@@ -21,6 +21,9 @@ const testConfig: UserConfig = {
         'src/test-utils.ts',
         'src/**/*.d.ts',
         'src/**/__tests__',
+        'src/main.tsx',
+        'cypress',
+        'cypress.config.ts',
       ],
       perFile: true,
       lines: 95,
@@ -52,7 +55,7 @@ export default defineConfig(({ mode }) => ({
       '/pensjon/kalkulator/api': {
         target: process.env.VITE_MOCKAPI
           ? 'http://localhost:8088'
-          : 'https://pensjonskalkulator-backend.dev.nav.no',
+          : 'https://pensjonskalkulator-backend.ekstern.dev.nav.no',
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/pensjon\/kalkulator/, ''),

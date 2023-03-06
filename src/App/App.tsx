@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Button, Heading } from '@navikt/ds-react'
 
 import reactLogo from '../assets/react.svg'
+import viteLogo from '../assets/vite.svg'
 import frameStyles from '../Frame/Frame.module.scss'
 
 import { onButtonClick } from './App-utils'
@@ -34,16 +35,12 @@ export function App() {
   }, [])
 
   return (
-    <div
+    <main
       className={`${frameStyles.frame} ${frameStyles.frame_isFlex} ${frameStyles.frame_hasPadding}`}
     >
       <div>
         <a href="https://vitejs.dev" target="_blank">
-          <img
-            src="/pensjon/kalkulator/vite.svg"
-            className={styles.logo}
-            alt="Vite logo"
-          />
+          <img src={viteLogo} className={styles.logo} alt="Vite logo" />
         </a>
         <a href="https://reactjs.org" target="_blank">
           <img
@@ -66,6 +63,6 @@ export function App() {
         </Button>
         <p>{'Du bør muligens spare bittelitt mer altså...'}</p>
       </div>
-    </div>
+    </main>
   )
 }

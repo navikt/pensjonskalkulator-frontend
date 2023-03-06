@@ -9,7 +9,14 @@ import { ErrorBoundary } from './ErrorBoundary/ErrorBoundary'
 
 import '@navikt/ds-css'
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+const rootId = 'root'
+const root = document.getElementById(rootId)
+
+if (!root) {
+  throw Error(`Missing element with id "${rootId}"`)
+}
+
+ReactDOM.createRoot(root).render(
   <React.StrictMode>
     <ErrorBoundary>
       <App />
