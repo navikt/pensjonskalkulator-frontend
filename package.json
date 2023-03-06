@@ -22,8 +22,10 @@
   "dependencies": {
     "@navikt/ds-css": "~2.1.7",
     "@navikt/ds-react": "~2.1.7",
+    "@reduxjs/toolkit": "^1.9.3",
     "react": "~18.2.0",
-    "react-dom": "~18.2.0"
+    "react-dom": "~18.2.0",
+    "react-redux": "^8.0.5"
   },
   "devDependencies": {
     "@navikt/nav-dekoratoren-moduler": "^1.9.0",
