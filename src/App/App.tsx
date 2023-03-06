@@ -1,38 +1,47 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { Button, Heading } from '@navikt/ds-react'
+import { Loader, Alert } from '@navikt/ds-react'
 
 import reactLogo from '../assets/react.svg'
 import viteLogo from '../assets/vite.svg'
 import frameStyles from '../Frame/Frame.module.scss'
+import { useGetStatusQuery } from '../state/api/apiSlice'
 
 import { onButtonClick } from './App-utils'
 
 import styles from './App.module.scss'
 
+// TODO move as util? move as container?
 export function App() {
   const [count, setCount] = useState<number>(0)
-  const [livenessStatus, setLivenessStatus] = useState<string>('')
 
-  useEffect(() => {
-    const apiPath = '/pensjon/kalkulator/api/status'
-    fetch(apiPath, {
-      method: 'GET',
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json()
-        }
-        throw new Error('Something went wrong')
-      })
-      .then((data) => {
-        setLivenessStatus(data.status)
-      })
-      .catch((error) => {
-        // TODO add error loggingto a server?
-        console.warn(error)
-      })
-  }, [])
+  const {
+    data: livenessStatus,
+    isLoading,
+    // isSuccess,
+    isError,
+    error,
+  } = useGetStatusQuery()
+
+  let content
+  if (isError) {
+    content = (
+      <Alert variant="error">
+        <Heading spacing size="small" level="1">
+          {`Beklager, vi fikk ikke hentet status pga en error ${error?.status}`}
+        </Heading>
+      </Alert>
+    )
+  } else if (isLoading) {
+    content = <Loader size="3xlarge" title="venter..." />
+  } else {
+    content = (
+      <Heading spacing size="large" level="1">
+        Pensjonskalkulator is "{livenessStatus}"
+      </Heading>
+    )
+  }
 
   return (
     <main
@@ -50,9 +59,8 @@ export function App() {
           />
         </a>
       </div>
-      <Heading spacing size="large" level="1">
-        Pensjonskalkulator is "{livenessStatus}"
-      </Heading>
+
+      {content}
 
       <div className={styles.card}>
         <Button

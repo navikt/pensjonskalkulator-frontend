@@ -9,9 +9,14 @@ export const apiSlice = createApi({
   // The "endpoints" represent operations and requests for this server
   endpoints: (builder) => ({
     // The `getStatus` endpoint is a "query" operation that returns data
-    getStatus: builder.query({
+    getStatus: builder.query<string, void>({
       // The URL for the request is '/pensjon/kalkulator/api/status'
       query: () => '/status',
+      transformResponse: (rawResult: { status: string }, meta) => {
+        // The optional `meta` property is available based on the type for the `baseQuery` used
+        // The return value for `transformResponse` must match `ResultType`
+        return rawResult.status
+      },
     }),
   }),
 })

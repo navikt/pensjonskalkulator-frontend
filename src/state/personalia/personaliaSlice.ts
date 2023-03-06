@@ -40,4 +40,4 @@ export const personaliaSlice = createSlice({
 
 export const { resetPersonalia, setUserInfo } = personaliaSlice.actions
 // ? Export the authSlice.reducer to be included in the store.
-// export default personaliaSlice.reducer
+export default personaliaSlice.reducer

@@ -1,11 +1,11 @@
 import React from 'react'
-// import { Provider } from 'react-redux'
+import { Provider } from 'react-redux'
 
 import ReactDOM from 'react-dom/client'
 
 import { App } from './App/App'
 import { ErrorBoundary } from './ErrorBoundary/ErrorBoundary'
-// import { store } from './state/store'
+import { store } from './state/store'
 
 import '@navikt/ds-css'
 
@@ -19,11 +19,9 @@ if (!root) {
 ReactDOM.createRoot(root).render(
   <React.StrictMode>
     <ErrorBoundary>
-      <App />
-
-      {/* <Provider store={store}>
+      <Provider store={store}>
         <App />
-      </Provider> */}
+      </Provider>
     </ErrorBoundary>
   </React.StrictMode>
 )

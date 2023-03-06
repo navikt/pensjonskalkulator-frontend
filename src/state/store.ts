@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 
 import { apiSlice } from './api/apiSlice'
-import { personaliaSlice } from './personalia/personaliaSlice'
+import personaliaReducer from './personalia/personaliaSlice'
 
 export const store = configureStore({
   reducer: {
-    personalia: personaliaSlice.reducer,
+    personalia: personaliaReducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
