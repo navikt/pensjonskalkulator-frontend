@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 
 import { Button, Heading } from '@navikt/ds-react'
+import cx from 'classnames'
 
 import reactLogo from '../assets/react.svg'
 import viteLogo from '../assets/vite.svg'
-import frameStyles from '../Frame/Frame.module.scss'
+import { Frame } from '../Frame/Frame'
 
 import { onButtonClick } from './App-utils'
 
@@ -35,9 +36,7 @@ export function App() {
   }, [])
 
   return (
-    <main
-      className={`${frameStyles.frame} ${frameStyles.frame_isFlex} ${frameStyles.frame_hasPadding}`}
-    >
+    <Frame tag="main" flex padded>
       <div>
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} className={styles.logo} alt="Vite logo" />
@@ -45,7 +44,7 @@ export function App() {
         <a href="https://reactjs.org" target="_blank">
           <img
             src={reactLogo}
-            className={`${styles.logo} ${styles.logo_react}`}
+            className={cx(styles.logo, styles.react)}
             alt="React logo"
           />
         </a>
@@ -63,6 +62,6 @@ export function App() {
         </Button>
         <p>{'Du bør muligens spare bittelitt mer altså...'}</p>
       </div>
-    </main>
+    </Frame>
   )
 }

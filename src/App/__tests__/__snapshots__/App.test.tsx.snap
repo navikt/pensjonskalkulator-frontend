@@ -5,7 +5,7 @@ exports[`Gitt at appen importeres, > Når Appen starter og at requesten er velly
 exports[`Gitt at appen importeres, > Når Appen starter og at requesten feiler, Så logges feilmeldingen og appen vises uten liveness status 1`] = `
 <DocumentFragment>
   <main
-    class="_frame_f5d647 _frame_isFlex_f5d647 _frame_hasPadding_f5d647"
+    class="_frame_f5d647 _padded_f5d647 _flex_f5d647"
   >
     <div>
       <a
@@ -24,7 +24,7 @@ exports[`Gitt at appen importeres, > Når Appen starter og at requesten feiler, 
       >
         <img
           alt="React logo"
-          class="_logo_728e4a _logo_react_728e4a"
+          class="_logo_728e4a _react_728e4a"
           src="/pensjon/kalkulator/src/assets/react.svg"
         />
       </a>

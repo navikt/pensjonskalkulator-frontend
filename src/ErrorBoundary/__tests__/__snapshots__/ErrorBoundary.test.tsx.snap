@@ -3,7 +3,7 @@
 exports[`Gitt at ErrorBoundary wrapper en komponent, > Når den nested komponent kaster feil, Så vises det riktig feilmelding fra ErrorBoundary 1`] = `
 <DocumentFragment>
   <div
-    class="_frame_f5d647 _frame_hasPadding_f5d647"
+    class="_frame_f5d647 _padded_f5d647"
   >
     <div
       class="navds-alert navds-alert--error navds-alert--medium"

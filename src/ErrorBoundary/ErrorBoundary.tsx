@@ -2,7 +2,7 @@ import React, { Component, ErrorInfo, ReactNode } from 'react'
 
 import { Alert, Heading } from '@navikt/ds-react'
 
-import frameStyles from '../Frame/Frame.module.scss'
+import { Frame } from '../Frame/Frame'
 
 interface Props {
   children: ReactNode
@@ -28,14 +28,14 @@ export class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return (
-        <div className={`${frameStyles.frame} ${frameStyles.frame_hasPadding}`}>
+        <Frame padded>
           <Alert variant="error">
             <Heading spacing size="small" level="1">
               Beklager, det har oppstått en feil
             </Heading>
             Lorem ipsum dolor sit amet
           </Alert>
-        </div>
+        </Frame>
       )
     }
 
