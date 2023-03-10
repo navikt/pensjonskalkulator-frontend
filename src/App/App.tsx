@@ -1,12 +1,16 @@
 import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
-import { Button, Heading } from '@navikt/ds-react'
+import { Checkbox, CheckboxGroup, Button, Heading } from '@navikt/ds-react'
 import { Loader, Alert } from '@navikt/ds-react'
+import { SerializedError } from '@reduxjs/toolkit'
 
 import reactLogo from '../assets/react.svg'
 import viteLogo from '../assets/vite.svg'
 import frameStyles from '../Frame/Frame.module.scss'
 import { useGetStatusQuery } from '../state/api/apiSlice'
+import { RootState } from '../state/store'
+import { userInputActions } from '../state/userInput/userInputReducer'
 
 import { onButtonClick } from './App-utils'
 
@@ -15,6 +19,11 @@ import styles from './App.module.scss'
 // TODO move as util? move as container?
 export function App() {
   const [count, setCount] = useState<number>(0)
+  const dispatch = useDispatch()
+  // TODO lage selector ut av det og skrive tester
+  const harSamtykket = useSelector(
+    (state: RootState) => state.userInput.samtykke
+  )
 
   const {
     data: livenessStatus,
@@ -29,7 +38,9 @@ export function App() {
     content = (
       <Alert variant="error">
         <Heading spacing size="small" level="1">
-          {`Beklager, vi fikk ikke hentet status pga en error ${error?.status}`}
+          {`Beklager, vi fikk ikke hentet status pga en feil: ${
+            (error as SerializedError).message
+          }`}
         </Heading>
       </Alert>
     )
@@ -63,9 +74,23 @@ export function App() {
       {content}
 
       <div className={styles.card}>
+        {!harSamtykket && (
+          <CheckboxGroup
+            legend="Er det greit for deg?"
+            onChange={(val: Array<string>) => {
+              dispatch(userInputActions.setSamtykke(val.length > 0))
+            }}
+          >
+            <Checkbox value={'ja'}>
+              Ja, jeg samtykker og går videre! :)
+            </Checkbox>
+          </CheckboxGroup>
+        )}
         <Button
           className={styles.button}
-          onClick={() => onButtonClick(count, setCount)}
+          onClick={() => {
+            onButtonClick(count, setCount)
+          }}
         >
           count is {count}
         </Button>
