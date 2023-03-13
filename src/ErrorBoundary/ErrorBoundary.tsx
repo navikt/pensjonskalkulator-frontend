@@ -3,7 +3,7 @@ import React, { Component, ErrorInfo, ReactNode } from 'react'
 import { Alert, Heading } from '@navikt/ds-react'
 import clsx from 'clsx'
 
-import frameStyles from '../Frame/Frame.module.scss'
+import frameStyles from '@/Frame/Frame.module.scss'
 
 interface Props {
   children: ReactNode

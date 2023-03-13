@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 import eslint from 'vite-plugin-eslint'
 import stylelint from 'vite-plugin-stylelint'
 import sassDts from 'vite-plugin-sass-dts'
+import tsconfigPaths from 'vite-tsconfig-paths'
 import path from 'path'
 
 import type { UserConfig } from 'vitest/config'
@@ -49,6 +50,7 @@ export default defineConfig(({ mode }) => ({
         outFile: path.resolve(__dirname, './src/style.d.ts'),
       },
     }),
+    tsconfigPaths(),
   ],
   server: {
     proxy: {

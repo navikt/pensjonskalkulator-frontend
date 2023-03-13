@@ -3,13 +3,13 @@ import { useEffect, useState } from 'react'
 import { Button, Heading } from '@navikt/ds-react'
 import clsx from 'clsx'
 
-import reactLogo from '../assets/react.svg'
-import viteLogo from '../assets/vite.svg'
-import frameStyles from '../Frame/Frame.module.scss'
-
 import { onButtonClick } from './App-utils'
 
 import styles from './App.module.scss'
+
+import reactLogo from '@/assets/react.svg'
+import viteLogo from '@/assets/vite.svg'
+import frameStyles from '@/Frame/Frame.module.scss'
 
 export function App() {
   const [count, setCount] = useState<number>(0)

@@ -64,6 +64,7 @@
     "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-sass-dts": "^1.2.16",
     "vite-plugin-stylelint": "^4.2.0",
+    "vite-tsconfig-paths": "^4.0.5",
     "vitest": "^0.28.5"
   }
 }
