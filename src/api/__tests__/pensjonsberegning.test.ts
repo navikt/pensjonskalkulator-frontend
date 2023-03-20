@@ -2,8 +2,8 @@ import { afterEach, describe, it, vi } from 'vitest'
 import {
   createFailureFetchResponse,
   createSuccessFetchResponse,
-} from '../../test-utils'
-import { fetchPensjonsberegning } from '../pensjonsberegning'
+} from '@/test-utils'
+import { fetchPensjonsberegning } from '@/api/pensjonsberegning'
 
 const cachedFetch = global.fetch
 

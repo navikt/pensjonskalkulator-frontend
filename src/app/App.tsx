@@ -1,8 +1,8 @@
 import { Heading } from '@navikt/ds-react'
 import clsx from 'clsx'
 
-import frameStyles from '../Frame/Frame.module.scss'
-import { Pensjonsberegning } from '../Pensjonsberegning'
+import { Pensjonsberegning } from '@/pensjonsberegning'
+import frameStyles from '@/styles/Frame/Frame.module.scss'
 
 import styles from './App.module.scss'
 

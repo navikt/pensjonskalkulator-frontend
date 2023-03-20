@@ -1,11 +1,11 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
+import { Pensjonsberegning } from '@/pensjonsberegning'
 import {
   createFailureFetchResponse,
   createSuccessFetchResponse,
-} from '../../test-utils'
-import { Pensjonsberegning } from '../Pensjonsberegning'
+} from '@/test-utils'
 
 const cachedFetch = global.fetch
 

@@ -1,4 +1,4 @@
-import { Pensjonsberegning } from '../Pensjonsberegning'
+import { Pensjonsberegning } from '@/Pensjonsberegning'
 import { isPensjonsberegning } from './typeguards'
 
 export const fetchPensjonsberegning = (): Promise<Pensjonsberegning[]> => {

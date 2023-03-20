@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import { afterAll, describe, it, vi } from 'vitest'
 
-import { createSuccessFetchResponse } from '../../test-utils'
-import { App } from '../App'
+import { App } from '@/app'
+import { createSuccessFetchResponse } from '@/test-utils'
 
 // TODO:
 //  Trenger vi egentlig å teste denne? Cypress håndterer allerede

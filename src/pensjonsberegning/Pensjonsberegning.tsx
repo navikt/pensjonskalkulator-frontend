@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react'
 
 import { Alert, BodyLong, Loader } from '@navikt/ds-react'
 
-import { fetchPensjonsberegning } from '../api/pensjonsberegning'
+import { fetchPensjonsberegning } from '@/api/pensjonsberegning'
 
 import styles from './Pensjonsberegning.module.scss'
+
 
 const usePensjonsberegning = (): FetchedData<Pensjonsberegning[]> => {
   const [beregning, setBeregning] = useState<FetchedData<Pensjonsberegning[]>>({

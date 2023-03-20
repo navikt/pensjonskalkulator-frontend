@@ -17,14 +17,12 @@ const testConfig: UserConfig = {
       all: true,
       extension: ['.ts', '.tsx'],
       exclude: [
-        'vite.config.ts',
+        '*.config.ts',
         'src/test-utils.ts',
         'src/**/*.d.ts',
         'src/**/__tests__',
         'src/main.tsx',
-        'src/**/index.ts',
         'cypress',
-        'cypress.config.ts',
       ],
       perFile: true,
       lines: 95,
@@ -52,6 +50,9 @@ export default defineConfig(({ mode }) => ({
       },
     }),
   ],
+  resolve: {
+    alias: [{ find: '@', replacement: path.resolve(__dirname, 'src') }],
+  },
   server: {
     proxy: {
       '/pensjon/kalkulator/api': {

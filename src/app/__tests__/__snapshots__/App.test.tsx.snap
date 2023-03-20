@@ -3,10 +3,10 @@
 exports[`App > rendrer slik den skal 1`] = `
 <DocumentFragment>
   <main
-    class="_frame_f5d647 _frame_isFlex_f5d647 _frame_hasPadding_f5d647 _main_728e4a"
+    class="_frame_1a99b7 _frame_isFlex_1a99b7 _frame_hasPadding_1a99b7 _main_6659cc"
   >
     <h1
-      class="_heading_728e4a navds-heading navds-heading--large"
+      class="_heading_6659cc navds-heading navds-heading--large"
     >
       Din pensjon
     </h1>

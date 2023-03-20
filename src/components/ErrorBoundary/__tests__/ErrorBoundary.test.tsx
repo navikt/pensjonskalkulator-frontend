@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
-import { render, screen } from '../../test-utils'
-import { ErrorBoundary } from '../ErrorBoundary'
+import { ErrorBoundary } from '@/components/ErrorBoundary'
+import { render, screen } from '@/test-utils'
 
 describe('ErrorBoundary', () => {
   it('rendrer children når children ikke kaster en feil', async () => {
