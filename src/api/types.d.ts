@@ -1,4 +1,4 @@
-declare type Pensjonsberegning = {
+declare type PensjonsberegningResponse = {
   pensjonsaar: number
   pensjonsbeloep: number
   alder: number

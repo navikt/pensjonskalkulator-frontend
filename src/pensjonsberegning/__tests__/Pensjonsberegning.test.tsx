@@ -1,6 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
+import data from '@/__mocks__/pensjonsberegning.json'
 import { Pensjonsberegning } from '@/pensjonsberegning'
 import {
   createFailureFetchResponse,
@@ -8,24 +9,6 @@ import {
 } from '@/test-utils'
 
 const cachedFetch = global.fetch
-
-const data: Pensjonsberegning[] = [
-  {
-    pensjonsbeloep: 1234,
-    pensjonsaar: 2020,
-    alder: 67,
-  },
-  {
-    pensjonsbeloep: 1357,
-    pensjonsaar: 2021,
-    alder: 68,
-  },
-  {
-    pensjonsbeloep: 2345,
-    pensjonsaar: 2023,
-    alder: 70,
-  },
-]
 
 function mockSuccessResponse() {
   const fetchMock = vi.fn().mockResolvedValue(createSuccessFetchResponse(data))

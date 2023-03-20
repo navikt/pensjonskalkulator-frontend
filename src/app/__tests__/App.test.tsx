@@ -11,7 +11,7 @@ import { createSuccessFetchResponse } from '@/test-utils'
 
 const cachedFetch = global.fetch
 
-const beregning: Pensjonsberegning = {
+const beregning: PensjonsberegningResponse = {
   pensjonsaar: 2020,
   pensjonsbeloep: 1234,
   alder: 67,

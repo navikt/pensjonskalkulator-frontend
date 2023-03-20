@@ -1,7 +1,8 @@
-import { Pensjonsberegning } from '@/Pensjonsberegning'
 import { isPensjonsberegning } from './typeguards'
 
-export const fetchPensjonsberegning = (): Promise<Pensjonsberegning[]> => {
+export const fetchPensjonsberegning = (): Promise<
+  PensjonsberegningResponse[]
+> => {
   return fetch('/pensjon/kalkulator/api/pensjonsberegning', {
     method: 'GET',
   })

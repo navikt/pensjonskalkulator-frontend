@@ -6,8 +6,10 @@ import { fetchPensjonsberegning } from '@/api/pensjonsberegning'
 
 import styles from './Pensjonsberegning.module.scss'
 
-const usePensjonsberegning = (): FetchedData<Pensjonsberegning[]> => {
-  const [beregning, setBeregning] = useState<FetchedData<Pensjonsberegning[]>>({
+const usePensjonsberegning = (): FetchedData<PensjonsberegningResponse[]> => {
+  const [beregning, setBeregning] = useState<
+    FetchedData<PensjonsberegningResponse[]>
+  >({
     data: null,
     isLoading: true,
     hasError: false,
@@ -15,7 +17,7 @@ const usePensjonsberegning = (): FetchedData<Pensjonsberegning[]> => {
 
   useEffect(() => {
     fetchPensjonsberegning()
-      .then((data: Pensjonsberegning[]) => {
+      .then((data: PensjonsberegningResponse[]) => {
         setBeregning({
           data: data.sort((a, b) => a.pensjonsaar - b.pensjonsaar),
           isLoading: false,

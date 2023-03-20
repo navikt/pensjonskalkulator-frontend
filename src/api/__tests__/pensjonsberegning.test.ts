@@ -7,7 +7,7 @@ import { fetchPensjonsberegning } from '@/api/pensjonsberegning'
 
 const cachedFetch = global.fetch
 
-function mockSuccessResponse(response: Pensjonsberegning[]) {
+function mockSuccessResponse(response: PensjonsberegningResponse[]) {
   const fetchMock = vi
     .fn()
     .mockResolvedValue(createSuccessFetchResponse(response))
@@ -48,7 +48,7 @@ describe('fetchPensjonsberegning', () => {
       pensjonsbeloep: null,
       pensjonsaar: '2020',
       alder: 67,
-    } as unknown as Pensjonsberegning
+    } as unknown as PensjonsberegningResponse
     mockSuccessResponse([beregning])
 
     await expect(() => fetchPensjonsberegning()).rejects.toThrow(
