@@ -6,7 +6,6 @@ import { fetchPensjonsberegning } from '@/api/pensjonsberegning'
 
 import styles from './Pensjonsberegning.module.scss'
 
-
 const usePensjonsberegning = (): FetchedData<Pensjonsberegning[]> => {
   const [beregning, setBeregning] = useState<FetchedData<Pensjonsberegning[]>>({
     data: null,
