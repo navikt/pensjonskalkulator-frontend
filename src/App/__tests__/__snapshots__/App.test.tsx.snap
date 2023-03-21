@@ -1,6 +1,6 @@
 // Vitest Snapshot v1
 
-exports[`App > rendrer slik den skal 1`] = `
+exports[`App > rendrer slik den skal, med main tag og Heading på riktig nivå 1`] = `
 <DocumentFragment>
   <main
     class="_frame_f5d647 _frame_isFlex_f5d647 _frame_hasPadding_f5d647 _main_728e4a"
@@ -10,36 +10,46 @@ exports[`App > rendrer slik den skal 1`] = `
     >
       Din pensjon
     </h1>
-    <svg
-      aria-labelledby="loader-r0"
-      class="navds-loader navds-loader--medium navds-loader--neutral"
-      data-testid="loader"
-      focusable="false"
-      preserveAspectRatio="xMidYMid"
-      viewBox="0 0 50 50"
+    <section
+      class="_sammenligning_e128d6"
     >
-      <title
-        id="loader-r0"
+      <div
+        class="navds-alert navds-alert--error navds-alert--medium"
       >
-        venter...
-      </title>
-      <circle
-        class="navds-loader__background"
-        cx="25"
-        cy="25"
-        fill="none"
-        r="20"
-        xmlns="http://www.w3.org/2000/svg"
-      />
-      <circle
-        class="navds-loader__foreground"
-        cx="25"
-        cy="25"
-        fill="none"
-        r="20"
-        stroke-dasharray="50 155"
-      />
-    </svg>
+        <svg
+          aria-labelledby="title-r0"
+          class="navds-alert__icon"
+          fill="none"
+          focusable="false"
+          height="1em"
+          role="img"
+          viewBox="0 0 24 24"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <title
+            id="title-r0"
+          >
+            Feil
+          </title>
+          <path
+            clip-rule="evenodd"
+            d="M0 11.976C.013 5.372 5.395 0 11.999 0 18.639.013 24.012 5.406 24 12.022 23.986 18.627 18.603 24 12 24h-.023a11.924 11.924 0 0 1-8.48-3.531A11.923 11.923 0 0 1 0 11.976Zm17-3.547L15.571 7 12 10.572 8.429 7 7 8.429 10.572 12 7 15.571 8.429 17 12 13.428 15.571 17 17 15.571 13.428 12 17 8.429Z"
+            fill="#C30000"
+            fill-rule="evenodd"
+          />
+        </svg>
+        <div
+          class="navds-alert__wrapper navds-body-long"
+        >
+          <h1
+            class="navds-heading navds-heading--small navds-typo--spacing"
+          >
+            Vi klarte ikke å kalkulere pensjonen din. Prøv igjen senere.
+          </h1>
+        </div>
+      </div>
+    </section>
   </main>
 </DocumentFragment>
 `;

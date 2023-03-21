@@ -55,12 +55,17 @@ export default defineConfig(({ mode }) => ({
   server: {
     proxy: {
       '/pensjon/kalkulator/api': {
-        target: process.env.VITE_MOCKAPI
-          ? 'http://localhost:8088'
-          : 'https://pensjonskalkulator-backend.ekstern.dev.nav.no',
+        // target: process.env.VITE_MOCKAPI
+        //   ? 'http://localhost:8088'
+        //   : 'https://pensjonskalkulator-backend.ekstern.dev.nav.no',
+        // target: process.env.VITE_MSW_BASEURL
+        //   ? process.env.VITE_MSW_BASEURL
+        //   : 'https://pensjonskalkulator-backend.ekstern.dev.nav.no',
+
+        target: 'http://localhost:8088',
         changeOrigin: true,
         secure: false,
-        rewrite: (path) => path.replace(/^\/pensjon\/kalkulator/, ''),
+        //rewrite: (path) => path.replace(/^\/pensjon\/kalkulator/, ''),
       },
     },
   },

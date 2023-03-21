@@ -1,0 +1,52 @@
+import React, { PropsWithChildren } from 'react'
+import { Provider } from 'react-redux'
+
+import { PreloadedState } from '@reduxjs/toolkit'
+import { render, RenderOptions } from '@testing-library/react'
+
+import { setupStore, RootState, AppStore } from './state/store'
+
+export interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
+  preloadedState?: PreloadedState<RootState>
+  store?: AppStore
+}
+
+// export const createSuccessFetchResponse = (data: Record<string, unknown>) => {
+//   return { ok: true, json: () => new Promise((resolve) => resolve(data)) }
+// }
+
+// export const createFailureFetchResponse = (statuscode?: number) => {
+//   return {
+//     status: statuscode ?? 404,
+//     json: () => new Promise((resolve) => resolve({})),
+//   }
+// }
+
+export const swallowErrors = (testFn: () => void) => {
+  const error = console.error
+  console.error = () => {}
+  testFn()
+  console.error = error
+}
+
+// Return an object with the store and all of RTL's query functions
+export function renderWithStore(
+  ui: React.ReactElement,
+  {
+    preloadedState = {},
+    store = setupStore(preloadedState),
+    ...renderOptions
+  }: ExtendedRenderOptions = {}
+) {
+  function Wrapper({ children }: PropsWithChildren<unknown>): JSX.Element {
+    return <Provider store={store}>{children}</Provider>
+  }
+  // TODO add listeners
+
+  return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) }
+}
+
+export * from '@testing-library/react'
+export { default as userEvent } from '@testing-library/user-event'
+// override render export
+export { renderWithStore as render }

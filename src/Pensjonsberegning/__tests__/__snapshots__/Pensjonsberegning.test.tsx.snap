@@ -1,0 +1,49 @@
+// Vitest Snapshot v1
+
+exports[`Pensjonsberegning > viser pensjonsberegning hentet fra backend 1`] = `
+<DocumentFragment>
+  <section
+    class="_sammenligning_e128d6"
+  >
+    <p
+      class="navds-body-long"
+    >
+      Hvis du fortsetter å ha samme inntekt som du har i dag kan du tidligst gå av med pensjon ved 
+      <b>
+        67 år
+      </b>
+       hvor du vil få utbetalt 
+      <b>
+        300001 kroner
+      </b>
+       i året
+    </p>
+    <p
+      class="navds-body-long"
+    >
+      Dersom du jobber frem til du er 
+      <b>
+        68 år
+      </b>
+      , vil du få 
+      <b>
+        300002 kroner
+      </b>
+       utbetalt
+    </p>
+    <p
+      class="navds-body-long"
+    >
+      Dersom du jobber frem til du er 
+      <b>
+        69 år
+      </b>
+      , vil du få 
+      <b>
+        300003 kroner
+      </b>
+       utbetalt
+    </p>
+  </section>
+</DocumentFragment>
+`;
