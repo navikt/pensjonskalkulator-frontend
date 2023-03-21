@@ -3,6 +3,7 @@ import { Unsubscribe } from '@reduxjs/toolkit'
 import { AppStartListening /* , AppListenerEffectAPI */ } from '../store'
 import { userInputActions } from '../userInput/userInputReducer'
 
+// TODO skrive tester når den vil taes i bruk
 async function onSamtykkeUpdate({
   payload,
 }: ReturnType<typeof userInputActions.setSamtykke>) {

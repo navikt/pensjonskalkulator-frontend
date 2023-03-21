@@ -11,17 +11,6 @@ export interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
   store?: AppStore
 }
 
-// export const createSuccessFetchResponse = (data: Record<string, unknown>) => {
-//   return { ok: true, json: () => new Promise((resolve) => resolve(data)) }
-// }
-
-// export const createFailureFetchResponse = (statuscode?: number) => {
-//   return {
-//     status: statuscode ?? 404,
-//     json: () => new Promise((resolve) => resolve({})),
-//   }
-// }
-
 export const swallowErrors = (testFn: () => void) => {
   const error = console.error
   console.error = () => {}
@@ -48,5 +37,5 @@ export function renderWithStore(
 
 export * from '@testing-library/react'
 export { default as userEvent } from '@testing-library/user-event'
-// override render export
+
 export { renderWithStore as render }
