@@ -7,11 +7,14 @@ import { useGetPensjonsberegningQuery } from '../state/api/apiSlice'
 import styles from './Pensjonsberegning.module.scss'
 
 export function Pensjonsberegning() {
-  const { data, isLoading, isSuccess, isError, error } =
-    useGetPensjonsberegningQuery()
+  const { data, isLoading, isError } = useGetPensjonsberegningQuery()
 
   let content
-  if (isError || data === undefined || (isSuccess && data.length === 0)) {
+  if (
+    isError ||
+    (!isLoading && data === undefined) ||
+    (!isLoading && data.length === 0)
+  ) {
     content = (
       <Alert variant="error">
         <Heading spacing size="small" level="1">
