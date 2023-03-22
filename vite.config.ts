@@ -18,6 +18,7 @@ const testConfig: UserConfig = {
       extension: ['.ts', '.tsx'],
       exclude: [
         'vite.config.ts',
+        'src/api',
         'src/test-utils.ts',
         'src/**/*.d.ts',
         'src/**/__tests__',

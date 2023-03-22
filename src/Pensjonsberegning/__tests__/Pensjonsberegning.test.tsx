@@ -7,6 +7,7 @@ import { Pensjonsberegning } from '../Pensjonsberegning'
 
 const pensjonsberegningData = require('../../api/__mocks__/pensjonsberegning.json')
 
+// TODO Bør vi legge til tester for å dekke dersom backend svarer men at data er tom
 describe('Pensjonsberegning', () => {
   it('viser loading og deretter pensjonsberegning hentet fra backend', async () => {
     const result = render(<Pensjonsberegning />)

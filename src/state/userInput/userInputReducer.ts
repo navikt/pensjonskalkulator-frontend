@@ -9,12 +9,12 @@ export interface Simulation {
   hasSomething?: boolean
 }
 
-interface UserInputState {
+export interface UserInputState {
   samtykke: boolean | null
   currentSimulation: Simulation
 }
 
-const initialState: UserInputState = {
+export const userInputInitialState: UserInputState = {
   samtykke: null,
   currentSimulation: {
     inntekt: null,
@@ -25,7 +25,7 @@ const initialState: UserInputState = {
 
 export const userInputSlice = createSlice({
   name: 'userInputSlice',
-  initialState,
+  initialState: userInputInitialState,
   reducers: {
     setSamtykke: (state, action: PayloadAction<boolean>) => {
       state.samtykke = action.payload
