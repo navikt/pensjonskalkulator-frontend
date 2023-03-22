@@ -1,13 +1,11 @@
-import { rest } from 'msw'
 import { describe, expect, it } from 'vitest'
 
-import { server } from '../../api/server'
+import { mockErrorResponse } from '../../api/server'
 import { render, screen, waitFor } from '../../test-utils'
 import { Pensjonsberegning } from '../Pensjonsberegning'
 
 const pensjonsberegningData = require('../../api/__mocks__/pensjonsberegning.json')
 
-// TODO Bør vi legge til tester for å dekke dersom backend svarer men at data er tom
 describe('Pensjonsberegning', () => {
   it('viser loading og deretter pensjonsberegning hentet fra backend', async () => {
     const result = render(<Pensjonsberegning />)
@@ -38,16 +36,8 @@ describe('Pensjonsberegning', () => {
   })
 
   it('viser feilmelding om henting av pensjonberegning feiler', async () => {
-    server.use(
-      rest.get(
-        `${
-          import.meta.env.VITE_MSW_BASEURL ?? ''
-        }/pensjon/kalkulator/api/pensjonsberegning`,
-        (_req, res, ctx) => {
-          return res(ctx.status(500), ctx.json('an error has occurred'))
-        }
-      )
-    )
+    mockErrorResponse(`/pensjonsberegning`)
+
     const result = render(<Pensjonsberegning />)
 
     await waitFor(() => {

@@ -55,9 +55,7 @@ export default defineConfig(({ mode }) => ({
   server: {
     proxy: {
       '/pensjon/kalkulator/api': {
-        target:
-          process.env.VITE_MSW_BASEURL ??
-          'https://pensjonskalkulator-backend.ekstern.dev.nav.no',
+        target: 'https://pensjonskalkulator-backend.ekstern.dev.nav.no',
         changeOrigin: true,
         secure: false,
       },
