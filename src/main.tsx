@@ -29,13 +29,9 @@ const startRendering = () => {
   )
 }
 
-if (
-  process.env.NODE_ENV === 'development' &&
-  import.meta.env.VITE_MSW_BASEURL
-) {
+if (process.env.NODE_ENV === 'development') {
   import('./api/browser').then((mswBrowserModule) => {
-    console.log('>>>> STARTING MSW WORKER', mswBrowserModule.worker)
-    mswBrowserModule.worker.start()
+    mswBrowserModule.worker.start({ onUnhandledRequest: 'bypass' })
     mswBrowserModule.worker.printHandlers()
     startRendering()
   })
