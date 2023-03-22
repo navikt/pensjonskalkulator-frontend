@@ -7,6 +7,7 @@ export const apiSlice = createApi({
     baseUrl: `${import.meta.env.VITE_MSW_BASEURL ?? ''}/pensjon/kalkulator/api`,
   }),
   endpoints: (builder) => ({
+    // Full request url med baseQuery: '${env.VITE_MSW_BASEURL}/pensjon/kalkulator/api/pensjonsberegning'
     getPensjonsberegning: builder.query<Pensjonsberegning[], void>({
       query: () => '/pensjonsberegning',
       transformResponse: (response: Pensjonsberegning[]) => {
@@ -19,4 +20,5 @@ export const apiSlice = createApi({
   }),
 })
 
+export default apiSlice
 export const { useGetPensjonsberegningQuery } = apiSlice
