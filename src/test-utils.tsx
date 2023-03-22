@@ -26,6 +26,13 @@ export const swallowErrors = (testFn: () => void) => {
   console.error = error
 }
 
+export const swallowErrorsAsync = async (testFn: () => Promise<void>) => {
+  const cache = console.error
+  console.error = () => {}
+  await testFn()
+  console.error = cache
+}
+
 // Return an object with the store and all of RTL's query functions
 export function renderWithStore(
   ui: React.ReactElement,
@@ -38,6 +45,7 @@ export function renderWithStore(
   function Wrapper({ children }: PropsWithChildren<unknown>): JSX.Element {
     return <Provider store={store}>{children}</Provider>
   }
+
   // TODO add listeners
 
   return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) }

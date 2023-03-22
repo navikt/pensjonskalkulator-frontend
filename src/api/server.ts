@@ -10,24 +10,34 @@ export const server = setupServer(...handlers)
 
 server.listen({ onUnhandledRequest: 'error' })
 
-type MockErrorResponseOptions = {
+type MockResponseOptions = {
   status?: number
   json?: any
 }
 
-export const mockErrorResponse = (
+export const mockResponse = (
   path: string,
-  options: MockErrorResponseOptions = {
-    status: 500,
-    json: "Beep boop I'm an error!",
+  options: MockResponseOptions = {
+    status: 200,
+    json: 'OK',
   }
 ) => {
   server.use(
     rest.get(`${target}${apiPath}${path}`, (req, res, ctx) => {
-      return res(
-        ctx.status(options.status ?? 500),
-        ctx.json("Beep boop I'm an error!")
-      )
+      return res(ctx.status(options.status ?? 200), ctx.json(options.json))
     })
   )
+}
+
+export const mockErrorResponse = (
+  path: string,
+  options: MockResponseOptions = {
+    status: 500,
+    json: "Beep boop I'm an error!",
+  }
+) => {
+  mockResponse(path, {
+    ...options,
+    status: options.status ?? 500,
+  })
 }
