@@ -11,7 +11,7 @@ describe('ErrorBoundary', () => {
     }
     render(
       <ErrorBoundary>
-        <ComponentThatIsJustFine/>
+        <ComponentThatIsJustFine />
       </ErrorBoundary>
     )
 
@@ -28,7 +28,7 @@ describe('ErrorBoundary', () => {
     swallowErrors(() => {
       const component = render(
         <ErrorBoundary>
-          <ComponentThatThrows/>
+          <ComponentThatThrows />
         </ErrorBoundary>
       )
 
