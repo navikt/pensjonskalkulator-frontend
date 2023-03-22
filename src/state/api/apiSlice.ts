@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { isPensjonsberegning } from './typeguards'
 
 export const apiSlice = createApi({
   reducerPath: 'api',
@@ -7,13 +8,12 @@ export const apiSlice = createApi({
   }),
   endpoints: (builder) => ({
     getPensjonsberegning: builder.query<Pensjonsberegning[], void>({
-      // Full request url med baseQuery: '${env.VITE_MSW_BASEURL}/pensjon/kalkulator/api/pensjonsberegning'
       query: () => '/pensjonsberegning',
-      transformResponse: (rawResult: Pensjonsberegning[], meta) => {
-        if (!rawResult || rawResult.length === 0) {
-          throw new Error('lorem ipsum')
+      transformResponse: (response: Pensjonsberegning[]) => {
+        if (!isPensjonsberegning(response)) {
+          throw new Error(`Mottok ugyldig pensjonsberegning: ${response}`)
         }
-        return rawResult
+        return response
       },
     }),
   }),
