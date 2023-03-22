@@ -7,7 +7,7 @@ import {
 } from '../userInput/userInputReducer'
 
 describe('store', () => {
-  it('returnerer store med riktig slices og default state', async () => {
+  it('returnerer store med riktig slices og default state', () => {
     const store = setupStore()
     const initialState = store.getState()
 
@@ -16,7 +16,7 @@ describe('store', () => {
     expect(initialState.userInput).toMatchObject(userInputInitialState)
   })
 
-  it('returnerer store med riktig state når setupStore kalles med parameter', async () => {
+  it('returnerer store med riktig state når setupStore kalles med parameter', () => {
     const state: UserInputState = {
       samtykke: true,
       currentSimulation: {
