@@ -4,7 +4,7 @@ import userInputSlice, {
 } from '../userInputReducer'
 
 describe('userInputSlice', () => {
-  test('initialize slice with initialValue', () => {
+  it('initialize slice with initialValue', () => {
     const listSliceInit = userInputSlice(userInputInitialState, {
       type: 'unknown',
     })
@@ -12,7 +12,7 @@ describe('userInputSlice', () => {
   })
 
   describe('actions', () => {
-    test('setSamtykke', () => {
+    it('setSamtykke', () => {
       const updatedState = userInputSlice(
         userInputInitialState,
         userInputActions.setSamtykke(true)
