@@ -34,7 +34,6 @@ const testConfig: UserConfig = {
       statements: 95,
       reporter: ['json', 'html', 'text', 'text-summary', 'cobertura'],
     },
-    onConsoleLog: () => false,
   },
 }
 
