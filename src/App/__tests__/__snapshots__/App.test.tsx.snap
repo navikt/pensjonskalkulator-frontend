@@ -10,40 +10,36 @@ exports[`App > rendrer slik den skal, med main tag og Heading på riktig nivå 1
     >
       Din pensjon
     </h1>
-    <section
-      class="_sammenligning_e128d6"
+    <svg
+      aria-labelledby="loader-r0"
+      class="navds-loader navds-loader--3xlarge navds-loader--neutral"
+      data-testid="loader"
+      focusable="false"
+      preserveAspectRatio="xMidYMid"
+      viewBox="0 0 50 50"
     >
-      <svg
-        aria-labelledby="loader-r0"
-        class="navds-loader navds-loader--3xlarge navds-loader--neutral"
-        data-testid="loader"
-        focusable="false"
-        preserveAspectRatio="xMidYMid"
-        viewBox="0 0 50 50"
+      <title
+        id="loader-r0"
       >
-        <title
-          id="loader-r0"
-        >
-          venter...
-        </title>
-        <circle
-          class="navds-loader__background"
-          cx="25"
-          cy="25"
-          fill="none"
-          r="20"
-          xmlns="http://www.w3.org/2000/svg"
-        />
-        <circle
-          class="navds-loader__foreground"
-          cx="25"
-          cy="25"
-          fill="none"
-          r="20"
-          stroke-dasharray="50 155"
-        />
-      </svg>
-    </section>
+        Henter pensjonsberegning
+      </title>
+      <circle
+        class="navds-loader__background"
+        cx="25"
+        cy="25"
+        fill="none"
+        r="20"
+        xmlns="http://www.w3.org/2000/svg"
+      />
+      <circle
+        class="navds-loader__foreground"
+        cx="25"
+        cy="25"
+        fill="none"
+        r="20"
+        stroke-dasharray="50 155"
+      />
+    </svg>
   </main>
 </DocumentFragment>
 `;
