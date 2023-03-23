@@ -20,5 +20,4 @@ export const apiSlice = createApi({
   }),
 })
 
-export default apiSlice
 export const { useGetPensjonsberegningQuery } = apiSlice

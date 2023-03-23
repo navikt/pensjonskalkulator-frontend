@@ -1,95 +1,139 @@
 import { rest } from 'msw'
 import { vi } from 'vitest'
-import apiSlice from '../apiSlice'
-
 import { server } from '../../../api/server'
+
 const pensjonsberegningData = require('../../../api/__mocks__/pensjonsberegning.json')
 
-import { setupApiStore } from '../../../test-utils'
-
 vi.mock('@reduxjs/toolkit/query/react')
+vi.mock('../apiSlice')
 
-describe('apiSlice', async () => {
-  it('har riktig baseQuery', async () => {
-    const createAPIMockFunction = vi
-      .fn()
-      .mockReturnValue({ useGetPensjonsberegningQuery: 'lorem' })
-    const fetchBaseQueryMockFunction = vi.fn().mockReturnValue('')
+//const OLD_ENV = process.env.VITE_MSW_BASEURL
 
+describe('apiSlice', () => {
+  const importRealApiSlice = async () => {
+    const apiSliceModuleActual = await vi.importActual('../apiSlice')
+    let apiSliceModule = await import('../apiSlice')
+    apiSliceModule.apiSlice = apiSliceModuleActual.apiSlice
+    return apiSliceModule.apiSlice
+  }
+
+  afterEach(async () => {
+    const realModule = await vi.importActual('@reduxjs/toolkit/query/react')
     const reduxUtils = await import('@reduxjs/toolkit/query/react')
-    reduxUtils.fetchBaseQuery = fetchBaseQueryMockFunction
-    reduxUtils.createApi = createAPIMockFunction
-
-    const apiSlice = await import('../apiSlice')
-
-    expect(fetchBaseQueryMockFunction).toHaveBeenCalledWith({
-      baseUrl: 'http://localhost:8088/pensjon/kalkulator/api',
-    })
-
-    // Mock clearing is not working - makes following tests to fail
-    vi.clearAllMocks()
-    vi.resetAllMocks()
+    reduxUtils.fetchBaseQuery = realModule.fetchBaseQuery
+    reduxUtils.createApi = realModule.createApi
   })
 
-  // it('eksponerer riktig endepunkter', () => {
-  //   expect(apiSlice.endpoints).toHaveProperty('getPensjonsberegning')
-  // })
+  describe('baseQuery', () => {
+    //TODO se om det går an å ha en test på denne ternary
+    // it('har riktig baseQuery i produksjon', async () => {
+    //   process.env.VITE_MSW_BASEURL = ''
 
-  // it('returnerer data ved successfull query', () => {
-  //   const storeRef = setupApiStore(apiSlice)
+    //   const createAPIMockFunction = vi
+    //     .fn()
+    //     .mockReturnValueOnce({ useGetPensjonsberegningQuery: 'lorem' })
+    //   const fetchBaseQueryMockFunction = vi.fn().mockReturnValueOnce('')
 
-  //   return storeRef.store
-  //     .dispatch<any>(apiSlice.endpoints.getPensjonsberegning.initiate())
-  //     .then((result: any) => {
-  //       expect(result.status).toBe('fulfilled')
-  //       expect(result.data).toMatchObject(pensjonsberegningData)
-  //     })
-  // })
+    //   const reduxUtils = await import('@reduxjs/toolkit/query/react')
+    //   reduxUtils.fetchBaseQuery = fetchBaseQueryMockFunction
+    //   reduxUtils.createApi = createAPIMockFunction
 
-  // it('returnerer undefined ved feilende query', () => {
-  //   const storeRef = setupApiStore(apiSlice)
-  //   server.use(
-  //     rest.get(
-  //       `${
-  //         import.meta.env.VITE_MSW_BASEURL ?? ''
-  //       }/pensjon/kalkulator/api/pensjonsberegning`,
-  //       (_req, res, ctx) => {
-  //         return res(ctx.status(500), ctx.json('an error has occurred'))
-  //       }
-  //     )
-  //   )
-  //   return storeRef.store
-  //     .dispatch<any>(apiSlice.endpoints.getPensjonsberegning.initiate())
-  //     .then((result: any) => {
-  //       expect(result.status).toBe('rejected')
-  //       expect(result.data).toBe(undefined)
-  //     })
-  // })
+    //   await import('../apiSlice')
+    //   await expect(fetchBaseQueryMockFunction).toHaveBeenCalledWith({
+    //     baseUrl: '/pensjon/kalkulator/api',
+    //   })
+    //   process.env.VITE_MSW_BASEURL = OLD_ENV
+    // })
 
-  // it('kaster feil ved uforventet format på responsen', () => {
-  //   const error = console.error
-  //   console.error = () => {}
+    it('har riktig baseQuery som default', async () => {
+      // vi.resetModules()
+      // process.env.VITE_MSW_BASEURL = OLD_ENV
 
-  //   const storeRef = setupApiStore(apiSlice)
+      const createAPIMockFunction = vi
+        .fn()
+        .mockReturnValueOnce({ useGetPensjonsberegningQuery: 'lorem' })
+      const fetchBaseQueryMockFunction = vi.fn().mockReturnValueOnce('')
 
-  //   server.use(
-  //     rest.get(
-  //       `${
-  //         import.meta.env.VITE_MSW_BASEURL ?? ''
-  //       }/pensjon/kalkulator/api/pensjonsberegning`,
-  //       (_req, res, ctx) => {
-  //         return res(ctx.status(200), ctx.json([{ 'tullete svar': 'lorem' }]))
-  //       }
-  //     )
-  //   )
+      const reduxUtils = await import('@reduxjs/toolkit/query/react')
+      reduxUtils.fetchBaseQuery = fetchBaseQueryMockFunction
+      reduxUtils.createApi = createAPIMockFunction
 
-  //   return storeRef.store
-  //     .dispatch<any>(apiSlice.endpoints.getPensjonsberegning.initiate())
-  //     .then((result: any) => {
-  //       expect(result).toThrow(Error)
-  //       expect(result.status).toBe('rejected')
-  //       expect(result.data).toBe(undefined)
-  //       console.error = error
-  //     })
-  // })
+      await import('../apiSlice')
+
+      await expect(fetchBaseQueryMockFunction).toHaveBeenCalledWith({
+        baseUrl: 'http://localhost:8088/pensjon/kalkulator/api',
+      })
+    })
+  })
+
+  it('eksponerer riktig endepunkter', async () => {
+    const apiSlice = await importRealApiSlice()
+    expect(apiSlice.endpoints).toHaveProperty('getPensjonsberegning')
+  })
+
+  it('returnerer data ved successfull query', async () => {
+    const apiSlice = await importRealApiSlice()
+
+    const storeModule = await import('../../store')
+    const storeRef = await storeModule.setupStore()
+
+    return storeRef
+      .dispatch<any>(apiSlice.endpoints.getPensjonsberegning.initiate())
+      .then((result: any) => {
+        expect(result.status).toBe('fulfilled')
+        expect(result.data).toMatchObject(pensjonsberegningData)
+      })
+  })
+
+  it('returnerer undefined ved feilende query', async () => {
+    const apiSlice = await importRealApiSlice()
+    const storeModule = await import('../../store')
+    const storeRef = await storeModule.setupStore()
+
+    server.use(
+      rest.get(
+        `${
+          import.meta.env.VITE_MSW_BASEURL ?? ''
+        }/pensjon/kalkulator/api/pensjonsberegning`,
+        (_req, res, ctx) => {
+          return res(ctx.status(500), ctx.json('an error has occurred'))
+        }
+      )
+    )
+    return storeRef
+      .dispatch<any>(apiSlice.endpoints.getPensjonsberegning.initiate())
+      .then((result: any) => {
+        expect(result.status).toBe('rejected')
+        expect(result.data).toBe(undefined)
+      })
+  })
+
+  it('kaster feil ved uforventet format på responsen', async () => {
+    const apiSlice = await importRealApiSlice()
+    const storeModule = await import('../../store')
+    const storeRef = await storeModule.setupStore()
+
+    const error = console.error
+    console.error = () => {}
+
+    server.use(
+      rest.get(
+        `${
+          import.meta.env.VITE_MSW_BASEURL ?? ''
+        }/pensjon/kalkulator/api/pensjonsberegning`,
+        (_req, res, ctx) => {
+          return res(ctx.status(200), ctx.json([{ 'tullete svar': 'lorem' }]))
+        }
+      )
+    )
+
+    return storeRef
+      .dispatch<any>(apiSlice.endpoints.getPensjonsberegning.initiate())
+      .then((result: any) => {
+        expect(result).toThrow(Error)
+        expect(result.status).toBe('rejected')
+        expect(result.data).toBe(undefined)
+        console.error = error
+      })
+  })
 })
