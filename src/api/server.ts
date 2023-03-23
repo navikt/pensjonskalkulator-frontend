@@ -8,8 +8,6 @@ export const API_PATH = '/pensjon/kalkulator/api'
 const handlers = getHandlers(`${API_TARGET}${API_PATH}`)
 export const server = setupServer(...handlers)
 
-server.listen({ onUnhandledRequest: 'error' })
-
 type MockResponseOptions = {
   status?: number
   json?: any
