@@ -2,8 +2,8 @@ import { setupServer } from 'msw/node'
 import { getHandlers } from './handlers.js'
 import { rest } from 'msw'
 
-const target = 'http://localhost:8088'
-const apiPath = '/pensjon/kalkulator/api'
+export const target = 'http://localhost:8088'
+export const apiPath = '/pensjon/kalkulator/api'
 
 const handlers = getHandlers(`${target}${apiPath}`)
 export const server = setupServer(...handlers)

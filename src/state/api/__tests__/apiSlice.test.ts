@@ -1,6 +1,6 @@
 import { rest } from 'msw'
 import { vi } from 'vitest'
-import { server } from '../../../api/server'
+import { server, target, apiPath } from '../../../api/server'
 
 const pensjonsberegningData = require('../../../api/__mocks__/pensjonsberegning.json')
 
@@ -91,14 +91,9 @@ describe('apiSlice', () => {
     const storeRef = await storeModule.setupStore()
 
     server.use(
-      rest.get(
-        `${
-          import.meta.env.VITE_MSW_BASEURL ?? ''
-        }/pensjon/kalkulator/api/pensjonsberegning`,
-        (_req, res, ctx) => {
-          return res(ctx.status(500), ctx.json('an error has occurred'))
-        }
-      )
+      rest.get(`${target}${apiPath}/pensjonsberegning`, (_req, res, ctx) => {
+        return res(ctx.status(500), ctx.json('an error has occurred'))
+      })
     )
     return storeRef
       .dispatch<any>(apiSlice.endpoints.getPensjonsberegning.initiate())
@@ -117,14 +112,9 @@ describe('apiSlice', () => {
     console.error = () => {}
 
     server.use(
-      rest.get(
-        `${
-          import.meta.env.VITE_MSW_BASEURL ?? ''
-        }/pensjon/kalkulator/api/pensjonsberegning`,
-        (_req, res, ctx) => {
-          return res(ctx.status(200), ctx.json([{ 'tullete svar': 'lorem' }]))
-        }
-      )
+      rest.get(`${target}${apiPath}/pensjonsberegning`, (_req, res, ctx) => {
+        return res(ctx.status(200), ctx.json([{ 'tullete svar': 'lorem' }]))
+      })
     )
 
     return storeRef
