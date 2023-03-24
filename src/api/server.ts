@@ -1,11 +1,9 @@
 import { setupServer } from 'msw/node'
 import { getHandlers } from './handlers.js'
 import { rest } from 'msw'
+import { API_BASEURL } from './paths'
 
-export const API_TARGET = 'http://localhost:8088'
-export const API_PATH = `${import.meta.env.BASE_URL}api`
-
-const handlers = getHandlers(API_TARGET, API_PATH)
+const handlers = getHandlers(API_BASEURL)
 export const server = setupServer(...handlers)
 
 type MockResponseOptions = {
@@ -21,7 +19,7 @@ export const mockResponse = (
   }
 ) => {
   server.use(
-    rest.get(`${API_TARGET}${API_PATH}${path}`, (req, res, ctx) => {
+    rest.get(`${API_BASEURL}${path}`, (req, res, ctx) => {
       return res(ctx.status(options.status ?? 200), ctx.json(options.json))
     })
   )

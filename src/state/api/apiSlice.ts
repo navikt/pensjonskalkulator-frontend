@@ -1,13 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { isPensjonsberegning } from './typeguards'
-
-/* c8 ignore next */
-const baseUrl = import.meta.env.MODE === 'test' ? 'http://localhost:8088' : ''
+import { API_BASEURL } from '../../api/paths'
 
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${baseUrl}/pensjon/kalkulator/api`,
+    baseUrl: API_BASEURL,
   }),
   endpoints: (builder) => ({
     // Full request url med baseQuery: '${env.VITE_MSW_BASEURL}/pensjon/kalkulator/api/pensjonsberegning'

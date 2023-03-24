@@ -1,10 +1,6 @@
 import { vi } from 'vitest'
-import {
-  API_PATH,
-  API_TARGET,
-  mockErrorResponse,
-  mockResponse,
-} from '../../../api/server'
+import { mockErrorResponse, mockResponse } from '../../../api/server'
+import { API_BASEURL } from '../../../api/paths'
 
 const pensjonsberegningData = require('../../../api/__mocks__/pensjonsberegning.json')
 
@@ -43,7 +39,7 @@ describe('apiSlice', () => {
     await import('../apiSlice')
 
     await expect(fetchBaseQueryMockFunction).toHaveBeenCalledWith({
-      baseUrl: `${API_TARGET}${API_PATH}`,
+      baseUrl: API_BASEURL,
     })
   })
 
