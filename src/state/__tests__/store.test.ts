@@ -1,20 +1,13 @@
 import { describe, it } from 'vitest'
 
 import { setupStore } from '../store'
-import {
-  userInputInitialState,
-  UserInputState,
-} from '../userInput/userInputReducer'
+import { UserInputState } from '../userInput/userInputReducer'
 
 describe('store', () => {
-  // TODO endre sjekk av initialstate mock snapshot
   it('returnerer store med riktig slices og default state', () => {
     const store = setupStore()
     const initialState = store.getState()
-
-    expect(initialState).toHaveProperty('api')
-    expect(initialState).toHaveProperty('userInput')
-    expect(initialState.userInput).toMatchObject(userInputInitialState)
+    expect(initialState).toMatchSnapshot()
   })
 
   it('returnerer store med riktig state når setupStore kalles med parameter', () => {

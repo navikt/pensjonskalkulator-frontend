@@ -1,16 +1,20 @@
 import { Unsubscribe } from '@reduxjs/toolkit'
 
-import { AppStartListening /* , AppListenerEffectAPI */ } from '../store'
+import { AppStartListening, AppListenerEffectAPI } from '../store'
 import { userInputActions } from '../userInput/userInputReducer'
 
-// TODO skrive tester når den vil taes i bruk
-async function onSamtykkeUpdate({
-  payload,
-}: ReturnType<typeof userInputActions.setSamtykke>) {
-  // { dispatch, getState, getOriginalState, condition }: AppListenerEffectAPI
-  // const hasSamtykke = getState().userInput.samtykke
-  console.log('>>>> running EFFECT onSamtykkeUpdate...', payload)
-  // f.eks flush store, logout, delay and redirect or dispatch another action
+async function onSamtykkeUpdate(
+  { payload }: ReturnType<typeof userInputActions.setSamtykke>,
+  {
+    dispatch /* , getState, getOriginalState, condition*/,
+  }: AppListenerEffectAPI
+) {
+  console.log('setSamtykke payload: ', payload)
+  dispatch(
+    userInputActions.setSomething(
+      `Brukeren har${!payload ? ' ikke' : ''} samtykket`
+    )
+  )
 }
 
 export function createSamtykkeListener(
@@ -24,6 +28,7 @@ export function createSamtykkeListener(
   ]
 
   return () => {
+    /* c8 ignore next */
     subscriptions.forEach((unsubscribe) => unsubscribe())
   }
 }

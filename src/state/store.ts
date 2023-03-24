@@ -14,7 +14,7 @@ import userInputReducer from './userInput/userInputReducer'
 
 const listenerMiddleware = createListenerMiddleware()
 
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer,
   userInput: userInputReducer,
 })

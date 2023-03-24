@@ -4,14 +4,6 @@ import userInputSlice, {
 } from '../userInputReducer'
 
 describe('userInputSlice', () => {
-  // TODO fjerne denne dersom den testes riktig i store
-  it('initialize slice with initialValue', () => {
-    const listSliceInit = userInputSlice(userInputInitialState, {
-      type: 'unknown',
-    })
-    expect(listSliceInit).toBe(userInputInitialState)
-  })
-
   describe('actions', () => {
     it('setSamtykke', () => {
       const updatedState = userInputSlice(

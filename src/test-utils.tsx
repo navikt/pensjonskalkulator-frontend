@@ -1,11 +1,16 @@
 import React, { PropsWithChildren } from 'react'
 import { Provider } from 'react-redux'
 
-import { PreloadedState } from '@reduxjs/toolkit'
+import { PreloadedState, createListenerMiddleware } from '@reduxjs/toolkit'
 import { render, RenderOptions } from '@testing-library/react'
 
-import { setupStore, RootState, AppStore } from './state/store'
-
+import { createSamtykkeListener } from './state/listeners/samtykkeListener'
+import {
+  setupStore,
+  RootState,
+  AppStore,
+  AppStartListening,
+} from './state/store'
 export interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
   preloadedState?: PreloadedState<RootState>
   store?: AppStore
@@ -37,8 +42,8 @@ export function renderWithStore(
   function Wrapper({ children }: PropsWithChildren<unknown>): JSX.Element {
     return <Provider store={store}>{children}</Provider>
   }
-
-  // TODO add listeners
+  const listenerMiddleware = createListenerMiddleware()
+  createSamtykkeListener(listenerMiddleware.startListening as AppStartListening)
 
   return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) }
 }
