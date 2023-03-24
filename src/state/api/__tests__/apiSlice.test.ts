@@ -7,9 +7,6 @@ const pensjonsberegningData = require('../../../api/__mocks__/pensjonsberegning.
 vi.mock('@reduxjs/toolkit/query/react')
 vi.mock('../apiSlice')
 
-// TODO teste med env variabel import.meta.env.MODE
-//const OLD_ENV = process.env.VITE_MSW_BASEURL
-
 describe('apiSlice', () => {
   const importRealApiSlice = async () => {
     const apiSliceModuleActual = await vi.importActual('../apiSlice')
@@ -29,45 +26,20 @@ describe('apiSlice', () => {
     reduxUtils.createApi = realModule.createApi
   })
 
-  describe('baseQuery', () => {
-    //TODO se om det går an å ha en test på denne ternary
-    // it('har riktig baseQuery i produksjon', async () => {
-    //   process.env.VITE_MSW_BASEURL = ''
+  it('har riktig baseQuery', async () => {
+    const createAPIMockFunction = vi
+      .fn()
+      .mockReturnValueOnce({ useGetPensjonsberegningQuery: 'lorem' })
+    const fetchBaseQueryMockFunction = vi.fn().mockReturnValueOnce('')
 
-    //   const createAPIMockFunction = vi
-    //     .fn()
-    //     .mockReturnValueOnce({ useGetPensjonsberegningQuery: 'lorem' })
-    //   const fetchBaseQueryMockFunction = vi.fn().mockReturnValueOnce('')
+    const reduxUtils = await import('@reduxjs/toolkit/query/react')
+    reduxUtils.fetchBaseQuery = fetchBaseQueryMockFunction
+    reduxUtils.createApi = createAPIMockFunction
 
-    //   const reduxUtils = await import('@reduxjs/toolkit/query/react')
-    //   reduxUtils.fetchBaseQuery = fetchBaseQueryMockFunction
-    //   reduxUtils.createApi = createAPIMockFunction
+    await import('../apiSlice')
 
-    //   await import('../apiSlice')
-    //   await expect(fetchBaseQueryMockFunction).toHaveBeenCalledWith({
-    //     baseUrl: '/pensjon/kalkulator/api',
-    //   })
-    //   process.env.VITE_MSW_BASEURL = OLD_ENV
-    // })
-
-    it('har riktig baseQuery som default', async () => {
-      // vi.resetModules()
-      // process.env.VITE_MSW_BASEURL = OLD_ENV
-
-      const createAPIMockFunction = vi
-        .fn()
-        .mockReturnValueOnce({ useGetPensjonsberegningQuery: 'lorem' })
-      const fetchBaseQueryMockFunction = vi.fn().mockReturnValueOnce('')
-
-      const reduxUtils = await import('@reduxjs/toolkit/query/react')
-      reduxUtils.fetchBaseQuery = fetchBaseQueryMockFunction
-      reduxUtils.createApi = createAPIMockFunction
-
-      await import('../apiSlice')
-
-      await expect(fetchBaseQueryMockFunction).toHaveBeenCalledWith({
-        baseUrl: 'http://localhost:8088/pensjon/kalkulator/api',
-      })
+    await expect(fetchBaseQueryMockFunction).toHaveBeenCalledWith({
+      baseUrl: `${API_TARGET}${API_PATH}`,
     })
   })
 
