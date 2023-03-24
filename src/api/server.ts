@@ -2,10 +2,10 @@ import { setupServer } from 'msw/node'
 import { getHandlers } from './handlers.js'
 import { rest } from 'msw'
 
-export const target = 'http://localhost:8088'
-export const apiPath = '/pensjon/kalkulator/api'
+export const API_TARGET = 'http://localhost:8088'
+export const API_PATH = '/pensjon/kalkulator/api'
 
-const handlers = getHandlers(`${target}${apiPath}`)
+const handlers = getHandlers(`${API_TARGET}${API_PATH}`)
 export const server = setupServer(...handlers)
 
 server.listen({ onUnhandledRequest: 'error' })
@@ -23,7 +23,7 @@ export const mockResponse = (
   }
 ) => {
   server.use(
-    rest.get(`${target}${apiPath}${path}`, (req, res, ctx) => {
+    rest.get(`${API_TARGET}${API_PATH}${path}`, (req, res, ctx) => {
       return res(ctx.status(options.status ?? 200), ctx.json(options.json))
     })
   )

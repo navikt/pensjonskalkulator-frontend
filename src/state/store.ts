@@ -1,5 +1,3 @@
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
-
 import {
   combineReducers,
   configureStore,
@@ -43,6 +41,3 @@ export type AppDispatch = AppStore['dispatch']
 export type AppListenerEffectAPI = ListenerEffectAPI<RootState, AppDispatch>
 export type AppStartListening = TypedStartListening<RootState, AppDispatch>
 export type AppAddListener = TypedAddListener<RootState, AppDispatch>
-
-export const useAppDispatch = () => useDispatch<AppDispatch>()
-export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector

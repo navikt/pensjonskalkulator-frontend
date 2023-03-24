@@ -4,6 +4,7 @@ import userInputSlice, {
 } from '../userInputReducer'
 
 describe('userInputSlice', () => {
+  // TODO fjerne denne dersom den testes riktig i store
   it('initialize slice with initialValue', () => {
     const listSliceInit = userInputSlice(userInputInitialState, {
       type: 'unknown',

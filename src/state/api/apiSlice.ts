@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { isPensjonsberegning } from './typeguards'
 
+/* c8 ignore next */
 const baseUrl = import.meta.env.MODE === 'test' ? 'http://localhost:8088' : ''
 
 export const apiSlice = createApi({

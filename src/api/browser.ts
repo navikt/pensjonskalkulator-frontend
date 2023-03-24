@@ -1,6 +1,6 @@
 import { setupWorker } from 'msw'
 import { getHandlers } from './handlers'
-import { apiPath } from './server'
+import { API_PATH } from './server'
 
-const handlers = getHandlers(apiPath)
+const handlers = getHandlers(API_PATH)
 export const worker = setupWorker(...handlers)

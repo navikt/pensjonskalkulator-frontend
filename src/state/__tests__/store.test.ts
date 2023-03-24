@@ -7,6 +7,7 @@ import {
 } from '../userInput/userInputReducer'
 
 describe('store', () => {
+  // TODO endre sjekk av initialstate mock snapshot
   it('returnerer store med riktig slices og default state', () => {
     const store = setupStore()
     const initialState = store.getState()
