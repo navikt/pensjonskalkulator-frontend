@@ -1,6 +1,10 @@
-import { rest } from 'msw'
 import { vi } from 'vitest'
-import { server, API_TARGET, API_PATH } from '../../../api/server'
+import {
+  API_PATH,
+  API_TARGET,
+  mockErrorResponse,
+  mockResponse,
+} from '../../../api/server'
 
 const pensjonsberegningData = require('../../../api/__mocks__/pensjonsberegning.json')
 
@@ -67,14 +71,8 @@ describe('apiSlice', () => {
     const storeModule = await import('../../store')
     const storeRef = await storeModule.setupStore()
 
-    server.use(
-      rest.get(
-        `${API_TARGET}${API_PATH}/pensjonsberegning`,
-        (_req, res, ctx) => {
-          return res(ctx.status(500), ctx.json('an error has occurred'))
-        }
-      )
-    )
+    mockErrorResponse('/pensjonsberegning')
+
     return storeRef
       .dispatch<any>(apiSlice.endpoints.getPensjonsberegning.initiate())
       .then((result: any) => {
@@ -91,14 +89,10 @@ describe('apiSlice', () => {
     const error = console.error
     console.error = () => {}
 
-    server.use(
-      rest.get(
-        `${API_TARGET}${API_PATH}/pensjonsberegning`,
-        (_req, res, ctx) => {
-          return res(ctx.status(200), ctx.json([{ 'tullete svar': 'lorem' }]))
-        }
-      )
-    )
+    mockResponse('/pensjonsberegning', {
+      status: 200,
+      json: [{ 'tullete svar': 'lorem' }],
+    })
 
     return storeRef
       .dispatch<any>(apiSlice.endpoints.getPensjonsberegning.initiate())

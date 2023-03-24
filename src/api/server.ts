@@ -3,9 +3,9 @@ import { getHandlers } from './handlers.js'
 import { rest } from 'msw'
 
 export const API_TARGET = 'http://localhost:8088'
-export const API_PATH = '/pensjon/kalkulator/api'
+export const API_PATH = `${import.meta.env.BASE_URL}api`
 
-const handlers = getHandlers(`${API_TARGET}${API_PATH}`)
+const handlers = getHandlers(API_TARGET, API_PATH)
 export const server = setupServer(...handlers)
 
 type MockResponseOptions = {
