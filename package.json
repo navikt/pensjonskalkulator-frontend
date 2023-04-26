@@ -24,7 +24,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@navikt/aksel-icons": "^2.8.14",
+    "@navikt/aksel-icons": "^2.9.0",
     "@navikt/ds-css": "^2.8.14",
     "@navikt/ds-icons": "^2.8.14",
     "@navikt/ds-react": "^2.8.14",
