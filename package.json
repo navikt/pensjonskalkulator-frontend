@@ -24,7 +24,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@formatjs/intl-datetimeformat": "^6.8.0",
+    "@formatjs/intl-datetimeformat": "^6.10.0",
     "@formatjs/intl-numberformat": "^8.6.0",
     "@grafana/faro-web-sdk": "^1.1.0",
     "@navikt/aksel-icons": "^4.1.3",
