@@ -73,7 +73,7 @@
     "postcss-modules-values": "^4.0.0",
     "prettier": "^2.8.4",
     "react-intl": "^6.4.2",
-    "rollup-plugin-visualizer": "^5.9.0",
+    "rollup-plugin-visualizer": "^5.9.2",
     "sass": "^1.58.0",
     "start-server-and-test": "^2.0.0",
     "stylelint": "^15.1.0",
