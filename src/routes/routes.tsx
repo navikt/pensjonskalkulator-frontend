@@ -2,6 +2,7 @@ import { RouteObject } from 'react-router-dom'
 
 import { Pensjonsberegning } from '@/containers/Pensjonsberegning'
 import { LandingPage } from '@/routes/LandingPage'
+import { uttaksalderLoader } from '@/routes/loaders'
 import { PageFramework } from '@/routes/PageFramework'
 import { RouteErrorBoundary } from '@/routes/RouteErrorBoundary'
 import { Step1 } from '@/routes/stegvisning/Step1'
@@ -74,7 +75,6 @@ export const routes: RouteObject[] = [
       </PageFramework>
     ),
     ErrorBoundary: RouteErrorBoundary,
-    // action: rootAction,// TODO vudere å ta i bruk action og loader for henting av tidligst mulig uttak
-    // loader: rootLoader,
+    loader: uttaksalderLoader,
   },
 ]

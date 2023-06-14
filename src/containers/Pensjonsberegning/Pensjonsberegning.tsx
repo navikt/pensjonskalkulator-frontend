@@ -10,7 +10,7 @@ import { Pensjonssimulering } from '@/components/Pensjonssimulering'
 import { TidligstMuligUttaksalder } from '@/components/TidligstMuligUttaksalder'
 import { TilbakeEllerAvslutt } from '@/components/TilbakeEllerAvslutt'
 import { VelgUttaksalder } from '@/components/VelgUttaksalder'
-import { useTidligsteUttaksalderQuery } from '@/state/api/apiSlice'
+import { useTidligsteUttaksalder } from '@/routes/hooks'
 
 export function Pensjonsberegning() {
   const {
@@ -18,9 +18,8 @@ export function Pensjonsberegning() {
     isLoading,
     isError,
     isSuccess,
-  } = useTidligsteUttaksalderQuery()
+  } = useTidligsteUttaksalder()
 
-  // TODO vurdere om denne skal lagres i Redux store for å minske prop drilling
   const [valgtUttaksalder, setValgtUttaksalder] = useState<string | undefined>()
 
   if (isLoading) {

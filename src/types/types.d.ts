@@ -1,3 +1,5 @@
+type LoaderFunction = import('react-router-dom').LoaderFunction
+
 declare type Uttaksalder = {
   aar: number
   maaned: number
@@ -46,3 +48,9 @@ declare type TpoMedlemskap = {
 declare type UnleashToggle = {
   enabled: boolean
 }
+
+declare type LoaderData<Loader extends LoaderFunction> = Awaited<
+  ReturnType<Loader>
+> extends Response | infer Data
+  ? Data
+  : never

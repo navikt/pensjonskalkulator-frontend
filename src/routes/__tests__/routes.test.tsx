@@ -2,7 +2,7 @@ import { createMemoryRouter, RouterProvider } from 'react-router-dom'
 
 import { describe } from 'vitest'
 
-import { ROUTER_BASE_URL, routes } from '..'
+import { ROUTER_BASE_URL, routes } from '@/routes'
 import { userInputInitialState } from '@/state/userInput/userInputReducer'
 import { render, screen, swallowErrors, userEvent } from '@/test-utils'
 
