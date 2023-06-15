@@ -4,7 +4,7 @@ export type UttaksalderRequestBody = {
   sisteInntekt?: number
 }
 
-export type AlderspensjonRequestBody = {
+export type SimuleringRequestBody = {
   simuleringstype: string
   uttaksgrad: number
   foersteUttaksdato: string
@@ -13,6 +13,7 @@ export type AlderspensjonRequestBody = {
   sivilstand?: Sivilstand
 }
 
-export type AlderspensjonResponseBody = {
-  pensjon: Pensjonsberegning[]
+export type SimuleringResponseBody = {
+  alderspensjon: Pensjonsberegning[]
+  afpPrivat: Pensjonsberegning[]
 }

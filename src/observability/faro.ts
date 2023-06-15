@@ -1,5 +1,6 @@
 import { getWebInstrumentations, initializeFaro } from '@grafana/faro-web-sdk'
 
+console.log(import.meta.env.VITE_FARO_TELEMETRY_URL)
 export const initializeLogs = () =>
   initializeFaro({
     url:

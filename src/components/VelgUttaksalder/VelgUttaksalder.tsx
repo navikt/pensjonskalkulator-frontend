@@ -4,14 +4,16 @@ import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons'
 import { Button, Chips, Heading } from '@navikt/ds-react'
 import clsx from 'clsx'
 
-import { getFormaterteAldere } from './utils'
+import { UttaksalderButton } from '@/components/VelgUttaksalder/UttaksalderButton'
+
+import { getAldere } from './utils'
 
 import styles from './VelgUttaksalder.module.scss'
 
 interface Props {
   tidligstMuligUttak: Uttaksalder
-  valgtUttaksalder?: string
-  setValgtUttaksalder: (alder: string) => void
+  valgtUttaksalder?: Uttaksalder
+  setValgtUttaksalder: (alder: Uttaksalder) => void
   defaultAntallSynligeAldere?: number
   visFlereAldereLabelClose?: string
   visFlereAldereLabelOpen?: string
@@ -25,11 +27,11 @@ export const VelgUttaksalder: React.FC<Props> = ({
   visFlereAldereLabelClose = 'Vis flere aldere',
   visFlereAldereLabelOpen = 'Vis færre aldere',
 }) => {
-  const formaterteAldere = useMemo(
-    () => getFormaterteAldere(tidligstMuligUttak),
+  const aldere = useMemo(
+    () => getAldere(tidligstMuligUttak),
     [tidligstMuligUttak]
   )
-  const [isFlereAldereOpen, setIsFlereAldereOpen] = useState<boolean>(false)
+  const [showFlereAldere, setShowFlereAldere] = useState<boolean>(false)
 
   return (
     <div className={styles.wrapper}>
@@ -37,27 +39,24 @@ export const VelgUttaksalder: React.FC<Props> = ({
         Når vil du ta ut alderspensjon?
       </Heading>
       <Chips className={clsx(styles.chipsWrapper, styles.chipsWrapper__hasGap)}>
-        {formaterteAldere
+        {aldere
           .slice(
             0,
-            isFlereAldereOpen
-              ? formaterteAldere.length
-              : defaultAntallSynligeAldere
+            showFlereAldere ? aldere.length : defaultAntallSynligeAldere
           )
-          .map((alderChip) => (
-            <Chips.Toggle
-              selected={valgtUttaksalder === alderChip}
-              key={alderChip}
-              onClick={() => setValgtUttaksalder(alderChip)}
-            >
-              {alderChip}
-            </Chips.Toggle>
+          .map((alder) => (
+            <UttaksalderButton
+              key={alder.aar}
+              alder={alder}
+              isSelected={alder.aar === valgtUttaksalder?.aar}
+              onClick={setValgtUttaksalder}
+            />
           ))}
       </Chips>
       <Button
         className={styles.visFlereAldere}
         icon={
-          isFlereAldereOpen ? (
+          showFlereAldere ? (
             <ChevronUpIcon aria-hidden />
           ) : (
             <ChevronDownIcon aria-hidden />
@@ -67,10 +66,10 @@ export const VelgUttaksalder: React.FC<Props> = ({
         size={'xsmall'}
         variant="tertiary"
         onClick={() => {
-          setIsFlereAldereOpen((prevState) => !prevState)
+          setShowFlereAldere((prevState) => !prevState)
         }}
       >
-        {isFlereAldereOpen ? visFlereAldereLabelOpen : visFlereAldereLabelClose}
+        {showFlereAldere ? visFlereAldereLabelOpen : visFlereAldereLabelClose}
       </Button>
     </div>
   )

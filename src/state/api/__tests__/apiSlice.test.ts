@@ -3,7 +3,7 @@ import { setupStore } from '@/state/store'
 import { apiSlice } from '@/state/api/apiSlice'
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query/react'
 import { swallowErrorsAsync } from '@/test-utils'
-import { AlderspensjonRequestBody } from '@/state/api/apiSlice.types'
+import { SimuleringRequestBody } from '@/state/api/apiSlice.types'
 
 const tidligsteUttaksalderResponse = require('../../../mocks/data/tidligsteUttaksalder.json')
 const alderspensjonResponse = require('../../../mocks/data/alderspensjon/2031.json')
@@ -68,7 +68,7 @@ describe('apiSlice', () => {
   })
 
   describe('alderspensjon', () => {
-    const body: AlderspensjonRequestBody = {
+    const body: SimuleringRequestBody = {
       simuleringstype: 'ALDER',
       uttaksgrad: 100,
       foersteUttaksdato: '2031-11-01',

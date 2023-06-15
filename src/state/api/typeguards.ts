@@ -1,4 +1,5 @@
 import { PensjonsavtaleType } from '@/types/enums'
+import { SimuleringResponseBody } from '@/state/api/apiSlice.types'
 
 export const isPensjonsberegningArray = (
   data?: any
@@ -10,6 +11,15 @@ export const isPensjonsberegningArray = (
         typeof beregning.alder === 'number' &&
         typeof beregning.belop === 'number'
     )
+  )
+}
+
+export const isSimuleringResponseBody = (
+  data?: any
+): data is SimuleringResponseBody => {
+  return (
+    isPensjonsberegningArray(data?.alderspensjon) &&
+    isPensjonsberegningArray(data?.afpPrivat)
   )
 }
 

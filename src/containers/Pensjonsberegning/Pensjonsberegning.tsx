@@ -20,7 +20,9 @@ export function Pensjonsberegning() {
     isSuccess,
   } = useTidligsteUttaksalder()
 
-  const [valgtUttaksalder, setValgtUttaksalder] = useState<string | undefined>()
+  const [valgtUttaksalder, setValgtUttaksalder] = useState<
+    Uttaksalder | undefined
+  >()
 
   if (isLoading) {
     return (
@@ -55,7 +57,7 @@ export function Pensjonsberegning() {
         />
 
         {valgtUttaksalder && (
-          <Pensjonssimulering uttaksalder={parseInt(valgtUttaksalder, 10)} />
+          <Pensjonssimulering uttaksalder={valgtUttaksalder} />
         )}
       </Card>
 

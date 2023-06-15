@@ -7,6 +7,23 @@ export const formatUttaksalder = (
     : `${aar} år`
 }
 
+export const getAldere = (
+  start: Uttaksalder,
+  end: Uttaksalder = { aar: 75, maaned: 0, uttaksdato: start.uttaksdato }
+): Uttaksalder[] => {
+  if (end.aar < start.aar) {
+    return []
+  }
+
+  const aldere: Uttaksalder[] = [start]
+
+  for (let i = start.aar + 1; i <= end.aar; i++) {
+    aldere.push({ aar: i, maaned: 0, uttaksdato: start.uttaksdato })
+  }
+
+  return aldere
+}
+
 export const getFormaterteAldere = (
   start: Uttaksalder,
   end: Uttaksalder = { aar: 75, maaned: 0, uttaksdato: start.uttaksdato }

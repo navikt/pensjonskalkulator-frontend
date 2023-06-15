@@ -6,6 +6,7 @@ import Highcharts, { SeriesColumnOptions, XAxisOptions } from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 
 import { TabellVisning } from '@/components/TabellVisning'
+import { useSimuleringQuery } from '@/state/api/apiSlice'
 
 import {
   COLUMN_WIDTH,
@@ -25,7 +26,7 @@ import {
 import styles from './Pensjonssimulering.module.scss'
 
 type PensjonssimuleringProps = {
-  uttaksalder: number
+  uttaksalder: Uttaksalder
 }
 
 export function Pensjonssimulering({ uttaksalder }: PensjonssimuleringProps) {
@@ -39,12 +40,24 @@ export function Pensjonssimulering({ uttaksalder }: PensjonssimuleringProps) {
   )
   const [isVisTabellOpen, setVisTabellOpen] = useState<boolean>(false)
 
+  const {
+    data: simulering,
+    isSuccess,
+    isError,
+    isLoading,
+  } = useSimuleringQuery({
+    simuleringstype: 'ALDER',
+    uttaksgrad: 100,
+    foersteUttaksdato: uttaksalder.uttaksdato,
+    epsHarInntektOver2G: false,
+  })
+
   useEffect(() => {
     return removeHandleChartScrollEventListener
   }, [])
 
   useEffect(() => {
-    const aarArray = generateXAxis(uttaksalder, MAX_UTTAKSALDER)
+    const aarArray = generateXAxis(uttaksalder.aar, MAX_UTTAKSALDER)
     setChartOptions({
       chart: {
         type: 'column',
@@ -86,7 +99,7 @@ export function Pensjonssimulering({ uttaksalder }: PensjonssimuleringProps) {
               color: 'var(--a-green-200)',
             },
           },
-          data: simulateTjenestepensjon(uttaksalder, MAX_UTTAKSALDER),
+          data: simulateTjenestepensjon(uttaksalder.aar, MAX_UTTAKSALDER),
         },
         {
           type: 'column',
@@ -101,7 +114,7 @@ export function Pensjonssimulering({ uttaksalder }: PensjonssimuleringProps) {
           data: simulateDataArray(
             FOLKETRYGDEN_DATA,
             aarArray.length,
-            uttaksalder,
+            uttaksalder.aar,
             18_000
           ),
         },

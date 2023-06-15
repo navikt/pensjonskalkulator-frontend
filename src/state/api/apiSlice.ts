@@ -1,16 +1,16 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import {
-  isPensjonsberegningArray,
   isPerson,
   isPensjonsavtale,
   isTpoMedlemskap,
   isUnleashToggle,
   isUttaksalder,
+  isSimuleringResponseBody,
 } from './typeguards'
 import { API_BASEURL } from '@/api/paths'
 import {
-  AlderspensjonRequestBody,
-  AlderspensjonResponseBody,
+  SimuleringRequestBody,
+  SimuleringResponseBody,
   UttaksalderRequestBody,
 } from '@/state/api/apiSlice.types'
 
@@ -37,23 +37,19 @@ export const apiSlice = createApi({
         return response
       },
     }),
-    alderspensjon: builder.query<Pensjonsberegning[], AlderspensjonRequestBody>(
-      {
-        query: (body) => ({
-          url: '/alderspensjon/simulering',
-          method: 'POST',
-          body,
-        }),
-        transformResponse: (response: AlderspensjonResponseBody) => {
-          if (!isPensjonsberegningArray(response?.pensjon)) {
-            throw new Error(
-              `Mottok ugyldig alderspensjon: ${response?.pensjon}`
-            )
-          }
-          return response.pensjon
-        },
-      }
-    ),
+    simulering: builder.query<SimuleringResponseBody, SimuleringRequestBody>({
+      query: (body) => ({
+        url: '/alderspensjon/simulering',
+        method: 'POST',
+        body,
+      }),
+      transformResponse: (response: SimuleringResponseBody) => {
+        if (!isSimuleringResponseBody(response)) {
+          throw new Error(`Mottok ugyldig simulering: ${response}`)
+        }
+        return response
+      },
+    }),
     getPerson: builder.query<Person, void>({
       query: () => '/person',
       transformResponse: (response) => {
@@ -95,7 +91,7 @@ export const apiSlice = createApi({
 
 export const {
   useTidligsteUttaksalderQuery,
-  useAlderspensjonQuery,
+  useSimuleringQuery,
   useGetPersonQuery,
   useGetPensjonsavtalerQuery,
   useGetTpoMedlemskapQuery,
