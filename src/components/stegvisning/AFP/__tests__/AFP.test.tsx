@@ -21,6 +21,19 @@ describe('stegvisning - AFP', () => {
     expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
       'stegvisning.afp.title'
     )
+
+    act(() => {
+      fireEvent.click(screen.getByText('stegvisning.afp.readmore_privat_title'))
+      fireEvent.click(
+        screen.getByText('stegvisning.afp.readmore_offentlig_title')
+      )
+    })
+
+    expect(result.asFragment()).toMatchSnapshot()
+    expect(
+      screen.getByRole('link', { name: 'AFP i privat sektor på afp.no' })
+    ).toHaveAttribute('href', 'stegvisning.afp.readmore_privat_url')
+
     const radioButtons = screen.getAllByRole('radio')
     await waitFor(() => {
       expect(radioButtons).toHaveLength(4)
