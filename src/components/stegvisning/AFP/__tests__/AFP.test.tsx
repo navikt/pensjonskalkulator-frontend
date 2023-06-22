@@ -48,7 +48,7 @@ describe('stegvisning - AFP', () => {
   it('rendrer slik den skal når afp er oppgitt', async () => {
     const result = render(
       <AFP
-        afp={'nei'}
+        afp="nei"
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -161,7 +161,7 @@ describe('stegvisning - AFP', () => {
   it('kaller onPrevious når brukeren klikker på Tilbake', () => {
     render(
       <AFP
-        afp={'ja_privat'}
+        afp="ja_privat"
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -178,7 +178,7 @@ describe('stegvisning - AFP', () => {
   it('kaller onCancel når brukeren klikker på Avbryt', () => {
     render(
       <AFP
-        afp={'ja_privat'}
+        afp="ja_privat"
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}

@@ -90,7 +90,7 @@ export function AFP({ afp, onCancel, onPrevious, onNext }: Props) {
                   target="_blank"
                 >
                   {chunks}
-                  <ExternalLinkIcon width={'1.25rem'} height={'1.25rem'} />
+                  <ExternalLinkIcon width="1.25rem" height="1.25rem" />
                 </Link>
               ),
             }}
@@ -119,7 +119,7 @@ export function AFP({ afp, onCancel, onPrevious, onNext }: Props) {
         <RadioGroup
           className={styles.radiogroup}
           legend={<FormattedMessage id="stegvisning.afp.radio_label" />}
-          name={'afp'}
+          name="afp"
           defaultValue={afp}
           onChange={handleRadioChange}
           error={validationError}
@@ -149,11 +149,11 @@ export function AFP({ afp, onCancel, onPrevious, onNext }: Props) {
           )}
         </RadioGroup>
 
-        <Button type={'submit'} className={styles.button}>
+        <Button type="submit" className={styles.button}>
           <FormattedMessage id="stegvisning.neste" />
         </Button>
         <Button
-          type={'button'}
+          type="button"
           className={styles.button}
           variant="secondary"
           onClick={onPrevious}
@@ -161,7 +161,7 @@ export function AFP({ afp, onCancel, onPrevious, onNext }: Props) {
           <FormattedMessage id="stegvisning.tilbake" />
         </Button>
         <Button
-          type={'button'}
+          type="button"
           className={styles.button}
           variant="tertiary"
           onClick={onCancel}

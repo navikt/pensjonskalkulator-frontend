@@ -67,7 +67,7 @@ export function renderWithProviders(
   function Wrapper({ children }: PropsWithChildren<unknown>): JSX.Element {
     return (
       <Provider store={store}>
-        <IntlProvider locale={'nb'} messages={generateMockedTranslations()}>
+        <IntlProvider locale="nb" messages={generateMockedTranslations()}>
           {hasRouter ? <MemoryRouter>{children}</MemoryRouter> : children}
         </IntlProvider>
       </Provider>
