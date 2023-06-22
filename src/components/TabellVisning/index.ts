@@ -1,1 +1,1 @@
-export { TabellVisning } from './TabellVisning'
+export { Tabellvisning } from './Tabellvisning'

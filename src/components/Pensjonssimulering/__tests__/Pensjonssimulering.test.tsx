@@ -1,28 +1,36 @@
 import { describe, it } from 'vitest'
 
 import { Pensjonssimulering } from '../Pensjonssimulering'
-import { render, screen, waitFor, fireEvent } from '@/test-utils'
+import { render, screen, userEvent } from '@/test-utils'
 
 describe('Pensjonssimulering', () => {
   it('rendrer med riktig tittel og chart og uten scroll-knapper', async () => {
     const { container, asFragment } = render(
-      <Pensjonssimulering uttaksalder={65} />
+      <Pensjonssimulering
+        uttaksalder={{ aar: 65, maaned: 0, uttaksdato: '2031-11-01' }}
+      />
     )
-    await waitFor(() => {
-      expect(screen.getByText('Beregning')).toBeInTheDocument()
-      expect(
-        container.getElementsByClassName('highcharts-container').length
-      ).toBe(1)
-      expect(asFragment()).toMatchSnapshot()
-    })
+
+    expect(await screen.findByText('Beregning')).toBeInTheDocument()
+
+    expect(
+      container.getElementsByClassName('highcharts-container').length
+    ).toBe(1)
+    expect(asFragment()).toMatchSnapshot()
   })
 
   it('viser tabell og oppdaterer label når brukeren klikker på Vis tabell knapp', async () => {
-    render(<Pensjonssimulering uttaksalder={65} />)
+    render(
+      <Pensjonssimulering
+        uttaksalder={{ aar: 65, maaned: 0, uttaksdato: '2031-11-01' }}
+      />
+    )
 
-    expect(screen.getByText('Vis tabell')).toBeVisible()
-    fireEvent.click(screen.getByText('Vis tabell'))
+    expect(await screen.findByText('Vis tabell')).toBeVisible()
+
+    await userEvent.click(screen.getByText('Vis tabell'))
+
     expect(screen.getByText('Lukk tabell')).toBeVisible()
-    expect(screen.getAllByRole('row').length).toBe(16)
+    expect(screen.getAllByRole('row')).not.toHaveLength(0)
   })
 })

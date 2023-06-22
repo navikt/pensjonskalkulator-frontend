@@ -6,17 +6,16 @@ import { swallowErrorsAsync } from '@/test-utils'
 import { SimuleringRequestBody } from '@/state/api/apiSlice.types'
 
 const tidligsteUttaksalderResponse = require('../../../mocks/data/tidligsteUttaksalder.json')
-const alderspensjonResponse = require('../../../mocks/data/alderspensjon/2031.json')
+const simuleringResponse = require('../../../mocks/data/simulering/2031.json')
 const personResponse = require('../../../mocks/data/person.json')
 const tpoMedlemskapResponse = require('../../../mocks/data/tpo-medlemskap.json')
 const unleashResponse = require('../../../mocks/data/unleash-disable-spraakvelger.json')
 const pensjonsavtalerResponse = require('../../../mocks/data/pensjonsavtaler.json')
 
-// TODO: fikse bedre typing ved dispatch
 describe('apiSlice', () => {
   it('eksponerer riktig endepunkter', async () => {
     expect(apiSlice.endpoints).toHaveProperty('tidligsteUttaksalder')
-    expect(apiSlice.endpoints).toHaveProperty('alderspensjon')
+    expect(apiSlice.endpoints).toHaveProperty('simulering')
     expect(apiSlice.endpoints).toHaveProperty('getPerson')
     expect(apiSlice.endpoints).toHaveProperty('getTpoMedlemskap')
     expect(apiSlice.endpoints).toHaveProperty('getPensjonsavtaler')
@@ -67,7 +66,7 @@ describe('apiSlice', () => {
     })
   })
 
-  describe('alderspensjon', () => {
+  describe('simulering', () => {
     const body: SimuleringRequestBody = {
       simuleringstype: 'ALDER',
       uttaksgrad: 100,
@@ -79,10 +78,10 @@ describe('apiSlice', () => {
     it('returnerer data ved vellykket query', async () => {
       const storeRef = await setupStore({}, true)
       return storeRef
-        .dispatch<any>(apiSlice.endpoints.alderspensjon.initiate(body))
+        .dispatch<any>(apiSlice.endpoints.simulering.initiate(body))
         .then((result: FetchBaseQueryError) => {
           expect(result.status).toBe('fulfilled')
-          expect(result.data).toMatchObject(alderspensjonResponse.pensjon)
+          expect(result.data).toMatchObject(simuleringResponse)
         })
     })
 
@@ -94,7 +93,7 @@ describe('apiSlice', () => {
         method: 'post',
       })
       return storeRef
-        .dispatch<any>(apiSlice.endpoints.alderspensjon.initiate(body))
+        .dispatch<any>(apiSlice.endpoints.simulering.initiate(body))
         .then((result: FetchBaseQueryError) => {
           expect(result.status).toBe('rejected')
           expect(result.data).toBe(undefined)
@@ -110,7 +109,7 @@ describe('apiSlice', () => {
       })
       await swallowErrorsAsync(async () => {
         await storeRef
-          .dispatch<any>(apiSlice.endpoints.alderspensjon.initiate(body))
+          .dispatch<any>(apiSlice.endpoints.simulering.initiate(body))
           .then((result: FetchBaseQueryError) => {
             expect(result).toThrow(Error)
             expect(result.status).toBe('rejected')

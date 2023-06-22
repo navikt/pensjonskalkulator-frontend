@@ -36,14 +36,12 @@ describe('Pensjonsberegning', () => {
 
     const result = render(<Pensjonsberegning />)
 
-    await waitFor(() => {
-      expect(
-        screen.getByText(
-          'Vi klarte ikke å hente din tidligste mulige uttaksalder. Prøv igjen senere.'
-        )
-      ).toBeVisible()
-      expect(result.asFragment()).toMatchSnapshot()
-    })
+    expect(
+      await screen.findByText(
+        'Vi klarte ikke å hente din tidligste mulige uttaksalder. Prøv igjen senere.'
+      )
+    ).toBeVisible()
+    expect(result.asFragment()).toMatchSnapshot()
   })
 
   it('viser feilmelding om pensjonsberegning er på ugyldig format', async () => {
@@ -59,13 +57,11 @@ describe('Pensjonsberegning', () => {
     render(<Pensjonsberegning />)
 
     await swallowErrorsAsync(async () => {
-      await waitFor(() => {
-        expect(
-          screen.getByText(
-            'Vi klarte ikke å hente din tidligste mulige uttaksalder. Prøv igjen senere.'
-          )
-        ).toBeVisible()
-      })
+      expect(
+        await screen.findByText(
+          'Vi klarte ikke å hente din tidligste mulige uttaksalder. Prøv igjen senere.'
+        )
+      ).toBeVisible()
     })
   })
 
@@ -79,8 +75,11 @@ describe('Pensjonsberegning', () => {
     expect(screen.getByRole('button', { pressed: true })).toHaveTextContent(
       '68 år'
     )
-    expect(
-      container.getElementsByClassName('highcharts-container').length
-    ).toBe(1)
+
+    await waitFor(() => {
+      expect(
+        container.getElementsByClassName('highcharts-container').length
+      ).toBe(1)
+    })
   })
 })

@@ -10,15 +10,15 @@ import { Pensjonssimulering } from '@/components/Pensjonssimulering'
 import { TidligstMuligUttaksalder } from '@/components/TidligstMuligUttaksalder'
 import { TilbakeEllerAvslutt } from '@/components/TilbakeEllerAvslutt'
 import { VelgUttaksalder } from '@/components/VelgUttaksalder'
-import { useTidligsteUttaksalder } from '@/routes/hooks'
+import { useTidligsteUttaksalderQuery } from '@/state/api/apiSlice'
 
 export function Pensjonsberegning() {
   const {
     data: tidligstMuligUttak,
     isLoading,
-    isError,
     isSuccess,
-  } = useTidligsteUttaksalder()
+    isError,
+  } = useTidligsteUttaksalderQuery()
 
   const [valgtUttaksalder, setValgtUttaksalder] = useState<
     Uttaksalder | undefined

@@ -21,7 +21,7 @@ exports[`VelgUttaksalder > viser riktig label, ikon og antall knapper når bruke
           <span
             class="navds-chips__chip-text"
           >
-            62 år og 10 md.
+            62 år og 10 måneder
           </span>
         </button>
       </li>
@@ -178,7 +178,7 @@ exports[`VelgUttaksalder > viser riktig label, ikon og antall knapper når bruke
           <span
             class="navds-chips__chip-text"
           >
-            62 år og 10 md.
+            62 år og 10 måneder
           </span>
         </button>
       </li>

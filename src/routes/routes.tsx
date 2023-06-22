@@ -1,8 +1,7 @@
-import { RouteObject } from 'react-router-dom'
+import { Outlet, RouteObject } from 'react-router-dom'
 
 import { Pensjonsberegning } from '@/containers/Pensjonsberegning'
 import { LandingPage } from '@/routes/LandingPage'
-import { uttaksalderLoader } from '@/routes/loaders'
 import { PageFramework } from '@/routes/PageFramework'
 import { RouteErrorBoundary } from '@/routes/RouteErrorBoundary'
 import { Step1 } from '@/routes/stegvisning/Step1'
@@ -15,66 +14,41 @@ export const ROUTER_BASE_URL = '/pensjon/kalkulator'
 
 export const routes: RouteObject[] = [
   {
-    path: '/',
     element: (
       <PageFramework>
-        <LandingPage />
+        <Outlet />
       </PageFramework>
     ),
     ErrorBoundary: RouteErrorBoundary,
-  },
-  {
-    path: '/start',
-    element: (
-      <PageFramework>
-        <Step1 />
-      </PageFramework>
-    ),
-    ErrorBoundary: RouteErrorBoundary,
-  },
-  {
-    path: '/samtykke',
-    element: (
-      <PageFramework>
-        <Step2 />
-      </PageFramework>
-    ),
-    ErrorBoundary: RouteErrorBoundary,
-  },
-  {
-    path: '/offentlig-tp',
-    element: (
-      <PageFramework>
-        <Step3 />
-      </PageFramework>
-    ),
-  },
-  {
-    path: '/afp',
-    element: (
-      <PageFramework>
-        <Step4 />
-      </PageFramework>
-    ),
-    ErrorBoundary: RouteErrorBoundary,
-  },
-  {
-    path: '/sivilstand',
-    element: (
-      <PageFramework>
-        <Step5 />
-      </PageFramework>
-    ),
-    ErrorBoundary: RouteErrorBoundary,
-  },
-  {
-    path: '/beregning',
-    element: (
-      <PageFramework>
-        <Pensjonsberegning />
-      </PageFramework>
-    ),
-    ErrorBoundary: RouteErrorBoundary,
-    loader: uttaksalderLoader,
+    children: [
+      {
+        path: '/',
+        element: <LandingPage />,
+      },
+      {
+        path: '/start',
+        element: <Step1 />,
+      },
+      {
+        path: '/samtykke',
+        element: <Step2 />,
+      },
+      {
+        path: '/offentlig-tp',
+        element: <Step3 />,
+      },
+      {
+        path: '/afp',
+        element: <Step4 />,
+      },
+      {
+        path: '/sivilstand',
+        element: <Step5 />,
+      },
+      {
+        path: '/beregning',
+        element: <Pensjonsberegning />,
+      },
+    ],
   },
 ]

@@ -1,0 +1,19 @@
+@import '../../scss/variables';
+
+.details {
+  display: grid;
+  width: 100%;
+  grid-template-columns: auto max-content;
+  grid-gap: var(--a-spacing-4);
+  margin: 0;
+  padding: 0;
+  font-size: var(--a-font-size-medium);
+
+  @media (min-width: $a-breakpoint-sm) {
+    font-size: var(--a-font-size-large);
+  }
+
+  > li {
+    display: contents;
+  }
+}

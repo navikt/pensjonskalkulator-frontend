@@ -1,31 +1,30 @@
 import { describe, expect, it } from 'vitest'
 
-import { formatUttaksalder, getFormaterteAldere } from '../utils'
+import { formatUttaksalder, getAldere } from '../utils'
 
 describe('VelgUttaksalder-utils', () => {
-  describe('getFormaterteAldere', () => {
+  describe('getAldere', () => {
     it('returnerer array med én verdi når start og slutt er like', () => {
       const start = { aar: 64, maaned: 3, uttaksdato: '2031-11-01' }
       const end = { ...start }
 
-      const aldere = getFormaterteAldere(start, end)
+      const aldere = getAldere(start, end)
       expect(aldere).toHaveLength(1)
-      expect(aldere[0]).toEqual(formatUttaksalder(start, { compact: true }))
+      expect(aldere[0]).toEqual(start)
     })
 
     it('tar kun hensyn til måned når det er snakk om start-alder', () => {
       const start = { aar: 64, maaned: 3, uttaksdato: '2031-11-01' }
-      const end = { aar: 66, maaned: 5, uttaksdato: '2031-11-01' }
+      const end = { aar: 66, maaned: 5, uttaksdato: '2033-11-01' }
 
-      const aldere = getFormaterteAldere(start, end)
+      const aldere = getAldere(start, end)
       expect(aldere).toHaveLength(3)
-      expect(aldere[0]).toEqual(formatUttaksalder(start, { compact: true }))
-      expect(aldere[2]).not.toEqual(formatUttaksalder(end))
-      expect(aldere[2]).toEqual('66 år')
+      expect(aldere[0]).toEqual(start)
+      expect(aldere[2]).toEqual({ ...end, maaned: 0 })
     })
 
     it('returnerer tomt array når sluttalder er lavere enn startalder', () => {
-      const aldere = getFormaterteAldere(
+      const aldere = getAldere(
         { aar: 67, maaned: 0, uttaksdato: '2031-11-01' },
         { aar: 66, maaned: 0, uttaksdato: '2031-11-01' }
       )
@@ -33,26 +32,26 @@ describe('VelgUttaksalder-utils', () => {
     })
 
     it('returnerer array med alle årene fra og med startalder til og med sluttalder', () => {
-      const aldere = getFormaterteAldere(
+      const aldere = getAldere(
         { aar: 62, maaned: 2, uttaksdato: '2031-11-01' },
-        { aar: 75, maaned: 0, uttaksdato: '2031-11-01' }
+        { aar: 75, maaned: 0, uttaksdato: '2044-11-01' }
       )
       expect(aldere).toHaveLength(14)
       expect(aldere).toEqual([
-        '62 år og 2 md.',
-        '63 år',
-        '64 år',
-        '65 år',
-        '66 år',
-        '67 år',
-        '68 år',
-        '69 år',
-        '70 år',
-        '71 år',
-        '72 år',
-        '73 år',
-        '74 år',
-        '75 år',
+        { aar: 62, maaned: 2, uttaksdato: '2031-11-01' },
+        { aar: 63, maaned: 0, uttaksdato: '2032-11-01' },
+        { aar: 64, maaned: 0, uttaksdato: '2033-11-01' },
+        { aar: 65, maaned: 0, uttaksdato: '2034-11-01' },
+        { aar: 66, maaned: 0, uttaksdato: '2035-11-01' },
+        { aar: 67, maaned: 0, uttaksdato: '2036-11-01' },
+        { aar: 68, maaned: 0, uttaksdato: '2037-11-01' },
+        { aar: 69, maaned: 0, uttaksdato: '2038-11-01' },
+        { aar: 70, maaned: 0, uttaksdato: '2039-11-01' },
+        { aar: 71, maaned: 0, uttaksdato: '2040-11-01' },
+        { aar: 72, maaned: 0, uttaksdato: '2041-11-01' },
+        { aar: 73, maaned: 0, uttaksdato: '2042-11-01' },
+        { aar: 74, maaned: 0, uttaksdato: '2043-11-01' },
+        { aar: 75, maaned: 0, uttaksdato: '2044-11-01' },
       ])
     })
   })

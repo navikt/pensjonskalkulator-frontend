@@ -1,32 +1,14 @@
 @import '../../scss/variables';
 
-.buttonRow {
-  margin-top: -0.125rem;
+.buttons {
   display: flex;
-
-  &Element {
-    flex-grow: 1;
-
-    &__Right {
-      text-align: right;
-    }
-  }
+  justify-content: space-between;
+  height: var(--a-font-line-height-medium);
 }
 
-.visTabell {
-  width: 100%;
-
-  button {
-    margin: 0 auto;
-  }
-
-  :global {
-    .navds-read-more__content {
-      border-left: 0;
-      margin-left: 0;
-      padding-left: 0;
-    }
-  }
+.rightAligned {
+  flex-grow: 1;
+  text-align: right;
 }
 
 .tooltip {
@@ -122,4 +104,8 @@
   .highcharts-scrollable-mask {
     filter: drop-shadow(-5px 0 3px rgb(255 255 255 / 25%));
   }
+}
+
+.hidden {
+  display: none;
 }

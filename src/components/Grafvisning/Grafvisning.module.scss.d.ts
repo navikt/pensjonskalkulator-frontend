@@ -1,10 +1,7 @@
 import globalClassNames from '../../style.d'
 declare const classNames: typeof globalClassNames & {
-  readonly buttonRow: 'buttonRow'
-  readonly buttonRowElement: 'buttonRowElement'
-  readonly buttonRowElement__Right: 'buttonRowElement__Right'
-  readonly visTabell: 'visTabell'
-  readonly 'navds-read-more__content': 'navds-read-more__content'
+  readonly buttons: 'buttons'
+  readonly rightAligned: 'rightAligned'
   readonly tooltip: 'tooltip'
   readonly tooltipTable: 'tooltipTable'
   readonly tooltipTableHeaderCell: 'tooltipTableHeaderCell'
@@ -16,5 +13,6 @@ declare const classNames: typeof globalClassNames & {
   readonly tooltipLine: 'tooltipLine'
   readonly 'highcharts-tooltip-container': 'highcharts-tooltip-container'
   readonly 'highcharts-scrollable-mask': 'highcharts-scrollable-mask'
+  readonly hidden: 'hidden'
 }
 export = classNames

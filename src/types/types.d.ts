@@ -49,6 +49,11 @@ declare type UnleashToggle = {
   enabled: boolean
 }
 
+declare type Simulering = {
+  alderspensjon: Pensjonsberegning[]
+  afpPrivat: Pensjonsberegning[]
+}
+
 declare type LoaderData<Loader extends LoaderFunction> = Awaited<
   ReturnType<Loader>
 > extends Response | infer Data

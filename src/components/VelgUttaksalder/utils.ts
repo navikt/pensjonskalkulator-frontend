@@ -1,3 +1,5 @@
+import { addYears, format } from 'date-fns'
+
 export const formatUttaksalder = (
   { aar, maaned }: Uttaksalder,
   options: { compact: boolean } = { compact: false }
@@ -18,26 +20,14 @@ export const getAldere = (
   const aldere: Uttaksalder[] = [start]
 
   for (let i = start.aar + 1; i <= end.aar; i++) {
-    aldere.push({ aar: i, maaned: 0, uttaksdato: start.uttaksdato })
-  }
-
-  return aldere
-}
-
-export const getFormaterteAldere = (
-  start: Uttaksalder,
-  end: Uttaksalder = { aar: 75, maaned: 0, uttaksdato: start.uttaksdato }
-): string[] => {
-  if (end.aar < start.aar) {
-    return []
-  }
-
-  const aldere: string[] = [formatUttaksalder(start, { compact: true })]
-
-  for (let i = start.aar + 1; i <= end.aar; i++) {
-    aldere.push(
-      formatUttaksalder({ aar: i, maaned: 0, uttaksdato: start.uttaksdato })
-    )
+    aldere.push({
+      aar: i,
+      maaned: 0,
+      uttaksdato: format(
+        addYears(new Date(start.uttaksdato), i - start.aar),
+        'yyyy-MM-dd'
+      ),
+    })
   }
 
   return aldere
