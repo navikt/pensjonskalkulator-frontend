@@ -10,6 +10,7 @@ describe('stegvisning - AFP', () => {
   const onNextMock = vi.fn()
 
   it('rendrer slik den skal når afp ikke er oppgitt', async () => {
+    const user = userEvent.setup()
     const result = render(
       <AFP
         afp={null}
@@ -22,12 +23,10 @@ describe('stegvisning - AFP', () => {
       'stegvisning.afp.title'
     )
 
-    act(() => {
-      fireEvent.click(screen.getByText('stegvisning.afp.readmore_privat_title'))
-      fireEvent.click(
-        screen.getByText('stegvisning.afp.readmore_offentlig_title')
-      )
-    })
+    await user.click(screen.getByText('stegvisning.afp.readmore_privat_title'))
+    await user.click(
+      screen.getByText('stegvisning.afp.readmore_offentlig_title')
+    )
 
     expect(result.asFragment()).toMatchSnapshot()
     expect(
