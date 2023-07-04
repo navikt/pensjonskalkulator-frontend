@@ -2,7 +2,7 @@ import { createMemoryRouter, RouterProvider } from 'react-router-dom'
 
 import { describe, vi } from 'vitest'
 
-import { ROUTER_BASE_URL, routes } from '..'
+import { BASE_PATH, routes } from '..'
 import { mockResponse } from '@/mocks/server'
 import { apiSlice } from '@/state/api/apiSlice'
 import { store } from '@/state/store'
@@ -38,7 +38,7 @@ describe('routes', () => {
   describe('/pensjon/kalkulator/login', () => {
     it('viser landingssiden med lenke til pålogging (stegvisning start)', async () => {
       const router = createMemoryRouter(routes, {
-        basename: ROUTER_BASE_URL,
+        basename: BASE_PATH,
         initialEntries: ['/pensjon/kalkulator/login'],
       })
       render(<RouterProvider router={router} />, { hasRouter: false })
@@ -54,7 +54,7 @@ describe('routes', () => {
   describe('/pensjon/kalkulator/', () => {
     it('redirigerer til /start', async () => {
       const router = createMemoryRouter(routes, {
-        basename: ROUTER_BASE_URL,
+        basename: BASE_PATH,
         initialEntries: ['/pensjon/kalkulator'],
       })
       render(<RouterProvider router={router} />, { hasRouter: false })
@@ -67,7 +67,7 @@ describe('routes', () => {
   describe('/pensjon/kalkulator/start', () => {
     it('viser Steg 1', async () => {
       const router = createMemoryRouter(routes, {
-        basename: ROUTER_BASE_URL,
+        basename: BASE_PATH,
         initialEntries: ['/pensjon/kalkulator/start'],
       })
       render(<RouterProvider router={router} />, { hasRouter: false })
@@ -80,7 +80,7 @@ describe('routes', () => {
   describe('/pensjon/kalkulator/samtykke', () => {
     it('redirigerer til Step 1 når brukeren prøver å aksessere steget med direkte url', async () => {
       const router = createMemoryRouter(routes, {
-        basename: ROUTER_BASE_URL,
+        basename: BASE_PATH,
         initialEntries: ['/pensjon/kalkulator/samtykke'],
       })
       render(<RouterProvider router={router} />, {
@@ -99,7 +99,7 @@ describe('routes', () => {
         userInput: { ...userInputInitialState },
       }))
       const router = createMemoryRouter(routes, {
-        basename: ROUTER_BASE_URL,
+        basename: BASE_PATH,
         initialEntries: ['/pensjon/kalkulator/samtykke'],
       })
       render(<RouterProvider router={router} />, {
@@ -118,7 +118,7 @@ describe('routes', () => {
         userInput: { ...userInputInitialState },
       }))
       const router = createMemoryRouter(routes, {
-        basename: ROUTER_BASE_URL,
+        basename: BASE_PATH,
         initialEntries: ['/pensjon/kalkulator/offentlig-tp'],
       })
       render(<RouterProvider router={router} />, {
@@ -137,7 +137,7 @@ describe('routes', () => {
         userInput: { ...userInputInitialState, samtykke: true },
       }))
       const router = createMemoryRouter(routes, {
-        basename: ROUTER_BASE_URL,
+        basename: BASE_PATH,
         initialEntries: ['/pensjon/kalkulator/offentlig-tp'],
       })
       render(<RouterProvider router={router} />, {
@@ -156,7 +156,7 @@ describe('routes', () => {
         userInput: { ...userInputInitialState, samtykke: false },
       }))
       const router = createMemoryRouter(routes, {
-        basename: ROUTER_BASE_URL,
+        basename: BASE_PATH,
         initialEntries: ['/pensjon/kalkulator/offentlig-tp'],
       })
       render(<RouterProvider router={router} />, {
@@ -177,7 +177,7 @@ describe('routes', () => {
         userInput: { ...userInputInitialState, samtykke: true },
       }))
       const router = createMemoryRouter(routes, {
-        basename: ROUTER_BASE_URL,
+        basename: BASE_PATH,
         initialEntries: ['/pensjon/kalkulator/offentlig-tp'],
       })
       render(<RouterProvider router={router} />, {
@@ -196,7 +196,7 @@ describe('routes', () => {
         userInput: { ...userInputInitialState },
       }))
       const router = createMemoryRouter(routes, {
-        basename: ROUTER_BASE_URL,
+        basename: BASE_PATH,
         initialEntries: ['/pensjon/kalkulator/afp'],
       })
       render(<RouterProvider router={router} />, {
@@ -215,7 +215,7 @@ describe('routes', () => {
         userInput: { ...userInputInitialState, samtykke: true },
       }))
       const router = createMemoryRouter(routes, {
-        basename: ROUTER_BASE_URL,
+        basename: BASE_PATH,
         initialEntries: ['/pensjon/kalkulator/afp'],
       })
       render(<RouterProvider router={router} />, {
@@ -234,7 +234,7 @@ describe('routes', () => {
         userInput: { ...userInputInitialState },
       }))
       const router = createMemoryRouter(routes, {
-        basename: ROUTER_BASE_URL,
+        basename: BASE_PATH,
         initialEntries: ['/pensjon/kalkulator/sivilstand'],
       })
       render(<RouterProvider router={router} />, {
@@ -253,7 +253,7 @@ describe('routes', () => {
         userInput: { ...userInputInitialState, samtykke: true },
       }))
       const router = createMemoryRouter(routes, {
-        basename: ROUTER_BASE_URL,
+        basename: BASE_PATH,
         initialEntries: ['/pensjon/kalkulator/sivilstand'],
       })
       render(<RouterProvider router={router} />, {
@@ -272,7 +272,7 @@ describe('routes', () => {
         userInput: { ...userInputInitialState },
       }))
       const router = createMemoryRouter(routes, {
-        basename: ROUTER_BASE_URL,
+        basename: BASE_PATH,
         initialEntries: ['/pensjon/kalkulator/beregning'],
       })
       render(<RouterProvider router={router} />, {
@@ -291,7 +291,7 @@ describe('routes', () => {
         userInput: { ...userInputInitialState, samtykke: true },
       }))
       const router = createMemoryRouter(routes, {
-        basename: ROUTER_BASE_URL,
+        basename: BASE_PATH,
         initialEntries: ['/pensjon/kalkulator/beregning'],
       })
       render(<RouterProvider router={router} />, {
@@ -305,7 +305,7 @@ describe('routes', () => {
 
   it('Uregistrerte url med path /pensjon/kalkulator sender til 404 siden', () => {
     const router = createMemoryRouter(routes, {
-      basename: ROUTER_BASE_URL,
+      basename: BASE_PATH,
       initialEntries: ['/pensjon/kalkulator/abc'],
     })
     swallowErrors(() => {

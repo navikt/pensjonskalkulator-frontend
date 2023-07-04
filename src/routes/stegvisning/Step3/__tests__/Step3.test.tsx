@@ -5,7 +5,7 @@ import { describe, it, vi } from 'vitest'
 
 import { Step3 } from '..'
 import { step3loader } from '../utils'
-import { ROUTER_BASE_URL } from '@/routes'
+import { BASE_PATH } from '@/routes'
 import { apiSlice } from '@/state/api/apiSlice'
 import { store, RootState } from '@/state/store'
 import * as userInputReducerUtils from '@/state/userInput/userInputReducer'
@@ -35,7 +35,7 @@ describe('Step 3', () => {
       },
     ],
     {
-      basename: ROUTER_BASE_URL,
+      basename: BASE_PATH,
       initialEntries: ['/pensjon/kalkulator/offentlig-tp'],
     }
   )

@@ -13,7 +13,7 @@ import { Step4 } from '@/routes/stegvisning/Step4'
 import { Step5 } from '@/routes/stegvisning/Step5'
 import { store } from '@/state/store'
 
-export const ROUTER_BASE_URL = '/pensjon/kalkulator'
+export const BASE_PATH = '/pensjon/kalkulator'
 
 const directAccessGuard = async () => {
   // Dersom ingen kall er registrert i store betyr det at brukeren prøver å aksessere en url direkte
