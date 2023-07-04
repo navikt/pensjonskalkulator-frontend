@@ -15,13 +15,24 @@ import { store } from '@/state/store'
 
 export const BASE_PATH = '/pensjon/kalkulator'
 
+export const paths = {
+  root: '/',
+  login: '/login',
+  start: '/start',
+  samtykke: '/samtykke',
+  offentligTp: '/offentlig-tp',
+  afp: '/afp',
+  sivilstand: '/sivilstand',
+  beregning: '/beregning',
+} as const
+
 const directAccessGuard = async () => {
   // Dersom ingen kall er registrert i store betyr det at brukeren prøver å aksessere en url direkte
   if (
     store.getState().api.queries === undefined ||
     Object.keys(store.getState().api.queries).length === 0
   ) {
-    return redirect('/start')
+    return redirect(paths.start)
   }
   return null
 }
@@ -36,39 +47,39 @@ export const routes: RouteObject[] = [
     ErrorBoundary: RouteErrorBoundary,
     children: [
       {
-        path: '/',
-        element: <Navigate to="/start" replace />,
+        path: paths.root,
+        element: <Navigate to={paths.start} replace />,
       },
       {
-        path: '/login',
+        path: paths.login,
         element: <LandingPage />,
       },
       {
-        path: '/start',
+        path: paths.start,
         element: <Step1 />,
       },
       {
-        path: '/samtykke',
+        path: paths.samtykke,
         loader: directAccessGuard,
         element: <Step2 />,
       },
       {
-        path: '/offentlig-tp',
+        path: paths.offentligTp,
         loader: step3loader,
         element: <Step3 />,
       },
       {
-        path: '/afp',
+        path: paths.afp,
         loader: directAccessGuard,
         element: <Step4 />,
       },
       {
-        path: '/sivilstand',
+        path: paths.sivilstand,
         loader: directAccessGuard,
         element: <Step5 />,
       },
       {
-        path: '/beregning',
+        path: paths.beregning,
         loader: directAccessGuard,
         element: <Pensjonsberegning />,
       },

@@ -8,6 +8,7 @@ import { apiSlice } from '@/state/api/apiSlice'
 import { store } from '@/state/store'
 import { userInputInitialState } from '@/state/userInput/userInputReducer'
 import { render, screen, swallowErrors, waitFor } from '@/test-utils'
+import { paths } from '@/routes'
 
 const initialGetState = store.getState
 
@@ -35,11 +36,11 @@ describe('routes', () => {
     store.getState = initialGetState
   })
 
-  describe('/pensjon/kalkulator/login', () => {
+  describe(`${BASE_PATH}${paths.login}`, () => {
     it('viser landingssiden med lenke til pålogging (stegvisning start)', async () => {
       const router = createMemoryRouter(routes, {
         basename: BASE_PATH,
-        initialEntries: ['/pensjon/kalkulator/login'],
+        initialEntries: [`${BASE_PATH}${paths.login}`],
       })
       render(<RouterProvider router={router} />, { hasRouter: false })
       expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
@@ -47,15 +48,15 @@ describe('routes', () => {
       )
       const links: HTMLAnchorElement[] = await screen.findAllByRole('link')
       expect(links[0].textContent).toEqual('Logg inn og test kalkulatoren')
-      expect(links[0].href).toContain('/start')
+      expect(links[0].href).toContain(paths.start)
     })
   })
 
-  describe('/pensjon/kalkulator/', () => {
+  describe(`${BASE_PATH}${paths.root}`, () => {
     it('redirigerer til /start', async () => {
       const router = createMemoryRouter(routes, {
         basename: BASE_PATH,
-        initialEntries: ['/pensjon/kalkulator'],
+        initialEntries: [`${BASE_PATH}${paths.root}`],
       })
       render(<RouterProvider router={router} />, { hasRouter: false })
       expect(
@@ -64,11 +65,11 @@ describe('routes', () => {
     })
   })
 
-  describe('/pensjon/kalkulator/start', () => {
+  describe(`${BASE_PATH}${paths.start}`, () => {
     it('viser Steg 1', async () => {
       const router = createMemoryRouter(routes, {
         basename: BASE_PATH,
-        initialEntries: ['/pensjon/kalkulator/start'],
+        initialEntries: [`${BASE_PATH}${paths.start}`],
       })
       render(<RouterProvider router={router} />, { hasRouter: false })
       expect(
@@ -77,11 +78,11 @@ describe('routes', () => {
     })
   })
 
-  describe('/pensjon/kalkulator/samtykke', () => {
+  describe(`${BASE_PATH}${paths.samtykke}`, () => {
     it('redirigerer til Step 1 når brukeren prøver å aksessere steget med direkte url', async () => {
       const router = createMemoryRouter(routes, {
         basename: BASE_PATH,
-        initialEntries: ['/pensjon/kalkulator/samtykke'],
+        initialEntries: [`${BASE_PATH}${paths.samtykke}`],
       })
       render(<RouterProvider router={router} />, {
         hasRouter: false,
@@ -100,7 +101,7 @@ describe('routes', () => {
       }))
       const router = createMemoryRouter(routes, {
         basename: BASE_PATH,
-        initialEntries: ['/pensjon/kalkulator/samtykke'],
+        initialEntries: [`${BASE_PATH}${paths.samtykke}`],
       })
       render(<RouterProvider router={router} />, {
         hasRouter: false,
@@ -111,7 +112,7 @@ describe('routes', () => {
     })
   })
 
-  describe('/pensjon/kalkulator/offentlig-tp', () => {
+  describe(`${BASE_PATH}${paths.offentligTp}`, () => {
     it('redirigerer til Step 1 når brukeren prøver å aksessere steget med direkte url', async () => {
       store.getState = vi.fn().mockImplementation(() => ({
         api: {},
@@ -119,7 +120,7 @@ describe('routes', () => {
       }))
       const router = createMemoryRouter(routes, {
         basename: BASE_PATH,
-        initialEntries: ['/pensjon/kalkulator/offentlig-tp'],
+        initialEntries: [`${BASE_PATH}${paths.offentligTp}`],
       })
       render(<RouterProvider router={router} />, {
         hasRouter: false,
@@ -138,7 +139,7 @@ describe('routes', () => {
       }))
       const router = createMemoryRouter(routes, {
         basename: BASE_PATH,
-        initialEntries: ['/pensjon/kalkulator/offentlig-tp'],
+        initialEntries: [`${BASE_PATH}${paths.offentligTp}`],
       })
       render(<RouterProvider router={router} />, {
         hasRouter: false,
@@ -157,7 +158,7 @@ describe('routes', () => {
       }))
       const router = createMemoryRouter(routes, {
         basename: BASE_PATH,
-        initialEntries: ['/pensjon/kalkulator/offentlig-tp'],
+        initialEntries: [`${BASE_PATH}${paths.offentligTp}`],
       })
       render(<RouterProvider router={router} />, {
         hasRouter: false,
@@ -178,7 +179,7 @@ describe('routes', () => {
       }))
       const router = createMemoryRouter(routes, {
         basename: BASE_PATH,
-        initialEntries: ['/pensjon/kalkulator/offentlig-tp'],
+        initialEntries: [`${BASE_PATH}${paths.offentligTp}`],
       })
       render(<RouterProvider router={router} />, {
         hasRouter: false,
@@ -189,7 +190,7 @@ describe('routes', () => {
     })
   })
 
-  describe('/pensjon/kalkulator/afp', () => {
+  describe(`${BASE_PATH}${paths.afp}`, () => {
     it('redirigerer til Step 1 når brukeren prøver å aksessere steget med direkte url', async () => {
       store.getState = vi.fn().mockImplementation(() => ({
         api: {},
@@ -197,7 +198,7 @@ describe('routes', () => {
       }))
       const router = createMemoryRouter(routes, {
         basename: BASE_PATH,
-        initialEntries: ['/pensjon/kalkulator/afp'],
+        initialEntries: [`${BASE_PATH}${paths.afp}`],
       })
       render(<RouterProvider router={router} />, {
         hasRouter: false,
@@ -216,7 +217,7 @@ describe('routes', () => {
       }))
       const router = createMemoryRouter(routes, {
         basename: BASE_PATH,
-        initialEntries: ['/pensjon/kalkulator/afp'],
+        initialEntries: [`${BASE_PATH}${paths.afp}`],
       })
       render(<RouterProvider router={router} />, {
         hasRouter: false,
@@ -227,7 +228,7 @@ describe('routes', () => {
     })
   })
 
-  describe('/pensjon/kalkulator/sivilstand', () => {
+  describe(`${BASE_PATH}${paths.sivilstand}`, () => {
     it('redirigerer til Step 1 når brukeren prøver å aksessere steget med direkte url', async () => {
       store.getState = vi.fn().mockImplementation(() => ({
         api: {},
@@ -235,7 +236,7 @@ describe('routes', () => {
       }))
       const router = createMemoryRouter(routes, {
         basename: BASE_PATH,
-        initialEntries: ['/pensjon/kalkulator/sivilstand'],
+        initialEntries: [`${BASE_PATH}${paths.sivilstand}`],
       })
       render(<RouterProvider router={router} />, {
         hasRouter: false,
@@ -254,7 +255,7 @@ describe('routes', () => {
       }))
       const router = createMemoryRouter(routes, {
         basename: BASE_PATH,
-        initialEntries: ['/pensjon/kalkulator/sivilstand'],
+        initialEntries: [`${BASE_PATH}${paths.sivilstand}`],
       })
       render(<RouterProvider router={router} />, {
         hasRouter: false,
@@ -265,7 +266,7 @@ describe('routes', () => {
     })
   })
 
-  describe('/pensjon/kalkulator/beregning', () => {
+  describe(`${BASE_PATH}${paths.beregning}`, () => {
     it('redirigerer til Step 1 når brukeren prøver å aksessere steget med direkte url', async () => {
       store.getState = vi.fn().mockImplementation(() => ({
         api: {},
@@ -273,7 +274,7 @@ describe('routes', () => {
       }))
       const router = createMemoryRouter(routes, {
         basename: BASE_PATH,
-        initialEntries: ['/pensjon/kalkulator/beregning'],
+        initialEntries: [`${BASE_PATH}${paths.beregning}`],
       })
       render(<RouterProvider router={router} />, {
         hasRouter: false,
@@ -292,7 +293,7 @@ describe('routes', () => {
       }))
       const router = createMemoryRouter(routes, {
         basename: BASE_PATH,
-        initialEntries: ['/pensjon/kalkulator/beregning'],
+        initialEntries: [`${BASE_PATH}${paths.beregning}`],
       })
       render(<RouterProvider router={router} />, {
         hasRouter: false,

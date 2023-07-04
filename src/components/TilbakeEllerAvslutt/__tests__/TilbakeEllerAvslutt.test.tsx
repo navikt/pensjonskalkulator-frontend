@@ -5,6 +5,8 @@ import { describe, it, vi } from 'vitest'
 import { TilbakeEllerAvslutt } from '..'
 import { RootState } from '@/state/store'
 import { render, screen, userEvent } from '@/test-utils'
+import { paths } from '@/routes'
+
 const realLocation = window.location
 
 describe('TilbakeEllerAvslutt', () => {
@@ -32,7 +34,7 @@ describe('TilbakeEllerAvslutt', () => {
     })
 
     await user.click(screen.getByText('Start ny beregning'))
-    expect(navigateMock).toHaveBeenCalledWith('/start')
+    expect(navigateMock).toHaveBeenCalledWith(paths.start)
     expect(store.getState().userInput.samtykke).toBe(null)
   })
 

@@ -10,6 +10,7 @@ import { selectSamtykke, selectAfp } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputReducer'
 
 import { checkHarSamboer, getNesteSide } from './utils'
+import { paths } from '@/routes'
 
 export function Step4() {
   const navigate = useNavigate()
@@ -22,7 +23,7 @@ export function Step4() {
 
   const onCancel = (): void => {
     dispatch(userInputActions.flush())
-    navigate('/')
+    navigate(paths.root)
   }
 
   const onPrevious = (): void => {
@@ -31,9 +32,9 @@ export function Step4() {
       isTpoMedlemskapQuerySuccess &&
       TpoMedlemskap.harTjenestepensjonsforhold
     ) {
-      return navigate('/offentlig-tp')
+      return navigate(paths.offentligTp)
     } else {
-      return navigate('/samtykke')
+      return navigate(paths.samtykke)
     }
   }
 

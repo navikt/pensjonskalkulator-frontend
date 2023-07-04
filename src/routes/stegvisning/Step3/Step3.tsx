@@ -7,6 +7,7 @@ import { useAppDispatch } from '@/state/hooks'
 import { userInputActions } from '@/state/userInput/userInputReducer'
 
 import { TpoMedlemskapQuery, useStep3LoaderData } from './utils'
+import { paths } from '@/routes'
 
 export function Step3() {
   const navigate = useNavigate()
@@ -15,15 +16,15 @@ export function Step3() {
 
   const onCancel = (): void => {
     dispatch(userInputActions.flush())
-    navigate('/')
+    navigate(paths.root)
   }
 
   const onPrevious = (): void => {
-    navigate('/samtykke')
+    navigate(paths.samtykke)
   }
 
   const onNext = (): void => {
-    navigate('/afp')
+    navigate(paths.afp)
   }
 
   return (
