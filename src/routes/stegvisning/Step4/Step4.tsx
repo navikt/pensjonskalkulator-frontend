@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 
 import { AFP, AfpRadio } from '@/components/stegvisning/AFP'
+import { paths } from '@/routes'
 import {
   useGetPersonQuery,
   useGetTpoMedlemskapQuery,
@@ -10,7 +11,6 @@ import { selectSamtykke, selectAfp } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputReducer'
 
 import { checkHarSamboer, getNesteSide } from './utils'
-import { paths } from '@/routes'
 
 export function Step4() {
   const navigate = useNavigate()

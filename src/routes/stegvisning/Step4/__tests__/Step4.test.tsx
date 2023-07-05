@@ -5,9 +5,9 @@ import { describe, it, vi } from 'vitest'
 import { Step4 } from '..'
 import * as Step4Utils from '../utils'
 import { mockResponse, mockErrorResponse } from '@/mocks/server'
+import { paths } from '@/routes'
 import { userInputInitialState } from '@/state/userInput/userInputReducer'
 import { screen, render, userEvent, waitFor } from '@/test-utils'
-import { paths } from '@/routes'
 
 describe('Step 4', () => {
   it('rendrer Step 4 slik den skal når brukeren har svart nei på spørsmålet om samtykke,', async () => {

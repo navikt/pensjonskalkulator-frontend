@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom'
 
 import { Start } from '@/components/stegvisning/Start'
-import { useGetPersonQuery } from '@/state/api/apiSlice'
 import { paths } from '@/routes'
+import { useGetPersonQuery } from '@/state/api/apiSlice'
 
 export function Step1() {
   const navigate = useNavigate()

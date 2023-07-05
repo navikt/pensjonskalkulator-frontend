@@ -4,10 +4,10 @@ import {
   Sivilstand,
   SivilstandRadio,
 } from '@/components/stegvisning/Sivilstand'
+import { paths } from '@/routes'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import { selectSamboer } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputReducer'
-import { paths } from '@/routes'
 
 export function Step5() {
   const navigate = useNavigate()

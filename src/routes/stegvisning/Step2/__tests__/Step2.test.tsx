@@ -3,9 +3,9 @@ import * as ReactRouterUtils from 'react-router'
 import { describe, it, vi } from 'vitest'
 
 import { Step2 } from '..'
+import { paths } from '@/routes'
 import { RootState } from '@/state/store'
 import { screen, render, userEvent } from '@/test-utils'
-import { paths } from '@/routes'
 
 describe('Step 2', () => {
   it('registrerer samtykke, henter pensjonsavtaler og navigerer videre til riktig side når brukeren samtykker og klikker på Neste', async () => {

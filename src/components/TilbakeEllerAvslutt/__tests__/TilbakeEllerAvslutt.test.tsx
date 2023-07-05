@@ -3,9 +3,9 @@ import * as ReactRouterUtils from 'react-router'
 import { describe, it, vi } from 'vitest'
 
 import { TilbakeEllerAvslutt } from '..'
+import { paths } from '@/routes'
 import { RootState } from '@/state/store'
 import { render, screen, userEvent } from '@/test-utils'
-import { paths } from '@/routes'
 
 const realLocation = window.location
 

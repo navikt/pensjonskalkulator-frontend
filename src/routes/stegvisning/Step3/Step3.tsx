@@ -3,11 +3,11 @@ import { useNavigate, Await } from 'react-router-dom'
 
 import { Loader } from '@/components/Loader'
 import { OffentligTP } from '@/components/stegvisning/OffentligTP'
+import { paths } from '@/routes'
 import { useAppDispatch } from '@/state/hooks'
 import { userInputActions } from '@/state/userInput/userInputReducer'
 
 import { TpoMedlemskapQuery, useStep3LoaderData } from './utils'
-import { paths } from '@/routes'
 
 export function Step3() {
   const navigate = useNavigate()

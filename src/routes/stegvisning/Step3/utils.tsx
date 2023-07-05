@@ -6,9 +6,9 @@ import {
   TypedUseQueryStateResult,
 } from '@reduxjs/toolkit/query/react'
 
+import { paths } from '@/routes'
 import { apiSlice } from '@/state/api/apiSlice'
 import { store } from '@/state/store'
-import { paths } from '@/routes'
 
 export const step3loader = async () => {
   const harSamtykket = store.getState().userInput.samtykke

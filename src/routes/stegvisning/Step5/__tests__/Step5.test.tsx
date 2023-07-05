@@ -3,9 +3,9 @@ import * as ReactRouterUtils from 'react-router'
 import { describe, it, vi } from 'vitest'
 
 import { Step5 } from '..'
+import { paths } from '@/routes'
 import { userInputInitialState } from '@/state/userInput/userInputReducer'
 import { render, screen, userEvent, waitFor } from '@/test-utils'
-import { paths } from '@/routes'
 
 describe('Step 5', () => {
   it('rendrer Step 5 slik den skal når brukeren har svart på spørsmålet om samtykke,', async () => {

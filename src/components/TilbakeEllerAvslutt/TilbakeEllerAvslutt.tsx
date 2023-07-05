@@ -2,11 +2,11 @@ import { useNavigate } from 'react-router-dom'
 
 import { BodyShort, Button, Heading } from '@navikt/ds-react'
 
+import { paths } from '@/routes'
 import { useAppDispatch } from '@/state/hooks'
 import { userInputActions } from '@/state/userInput/userInputReducer'
 
 import styles from './TilbakeEllerAvslutt.module.scss'
-import { paths } from '@/routes'
 
 export function TilbakeEllerAvslutt() {
   const dispatch = useAppDispatch()

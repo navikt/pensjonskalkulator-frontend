@@ -4,8 +4,8 @@ import { describe, it, vi } from 'vitest'
 
 import { Step1 } from '..'
 import { mockErrorResponse } from '@/mocks/server'
-import { userEvent, render, screen, waitFor } from '@/test-utils'
 import { paths } from '@/routes'
+import { userEvent, render, screen, waitFor } from '@/test-utils'
 
 describe('Step 1', () => {
   it('henter personopplysninger og viser hilsen med fornavnet til brukeren', async () => {

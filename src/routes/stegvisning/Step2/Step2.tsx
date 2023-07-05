@@ -1,11 +1,11 @@
 import { useNavigate } from 'react-router-dom'
 
 import { Samtykke, SamtykkeRadio } from '@/components/stegvisning/Samtykke'
+import { paths } from '@/routes'
 import { apiSlice } from '@/state/api/apiSlice'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import { selectSamtykke } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputReducer'
-import { paths } from '@/routes'
 
 export function Step2() {
   const navigate = useNavigate()

@@ -4,11 +4,11 @@ import { describe, vi } from 'vitest'
 
 import { BASE_PATH, routes } from '..'
 import { mockResponse } from '@/mocks/server'
+import { paths } from '@/routes'
 import { apiSlice } from '@/state/api/apiSlice'
 import { store } from '@/state/store'
 import { userInputInitialState } from '@/state/userInput/userInputReducer'
 import { render, screen, swallowErrors, waitFor } from '@/test-utils'
-import { paths } from '@/routes'
 
 const initialGetState = store.getState
 
