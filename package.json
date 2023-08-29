@@ -71,7 +71,7 @@
     "postcss-modules-local-by-default": "^4.0.3",
     "postcss-modules-scope": "^3.0.0",
     "postcss-modules-values": "^4.0.0",
-    "prettier": "^3.0.2",
+    "prettier": "^3.0.3",
     "react-intl": "^6.4.4",
     "rollup-plugin-visualizer": "^5.9.2",
     "sass": "^1.58.0",
