@@ -30,7 +30,7 @@
     "@navikt/aksel-icons": "^5.7.0",
     "@navikt/ds-css": "^5.7.0",
     "@navikt/ds-react": "^5.7.0",
-    "@navikt/ds-tokens": "^5.7.0",
+    "@navikt/ds-tokens": "^5.7.2",
     "@reduxjs/toolkit": "^1.9.7",
     "clsx": "^2.0.0",
     "date-fns": "^2.30.0",
