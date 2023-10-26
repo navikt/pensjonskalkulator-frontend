@@ -14,7 +14,7 @@ export default defineConfig(() => ({
   build: {
     sourcemap: true,
     rollupOptions: {
-      external: ['./public/nais.js'],
+      external: ['/nais.js'],
       output: {
         manualChunks: {
           highcharts: ['highcharts'],
