@@ -157,7 +157,7 @@ jobs:
 
   deploy-dev:
     name: Deploy to dev-gcp
-    needs: [ run-unit-tests ]
+    needs: [run-unit-tests]
     permissions: write-all
     runs-on: ubuntu-latest
     if: |
@@ -203,7 +203,7 @@ jobs:
 
   deploy-prod:
     name: Deploy to prod-gcp
-    needs: [ run-unit-tests ]
+    needs: [run-unit-tests]
     permissions: write-all
     runs-on: ubuntu-latest
     if: |
