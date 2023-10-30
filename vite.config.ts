@@ -68,6 +68,13 @@ export default defineConfig(() => ({
         changeOrigin: true,
         secure: false,
       },
+      '/pensjon/kalkulator/nav/dekoratoren': {
+        changeOrigin: true,
+        secure: false,
+        target: 'https://dekoratoren.ekstern.dev.nav.no',
+        rewrite: (path) =>
+          path.replace(/^\/pensjon\/kalkulator\/nav\/dekoratoren/, ''),
+      },
     },
   },
   css: {
