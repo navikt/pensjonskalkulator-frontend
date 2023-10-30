@@ -44,10 +44,14 @@ jobs:
         run: npm ci
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
-          VITE_DECORATOR_URL: ${{ github.event.inputs.prod == 'true' && 'https://www.nav.no/dekoratoren' || 'https://dekoratoren.ekstern.dev.nav.no' }}
 
-      - name: Build application
+      - name: Build staging application
+        if: github.event.inputs.prod  == 'false'
         run: npm run build
+
+      - name: Build staging application
+        if: github.event.inputs.prod  == 'true'
+        run: npm run build:production
 
       - name: Save build folder
         uses: actions/upload-artifact@v3
