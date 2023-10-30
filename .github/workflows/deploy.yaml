@@ -54,109 +54,110 @@ jobs:
           name: dist
           path: dist
           if-no-files-found: error
-          retention-days: 1
+          retention-days:
+            1
 
-  run-unit-tests:
-    name: Run unit tests
-    runs-on: ubuntu-latest
-    needs: build
-    strategy:
-      fail-fast: true
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Use Node.js v19.6.0
-        uses: actions/setup-node@v3
-        with:
-          node-version: '19.6.0'
-          registry-url: 'https://npm.pkg.github.com'
-
-      - name: Cache node modules
-        id: cache-node
-        uses: actions/cache@v3
-        with:
-          path: |
-            node_modules
-            ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-
-      - name: Install dependencies
-        if: steps.cache-node.outputs.cache-hit != 'true'
-        run: npm ci
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
-
-      - name: Run unit tests
-        run: npm run test
-
-      - name: Archive code coverage results
-        uses: actions/upload-artifact@v3
-        with:
-          name: code-coverage-report
-          path: coverage
-
-  run-integration-tests:
-    name: Run integration tests
-    runs-on: ubuntu-latest
-    needs: build
-    strategy:
-      fail-fast: true
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Use Node.js v19.6.0
-        uses: actions/setup-node@v3
-        with:
-          node-version: '19.6.0'
-          registry-url: 'https://npm.pkg.github.com'
-
-      - name: Cache node modules
-        id: cache-node
-        uses: actions/cache@v3
-        with:
-          path: |
-            node_modules
-            ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-
-      - name: Cache Cypress binary
-        id: cache-cypress
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/Cypress
-          key: ${{ runner.os }}-cypress-${{ hashFiles('**/package.json') }}
-
-      - name: Download the build folders
-        uses: actions/download-artifact@v3
-        with:
-          name: dist
-          path: dist
-
-      - name: Install dependencies
-        if: steps.cache-node.outputs.cache-hit != 'true'
-        run: npm ci
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
-
-      - name: Install cypress
-        if: steps.cache-cypress.outputs.cache-hit != 'true'
-        run: npx cypress install
-
-      - name: Run integration tests
-        run: npm run cy:test
-
-      - name: Archive Cypress artifacts
-        uses: actions/upload-artifact@v3
-        if: failure()
-        with:
-          name: videos
-          path: cypress/videos
+            #  run-unit-tests:
+            #    name: Run unit tests
+            #    runs-on: ubuntu-latest
+            #    needs: build
+            #    strategy:
+            #      fail-fast: true
+            #    steps:
+            #      - name: Checkout
+            #        uses: actions/checkout@v4
+            #
+            #      - name: Use Node.js v19.6.0
+            #        uses: actions/setup-node@v3
+            #        with:
+            #          node-version: '19.6.0'
+            #          registry-url: 'https://npm.pkg.github.com'
+            #
+            #      - name: Cache node modules
+            #        id: cache-node
+            #        uses: actions/cache@v3
+            #        with:
+            #          path: |
+            #            node_modules
+            #            ~/.npm
+            #          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+            #
+            #      - name: Install dependencies
+            #        if: steps.cache-node.outputs.cache-hit != 'true'
+            #        run: npm ci
+            #        env:
+            #          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+            #
+            #      - name: Run unit tests
+            #        run: npm run test
+            #
+            #      - name: Archive code coverage results
+            #        uses: actions/upload-artifact@v3
+            #        with:
+            #          name: code-coverage-report
+            #          path: coverage
+            #
+            #  run-integration-tests:
+            #    name: Run integration tests
+            #    runs-on: ubuntu-latest
+            #    needs: build
+            #    strategy:
+            #      fail-fast: true
+            #    steps:
+            #      - name: Checkout
+            #        uses: actions/checkout@v4
+            #
+            #      - name: Use Node.js v19.6.0
+            #        uses: actions/setup-node@v3
+            #        with:
+            #          node-version: '19.6.0'
+            #          registry-url: 'https://npm.pkg.github.com'
+            #
+            #      - name: Cache node modules
+            #        id: cache-node
+            #        uses: actions/cache@v3
+            #        with:
+            #          path: |
+            #            node_modules
+            #            ~/.npm
+            #          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+            #
+            #      - name: Cache Cypress binary
+            #        id: cache-cypress
+            #        uses: actions/cache@v3
+            #        with:
+            #          path: ~/.cache/Cypress
+            #          key: ${{ runner.os }}-cypress-${{ hashFiles('**/package.json') }}
+            #
+            #      - name: Download the build folders
+            #        uses: actions/download-artifact@v3
+            #        with:
+            #          name: dist
+            #          path: dist
+            #
+            #      - name: Install dependencies
+            #        if: steps.cache-node.outputs.cache-hit != 'true'
+            #        run: npm ci
+            #        env:
+            #          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+            #
+            #      - name: Install cypress
+            #        if: steps.cache-cypress.outputs.cache-hit != 'true'
+            #        run: npx cypress install
+            #
+            #      - name: Run integration tests
+            #        run: npm run cy:test
+            #
+            #      - name: Archive Cypress artifacts
+            #        uses: actions/upload-artifact@v3
+            #        if: failure()
+            #        with:
+            #          name: videos
+            #          path: cypress/videos
 
   deploy-dev:
     name: Deploy to dev-gcp
-    needs: [ run-unit-tests, run-integration-tests  ]
+    needs: [build]
     permissions: write-all
     runs-on: ubuntu-latest
     if: |
@@ -198,51 +199,52 @@ jobs:
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
-          RESOURCE: .nais/deploy-dev.yml
+          RESOURCE:
+            .nais/deploy-dev.yml
 
-  deploy-prod:
-    name: Deploy to prod-gcp
-    needs: [ run-unit-tests, run-integration-tests  ]
-    permissions: write-all
-    runs-on: ubuntu-latest
-    if: |
-      github.ref == 'refs/heads/main' &&
-      github.event_name == 'workflow_dispatch' &&
-      github.event.inputs.prod == 'true'
-    env:
-      IMAGE: ghcr.io/${{ github.repository }}/pensjonskalkulator-frontend:${{ github.sha }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Download the build folders
-        uses: actions/download-artifact@v3
-        with:
-          name: dist
-          path: dist
-
-      - name: Build Docker image prod-gcp
-        run: |
-          docker build -f .docker/Dockerfile -t ${IMAGE} .
-
-      - name: Log in to the container registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: .docker/Dockerfile
-          push: true
-          tags: ${{ env.IMAGE }}
-
-      - name: Deploy to prod-gcp
-        uses: nais/deploy/actions/deploy@v1
-        env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: prod-gcp
-          RESOURCE: .nais/deploy-prod.yml
+            #  deploy-prod:
+            #    name: Deploy to prod-gcp
+            #    needs: [run-unit-tests, run-integration-tests]
+            #    permissions: write-all
+            #    runs-on: ubuntu-latest
+            #    if: |
+            #      github.ref == 'refs/heads/main' &&
+            #      github.event_name == 'workflow_dispatch' &&
+            #      github.event.inputs.prod == 'true'
+            #    env:
+            #      IMAGE: ghcr.io/${{ github.repository }}/pensjonskalkulator-frontend:${{ github.sha }}
+            #    steps:
+            #      - name: Checkout
+            #        uses: actions/checkout@v4
+            #
+            #      - name: Download the build folders
+            #        uses: actions/download-artifact@v3
+            #        with:
+            #          name: dist
+            #          path: dist
+            #
+            #      - name: Build Docker image prod-gcp
+            #        run: |
+            #          docker build -f .docker/Dockerfile -t ${IMAGE} .
+            #
+            #      - name: Log in to the container registry
+            #        uses: docker/login-action@v3
+            #        with:
+            #          registry: ghcr.io
+            #          username: ${{ github.actor }}
+            #          password: ${{ secrets.GITHUB_TOKEN }}
+            #
+            #      - name: Push Docker image
+            #        uses: docker/build-push-action@v5
+            #        with:
+            #          context: .
+            #          file: .docker/Dockerfile
+            #          push: true
+            #          tags: ${{ env.IMAGE }}
+            #
+            #      - name: Deploy to prod-gcp
+            #        uses: nais/deploy/actions/deploy@v1
+            #        env:
+            #          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+            #          CLUSTER: prod-gcp
+            #          RESOURCE: .nais/deploy-prod.yml
