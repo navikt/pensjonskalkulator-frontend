@@ -44,7 +44,7 @@ jobs:
         run: npm ci
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
-          VITE_DECORATOR_URL: ${{ github.event.inputs.prod == 'true' && 'https://dekoratoren.ekstern.dev.nav.no' || 'https://www.nav.no/dekoratoren' }}
+          VITE_DECORATOR_URL: ${{ github.event.inputs.prod == 'true' && 'https://www.nav.no/dekoratoren' || 'https://dekoratoren.ekstern.dev.nav.no' }}
 
       - name: Build application
         run: npm run build
