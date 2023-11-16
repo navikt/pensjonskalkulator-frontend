@@ -71,7 +71,7 @@
     "husky": "^8.0.0",
     "jsdom": "^22.1.0",
     "lint-staged": "^15.0.2",
-    "msw": "^2.0.3",
+    "msw": "^2.0.7",
     "node-sass": "^9.0.0",
     "openapi-typescript": "^7.0.0-next.2",
     "postcss": "^8.4.31",
