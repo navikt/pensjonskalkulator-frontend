@@ -30,6 +30,7 @@ import {
 } from '@/state/userInput/selectors'
 
 import styles from './Beregning.module.scss'
+import { logger } from '@/utils/logging'
 
 export function Beregning() {
   const isAlderValgt = useAppSelector(selectFormatertUttaksalder) !== null
@@ -137,6 +138,21 @@ export function Beregning() {
     )
   }
 
+  React.useEffect(() => {
+    if (
+      isError ||
+      isInntektError ||
+      (alderspensjon && !alderspensjon?.vilkaarErOppfylt)
+    ) {
+      if (startAar && startAar < 67) {
+        logger('alert', { teskt: 'Beregning: Ikke høy nok opptjening' })
+      }
+      if (isError) {
+        logger('alert', { teskt: 'Beregning: Klarte ikke beregne pensjon' })
+      }
+    }
+  }, [isError, isInntektError, alderspensjon, startAar])
+
   return (
     <>
       {!isTidligstMuligUttaksalderError && tidligstMuligUttak && (
@@ -168,9 +184,7 @@ export function Beregning() {
                   Beregning
                 </Heading>
                 <Alert onRetry={isError ? onRetry : undefined}>
-                  {alderspensjon &&
-                    !alderspensjon?.vilkaarErOppfylt &&
-                    startAar &&
+                  {startAar &&
                     startAar < 67 &&
                     `Du har ikke høy nok opptjening til å kunne starte uttak ved ${startAar} år. Prøv en høyere alder.`}
                   {isError &&
