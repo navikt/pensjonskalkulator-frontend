@@ -47,6 +47,9 @@ export function AFP({ isLastStep, afp, onCancel, onPrevious, onNext }: Props) {
         tekst: 'Rett til AFP',
         valg: afpData,
       })
+      logger('button klikk', {
+        tekst: 'Neste',
+      })
       onNext(afpData)
     }
   }

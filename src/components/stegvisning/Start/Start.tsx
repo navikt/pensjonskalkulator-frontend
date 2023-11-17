@@ -34,7 +34,13 @@ export function Start({ fornavn, onCancel, onNext }: Props) {
           <BodyLong size="large">
             <FormattedMessage id="stegvisning.start.ingress" />
           </BodyLong>
-          <Button type="submit" className={styles.button} onClick={onNext}>
+          <Button
+            type="submit"
+            className={styles.button}
+            onClick={wrapLogger('button klikk', { tekst: 'Kom i gang' })(
+              onNext
+            )}
+          >
             <FormattedMessage id="stegvisning.start.button" />
           </Button>
           <Button
