@@ -13,6 +13,8 @@ type IExtendedAmpltitudeEvents =
   | AmplitudeEvent<'graf tooltip åpnet', { data: string }>
   | AmplitudeEvent<'table expand åpnet', { tekst: string; data: string }>
   | AmplitudeEvent<'table expand lukket', { tekst: string; data: string }>
+  | AmplitudeEvent<'help text åpnet', { tekst: string }>
+  | AmplitudeEvent<'help text lukket', { tekst: string }>
 
 export const logger =
   getAmplitudeInstance<IExtendedAmpltitudeEvents>('dekoratoren')

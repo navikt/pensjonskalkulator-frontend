@@ -1,10 +1,11 @@
-import { memo } from 'react'
+import React from 'react'
 
 import { InformationSquareFillIcon } from '@navikt/aksel-icons'
 import { BodyLong, HelpText } from '@navikt/ds-react'
 
 import Piggybank from '../../assets/piggybank.svg'
 import { formatUttaksalder } from '@/components/VelgUttaksalder/utils'
+import { logger } from '@/utils/logging'
 
 import { isUttaksalderOver62 } from './utils'
 
@@ -15,8 +16,44 @@ interface Props {
   hasAfpOffentlig: boolean
 }
 
-export const TidligstMuligUttaksalder: React.FC<Props> = memo(
+export const TidligstMuligUttaksalder: React.FC<Props> = React.memo(
   ({ tidligstMuligUttak, hasAfpOffentlig }) => {
+    // Legger til observering av attributter på HelpText for logging
+    const helpTextRef = React.useRef<HTMLButtonElement>(null)
+    const helpTextObserver = React.useMemo(
+      () =>
+        new MutationObserver((mutationList) => {
+          if (
+            mutationList.some(
+              (mutation) => mutation.attributeName === 'aria-expanded'
+            )
+          ) {
+            const isOpen =
+              helpTextRef?.current?.getAttribute('aria-expanded') === 'true'
+
+            if (isOpen) {
+              logger('help text åpnet', {
+                tekst: 'Tidligst mulig uttak',
+              })
+            } else {
+              logger('help text lukket', {
+                tekst: 'Tidligst mulig uttak',
+              })
+            }
+          }
+        }),
+      []
+    )
+
+    React.useEffect(() => {
+      if (helpTextRef?.current) {
+        helpTextObserver.observe(helpTextRef.current, {
+          attributes: true,
+        })
+      }
+      return () => helpTextObserver.disconnect()
+    })
+
     return (
       <div className={styles.wrapper} data-testid="tidligst-mulig-uttak">
         <div className={styles.wrapperCard}>
@@ -31,7 +68,7 @@ export const TidligstMuligUttaksalder: React.FC<Props> = memo(
             </BodyLong>
             <span className={styles.highlighted}>
               {formatUttaksalder(tidligstMuligUttak)}
-              <HelpText wrapperClassName={styles.helptext}>
+              <HelpText ref={helpTextRef} wrapperClassName={styles.helptext}>
                 For å starte uttak mellom 62 og 67 år må opptjeningen din være
                 høy nok. Tidspunktet er et estimat.
               </HelpText>
