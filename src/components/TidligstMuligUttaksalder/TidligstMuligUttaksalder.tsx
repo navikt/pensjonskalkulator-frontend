@@ -1,4 +1,5 @@
 import React from 'react'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 import { InformationSquareFillIcon } from '@navikt/aksel-icons'
 import { BodyLong, HelpText } from '@navikt/ds-react'
@@ -6,6 +7,7 @@ import { BodyLong, HelpText } from '@navikt/ds-react'
 import Piggybank from '../../assets/piggybank.svg'
 import { formatUttaksalder } from '@/components/VelgUttaksalder/utils'
 import { logger } from '@/utils/logging'
+import { formatMessageValues } from '@/utils/translations'
 
 import { isUttaksalderOver62 } from './utils'
 
@@ -18,6 +20,7 @@ interface Props {
 
 export const TidligstMuligUttaksalder: React.FC<Props> = React.memo(
   ({ tidligstMuligUttak, hasAfpOffentlig }) => {
+    const intl = useIntl()
     // Legger til observering av attributter på HelpText for logging
     const helpTextRef = React.useRef<HTMLButtonElement>(null)
     const helpTextObserver = React.useMemo(
@@ -63,18 +66,31 @@ export const TidligstMuligUttaksalder: React.FC<Props> = React.memo(
               size="large"
               className={`${styles.ingress} ${styles.ingress__isInline}`}
             >
-              Din opptjening i folketrygden gjør at du tidligst kan ta <br />
-              ut alderspensjon når du er{' '}
+              <FormattedMessage
+                id="tidligsteuttaksalder.ingress_1"
+                values={{
+                  ...formatMessageValues,
+                }}
+              />
             </BodyLong>
             <span className={styles.highlighted}>
-              {formatUttaksalder(tidligstMuligUttak)}
+              {formatUttaksalder(intl, tidligstMuligUttak)}
               <HelpText ref={helpTextRef} wrapperClassName={styles.helptext}>
-                For å starte uttak mellom 62 og 67 år må opptjeningen din være
-                høy nok. Tidspunktet er et estimat.
+                <FormattedMessage
+                  id="tidligsteuttaksalder.help"
+                  values={{
+                    ...formatMessageValues,
+                  }}
+                />
               </HelpText>
             </span>
             <BodyLong size="large" className={styles.ingress}>
-              Jo lenger du venter, desto mer får du i året.
+              <FormattedMessage
+                id="tidligsteuttaksalder.ingress_2"
+                values={{
+                  ...formatMessageValues,
+                }}
+              />
             </BodyLong>
             {hasAfpOffentlig && isUttaksalderOver62(tidligstMuligUttak) && (
               <div className={styles.info}>
@@ -84,7 +100,12 @@ export const TidligstMuligUttaksalder: React.FC<Props> = React.memo(
                   aria-hidden
                 />
                 <p className={styles.infoText}>
-                  Din AFP kan gjøre at tidspunktet blir tidligere
+                  <FormattedMessage
+                    id="tidligsteuttaksalder.info_afp"
+                    values={{
+                      ...formatMessageValues,
+                    }}
+                  />
                 </p>
               </div>
             )}

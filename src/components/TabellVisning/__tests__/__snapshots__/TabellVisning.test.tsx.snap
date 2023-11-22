@@ -30,7 +30,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
         />
       </svg>
       <span>
-        Lukk tabell av beregningen
+        beregning.tabell.lukk
       </span>
     </button>
     <div
@@ -59,7 +59,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
               class="navds-table__header-cell navds-label _detailsItemRight_15ff36"
               scope="col"
             >
-              Sum
+              beregning.tabell.sum
               <span
                 class="_tableMobileOnly_15ff36"
               >
@@ -70,13 +70,13 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
               class="navds-table__header-cell navds-label _detailsItemRight_15ff36 _tableDesktopOnly_15ff36"
               scope="col"
             >
-              Pensjonsgivende inntekt
+              beregning.highcharts.serie.inntekt.name
             </th>
             <th
               class="navds-table__header-cell navds-label _detailsItemRight_15ff36 _tableDesktopOnly_15ff36"
               scope="col"
             >
-              Alderspensjon (NAV)
+              beregning.highcharts.serie.alderspensjon.name
             </th>
           </tr>
         </thead>
@@ -123,7 +123,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              69 år
+              69 alder.aar
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -153,7 +153,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -161,7 +161,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                       100 000
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -213,7 +213,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              70 år
+              70 alder.aar
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -243,7 +243,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -251,7 +251,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                       175 000
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -303,7 +303,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              71 år
+              71 alder.aar
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -333,7 +333,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -341,7 +341,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                       0
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -393,7 +393,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              72 år
+              72 alder.aar
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -423,7 +423,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -431,7 +431,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                       0
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -483,7 +483,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              73 år
+              73 alder.aar
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -513,7 +513,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -521,7 +521,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                       0
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -573,7 +573,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              74 år
+              74 alder.aar
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -603,7 +603,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -611,7 +611,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                       0
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -663,7 +663,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              75 år
+              75 alder.aar
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -693,7 +693,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -701,7 +701,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                       0
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -753,7 +753,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              76 år
+              76 alder.aar
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -783,7 +783,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -791,7 +791,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                       0
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -843,7 +843,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              77+ år (livsvarig)
+              77+ alder.aar_livsvarig
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -873,7 +873,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -881,7 +881,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                       0
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -900,11 +900,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              69 år
-            </td>
+              69 alder.aar
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             >
@@ -924,11 +924,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              70 år
-            </td>
+              70 alder.aar
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             >
@@ -948,11 +948,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              71 år
-            </td>
+              71 alder.aar
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             >
@@ -970,11 +970,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              72 år
-            </td>
+              72 alder.aar
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             >
@@ -992,11 +992,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              73 år
-            </td>
+              73 alder.aar
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             >
@@ -1014,11 +1014,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              74 år
-            </td>
+              74 alder.aar
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             >
@@ -1036,11 +1036,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              75 år
-            </td>
+              75 alder.aar
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             >
@@ -1058,11 +1058,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              76 år
-            </td>
+              76 alder.aar
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             >
@@ -1080,11 +1080,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              77+ år (livsvarig)
-            </td>
+              77+ alder.aar_livsvarig
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             />
@@ -1132,7 +1132,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
         />
       </svg>
       <span>
-        Lukk tabell av beregningen
+        beregning.tabell.lukk
       </span>
     </button>
     <div
@@ -1161,7 +1161,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
               class="navds-table__header-cell navds-label _detailsItemRight_15ff36"
               scope="col"
             >
-              Sum
+              beregning.tabell.sum
               <span
                 class="_tableMobileOnly_15ff36"
               >
@@ -1172,13 +1172,13 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
               class="navds-table__header-cell navds-label _detailsItemRight_15ff36 _tableDesktopOnly_15ff36"
               scope="col"
             >
-              Pensjonsgivende inntekt
+              beregning.highcharts.serie.inntekt.name
             </th>
             <th
               class="navds-table__header-cell navds-label _detailsItemRight_15ff36 _tableDesktopOnly_15ff36"
               scope="col"
             >
-              Alderspensjon (NAV)
+              beregning.highcharts.serie.alderspensjon.name
             </th>
           </tr>
         </thead>
@@ -1225,7 +1225,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              69 år
+              69 alder.aar
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -1255,7 +1255,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -1263,7 +1263,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                       100 000
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -1315,7 +1315,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              70 år
+              70 alder.aar
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -1345,7 +1345,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -1353,7 +1353,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                       175 000
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -1405,7 +1405,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              71 år
+              71 alder.aar
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -1435,7 +1435,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -1443,7 +1443,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                       0
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -1495,7 +1495,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              72 år
+              72 alder.aar
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -1525,7 +1525,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -1533,7 +1533,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                       0
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -1585,7 +1585,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              73 år
+              73 alder.aar
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -1615,7 +1615,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -1623,7 +1623,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                       0
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -1675,7 +1675,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              74 år
+              74 alder.aar
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -1705,7 +1705,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -1713,7 +1713,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                       0
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -1765,7 +1765,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              75 år
+              75 alder.aar
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -1795,7 +1795,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -1803,7 +1803,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                       0
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -1855,7 +1855,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              76 år
+              76 alder.aar
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -1885,7 +1885,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -1893,7 +1893,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                       0
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -1945,7 +1945,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              77+ år (livsvarig)
+              77+ alder.aar_livsvarig
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -1975,7 +1975,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -1983,7 +1983,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
                       0
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -2002,11 +2002,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              69 år
-            </td>
+              69 alder.aar
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             >
@@ -2026,11 +2026,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              70 år
-            </td>
+              70 alder.aar
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             >
@@ -2050,11 +2050,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              71 år
-            </td>
+              71 alder.aar
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             >
@@ -2072,11 +2072,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              72 år
-            </td>
+              72 alder.aar
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             >
@@ -2094,11 +2094,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              73 år
-            </td>
+              73 alder.aar
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             >
@@ -2116,11 +2116,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              74 år
-            </td>
+              74 alder.aar
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             >
@@ -2138,11 +2138,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              75 år
-            </td>
+              75 alder.aar
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             >
@@ -2160,11 +2160,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              76 år
-            </td>
+              76 alder.aar
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             >
@@ -2182,11 +2182,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 2 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              77+ år (livsvarig)
-            </td>
+              77+ alder.aar_livsvarig
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             />
@@ -2234,7 +2234,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
         />
       </svg>
       <span>
-        Lukk tabell av beregningen
+        beregning.tabell.lukk
       </span>
     </button>
     <div
@@ -2263,7 +2263,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
               class="navds-table__header-cell navds-label _detailsItemRight_15ff36"
               scope="col"
             >
-              Sum
+              beregning.tabell.sum
               <span
                 class="_tableMobileOnly_15ff36"
               >
@@ -2274,25 +2274,25 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
               class="navds-table__header-cell navds-label _detailsItemRight_15ff36 _tableDesktopOnly_15ff36"
               scope="col"
             >
-              Pensjonsgivende inntekt
+              beregning.highcharts.serie.inntekt.name
             </th>
             <th
               class="navds-table__header-cell navds-label _detailsItemRight_15ff36 _tableDesktopOnly_15ff36"
               scope="col"
             >
-              AFP (Avtalefestet pensjon)
+              beregning.highcharts.serie.afp.name
             </th>
             <th
               class="navds-table__header-cell navds-label _detailsItemRight_15ff36 _tableDesktopOnly_15ff36"
               scope="col"
             >
-              Pensjonsavtaler (arbeidsgivere m.m.)
+              beregning.highcharts.serie.tp.name
             </th>
             <th
               class="navds-table__header-cell navds-label _detailsItemRight_15ff36 _tableDesktopOnly_15ff36"
               scope="col"
             >
-              Alderspensjon (NAV)
+              beregning.highcharts.serie.alderspensjon.name
             </th>
           </tr>
         </thead>
@@ -2339,7 +2339,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              69 år
+              69 alder.aar
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -2369,7 +2369,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -2377,7 +2377,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       100 000
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -2385,7 +2385,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       200 000
                     </dd>
                     <dt>
-                      Pensjonsavtaler (arbeidsgivere m.m.)
+                      beregning.highcharts.serie.tp.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -2393,7 +2393,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       180 000
                     </dd>
                     <dt>
-                      AFP
+                      beregning.highcharts.serie.AFP.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -2445,7 +2445,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              70 år
+              70 alder.aar
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -2475,7 +2475,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -2483,7 +2483,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       175 000
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -2491,7 +2491,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       350 000
                     </dd>
                     <dt>
-                      Pensjonsavtaler (arbeidsgivere m.m.)
+                      beregning.highcharts.serie.tp.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -2499,7 +2499,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       250 000
                     </dd>
                     <dt>
-                      AFP
+                      beregning.highcharts.serie.AFP.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -2551,7 +2551,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              71 år
+              71 alder.aar
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -2581,7 +2581,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -2589,7 +2589,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       0
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -2597,7 +2597,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       400 000
                     </dd>
                     <dt>
-                      Pensjonsavtaler (arbeidsgivere m.m.)
+                      beregning.highcharts.serie.tp.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -2605,7 +2605,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       380 000
                     </dd>
                     <dt>
-                      AFP
+                      beregning.highcharts.serie.AFP.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -2657,7 +2657,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              72 år
+              72 alder.aar
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -2687,7 +2687,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -2695,7 +2695,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       0
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -2703,7 +2703,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       400 000
                     </dd>
                     <dt>
-                      Pensjonsavtaler (arbeidsgivere m.m.)
+                      beregning.highcharts.serie.tp.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -2711,7 +2711,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       380 000
                     </dd>
                     <dt>
-                      AFP
+                      beregning.highcharts.serie.AFP.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -2763,7 +2763,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              73 år
+              73 alder.aar
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -2793,7 +2793,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -2801,7 +2801,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       0
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -2809,7 +2809,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       400 000
                     </dd>
                     <dt>
-                      Pensjonsavtaler (arbeidsgivere m.m.)
+                      beregning.highcharts.serie.tp.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -2817,7 +2817,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       380 000
                     </dd>
                     <dt>
-                      AFP
+                      beregning.highcharts.serie.AFP.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -2869,7 +2869,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              74 år
+              74 alder.aar
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -2899,7 +2899,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -2907,7 +2907,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       0
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -2915,7 +2915,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       400 000
                     </dd>
                     <dt>
-                      Pensjonsavtaler (arbeidsgivere m.m.)
+                      beregning.highcharts.serie.tp.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -2923,7 +2923,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       380 000
                     </dd>
                     <dt>
-                      AFP
+                      beregning.highcharts.serie.AFP.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -2975,7 +2975,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              75 år
+              75 alder.aar
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -3005,7 +3005,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -3013,7 +3013,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       0
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -3021,7 +3021,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       400 000
                     </dd>
                     <dt>
-                      Pensjonsavtaler (arbeidsgivere m.m.)
+                      beregning.highcharts.serie.tp.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -3029,7 +3029,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       380 000
                     </dd>
                     <dt>
-                      AFP
+                      beregning.highcharts.serie.AFP.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -3081,7 +3081,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              76 år
+              76 alder.aar
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -3111,7 +3111,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -3119,7 +3119,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       0
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -3127,7 +3127,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       400 000
                     </dd>
                     <dt>
-                      Pensjonsavtaler (arbeidsgivere m.m.)
+                      beregning.highcharts.serie.tp.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -3135,7 +3135,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       380 000
                     </dd>
                     <dt>
-                      AFP
+                      beregning.highcharts.serie.AFP.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -3187,7 +3187,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              77+ år (livsvarig)
+              77+ alder.aar_livsvarig
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -3217,7 +3217,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -3225,7 +3225,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       0
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -3233,7 +3233,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       0
                     </dd>
                     <dt>
-                      Pensjonsavtaler (arbeidsgivere m.m.)
+                      beregning.highcharts.serie.tp.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -3241,7 +3241,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       0
                     </dd>
                     <dt>
-                      AFP
+                      beregning.highcharts.serie.AFP.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -3260,11 +3260,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              69 år
-            </td>
+              69 alder.aar
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             >
@@ -3294,11 +3294,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              70 år
-            </td>
+              70 alder.aar
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             >
@@ -3328,11 +3328,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              71 år
-            </td>
+              71 alder.aar
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             >
@@ -3360,11 +3360,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              72 år
-            </td>
+              72 alder.aar
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             >
@@ -3392,11 +3392,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              73 år
-            </td>
+              73 alder.aar
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             >
@@ -3424,11 +3424,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              74 år
-            </td>
+              74 alder.aar
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             >
@@ -3456,11 +3456,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              75 år
-            </td>
+              75 alder.aar
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             >
@@ -3488,11 +3488,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              76 år
-            </td>
+              76 alder.aar
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             >
@@ -3520,11 +3520,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              77+ år (livsvarig)
-            </td>
+              77+ alder.aar_livsvarig
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             />
@@ -3578,7 +3578,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
         />
       </svg>
       <span>
-        Lukk tabell av beregningen
+        beregning.tabell.lukk
       </span>
     </button>
     <div
@@ -3607,7 +3607,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
               class="navds-table__header-cell navds-label _detailsItemRight_15ff36"
               scope="col"
             >
-              Sum
+              beregning.tabell.sum
               <span
                 class="_tableMobileOnly_15ff36"
               >
@@ -3618,25 +3618,25 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
               class="navds-table__header-cell navds-label _detailsItemRight_15ff36 _tableDesktopOnly_15ff36"
               scope="col"
             >
-              Pensjonsgivende inntekt
+              beregning.highcharts.serie.inntekt.name
             </th>
             <th
               class="navds-table__header-cell navds-label _detailsItemRight_15ff36 _tableDesktopOnly_15ff36"
               scope="col"
             >
-              AFP (Avtalefestet pensjon)
+              beregning.highcharts.serie.afp.name
             </th>
             <th
               class="navds-table__header-cell navds-label _detailsItemRight_15ff36 _tableDesktopOnly_15ff36"
               scope="col"
             >
-              Pensjonsavtaler (arbeidsgivere m.m.)
+              beregning.highcharts.serie.tp.name
             </th>
             <th
               class="navds-table__header-cell navds-label _detailsItemRight_15ff36 _tableDesktopOnly_15ff36"
               scope="col"
             >
-              Alderspensjon (NAV)
+              beregning.highcharts.serie.alderspensjon.name
             </th>
           </tr>
         </thead>
@@ -3683,7 +3683,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              69 år
+              69 alder.aar
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -3713,7 +3713,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -3721,7 +3721,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       100 000
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -3729,7 +3729,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       200 000
                     </dd>
                     <dt>
-                      Pensjonsavtaler (arbeidsgivere m.m.)
+                      beregning.highcharts.serie.tp.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -3737,7 +3737,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       180 000
                     </dd>
                     <dt>
-                      AFP
+                      beregning.highcharts.serie.AFP.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -3789,7 +3789,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              70 år
+              70 alder.aar
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -3819,7 +3819,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -3827,7 +3827,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       175 000
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -3835,7 +3835,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       350 000
                     </dd>
                     <dt>
-                      Pensjonsavtaler (arbeidsgivere m.m.)
+                      beregning.highcharts.serie.tp.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -3843,7 +3843,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       250 000
                     </dd>
                     <dt>
-                      AFP
+                      beregning.highcharts.serie.AFP.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -3895,7 +3895,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              71 år
+              71 alder.aar
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -3925,7 +3925,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -3933,7 +3933,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       0
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -3941,7 +3941,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       400 000
                     </dd>
                     <dt>
-                      Pensjonsavtaler (arbeidsgivere m.m.)
+                      beregning.highcharts.serie.tp.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -3949,7 +3949,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       380 000
                     </dd>
                     <dt>
-                      AFP
+                      beregning.highcharts.serie.AFP.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -4001,7 +4001,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              72 år
+              72 alder.aar
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -4031,7 +4031,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -4039,7 +4039,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       0
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -4047,7 +4047,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       400 000
                     </dd>
                     <dt>
-                      Pensjonsavtaler (arbeidsgivere m.m.)
+                      beregning.highcharts.serie.tp.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -4055,7 +4055,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       380 000
                     </dd>
                     <dt>
-                      AFP
+                      beregning.highcharts.serie.AFP.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -4107,7 +4107,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              73 år
+              73 alder.aar
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -4137,7 +4137,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -4145,7 +4145,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       0
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -4153,7 +4153,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       400 000
                     </dd>
                     <dt>
-                      Pensjonsavtaler (arbeidsgivere m.m.)
+                      beregning.highcharts.serie.tp.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -4161,7 +4161,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       380 000
                     </dd>
                     <dt>
-                      AFP
+                      beregning.highcharts.serie.AFP.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -4213,7 +4213,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              74 år
+              74 alder.aar
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -4243,7 +4243,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -4251,7 +4251,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       0
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -4259,7 +4259,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       400 000
                     </dd>
                     <dt>
-                      Pensjonsavtaler (arbeidsgivere m.m.)
+                      beregning.highcharts.serie.tp.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -4267,7 +4267,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       380 000
                     </dd>
                     <dt>
-                      AFP
+                      beregning.highcharts.serie.AFP.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -4319,7 +4319,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              75 år
+              75 alder.aar
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -4349,7 +4349,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -4357,7 +4357,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       0
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -4365,7 +4365,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       400 000
                     </dd>
                     <dt>
-                      Pensjonsavtaler (arbeidsgivere m.m.)
+                      beregning.highcharts.serie.tp.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -4373,7 +4373,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       380 000
                     </dd>
                     <dt>
-                      AFP
+                      beregning.highcharts.serie.AFP.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -4425,7 +4425,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              76 år
+              76 alder.aar
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -4455,7 +4455,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -4463,7 +4463,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       0
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -4471,7 +4471,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       400 000
                     </dd>
                     <dt>
-                      Pensjonsavtaler (arbeidsgivere m.m.)
+                      beregning.highcharts.serie.tp.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -4479,7 +4479,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       380 000
                     </dd>
                     <dt>
-                      AFP
+                      beregning.highcharts.serie.AFP.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -4531,7 +4531,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
             <td
               class="navds-table__data-cell navds-body-short navds-body-short--medium"
             >
-              77+ år (livsvarig)
+              77+ alder.aar_livsvarig
             </td>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 navds-body-short navds-body-short--medium"
@@ -4561,7 +4561,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                     class="_details_15ff36"
                   >
                     <dt>
-                      Pensjonsgivende inntekt
+                      beregning.highcharts.serie.inntekt.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -4569,7 +4569,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       0
                     </dd>
                     <dt>
-                      Alderspensjon (NAV)
+                      beregning.highcharts.serie.alderspensjon.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -4577,7 +4577,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       0
                     </dd>
                     <dt>
-                      Pensjonsavtaler (arbeidsgivere m.m.)
+                      beregning.highcharts.serie.tp.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -4585,7 +4585,7 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
                       0
                     </dd>
                     <dt>
-                      AFP
+                      beregning.highcharts.serie.AFP.name
                     </dt>
                     <dd
                       class="_detailsItemRight_15ff36"
@@ -4604,11 +4604,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              69 år
-            </td>
+              69 alder.aar
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             >
@@ -4638,11 +4638,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              70 år
-            </td>
+              70 alder.aar
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             >
@@ -4672,11 +4672,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              71 år
-            </td>
+              71 alder.aar
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             >
@@ -4704,11 +4704,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              72 år
-            </td>
+              72 alder.aar
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             >
@@ -4736,11 +4736,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              73 år
-            </td>
+              73 alder.aar
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             >
@@ -4768,11 +4768,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              74 år
-            </td>
+              74 alder.aar
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             >
@@ -4800,11 +4800,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              75 år
-            </td>
+              75 alder.aar
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             >
@@ -4832,11 +4832,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              76 år
-            </td>
+              76 alder.aar
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             >
@@ -4864,11 +4864,11 @@ exports[`TabellVisning > rendrer riktig formatert tabell med detaljer når 4 ser
           <tr
             class="navds-table__row navds-table__row--shade-on-hover"
           >
-            <td
-              class="navds-table__data-cell navds-body-short navds-body-short--medium"
+            <th
+              class="navds-table__header-cell navds-label"
             >
-              77+ år (livsvarig)
-            </td>
+              77+ alder.aar_livsvarig
+            </th>
             <td
               class="navds-table__data-cell _detailsItemRight_15ff36 _detailsItemBold_15ff36 navds-body-short navds-body-short--medium"
             />
