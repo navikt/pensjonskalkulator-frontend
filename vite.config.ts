@@ -1,15 +1,14 @@
-import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import eslint from 'vite-plugin-eslint'
 import stylelint from 'vite-plugin-stylelint'
-import sassDts from 'vite-plugin-sass-dts'
+// import sassDts from 'vite-plugin-sass-dts'
 import { visualizer } from 'rollup-plugin-visualizer'
 import CustomPostCSSLoader from './scripts/CustomPostCSSLoader'
 import path from 'path'
 import tsconfigPaths from 'vite-tsconfig-paths'
 
 // https://vitejs.dev/config/
-export default defineConfig(() => ({
+export default {
   base: '/pensjon/kalkulator',
   build: {
     sourcemap: true,
@@ -48,12 +47,12 @@ export default defineConfig(() => ({
     react(),
     eslint(),
     stylelint({ fix: true }),
-    sassDts({
-      global: {
-        generate: true,
-        outputFilePath: path.resolve(__dirname, './src/style.d.ts'),
-      },
-    }),
+    // sassDts({
+    //   global: {
+    //     generate: true,
+    //     outputFilePath: path.resolve(__dirname, './src/style.d.ts'),
+    //   },
+    // }),
     visualizer({
       open: true,
       gzipSize: true,
@@ -124,4 +123,4 @@ export default defineConfig(() => ({
       reporter: ['json', 'html', 'text', 'text-summary', 'cobertura'],
     },
   },
-}))
+}
