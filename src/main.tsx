@@ -9,7 +9,6 @@ import { initializeLogs } from '@/faro'
 import { BASE_PATH } from '@/router/constants'
 import { routes } from '@/router/routes'
 
-import { GlobalLogWrapper } from './components/GlobalLogWrapper'
 import { store } from './state/store'
 
 import './scss/designsystem.scss'
@@ -40,9 +39,7 @@ ReactDOM.createRoot(root).render(
   <React.StrictMode>
     <Provider store={store}>
       <LanguageProvider>
-        <GlobalLogWrapper rootEl={root}>
-          <RouterProvider router={router} />
-        </GlobalLogWrapper>
+        <RouterProvider router={router} />
       </LanguageProvider>
     </Provider>
   </React.StrictMode>

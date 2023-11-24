@@ -1,3 +1,4 @@
+import { isAnchorTag } from '@/state/api/typeguards'
 import {
   getAmplitudeInstance,
   AmplitudeEvent,
@@ -32,3 +33,13 @@ export const wrapLogger =
     logger(name, properties)
     return func()
   }
+
+export const logOpenLink: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
+  if (isAnchorTag(e.target)) {
+    e.preventDefault()
+    const { href, target } = e.target
+    logger('link åpnet', { href, target })
+    debugger
+    window.open(href, target)
+  }
+}
