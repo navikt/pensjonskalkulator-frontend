@@ -15,6 +15,7 @@ export function ErrorPage404() {
       feil: '404 Not found',
     })
   })
+
   return (
     <FrameComponent>
       <Card data-testid="error-page-404" hasLargePadding>

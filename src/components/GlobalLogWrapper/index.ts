@@ -1,0 +1,1 @@
+export { GlobalLogWrapper } from './GlobalLogWrapper'

@@ -28,9 +28,9 @@ import {
   selectCurrentSimulation,
   selectFormatertUttaksalder,
 } from '@/state/userInput/selectors'
+import { logger } from '@/utils/logging'
 
 import styles from './Beregning.module.scss'
-import { logger } from '@/utils/logging'
 
 export function Beregning() {
   const isAlderValgt = useAppSelector(selectFormatertUttaksalder) !== null
