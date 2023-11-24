@@ -126,18 +126,6 @@ export function Beregning() {
     }
   }
 
-  if (isTidligstMuligUttaksalderLoading) {
-    return (
-      <Loader
-        data-testid="uttaksalder-loader"
-        size="3xlarge"
-        title={intl.formatMessage({
-          id: 'beregning.loading',
-        })}
-      />
-    )
-  }
-
   React.useEffect(() => {
     if (
       isError ||
@@ -152,6 +140,18 @@ export function Beregning() {
       }
     }
   }, [isError, isInntektError, alderspensjon, startAar])
+
+  if (isTidligstMuligUttaksalderLoading) {
+    return (
+      <Loader
+        data-testid="uttaksalder-loader"
+        size="3xlarge"
+        title={intl.formatMessage({
+          id: 'beregning.loading',
+        })}
+      />
+    )
+  }
 
   return (
     <>
@@ -184,15 +184,12 @@ export function Beregning() {
                   <FormattedMessage id="beregning.title" />
                 </Heading>
                 <Alert onRetry={isError ? onRetry : undefined}>
-                  {alderspensjon &&
-                    !alderspensjon?.vilkaarErOppfylt &&
-                    startAar &&
-                    startAar < 67 && (
-                      <FormattedMessage
-                        id="beregning.lav_opptjening"
-                        values={{ startAar }}
-                      />
-                    )}
+                  {startAar && startAar < 67 && (
+                    <FormattedMessage
+                      id="beregning.lav_opptjening"
+                      values={{ startAar }}
+                    />
+                  )}
                   {isError && <FormattedMessage id="beregning.error" />}
                 </Alert>
               </>
