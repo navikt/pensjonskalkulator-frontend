@@ -127,19 +127,14 @@ export function Beregning() {
   }
 
   React.useEffect(() => {
-    if (
-      isError ||
-      isInntektError ||
-      (alderspensjon && !alderspensjon?.vilkaarErOppfylt)
-    ) {
-      if (startAar && startAar < 67) {
+    if (isAlderValgt) {
+      if (alderspensjon && !alderspensjon?.vilkaarErOppfylt) {
         logger('alert', { teskt: 'Beregning: Ikke høy nok opptjening' })
-      }
-      if (isError) {
+      } else if (isError) {
         logger('alert', { teskt: 'Beregning: Klarte ikke beregne pensjon' })
       }
     }
-  }, [isError, isInntektError, alderspensjon, startAar])
+  }, [isAlderValgt, isError, alderspensjon])
 
   if (isTidligstMuligUttaksalderLoading) {
     return (
@@ -176,9 +171,7 @@ export function Beregning() {
           <div
             className={`${styles.container} ${styles.container__hasPadding}`}
           >
-            {isError ||
-            isInntektError ||
-            (alderspensjon && !alderspensjon?.vilkaarErOppfylt) ? (
+            {isError || (alderspensjon && !alderspensjon?.vilkaarErOppfylt) ? (
               <>
                 <Heading level="2" size="small">
                   <FormattedMessage id="beregning.title" />
