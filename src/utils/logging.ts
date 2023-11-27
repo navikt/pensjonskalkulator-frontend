@@ -39,7 +39,6 @@ export const logOpenLink: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     e.preventDefault()
     const { href, target } = e.target
     logger('link åpnet', { href, target })
-    debugger
     window.open(href, target)
   }
 }

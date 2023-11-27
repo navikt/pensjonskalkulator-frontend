@@ -38,7 +38,7 @@ export function ErrorPage404() {
               </List.Item>
             </List>
             <VStack gap="4">
-              <Link onClick={logOpenLink} as={ReactRouterLink} to={paths.login}>
+              <Link as={ReactRouterLink} to={paths.login}>
                 <FormattedMessage id="error.404.button.link_1" />
               </Link>
               <Link onClick={logOpenLink} href={externalUrls.dinPensjon}>
