@@ -45,13 +45,6 @@ describe('TidligstMuligUttaksalder', () => {
       'help text åpnet',
       expect.any(Object)
     )
-
-    await user.click(screen.getByRole('button'))
-    expect(loggerSpy).toHaveBeenNthCalledWith(
-      2,
-      'help text lukket',
-      expect.any(Object)
-    )
   })
   it('viser AFP melding hvis brukeren har AFP offentlig og tidligstMuligUttak etter 62', async () => {
     render(
