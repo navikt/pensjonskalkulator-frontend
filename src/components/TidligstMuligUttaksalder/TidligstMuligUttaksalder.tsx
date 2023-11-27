@@ -21,41 +21,16 @@ interface Props {
 export const TidligstMuligUttaksalder: React.FC<Props> = React.memo(
   ({ tidligstMuligUttak, hasAfpOffentlig }) => {
     const intl = useIntl()
-    // Legger til observering av attributter på HelpText for logging
-    const helpTextRef = React.useRef<HTMLButtonElement>(null)
-    const helpTextObserver = React.useMemo(
-      () =>
-        new MutationObserver((mutationList) => {
-          if (
-            mutationList.some(
-              (mutation) => mutation.attributeName === 'aria-expanded'
-            )
-          ) {
-            const isOpen =
-              helpTextRef?.current?.getAttribute('aria-expanded') === 'true'
-
-            if (isOpen) {
-              logger('help text åpnet', {
-                tekst: 'Tidligst mulig uttak',
-              })
-            } else {
-              logger('help text lukket', {
-                tekst: 'Tidligst mulig uttak',
-              })
-            }
-          }
-        }),
-      []
-    )
-
-    React.useEffect(() => {
-      if (helpTextRef?.current) {
-        helpTextObserver.observe(helpTextRef.current, {
-          attributes: true,
+    const [hasHelpTextBeenClicked, setHasHelpTextBeenClicked] =
+      React.useState(false)
+    const logHelpTextClick = () => {
+      if (!hasHelpTextBeenClicked) {
+        logger('help text åpnet', {
+          tekst: 'Tidligst mulig uttak',
         })
       }
-      return () => helpTextObserver.disconnect()
-    })
+      setHasHelpTextBeenClicked(true)
+    }
 
     return (
       <div className={styles.wrapper} data-testid="tidligst-mulig-uttak">
@@ -75,7 +50,10 @@ export const TidligstMuligUttaksalder: React.FC<Props> = React.memo(
             </BodyLong>
             <span className={styles.highlighted}>
               {formatUttaksalder(intl, tidligstMuligUttak)}
-              <HelpText ref={helpTextRef} wrapperClassName={styles.helptext}>
+              <HelpText
+                onClick={logHelpTextClick}
+                wrapperClassName={styles.helptext}
+              >
                 <FormattedMessage
                   id="tidligsteuttaksalder.help"
                   values={{
