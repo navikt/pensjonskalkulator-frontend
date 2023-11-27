@@ -1,8 +1,9 @@
-import { isAnchorTag } from '@/state/api/typeguards'
 import {
   getAmplitudeInstance,
   AmplitudeEvent,
 } from '@navikt/nav-dekoratoren-moduler'
+
+import { isAnchorTag } from '@/state/api/typeguards'
 
 type IExtendedAmpltitudeEvents =
   | AmplitudeEvent<'readmore åpnet', { tekst: string }>
