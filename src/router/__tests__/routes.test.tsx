@@ -2,7 +2,8 @@ import { createMemoryRouter, RouterProvider } from 'react-router-dom'
 
 import { describe, vi } from 'vitest'
 
-import { BASE_PATH, paths, routes } from '..'
+import { BASE_PATH, paths } from '../constants'
+import { routes } from '../routes'
 import { mockErrorResponse, mockResponse } from '@/mocks/server'
 import { HOST_BASEURL } from '@/paths'
 import { apiSlice } from '@/state/api/apiSlice'
@@ -58,8 +59,12 @@ describe('routes', () => {
           basename: BASE_PATH,
           initialEntries: [`${BASE_PATH}${paths.login}`],
         })
-        render(<RouterProvider router={router} />, { hasRouter: false })
-        expect(router.state.location.pathname).toBe(`${BASE_PATH}/login`)
+        render(<RouterProvider router={router} />, {
+          hasRouter: false,
+        })
+        expect(
+          await screen.findByText('landingsside.for.deg.foedt.foer.1963')
+        ).toBeVisible()
       })
     })
 

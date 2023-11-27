@@ -1,5 +1,6 @@
 import { createMemoryRouter, RouterProvider } from 'react-router-dom'
 
+import { act } from 'react-dom/test-utils'
 import { describe, expect, it, vi } from 'vitest'
 
 import { Beregning } from '../Beregning'
@@ -131,7 +132,11 @@ describe('Beregning', () => {
         ).toBeVisible()
       })
       // Nødvendig for at animasjonen rekker å bli ferdig
-      await new Promise((r) => setTimeout(r, 500))
+      await act(async () => {
+        await new Promise((r) => {
+          setTimeout(r, 500)
+        })
+      })
       expect(
         container.getElementsByClassName('highcharts-container').length
       ).toBe(1)
@@ -164,7 +169,12 @@ describe('Beregning', () => {
         ).toBeVisible()
       })
       // Nødvendig for at animasjonen rekker å bli ferdig
-      await new Promise((r) => setTimeout(r, 500))
+      await act(async () => {
+        await new Promise((r) => {
+          setTimeout(r, 500)
+        })
+      })
+
       expect(
         container.getElementsByClassName('highcharts-container').length
       ).toBe(1)

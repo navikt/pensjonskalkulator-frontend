@@ -1,7 +1,7 @@
 import react from '@vitejs/plugin-react'
 import eslint from 'vite-plugin-eslint'
 import stylelint from 'vite-plugin-stylelint'
-// import sassDts from 'vite-plugin-sass-dts'
+import sassDts from 'vite-plugin-sass-dts'
 import { visualizer } from 'rollup-plugin-visualizer'
 import CustomPostCSSLoader from './scripts/CustomPostCSSLoader'
 import path from 'path'
@@ -45,20 +45,22 @@ export default {
   plugins: [
     tsconfigPaths(),
     react(),
-    eslint(),
-    stylelint({ fix: true }),
-    // sassDts({
-    //   global: {
-    //     generate: true,
-    //     outputFilePath: path.resolve(__dirname, './src/style.d.ts'),
-    //   },
-    // }),
-    visualizer({
-      open: true,
-      gzipSize: true,
-      brotliSize: true,
-      filename: 'analice.html',
-    }),
+    process.env.NODE_ENV !== 'test' && eslint(),
+    process.env.NODE_ENV !== 'test' && stylelint({ fix: true }),
+    process.env.NODE_ENV !== 'test' &&
+      sassDts({
+        global: {
+          generate: true,
+          outputFilePath: path.resolve(__dirname, './src/style.d.ts'),
+        },
+      }),
+    process.env.NODE_ENV !== 'test' &&
+      visualizer({
+        open: true,
+        gzipSize: true,
+        brotliSize: true,
+        filename: 'analice.html',
+      }),
   ],
   server: {
     proxy: {
@@ -94,6 +96,7 @@ export default {
     },
   },
   test: {
+    cache: false,
     environment: 'jsdom',
     globals: true,
     setupFiles: 'src/test-setup.ts',

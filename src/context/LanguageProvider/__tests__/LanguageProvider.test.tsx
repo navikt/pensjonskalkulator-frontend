@@ -25,7 +25,7 @@ describe('LanguageProvider', () => {
     })
   })
   it('gir tilgang til react-intl translations', async () => {
-    const storeRef = await setupStore({}, true)
+    const storeRef = setupStore({}, true)
     render(
       <Provider store={storeRef}>
         <LanguageProvider>
@@ -41,7 +41,7 @@ describe('LanguageProvider', () => {
   })
 
   it('bruker locale fra cookie når den er tilgjengelig', async () => {
-    const storeRef = await setupStore({}, true)
+    const storeRef = setupStore({}, true)
     document.cookie = 'decorator-language=en'
     render(
       <Provider store={storeRef}>
@@ -55,13 +55,14 @@ describe('LanguageProvider', () => {
       expect(screen.getByTestId('test-component')).toHaveTextContent(
         'Retirement income calculator'
       )
+      expect(document.documentElement.lang).toBe('en')
     })
   })
 
   it('bruker norsk bokmål uansett når kall til feature toggle feiler', async () => {
-    const storeRef = await setupStore({}, true)
+    const storeRef = setupStore({}, true)
     document.cookie = 'decorator-language=en'
-    await mockErrorResponse('/feature/pensjonskalkulator.disable-spraakvelger')
+    mockErrorResponse('/feature/pensjonskalkulator.disable-spraakvelger')
 
     render(
       <Provider store={storeRef}>
