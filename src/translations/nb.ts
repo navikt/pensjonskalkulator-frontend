@@ -181,7 +181,7 @@ const translations = {
   'sivilstand.med_samboer': 'med samboer',
   'sivilstand.uten_samboer': 'uten samboer',
   'tidligsteuttaksalder.ingress':
-    'Din opptjening i folketrygden gjør at du tidligst kan ta ut 100% alderspensjon når du er ',
+    'Din opptjening i folketrygden gjør at du tidligst kan ta ut 100 % alderspensjon når du er ',
   'tidligsteuttaksalder.readmore_title': 'Om tidspunkter for uttak',
   'tidligsteuttaksalder.readmore_ingress': 'Lorem ipsum',
   'tidligsteuttaksalder.info_afp':

@@ -176,7 +176,7 @@ const translations = {
   'sivilstand.med_samboer': 'MANGLER_TEKST',
   'sivilstand.uten_samboer': 'MANGLER_TEKST',
   'tidligsteuttaksalder.ingress':
-    'Di opptening i folketrygda gjer at du tidlegast kan ta ut 100% alderspensjon når du er ',
+    'Di opptening i folketrygda gjer at du tidlegast kan ta ut 100 % alderspensjon når du er ',
   'tidligsteuttaksalder.readmore_title': 'MANGLER_TEKST',
   'tidligsteuttaksalder.readmore_ingress': 'MANGLER_TEKST',
   'tidligsteuttaksalder.ingress_1':
