@@ -32,13 +32,19 @@ export const useFormLocalState = (initialValues: {
       : null
   )
   const [localHeltUttak, setHeltUttak] = React.useState<
-    RecursivePartial<HeltUttak> | undefined
+    | (Omit<RecursivePartial<HeltUttak>, 'aarligInntektVsaPensjon'> & {
+        aarligInntektVsaPensjon?: {
+          beloep?: string
+          sluttAlder?: Partial<Alder>
+        }
+      })
+    | undefined
   >({
     uttaksalder: uttaksalder !== null ? uttaksalder : undefined,
     aarligInntektVsaPensjon: aarligInntektVsaHelPensjon
       ? {
-          ...aarligInntektVsaHelPensjon,
-          beloep: aarligInntektVsaHelPensjon.beloep,
+          beloep: aarligInntektVsaHelPensjon.beloep.toString(),
+          sluttAlder: aarligInntektVsaHelPensjon.sluttAlder,
         }
       : undefined,
   })

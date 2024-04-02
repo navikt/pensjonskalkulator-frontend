@@ -10,6 +10,8 @@ export const FORM_NAMES = {
   uttaksalderHeltUttak: 'uttaksalder-helt-uttak',
   uttaksalderGradertUttak: 'uttaksalder-gradert-uttak',
   inntektVsaGradertUttak: 'inntekt-vsa-gradert-uttak',
+  inntektVsaHeltUttak: 'inntekt-vsa-helt-uttak',
+  inntektVsaHeltUttakSluttAlder: 'inntekt-vsa-helt-uttak-slutt-alder',
 }
 
 const validateAlderForGradertUttak = (
@@ -157,7 +159,14 @@ export const onAvansertBeregningSubmit = (
   >,
   gaaTilResultat: () => void,
   previousData: {
-    localHeltUttak: RecursivePartial<HeltUttak> | undefined
+    localHeltUttak:
+      | (Omit<RecursivePartial<HeltUttak>, 'aarligInntektVsaPensjon'> & {
+          aarligInntektVsaPensjon?: {
+            beloep?: string
+            sluttAlder?: Partial<Alder>
+          }
+        })
+      | undefined
     localInntektFremTilUttak: number | null
     hasVilkaarIkkeOppfylt: boolean | undefined
     harAvansertSkjemaUnsavedChanges: boolean
@@ -253,7 +262,10 @@ export const onAvansertBeregningSubmit = (
           localHeltUttak?.aarligInntektVsaPensjon?.sluttAlder?.maaneder !==
             undefined
           ? {
-              beloep: localHeltUttak?.aarligInntektVsaPensjon?.beloep,
+              beloep: parseInt(
+                localHeltUttak?.aarligInntektVsaPensjon?.beloep,
+                10
+              ),
               sluttAlder: localHeltUttak?.aarligInntektVsaPensjon
                 ?.sluttAlder as Alder,
             }

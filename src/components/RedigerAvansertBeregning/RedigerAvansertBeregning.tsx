@@ -8,7 +8,6 @@ import { Divider } from '@/components/common/Divider'
 import { ReadMore } from '@/components/common/ReadMore'
 import { EndreInntekt } from '@/components/EndreInntekt'
 import { InfoOmInntekt } from '@/components/EndreInntekt/InfoOmInntekt'
-import { EndreInntektVsaPensjon } from '@/components/EndreInntektVsaPensjon'
 import { VilkaarsproevingAlert } from '@/components/VilkaarsproevingAlert'
 import { BeregningContext } from '@/pages/Beregning/context'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
@@ -134,6 +133,34 @@ export const RedigerAvansertBeregning: React.FC<{
         : undefined,
     }))
     setValidationErrorInntektVsaGradertUttak('')
+  }
+
+  const handleInntektVsaHeltPensjonChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    setLocalHeltUttak((previous) => ({
+      ...previous,
+      aarligInntektVsaPensjon: e.target.value
+        ? {
+            ...previous?.aarligInntektVsaPensjon,
+            beloep: e.target.value,
+          }
+        : undefined,
+    }))
+    // setValidationErrorInntektVsaGradertUttak('')
+  }
+
+  const handleSluttAlderInntektVsaHeltPensjonChange = (
+    alder: Partial<Alder> | undefined
+  ): void => {
+    setLocalHeltUttak((previous) => ({
+      ...previous,
+      aarligInntektVsaPensjon: {
+        ...previous?.aarligInntektVsaPensjon,
+        sluttAlder: alder,
+      },
+    }))
+    // setValidationErrorInntektVsaGradertUttak('')
   }
 
   const handleGradertUttaksalderChange = (
@@ -371,9 +398,67 @@ export const RedigerAvansertBeregning: React.FC<{
 
         {localHeltUttak?.uttaksalder?.aar &&
           localHeltUttak?.uttaksalder?.maaneder !== undefined && (
-            <div>
-              <div className={`${styles.spacer} ${styles.spacer__small}`} />
-              <EndreInntektVsaPensjon
+            <>
+              <div>
+                <TextField
+                  form={FORM_NAMES.form}
+                  data-testid="inntekt-vsa-hel-pensjon-textfield"
+                  type="text"
+                  inputMode="numeric"
+                  name={FORM_NAMES.inntektVsaHeltUttak}
+                  className={styles.textfield}
+                  label="Hva er din forventede årsinntekt mens du tar ut <nowrap>100 %</nowrap> alderspensjon?"
+                  description="Dagens kroneverdi før skatt"
+                  // error={
+                  //   validationErrors[FORM_NAMES.inntektVsaGradertUttak]
+                  //     ? intl.formatMessage({
+                  //         id: validationErrors[FORM_NAMES.inntektVsaGradertUttak],
+                  //       })
+                  //     : ''
+                  // }
+                  onChange={handleInntektVsaHeltPensjonChange}
+                  value={localHeltUttak?.aarligInntektVsaPensjon?.beloep}
+                  // value={localGradertUttak?.aarligInntektVsaPensjonBeloep}
+                  max={5}
+                />
+              </div>
+              {localHeltUttak?.aarligInntektVsaPensjon?.beloep && (
+                <div>
+                  <AgePicker
+                    name={FORM_NAMES.inntektVsaHeltUttakSluttAlder}
+                    label="Til hvilken alder forventer du å ha inntekten?"
+                    value={localHeltUttak?.aarligInntektVsaPensjon?.sluttAlder}
+                    minAlder={
+                      localHeltUttak?.uttaksalder?.aar
+                        ? {
+                            aar:
+                              localHeltUttak?.uttaksalder?.maaneder === 11
+                                ? localHeltUttak?.uttaksalder?.aar + 1
+                                : localHeltUttak?.uttaksalder?.aar,
+                            maaneder:
+                              localHeltUttak?.uttaksalder?.maaneder !==
+                                undefined &&
+                              localHeltUttak?.uttaksalder?.maaneder !== 11
+                                ? localHeltUttak?.uttaksalder?.maaneder + 1
+                                : 0,
+                          }
+                        : undefined
+                    }
+                    maxAlder={{ aar: 75, maaneder: 11 }}
+                    onChange={handleSluttAlderInntektVsaHeltPensjonChange}
+                    error={
+                      validationErrors['sluttalder-inntekt-vsa-pensjon']
+                        ? `${intl.formatMessage({
+                            id: validationErrors[
+                              'sluttalder-inntekt-vsa-pensjon'
+                            ],
+                          })}.`
+                        : ''
+                    }
+                  />
+                </div>
+              )}
+              {/* <EndreInntektVsaPensjon
                 uttaksperiode={localHeltUttak}
                 oppdatereInntekt={(aarligInntektVsaPensjon?: {
                   beloep: number
@@ -389,8 +474,8 @@ export const RedigerAvansertBeregning: React.FC<{
                     }
                   })
                 }}
-              />
-            </div>
+              /> */}
+            </>
           )}
         <FormButtonRow
           resetForm={resetForm}
