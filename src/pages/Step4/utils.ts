@@ -2,10 +2,12 @@ import { paths } from '@/router/constants'
 
 export function getNesteSide(
   harSamboer: boolean | null,
-  isInntektError?: boolean
+  isInntektError?: boolean,
+  isEkskludertError?: boolean
 ): string {
-  if (isInntektError || harSamboer === null) {
+  if (harSamboer === null || isInntektError || isEkskludertError) {
     return paths.uventetFeil
+  } else {
+    return harSamboer ? paths.beregningEnkel : paths.sivilstand
   }
-  return harSamboer ? paths.beregningEnkel : paths.sivilstand
 }

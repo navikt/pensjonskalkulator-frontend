@@ -6,10 +6,7 @@ import { Card } from '@/components/common/Card'
 import { Loader } from '@/components/common/Loader'
 import { OffentligTP } from '@/components/stegvisning/OffentligTP'
 import { paths } from '@/router/constants'
-import {
-  TpoMedlemskapQuery,
-  useTpoMedlemskapAccessData,
-} from '@/router/loaders'
+import { GetTpoMedlemskapQuery, useStep3AccessData } from '@/router/loaders'
 import { useAppDispatch } from '@/state/hooks'
 import { userInputActions } from '@/state/userInput/userInputReducer'
 
@@ -17,7 +14,7 @@ export function Step3() {
   const intl = useIntl()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const loaderData = useTpoMedlemskapAccessData()
+  const loaderData = useStep3AccessData()
 
   React.useEffect(() => {
     document.title = intl.formatMessage({
@@ -27,7 +24,9 @@ export function Step3() {
 
   const onCancel = (): void => {
     dispatch(userInputActions.flush())
-    navigate(paths.login)
+    navigate(paths.login, {
+      state: { previousLocationPathname: location.pathname },
+    })
   }
 
   const onPrevious = (): void => {
@@ -35,7 +34,9 @@ export function Step3() {
   }
 
   const onNext = (): void => {
-    navigate(paths.afp)
+    navigate(paths.afp, {
+      state: { previousLocationPathname: location.pathname },
+    })
   }
 
   return (
@@ -50,7 +51,7 @@ export function Step3() {
         }
       >
         <Await resolve={loaderData.getTpoMedlemskapQuery}>
-          {(getTpoMedlemskapQuery: TpoMedlemskapQuery) => {
+          {(getTpoMedlemskapQuery: GetTpoMedlemskapQuery) => {
             return getTpoMedlemskapQuery.isError ? (
               <Card hasLargePadding hasMargin>
                 <Card.Content
@@ -68,10 +69,11 @@ export function Step3() {
               </Card>
             ) : (
               <OffentligTP
-                shouldJumpOverStep={
-                  getTpoMedlemskapQuery.isSuccess &&
-                  !getTpoMedlemskapQuery.data.harTjenestepensjonsforhold
-                }
+                // TODO PEK-400 dette er overført til Loader, se om det virker
+                // shouldJumpOverStep={
+                //   getTpoMedlemskapQuery.isSuccess &&
+                //   !getTpoMedlemskapQuery.data.harTjenestepensjonsforhold
+                // }
                 onCancel={onCancel}
                 onPrevious={onPrevious}
                 onNext={onNext}

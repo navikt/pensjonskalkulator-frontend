@@ -10,16 +10,18 @@ import { useDeferAuthenticationAccessData } from '@/router/loaders'
 import { CheckLoginOnFocus } from './CheckLoginOnFocus'
 import { FrameComponent } from './FrameComponent'
 
-function RedirectElement() {
-  React.useEffect(() => {
-    window.open(
-      `${HOST_BASEURL}/oauth2/login?redirect=${encodeURIComponent(
-        window.location.pathname
-      )}`,
-      '_self'
-    )
-  }, [])
-  return <span data-testid="redirect-element"></span>
+export function RedirectElement() {
+  // React.useEffect(() => {
+  //   window.open(
+  //     `${HOST_BASEURL}/oauth2/login?redirect=${encodeURIComponent(
+  //       window.location.pathname
+  //     )}`,
+  //     '_self'
+  //   )
+  // }, [])
+  return (
+    <span data-testid="redirect-element">Page Framework Redirect Element</span>
+  )
 }
 
 export const PageFramework: React.FC<{

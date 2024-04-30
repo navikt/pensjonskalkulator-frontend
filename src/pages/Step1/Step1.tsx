@@ -23,20 +23,28 @@ export function Step1() {
   const onNext = (utenlandsoppholdData: BooleanRadio) => {
     const utenlandsopphold = utenlandsoppholdData === 'ja'
     if (utenlandsopphold) {
-      navigate(`${paths.henvisning}/${henvisningUrlParams.utland}`)
+      navigate(`${paths.henvisning}/${henvisningUrlParams.utland}`, {
+        state: { previousLocationPathname: location.pathname },
+      })
     } else {
       dispatch(userInputActions.setUtenlandsopphold(utenlandsopphold))
-      navigate(paths.samtykke)
+      navigate(paths.samtykke, {
+        state: { previousLocationPathname: location.pathname },
+      })
     }
   }
 
   const onCancel = (): void => {
     dispatch(userInputActions.flush())
-    navigate(paths.login)
+    navigate(paths.login, {
+      state: { previousLocationPathname: location.pathname },
+    })
   }
 
   const onPrevious = (): void => {
-    navigate(paths.start)
+    navigate(paths.start, {
+      state: { previousLocationPathname: location.pathname },
+    })
   }
 
   return (

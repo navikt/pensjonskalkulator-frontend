@@ -13,22 +13,22 @@ interface Props {
   onCancel: () => void
   onPrevious: () => void
   onNext: () => void
-  shouldJumpOverStep?: boolean
+  // shouldJumpOverStep?: boolean
 }
 
 export function OffentligTP({
   onCancel,
   onPrevious,
   onNext,
-  shouldJumpOverStep,
+  // shouldJumpOverStep,
 }: Props) {
   const intl = useIntl()
 
-  React.useEffect(() => {
-    if (shouldJumpOverStep) {
-      onNext()
-    }
-  }, [shouldJumpOverStep])
+  // React.useEffect(() => {
+  //   if (shouldJumpOverStep) {
+  //     onNext()
+  //   }
+  // }, [shouldJumpOverStep])
 
   return (
     <Card hasLargePadding hasMargin>

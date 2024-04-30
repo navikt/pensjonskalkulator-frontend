@@ -34,12 +34,16 @@ export function Step2() {
       dispatch(apiSlice.endpoints.getPerson.initiate())
       dispatch(apiSlice.endpoints.getInntekt.initiate())
     }
-    navigate(paths.offentligTp)
+    navigate(paths.offentligTp, {
+      state: { previousLocationPathname: location.pathname },
+    })
   }
 
   const onCancel = (): void => {
     dispatch(userInputActions.flush())
-    navigate(paths.login)
+    navigate(paths.login, {
+      state: { previousLocationPathname: location.pathname },
+    })
   }
 
   const onPrevious = (): void => {

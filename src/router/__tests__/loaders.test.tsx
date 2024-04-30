@@ -3,7 +3,7 @@ import { describe, it, vi } from 'vitest'
 import {
   directAccessGuard,
   authenticationGuard,
-  tpoMedlemskapAccessGuard,
+  step3AccessGuard,
 } from '../loaders'
 import * as apiSliceUtils from '@/state/api/apiSlice'
 import { store } from '@/state/store'
@@ -74,7 +74,7 @@ describe('Loaders', () => {
       store.getState = vi.fn().mockImplementation(() => {
         return mockedState
       })
-      expect(await tpoMedlemskapAccessGuard()).toMatchSnapshot()
+      expect(await step3AccessGuard()).toMatchSnapshot()
     })
 
     it('kaller redirect til /afp location når samtykke er oppgitt til false', async () => {
@@ -84,7 +84,7 @@ describe('Loaders', () => {
       store.getState = vi.fn().mockImplementation(() => {
         return mockedState
       })
-      expect(await tpoMedlemskapAccessGuard()).toMatchSnapshot()
+      expect(await step3AccessGuard()).toMatchSnapshot()
     })
 
     it('kaller tp-registret når samtykke er oppgitt til true', async () => {
@@ -99,7 +99,7 @@ describe('Loaders', () => {
         return mockedState
       })
 
-      expect(await tpoMedlemskapAccessGuard()).toMatchSnapshot()
+      expect(await step3AccessGuard()).toMatchSnapshot()
       expect(initiateMock).toHaveBeenCalled()
     })
   })
