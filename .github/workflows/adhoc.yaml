@@ -90,4 +90,4 @@ jobs:
           CLUSTER: dev-gcp
           IMAGE: ${{ needs.build.outputs.image }}
           RESOURCE: .nais/deploy-adhoc.yml
-          DEPLOYMENT_NAME: ${{ needs.build.outputs.deplyment_name.name }}
+          DEPLOYMENT_NAME: ${{ needs.build.outputs.deployment_name.name }}
