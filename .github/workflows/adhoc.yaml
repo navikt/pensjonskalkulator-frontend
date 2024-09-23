@@ -10,8 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     permissions: write-all
     steps:
-      - name: Set branch name as NAME
-        run: echo "NAME=$(echo ${GITHUB_REF##*/} | sed 's/\//-/g')" >> $GITHUB_ENV
+      - name: Set deployment name as NAME
+        id: deployment_name
+        run: echo "::set-output name=name::$(echo {GITHUB_REF##*/} | sed 's/\//-/g')"
+
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -51,14 +53,6 @@ jobs:
       - name: Build backend for frontend
         run: npm run build:server
 
-      - name: Save build folder
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist
-          path: dist
-          if-no-files-found: error
-          retention-days: 1
-
       - name: Create Docker image
         id: image-creation
         uses: nais/docker-build-push@v0
@@ -69,6 +63,16 @@ jobs:
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
     outputs:
       image: ${{ steps.image-creation.outputs.image }}
+      deployment_name: ${{ steps.deployment_name.outputs.name }}
+
+  test-adhoc:
+    name: Test adhoc
+    needs: [build]
+    permissions: write-all
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print outputs
+        run: echo ${{ needs.build.outputs.deployment_name }}
 
 #  deploy-adhoc:
 #    name: Deploy adhoc
