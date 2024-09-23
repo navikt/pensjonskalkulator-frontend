@@ -88,6 +88,6 @@ jobs:
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
-          IMAGE: ${{ needs.build.outputs.image }}
+          DRY_RUN: true
           RESOURCE: .nais/deploy-adhoc.yml
-          DEPLOYMENT_NAME: ${{ needs.build.outputs.deplyment_name }}
+          VAR: image=${{ needs.build.outputs.image }},deployment_name=${{ needs.build.outputs.deplyment_name }}
