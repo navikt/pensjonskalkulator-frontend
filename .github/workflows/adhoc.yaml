@@ -90,4 +90,4 @@ jobs:
           CLUSTER: dev-gcp
           DRY_RUN: true
           RESOURCE: .nais/deploy-adhoc.yml
-          VAR: image=${{ needs.build.outputs.image }},deployment_name=${{ needs.build.outputs.deplyment_name }}
+          VAR: image=${{ needs.build.outputs.image }},deployment_name=${{ needs.build.outputs.deployment_name }}
