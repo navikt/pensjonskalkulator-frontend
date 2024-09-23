@@ -89,5 +89,5 @@ jobs:
         env:
           CLUSTER: dev-gcp
           IMAGE: ${{ needs.build.outputs.image }}
-          RESOURCE: .nais/deploy-staging.yml
+          RESOURCE: .nais/deploy-adhoc.yml
           DEPLOYMENT_NAME: ${{ needs.build.outputs.deplyment_name }}
