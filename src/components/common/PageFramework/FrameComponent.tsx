@@ -5,6 +5,7 @@ import { Heading } from '@navikt/ds-react'
 import clsx from 'clsx'
 
 import KalkulatorLogo from '../../../assets/kalkulator.svg'
+import { BASE_PATH } from '@/router/constants'
 
 import styles from './FrameComponent.module.scss'
 
@@ -33,6 +34,10 @@ export const FrameComponent: React.FC<{
         })}
       >
         <div className={styles.headerGroup}>
+          <representasjon-banner
+            representasjonstyper="PENSJON_FULLSTENDIG,PENSJON_BEGRENSET"
+            redirectTo={`${window.location.origin}${BASE_PATH}/start`}
+          ></representasjon-banner>
           <div
             className={clsx(styles.headerGroupTitle, {
               [styles.headerGroupTitle__isFramed]: !isFullWidth,
