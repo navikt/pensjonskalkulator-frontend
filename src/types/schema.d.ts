@@ -130,6 +130,27 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/api/v2/vedtak/loepende-vedtak': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Har løpende vedtak
+     *
+     * @description Hvorvidt den innloggede brukeren har løpende uføretrygd med uttaksgrad, alderspensjon med uttaksgrad, AFP i privat eller offentlig sektor
+     */
+    get: operations['hentLoependeVedtakV2']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/api/v2/person': {
     parameters: {
       query?: never
@@ -785,6 +806,26 @@ export interface components {
       vilkaarErOppfylt: boolean
       alternativ?: components['schemas']['AnonymAlternativV1']
     }
+    AlderspensjonDetaljerV2: {
+      /** Format: int32 */
+      grad: number
+      /** Format: date */
+      fom?: string
+    }
+    LoependeFraV2: {
+      /** Format: date */
+      fom: string
+    }
+    LoependeVedtakV2: {
+      alderspensjon?: components['schemas']['AlderspensjonDetaljerV2']
+      ufoeretrygd: components['schemas']['UfoeretrygdDetaljerV2']
+      afpPrivat?: components['schemas']['LoependeFraV2']
+      afpOffentlig?: components['schemas']['LoependeFraV2']
+    }
+    UfoeretrygdDetaljerV2: {
+      /** Format: int32 */
+      grad: number
+    }
     PersonV2: {
       navn: string
       /** Format: date */
@@ -1065,6 +1106,35 @@ export interface operations {
         }
       }
       /** @description Simulering kunne ikke utføres av tekniske årsaker */
+      503: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          '*/*': unknown
+        }
+      }
+    }
+  }
+  hentLoependeVedtakV2: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Henting av løpende vedtak utført */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          '*/*': components['schemas']['LoependeVedtakV2']
+        }
+      }
+      /** @description Henting av løpende vedtak kunne ikke utføres av tekniske årsaker */
       503: {
         headers: {
           [name: string]: unknown
