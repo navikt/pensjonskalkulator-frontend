@@ -188,7 +188,7 @@ export const apiSlice = createApi({
       },
     }),
     getRedirect1963FeatureToggle: builder.query<UnleashToggle, void>({
-      query: () => '/feature/pensjonskalkulator.enable-redirect-1963',
+      query: () => '/feature/pensjonskalkulator.disable-redirect-1963',
       transformResponse: (response: UnleashToggle) => {
         if (!isUnleashToggle(response)) {
           throw new Error(`Mottok ugyldig unleash response:`, response)

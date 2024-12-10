@@ -9,9 +9,9 @@ import omstillingsstoenadOgGjenlevendeResponse from '../../../mocks/data/omstill
 import pensjonsavtalerResponse from '../../../mocks/data/pensjonsavtaler/67.json' with { type: 'json' }
 import personResponse from '../../../mocks/data/person.json' with { type: 'json' }
 import tidligstMuligHeltUttakResponse from '../../../mocks/data/tidligstMuligHeltUttak.json' with { type: 'json' }
+import enableRedirect1963ToggleResponse from '../../../mocks/data/unleash-disable-redirect-1963.json' with { type: 'json' }
 import spraakvelgerToggleResponse from '../../../mocks/data/unleash-disable-spraakvelger.json' with { type: 'json' }
 import endringToggleResponse from '../../../mocks/data/unleash-enable-endring.json' with { type: 'json' }
-import enableRedirect1963ToggleResponse from '../../../mocks/data/unleash-enable-redirect-1963.json' with { type: 'json' }
 import utvidetSimuleringsresultatToggleResponse from '../../../mocks/data/unleash-utvidet-simuleringsresultat.json' with { type: 'json' }
 import { mockErrorResponse, mockResponse } from '@/mocks/server'
 import { apiSlice } from '@/state/api/apiSlice'
@@ -621,7 +621,7 @@ describe('apiSlice', () => {
 
     it('returnerer undefined ved feilende query', async () => {
       const storeRef = setupStore(undefined, true)
-      mockErrorResponse('/feature/pensjonskalkulator.enable-redirect-1963')
+      mockErrorResponse('/feature/pensjonskalkulator.disable-redirect-1963')
       return storeRef
         .dispatch(apiSlice.endpoints.getRedirect1963FeatureToggle.initiate())
         .then((result) => {
@@ -634,7 +634,7 @@ describe('apiSlice', () => {
     it('kaster feil ved uventet format på responsen', async () => {
       const storeRef = setupStore(undefined, true)
 
-      mockResponse('/feature/pensjonskalkulator.enable-redirect-1963', {
+      mockResponse('/feature/pensjonskalkulator.disable-redirect-1963', {
         status: 200,
         json: { lorem: 'ipsum' },
       })

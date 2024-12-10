@@ -66,7 +66,7 @@ export const landingPageAccessGuard =
     ])
       .then(([getRedirect1963FeatureToggleRes, getPersonRes]) => {
         if (
-          getRedirect1963FeatureToggleRes.data?.enabled &&
+          !getRedirect1963FeatureToggleRes.data?.enabled &&
           getPersonRes?.isSuccess &&
           isFoedtFoer1963(getPersonRes?.data?.foedselsdato as string)
         ) {
@@ -190,7 +190,7 @@ export const stepStartAccessGuard =
         }
         if (getPersonRes.isSuccess) {
           if (
-            getRedirect1963FeatureToggleRes?.data?.enabled &&
+            !getRedirect1963FeatureToggleRes?.data?.enabled &&
             isFoedtFoer1963(getPersonRes?.data?.foedselsdato as string)
           ) {
             window.addEventListener(
