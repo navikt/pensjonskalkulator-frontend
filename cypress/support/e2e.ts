@@ -82,9 +82,9 @@ beforeEach(() => {
   cy.intercept(
     {
       method: 'GET',
-      url: '/pensjon/kalkulator/api/feature/pensjonskalkulator.enable-redirect-1963',
+      url: '/pensjon/kalkulator/api/feature/pensjonskalkulator.disable-redirect-1963',
     },
-    { fixture: 'toggle-enable-redirect-1963.json' }
+    { fixture: 'toggle-disable-redirect-1963.json' }
   ).as('getFeatureToggleRedirect1963')
 
   cy.intercept(
@@ -122,9 +122,9 @@ beforeEach(() => {
   ).as('getInntekt')
 
   cy.intercept(
-    { method: 'GET', url: '/pensjon/kalkulator/api/v1/tpo-medlemskap' },
-    { fixture: 'tpo-medlemskap.json' }
-  ).as('getTpoMedlemskap')
+    { method: 'POST', url: '/pensjon/kalkulator/api/v1/simuler-oftp' },
+    { fixture: 'offentlig-tp.json' }
+  ).as('fetchOffentligTp')
 
   cy.intercept(
     {
@@ -135,7 +135,7 @@ beforeEach(() => {
   ).as('fetchTidligsteUttaksalder')
 
   cy.intercept(
-    { method: 'POST', url: '/pensjon/kalkulator/api/v2/pensjonsavtaler' },
+    { method: 'POST', url: '/pensjon/kalkulator/api/v3/pensjonsavtaler' },
     { fixture: 'pensjonsavtaler.json' }
   ).as('fetchPensjonsavtaler')
 
