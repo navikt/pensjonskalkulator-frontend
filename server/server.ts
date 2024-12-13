@@ -233,7 +233,7 @@ const redirect163Middleware = async (
 
     const person = (await data.json()) as Person
     if (isFoedtFoer1963(person.foedselsdato)) {
-      res.redirect('https://wwww.vg.no') // TODO: Redirect til gammel kalkulator
+      res.redirect(env.detaljertKalkulatorUrl)
       return
     }
     console.log('Person ikke foedt etter 1963')
