@@ -49,6 +49,10 @@ const unleash = initialize({
   },
 })
 
+unleash.on('synchronized', () => {
+  logger.info('Unleash synchronized')
+})
+
 const AUTH_PROVIDER = (() => {
   const idporten: boolean = !!process.env.TOKEN_X_ISSUER
   const azure: boolean = !!process.env.AZURE_OPENID_CONFIG_ISSUER
