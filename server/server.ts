@@ -214,10 +214,10 @@ const redirect163Middleware = async (
   next: NextFunction
 ) => {
   console.log(
-    'Status of feature toggle pensjonskalkulator.enable-redirect-1963',
-    unleash.isEnabled('pensjonskalkulator.enable-redirect-1963')
+    'Status of feature toggle pensjonskalkulator.disable-redirect-1963',
+    unleash.isEnabled('pensjonskalkulator.disable-redirect-1963')
   )
-  if (!unleash.isEnabled('pensjonskalkulator.enable-redirect-1963')) {
+  if (unleash.isEnabled('pensjonskalkulator.disable-redirect-1963')) {
     console.log('Feature flag is not enabled')
     next()
     return
