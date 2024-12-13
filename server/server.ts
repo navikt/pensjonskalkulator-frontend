@@ -31,8 +31,6 @@ const env = ensureEnv({
   detaljertKalkulatorUrl: 'DETALJERT_KALKULATOR_URL',
 })
 
-console.log(env)
-
 // TODO: Sjekk om man kan gjenbruke koden i utils/alders.ts
 export const isFoedtFoer1963 = (foedselsdato: string): boolean => {
   const LAST_DAY_1962 = new Date(1962, 11, 31)
@@ -215,6 +213,10 @@ const redirect163Middleware = async (
   res: Response,
   next: NextFunction
 ) => {
+  console.log(
+    'Status of feature toggle pensjonskalkulator.enable-redirect-1963',
+    unleash.isEnabled('pensjonskalkulator.enable-redirect-1963')
+  )
   if (!unleash.isEnabled('pensjonskalkulator.enable-redirect-1963')) {
     console.log('Feature flag is not enabled')
     next()
@@ -223,7 +225,6 @@ const redirect163Middleware = async (
 
   try {
     const oboToken = await getOboToken(req)
-    console.log('oboToken', oboToken)
     const data = await fetch(`${PENSJONSKALKULATOR_BACKEND}/api/v2/person`, {
       headers: new Headers({
         Authorization: `Bearer ${oboToken}`,
