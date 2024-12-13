@@ -2,10 +2,18 @@ import path from 'path'
 
 import { ecsFormat } from '@elastic/ecs-winston-format'
 import { getToken, requestOboToken, validateToken } from '@navikt/oasis'
+import { isBefore, isSameDay } from 'date-fns'
 import express, { NextFunction, Request, Response } from 'express'
 import promBundle from 'express-prom-bundle'
 import { createProxyMiddleware } from 'http-proxy-middleware'
+import { initialize } from 'unleash-client'
 import winston from 'winston'
+
+import type { components } from '../src/types/schema.d.ts'
+
+import { ensureEnv } from './ensureEnv.js'
+
+type Person = components['schemas']['PersonV2']
 
 const metricsMiddleware = promBundle({ includeMethod: true })
 
@@ -16,12 +24,39 @@ const logger = winston.createLogger({
   transports: [new winston.transports.Console()],
 })
 
+const env = ensureEnv({
+  unleashUrl: 'UNLEASH_SERVER_API_URL',
+  unleashToken: 'UNLEASH_SERVER_API_TOKEN',
+  unleashEnv: 'UNLEASH_SERVER_API_ENV',
+  detaljertKalkulatorUrl: 'DETALJERT_KALKULATOR_URL',
+})
+
+console.log(env)
+
+// TODO: Sjekk om man kan gjenbruke koden i utils/alders.ts
+export const isFoedtFoer1963 = (foedselsdato: string): boolean => {
+  const LAST_DAY_1962 = new Date(1962, 11, 31)
+  return (
+    isBefore(new Date(foedselsdato), LAST_DAY_1962) ||
+    isSameDay(new Date(foedselsdato), LAST_DAY_1962)
+  )
+}
+
+const unleash = initialize({
+  url: `${env.unleashUrl}/api`,
+  appName: 'pensjonskalkulator-frontend',
+  environment: env.unleashEnv,
+  customHeaders: {
+    Authorization: env.unleashToken,
+  },
+})
+
 const AUTH_PROVIDER = (() => {
-  const idporten: boolean = !!process.env.IDPORTEN_ISSUER
+  const idporten: boolean = !!process.env.TOKEN_X_ISSUER
   const azure: boolean = !!process.env.AZURE_OPENID_CONFIG_ISSUER
   if (idporten && azure) {
     throw new Error(
-      'Both IDPORTEN_ISSUER and AZURE_OPENID_CONFIG_ISSUER are set. Only one of these can be set.'
+      'Both TOKEN_X_ISSUER (idporten) and AZURE_OPENID_CONFIG_ISSUER are set. Only one of these can be set.'
     )
   }
 
@@ -105,43 +140,53 @@ app.use(
   }
 )
 
+const getOboToken = async (req: Request) => {
+  const token = getToken(req)
+  if (!token) {
+    logger.info('No token found in request', {
+      'x_correlation-id': req.headers['x_correlation-id'],
+    })
+    throw new Error('403')
+  }
+
+  const validationResult = await validateToken(token)
+  if (!validationResult.ok) {
+    logger.error('Failed to validate token', {
+      error: validationResult.error.message,
+      errorType: validationResult.errorType,
+      'x_correlation-id': req.headers['x_correlation-id'],
+    })
+    throw new Error('401')
+  }
+
+  const obo = await requestOboToken(token, OBO_AUDIENCE)
+  if (!obo.ok) {
+    logger.error('Failed to get OBO token', {
+      error: obo.error.message,
+      'x_correlation-id': req.headers['x_correlation-id'],
+    })
+    throw new Error('401')
+  }
+  return obo.token
+}
+
 // Proxy til backend med token exchange
 app.use(
   '/pensjon/kalkulator/api',
   async (req: Request, res: Response, next: NextFunction) => {
-    const token = getToken(req)
-    if (!token) {
-      logger.info('No token found in request', {
-        'x_correlation-id': req.headers['x_correlation-id'],
-      })
-      res.sendStatus(403)
-      return
-    }
-    const validationResult = await validateToken(token)
-    if (!validationResult.ok) {
-      logger.error('Failed to validate token', {
-        error: validationResult.error.message,
-        errorType: validationResult.errorType,
-        'x_correlation-id': req.headers['x_correlation-id'],
-      })
+    let oboToken: string
+    try {
+      oboToken = await getOboToken(req)
+    } catch {
+      // TODO: Handle in a better way
       res.sendStatus(401)
       return
     }
 
-    const obo = await requestOboToken(token, OBO_AUDIENCE)
-    if (!obo.ok) {
-      logger.error('Failed to get OBO token', {
-        error: obo.error.message,
-        'x_correlation-id': req.headers['x_correlation-id'],
-      })
-      res.sendStatus(401)
-      return
-    }
-
-    createProxyMiddleware({
+    return createProxyMiddleware({
       target: `${PENSJONSKALKULATOR_BACKEND}/api`,
       headers: {
-        Authorization: `Bearer ${obo.token}`,
+        Authorization: `Bearer ${oboToken}`,
       },
       logger: logger,
     })(req, res, next)
@@ -165,6 +210,39 @@ app.get('/internal/health/readiness', (_req: Request, res: Response) => {
   res.sendStatus(200)
 })
 
+const redirect163Middleware = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (!unleash.isEnabled('pensjonskalkulator.enable-redirect-1963')) {
+    console.log('Feature flag is not enabled')
+    next()
+    return
+  }
+
+  try {
+    const oboToken = await getOboToken(req)
+    console.log('oboToken', oboToken)
+    const data = await fetch(`${PENSJONSKALKULATOR_BACKEND}/api/v2/person`, {
+      headers: new Headers({
+        Authorization: `Bearer ${oboToken}`,
+      }),
+    })
+
+    const person = (await data.json()) as Person
+    if (isFoedtFoer1963(person.foedselsdato)) {
+      res.redirect('https://wwww.vg.no') // TODO: Redirect til gammel kalkulator
+      return
+    }
+    console.log('Person ikke foedt etter 1963')
+    next()
+  } catch (e) {
+    console.error('Bruker er ikke logget inn eller har ikke gyldig token: ', e)
+    next()
+  }
+}
+
 // For alle andre endepunkt svar med /veileder/veileder.html (siden vi bruker react-router)
 app.get('/pensjon/kalkulator/veileder?*', (_req: Request, res: Response) => {
   if (AUTH_PROVIDER === 'azure') {
@@ -174,9 +252,9 @@ app.get('/pensjon/kalkulator/veileder?*', (_req: Request, res: Response) => {
   }
 })
 
-app.get('*', (_req: Request, res: Response) => {
+app.get('*', redirect163Middleware, async (req: Request, res: Response) => {
   if (AUTH_PROVIDER === 'idporten') {
-    return res.sendFile(__dirname + '/index.html')
+    res.sendFile(__dirname + '/index.html')
   } else if (AUTH_PROVIDER === 'azure') {
     return res.redirect('/pensjon/kalkulator/veileder')
   }
