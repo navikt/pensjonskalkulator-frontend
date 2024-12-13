@@ -58,6 +58,8 @@ spec:
       rules:
         - application: wonderwalled-idporten # only in dev
           namespace: aura
+    external:
+      - host: pensjonskalkulator-unleash-api.nav.cloud.nais.io
   env:
     - name: "PENSJONSKALKULATOR_BACKEND"
       value: "http://pensjonskalkulator-backend"
