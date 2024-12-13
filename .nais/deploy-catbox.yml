@@ -54,6 +54,10 @@ spec:
     outbound:
       rules:
         - application: pensjonskalkulator-backend
+    inbound:
+      rules:
+        - application: wonderwalled-idporten # only in dev
+          namespace: aura
   env:
     - name: "PENSJONSKALKULATOR_BACKEND"
       value: "http://pensjonskalkulator-backend"
