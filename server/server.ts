@@ -136,10 +136,10 @@ app.post(
   '/pensjon/kalkulator/redirect/detaljert-kalkulator',
   express.urlencoded({ extended: true }),
   async (req: Request, res: Response) => {
-    if (AUTH_PROVIDER === 'azure') {
+    if (AUTH_PROVIDER === 'idporten') {
       res.redirect(`${env.detaljertKalkulatorUrl}`)
       return
-    } else if (AUTH_PROVIDER === 'idporten') {
+    } else if (AUTH_PROVIDER === 'azure') {
       const { fnr } = req.body
       const url = new URL(env.detaljertKalkulatorUrl)
       const loggedOnName = await getUsernameFromAzureToken(req)
@@ -148,7 +148,7 @@ app.post(
       console.log('loggedOnName', loggedOnName)
       url.searchParams.append('_brukerId', fnr)
       url.searchParams.append('_loggedOnName', loggedOnName)
-      res.redirect(`${url}`)
+      res.redirect(url.toString())
       return
     }
   }
