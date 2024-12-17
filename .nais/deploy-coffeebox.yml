@@ -1,7 +1,7 @@
 apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
-  name: pensjonskalkulator-frontend-sandbox
+  name: pensjonskalkulator-frontend-coffeebox
   namespace: pensjonskalkulator
   labels:
     team: pensjonskalkulator
@@ -10,11 +10,11 @@ metadata:
 spec:
   image: "{{ image }}"
   ingresses:
-    - https://sandbox.ekstern.dev.nav.no/pensjon/kalkulator
+    - https://coffeebox.ekstern.dev.nav.no/pensjon/kalkulator
   port: 8080
   replicas:
-    min: 2
-    max: 2
+    min: 1
+    max: 1
   liveness:
     path: /internal/health/liveness
     initialDelay: 20
@@ -59,5 +59,3 @@ spec:
       value: "http://pensjonskalkulator-backend"
     - name: "TOKEN_X_OBO_AUDIENCE"
       value: "dev-gcp:pensjonskalkulator:pensjonskalkulator-backend"
-    - name: "DETALJERT_KALKULATOR_URL"
-      value: "https://pensjon-pselv-q2-gcp.intern.dev.nav.no/pselv/simulering.jsf?simpleMode=true"
