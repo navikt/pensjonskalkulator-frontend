@@ -189,7 +189,7 @@ const getUsernameFromAzureToken = async (req: Request) => {
     throw new Error('403')
   }
 
-  return parse.NAVident
+  return parse.preferred_username
 }
 
 const getOboToken = async (req: Request) => {
