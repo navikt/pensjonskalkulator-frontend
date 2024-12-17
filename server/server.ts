@@ -1,7 +1,12 @@
 import path from 'path'
 
 import { ecsFormat } from '@elastic/ecs-winston-format'
-import { getToken, requestOboToken, validateToken } from '@navikt/oasis'
+import {
+  getToken,
+  parseAzureUserToken,
+  requestOboToken,
+  validateToken,
+} from '@navikt/oasis'
 import { isBefore, isSameDay } from 'date-fns'
 import express, { NextFunction, Request, Response } from 'express'
 import promBundle from 'express-prom-bundle'
@@ -95,12 +100,15 @@ const app = express()
 const __dirname = process.cwd()
 
 app.use(metricsMiddleware)
-app.use((req, _res, next) => {
+
+const addCorrelationId = (req: Request, res: Response, next: NextFunction) => {
   if (!req.headers['x_correlation-id']) {
     req.headers['x_correlation-id'] = crypto.randomUUID()
   }
   next()
-})
+}
+
+app.use(addCorrelationId)
 
 app.use((req, res, next) => {
   const start = Date.now()
@@ -123,6 +131,29 @@ app.use((req, res, next) => {
   })
   next()
 })
+
+app.post(
+  '/pensjon/kalkulator/redirect/detaljert-kalkulator',
+  express.urlencoded({ extended: true }),
+  async (req: Request, res: Response) => {
+    if (AUTH_PROVIDER === 'azure') {
+      res.redirect(`${env.detaljertKalkulatorUrl}`)
+      return
+    } else if (AUTH_PROVIDER === 'idporten') {
+      const { fnr } = req.body
+      const url = new URL(env.detaljertKalkulatorUrl)
+      const loggedOnName = await getUsernameFromAzureToken(req)
+
+      console.log('url', url)
+      console.log('loggedOnName', loggedOnName)
+      url.searchParams.append('_brukerId', fnr)
+      url.searchParams.append('_loggedOnName', loggedOnName)
+      res.redirect(`${url}`)
+      return
+    }
+  }
+)
+
 // Server hele assets mappen uten autentisering
 app.use(
   '/pensjon/kalkulator/assets',
@@ -140,6 +171,26 @@ app.use(
     return express.static(srcFolder)(req, res, next)
   }
 )
+
+const getUsernameFromAzureToken = async (req: Request) => {
+  const token = getToken(req)
+  if (!token) {
+    logger.info('No token found in request', {
+      'x_correlation-id': req.headers['x_correlation-id'],
+    })
+    throw new Error('403')
+  }
+  const parse = parseAzureUserToken(token)
+
+  if (!parse.ok) {
+    logger.info('No token found in request', {
+      'x_correlation-id': req.headers['x_correlation-id'],
+    })
+    throw new Error('403')
+  }
+
+  return parse.NAVident
+}
 
 const getOboToken = async (req: Request) => {
   const token = getToken(req)
