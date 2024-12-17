@@ -30,8 +30,10 @@ import {
   selectVeilederBorgerEncryptedFnr,
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputReducer'
+import { isFoedtFoer1963 } from '@/utils/alder'
 import { findRoutesWithoutLoaders } from '@/utils/veileder'
 
+import { KalkulatorRedirect } from './KalkulatorRedirect'
 import { VeilederInputRequestError } from './VeilederInputRequestError'
 
 import styles from './VeilederInput.module.scss'
@@ -53,6 +55,7 @@ export const VeilederInput = () => {
     isSuccess: personSuccess,
     isFetching: personLoading,
     error: personError,
+    data: personData,
   } = useGetPersonQuery(undefined, {
     skip: !veilederBorgerFnr || !veilederBorgerEncryptedFnr,
   })
@@ -204,6 +207,12 @@ export const VeilederInput = () => {
         </FrameComponent>
       </div>
     )
+  } else if (
+    personData?.foedselsdato &&
+    isFoedtFoer1963(personData?.foedselsdato) &&
+    veilederBorgerFnr
+  ) {
+    return <KalkulatorRedirect fnr={veilederBorgerFnr} />
   } else {
     return (
       <div data-testid="veileder-med-borger">
