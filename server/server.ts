@@ -31,7 +31,6 @@ const env = ensureEnv({
   detaljertKalkulatorUrl: 'DETALJERT_KALKULATOR_URL',
 })
 
-// TODO: Sjekk om man kan gjenbruke koden i utils/alders.ts
 export const isFoedtFoer1963 = (foedselsdato: string): boolean => {
   const LAST_DAY_1962 = new Date(1962, 11, 31)
   return (
@@ -237,13 +236,11 @@ const redirect163Middleware = async (
 
     const person = (await data.json()) as Person
     if (isFoedtFoer1963(person.foedselsdato)) {
-      res.redirect(env.detaljertKalkulatorUrl)
+      res.redirect(`${env.detaljertKalkulatorUrl}`)
       return
     }
-    console.log('Person ikke foedt etter 1963')
     next()
-  } catch (e) {
-    console.error('Bruker er ikke logget inn eller har ikke gyldig token: ', e)
+  } catch {
     next()
   }
 }
@@ -257,11 +254,13 @@ app.get('/pensjon/kalkulator/veileder?*', (_req: Request, res: Response) => {
   }
 })
 
-app.get('*', redirect163Middleware, async (req: Request, res: Response) => {
+app.get('*', redirect163Middleware, async (_req: Request, res: Response) => {
   if (AUTH_PROVIDER === 'idporten') {
     res.sendFile(__dirname + '/index.html')
+    return
   } else if (AUTH_PROVIDER === 'azure') {
-    return res.redirect('/pensjon/kalkulator/veileder')
+    res.redirect('/pensjon/kalkulator/veileder')
+    return
   }
 })
 
