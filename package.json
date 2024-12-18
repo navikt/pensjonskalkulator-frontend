@@ -75,7 +75,7 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.31.0",
     "globals": "^15.13.0",
-    "highcharts": "^11.4.8",
+    "highcharts": "^12.1.0",
     "highcharts-react-official": "^3.2.1",
     "husky": "^9.1.7",
     "jsdom": "^25.0.1",
