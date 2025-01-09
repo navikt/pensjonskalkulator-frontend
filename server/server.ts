@@ -144,8 +144,6 @@ app.post(
       const url = new URL(env.detaljertKalkulatorUrl)
       const loggedOnName = await getUsernameFromAzureToken(req)
 
-      console.log('url', url)
-      console.log('loggedOnName', loggedOnName)
       url.searchParams.append('_brukerId', fnr)
       url.searchParams.append('_loggedOnName', loggedOnName)
       res.redirect(url.toString())
