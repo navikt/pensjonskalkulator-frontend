@@ -289,7 +289,8 @@ const redirect163Middleware = async (
       return
     }
     next()
-  } catch {
+  } catch (e) {
+    console.log('Could not get age or obo', e)
     next()
   }
 }
