@@ -4,7 +4,6 @@ import { describe, it, vi } from 'vitest'
 import {
   directAccessGuard,
   authenticationGuard,
-  landingPageAccessGuard,
   stepStartAccessGuard,
   stepSivilstandAccessGuard,
   StepSivilstandAccessGuardLoader,
@@ -72,93 +71,6 @@ describe('Loaders', () => {
       expect(initiateMock).toHaveBeenCalledWith(
         'http://localhost:8088/pensjon/kalkulator/oauth2/session'
       )
-    })
-  })
-
-  describe('landingPageAccessGuard', () => {
-    it('kaller getPersonQuery og returnerer en defered response', async () => {
-      const initiateMock = vi.spyOn(
-        apiSliceUtils.apiSlice.endpoints.getPerson,
-        'initiate'
-      )
-      const mockedState = {
-        userInput: { ...userInputInitialState },
-      }
-      store.getState = vi.fn().mockImplementation(() => {
-        return mockedState
-      })
-      const returnedFromLoader = await landingPageAccessGuard()
-      const shouldRedirectToResponse = await returnedFromLoader.shouldRedirectTo
-
-      await waitFor(async () => {
-        expect(shouldRedirectToResponse).toEqual('')
-      })
-      expect(initiateMock).toHaveBeenCalled()
-    })
-
-    it('redirigerer til detaljert kalkulator dersom brukeren er født før 1963', async () => {
-      const open = vi.fn()
-      const addEventListener = vi.fn()
-
-      vi.stubGlobal('open', open)
-      vi.stubGlobal('addEventListener', addEventListener)
-
-      mockResponse('/v2/person', {
-        status: 200,
-        json: {
-          navn: 'Ola',
-          sivilstand: 'GIFT',
-          foedselsdato: '1960-04-30',
-        },
-      })
-
-      const mockedState = {
-        userInput: { ...userInputInitialState },
-      }
-      store.getState = vi.fn().mockImplementation(() => {
-        return mockedState
-      })
-      const returnedFromLoader = await landingPageAccessGuard()
-      const shouldRedirectToResponse = await returnedFromLoader.shouldRedirectTo
-
-      await waitFor(async () => {
-        expect(shouldRedirectToResponse).toEqual('')
-      })
-
-      await waitFor(async () => {
-        expect(addEventListener).toHaveBeenCalledWith(
-          'pageshow',
-          expect.any(Function)
-        )
-      })
-
-      await waitFor(async () => {
-        expect(open).toHaveBeenCalledWith(
-          externalUrls.detaljertKalkulator,
-          '_self'
-        )
-      })
-    })
-
-    it('kaller redirect til /start location når brukeren er veilder', async () => {
-      const mockedState = {
-        api: {
-          queries: {
-            ...fulfilledGetPerson,
-          },
-        },
-        userInput: { ...userInputInitialState, veilederBorgerFnr: '81549300' },
-      }
-      store.getState = vi.fn().mockImplementation(() => {
-        return mockedState
-      })
-
-      const returnedFromLoader = await landingPageAccessGuard()
-      const shouldRedirectToResponse = await returnedFromLoader.shouldRedirectTo
-
-      await waitFor(async () => {
-        expect(shouldRedirectToResponse).toEqual(paths.start)
-      })
     })
   })
 
