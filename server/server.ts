@@ -110,6 +110,15 @@ const addCorrelationId = (req: Request, res: Response, next: NextFunction) => {
 
 app.use(addCorrelationId)
 
+// Kubernetes probes
+app.get('/internal/health/liveness', (_req: Request, res: Response) => {
+  res.sendStatus(200)
+})
+
+app.get('/internal/health/readiness', (_req: Request, res: Response) => {
+  res.sendStatus(200)
+})
+
 app.use((req, res, next) => {
   const start = Date.now()
   res.on('finish', () => {
@@ -250,15 +259,6 @@ app.use(
     logger: logger,
   })
 )
-
-// Kubernetes probes
-app.get('/internal/health/liveness', (_req: Request, res: Response) => {
-  res.sendStatus(200)
-})
-
-app.get('/internal/health/readiness', (_req: Request, res: Response) => {
-  res.sendStatus(200)
-})
 
 const redirect163Middleware = async (
   req: Request,
