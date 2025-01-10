@@ -2,12 +2,7 @@ import { createMemoryRouter, RouterProvider } from 'react-router'
 
 import { describe, vi } from 'vitest'
 
-import {
-  BASE_PATH,
-  externalUrls,
-  henvisningUrlParams,
-  paths,
-} from '../constants'
+import { BASE_PATH, henvisningUrlParams, paths } from '../constants'
 import { routes } from '../routes'
 import {
   fulfilledGetPerson,
