@@ -141,7 +141,7 @@ app.use((req, res, next) => {
   next()
 })
 
-app.post(
+app.use(
   '/pensjon/kalkulator/redirect/detaljert-kalkulator',
   express.urlencoded({ extended: true }),
   async (req: Request, res: Response) => {
@@ -289,8 +289,10 @@ const redirect163Middleware = async (
       return
     }
     next()
-  } catch (e) {
-    console.log('Could not get age or obo', e)
+  } catch {
+    logger.error(
+      'Could not redirect person, missing token or could not get /api/v2/person'
+    )
     next()
   }
 }
