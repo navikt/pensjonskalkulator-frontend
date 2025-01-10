@@ -134,37 +134,6 @@ describe('Loaders', () => {
       expect(initiateGetEkskludertStatusMock).toHaveBeenCalled()
     })
 
-    it('Når brukeren er født før 1963, returneres det riktig redirect url', async () => {
-      const open = vi.fn()
-      vi.stubGlobal('open', open)
-
-      mockResponse('/v2/person', {
-        status: 200,
-        json: {
-          navn: 'Ola',
-          sivilstand: 'GIFT',
-          foedselsdato: '1960-04-30',
-        },
-      })
-
-      const mockedState = {
-        userInput: { ...userInputInitialState },
-      }
-      store.getState = vi.fn().mockImplementation(() => {
-        return mockedState
-      })
-      const returnedFromLoader = await stepStartAccessGuard()
-      const getPersonQueryResponse =
-        await (returnedFromLoader.getPersonQuery as GetPersonQuery)
-      expect(getPersonQueryResponse.data.foedselsdato).toBe('1960-04-30')
-      await waitFor(() => {
-        expect(open).toHaveBeenCalledWith(
-          externalUrls.detaljertKalkulator,
-          '_self'
-        )
-      })
-    })
-
     it('Når /vedtak/loepende-vedtak kall feiler redirigeres brukes til uventet-feil side', async () => {
       mockErrorResponse('/v2/vedtak/loepende-vedtak')
 
@@ -184,7 +153,7 @@ describe('Loaders', () => {
     })
 
     it('Når /person kall feiler med 403 status redirigeres brukes til ingen-tilgang', async () => {
-      mockErrorResponse('/v2/person', {
+      mockErrorResponse('/v4/person', {
         status: 403,
       })
 
@@ -204,7 +173,7 @@ describe('Loaders', () => {
     })
 
     it('Når /person kall feiler med andre status redirigeres brukes til uventet-feil side', async () => {
-      mockErrorResponse('/v2/person', {
+      mockErrorResponse('/v4/person', {
         status: 503,
       })
 

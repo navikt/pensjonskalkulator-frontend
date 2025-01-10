@@ -101,7 +101,7 @@ describe('routes', () => {
       })
 
       it('Når brukeren er pålogget og kall til /person feiler, viser pålogget landingssiden', async () => {
-        mockErrorResponse('/v2/person')
+        mockErrorResponse('/v4/person')
         const router = createMemoryRouter(routes, {
           basename: BASE_PATH,
           initialEntries: [`${BASE_PATH}${paths.login}`],
@@ -115,32 +115,6 @@ describe('routes', () => {
         expect(
           screen.queryByText('landingsside.for.deg.foedt.foer.1963')
         ).not.toBeInTheDocument()
-      })
-
-      it('Når brukeren er pålogget og født før 1963, redirigerer brukeren til detaljert kalkulator', async () => {
-        const open = vi.fn()
-        vi.stubGlobal('open', open)
-        mockResponse('/v2/person', {
-          status: 200,
-          json: {
-            navn: 'Ola',
-            sivilstand: 'GIFT',
-            foedselsdato: '1961-04-30',
-          },
-        })
-        const router = createMemoryRouter(routes, {
-          basename: BASE_PATH,
-          initialEntries: [`${BASE_PATH}${paths.login}`],
-        })
-        render(<RouterProvider router={router} />, {
-          hasRouter: false,
-        })
-        await waitFor(() => {
-          expect(open).toHaveBeenCalledWith(
-            externalUrls.detaljertKalkulator,
-            '_self'
-          )
-        })
       })
     })
   })
@@ -163,32 +137,6 @@ describe('routes', () => {
         await waitFor(() => {
           expect(open).toHaveBeenCalledWith(
             'http://localhost:8088/pensjon/kalkulator/oauth2/login?redirect=%2F',
-            '_self'
-          )
-        })
-      })
-
-      it('redirigerer brukeren til detaljert kalkulator, hvis brukeren er pålogget og født før 1963', async () => {
-        const open = vi.fn()
-        vi.stubGlobal('open', open)
-        mockResponse('/v2/person', {
-          status: 200,
-          json: {
-            navn: 'Ola',
-            sivilstand: 'GIFT',
-            foedselsdato: '1961-04-30',
-          },
-        })
-        const router = createMemoryRouter(routes, {
-          basename: BASE_PATH,
-          initialEntries: [`${BASE_PATH}${paths.start}`],
-        })
-        render(<RouterProvider router={router} />, {
-          hasRouter: false,
-        })
-        await waitFor(() => {
-          expect(open).toHaveBeenCalledWith(
-            externalUrls.detaljertKalkulator,
             '_self'
           )
         })
