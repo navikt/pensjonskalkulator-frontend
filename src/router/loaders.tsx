@@ -4,7 +4,6 @@ import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
 
 import { HOST_BASEURL } from '@/paths'
 import {
-  externalUrls,
   henvisningUrlParams,
   paths,
   stegvisningOrder,
@@ -12,15 +11,8 @@ import {
 } from '@/router/constants'
 import { apiSlice } from '@/state/api/apiSlice'
 import { store } from '@/state/store'
-import {
-  selectIsVeileder,
-  selectAfp,
-  selectFoedselsdato,
-} from '@/state/userInput/selectors'
-import {
-  isFoedselsdatoOverEllerLikMinUttaksalder,
-  isFoedtFoer1963,
-} from '@/utils/alder'
+import { selectAfp, selectFoedselsdato } from '@/state/userInput/selectors'
+import { isFoedselsdatoOverEllerLikMinUttaksalder } from '@/utils/alder'
 import { isLoependeVedtakEndring } from '@/utils/loependeVedtak'
 import { logger } from '@/utils/logging'
 import { checkHarSamboer } from '@/utils/sivilstand'
@@ -48,52 +40,6 @@ export const directAccessGuard = async () => {
 }
 
 // ////////////////////////////////////////
-
-export type LandingPageAccessGuardLoader = { shouldRedirectTo: Promise<string> }
-
-export const landingPageAccessGuard =
-  async (): Promise<LandingPageAccessGuardLoader> => {
-    const getRedirect1963FeatureToggleQuery = store.dispatch(
-      apiSlice.endpoints.getRedirect1963FeatureToggle.initiate()
-    )
-
-    const getPersonQuery = store.dispatch(
-      apiSlice.endpoints.getPerson.initiate()
-    )
-    const shouldRedirectTo = Promise.all([
-      getRedirect1963FeatureToggleQuery,
-      getPersonQuery,
-    ])
-      .then(([getRedirect1963FeatureToggleRes, getPersonRes]) => {
-        if (
-          getRedirect1963FeatureToggleRes.data?.enabled &&
-          getPersonRes?.isSuccess &&
-          isFoedtFoer1963(getPersonRes?.data?.foedselsdato as string)
-        ) {
-          // Håndterer når bruker kommer tilbake på siden etter redirect - bfcache - https://web.dev/articles/bfcache
-          window.addEventListener('pageshow', (event: PageTransitionEvent) => {
-            if (event.persisted) {
-              window.open(externalUrls.detaljertKalkulator, '_self')
-            }
-          })
-          window.open(externalUrls.detaljertKalkulator, '_self')
-          return ''
-        } else {
-          if (selectIsVeileder(store.getState())) {
-            return paths.start
-          } else {
-            return ''
-          }
-        }
-      })
-      .catch(() => {
-        return ''
-      })
-    return { shouldRedirectTo }
-  }
-
-/// ////////////////////////////////////////////////////////////////////////
-
 export type StepStartAccessGuardLoader = {
   getPersonQuery: GetPersonQuery
   getLoependeVedtakQuery: GetLoependeVedtakQuery
@@ -102,9 +48,6 @@ export type StepStartAccessGuardLoader = {
 
 export const stepStartAccessGuard =
   async (): Promise<StepStartAccessGuardLoader> => {
-    const getRedirect1963FeatureToggleQuery = store.dispatch(
-      apiSlice.endpoints.getRedirect1963FeatureToggle.initiate()
-    )
     // Sørger for at brukeren er redirigert til henvisningsside iht. fødselsdato
     const getPersonQuery = store.dispatch(
       apiSlice.endpoints.getPerson.initiate()
@@ -127,88 +70,62 @@ export const stepStartAccessGuard =
 
     const shouldRedirectTo = Promise.all([
       getLoependeVedtakQuery,
-      getRedirect1963FeatureToggleQuery,
       getPersonQuery,
       getEkskludertStatusQuery,
-    ]).then(
-      ([
-        getLoependeVedtakRes,
-        getRedirect1963FeatureToggleRes,
-        getPersonRes,
-        getEkskludertStatusRes,
-      ]) => {
-        if (
-          getEkskludertStatusRes?.data?.ekskludert &&
-          getEkskludertStatusRes?.data?.aarsak === 'ER_APOTEKER'
-        ) {
-          return `${paths.henvisning}/${henvisningUrlParams.apotekerne}`
-        }
+    ]).then(([getLoependeVedtakRes, getPersonRes, getEkskludertStatusRes]) => {
+      if (
+        getEkskludertStatusRes?.data?.ekskludert &&
+        getEkskludertStatusRes?.data?.aarsak === 'ER_APOTEKER'
+      ) {
+        return `${paths.henvisning}/${henvisningUrlParams.apotekerne}`
+      }
 
-        if (getLoependeVedtakRes.isError) {
+      if (getLoependeVedtakRes.isError) {
+        return paths.uventetFeil
+      }
+      if (getLoependeVedtakRes.isSuccess) {
+        logger('info', {
+          tekst: 'hent uføregrad',
+          data:
+            getLoependeVedtakRes.data?.ufoeretrygd.grad === 0
+              ? 'Ingen uføretrygd'
+              : getLoependeVedtakRes.data?.ufoeretrygd.grad === 100
+                ? 'Hel uføretrygd'
+                : `Gradert uføretrygd`,
+        })
+
+        if (getLoependeVedtakRes.data?.alderspensjon) {
+          logger('info', {
+            tekst: 'Vedtak alderspensjon',
+            data: getLoependeVedtakRes.data?.alderspensjon.grad,
+          })
+        }
+        if (getLoependeVedtakRes.data?.afpPrivat) {
+          logger('info', {
+            tekst: 'Vedtak AFP Offentlig',
+          })
+        }
+        if (getLoependeVedtakRes.data?.afpOffentlig) {
+          logger('info', {
+            tekst: 'Vedtak AFP Privat',
+          })
+        }
+        if (getLoependeVedtakRes.data?.harFremtidigLoependeVedtak) {
+          logger('info', {
+            tekst: 'Fremtidig vedtak',
+          })
+        }
+      }
+
+      if (getPersonRes.isError) {
+        if ((getPersonRes.error as FetchBaseQueryError).status === 403) {
+          return paths.ingenTilgang
+        } else {
           return paths.uventetFeil
         }
-        if (getLoependeVedtakRes.isSuccess) {
-          logger('info', {
-            tekst: 'hent uføregrad',
-            data:
-              getLoependeVedtakRes.data?.ufoeretrygd.grad === 0
-                ? 'Ingen uføretrygd'
-                : getLoependeVedtakRes.data?.ufoeretrygd.grad === 100
-                  ? 'Hel uføretrygd'
-                  : `Gradert uføretrygd`,
-          })
-
-          if (getLoependeVedtakRes.data?.alderspensjon) {
-            logger('info', {
-              tekst: 'Vedtak alderspensjon',
-              data: getLoependeVedtakRes.data?.alderspensjon.grad,
-            })
-          }
-          if (getLoependeVedtakRes.data?.afpPrivat) {
-            logger('info', {
-              tekst: 'Vedtak AFP Offentlig',
-            })
-          }
-          if (getLoependeVedtakRes.data?.afpOffentlig) {
-            logger('info', {
-              tekst: 'Vedtak AFP Privat',
-            })
-          }
-          if (getLoependeVedtakRes.data?.harFremtidigLoependeVedtak) {
-            logger('info', {
-              tekst: 'Fremtidig vedtak',
-            })
-          }
-        }
-
-        if (getPersonRes.isError) {
-          if ((getPersonRes.error as FetchBaseQueryError).status === 403) {
-            return paths.ingenTilgang
-          } else {
-            return paths.uventetFeil
-          }
-        }
-        if (getPersonRes.isSuccess) {
-          if (
-            getRedirect1963FeatureToggleRes?.data?.enabled &&
-            isFoedtFoer1963(getPersonRes?.data?.foedselsdato as string)
-          ) {
-            window.addEventListener(
-              'pageshow',
-              (event: PageTransitionEvent) => {
-                if (event.persisted) {
-                  window.open(externalUrls.detaljertKalkulator, '_self')
-                }
-              }
-            )
-            window.open(externalUrls.detaljertKalkulator, '_self')
-            return ''
-          }
-          return ''
-        }
-        return ''
       }
-    )
+      return ''
+    })
 
     return {
       getPersonQuery,
