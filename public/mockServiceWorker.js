@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* tslint:disable */
 
 /**
@@ -7,7 +8,7 @@
  * - Please do NOT serve this file on production.
  */
 
-const PACKAGE_VERSION = '2.6.8'
+const PACKAGE_VERSION = '2.7.0'
 const INTEGRITY_CHECKSUM = '00729d72e3b82faf54ca8b9621dbb96f'
 const IS_MOCKED_RESPONSE = Symbol('isMockedResponse')
 const activeClientIds = new Set()
@@ -144,7 +145,7 @@ async function handleRequest(event, requestId) {
             headers: Object.fromEntries(responseClone.headers.entries()),
           },
         },
-        [responseClone.body]
+        [responseClone.body],
       )
     })()
   }
@@ -202,7 +203,7 @@ async function getResponse(event, client, requestId) {
     if (acceptHeader) {
       const values = acceptHeader.split(',').map((value) => value.trim())
       const filteredValues = values.filter(
-        (value) => value !== 'msw/passthrough'
+        (value) => value !== 'msw/passthrough',
       )
 
       if (filteredValues.length > 0) {
@@ -251,7 +252,7 @@ async function getResponse(event, client, requestId) {
         keepalive: request.keepalive,
       },
     },
-    [requestBuffer]
+    [requestBuffer],
   )
 
   switch (clientMessage.type) {
@@ -281,7 +282,7 @@ function sendToClient(client, message, transferrables = []) {
 
     client.postMessage(
       message,
-      [channel.port2].concat(transferrables.filter(Boolean))
+      [channel.port2].concat(transferrables.filter(Boolean)),
     )
   })
 }

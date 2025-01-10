@@ -74,7 +74,7 @@ describe('StepStart', () => {
     })
 
     it('rendrer ikke siden når henting av personopplysninger feiler og redirigerer til /uventet-feil', async () => {
-      mockErrorResponse('/v2/person')
+      mockErrorResponse('/v4/person')
       const mockedState = {
         api: {
           queries: {
@@ -102,8 +102,8 @@ describe('StepStart', () => {
 
       await waitFor(async () => {
         expect(await screen.findByText('pageframework.title')).toBeVisible()
+        expect(navigateMock).toHaveBeenCalledWith(paths.uventetFeil)
       })
-      expect(navigateMock).toHaveBeenCalledWith(paths.uventetFeil)
     })
   })
 
@@ -170,9 +170,8 @@ describe('StepStart', () => {
 
       await waitFor(async () => {
         expect(await screen.findByText('pageframework.title')).toBeVisible()
+        expect(navigateMock).toHaveBeenCalledWith(paths.uventetFeil)
       })
-
-      expect(navigateMock).toHaveBeenCalledWith(paths.uventetFeil)
     })
   })
 
