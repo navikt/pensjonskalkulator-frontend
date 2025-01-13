@@ -237,7 +237,7 @@ app.use(
     try {
       oboToken = await getOboToken(req)
     } catch {
-      // TODO: Handle in a better way
+      // Send 401 dersom man ikke kan hente obo token
       res.sendStatus(401)
       return
     }
