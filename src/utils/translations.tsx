@@ -3,31 +3,24 @@ import { IntlShape } from 'react-intl'
 import { ExternalLinkIcon } from '@navikt/aksel-icons'
 import { Link } from '@navikt/ds-react'
 
+import { ExternalLink } from '@/components/common/ExternalLink'
 import { externalUrls } from '@/router/constants'
 
 import { logOpenLink } from './logging'
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export const getFormatMessageValues = (
   intl: IntlShape
-): Record<string, any> => {
+): Record<
+  string,
+  React.ReactNode | ((chunks: React.ReactNode) => React.ReactNode)
+> => {
   return {
-    detaljertKalkulatorLink: (chunks: string) => (
-      <Link
-        onClick={logOpenLink}
-        href={externalUrls.detaljertKalkulator}
-        target="_blank"
-        inlineText
-      >
+    detaljertKalkulatorLink: (chunks: React.ReactNode) => (
+      <ExternalLink href={externalUrls.detaljertKalkulator}>
         {chunks}
-        <ExternalLinkIcon
-          title={intl.formatMessage({ id: 'application.global.external_link' })}
-          width="1.25rem"
-          height="1.25rem"
-        />
-      </Link>
+      </ExternalLink>
     ),
-    dinPensjonLink: (chunks: string) => (
+    dinPensjonLink: (chunks: React.ReactNode) => (
       <Link
         onClick={logOpenLink}
         href={externalUrls.dinPensjon}
@@ -43,7 +36,7 @@ export const getFormatMessageValues = (
         />
       </Link>
     ),
-    dinPensjonBeholdningLink: (chunks: string) => (
+    dinPensjonBeholdningLink: (chunks: React.ReactNode) => (
       <Link
         onClick={logOpenLink}
         href={externalUrls.dinPensjonBeholdning}
@@ -58,7 +51,7 @@ export const getFormatMessageValues = (
         />
       </Link>
     ),
-    dinPensjonEndreSoeknadLink: (chunks: string) => (
+    dinPensjonEndreSoeknadLink: (chunks: React.ReactNode) => (
       <Link
         onClick={logOpenLink}
         href={externalUrls.dinPensjonEndreSoeknad}
@@ -73,7 +66,7 @@ export const getFormatMessageValues = (
         />
       </Link>
     ),
-    alderspensjonsreglerLink: (chunks: string) => (
+    alderspensjonsreglerLink: (chunks: React.ReactNode) => (
       <Link
         onClick={logOpenLink}
         href={externalUrls.alderspensjonsregler}
@@ -88,7 +81,7 @@ export const getFormatMessageValues = (
         />
       </Link>
     ),
-    garantiPensjonLink: (chunks: string) => (
+    garantiPensjonLink: (chunks: React.ReactNode) => (
       <Link
         onClick={logOpenLink}
         href={externalUrls.garantipensjon}
@@ -103,7 +96,7 @@ export const getFormatMessageValues = (
         />
       </Link>
     ),
-    afpLink: (chunks: string) => (
+    afpLink: (chunks: React.ReactNode) => (
       <Link
         onClick={logOpenLink}
         href={externalUrls.afp}
@@ -118,7 +111,7 @@ export const getFormatMessageValues = (
         />
       </Link>
     ),
-    afpPrivatLink: (chunks: string) => (
+    afpPrivatLink: (chunks: React.ReactNode) => (
       <Link
         onClick={logOpenLink}
         href={externalUrls.afpPrivat}
@@ -133,7 +126,7 @@ export const getFormatMessageValues = (
         />
       </Link>
     ),
-    norskPensjonLink: (chunks: string) => (
+    norskPensjonLink: (chunks: React.ReactNode) => (
       <Link
         onClick={logOpenLink}
         href={externalUrls.norskPensjon}
@@ -148,7 +141,7 @@ export const getFormatMessageValues = (
         />
       </Link>
     ),
-    navPersonvernerklaeringLink: (chunks: string) => (
+    navPersonvernerklaeringLink: (chunks: React.ReactNode) => (
       <Link
         onClick={logOpenLink}
         href={externalUrls.personvernerklaering}
@@ -163,7 +156,7 @@ export const getFormatMessageValues = (
         />
       </Link>
     ),
-    navPersonvernerklaeringKontaktOssLink: (chunks: string) => (
+    navPersonvernerklaeringKontaktOssLink: (chunks: React.ReactNode) => (
       <Link
         onClick={logOpenLink}
         href={externalUrls.personvernerklaeringKontaktOss}
@@ -178,7 +171,7 @@ export const getFormatMessageValues = (
         />
       </Link>
     ),
-    kontaktOssLink: (chunks: string) => (
+    kontaktOssLink: (chunks: React.ReactNode) => (
       <Link
         onClick={logOpenLink}
         href={externalUrls.kontaktOss}
@@ -193,7 +186,7 @@ export const getFormatMessageValues = (
         />
       </Link>
     ),
-    planleggePensjonLink: (chunks: string) => (
+    planleggePensjonLink: (chunks: React.ReactNode) => (
       <Link
         onClick={logOpenLink}
         href={externalUrls.planleggePensjon}
@@ -208,7 +201,7 @@ export const getFormatMessageValues = (
         />
       </Link>
     ),
-    trygdetidLink: (chunks: string) => (
+    trygdetidLink: (chunks: React.ReactNode) => (
       <Link
         onClick={logOpenLink}
         href={externalUrls.trygdetid}
@@ -223,7 +216,7 @@ export const getFormatMessageValues = (
         />
       </Link>
     ),
-    kortBotidLink: (chunks: string) => (
+    kortBotidLink: (chunks: React.ReactNode) => (
       <Link
         onClick={logOpenLink}
         href={externalUrls.kortBotid}
@@ -238,7 +231,7 @@ export const getFormatMessageValues = (
         />
       </Link>
     ),
-    personopplysningerLink: (chunks: string) => (
+    personopplysningerLink: (chunks: React.ReactNode) => (
       <Link
         onClick={logOpenLink}
         href={externalUrls.personopplysninger}
@@ -253,7 +246,7 @@ export const getFormatMessageValues = (
         />
       </Link>
     ),
-    spkLink: (chunks: string) => (
+    spkLink: (chunks: React.ReactNode) => (
       <Link
         onClick={logOpenLink}
         href={externalUrls.spk}
@@ -269,8 +262,9 @@ export const getFormatMessageValues = (
       </Link>
     ),
     br: <br />,
-    strong: (chunks: string) => <strong>{chunks}</strong>,
-    nowrap: (chunks: string) => <span className="nowrap">{chunks}</span>,
+    strong: (chunks: React.ReactNode) => <strong>{chunks}</strong>,
+    nowrap: (chunks: React.ReactNode) => (
+      <span className="nowrap">{chunks}</span>
+    ),
   }
 }
-/* eslint-enable @typescript-eslint/no-explicit-any */
