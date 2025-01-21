@@ -10,7 +10,6 @@ import pensjonsavtalerResponse from '../../../mocks/data/pensjonsavtaler/67.json
 import personResponse from '../../../mocks/data/person.json' with { type: 'json' }
 import tidligstMuligHeltUttakResponse from '../../../mocks/data/tidligstMuligHeltUttak.json' with { type: 'json' }
 import spraakvelgerToggleResponse from '../../../mocks/data/unleash-disable-spraakvelger.json' with { type: 'json' }
-import enableTpOffentligToggleResponse from '../../../mocks/data/unleash-enable-tpoffentlig.json' with { type: 'json' }
 import utvidetSimuleringsresultatToggleResponse from '../../../mocks/data/unleash-utvidet-simuleringsresultat.json' with { type: 'json' }
 import { mockErrorResponse, mockResponse } from '@/mocks/server'
 import { apiSlice } from '@/state/api/apiSlice'
@@ -605,25 +604,29 @@ describe('apiSlice', () => {
     })
   })
 
-  describe('getTpOffentligFeatureToggle', () => {
+  describe('getUtvidetSimuleringsresultatFeatureToggle', () => {
     it('returnerer data ved vellykket query', async () => {
       const storeRef = setupStore(undefined, true)
       return storeRef
-        .dispatch(apiSlice.endpoints.getTpOffentligFeatureToggle.initiate())
+        .dispatch(
+          apiSlice.endpoints.getUtvidetSimuleringsresultatFeatureToggle.initiate()
+        )
         .then((result) => {
           const fetchBaseQueryResult = result as unknown as FetchBaseQueryError
           expect(fetchBaseQueryResult.status).toBe('fulfilled')
           expect(fetchBaseQueryResult.data).toMatchObject(
-            enableTpOffentligToggleResponse
+            utvidetSimuleringsresultatToggleResponse
           )
         })
     })
 
     it('returnerer undefined ved feilende query', async () => {
       const storeRef = setupStore(undefined, true)
-      mockErrorResponse('/feature/pensjonskalkulator.enable-tpoffentlig')
+      mockErrorResponse('/feature/utvidet-simuleringsresultat')
       return storeRef
-        .dispatch(apiSlice.endpoints.getTpOffentligFeatureToggle.initiate())
+        .dispatch(
+          apiSlice.endpoints.getUtvidetSimuleringsresultatFeatureToggle.initiate()
+        )
         .then((result) => {
           const fetchBaseQueryResult = result as unknown as FetchBaseQueryError
           expect(fetchBaseQueryResult.status).toBe('rejected')
@@ -634,14 +637,16 @@ describe('apiSlice', () => {
     it('kaster feil ved uventet format på responsen', async () => {
       const storeRef = setupStore(undefined, true)
 
-      mockResponse('/feature/pensjonskalkulator.enable-tpoffentlig', {
+      mockResponse('/feature/utvidet-simuleringsresultat', {
         status: 200,
         json: { lorem: 'ipsum' },
       })
 
       await swallowErrorsAsync(async () => {
         await storeRef
-          .dispatch(apiSlice.endpoints.getTpOffentligFeatureToggle.initiate())
+          .dispatch(
+            apiSlice.endpoints.getUtvidetSimuleringsresultatFeatureToggle.initiate()
+          )
           .then((result) => {
             const fetchBaseQueryResult =
               result as unknown as FetchBaseQueryError
@@ -649,62 +654,6 @@ describe('apiSlice', () => {
             expect(fetchBaseQueryResult.status).toBe('rejected')
             expect(fetchBaseQueryResult.data).toBe(undefined)
           })
-      })
-    })
-
-    describe('getUtvidetSimuleringsresultatFeatureToggle', () => {
-      it('returnerer data ved vellykket query', async () => {
-        const storeRef = setupStore(undefined, true)
-        return storeRef
-          .dispatch(
-            apiSlice.endpoints.getUtvidetSimuleringsresultatFeatureToggle.initiate()
-          )
-          .then((result) => {
-            const fetchBaseQueryResult =
-              result as unknown as FetchBaseQueryError
-            expect(fetchBaseQueryResult.status).toBe('fulfilled')
-            expect(fetchBaseQueryResult.data).toMatchObject(
-              utvidetSimuleringsresultatToggleResponse
-            )
-          })
-      })
-
-      it('returnerer undefined ved feilende query', async () => {
-        const storeRef = setupStore(undefined, true)
-        mockErrorResponse('/feature/utvidet-simuleringsresultat')
-        return storeRef
-          .dispatch(
-            apiSlice.endpoints.getUtvidetSimuleringsresultatFeatureToggle.initiate()
-          )
-          .then((result) => {
-            const fetchBaseQueryResult =
-              result as unknown as FetchBaseQueryError
-            expect(fetchBaseQueryResult.status).toBe('rejected')
-            expect(fetchBaseQueryResult.data).toBe(undefined)
-          })
-      })
-
-      it('kaster feil ved uventet format på responsen', async () => {
-        const storeRef = setupStore(undefined, true)
-
-        mockResponse('/feature/utvidet-simuleringsresultat', {
-          status: 200,
-          json: { lorem: 'ipsum' },
-        })
-
-        await swallowErrorsAsync(async () => {
-          await storeRef
-            .dispatch(
-              apiSlice.endpoints.getUtvidetSimuleringsresultatFeatureToggle.initiate()
-            )
-            .then((result) => {
-              const fetchBaseQueryResult =
-                result as unknown as FetchBaseQueryError
-              expect(fetchBaseQueryResult).toThrow(Error)
-              expect(fetchBaseQueryResult.status).toBe('rejected')
-              expect(fetchBaseQueryResult.data).toBe(undefined)
-            })
-        })
       })
     })
   })
