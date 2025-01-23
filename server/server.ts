@@ -200,6 +200,11 @@ const getUsernameFromAzureToken = async (req: Request) => {
 }
 
 const getOboToken = async (req: Request) => {
+  // Returner access token fra env-var som det finnes sammen med at man utviklerer lokalt
+  if (process.env.NODE_ENV === 'development' && process.env.ACCESS_TOKEN) {
+    return process.env.ACCESS_TOKEN
+  }
+
   const token = getToken(req)
   if (!token) {
     logger.info('No token found in request', {
@@ -236,6 +241,7 @@ app.use(
     let oboToken: string
     try {
       oboToken = await getOboToken(req)
+      console.log('oboToken', oboToken)
     } catch {
       // Send 401 dersom man ikke kan hente obo token
       res.sendStatus(401)
