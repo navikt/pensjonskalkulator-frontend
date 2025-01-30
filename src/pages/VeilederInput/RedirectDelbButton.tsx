@@ -18,7 +18,9 @@ export const RedirectDelbButton: React.FC<IRedirectDelbButtonProps> = ({
       >
         <input type="hidden" name="fnr" value={fnr} />
       </form>
-      <Button type="submit">Gå til Del B</Button>
+      <Button size="small" type="submit">
+        Gå til Del B
+      </Button>
     </div>
   )
 }

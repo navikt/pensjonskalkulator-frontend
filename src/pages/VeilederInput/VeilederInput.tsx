@@ -223,10 +223,17 @@ export const VeilederInput = () => {
             Pensjonskalkulator
           </InternalHeader.Title>
           <Spacer />
-          {showDelbButton && <RedirectDelbButton fnr={veilederBorgerFnr!} />}
           <InternalHeader.User name={ansatt?.id ?? ''} />
         </InternalHeader>
-        {veilederBorgerFnr && <BorgerInformasjon fnr={veilederBorgerFnr} />}
+        {veilederBorgerFnr && (
+          <BorgerInformasjon fnr={veilederBorgerFnr}>
+            <>
+              {showDelbButton && (
+                <RedirectDelbButton fnr={veilederBorgerFnr!} />
+              )}
+            </>
+          </BorgerInformasjon>
+        )}
         <RouterProvider router={router} />
       </div>
     )
