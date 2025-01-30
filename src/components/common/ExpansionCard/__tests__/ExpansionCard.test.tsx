@@ -53,7 +53,7 @@ describe('ExpansionCard', () => {
           name="name"
           aria-labelledby="expansion-card-label"
           open={isOpen}
-          onClick={toggleOpen}
+          onToggle={toggleOpen}
         >
           <ExpansionCardAksel.Header>
             <ExpansionCardAksel.Title id="expansion-card-label" size="small">
@@ -85,7 +85,7 @@ describe('ExpansionCard', () => {
           name="name"
           aria-labelledby="expansion-card-label"
           open={isOpen}
-          onClick={toggleOpen}
+          onToggle={toggleOpen}
         >
           <ExpansionCardAksel.Header>
             <ExpansionCardAksel.Title id="expansion-card-label" size="small">
