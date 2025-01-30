@@ -1,17 +1,13 @@
+import { Button } from '@navikt/ds-react'
 import React from 'react'
 
-interface IKalkulatorRedirectProps {
+interface IRedirectDelbButtonProps {
   fnr: string
 }
-export const KalkulatorRedirect: React.FC<IKalkulatorRedirectProps> = ({
+export const RedirectDelbButton: React.FC<IRedirectDelbButtonProps> = ({
   fnr,
 }) => {
   const formRef = React.useRef<HTMLFormElement>(null)
-  React.useEffect(() => {
-    if (formRef.current) {
-      formRef.current.submit()
-    }
-  }, [])
 
   return (
     <div>
@@ -22,6 +18,7 @@ export const KalkulatorRedirect: React.FC<IKalkulatorRedirectProps> = ({
       >
         <input type="hidden" name="fnr" value={fnr} />
       </form>
+      <Button type="submit">Gå til Del B</Button>
     </div>
   )
 }
