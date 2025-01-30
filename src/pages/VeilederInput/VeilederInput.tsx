@@ -33,7 +33,7 @@ import { userInputActions } from '@/state/userInput/userInputReducer'
 import { isFoedtFoer1963 } from '@/utils/alder'
 import { findRoutesWithoutLoaders } from '@/utils/veileder'
 
-import { KalkulatorRedirect } from './KalkulatorRedirect'
+import { RedirectDelbButton } from './RedirectDelbButton'
 import { VeilederInputRequestError } from './VeilederInputRequestError'
 
 import styles from './VeilederInput.module.scss'
@@ -59,6 +59,14 @@ export const VeilederInput = () => {
   } = useGetPersonQuery(undefined, {
     skip: !veilederBorgerFnr || !veilederBorgerEncryptedFnr,
   })
+
+  const showDelbButton = React.useMemo(
+    () =>
+      personData?.foedselsdato &&
+      isFoedtFoer1963(personData?.foedselsdato) &&
+      veilederBorgerFnr,
+    [veilederBorgerFnr, personData?.foedselsdato]
+  )
 
   const [encryptedRequestLoading, setEncryptedRequestLoading] = React.useState<
     'IDLE' | 'LOADING' | 'SUCCESS' | 'ERROR'
@@ -207,12 +215,6 @@ export const VeilederInput = () => {
         </FrameComponent>
       </div>
     )
-  } else if (
-    personData?.foedselsdato &&
-    isFoedtFoer1963(personData?.foedselsdato) &&
-    veilederBorgerFnr
-  ) {
-    return <KalkulatorRedirect fnr={veilederBorgerFnr} />
   } else {
     return (
       <div data-testid="veileder-med-borger">
@@ -221,6 +223,7 @@ export const VeilederInput = () => {
             Pensjonskalkulator
           </InternalHeader.Title>
           <Spacer />
+          {showDelbButton && <RedirectDelbButton fnr={veilederBorgerFnr!} />}
           <InternalHeader.User name={ansatt?.id ?? ''} />
         </InternalHeader>
         {veilederBorgerFnr && <BorgerInformasjon fnr={veilederBorgerFnr} />}
