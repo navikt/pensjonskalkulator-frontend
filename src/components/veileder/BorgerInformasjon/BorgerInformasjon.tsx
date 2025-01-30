@@ -50,7 +50,7 @@ export const BorgerInformasjon: React.FC<IBorgerInformasjonProps> = ({
           <CopyButton size="small" copyText={fnr} />
         </HStack>
         <Spacer />
-        <div>
+        <HStack gap="2">
           {children}
           <Button
             onClick={onNullstillClick}
@@ -60,7 +60,7 @@ export const BorgerInformasjon: React.FC<IBorgerInformasjonProps> = ({
           >
             Nullstill bruker
           </Button>
-        </div>
+        </HStack>
       </HStack>
     </Box>
   )

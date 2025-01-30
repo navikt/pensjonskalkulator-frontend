@@ -227,11 +227,7 @@ export const VeilederInput = () => {
         </InternalHeader>
         {veilederBorgerFnr && (
           <BorgerInformasjon fnr={veilederBorgerFnr}>
-            <>
-              {showDelbButton && (
-                <RedirectDelbButton fnr={veilederBorgerFnr!} />
-              )}
-            </>
+            {showDelbButton && <RedirectDelbButton fnr={veilederBorgerFnr!} />}
           </BorgerInformasjon>
         )}
         <RouterProvider router={router} />
