@@ -1,6 +1,5 @@
 import path from 'path'
 
-import { ecsFormat } from '@elastic/ecs-winston-format'
 import {
   getToken,
   parseAzureUserToken,
@@ -12,7 +11,7 @@ import express, { NextFunction, Request, Response } from 'express'
 import promBundle from 'express-prom-bundle'
 import { createProxyMiddleware } from 'http-proxy-middleware'
 import { initialize } from 'unleash-client'
-import winston from 'winston'
+import winston, { format } from 'winston'
 
 import type { components } from '../src/types/schema.d.ts'
 
@@ -20,12 +19,11 @@ import { ensureEnv } from './ensureEnv.js'
 
 type Person = components['schemas']['PersonV2']
 
+const isDevelopment = process.env.NODE_ENV === 'development'
+
 const metricsMiddleware = promBundle({ includeMethod: true })
 
 const logger = winston.createLogger({
-  format: ecsFormat({
-    convertReqRes: true,
-  }),
   transports: [new winston.transports.Console()],
 })
 
@@ -201,7 +199,7 @@ const getUsernameFromAzureToken = async (req: Request) => {
 
 const getOboToken = async (req: Request) => {
   // Returner access token fra env-var som det finnes sammen med at man utviklerer lokalt
-  if (process.env.NODE_ENV === 'development' && process.env.ACCESS_TOKEN) {
+  if (isDevelopment && process.env.ACCESS_TOKEN) {
     return process.env.ACCESS_TOKEN
   }
 
@@ -241,7 +239,6 @@ app.use(
     let oboToken: string
     try {
       oboToken = await getOboToken(req)
-      console.log('oboToken', oboToken)
     } catch {
       // Send 401 dersom man ikke kan hente obo token
       res.sendStatus(401)
@@ -250,6 +247,7 @@ app.use(
 
     return createProxyMiddleware({
       target: `${PENSJONSKALKULATOR_BACKEND}/api`,
+      changeOrigin: true,
       headers: {
         Authorization: `Bearer ${oboToken}`,
       },
@@ -262,6 +260,7 @@ app.use(
   '/pensjon/kalkulator/v3/api-docs',
   createProxyMiddleware({
     target: `${PENSJONSKALKULATOR_BACKEND}/v3/api-docs`,
+    changeOrigin: true,
     logger: logger,
   })
 )
@@ -271,12 +270,11 @@ const redirect163Middleware = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log(
-    'Status of feature toggle pensjonskalkulator.disable-redirect-1963',
-    unleash.isEnabled('pensjonskalkulator.disable-redirect-1963')
+  const disableRedirectToggle = unleash.isEnabled(
+    'pensjonskalkulator.disable-redirect-1963'
   )
-  if (unleash.isEnabled('pensjonskalkulator.disable-redirect-1963')) {
-    console.log('Feature flag is not enabled')
+
+  if (disableRedirectToggle) {
     next()
     return
   }
