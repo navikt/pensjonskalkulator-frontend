@@ -30,8 +30,10 @@ import {
   selectVeilederBorgerEncryptedFnr,
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputReducer'
+import { isFoedtFoer1963 } from '@/utils/alder'
 import { findRoutesWithoutLoaders } from '@/utils/veileder'
 
+import { RedirectDelbButton } from './RedirectDelbButton'
 import { VeilederInputRequestError } from './VeilederInputRequestError'
 
 import styles from './VeilederInput.module.scss'
@@ -53,9 +55,18 @@ export const VeilederInput = () => {
     isSuccess: personSuccess,
     isFetching: personLoading,
     error: personError,
+    data: personData,
   } = useGetPersonQuery(undefined, {
     skip: !veilederBorgerFnr || !veilederBorgerEncryptedFnr,
   })
+
+  const showDelbButton = React.useMemo(
+    () =>
+      personData?.foedselsdato &&
+      isFoedtFoer1963(personData?.foedselsdato) &&
+      veilederBorgerFnr,
+    [veilederBorgerFnr, personData?.foedselsdato]
+  )
 
   const [encryptedRequestLoading, setEncryptedRequestLoading] = React.useState<
     'IDLE' | 'LOADING' | 'SUCCESS' | 'ERROR'
@@ -214,7 +225,11 @@ export const VeilederInput = () => {
           <Spacer />
           <InternalHeader.User name={ansatt?.id ?? ''} />
         </InternalHeader>
-        {veilederBorgerFnr && <BorgerInformasjon fnr={veilederBorgerFnr} />}
+        {veilederBorgerFnr && (
+          <BorgerInformasjon fnr={veilederBorgerFnr}>
+            {showDelbButton && <RedirectDelbButton fnr={veilederBorgerFnr!} />}
+          </BorgerInformasjon>
+        )}
         <RouterProvider router={router} />
       </div>
     )
