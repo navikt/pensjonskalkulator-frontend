@@ -17,10 +17,10 @@ export const RedirectDelbButton: React.FC<IRedirectDelbButtonProps> = ({
         method="POST"
       >
         <input type="hidden" name="fnr" value={fnr} />
+        <Button size="small" type="submit">
+          Gå til Del B
+        </Button>
       </form>
-      <Button size="small" type="submit">
-        Gå til Del B
-      </Button>
     </div>
   )
 }
