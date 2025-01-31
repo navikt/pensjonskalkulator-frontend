@@ -23,6 +23,7 @@ const ignoredFiles = [
   '**/cypress',
   'public/src/nais.js',
   'scripts/FetchLandListe.js',
+  'sanity.cli.ts',
 ]
 
 const defaultEslintConfig = tseslint.config(
