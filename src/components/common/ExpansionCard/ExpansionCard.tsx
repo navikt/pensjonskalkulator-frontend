@@ -25,7 +25,6 @@ export const ExpansionCard: React.FC<ExpansionCardProps & IProps> = ({
   ...rest
 }) => (
   <ExpansionCardAksel
-    data-testid="expansioncard"
     onToggle={(newIsOpen) => {
       logIsOpen(name, newIsOpen)
       onToggle?.(newIsOpen)

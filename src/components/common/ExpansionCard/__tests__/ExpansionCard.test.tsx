@@ -25,7 +25,7 @@ describe('ExpansionCard', () => {
         </ExpansionCard>
       )
 
-      await user.click(screen.getByTestId('expansioncard'))
+      await user.click(screen.getByRole('button', { name: 'Vis mer' }))
 
       expect(loggerSpy).toHaveBeenNthCalledWith(
         1,
@@ -33,7 +33,7 @@ describe('ExpansionCard', () => {
         expect.any(Object)
       )
 
-      await user.click(screen.getByTestId('expansioncard'))
+      await user.click(screen.getByRole('button', { name: 'Vis mer' }))
 
       expect(loggerSpy).toHaveBeenNthCalledWith(
         2,
@@ -66,7 +66,7 @@ describe('ExpansionCard', () => {
         </ExpansionCard>
       )
 
-      await user.click(screen.getByTestId('expansioncard'))
+      await user.click(screen.getByRole('button', { name: 'Vis mer' }))
 
       expect(loggerSpy).toHaveBeenNthCalledWith(
         1,
@@ -98,7 +98,7 @@ describe('ExpansionCard', () => {
         </ExpansionCard>
       )
 
-      await user.click(screen.getByTestId('expansioncard'))
+      await user.click(screen.getByRole('button', { name: 'Vis mer' }))
 
       expect(loggerSpy).toHaveBeenNthCalledWith(
         1,
