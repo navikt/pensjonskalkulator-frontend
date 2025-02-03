@@ -5,6 +5,7 @@ import {
   Alert,
   BodyLong,
   Button,
+  HGrid,
   HStack,
   Heading,
   InternalHeader,
@@ -31,7 +32,6 @@ import {
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputReducer'
 import { isFoedtFoer1963 } from '@/utils/alder'
-import { findRoutesWithoutLoaders } from '@/utils/veileder'
 
 import { RedirectDelbButton } from './RedirectDelbButton'
 import { VeilederInputRequestError } from './VeilederInputRequestError'
@@ -60,7 +60,7 @@ export const VeilederInput = () => {
     skip: !veilederBorgerFnr || !veilederBorgerEncryptedFnr,
   })
 
-  const showDelbButton = React.useMemo(
+  const showDelbWarning = React.useMemo(
     () =>
       personData?.foedselsdato &&
       isFoedtFoer1963(personData?.foedselsdato) &&
@@ -135,27 +135,6 @@ export const VeilederInput = () => {
     }
   }
 
-  const excludedPaths = findRoutesWithoutLoaders(routes)
-  const isExcludedPath = excludedPaths.some((path) =>
-    window.location.pathname.includes(`/veileder${path}`)
-  )
-
-  // Unntak for rutene som skal serveres uten å slå opp bruker
-  if (isExcludedPath) {
-    return (
-      <div data-testid="veileder-ekskludert-side">
-        <InternalHeader>
-          <InternalHeader.Title onClick={onTitleClick}>
-            Pensjonskalkulator
-          </InternalHeader.Title>
-          <Spacer />
-          <InternalHeader.User name={ansatt?.id ?? ''} />
-        </InternalHeader>
-        <RouterProvider router={router} />
-      </div>
-    )
-  }
-
   if ((!personSuccess && !veilederBorgerFnr) || personError || isLoading) {
     return (
       <div data-testid="veileder-uten-borger">
@@ -226,9 +205,19 @@ export const VeilederInput = () => {
           <InternalHeader.User name={ansatt?.id ?? ''} />
         </InternalHeader>
         {veilederBorgerFnr && (
-          <BorgerInformasjon fnr={veilederBorgerFnr}>
-            {showDelbButton && <RedirectDelbButton fnr={veilederBorgerFnr!} />}
-          </BorgerInformasjon>
+          <BorgerInformasjon fnr={veilederBorgerFnr}></BorgerInformasjon>
+        )}
+        {showDelbWarning && (
+          <Alert variant={'warning'}>
+            <HGrid>
+              <div>
+                Bruker er født før 1963. Det kan være mangler for eldre
+                ordninger i denne kalkulatoren. Åpne bruker i gammel kalkulator
+                (Del B) for flere valg.
+              </div>
+              <RedirectDelbButton fnr={veilederBorgerFnr!} />
+            </HGrid>
+          </Alert>
         )}
         <RouterProvider router={router} />
       </div>
