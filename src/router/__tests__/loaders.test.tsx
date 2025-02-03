@@ -20,6 +20,7 @@ import {
   fulfilledGetLoependeVedtak75Ufoeregrad,
   fulfilledGetLoependeVedtakLoependeAFPprivat,
   fulfilledGetLoependeVedtakLoependeAFPoffentlig,
+  fulfilledGetGrunnbelop,
 } from '@/mocks/mockedRTKQueryApiCalls'
 import { mockErrorResponse, mockResponse } from '@/mocks/server'
 import { externalUrls, henvisningUrlParams, paths } from '@/router/constants'
@@ -398,45 +399,46 @@ describe('Loaders', () => {
         }
       `)
     })
-
-    it('Når brukeren ikke har samboer, er hen ikke redirigert', async () => {
-      const mockedState = {
-        api: {
-          queries: {
-            ...fulfilledGetPerson,
+    describe('Gitt at alle kallene er vellykket, ', () => {
+      it('skal ikke brukere bli redirigert etter innhenting av sivilstand uten samboerskap', async () => {
+        const mockedState = {
+          api: {
+            queries: {
+              ...fulfilledGetPerson,
+              ...fulfilledGetGrunnbelop,
+            },
           },
-        },
-        userInput: { ...userInputInitialState },
-      }
-      store.getState = vi.fn().mockImplementation(() => {
-        return mockedState
+          userInput: { ...userInputInitialState },
+        }
+        store.getState = vi.fn().mockImplementation(() => {
+          return { ...mockedState }
+        })
+
+        const returnedFromLoader = await stepSivilstandAccessGuard()
+        const shouldRedirectToResponse = await (
+          returnedFromLoader as StepSivilstandAccessGuardLoader
+        ).shouldRedirectTo
+        expect(shouldRedirectToResponse).toBe('')
       })
-
-      const returnedFromLoader = await stepSivilstandAccessGuard()
-      const shouldRedirectToResponse = await (
-        returnedFromLoader as StepSivilstandAccessGuardLoader
-      ).shouldRedirectTo
-      expect(shouldRedirectToResponse).toBe('')
-    })
-
-    it('Når brukeren har samboer, er hen redirigert', async () => {
-      const mockedState = {
-        api: {
-          queries: {
-            ...fulfilledGetPersonMedSamboer,
+      it('skal ikke brukere bli redirigert etter innhenting av sivilstand med samboerskap', async () => {
+        const mockedState = {
+          api: {
+            queries: {
+              ...fulfilledGetPersonMedSamboer,
+            },
           },
-        },
-        userInput: { ...userInputInitialState },
-      }
-      store.getState = vi.fn().mockImplementation(() => {
-        return mockedState
-      })
+          userInput: { ...userInputInitialState },
+        }
+        store.getState = vi.fn().mockImplementation(() => {
+          return mockedState
+        })
 
-      const returnedFromLoader = await stepSivilstandAccessGuard()
-      const shouldRedirectToResponse = await (
-        returnedFromLoader as StepSivilstandAccessGuardLoader
-      ).shouldRedirectTo
-      expect(shouldRedirectToResponse).toBe(paths.utenlandsopphold)
+        const returnedFromLoader = await stepSivilstandAccessGuard()
+        const shouldRedirectToResponse = await (
+          returnedFromLoader as StepSivilstandAccessGuardLoader
+        ).shouldRedirectTo
+        expect(shouldRedirectToResponse).toBe('')
+      })
     })
   })
 

@@ -23,7 +23,6 @@ import {
 } from '@/utils/alder'
 import { isLoependeVedtakEndring } from '@/utils/loependeVedtak'
 import { logger } from '@/utils/logging'
-import { checkHarSamboer } from '@/utils/sivilstand'
 
 export interface LoginContext {
   isLoggedIn: boolean
@@ -229,6 +228,7 @@ export const stepStartAccessGuard =
 
 export type StepSivilstandAccessGuardLoader = {
   getPersonQuery: GetPersonQuery
+  getGrunnbelopQuery: number | undefined
   shouldRedirectTo: Promise<string>
 }
 
@@ -244,6 +244,9 @@ export const stepSivilstandAccessGuard = async (): Promise<
   const resolveGetPerson: (
     value: null | GetPersonQuery | PromiseLike<GetPersonQuery>
   ) => void = () => {}
+  const resolveGetGrunnbelop: (
+    value: number | undefined | PromiseLike<number | undefined>
+  ) => void = () => {}
 
   const shouldRedirectTo: Promise<string> = new Promise((resolve) => {
     resolveRedirectUrl = resolve
@@ -252,19 +255,20 @@ export const stepSivilstandAccessGuard = async (): Promise<
   const getPersonResponse = apiSlice.endpoints.getPerson.select(undefined)(
     store.getState()
   )
-  if (
-    getPersonResponse?.data?.sivilstand &&
-    checkHarSamboer(getPersonResponse.data.sivilstand)
-  ) {
-    resolveRedirectUrl(paths.utenlandsopphold)
-    resolveGetPerson(getPersonResponse)
-  } else {
-    resolveRedirectUrl('')
-    resolveGetPerson(getPersonResponse)
-  }
+
+  const getGrunnbelopPromise = store
+    .dispatch(apiSlice.endpoints.getGrunnbelop.initiate(undefined))
+    .unwrap()
+
+  const getGrunnbelopResponse = await getGrunnbelopPromise
+
+  resolveRedirectUrl('')
+  resolveGetPerson(getPersonResponse)
+  resolveGetGrunnbelop(getGrunnbelopResponse)
 
   return {
     getPersonQuery: getPersonResponse,
+    getGrunnbelopQuery: getGrunnbelopResponse,
     shouldRedirectTo,
   }
 }
