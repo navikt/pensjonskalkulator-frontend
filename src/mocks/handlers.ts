@@ -11,6 +11,7 @@ import omstillingsstoenadOgGjenlevendeResponse from './data/omstillingsstoenad-o
 import personResponse from './data/person.json' with { type: 'json' }
 import tidligstMuligHeltUttakResponse from './data/tidligstMuligHeltUttak.json' with { type: 'json' }
 import disableSpraakvelgerToggleResponse from './data/unleash-disable-spraakvelger.json' with { type: 'json' }
+import enableOtpFraKlpToggleResponse from './data/unleash-otp-fra-klp.json' with { type: 'json' }
 import enableUtvidetSimuleringsresultatPluginToggleResponse from './data/unleash-utvidet-simuleringsresultat.json' with { type: 'json' }
 
 const TEST_DELAY = process.env.NODE_ENV === 'test' ? 0 : 30
@@ -147,6 +148,14 @@ export const getHandlers = (baseUrl: string = API_PATH) => [
       enableUtvidetSimuleringsresultatPluginToggleResponse
     )
   }),
+
+  http.get(
+    `${baseUrl}/feature/pensjonskalkulator.vis-otp-fra-klp`,
+    async () => {
+      await delay(TEST_DELAY)
+      return HttpResponse.json(enableOtpFraKlpToggleResponse)
+    }
+  ),
 
   http.post('http://localhost:12347/collect', async ({ request }) => {
     await request.json()

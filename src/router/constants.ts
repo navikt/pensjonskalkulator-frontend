@@ -26,6 +26,7 @@ export const externalUrls = {
   personopplysninger:
     'https://www.nav.no/personopplysninger-i-pensjonskalkulator',
   spk: 'https://www.spk.no/',
+  klp: 'https://www.klp.no/',
 }
 
 export const paths = {
