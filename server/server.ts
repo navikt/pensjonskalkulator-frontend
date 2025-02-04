@@ -11,7 +11,7 @@ import express, { NextFunction, Request, Response } from 'express'
 import promBundle from 'express-prom-bundle'
 import { createProxyMiddleware } from 'http-proxy-middleware'
 import { initialize } from 'unleash-client'
-import winston, { format } from 'winston'
+import winston from 'winston'
 
 import type { components } from '../src/types/schema.d.ts'
 
@@ -24,6 +24,7 @@ const isDevelopment = process.env.NODE_ENV === 'development'
 const metricsMiddleware = promBundle({ includeMethod: true })
 
 const logger = winston.createLogger({
+  format: isDevelopment ? winston.format.simple() : undefined,
   transports: [new winston.transports.Console()],
 })
 
@@ -200,6 +201,7 @@ const getUsernameFromAzureToken = async (req: Request) => {
 const getOboToken = async (req: Request) => {
   // Returner access token fra env-var som det finnes sammen med at man utviklerer lokalt
   if (isDevelopment && process.env.ACCESS_TOKEN) {
+    logger.info('Using ACCESS_TOKEN fron environment')
     return process.env.ACCESS_TOKEN
   }
 
