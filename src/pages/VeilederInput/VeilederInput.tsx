@@ -33,7 +33,7 @@ import {
 import { userInputActions } from '@/state/userInput/userInputReducer'
 import { isFoedtFoer1963 } from '@/utils/alder'
 
-import { RedirectDelbButton } from './RedirectDelbButton'
+import { AlertDelB } from './AlertDelB'
 import { VeilederInputRequestError } from './VeilederInputRequestError'
 
 import styles from './VeilederInput.module.scss'
@@ -207,18 +207,7 @@ export const VeilederInput = () => {
         {veilederBorgerFnr && (
           <BorgerInformasjon fnr={veilederBorgerFnr}></BorgerInformasjon>
         )}
-        {showDelbWarning && (
-          <Alert variant={'warning'}>
-            <HGrid>
-              <div>
-                Bruker er født før 1963. Det kan være mangler for eldre
-                ordninger i denne kalkulatoren. Åpne bruker i gammel kalkulator
-                (Del B) for flere valg.
-              </div>
-              <RedirectDelbButton fnr={veilederBorgerFnr!} />
-            </HGrid>
-          </Alert>
-        )}
+        {showDelbWarning && <AlertDelB fnr={veilederBorgerFnr!} />}
         <RouterProvider router={router} />
       </div>
     )
