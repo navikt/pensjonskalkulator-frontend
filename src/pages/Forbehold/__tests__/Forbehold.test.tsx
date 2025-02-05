@@ -1,17 +1,46 @@
 import { describe, it } from 'vitest'
 
 import { Forbehold } from '..'
+import {
+  fulfilledGetPersonMedOkteAldersgrenser,
+  fulfilledGetPerson,
+} from '@/mocks/mockedRTKQueryApiCalls'
 import { mockErrorResponse } from '@/mocks/server'
+import { userInputInitialState } from '@/state/userInput/userInputReducer'
 import { render, screen, waitFor } from '@/test-utils'
 
 describe('Forbehold', () => {
   it('har riktig sidetittel', () => {
-    render(<Forbehold />)
+    render(<Forbehold />, {
+      preloadedState: {
+        api: {
+          //@ts-ignore
+          queries: {
+            ...fulfilledGetPersonMedOkteAldersgrenser,
+          },
+        },
+        userInput: {
+          ...userInputInitialState,
+        },
+      },
+    })
     expect(document.title).toBe('application.title.forbehold')
   })
 
   it('rendrer seksjonene riktig med innhold fra Sanity', async () => {
-    render(<Forbehold />)
+    render(<Forbehold />, {
+      preloadedState: {
+        api: {
+          //@ts-ignore
+          queries: {
+            ...fulfilledGetPersonMedOkteAldersgrenser,
+          },
+        },
+        userInput: {
+          ...userInputInitialState,
+        },
+      },
+    })
     await waitFor(() => {
       expect(screen.getByText('forbehold.title')).toBeVisible()
       expect(screen.getAllByRole('paragraph').length).toBeGreaterThanOrEqual(3)
@@ -20,7 +49,19 @@ describe('Forbehold', () => {
 
   it('rendrer seksjonene riktig når tekstene fra Sanity ikke kunne hentes', () => {
     mockErrorResponse('/feature/pensjonskalkulator.hent-tekster-fra-sanity')
-    render(<Forbehold />)
+    render(<Forbehold />, {
+      preloadedState: {
+        api: {
+          //@ts-ignore
+          queries: {
+            ...fulfilledGetPerson,
+          },
+        },
+        userInput: {
+          ...userInputInitialState,
+        },
+      },
+    })
     expect(screen.getByText('forbehold.title')).toBeVisible()
     expect(screen.getByText('forbehold.inntekt.title')).toBeVisible()
     expect(screen.getByText('forbehold.utenlandsopphold.title')).toBeVisible()

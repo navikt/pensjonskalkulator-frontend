@@ -36,16 +36,10 @@ import {
   selectUfoeregrad,
   selectIsEndring,
   selectLoependeVedtak,
+  selectNedreAldersgrense,
+  selectUbetingetUttaksalder,
 } from '@/state/userInput/selectors'
-import {
-  DEFAULT_TIDLIGST_UTTAKSALDER,
-  DEFAULT_UBETINGET_UTTAKSALDER,
-  getAlderMinus1Maaned,
-  getAlderPlus1Maaned,
-  isAlderOverMinUttaksalder,
-  isFoedtFoer1964,
-  transformFoedselsdatoToAlderMinus1md,
-} from '@/utils/alder'
+import { isFoedtFoer1964, getBrukerensAlderPlus1Maaned } from '@/utils/alder'
 import { logger } from '@/utils/logging'
 
 import styles from './BeregningEnkel.module.scss'
@@ -68,6 +62,8 @@ export const BeregningEnkel: React.FC = () => {
   const aarligInntektFoerUttakBeloepFraBrukerInput = useAppSelector(
     selectAarligInntektFoerUttakBeloepFraBrukerInput
   )
+  const nedreAldersgrense = useAppSelector(selectNedreAldersgrense)
+  const ubetingetUttaksalder = useAppSelector(selectUbetingetUttaksalder)
 
   const { isSuccess: isPersonSuccess, data: person } = useGetPersonQuery()
 
@@ -185,16 +181,6 @@ export const BeregningEnkel: React.FC = () => {
     return isPersonSuccess && isFoedtFoer1964(person?.foedselsdato)
   }, [person])
 
-  const brukerensAlderPlus1Maaned = React.useMemo(() => {
-    const brukerensAlder = isPersonSuccess
-      ? transformFoedselsdatoToAlderMinus1md(person?.foedselsdato)
-      : getAlderMinus1Maaned(DEFAULT_TIDLIGST_UTTAKSALDER)
-    const beregnetMinAlder = getAlderPlus1Maaned(brukerensAlder)
-    return isAlderOverMinUttaksalder(beregnetMinAlder)
-      ? beregnetMinAlder
-      : DEFAULT_TIDLIGST_UTTAKSALDER
-  }, [person])
-
   const onRetry = (): void => {
     dispatch(apiSlice.util.invalidateTags(['Alderspensjon']))
     if (alderspensjonEnkelRequestBody) {
@@ -250,10 +236,10 @@ export const BeregningEnkel: React.FC = () => {
         <VelgUttaksalder
           tidligstMuligUttak={
             ufoeregrad
-              ? { ...DEFAULT_UBETINGET_UTTAKSALDER }
+              ? ubetingetUttaksalder
               : isTidligstMuligUttakSuccess
                 ? tidligstMuligUttak
-                : brukerensAlderPlus1Maaned
+                : getBrukerensAlderPlus1Maaned(person, nedreAldersgrense)
           }
         />
       </div>
@@ -263,22 +249,24 @@ export const BeregningEnkel: React.FC = () => {
           className={`${styles.container} ${styles.container__hasMobilePadding}`}
         >
           {isError ||
-          (alderspensjon &&
-            !alderspensjon?.vilkaarsproeving.vilkaarErOppfylt) ? (
+          (!isError &&
+            alderspensjon &&
+            !alderspensjon?.vilkaarsproeving.vilkaarErOppfylt &&
+            uttaksalder &&
+            uttaksalder.aar < ubetingetUttaksalder.aar) ? (
             <>
               <Heading level="2" size="small">
                 <FormattedMessage id="beregning.title" />
               </Heading>
               <AlertDashBorder onRetry={isError ? onRetry : undefined}>
-                {!isError &&
-                  uttaksalder &&
-                  uttaksalder.aar < DEFAULT_UBETINGET_UTTAKSALDER.aar && (
-                    <FormattedMessage
-                      id="beregning.lav_opptjening.aar"
-                      values={{ startAar: uttaksalder.aar }}
-                    />
-                  )}
-                {isError && <FormattedMessage id="beregning.error" />}
+                {isError ? (
+                  <FormattedMessage id="beregning.error" />
+                ) : (
+                  <FormattedMessage
+                    id="beregning.lav_opptjening.aar"
+                    values={{ startAar: uttaksalder.aar }}
+                  />
+                )}
               </AlertDashBorder>
             </>
           ) : (

@@ -8,6 +8,9 @@ import { Card } from '@/components/common/Card'
 import { SanityContext } from '@/context/SanityContext'
 import { SanityForbeholdAvsnitt } from '@/context/SanityContext/SanityTypes'
 import { useGetSanityFeatureToggleQuery } from '@/state/api/apiSlice'
+import { useAppSelector } from '@/state/hooks'
+import { selectUbetingetUttaksalder } from '@/state/userInput/selectors'
+import { transformAlderToString } from '@/utils/alder'
 import { getSanityPortableTextComponents } from '@/utils/sanity'
 import { getFormatMessageValues } from '@/utils/translations'
 
@@ -15,6 +18,8 @@ export function Forbehold() {
   const intl = useIntl()
   const { data: sanityFeatureToggle } = useGetSanityFeatureToggleQuery()
   const { forbeholdAvsnittData } = React.useContext(SanityContext)
+
+  const ubetingetUttaksalder = useAppSelector(selectUbetingetUttaksalder)
 
   React.useEffect(() => {
     document.title = intl.formatMessage({
@@ -130,6 +135,10 @@ export function Forbehold() {
                 id="forbehold.uforetrygd.ingress"
                 values={{
                   ...getFormatMessageValues(intl),
+                  ubetingetUttaksalder: transformAlderToString(
+                    intl.formatMessage,
+                    ubetingetUttaksalder
+                  ),
                 }}
               />
             </BodyLong>
