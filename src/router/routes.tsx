@@ -22,10 +22,10 @@ import {
   authenticationGuard,
   landingPageAccessGuard,
   stepStartAccessGuard,
-  stepSivilstandAccessGuard,
   stepAFPAccessGuard,
   stepUfoeretrygdAFPAccessGuard,
   stepSamtykkeOffentligAFPAccessGuard,
+  stepSivilstandAccessGuard,
 } from './loaders'
 
 export const routes: RouteObject[] = [
