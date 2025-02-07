@@ -10,7 +10,6 @@ on:
       - dreambox
       - coffeebox
       - codebox
-      - workflow-permissions
     paths-ignore:
       - '.gitignore'
       - 'CODEOWNERS'
@@ -196,7 +195,8 @@ jobs:
   deploy-staging:
     name: Deploy to staging
     needs: [build, run-unit-tests, run-integration-tests]
-    permissions: write-all
+    permissions:
+      id-token: 'write'
     runs-on: ubuntu-latest
     if: |
       (github.event_name == 'push' ||
@@ -223,7 +223,7 @@ jobs:
 
   deploy-sandbox:
     name: Deploy to sandbox
-    needs: [build]
+    needs: [build, run-unit-tests, run-integration-tests]
     permissions:
       id-token: 'write'
     runs-on: ubuntu-latest
@@ -231,7 +231,7 @@ jobs:
       (github.event_name == 'push' ||
       github.event_name == 'workflow_dispatch') &&
       github.event.inputs.prod != 'true' &&
-      github.ref == 'refs/heads/workflow-permissions'
+      github.ref == 'refs/heads/main'
     env:
       IMAGE: ghcr.io/${{ github.repository }}/pensjonskalkulator-frontend-node:${{ github.sha }}
     steps:
@@ -255,7 +255,8 @@ jobs:
   deploy-catbox:
     name: Deploy to catbox
     needs: [build, run-unit-tests, run-integration-tests]
-    permissions: write-all
+    permissions:
+      id-token: 'write'
     runs-on: ubuntu-latest
     if: |
       (github.event_name == 'push' ||
@@ -283,7 +284,8 @@ jobs:
   deploy-magicbox:
     name: Deploy to magicbox
     needs: [build, run-unit-tests, run-integration-tests]
-    permissions: write-all
+    permissions:
+      id-token: 'write'
     runs-on: ubuntu-latest
     if: |
       (github.event_name == 'push' ||
@@ -311,7 +313,8 @@ jobs:
   deploy-dreambox:
     name: Deploy to dreambox
     needs: [build, run-unit-tests, run-integration-tests]
-    permissions: write-all
+    permissions:
+      id-token: 'write'
     runs-on: ubuntu-latest
     if: |
       (github.event_name == 'push' ||
@@ -339,7 +342,8 @@ jobs:
   deploy-coffeebox:
     name: Deploy to coffeebox
     needs: [build, run-unit-tests, run-integration-tests]
-    permissions: write-all
+    permissions:
+      id-token: 'write'
     runs-on: ubuntu-latest
     if: |
       (github.event_name == 'push' ||
@@ -367,7 +371,8 @@ jobs:
   deploy-codebox:
     name: Deploy to codebox
     needs: [build, run-unit-tests, run-integration-tests]
-    permissions: write-all
+    permissions:
+      id-token: 'write'
     runs-on: ubuntu-latest
     if: |
       (github.event_name == 'push' ||
@@ -395,7 +400,8 @@ jobs:
   deploy-prod:
     name: Deploy to prod-gcp
     needs: [build, run-unit-tests, run-integration-tests]
-    permissions: write-all
+    permissions:
+      id-token: 'write'
     runs-on: ubuntu-latest
     if: |
       github.ref == 'refs/heads/main' &&
