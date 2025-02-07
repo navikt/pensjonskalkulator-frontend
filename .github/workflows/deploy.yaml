@@ -10,6 +10,7 @@ on:
       - dreambox
       - coffeebox
       - codebox
+      - workflow-permissions
     paths-ignore:
       - '.gitignore'
       - 'CODEOWNERS'
@@ -222,13 +223,13 @@ jobs:
   deploy-sandbox:
     name: Deploy to sandbox
     needs: [build, run-unit-tests, run-integration-tests]
-    permissions: write-all
+    #permissions: write-all
     runs-on: ubuntu-latest
     if: |
       (github.event_name == 'push' ||
       github.event_name == 'workflow_dispatch') &&
       github.event.inputs.prod != 'true' &&
-      github.ref == 'refs/heads/sandbox'
+      github.ref == 'refs/heads/workflow-permissions'
     env:
       IMAGE: ghcr.io/${{ github.repository }}/pensjonskalkulator-frontend-node:${{ github.sha }}
     steps:
