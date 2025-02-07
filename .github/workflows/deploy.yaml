@@ -224,7 +224,8 @@ jobs:
   deploy-sandbox:
     name: Deploy to sandbox
     needs: [build]
-    #permissions: write-all
+    permissions:
+      id-token: 'write'
     runs-on: ubuntu-latest
     if: |
       (github.event_name == 'push' ||
