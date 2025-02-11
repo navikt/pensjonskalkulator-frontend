@@ -281,14 +281,28 @@ const translations = {
   'stegvisning.samtykke_offentlig_afp.validation_error':
     'You must answer whether you want Nav to calculate AFP for you.',
   'stegvisning.sivilstand.title': 'Your Marital Status',
+  'stegvisning.sivilstand.ingress_ukjent': 'MANGLER_TEKST',
   'stegvisning.sivilstand.ingress_1': 'You are registered as ',
   'stegvisning.sivilstand.ingress_2':
     ' in the National Population Register. If you have a partner or spouse, it may affect the calculation.',
+  'stegvisning.sivilstand.select_label': 'MANGLER_TEKST',
+  'stegvisning.sivilstand.select_description_ukjent': 'MANGLER_TEKST',
+  'stegvisning.sivilstand.select_description': 'MANGLER_TEKST',
+  'stegvisning.sivilstand.radio_epsHarPensjon_label': 'MANGLER_TEKST',
+  'stegvisning.sivilstand.radio_epsHarPensjon_description': 'MANGLER_TEKST',
+  'stegvisning.sivilstand.radio_epsHarInntektOver2G_label': 'MANGLER_TEKST',
+  'stegvisning.sivilstand.radio_epsHarInntektOver2G_description':
+    'MANGLER_TEKST',
   'stegvisning.sivilstand.radio_label': 'Do you have a partner or spouse?',
   'stegvisning.sivilstand.radio_ja': 'Yes',
   'stegvisning.sivilstand.radio_nei': 'No',
-  'stegvisning.sivilstand.validation_error':
-    'You must answer whether you have a partner or spouse.',
+  'stegvisning.sivilstand.select_validation_error': 'MANGELR_TEKST',
+  'stegvisning.sivilstand.epsHarPensjon.validation_error': 'MANGLER_TEKST',
+  'stegvisning.sivilstand.epsHarInntektOver2G.validation_error':
+    'MANGLER_TEKST',
+  'stegvisning.sivilstand.ektefellen': 'MANGLER_TEKST',
+  'stegvisning.sivilstand.samboeren': 'MANGLER_TEKST',
+  'stegvisning.sivilstand.partneren': 'MANGLER_TEKST',
   'agepicker.validation_error.aar': 'You must select year and month',
   'agepicker.validation_error.maaneder': 'You must select month',
   'string.og': 'and',
@@ -303,15 +317,16 @@ const translations = {
   'afp.privat': 'Private',
   'afp.nei': 'No',
   'afp.vet_ikke': 'Don’t know',
-  'sivilstand.gift': 'Married',
-  'sivilstand.ugift': 'Unmarried',
-  'sivilstand.registrert_partner': 'Registered Partner',
-  'sivilstand.enke_enkemann': 'Widow/Widower',
-  'sivilstand.skilt': 'Divorced',
-  'sivilstand.separert': 'Separated',
-  'sivilstand.separert_partner': 'Separated Partner',
-  'sivilstand.skilt_partner': 'Divorced Partner',
-  'sivilstand.gjenlevende_partner': 'Surviving Partner',
+  'sivilstand.GIFT': 'Married',
+  'sivilstand.UGIFT': 'Unmarried',
+  'sivilstand.REGISTRERT_PARTNER': 'Registered Partner',
+  'sivilstand.ENKE_ELLER_ENKEMANN': 'Widow/Widower',
+  'sivilstand.SKILT': 'Divorced',
+  'sivilstand.SEPARERT': 'Separated',
+  'sivilstand.SEPARERT_PARTNER': 'Separated Partner',
+  'sivilstand.SAMBOER': 'MANGLER_TEKST',
+  'sivilstand.SKILT_PARTNER': 'Divorced Partner',
+  'sivilstand.GJENLEVENDE_PARTNER': 'Surviving Partner',
   'sivilstand.med_samboer': 'with Partner',
   'sivilstand.uten_samboer': 'without Partner',
   'tidligstmuliguttak.ingress_1':
@@ -618,9 +633,8 @@ const translations = {
     'You are or have been employed in the public sector, but we unfortunately cannot retrieve public pension agreements. Check your pension agreements with the relevant occupational pension scheme ({chunk}).',
   'pensjonsavtaler.offentligtp.error':
     'We could not check whether you have public pension agreements. If you have been or are employed in the public sector, you can check your pension agreements with the relevant occupational pension scheme (e.g. Statens Pensjonskasse, Kommunal Landspensjonskasse, Oslo Pensjonsforsikring).',
-  'pensjonsavtaler.offentligtp.spk_error':
-    'We were unable to retrieve your public service pension. Please try again later or contact <spkLink>SPK</spkLink>.',
-  'pensjonsavtaler.offentligtp.spk_empty':
+  'pensjonsavtaler.offentligtp.teknisk_feil': 'MANGLER_TEKST',
+  'pensjonsavtaler.offentligtp.empty':
     'We did not receive a response regarding your public service pension.',
   'pensjonsavtaler.offentligtp.subtitle.spk':
     'Retirement pension from the Norwegian Public Service Pension Fund (SPK)',
@@ -724,8 +738,7 @@ const translations = {
   'forbehold.gjenlevende.ingress':
     'Early withdrawal of retirement pension assumes that you have relinquished the survivor"s pension or the adjustment benefit at the time of withdrawal.',
   'forbehold.pensjonsavtaler.title': 'Pension Agreements',
-  'forbehold.pensjonsavtaler.ingress':
-    'If you have consented, we will retrieve information about what you will receive from public and private pension schemes. Nav is not responsible for the amounts provided, but is intended to give a rough overview of your total pension.{br}{br}Private occupational pension and individual rights are retrieved via Norsk Pensjon.{br}{br}Nav currently has no ability to retrieve information from public occupational pension schemes. Please contact your occupational pension scheme if you need information about your occupational pension.{br}{br}If you want a closer overview of your pension agreements, you need to check directly with each pension scheme.',
+  'forbehold.pensjonsavtaler.ingress': 'MANGLER_TEKST',
   'personopplysninger.header':
     'Personal information used in the pension calculator',
   'personopplysninger.section.formaal.header':

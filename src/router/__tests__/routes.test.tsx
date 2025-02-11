@@ -11,13 +11,14 @@ import {
   fulfilledGetLoependeVedtak0Ufoeregrad,
   fulfilledGetLoependeVedtak75Ufoeregrad,
   fulfilledGetOmstillingsstoenadOgGjenlevendeUtenSak,
+  fulfilledGetGrunnbelop,
 } from '@/mocks/mockedRTKQueryApiCalls'
 import { mockErrorResponse, mockResponse } from '@/mocks/server'
 import { HOST_BASEURL } from '@/paths'
 import { apiSlice } from '@/state/api/apiSlice'
 import { store } from '@/state/store'
 import { userInputInitialState } from '@/state/userInput/userInputReducer'
-import { render, screen, swallowErrors, waitFor } from '@/test-utils'
+import { render, screen, waitFor } from '@/test-utils'
 
 const initialGetState = store.getState
 
@@ -284,6 +285,7 @@ describe('routes', () => {
               // @ts-ignore
               queries: {
                 ...fulfilledGetPerson,
+                ...fulfilledGetGrunnbelop,
               },
             },
             userInput: { ...userInputInitialState },
@@ -817,7 +819,6 @@ describe('routes', () => {
             userInput: {
               ...userInputInitialState,
               samtykke: true,
-              samboer: false,
               afp: 'ja_privat',
               currentSimulation: {
                 ...userInputInitialState.currentSimulation,
@@ -837,14 +838,15 @@ describe('routes', () => {
     })
   })
 
-  it('Uregistrerte url med path /pensjon/kalkulator sender til 404 siden', () => {
+  it('Uregistrerte url med path /pensjon/kalkulator/* sender til 404 siden', async () => {
     const router = createMemoryRouter(routes, {
       basename: BASE_PATH,
       initialEntries: ['/pensjon/kalkulator/abc'],
     })
-    swallowErrors(() => {
-      render(<RouterProvider router={router} />, { hasRouter: false })
-      expect(screen.queryByTestId('error-page-404')).toBeInTheDocument()
+
+    render(<RouterProvider router={router} />, {
+      hasRouter: false,
     })
+    expect(screen.getByTestId('error-page-404')).toBeInTheDocument()
   })
 })

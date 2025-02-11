@@ -64,6 +64,15 @@ export const apiSlice = createApi({
         }
       },
     }),
+    getGrunnbelop: builder.query<number, void>({
+      query: () => 'https://g.nav.no/api/v1/grunnbel%C3%B8p',
+      transformResponse: (response: { grunnbeløp: number }) => {
+        if (!response.grunnbeløp) {
+          throw new Error(`Mottok ugyldig grunnbeløp: ${response}`)
+        }
+        return response.grunnbeløp
+      },
+    }),
     getEkskludertStatus: builder.query<EkskludertStatus, void>({
       query: () => '/v2/ekskludert',
       transformResponse: (response) => {
@@ -224,6 +233,15 @@ export const apiSlice = createApi({
         return response
       },
     }),
+    getSanityFeatureToggle: builder.query<UnleashToggle, void>({
+      query: () => '/feature/pensjonskalkulator.hent-tekster-fra-sanity',
+      transformResponse: (response: UnleashToggle) => {
+        if (!isUnleashToggle(response)) {
+          throw new Error(`Mottok ugyldig unleash response:`, response)
+        }
+        return response
+      },
+    }),
     getUtvidetSimuleringsresultatFeatureToggle: builder.query<
       UnleashToggle,
       void
@@ -255,6 +273,7 @@ export const {
   useGetAnsattIdQuery,
   useGetInntektQuery,
   useGetPersonQuery,
+  useGetGrunnbelopQuery,
   useGetEkskludertStatusQuery,
   useGetOmstillingsstoenadOgGjenlevendeQuery,
   useGetLoependeVedtakQuery,
@@ -264,6 +283,7 @@ export const {
   usePensjonsavtalerQuery,
   useGetSpraakvelgerFeatureToggleQuery,
   useGetRedirect1963FeatureToggleQuery,
+  useGetSanityFeatureToggleQuery,
   useGetOtpKlpFeatureToggleQuery,
   useGetUtvidetSimuleringsresultatFeatureToggleQuery,
 } = apiSlice
