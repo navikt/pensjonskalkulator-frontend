@@ -30,6 +30,10 @@ vi.mock(import('react-router'), async (importOriginal) => {
 })
 
 describe('BeregningEnkel', () => {
+  afterEach(() => {
+    vi.clearAllMocks()
+  })
+
   describe('Gitt at en bruker ikke mottar uføretrygd', () => {
     it('kalles endepunktet for tidligst mulig uttaksalder med riktig request body', async () => {
       const initiateMock = vi.spyOn(
@@ -49,7 +53,6 @@ describe('BeregningEnkel', () => {
           userInput: {
             ...userInputInitialState,
             samtykke: true,
-            samboer: false,
             afp: 'ja_privat',
           },
         },
@@ -96,7 +99,6 @@ describe('BeregningEnkel', () => {
             ...userInputInitialState,
             samtykke: true,
             samtykkeOffentligAFP: false,
-            samboer: false,
             afp: 'ja_offentlig',
           },
         },
@@ -179,7 +181,6 @@ describe('BeregningEnkel', () => {
             userInput: {
               ...userInputInitialState,
               samtykke: true,
-              samboer: false,
             },
           },
         })
@@ -210,7 +211,6 @@ describe('BeregningEnkel', () => {
             userInput: {
               ...userInputInitialState,
               samtykke: true,
-              samboer: false,
             },
           },
         })
@@ -255,7 +255,6 @@ describe('BeregningEnkel', () => {
           userInput: {
             ...userInputInitialState,
             samtykke: true,
-            samboer: false,
             afp: 'ja_privat',
           },
         },
@@ -279,7 +278,6 @@ describe('BeregningEnkel', () => {
           userInput: {
             ...userInputInitialState,
             samtykke: true,
-            samboer: false,
             afp: 'ja_privat',
           },
         },
@@ -818,7 +816,6 @@ describe('BeregningEnkel', () => {
           userInput: {
             ...userInputInitialState,
             samtykke: true,
-            samboer: false,
             currentSimulation: {
               utenlandsperioder: [],
               formatertUttaksalderReadOnly: '63 alder.aar',

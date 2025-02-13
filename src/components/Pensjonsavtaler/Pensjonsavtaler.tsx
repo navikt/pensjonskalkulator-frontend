@@ -21,9 +21,10 @@ import {
   selectAarligInntektFoerUttakBeloep,
   selectAfp,
   selectFoedselsdato,
-  selectSamboer,
   selectUfoeregrad,
   selectSivilstand,
+  selectEpsHarInntektOver2G,
+  selectEpsHarPensjon,
   selectCurrentSimulation,
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputReducer'
@@ -35,7 +36,7 @@ import { PrivatePensjonsavtaler } from './PrivatePensjonsavtaler'
 import styles from './Pensjonsavtaler.module.scss'
 
 export const Pensjonsavtaler = (props: {
-  headingLevel: HeadingProps['level']
+  headingLevel: Exclude<HeadingProps['level'], undefined>
 }) => {
   const { headingLevel } = props
   const { pensjonsavtalerShowMoreRef } = React.useContext(BeregningContext)
@@ -50,7 +51,8 @@ export const Pensjonsavtaler = (props: {
   const ufoeregrad = useAppSelector(selectUfoeregrad)
   const afp = useAppSelector(selectAfp)
   const foedselsdato = useAppSelector(selectFoedselsdato)
-  const harSamboer = useAppSelector(selectSamboer)
+  const epsHarInntektOver2G = useAppSelector(selectEpsHarInntektOver2G)
+  const epsHarPensjon = useAppSelector(selectEpsHarPensjon)
   const {
     uttaksalder,
     aarligInntektVsaHelPensjon,
@@ -76,7 +78,8 @@ export const Pensjonsavtaler = (props: {
       const requestBody = generateOffentligTpRequestBody({
         afp,
         foedselsdato,
-        harSamboer,
+        epsHarInntektOver2G,
+        epsHarPensjon,
         aarligInntektFoerUttakBeloep: aarligInntektFoerUttakBeloep ?? '0',
         gradertUttak: gradertUttaksperiode ? gradertUttaksperiode : undefined,
         heltUttak: {
@@ -99,7 +102,8 @@ export const Pensjonsavtaler = (props: {
         ufoeregrad,
         afp,
         sivilstand,
-        harSamboer,
+        epsHarInntektOver2G,
+        epsHarPensjon,
         aarligInntektFoerUttakBeloep: aarligInntektFoerUttakBeloep ?? '0',
         gradertUttak: gradertUttaksperiode ? gradertUttaksperiode : undefined,
         heltUttak: {
@@ -123,11 +127,9 @@ export const Pensjonsavtaler = (props: {
   )
 
   const subHeadingLevel = React.useMemo(() => {
-    return headingLevel
-      ? ((
-          parseInt(headingLevel as string, 10) + 1
-        ).toString() as HeadingProps['level'])
-      : '4'
+    return (
+      headingLevel ? (parseInt(headingLevel, 10) + 1).toString() : '4'
+    ) as Exclude<HeadingProps['level'], undefined>
   }, [headingLevel])
 
   const onCancel = (e: React.MouseEvent<HTMLAnchorElement>): void => {
