@@ -41,7 +41,6 @@ export const useStegvisningNavigation = (currentPath: Path) => {
     const stepArrays = isEndring ? stegvisningOrderEndring : stegvisningOrder
 
     const currentPathIndex = stepArrays.indexOf(currentPath)
-    console.log('currentPathIndex', currentPathIndex)
 
     // Hvis brukeren er på eller forbi afp steget
     if (
@@ -54,7 +53,6 @@ export const useStegvisningNavigation = (currentPath: Path) => {
         foedselsdato &&
         isFoedselsdatoOverEllerLikMinUttaksalder(foedselsdato)
       ) {
-        console.log('currentPathIndex >= 4: +1')
         antallStepTilbake = antallStepTilbake + 1
       } else if (loependeVedtak?.afpPrivat || loependeVedtak?.afpOffentlig) {
         // Bruker med vedtak om AFP har ikke fått steg om AFP og skal navigere tilbake forbi den
@@ -75,7 +73,6 @@ export const useStegvisningNavigation = (currentPath: Path) => {
           foedselsdato &&
           isFoedselsdatoOverEllerLikMinUttaksalder(foedselsdato))
       ) {
-        console.log('currentPathIndex >= 5: +1')
         antallStepTilbake = antallStepTilbake + 1
       }
     }
@@ -87,11 +84,10 @@ export const useStegvisningNavigation = (currentPath: Path) => {
     ) {
       // Bruker med uføretrygd eller brukere som har svart noe annet enn "ja_offentlig" på afp steget har ikke fått info steg om samtykkeOffentligAFP og skal navigere tilbake forbi den
       if (ufoeregrad || afp !== 'ja_offentlig') {
-        console.log('currentPathIndex >= 6: +1', afp)
         antallStepTilbake = antallStepTilbake + 1
       }
     }
-    console.log('>>> onStegvisningPrevious', antallStepTilbake)
+
     navigate(stepArrays[currentPathIndex - antallStepTilbake])
   }
 

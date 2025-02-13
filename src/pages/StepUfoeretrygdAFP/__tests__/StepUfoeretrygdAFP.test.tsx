@@ -19,6 +19,10 @@ vi.mock(import('react-router'), async (importOriginal) => {
 })
 
 describe('StepUfoeretrygdAFP', () => {
+  afterEach(() => {
+    vi.resetAllMocks()
+  })
+
   it('har riktig sidetittel', () => {
     render(<StepUfoeretrygdAFP />)
     expect(document.title).toBe('application.title.stegvisning.ufoeretryg_AFP')
@@ -52,6 +56,7 @@ describe('StepUfoeretrygdAFP', () => {
             ...fulfilledGetLoependeVedtak75Ufoeregrad,
           },
         },
+        userInput: { ...userInputInitialState, afp: 'ja_privat' },
       },
     })
     await user.click(await screen.findByText('stegvisning.tilbake'))
