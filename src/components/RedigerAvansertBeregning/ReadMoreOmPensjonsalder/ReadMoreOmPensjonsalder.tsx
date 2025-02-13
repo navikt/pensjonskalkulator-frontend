@@ -34,7 +34,7 @@ export const ReadMoreOmPensjonsalder: React.FC<Props> = ({
                 : 'omufoeretrygd.readmore.gradert.avansert.ingress'
             }
             values={{
-              ...getFormatMessageValues(intl),
+              ...getFormatMessageValues(),
             }}
           />
         </BodyLong>
@@ -48,7 +48,7 @@ export const ReadMoreOmPensjonsalder: React.FC<Props> = ({
                   : 'beregning.read_more.pensjonsalder.body'
               }
               values={{
-                ...getFormatMessageValues(intl),
+                ...getFormatMessageValues(),
               }}
             />
           </BodyLong>

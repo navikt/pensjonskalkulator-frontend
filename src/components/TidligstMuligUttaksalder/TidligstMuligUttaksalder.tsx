@@ -45,7 +45,7 @@ export const TidligstMuligUttaksalder: React.FC<Props> = ({
             <FormattedMessage
               id="tidligstmuliguttak.error"
               values={{
-                ...getFormatMessageValues(intl),
+                ...getFormatMessageValues(),
               }}
             />
           </BodyLong>
@@ -60,7 +60,7 @@ export const TidligstMuligUttaksalder: React.FC<Props> = ({
                   : 'omufoeretrygd.gradert.ingress'
               }
               values={{
-                ...getFormatMessageValues(intl),
+                ...getFormatMessageValues(),
                 grad: ufoeregrad,
                 link: (
                   <Link href="#" onClick={goToAvansert}>
@@ -78,7 +78,7 @@ export const TidligstMuligUttaksalder: React.FC<Props> = ({
               <FormattedMessage
                 id="tidligstmuliguttak.ingress_1"
                 values={{
-                  ...getFormatMessageValues(intl),
+                  ...getFormatMessageValues(),
                 }}
               />
             </BodyLong>
@@ -91,7 +91,7 @@ export const TidligstMuligUttaksalder: React.FC<Props> = ({
                   show1963Text ? '1963' : '1964'
                 }.ingress_2`}
                 values={{
-                  ...getFormatMessageValues(intl),
+                  ...getFormatMessageValues(),
                 }}
               />
             </BodyLong>
@@ -103,7 +103,7 @@ export const TidligstMuligUttaksalder: React.FC<Props> = ({
             <FormattedMessage
               id="tidligstmuliguttak.info_omstillingsstoenad_og_gjenlevende"
               values={{
-                ...getFormatMessageValues(intl),
+                ...getFormatMessageValues(),
               }}
             />
           </Alert>
@@ -122,7 +122,7 @@ export const TidligstMuligUttaksalder: React.FC<Props> = ({
                   : 'omufoeretrygd.readmore.gradert.ingress'
               }
               values={{
-                ...getFormatMessageValues(intl),
+                ...getFormatMessageValues(),
               }}
             />
           </ReadMore>
@@ -138,14 +138,14 @@ export const TidligstMuligUttaksalder: React.FC<Props> = ({
               <FormattedMessage
                 id="beregning.read_more.pensjonsalder.body.optional"
                 values={{
-                  ...getFormatMessageValues(intl),
+                  ...getFormatMessageValues(),
                 }}
               />
             )}
             <FormattedMessage
               id="beregning.read_more.pensjonsalder.body"
               values={{
-                ...getFormatMessageValues(intl),
+                ...getFormatMessageValues(),
               }}
             />
           </ReadMore>

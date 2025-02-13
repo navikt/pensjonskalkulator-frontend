@@ -96,7 +96,7 @@ export const GrunnlagAFP: React.FC<Props> = ({ goToStart }) => {
             <FormattedMessage
               id={formatertAfpIngress}
               values={{
-                ...getFormatMessageValues(intl),
+                ...getFormatMessageValues(),
               }}
             />
 
