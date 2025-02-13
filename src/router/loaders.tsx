@@ -432,7 +432,7 @@ export const stepUfoeretrygdAFPAccessGuard =
       ? stegvisningOrderEndring
       : stegvisningOrder
 
-    // Bruker med uføretrygd, som svarer ja til afp, og som er under 62 kan se steget
+    // Bruker med uføretrygd, som svarer ja eller vet_ikke til afp, og som er under 62 kan se steget
     if (
       (getLoependeVedtakResponse.data as LoependeVedtak).ufoeretrygd.grad &&
       afp !== 'nei' &&
