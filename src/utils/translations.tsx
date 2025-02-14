@@ -238,6 +238,21 @@ export const getFormatMessageValues = (
         />
       </Link>
     ),
+    ufoeretrygdOgAfpLink: (chunks: string) => (
+      <Link
+        onClick={logOpenLink}
+        href={externalUrls.ufoeretrygdOgAfp}
+        target="_blank"
+        inlineText
+      >
+        {chunks}
+        <ExternalLinkIcon
+          title={intl.formatMessage({ id: 'application.global.external_link' })}
+          width="1.25rem"
+          height="1.25rem"
+        />
+      </Link>
+    ),
     personopplysningerLink: (chunks: string) => (
       <Link
         onClick={logOpenLink}
