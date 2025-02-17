@@ -10,7 +10,6 @@ on:
       - dreambox
       - coffeebox
       - codebox
-      - tpnummer
     paths-ignore:
       - '.gitignore'
       - 'CODEOWNERS'
@@ -232,7 +231,7 @@ jobs:
       (github.event_name == 'push' ||
       github.event_name == 'workflow_dispatch') &&
       github.event.inputs.prod != 'true' &&
-      github.ref == 'refs/heads/tpnummer'
+      github.ref == 'refs/heads/sandbox'
     env:
       IMAGE: ghcr.io/${{ github.repository }}/pensjonskalkulator-frontend-node:${{ github.sha }}
     steps:
