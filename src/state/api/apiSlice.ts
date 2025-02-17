@@ -4,6 +4,7 @@ import {
   FetchBaseQueryError,
 } from '@reduxjs/toolkit/query/react'
 
+import { tpNummerMap } from '@/components/Pensjonsavtaler/OffentligTjenestePensjon/utils'
 import { API_BASEURL } from '@/paths'
 import { RootState } from '@/state/store'
 import {
@@ -140,8 +141,7 @@ export const apiSlice = createApi({
         }
 
         if (
-          data.simulertTjenestepensjon?.tpLeverandoer ===
-            'Kommunal Landspensjonskasse' &&
+          tpNummerMap[data.simulertTjenestepensjon?.tpNummer || ''] === 'klp' &&
           !featureToggleResult.data?.enabled
         ) {
           data.simuleringsresultatStatus = 'TP_ORDNING_STOETTES_IKKE'
