@@ -28,6 +28,8 @@ const translations = {
     'lorem ipsum dolor <trygdetidLink>my link</trygdetidLink>',
   'translation.test.kortBotidLink':
     'lorem ipsum dolor <kortBotidLink>my link</kortBotidLink>',
+  'translation.test.ufoeretrygdOgAfpLink':
+    'lorem ipsum dolor <ufoeretrygdOgAfpLink>my link</ufoeretrygdOgAfpLink>',
   'translation.test.personopplysningerLink':
     'lorem ipsum dolor <personopplysningerLink>my link</personopplysningerLink>',
   'translation.test.spkLink': 'lorem ipsum dolor <spkLink>my link</spkLink>',
