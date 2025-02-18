@@ -42,11 +42,8 @@ export const useStegvisningNavigation = (currentPath: Path) => {
 
     const currentPathIndex = stepArrays.indexOf(currentPath)
 
-    // Hvis brukeren er på eller forbi afp steget
-    if (
-      (!isEndring && currentPathIndex >= 4) ||
-      (isEndring && currentPathIndex >= 2)
-    ) {
+    // Hvis brukeren er på eller forbi afp steget (gjelder både endring og vanlig flyt)
+    if (currentPathIndex >= stepArrays.indexOf(paths.afp)) {
       // Bruker med uføretrygd som er eldre enn AFP-Uføre oppsigelsesalder har ikke fått steg om AFP og skal navigere tilbake forbi den
       if (
         ufoeregrad &&
@@ -60,11 +57,8 @@ export const useStegvisningNavigation = (currentPath: Path) => {
       }
     }
 
-    // Hvis brukeren er på eller forbi ufoeretrygdAFP steget
-    if (
-      (!isEndring && currentPathIndex >= 5) ||
-      (isEndring && currentPathIndex >= 3)
-    ) {
+    // Hvis brukeren er på eller forbi ufoeretrygdAFP steget (gjelder både endring og vanlig flyt)
+    if (currentPathIndex >= stepArrays.indexOf(paths.ufoeretrygdAFP)) {
       // Bruker uten uføretryg, eller bruker med uføretrygd som har svart "nei" på AFP, eller bruker med uføretrygd eldre enn AFP-Uføre oppsigelsesalder har ikke fått infosteg om AFP + Uføretrygd og skal navigere tilbake forbi den
       if (
         !ufoeregrad ||
@@ -77,11 +71,8 @@ export const useStegvisningNavigation = (currentPath: Path) => {
       }
     }
 
-    // Hvis brukeren er på eller forbi samtykkeOffentligAFP steget
-    if (
-      (!isEndring && currentPathIndex >= 6) ||
-      (isEndring && currentPathIndex >= 4)
-    ) {
+    // Hvis brukeren er på eller forbi samtykkeOffentligAFP steget (gjelder både endring og vanlig flyt)
+    if (currentPathIndex >= stepArrays.indexOf(paths.samtykkeOffentligAFP)) {
       // Bruker med uføretrygd eller brukere som har svart noe annet enn "ja_offentlig" på afp steget har ikke fått info steg om samtykkeOffentligAFP og skal navigere tilbake forbi den
       if (ufoeregrad || afp !== 'ja_offentlig') {
         antallStepTilbake = antallStepTilbake + 1
