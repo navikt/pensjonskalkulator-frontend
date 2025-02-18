@@ -179,7 +179,14 @@ app.use(
 )
 
 const getUsernameFromAzureToken = async (req: Request) => {
-  const token = getToken(req)
+  let token = getToken(req)
+
+  // Returner access token fra env-var som det finnes sammen med at man utviklerer lokalt
+  if (isDevelopment && process.env.ACCESS_TOKEN) {
+    logger.info('Using ACCESS_TOKEN fron environment')
+    token = process.env.ACCESS_TOKEN
+  }
+
   if (!token) {
     logger.info('No token found in request', {
       'x_correlation-id': req.headers['x_correlation-id'],
@@ -195,7 +202,7 @@ const getUsernameFromAzureToken = async (req: Request) => {
     throw new Error('403')
   }
 
-  return parse.preferred_username
+  return parse.name
 }
 
 const getOboToken = async (req: Request) => {
@@ -272,6 +279,9 @@ const redirect163Middleware = async (
   res: Response,
   next: NextFunction
 ) => {
+  if (AUTH_PROVIDER === 'azure') {
+    return next()
+  }
   const disableRedirectToggle = unleash.isEnabled(
     'pensjonskalkulator.disable-redirect-1963'
   )
