@@ -69,7 +69,7 @@ export function Forbehold() {
             <FormattedMessage
               id="forbehold.intro"
               values={{
-                ...getFormatMessageValues(intl),
+                ...getFormatMessageValues(),
               }}
             />
           </BodyLong>
@@ -81,7 +81,7 @@ export function Forbehold() {
               <FormattedMessage
                 id="forbehold.inntekt.ingress"
                 values={{
-                  ...getFormatMessageValues(intl),
+                  ...getFormatMessageValues(),
                 }}
               />
             </BodyLong>
@@ -94,7 +94,7 @@ export function Forbehold() {
               <FormattedMessage
                 id="forbehold.utenlandsopphold.ingress"
                 values={{
-                  ...getFormatMessageValues(intl),
+                  ...getFormatMessageValues(),
                 }}
               />
             </BodyLong>
@@ -107,7 +107,7 @@ export function Forbehold() {
               <FormattedMessage
                 id="forbehold.sivilstand.ingress"
                 values={{
-                  ...getFormatMessageValues(intl),
+                  ...getFormatMessageValues(),
                 }}
               />
             </BodyLong>
@@ -120,7 +120,7 @@ export function Forbehold() {
               <FormattedMessage
                 id="forbehold.afp.ingress"
                 values={{
-                  ...getFormatMessageValues(intl),
+                  ...getFormatMessageValues(),
                 }}
               />
             </BodyLong>
@@ -133,7 +133,7 @@ export function Forbehold() {
               <FormattedMessage
                 id="forbehold.uforetrygd.ingress"
                 values={{
-                  ...getFormatMessageValues(intl),
+                  ...getFormatMessageValues(),
                 }}
               />
             </BodyLong>
@@ -146,7 +146,7 @@ export function Forbehold() {
               <FormattedMessage
                 id="forbehold.uforetrygd_afp.ingress"
                 values={{
-                  ...getFormatMessageValues(intl),
+                  ...getFormatMessageValues(),
                 }}
               />
             </BodyLong>
@@ -159,7 +159,7 @@ export function Forbehold() {
               <FormattedMessage
                 id="forbehold.gjenlevende.ingress"
                 values={{
-                  ...getFormatMessageValues(intl),
+                  ...getFormatMessageValues(),
                 }}
               />
             </BodyLong>
@@ -172,7 +172,7 @@ export function Forbehold() {
               <FormattedMessage
                 id="forbehold.pensjonsavtaler.ingress"
                 values={{
-                  ...getFormatMessageValues(intl),
+                  ...getFormatMessageValues(),
                 }}
               />
             </BodyLong>

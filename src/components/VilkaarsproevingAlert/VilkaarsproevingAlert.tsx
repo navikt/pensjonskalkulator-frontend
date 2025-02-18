@@ -1,6 +1,6 @@
 /* c8 disable */
 import React from 'react'
-import { FormattedMessage, useIntl } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 
 import { Alert } from '@navikt/ds-react'
 
@@ -16,7 +16,6 @@ export const VilkaarsproevingAlert: React.FC<Props> = ({
   vilkaarsproeving,
   uttaksalder,
 }) => {
-  const intl = useIntl()
   const harIkkeNokOpptjening = React.useMemo(() => {
     return (
       JSON.stringify(vilkaarsproeving.alternativ?.heltUttaksalder) ===
@@ -42,7 +41,7 @@ export const VilkaarsproevingAlert: React.FC<Props> = ({
             ? 'beregning.vilkaarsproeving.intro.ikke_nok_opptjening'
             : 'beregning.vilkaarsproeving.intro.optional'
         }
-        values={{ ...getFormatMessageValues(intl) }}
+        values={{ ...getFormatMessageValues() }}
       />
 
       {
@@ -53,7 +52,7 @@ export const VilkaarsproevingAlert: React.FC<Props> = ({
             <FormattedMessage
               id="beregning.vilkaarsproeving.alternativer.heltUttak"
               values={{
-                ...getFormatMessageValues(intl),
+                ...getFormatMessageValues(),
                 alternativtHeltStartAar:
                   vilkaarsproeving.alternativ.heltUttaksalder?.aar,
                 alternativtHeltStartMaaned:
@@ -70,7 +69,7 @@ export const VilkaarsproevingAlert: React.FC<Props> = ({
             <FormattedMessage
               id="beregning.vilkaarsproeving.alternativer.gradertUttak"
               values={{
-                ...getFormatMessageValues(intl),
+                ...getFormatMessageValues(),
                 alternativtGrad: vilkaarsproeving.alternativ.uttaksgrad,
                 alternativtGradertStartAar:
                   vilkaarsproeving.alternativ.gradertUttaksalder?.aar,
@@ -88,7 +87,7 @@ export const VilkaarsproevingAlert: React.FC<Props> = ({
             <FormattedMessage
               id="beregning.vilkaarsproeving.alternativer.heltOgGradertUttak"
               values={{
-                ...getFormatMessageValues(intl),
+                ...getFormatMessageValues(),
                 alternativtGrad: vilkaarsproeving.alternativ.uttaksgrad,
                 alternativtGradertStartAar:
                   vilkaarsproeving.alternativ.gradertUttaksalder?.aar,

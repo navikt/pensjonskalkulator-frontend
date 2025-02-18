@@ -130,7 +130,7 @@ export function Utenlandsopphold({
           <FormattedMessage
             id="stegvisning.utenlandsopphold.readmore_1.opphold.subtitle"
             values={{
-              ...getFormatMessageValues(intl),
+              ...getFormatMessageValues(),
             }}
           />
           <ul>
@@ -144,7 +144,7 @@ export function Utenlandsopphold({
           <FormattedMessage
             id="stegvisning.utenlandsopphold.readmore_1.ikke_opphold.subtitle"
             values={{
-              ...getFormatMessageValues(intl),
+              ...getFormatMessageValues(),
             }}
           />
           <ul>
@@ -170,7 +170,7 @@ export function Utenlandsopphold({
           <FormattedMessage
             id="stegvisning.utenlandsopphold.readmore_1.ingress"
             values={{
-              ...getFormatMessageValues(intl),
+              ...getFormatMessageValues(),
             }}
           />
         </ReadMore>
@@ -198,7 +198,7 @@ export function Utenlandsopphold({
           <FormattedMessage
             id="stegvisning.utenlandsopphold.readmore_2.ingress"
             values={{
-              ...getFormatMessageValues(intl),
+              ...getFormatMessageValues(),
             }}
           />
         </ReadMore>
