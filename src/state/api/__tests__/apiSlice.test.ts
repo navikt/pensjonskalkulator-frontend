@@ -250,6 +250,7 @@ describe('apiSlice', () => {
           simulertTjenestepensjon: {
             ...offentligTpResponse.simulertTjenestepensjon,
             tpLeverandoer: 'Kommunal Landspensjonskasse',
+            tpNummer: '4080',
           },
         },
       })
@@ -274,6 +275,7 @@ describe('apiSlice', () => {
         simulertTjenestepensjon: {
           ...offentligTpResponse.simulertTjenestepensjon,
           tpLeverandoer: 'Kommunal Landspensjonskasse',
+          tpNummer: '4080',
         },
       }
       mockResponse('/v2/simuler-oftp', {
