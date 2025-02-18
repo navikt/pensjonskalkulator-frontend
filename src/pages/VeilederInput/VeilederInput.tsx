@@ -5,7 +5,6 @@ import {
   Alert,
   BodyLong,
   Button,
-  HGrid,
   HStack,
   Heading,
   InternalHeader,
@@ -207,7 +206,9 @@ export const VeilederInput = () => {
         {veilederBorgerFnr && (
           <BorgerInformasjon fnr={veilederBorgerFnr}></BorgerInformasjon>
         )}
-        {showDelbWarning && <AlertDelB fnr={veilederBorgerFnr!} />}
+        <div className={styles.alert}>
+          {showDelbWarning && <AlertDelB fnr={veilederBorgerFnr!} />}
+        </div>
         <RouterProvider router={router} />
       </div>
     )

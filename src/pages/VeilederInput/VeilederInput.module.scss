@@ -1,3 +1,14 @@
+@use '../../scss/variables';
+
 .form {
   max-width: 16em;
+}
+
+.alert {
+  background: var(--a-gray-100);
+}
+
+.alert > * {
+  margin: 0 auto;
+  max-width: variables.$container-max-width;
 }
