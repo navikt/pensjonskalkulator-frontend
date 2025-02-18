@@ -88,11 +88,12 @@ describe('stegvisning - hooks', () => {
           const wrapper = ({ children }: { children: React.ReactNode }) => {
             const storeRef = setupStore(
               {
+                // @ts-ignore
                 api: {
                   ...apiMock,
                 },
                 userInput: { ...userInputInitialState },
-              } as unknown as RootState,
+              },
               true
             )
             return <Provider store={storeRef}>{children}</Provider>
@@ -122,11 +123,12 @@ describe('stegvisning - hooks', () => {
           const wrapper = ({ children }: { children: React.ReactNode }) => {
             const storeRef = setupStore(
               {
+                // @ts-ignore
                 api: {
                   ...apiMock,
                 },
                 userInput: { ...userInputInitialState, afp: 'nei' },
-              } as unknown as RootState,
+              },
               true
             )
             return <Provider store={storeRef}>{children}</Provider>
@@ -146,11 +148,12 @@ describe('stegvisning - hooks', () => {
           const wrapper = ({ children }: { children: React.ReactNode }) => {
             const storeRef = setupStore(
               {
+                // @ts-ignore
                 api: {
                   ...apiMock,
                 },
                 userInput: { ...userInputInitialState, afp: 'ja_offentlig' },
-              } as unknown as RootState,
+              },
               true
             )
             return <Provider store={storeRef}>{children}</Provider>
@@ -170,11 +173,12 @@ describe('stegvisning - hooks', () => {
           const wrapper = ({ children }: { children: React.ReactNode }) => {
             const storeRef = setupStore(
               {
+                // @ts-ignore
                 api: {
                   ...apiMock,
                 },
                 userInput: { ...userInputInitialState, afp: 'ja_offentlig' },
-              } as unknown as RootState,
+              },
               true
             )
             return <Provider store={storeRef}>{children}</Provider>
@@ -204,11 +208,12 @@ describe('stegvisning - hooks', () => {
           const wrapper = ({ children }: { children: React.ReactNode }) => {
             const storeRef = setupStore(
               {
+                // @ts-ignore
                 api: {
                   ...apiMock,
                 },
                 userInput: { ...userInputInitialState, afp: 'ja_privat' },
-              } as unknown as RootState,
+              },
               true
             )
             return <Provider store={storeRef}>{children}</Provider>
@@ -290,11 +295,12 @@ describe('stegvisning - hooks', () => {
           const wrapper = ({ children }: { children: React.ReactNode }) => {
             const storeRef = setupStore(
               {
+                // @ts-ignore
                 api: {
                   ...apiMock,
                 },
                 userInput: { ...userInputInitialState, afp: 'ja_offentlig' },
-              } as unknown as RootState,
+              },
               true
             )
             return <Provider store={storeRef}>{children}</Provider>
@@ -324,11 +330,12 @@ describe('stegvisning - hooks', () => {
           const wrapper = ({ children }: { children: React.ReactNode }) => {
             const storeRef = setupStore(
               {
+                // @ts-ignore
                 api: {
                   ...apiMock,
                 },
                 userInput: { ...userInputInitialState, afp: 'ja_offentlig' },
-              } as unknown as RootState,
+              },
               true
             )
             return <Provider store={storeRef}>{children}</Provider>
