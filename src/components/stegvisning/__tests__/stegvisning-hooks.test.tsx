@@ -33,7 +33,7 @@ describe('stegvisning - hooks', () => {
         vi.resetAllMocks()
       })
 
-      it('navigerer riktig fremover, bakover og ved kansellering', () => {
+      it('navigerer riktig fremover, bakover og ved kansellering.', () => {
         const flushMock = vi.spyOn(
           userInputReducerUtils.userInputActions,
           'flush'
@@ -84,7 +84,7 @@ describe('stegvisning - hooks', () => {
           },
         }
 
-        it('Når brukeren navigerer tilbake fra samtykke steget, er hen sendt tilbake til utenlandsopphold steget ', () => {
+        it('Når brukeren navigerer tilbake fra samtykke steget, er hen sendt tilbake til utenlandsopphold steget.', () => {
           const wrapper = ({ children }: { children: React.ReactNode }) => {
             const storeRef = setupStore(
               {
@@ -119,7 +119,7 @@ describe('stegvisning - hooks', () => {
           },
         }
 
-        it('Når brukeren har svart "nei" på AFP steget og navigerer tilbake fra samtykke steget, er hen sendt tilbake til afp steget ', () => {
+        it('Når brukeren har svart "nei" på AFP steget og navigerer tilbake fra samtykke steget, er hen sendt tilbake til afp steget.', () => {
           const wrapper = ({ children }: { children: React.ReactNode }) => {
             const storeRef = setupStore(
               {
@@ -169,7 +169,7 @@ describe('stegvisning - hooks', () => {
           expect(navigateMock).toHaveBeenCalledWith(paths.ufoeretrygdAFP)
         })
 
-        it('Når brukeren navigerer tilbake fra ufoeretrygdAFP steget, er hen sendt tilbake til afp steget ', () => {
+        it('Når brukeren navigerer tilbake fra ufoeretrygdAFP steget, er hen sendt tilbake til afp steget.', () => {
           const wrapper = ({ children }: { children: React.ReactNode }) => {
             const storeRef = setupStore(
               {
@@ -204,7 +204,7 @@ describe('stegvisning - hooks', () => {
           },
         }
 
-        it('Når brukeren navigerer tilbake fra samtykke steget, er hen sendt tilbake til afp steget ', () => {
+        it('Når brukeren navigerer tilbake fra samtykke steget, er hen sendt tilbake til afp steget.', () => {
           const wrapper = ({ children }: { children: React.ReactNode }) => {
             const storeRef = setupStore(
               {
@@ -240,7 +240,7 @@ describe('stegvisning - hooks', () => {
       // brukere med uføretrygd  eldre enn AFP-Uføre oppsigelsesalder får ikke AFP steg og går da direkte til beregning (ingen tilbakeknapp der)
       // brukere med AFP vedtak får ikke AFP steg og går da direkte til beregning (ingen tilbakeknapp der)
 
-      it('navigerer riktig fremover, bakover og ved kansellering', () => {
+      it('navigerer riktig fremover, bakover og ved kansellering.', () => {
         const flushMock = vi.spyOn(
           userInputReducerUtils.userInputActions,
           'flush'
@@ -291,7 +291,7 @@ describe('stegvisning - hooks', () => {
           },
         }
 
-        it('Når brukeren navigerer tilbake fra ufoeretrygdAFP steget, er hen sendt tilbake til afp steget ', () => {
+        it('Når brukeren navigerer tilbake fra ufoeretrygdAFP steget, er hen sendt tilbake til afp steget.', () => {
           const wrapper = ({ children }: { children: React.ReactNode }) => {
             const storeRef = setupStore(
               {
@@ -326,7 +326,7 @@ describe('stegvisning - hooks', () => {
           },
         }
 
-        it('Når brukeren og har svart "ja_offentlig" på samtykkeOffentligAFP steget og navigerer tilbake fra, er hen sendt tilbake til afp steget ', () => {
+        it('Når brukeren har svart "ja_offentlig" og navigerer tilbake fra samtykkeOffentligAFP, er hen sendt tilbake til afp steget.', () => {
           const wrapper = ({ children }: { children: React.ReactNode }) => {
             const storeRef = setupStore(
               {
