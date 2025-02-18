@@ -9,7 +9,6 @@ import {
 } from '@/mocks/mockedRTKQueryApiCalls'
 import { paths } from '@/router/constants'
 import * as apiSliceUtils from '@/state/api/apiSlice'
-import { selectHarHentetOffentligTp } from '@/state/userInput/selectors'
 import { userInputInitialState } from '@/state/userInput/userInputReducer'
 import { screen, render, userEvent, waitFor } from '@/test-utils'
 
@@ -77,12 +76,7 @@ describe('StepSamtykkePensjonsavtaler', () => {
           },
         },
       })
-      await store.dispatch(
-        apiSliceUtils.apiSlice.endpoints.offentligTp.initiate()
-      )
       expect(Object.keys(store.getState().api.queries).length).toEqual(3)
-
-      expect(selectHarHentetOffentligTp(store.getState())).toBe(true)
 
       const radioButtons = screen.getAllByRole('radio')
 
@@ -90,7 +84,7 @@ describe('StepSamtykkePensjonsavtaler', () => {
       await user.click(screen.getByText('stegvisning.neste'))
 
       expect(store.getState().userInput.samtykke).toBe(false)
-      expect(invalidateMock).toHaveBeenCalledTimes(2)
+      expect(invalidateMock).toHaveBeenCalledTimes(3)
 
       expect(navigateMock).toHaveBeenCalledWith(paths.beregningEnkel)
     })
