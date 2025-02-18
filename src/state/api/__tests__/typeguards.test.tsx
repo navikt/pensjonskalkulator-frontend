@@ -948,6 +948,7 @@ describe('Typeguards', () => {
           ],
           simulertTjenestepensjon: {
             tpLeverandoer: 'Statens pensjonskasse',
+            tpNummer: '3010',
             simuleringsresultat: {
               utbetalingsperioder: [
                 {
