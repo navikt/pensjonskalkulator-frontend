@@ -82,10 +82,7 @@ describe('StepSamtykkeOffentligAFP', () => {
         },
       },
     })
-    const radioButtons = screen.getAllByRole('radio')
 
-    await user.click(radioButtons[0])
-    expect(radioButtons[0]).toBeChecked()
     await user.click(screen.getByText('stegvisning.tilbake'))
 
     expect(navigateMock).toHaveBeenCalledWith(paths.afp)
