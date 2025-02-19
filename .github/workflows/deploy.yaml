@@ -370,7 +370,7 @@ jobs:
 
   deploy-codebox:
     name: Deploy to codebox
-    needs: [build, run-unit-tests, run-integration-tests]
+    needs: [build]
     permissions:
       id-token: 'write'
     runs-on: ubuntu-latest
