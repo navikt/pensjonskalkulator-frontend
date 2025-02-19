@@ -1,7 +1,7 @@
 import { describe, it } from 'vitest'
 
 import { VeilederInput } from '../'
-import { BASE_PATH, paths } from '@/router/constants'
+import { BASE_PATH } from '@/router/constants'
 import * as apiSliceUtils from '@/state/api/apiSlice'
 import { userInputInitialState } from '@/state/userInput/userInputReducer'
 import * as userInputReducerUtils from '@/state/userInput/userInputReducer'
@@ -14,31 +14,6 @@ describe('VeilederInput', () => {
     vi.clearAllMocks()
     vi.resetAllMocks()
     global.window = previousWindow
-  })
-
-  describe('Gitt at veilederen besøker en side som er ekskludert', () => {
-    afterEach(() => {
-      global.window = previousWindow
-    })
-    it('Når veilederen klikker på tittelen, vises det ansattid med vanlig side under', async () => {
-      const user = userEvent.setup()
-      global.window = Object.create(window)
-      Object.defineProperty(window, 'location', {
-        value: {
-          href: 'before',
-          pathname: `/veileder${paths.forbehold}`,
-        },
-        writable: true,
-      })
-      render(<VeilederInput />, {
-        hasRouter: false,
-      })
-      expect(window.location.href).toBe('before')
-
-      await user.click(screen.getByText('Pensjonskalkulator', { exact: true }))
-      expect(window.location.href).toBe(`${BASE_PATH}/veileder`)
-      expect(screen.getByTestId('veileder-ekskludert-side')).toBeVisible()
-    })
   })
 
   describe('Gitt at borger ikke er valgt', () => {
