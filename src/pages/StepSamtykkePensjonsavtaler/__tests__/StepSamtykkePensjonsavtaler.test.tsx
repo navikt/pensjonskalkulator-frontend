@@ -2,6 +2,7 @@ import { describe, it, vi } from 'vitest'
 
 import { StepSamtykkePensjonsavtaler } from '..'
 import {
+  fulfilledGetPerson,
   fulfilledsimulerOffentligTp,
   fulfilledGetLoependeVedtak0Ufoeregrad,
   fulfilledGetLoependeVedtak75Ufoeregrad,
@@ -37,6 +38,7 @@ describe('StepSamtykkePensjonsavtaler', () => {
           api: {
             // @ts-ignore
             queries: {
+              ...fulfilledGetPerson,
               ...fulfilledGetLoependeVedtak0Ufoeregrad,
             },
           },
@@ -66,6 +68,7 @@ describe('StepSamtykkePensjonsavtaler', () => {
           api: {
             // @ts-ignore
             queries: {
+              ...fulfilledGetPerson,
               ...fulfilledsimulerOffentligTp,
               ...fulfilledPensjonsavtaler,
               ...fulfilledGetLoependeVedtak75Ufoeregrad,
@@ -80,7 +83,7 @@ describe('StepSamtykkePensjonsavtaler', () => {
       await store.dispatch(
         apiSliceUtils.apiSlice.endpoints.offentligTp.initiate()
       )
-      expect(Object.keys(store.getState().api.queries).length).toEqual(3)
+      expect(Object.keys(store.getState().api.queries).length).toEqual(4)
 
       expect(selectHarHentetOffentligTp(store.getState())).toBe(true)
 
@@ -118,6 +121,13 @@ describe('StepSamtykkePensjonsavtaler', () => {
     it('vises ikke Avbryt knapp', async () => {
       render(<StepSamtykkePensjonsavtaler />, {
         preloadedState: {
+          api: {
+            // @ts-ignore
+            queries: {
+              ...fulfilledGetPerson,
+              ...fulfilledGetLoependeVedtak0Ufoeregrad,
+            },
+          },
           userInput: {
             ...userInputInitialState,
             veilederBorgerFnr: '81549300',
