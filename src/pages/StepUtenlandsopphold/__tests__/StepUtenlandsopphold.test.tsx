@@ -61,24 +61,21 @@ describe('StepUtenlandsopphold', () => {
         },
         userInput: {
           ...userInputInitialState,
-          currentSimulation: {
-            ...userInputInitialState.currentSimulation,
-            utenlandsperioder: [
-              {
-                id: '1',
-                landkode: 'SWE',
-                startdato: '12.12.2012',
-                sluttdato: '12.12.2013',
-                arbeidetUtenlands: true,
-              },
-              {
-                id: '2',
-                landkode: 'SWE',
-                startdato: '12.12.2020',
-                arbeidetUtenlands: true,
-              },
-            ],
-          },
+          utenlandsperioder: [
+            {
+              id: '1',
+              landkode: 'SWE',
+              startdato: '12.12.2012',
+              sluttdato: '12.12.2013',
+              arbeidetUtenlands: true,
+            },
+            {
+              id: '2',
+              landkode: 'SWE',
+              startdato: '12.12.2020',
+              arbeidetUtenlands: true,
+            },
+          ],
         },
       },
     })
@@ -88,9 +85,7 @@ describe('StepUtenlandsopphold', () => {
     await user.click(await screen.findByText('stegvisning.neste'))
 
     expect(store.getState().userInput.harUtenlandsopphold).toBe(false)
-    expect(
-      store.getState().userInput.currentSimulation.utenlandsperioder
-    ).toStrictEqual([])
+    expect(store.getState().userInput.utenlandsperioder).toStrictEqual([])
     expect(navigateMock).toHaveBeenCalledWith(paths.afp)
   })
 

@@ -15,6 +15,7 @@ describe('store', () => {
       veilederBorgerEncryptedFnr: undefined,
       veilederBorgerFnr: undefined,
       harUtenlandsopphold: true,
+      utenlandsperioder: [],
       samtykke: true,
       samtykkeOffentligAFP: true,
       afp: null,
@@ -22,7 +23,6 @@ describe('store', () => {
       epsHarPensjon: null,
       epsHarInntektOver2G: null,
       currentSimulation: {
-        utenlandsperioder: [],
         formatertUttaksalderReadOnly: null,
         uttaksalder: null,
         aarligInntektFoerUttakBeloep: '500 000',

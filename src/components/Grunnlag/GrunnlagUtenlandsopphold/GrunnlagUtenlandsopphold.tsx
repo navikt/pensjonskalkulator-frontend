@@ -91,9 +91,7 @@ export const GrunnlagUtenlandsopphold: React.FC<Props> = ({
             type="button"
             onClick={() => {
               logger('button klikk', { tekst: 'Tilbake til utenlandsopphold' })
-              dispatch(
-                userInputActions.flushCurrentSimulationUtenomUtenlandsperioder()
-              )
+              dispatch(userInputActions.flushCurrentSimulation())
               avbrytModalRef.current?.close()
               navigate(paths.utenlandsopphold)
             }}

@@ -120,7 +120,7 @@ describe('Grunnlag', () => {
     it('brukeren kan gå til avansert fane og starte en ny beregning', async () => {
       const flushCurrentSimulationMock = vi.spyOn(
         userInputReducerUtils.userInputActions,
-        'flushCurrentSimulationUtenomUtenlandsperioder'
+        'flushCurrentSimulation'
       )
 
       const user = userEvent.setup()

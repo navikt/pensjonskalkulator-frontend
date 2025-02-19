@@ -9,6 +9,9 @@ import { isLoependeVedtakEndring } from '@/utils/loependeVedtak'
 export const selectHarUtenlandsopphold = (state: RootState): boolean | null =>
   state.userInput.harUtenlandsopphold
 
+export const selectUtenlandsperioder = (state: RootState) =>
+  state.userInput.utenlandsperioder
+
 export const selectSamtykke = (state: RootState): boolean | null =>
   state.userInput.samtykke
 
@@ -108,10 +111,6 @@ export const selectAarligInntektFoerUttakBeloep = (
   }
   return aarligInntektFoerUttakBeloepFraBrukerInput
 }
-
-export const selectCurrentSimulationUtenlandsperioder = (
-  state: RootState
-): Utenlandsperiode[] => state.userInput.currentSimulation.utenlandsperioder
 
 export const selectFormatertUttaksalderReadOnly = (
   state: RootState

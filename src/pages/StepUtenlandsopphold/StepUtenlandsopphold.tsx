@@ -33,7 +33,7 @@ export function StepUtenlandsopphold() {
     )
 
     if (utenlandsoppholdData === 'nei') {
-      dispatch(userInputActions.deleteCurrentSimulationAlleUtenlandsperioder())
+      dispatch(userInputActions.clearUtenlandsperioder())
     }
     if (onStegvisningNext) {
       onStegvisningNext()
