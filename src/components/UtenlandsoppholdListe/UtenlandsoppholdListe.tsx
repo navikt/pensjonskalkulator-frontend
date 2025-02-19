@@ -10,7 +10,7 @@ import { getSelectedLanguage } from '@/context/LanguageProvider/utils'
 import { useAppSelector, useAppDispatch } from '@/state/hooks'
 import {
   selectCurrentSimulation,
-  selectCurrentSimulationUtenlandsperioder,
+  selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputReducer'
 import {
@@ -33,9 +33,7 @@ export function UtenlandsoppholdListe({
   const intl = useIntl()
   const avbrytModalRef = React.useRef<HTMLDialogElement>(null)
   const utenlandsoppholdModalRef = React.useRef<HTMLDialogElement>(null)
-  const utenlandsperioder = useAppSelector(
-    selectCurrentSimulationUtenlandsperioder
-  )
+  const utenlandsperioder = useAppSelector(selectUtenlandsperioder)
   const { formatertUttaksalderReadOnly } = useAppSelector(
     selectCurrentSimulation
   )
@@ -110,9 +108,7 @@ export function UtenlandsoppholdListe({
             type="button"
             onClick={() => {
               dispatch(
-                userInputActions.deleteCurrentSimulationUtenlandsperiode(
-                  valgtUtenlandsperiodeId
-                )
+                userInputActions.deleteUtenlandsperiode(valgtUtenlandsperiodeId)
               )
               logger('button klikk', {
                 tekst: `sletter utenlandsopphold`,

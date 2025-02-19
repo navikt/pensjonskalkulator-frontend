@@ -484,7 +484,7 @@ export const onUtenlandsoppholdSubmit = (
     }
 
     dispatch(
-      userInputActions.setCurrentSimulationUtenlandsperiode({
+      userInputActions.setUtenlandsperiode({
         ...updatedUtenlandsperiode,
       })
     )

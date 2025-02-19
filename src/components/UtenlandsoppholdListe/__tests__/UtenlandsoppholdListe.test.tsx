@@ -55,10 +55,7 @@ describe('UtenlandsoppholdListe', () => {
         preloadedState: {
           userInput: {
             ...userInputInitialState,
-            currentSimulation: {
-              ...userInputInitialState.currentSimulation,
-              utenlandsperioder: [...registrertePerioder],
-            },
+            utenlandsperioder: [...registrertePerioder],
           },
         },
       })
@@ -190,10 +187,7 @@ describe('UtenlandsoppholdListe', () => {
         preloadedState: {
           userInput: {
             ...userInputInitialState,
-            currentSimulation: {
-              ...userInputInitialState.currentSimulation,
-              utenlandsperioder: [...registrertePerioder],
-            },
+            utenlandsperioder: [...registrertePerioder],
           },
         },
       })
@@ -392,10 +386,7 @@ describe('UtenlandsoppholdListe', () => {
         preloadedState: {
           userInput: {
             ...userInputInitialState,
-            currentSimulation: {
-              ...userInputInitialState.currentSimulation,
-              utenlandsperioder: [{ ...registrertePerioder[0] }],
-            },
+            utenlandsperioder: [{ ...registrertePerioder[0] }],
           },
         },
       })
@@ -423,10 +414,7 @@ describe('UtenlandsoppholdListe', () => {
         preloadedState: {
           userInput: {
             ...userInputInitialState,
-            currentSimulation: {
-              ...userInputInitialState.currentSimulation,
-              utenlandsperioder: [{ ...registrertePerioder[0] }],
-            },
+            utenlandsperioder: [{ ...registrertePerioder[0] }],
           },
         },
       })
@@ -484,19 +472,16 @@ describe('UtenlandsoppholdListe', () => {
       preloadedState: {
         userInput: {
           ...userInputInitialState,
-          currentSimulation: {
-            ...userInputInitialState.currentSimulation,
-            utenlandsperioder: [
-              ...registrertePerioder,
-              {
-                id: '0',
-                landkode: 'FIN',
-                arbeidetUtenlands: true,
-                startdato: '01.01.1970',
-                sluttdato: '31.12.1990',
-              },
-            ],
-          },
+          utenlandsperioder: [
+            ...registrertePerioder,
+            {
+              id: '0',
+              landkode: 'FIN',
+              arbeidetUtenlands: true,
+              startdato: '01.01.1970',
+              sluttdato: '31.12.1990',
+            },
+          ],
         },
       },
     })

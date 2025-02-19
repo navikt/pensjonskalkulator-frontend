@@ -43,7 +43,7 @@ export const TidligstMuligUttaksalder: React.FC<Props> = ({
 
   const goToAvansert: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     e.preventDefault()
-    dispatch(userInputActions.flushCurrentSimulationUtenomUtenlandsperioder())
+    dispatch(userInputActions.flushCurrentSimulation())
     navigate(paths.beregningAvansert)
   }
 

@@ -343,7 +343,7 @@ describe('TidligstMuligUttaksalder', () => {
     it('viser riktig innhold med gradert ufoeretrygd.', async () => {
       const flushCurrentSimulationMock = vi.spyOn(
         userInputReducerUtils.userInputActions,
-        'flushCurrentSimulationUtenomUtenlandsperioder'
+        'flushCurrentSimulation'
       )
 
       const user = userEvent.setup()

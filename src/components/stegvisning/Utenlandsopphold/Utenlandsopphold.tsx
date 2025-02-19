@@ -13,7 +13,7 @@ import { SanityReadMore } from '@/context/SanityContext/SanityTypes'
 import { paths } from '@/router/constants'
 import { useGetSanityFeatureToggleQuery } from '@/state/api/apiSlice'
 import { useAppSelector } from '@/state/hooks'
-import { selectCurrentSimulationUtenlandsperioder } from '@/state/userInput/selectors'
+import { selectUtenlandsperioder } from '@/state/userInput/selectors'
 import { wrapLogger } from '@/utils/logging'
 import { getSanityPortableTextComponents } from '@/utils/sanity'
 import { getFormatMessageValues } from '@/utils/translations'
@@ -43,9 +43,7 @@ export function Utenlandsopphold({
 
   const { data: sanityFeatureToggle } = useGetSanityFeatureToggleQuery()
 
-  const utenlandsperioder = useAppSelector(
-    selectCurrentSimulationUtenlandsperioder
-  )
+  const utenlandsperioder = useAppSelector(selectUtenlandsperioder)
 
   const [validationErrors, setValidationErrors] = React.useState<
     Record<'top' | 'bottom', string>

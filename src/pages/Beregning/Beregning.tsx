@@ -97,7 +97,7 @@ export const Beregning: React.FC<Props> = ({ visning }) => {
 
   const navigateToTab = (v: BeregningVisning) => {
     navigate(v === 'enkel' ? paths.beregningEnkel : paths.beregningAvansert)
-    dispatch(userInputActions.flushCurrentSimulationUtenomUtenlandsperioder())
+    dispatch(userInputActions.flushCurrentSimulation())
     setAvansertSkjemaModus('redigering')
     setHarAvansertSkjemaUnsavedChanges(false)
   }
@@ -161,9 +161,7 @@ export const Beregning: React.FC<Props> = ({ visning }) => {
             type="button"
             onClick={() => {
               if (isEndring) {
-                dispatch(
-                  userInputActions.flushCurrentSimulationUtenomUtenlandsperioder()
-                )
+                dispatch(userInputActions.flushCurrentSimulation())
                 navigate(paths.start)
               } else {
                 navigateToTab('enkel')

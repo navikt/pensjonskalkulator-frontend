@@ -215,10 +215,6 @@ describe('stegvisning - Utenlandsopphold', () => {
           preloadedState: {
             userInput: {
               ...userInputInitialState,
-              currentSimulation: {
-                ...userInputInitialState.currentSimulation,
-                utenlandsperioder: [],
-              },
             },
           },
         }
@@ -255,10 +251,6 @@ describe('stegvisning - Utenlandsopphold', () => {
           preloadedState: {
             userInput: {
               ...userInputInitialState,
-              currentSimulation: {
-                ...userInputInitialState.currentSimulation,
-                utenlandsperioder: [],
-              },
             },
           },
         }
@@ -272,16 +264,14 @@ describe('stegvisning - Utenlandsopphold', () => {
         )
       ).toBeInTheDocument()
 
-      await waitFor(() => {
-        store.dispatch(
-          userInputActions.setCurrentSimulationUtenlandsperiode({
-            id: '1',
-            landkode: 'AFG',
-            arbeidetUtenlands: true,
-            startdato: '20-01-2021',
-          })
-        )
-      })
+      store.dispatch(
+        userInputActions.setUtenlandsperiode({
+          id: '1',
+          landkode: 'AFG',
+          arbeidetUtenlands: true,
+          startdato: '20-01-2021',
+        })
+      )
 
       expect(
         await screen.findByText('stegvisning.utenlandsopphold.oppholdene.title')
