@@ -14,7 +14,8 @@ import { userInputActions } from '@/state/userInput/userInputReducer'
 export function StepAFP() {
   const intl = useIntl()
   const dispatch = useAppDispatch()
-  const { shouldRedirectTo } = useLoaderData() as StepAFPAccessGuardLoader
+  const stepAFPAccessGuard =
+    useLoaderData() as Promise<StepAFPAccessGuardLoader>
   const previousAfp = useAppSelector(selectAfp)
   const isVeileder = useAppSelector(selectIsVeileder)
 
@@ -47,17 +48,21 @@ export function StepAFP() {
         </div>
       }
     >
-      <Await resolve={shouldRedirectTo}>
-        {(resp: string) => {
-          return (
-            <AFP
-              shouldRedirectTo={resp}
-              afp={previousAfp}
-              onCancel={isVeileder ? undefined : onStegvisningCancel}
-              onPrevious={onStegvisningPrevious}
-              onNext={onNext}
-            />
-          )
+      <Await resolve={stepAFPAccessGuard}>
+        {(view: StepAFPAccessGuardLoader) => {
+          // TODO: Logikk som endrer på hvilket view som skal vises
+          if (view === 'VIEW1') {
+            return (
+              <AFP
+                afp={previousAfp}
+                onCancel={isVeileder ? undefined : onStegvisningCancel}
+                onPrevious={onStegvisningPrevious}
+                onNext={onNext}
+              />
+            )
+          } else {
+            return <div>Noe annet</div>
+          }
         }}
       </Await>
     </React.Suspense>
