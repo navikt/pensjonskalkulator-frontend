@@ -114,16 +114,16 @@ describe('LanguageProvider', () => {
     await waitFor(() => {
       expect(sanityClientFetchMock).toHaveBeenCalledTimes(4)
       expect(sanityClientFetchMock.mock.calls[0][0]).toBe(
-        '*[_type == "readmore" && language == "nb"]'
+        '*[_type == "readmore" && language == "nb"] | {name,overskrift,innhold}'
       )
       expect(sanityClientFetchMock.mock.calls[1][0]).toBe(
-        '*[_type == "forbeholdAvsnitt" && language == "nb"]'
+        '*[_type == "forbeholdAvsnitt" && language == "nb"] | order(order asc) | {overskrift,innhold}'
       )
       expect(sanityClientFetchMock.mock.calls[2][0]).toBe(
-        '*[_type == "readmore" && language == "en"]'
+        '*[_type == "readmore" && language == "en"] | {name,overskrift,innhold}'
       )
       expect(sanityClientFetchMock.mock.calls[3][0]).toBe(
-        '*[_type == "forbeholdAvsnitt" && language == "en"]'
+        '*[_type == "forbeholdAvsnitt" && language == "en"] | order(order asc) | {overskrift,innhold}'
       )
     })
 
