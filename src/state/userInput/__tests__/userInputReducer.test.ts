@@ -186,7 +186,7 @@ describe('userInputSlice', () => {
       })
     })
 
-    it('clearUtenlandsperioder', () => {
+    it('flushUtenlandsperioder', () => {
       const utenlandsperiode_1: Utenlandsperiode = {
         id: '12345',
         landkode: 'URY',
@@ -211,7 +211,7 @@ describe('userInputSlice', () => {
             { ...utenlandsperiode_2 },
           ],
         },
-        userInputActions.clearUtenlandsperioder()
+        userInputActions.flushUtenlandsperioder()
       )
 
       expect(updatedState_1).toStrictEqual({

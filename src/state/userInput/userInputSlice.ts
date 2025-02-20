@@ -74,7 +74,7 @@ export const userInputSlice = createSlice({
         (utenlandsperiode) => utenlandsperiode.id !== action.payload
       )
     },
-    clearUtenlandsperioder: (state) => {
+    flushUtenlandsperioder: (state) => {
       state.utenlandsperioder = []
     },
     setSamtykke: (state, action: PayloadAction<boolean>) => {
