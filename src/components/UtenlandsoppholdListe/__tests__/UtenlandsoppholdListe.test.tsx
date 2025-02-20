@@ -2,7 +2,7 @@ import { describe, it } from 'vitest'
 
 import { UtenlandsoppholdListe } from '..'
 import { UTENLANDSOPPHOLD_FORM_NAMES } from '../../UtenlandsoppholdModal/utils'
-import { userInputInitialState } from '@/state/userInput/userInputReducer'
+import { userInputInitialState } from '@/state/userInput/userInputSlice'
 import { render, screen, userEvent } from '@/test-utils'
 
 describe('UtenlandsoppholdListe', () => {

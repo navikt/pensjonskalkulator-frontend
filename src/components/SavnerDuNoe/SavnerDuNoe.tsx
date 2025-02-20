@@ -6,7 +6,7 @@ import { BodyLong, Heading, HeadingProps } from '@navikt/ds-react'
 
 import { paths } from '@/router/constants'
 import { useAppDispatch } from '@/state/hooks'
-import { userInputActions } from '@/state/userInput/userInputReducer'
+import { userInputActions } from '@/state/userInput/userInputSlice'
 import { wrapLogger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
 

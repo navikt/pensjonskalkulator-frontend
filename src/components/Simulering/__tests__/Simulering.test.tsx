@@ -15,7 +15,7 @@ import * as apiSliceUtils from '@/state/api/apiSlice'
 import {
   userInputInitialState,
   Simulation,
-} from '@/state/userInput/userInputReducer'
+} from '@/state/userInput/userInputSlice'
 import { act, render, screen, waitFor } from '@/test-utils'
 
 describe('Simulering', () => {

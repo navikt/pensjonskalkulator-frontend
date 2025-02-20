@@ -7,8 +7,8 @@ import {
   fulfilledGetLoependeVedtakLoepende50Alderspensjon,
 } from '@/mocks/mockedRTKQueryApiCalls'
 import { paths } from '@/router/constants'
-import { userInputInitialState } from '@/state/userInput/userInputReducer'
-import * as userInputReducerUtils from '@/state/userInput/userInputReducer'
+import { userInputInitialState } from '@/state/userInput/userInputSlice'
+import * as userInputReducerUtils from '@/state/userInput/userInputSlice'
 import { renderHook } from '@/test-utils'
 
 const navigateMock = vi.fn()

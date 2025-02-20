@@ -12,7 +12,7 @@ import {
   selectNedreAldersgrense,
   selectNormertPensjonsalder,
 } from '@/state/userInput/selectors'
-import { userInputActions } from '@/state/userInput/userInputReducer'
+import { userInputActions } from '@/state/userInput/userInputSlice'
 import { formatUttaksalder } from '@/utils/alder'
 import { getFormatMessageValues } from '@/utils/translations'
 

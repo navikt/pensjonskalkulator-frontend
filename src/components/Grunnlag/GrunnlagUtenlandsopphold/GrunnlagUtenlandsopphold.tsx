@@ -15,7 +15,7 @@ import {
   selectCurrentSimulation,
   selectIsEndring,
 } from '@/state/userInput/selectors'
-import { userInputActions } from '@/state/userInput/userInputReducer'
+import { userInputActions } from '@/state/userInput/userInputSlice'
 import { logger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
 

@@ -1,7 +1,7 @@
 import userInputReducer, {
   userInputInitialState,
   userInputActions,
-} from '../userInputReducer'
+} from '../userInputSlice'
 
 describe('userInputSlice', () => {
   describe('actions', () => {

@@ -21,8 +21,8 @@ import {
 import { paths } from '@/router/constants'
 import { RouteErrorBoundary } from '@/router/RouteErrorBoundary'
 import * as apiSliceUtils from '@/state/api/apiSlice'
-import { userInputInitialState } from '@/state/userInput/userInputReducer'
-import { UserInputState } from '@/state/userInput/userInputReducer'
+import { userInputInitialState } from '@/state/userInput/userInputSlice'
+import { UserInputState } from '@/state/userInput/userInputSlice'
 import { fireEvent, render, screen, userEvent, waitFor } from '@/test-utils'
 import * as loggerUtils from '@/utils/logging'
 

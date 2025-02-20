@@ -9,7 +9,7 @@ import { apiSlice } from '@/state/api/apiSlice'
 import {
   userInputInitialState,
   Simulation,
-} from '@/state/userInput/userInputReducer'
+} from '@/state/userInput/userInputSlice'
 import { render, screen, userEvent } from '@/test-utils'
 import * as loggerUtils from '@/utils/logging'
 

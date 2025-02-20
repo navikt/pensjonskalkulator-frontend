@@ -32,7 +32,7 @@ import {
   fulfilledGetLoependeVedtakLoepende0Alderspensjon100Ufoeretrygd,
 } from '@/mocks/mockedRTKQueryApiCalls'
 import { store, RootState } from '@/state/store'
-import { Simulation } from '@/state/userInput/userInputReducer'
+import { Simulation } from '@/state/userInput/userInputSlice'
 
 describe('userInput selectors', () => {
   const initialState = store.getState()

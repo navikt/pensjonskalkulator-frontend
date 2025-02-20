@@ -22,7 +22,7 @@ import { apiSlice } from '@/state/api/apiSlice'
 import {
   userInputInitialState,
   Simulation,
-} from '@/state/userInput/userInputReducer'
+} from '@/state/userInput/userInputSlice'
 import { render, screen, fireEvent, userEvent } from '@/test-utils'
 
 describe('RedigerAvansertBeregning', () => {

@@ -1,7 +1,7 @@
 import { describe, it } from 'vitest'
 
 import { setupStore } from '../store'
-import { UserInputState } from '../userInput/userInputReducer'
+import { UserInputState } from '../userInput/userInputSlice'
 
 describe('store', () => {
   it('returnerer store med riktig slices og default state', () => {

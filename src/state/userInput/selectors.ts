@@ -2,7 +2,7 @@ import { createSelector } from '@reduxjs/toolkit'
 
 import { apiSlice } from '@/state/api/apiSlice'
 import { RootState } from '@/state/store'
-import { Simulation } from '@/state/userInput/userInputReducer'
+import { Simulation } from '@/state/userInput/userInputSlice'
 import { formatInntekt } from '@/utils/inntekt'
 import { isLoependeVedtakEndring } from '@/utils/loependeVedtak'
 

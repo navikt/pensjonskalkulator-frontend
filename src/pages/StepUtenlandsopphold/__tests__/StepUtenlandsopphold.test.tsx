@@ -5,7 +5,7 @@ import { fulfilledGetLoependeVedtak0Ufoeregrad } from '@/mocks/mockedRTKQueryApi
 import { mockResponse } from '@/mocks/server'
 import { paths } from '@/router/constants'
 import { apiSlice } from '@/state/api/apiSlice'
-import { userInputInitialState } from '@/state/userInput/userInputReducer'
+import { userInputInitialState } from '@/state/userInput/userInputSlice'
 import { screen, render, userEvent } from '@/test-utils'
 
 const navigateMock = vi.fn()

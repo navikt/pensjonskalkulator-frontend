@@ -17,7 +17,7 @@ import { mockResponse, mockErrorResponse } from '@/mocks/server'
 import { paths } from '@/router/constants'
 import { RouteErrorBoundary } from '@/router/RouteErrorBoundary'
 import * as apiSliceUtils from '@/state/api/apiSlice'
-import { userInputInitialState } from '@/state/userInput/userInputReducer'
+import { userInputInitialState } from '@/state/userInput/userInputSlice'
 import { render, screen, userEvent, waitFor } from '@/test-utils'
 
 const navigateMock = vi.fn()

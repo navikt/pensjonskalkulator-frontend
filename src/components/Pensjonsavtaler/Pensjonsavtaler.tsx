@@ -28,7 +28,7 @@ import {
   selectCurrentSimulation,
   selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
-import { userInputActions } from '@/state/userInput/userInputReducer'
+import { userInputActions } from '@/state/userInput/userInputSlice'
 import { getFormatMessageValues } from '@/utils/translations'
 
 import { OffentligTjenestepensjon } from './OffentligTjenestePensjon/OffentligTjenestepensjon'
