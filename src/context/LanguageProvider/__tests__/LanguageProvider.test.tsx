@@ -17,7 +17,9 @@ function TestComponent() {
   return (
     <div data-testid="test-component">
       <p>{intl.formatMessage({ id: 'pageframework.title' })}</p>
-      <p data-testid="readmore-data-length">{readMoreData.length}</p>
+      <p data-testid="readmore-data-length">
+        {Object.keys(readMoreData).length}
+      </p>
       <p data-testid="forbehold-avsnitt-length">
         {forbeholdAvsnittData.length}
       </p>
