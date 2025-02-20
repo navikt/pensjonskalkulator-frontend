@@ -15,8 +15,7 @@ import {
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputReducer'
 import {
-  isAlderOverAnnenAlder,
-  transformFoedselsdatoToAlder,
+  isFoedselsdatoOverAlder,
   AFP_UFOERE_OPPSIGELSESALDER,
 } from '@/utils/alder'
 import { isLoependeVedtakEndring } from '@/utils/loependeVedtak'
@@ -52,10 +51,7 @@ export const useStegvisningNavigation = (currentPath: Path) => {
       if (
         ufoeregrad &&
         foedselsdato &&
-        isAlderOverAnnenAlder(
-          transformFoedselsdatoToAlder(foedselsdato),
-          AFP_UFOERE_OPPSIGELSESALDER
-        )
+        isFoedselsdatoOverAlder(foedselsdato, AFP_UFOERE_OPPSIGELSESALDER)
       ) {
         antallStepTilbake = antallStepTilbake + 1
       } else if (loependeVedtak?.afpPrivat || loependeVedtak?.afpOffentlig) {
@@ -73,10 +69,7 @@ export const useStegvisningNavigation = (currentPath: Path) => {
         (ufoeregrad && (afp === null || afp === 'nei')) ||
         (ufoeregrad &&
           foedselsdato &&
-          isAlderOverAnnenAlder(
-            transformFoedselsdatoToAlder(foedselsdato),
-            AFP_UFOERE_OPPSIGELSESALDER
-          ))
+          isFoedselsdatoOverAlder(foedselsdato, AFP_UFOERE_OPPSIGELSESALDER))
       ) {
         antallStepTilbake = antallStepTilbake + 1
       }
