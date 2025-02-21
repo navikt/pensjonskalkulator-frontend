@@ -8,7 +8,7 @@ import {
 } from '@/router/constants'
 import { useGetLoependeVedtakQuery } from '@/state/api/apiSlice'
 import { useAppDispatch } from '@/state/hooks'
-import { userInputActions } from '@/state/userInput/userInputReducer'
+import { userInputActions } from '@/state/userInput/userInputSlice'
 import { isLoependeVedtakEndring } from '@/utils/loependeVedtak'
 
 export const useStegvisningNavigation = (currentPath: Path) => {

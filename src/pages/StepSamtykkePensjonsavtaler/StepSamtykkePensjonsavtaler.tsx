@@ -14,7 +14,7 @@ import {
   selectHarHentetOffentligTp,
   selectIsVeileder,
 } from '@/state/userInput/selectors'
-import { userInputActions } from '@/state/userInput/userInputReducer'
+import { userInputActions } from '@/state/userInput/userInputSlice'
 import {
   isAlderOverAnnenAlder,
   transformFoedselsdatoToAlderMinus1md,
