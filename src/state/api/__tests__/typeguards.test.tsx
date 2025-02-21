@@ -1048,6 +1048,7 @@ describe('Typeguards', () => {
           muligeTpLeverandoerListe: [],
           simulertTjenestepensjon: {
             tpLeverandoer: null,
+            tpNummer: '3010',
             simuleringsresultat: {
               utbetalingsperioder: [],
               betingetTjenestepensjonErInkludert: true,
@@ -1061,6 +1062,7 @@ describe('Typeguards', () => {
           muligeTpLeverandoerListe: [],
           simulertTjenestepensjon: {
             tpLeverandoer: undefined,
+            tpNummer: '3010',
             simuleringsresultat: {
               utbetalingsperioder: [],
               betingetTjenestepensjonErInkludert: true,
@@ -1074,6 +1076,52 @@ describe('Typeguards', () => {
           muligeTpLeverandoerListe: [],
           simulertTjenestepensjon: {
             tpLeverandoer: 123,
+            tpNummer: '3010',
+            simuleringsresultat: {
+              utbetalingsperioder: [],
+              betingetTjenestepensjonErInkludert: true,
+            },
+          },
+        })
+      ).toBeFalsy()
+    })
+
+    it('returnerer false når simulertTjenestepensjon har feil tpNummer', () => {
+      expect(
+        isOffentligTp({
+          simuleringsresultatStatus: 'BRUKER_ER_IKKE_MEDLEM_AV_TP_ORDNING',
+          muligeTpLeverandoerListe: [],
+          simulertTjenestepensjon: {
+            tpLeverandoer: 'Statens pensjonskasse',
+            tpNummer: null,
+            simuleringsresultat: {
+              utbetalingsperioder: [],
+              betingetTjenestepensjonErInkludert: true,
+            },
+          },
+        })
+      ).toBeFalsy()
+      expect(
+        isOffentligTp({
+          simuleringsresultatStatus: 'BRUKER_ER_IKKE_MEDLEM_AV_TP_ORDNING',
+          muligeTpLeverandoerListe: [],
+          simulertTjenestepensjon: {
+            tpLeverandoer: 'Statens pensjonskasse',
+            tpNummer: undefined,
+            simuleringsresultat: {
+              utbetalingsperioder: [],
+              betingetTjenestepensjonErInkludert: true,
+            },
+          },
+        })
+      ).toBeFalsy()
+      expect(
+        isOffentligTp({
+          simuleringsresultatStatus: 'BRUKER_ER_IKKE_MEDLEM_AV_TP_ORDNING',
+          muligeTpLeverandoerListe: [],
+          simulertTjenestepensjon: {
+            tpLeverandoer: 'Statens pensjonskasse',
+            tpNummer: 3010,
             simuleringsresultat: {
               utbetalingsperioder: [],
               betingetTjenestepensjonErInkludert: true,
@@ -1090,6 +1138,7 @@ describe('Typeguards', () => {
           muligeTpLeverandoerListe: [],
           simulertTjenestepensjon: {
             tpLeverandoer: 'Statens pensjonskasse',
+            tpNummer: '3010',
             simuleringsresultat: {
               utbetalingsperioder: null,
               betingetTjenestepensjonErInkludert: true,
@@ -1104,6 +1153,7 @@ describe('Typeguards', () => {
           muligeTpLeverandoerListe: [],
           simulertTjenestepensjon: {
             tpLeverandoer: 'Statens pensjonskasse',
+            tpNummer: '3010',
             simuleringsresultat: {
               utbetalingsperioder: undefined,
               betingetTjenestepensjonErInkludert: true,
@@ -1117,6 +1167,7 @@ describe('Typeguards', () => {
           muligeTpLeverandoerListe: [],
           simulertTjenestepensjon: {
             tpLeverandoer: 'Statens pensjonskasse',
+            tpNummer: '3010',
             simuleringsresultat: {
               utbetalingsperioder: 123,
               betingetTjenestepensjonErInkludert: true,
@@ -1130,6 +1181,7 @@ describe('Typeguards', () => {
           muligeTpLeverandoerListe: [],
           simulertTjenestepensjon: {
             tpLeverandoer: 'Statens pensjonskasse',
+            tpNummer: '3010',
             simuleringsresultat: {
               utbetalingsperioder: 'string',
               betingetTjenestepensjonErInkludert: true,
@@ -1144,6 +1196,7 @@ describe('Typeguards', () => {
           muligeTpLeverandoerListe: [],
           simulertTjenestepensjon: {
             tpLeverandoer: 'Statens pensjonskasse',
+            tpNummer: '3010',
             simuleringsresultat: {
               utbetalingsperioder: [{ tull: 'tull' }],
               betingetTjenestepensjonErInkludert: true,
@@ -1159,7 +1212,8 @@ describe('Typeguards', () => {
           simuleringsresultatStatus: 'BRUKER_ER_IKKE_MEDLEM_AV_TP_ORDNING',
           muligeTpLeverandoerListe: [],
           simulertTjenestepensjon: {
-            tpLeverandoer: null,
+            tpLeverandoer: 'Statens pensjonskasse',
+            tpNummer: '3010',
             simuleringsresultat: {
               utbetalingsperioder: [],
               betingetTjenestepensjonErInkludert: null,
@@ -1172,7 +1226,8 @@ describe('Typeguards', () => {
           simuleringsresultatStatus: 'BRUKER_ER_IKKE_MEDLEM_AV_TP_ORDNING',
           muligeTpLeverandoerListe: [],
           simulertTjenestepensjon: {
-            tpLeverandoer: null,
+            tpLeverandoer: 'Statens pensjonskasse',
+            tpNummer: '3010',
             simuleringsresultat: {
               utbetalingsperioder: [],
               betingetTjenestepensjonErInkludert: undefined,
@@ -1185,7 +1240,8 @@ describe('Typeguards', () => {
           simuleringsresultatStatus: 'BRUKER_ER_IKKE_MEDLEM_AV_TP_ORDNING',
           muligeTpLeverandoerListe: [],
           simulertTjenestepensjon: {
-            tpLeverandoer: null,
+            tpLeverandoer: 'Statens pensjonskasse',
+            tpNummer: '3010',
             simuleringsresultat: {
               utbetalingsperioder: [],
               betingetTjenestepensjonErInkludert: 'tull',
