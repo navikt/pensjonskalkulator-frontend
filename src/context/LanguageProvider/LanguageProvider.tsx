@@ -45,33 +45,43 @@ export function LanguageProvider({ children }: Props) {
   const { data: disableSpraakvelgerFeatureToggle, isSuccess } =
     useGetSpraakvelgerFeatureToggleQuery()
 
-  const fetchSanityData = async (locale: Locales) => {
-    if (sanityClient) {
-      const readMorePromise = sanityClient
-        .fetch(`*[_type == "readmore" && language == "${locale}"]`)
-        .then((sanityReadMoreResponse) => {
-          setSanityReadMoreData(sanityReadMoreResponse || [])
-        })
-        .catch(() => {
+  const fetchSanityData = (locale: Locales) => {
+    const logTekst = 'Feil ved henting av innhold fra Sanity'
+    const logData = `readmore ${locale}`
+    sanityClient
+      .fetch(`*[_type == "readmore" && language == "${locale}"]`)
+      .then((sanityReadMoreResponse) => {
+        if (!sanityReadMoreResponse.ok) {
           logger('info', {
-            tekst: 'Feil ved henting av innhold fra Sanity',
-            data: `readmore ${locale}`,
+            tekst: `${logTekst} med status: ${sanityReadMoreResponse.status}`,
+            data: logData,
           })
+        }
+        setSanityReadMoreData(sanityReadMoreResponse || [])
+      })
+      .catch(() => {
+        logger('info', {
+          tekst: logTekst,
+          data: logData,
         })
-      const forbeholdAvsnittPromise = sanityClient
-        .fetch(`*[_type == "forbeholdAvsnitt" && language == "${locale}"]`)
-        .then((sanityForbeholdAvsnittResponse) => {
-          setSanityForbeholdAvsnittData(sanityForbeholdAvsnittResponse || [])
-        })
-        .catch(() => {
+      })
+    sanityClient
+      .fetch(`*[_type == "forbeholdAvsnitt" && language == "${locale}"]`)
+      .then((sanityForbeholdAvsnittResponse) => {
+        if (!sanityForbeholdAvsnittResponse.ok) {
           logger('info', {
-            tekst: 'Feil ved henting av innhold fra Sanity',
-            data: `forbeholdAvsnitt ${locale}`,
+            tekst: `${logTekst} med status: ${sanityForbeholdAvsnittResponse.status}`,
+            data: logData,
           })
+        }
+        setSanityForbeholdAvsnittData(sanityForbeholdAvsnittResponse || [])
+      })
+      .catch(() => {
+        logger('info', {
+          tekst: logTekst,
+          data: logData,
         })
-
-      await Promise.all([readMorePromise, forbeholdAvsnittPromise])
-    }
+      })
   }
 
   /* c8 ignore next 4 */
