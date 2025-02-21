@@ -2,212 +2,37 @@
   "result": [
     {
       "name": "hva_er_opphold_utenfor_norge",
-      "overskrift": "Hva som er opphold utenfor Norge (Sanity)",
+      "overskrift": "Hva som er opphold utenfor Norge",
       "innhold": [
         {
-          "_type": "block",
-          "style": "normal",
-          "_key": "487e18d25695",
-          "markDefs": [],
-          "children": [
-            {
-              "_type": "span",
-              "marks": [],
-              "text": "Som hovedregel er dette opphold utenfor Norge:",
-              "_key": "934c6df24ebb0"
-            }
-          ]
-        },
-        {
-          "_key": "c92f05b8e9ca",
-          "listItem": "bullet",
-          "markDefs": [],
-          "children": [
-            {
-              "text": "opphold i mer enn 12 måneder",
-              "_key": "f6377469b6b10",
-              "_type": "span",
-              "marks": []
-            }
-          ],
-          "level": 1,
-          "_type": "block",
-          "style": "normal"
-        },
-        {
-          "_type": "block",
-          "style": "normal",
-          "_key": "a3ff13c001f6",
-          "listItem": "bullet",
-          "markDefs": [],
-          "children": [
-            {
-              "_type": "span",
-              "marks": [],
-              "text": "opphold med jobb for utenlandsk arbeidsgiver uansett varighet",
-              "_key": "5a2170539c060"
-            }
-          ],
-          "level": 1
-        },
-        {
-          "style": "normal",
-          "_key": "d9621183e2b0",
-          "markDefs": [],
-          "children": [
-            {
-              "_type": "span",
-              "marks": [],
-              "text": "Som hovedregel er dette ikke opphold utenfor Norge:",
-              "_key": "ab82668f71f70"
-            }
-          ],
-          "_type": "block"
-        },
-        {
-          "style": "normal",
-          "_key": "f86105951ccf",
-          "listItem": "bullet",
-          "markDefs": [],
-          "children": [
-            {
-              "_type": "span",
-              "marks": [],
-              "text": "ferier",
-              "_key": "ac340ae83b9d0"
-            }
-          ],
-          "level": 1,
-          "_type": "block"
-        },
-        {
-          "_key": "8fe7b46d90d1",
-          "listItem": "bullet",
-          "markDefs": [],
-          "children": [
-            {
-              "_type": "span",
-              "marks": [],
-              "text": "opphold uten jobb på under 12 måneder",
-              "_key": "d1417a9a09dd0"
-            }
-          ],
-          "level": 1,
-          "_type": "block",
-          "style": "normal"
-        },
-        {
-          "listItem": "bullet",
-          "markDefs": [],
-          "children": [
-            {
-              "_type": "span",
-              "marks": [],
-              "text": "studier på under 12 måneder eller med støtte fra Lånekassen",
-              "_key": "b471491421e40"
-            }
-          ],
-          "level": 1,
-          "_type": "block",
-          "style": "normal",
-          "_key": "9ce30059abdd"
-        },
-        {
-          "_key": "c8c25b87e9d4",
-          "listItem": "bullet",
-          "markDefs": [],
-          "children": [
-            {
-              "text": "ansatt for norsk arbeidsgiver avhengig av hvilket land du jobber i",
-              "_key": "360b588100d70",
-              "_type": "span",
-              "marks": []
-            }
-          ],
-          "level": 1,
-          "_type": "block",
-          "style": "normal"
-        },
-        {
-          "markDefs": [],
-          "children": [
-            {
-              "text": "ansatt i Forsvarets tjeneste",
-              "_key": "4276072a8c090",
-              "_type": "span",
-              "marks": []
-            }
-          ],
-          "level": 1,
-          "_type": "block",
-          "style": "normal",
-          "_key": "21ce84092d9f",
-          "listItem": "bullet"
-        },
-        {
-          "children": [
-            {
-              "marks": [],
-              "text": "norsk statsborger og arbeidstaker på et norskregistrert skip eller i et norsk sivilt luftfartsselskap",
-              "_key": "cdb1ac6049b50",
-              "_type": "span"
-            }
-          ],
-          "level": 1,
-          "_type": "block",
-          "style": "normal",
-          "_key": "7c6e422c2605",
-          "listItem": "bullet",
-          "markDefs": []
-        },
-        {
-          "style": "normal",
           "_key": "95267fac3892",
-          "markDefs": [
-            {
-              "_type": "link",
-              "href": "https://www.nav.no/no/person/flere-tema/arbeid-og-opphold-i-norge/relatert-informasjon/medlemskap-i-folketrygden",
-              "_key": "a077657a6b1b",
-              "blank": true
-            }
-          ],
-          "children": [
-            {
-              "text": "Er du usikker på hva som gjelder for deg, les om ",
-              "_key": "553475223f9e0",
-              "_type": "span",
-              "marks": []
-            },
-            {
-              "_type": "span",
-              "marks": ["a077657a6b1b"],
-              "text": "medlemskap i folketrygden",
-              "_key": "553475223f9e1"
-            },
-            {
-              "text": ".",
-              "_key": "553475223f9e2",
-              "_type": "span",
-              "marks": []
-            }
-          ],
-          "_type": "block"
-        }
-      ]
-    },
-    {
-      "name": "betydning_av_opphold_utenfor_norge",
-      "overskrift": "Betydning av opphold utenfor Norge for pensjon (Sanity)",
-      "innhold": [
-        {
-          "_key": "6ec40e9cad37",
           "markDefs": [],
           "children": [
             {
               "_type": "span",
               "marks": [],
               "text": "Lorem",
-              "_key": "8a74261908ec2"
+              "_key": "553475223f9e2"
+            }
+          ],
+          "_type": "block",
+          "style": "normal"
+        }
+      ]
+    },
+    {
+      "name": "betydning_av_opphold_utenfor_norge",
+      "overskrift": "Betydning av opphold utenfor Norge for pensjon",
+      "innhold": [
+        {
+          "_key": "95267fac3892",
+          "markDefs": [],
+          "children": [
+            {
+              "_type": "span",
+              "marks": [],
+              "text": "Lorem",
+              "_key": "553475223f9e2"
             }
           ],
           "_type": "block",
