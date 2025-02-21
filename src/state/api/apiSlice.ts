@@ -4,7 +4,7 @@ import {
   FetchBaseQueryError,
 } from '@reduxjs/toolkit/query/react'
 
-import { tpNummerMap } from '@/components/Pensjonsavtaler/OffentligTjenestePensjon/utils'
+import { tpNummerTilNavn } from '@/components/Pensjonsavtaler/OffentligTjenestePensjon/utils'
 import { API_BASEURL } from '@/paths'
 import { RootState } from '@/state/store'
 import {
@@ -141,7 +141,8 @@ export const apiSlice = createApi({
         }
 
         if (
-          tpNummerMap[data.simulertTjenestepensjon?.tpNummer || ''] === 'klp' &&
+          tpNummerTilNavn[data.simulertTjenestepensjon?.tpNummer || ''] ===
+            'klp' &&
           !featureToggleResult.data?.enabled
         ) {
           data.simuleringsresultatStatus = 'TP_ORDNING_STOETTES_IKKE'

@@ -2,7 +2,7 @@ import type { IntlShape } from 'react-intl'
 
 import type { Translations } from '@/translations/nb'
 
-export const tpNummerMap: Record<string, 'spk' | 'klp'> = {
+export const tpNummerTilNavn: Record<string, 'spk' | 'klp'> = {
   '3010': 'spk',
   '3060': 'spk',
   '4080': 'klp',
@@ -14,9 +14,9 @@ export const getLeverandoerHeading = (
   tpNummer: string,
   tpLeverandoer?: string
 ) => {
-  if (tpNummer in tpNummerMap) {
+  if (tpNummer in tpNummerTilNavn) {
     return intl.formatMessage({
-      id: `pensjonsavtaler.offentligtp.subtitle.${tpNummerMap[tpNummer]}`,
+      id: `pensjonsavtaler.offentligtp.subtitle.${tpNummerTilNavn[tpNummer]}`,
     })
   }
   return tpLeverandoer
@@ -27,7 +27,7 @@ export const getInfoOmAfpOgBetingetTjenestepensjon = (
   afp: AfpRadio | null,
   betingetTjenestepensjonErInkludert?: boolean
 ): keyof Translations => {
-  if (tpNummerMap[tpNummer] === 'klp') {
+  if (tpNummerTilNavn[tpNummer] === 'klp') {
     if (afp === 'ja_offentlig' || afp === 'ja_privat') {
       return 'pensjonsavtaler.offentligtp.klp.afp_ja'
     }
