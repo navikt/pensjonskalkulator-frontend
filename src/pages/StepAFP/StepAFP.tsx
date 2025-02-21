@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl'
 import { Await, useLoaderData } from 'react-router'
 
 import { Loader } from '@/components/common/Loader'
-import { AFP } from '@/components/stegvisning/AFP'
+import { AFP, AFPOvergangskullUtenAP } from '@/components/stegvisning/AFP'
 import { useStegvisningNavigation } from '@/components/stegvisning/stegvisning-hooks'
 import { paths } from '@/router/constants'
 import { StepAFPAccessGuardLoader } from '@/router/loaders'
@@ -53,13 +53,21 @@ export function StepAFP() {
           // TODO: Logikk som endrer på hvilket view som skal vises
           if (view === 'VIEW1') {
             return (
-              <AFP
+              <AFPOvergangskullUtenAP
                 afp={previousAfp}
                 onCancel={isVeileder ? undefined : onStegvisningCancel}
                 onPrevious={onStegvisningPrevious}
                 onNext={onNext}
               />
             )
+            /* return (
+              <AFP
+                afp={previousAfp}
+                onCancel={isVeileder ? undefined : onStegvisningCancel}
+                onPrevious={onStegvisningPrevious}
+                onNext={onNext}
+              />
+            ) */
           } else {
             return <div>Noe annet</div>
           }

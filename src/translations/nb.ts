@@ -256,6 +256,10 @@ const translations = {
   'stegvisning.afp.radio_ja_privat': 'Ja, i privat sektor',
   'stegvisning.afp.radio_nei': 'Nei',
   'stegvisning.afp.radio_vet_ikke': 'Vet ikke',
+  'stegvisning.afp.overgangskullUtenAP.radio_label': 'Hva vil du beregne?',
+  'stegvisning.afp.overgangskullUtenAP.radio_ja':
+    'AFP etterfulgt av alderspensjon fra 67 år',
+  'stegvisning.afp.overgangskullUtenAP.radio_nei': 'Kun alderspensjon',
   'stegvisning.afp.alert_vet_ikke':
     'Er du usikker, bør du sjekke med arbeidsgiveren din.',
   'stegvisning.afp.validation_error': 'Du må svare på om du har rett til AFP.',
