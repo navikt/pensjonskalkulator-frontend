@@ -1,6 +1,14 @@
+import { externalLinks } from '../translations'
+
+const translationsForExternalLinks = Object.fromEntries(
+  externalLinks.map((key) => [
+    `translation.test.${key}Link`,
+    `lorem ipsum dolor <${key}Link>my link</${key}Link>`,
+  ])
+)
+
 const translations = {
-  'translation.test.eksternLink':
-    'lorem ipsum dolor <detaljertKalkulatorLink>my link</detaljertKalkulatorLink>',
+  ...translationsForExternalLinks,
   'translation.test.br': 'lorem{br}ipsum{br}{br}dolor',
   'translation.test.strong': 'lorem<strong>ipsum</strong>dolor',
   'translation.test.nowrap': 'lorem<nowrap>ipsum</nowrap>dolor',

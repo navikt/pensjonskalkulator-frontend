@@ -1,32 +1,31 @@
 import { ExternalLink } from '@/components/common/ExternalLink'
 import { externalUrls } from '@/router/constants'
 
-const externalLinks = {
-  detaljertKalkulatorLink: externalUrls.detaljertKalkulator,
-  dinPensjonBeholdningLink: externalUrls.dinPensjonBeholdning,
-  dinPensjonEndreSoeknadLink: externalUrls.dinPensjonEndreSoeknad,
-  alderspensjonsreglerLink: externalUrls.alderspensjonsregler,
-  garantiPensjonLink: externalUrls.garantipensjon,
-  afpLink: externalUrls.afp,
-  afpPrivatLink: externalUrls.afpPrivat,
-  norskPensjonLink: externalUrls.norskPensjon,
-  navPersonvernerklaeringLink: externalUrls.personvernerklaering,
-  navPersonvernerklaeringKontaktOssLink:
-    externalUrls.personvernerklaeringKontaktOss,
-  kontaktOssLink: externalUrls.kontaktOss,
-  planleggePensjonLink: externalUrls.planleggePensjon,
-  trygdetidLink: externalUrls.trygdetid,
-  kortBotidLink: externalUrls.kortBotid,
-  personopplysningerLink: externalUrls.personopplysninger,
-  spkLink: externalUrls.spk,
-  klpLink: externalUrls.klp,
-}
+export const externalLinks = [
+  'detaljertKalkulator',
+  'dinPensjonBeholdning',
+  'dinPensjonEndreSoeknad',
+  'alderspensjonsregler',
+  'garantiPensjon',
+  'afp',
+  'afpPrivat',
+  'norskPensjon',
+  'navPersonvernerklaering',
+  'navPersonvernerklaeringKontaktOss',
+  'kontaktOss',
+  'planleggePensjon',
+  'trygdetid',
+  'kortBotid',
+  'personopplysninger',
+  'spk',
+  'klp',
+] satisfies (keyof typeof externalUrls)[]
 
 const externalLinkComponents = Object.fromEntries(
-  Object.entries(externalLinks).map(([key, href]) => [
-    key,
+  externalLinks.map((key) => [
+    `${key}Link`,
     (chunks: React.ReactNode) => (
-      <ExternalLink href={href}>{chunks}</ExternalLink>
+      <ExternalLink href={externalUrls[key]}>{chunks}</ExternalLink>
     ),
   ])
 )
