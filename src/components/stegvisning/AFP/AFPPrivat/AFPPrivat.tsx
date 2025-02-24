@@ -42,7 +42,7 @@ export function AFPPrivat({ afp, onCancel, onPrevious, onNext }: Props) {
 
     if (!afpData) {
       const tekst = intl.formatMessage({
-        id: 'stegvisning.afp.validation_error',
+        id: 'stegvisning.afpPrivat.validation_error',
       })
       setValidationError(tekst)
       logger('skjema validering feilet', {

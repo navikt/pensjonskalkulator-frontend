@@ -275,6 +275,10 @@ const translations = {
   'stegvisning.afp.alert_vet_ikke':
     'Er du usikker, bør du sjekke med arbeidsgiveren din.',
   'stegvisning.afp.validation_error': 'Du må svare på om du har rett til AFP.',
+  'stegvisning.afpPrivat.validation_error':
+    'Du må svare på om du har rett til AFP i privat sektor.',
+  'stegvisning.afpOverganskull.validation_error':
+    'Du må svare på om du vil beregne AFP etterfulgt av alderspensjon fra 67 år eller kun alderspensjon.',
   'stegvisning.ufoere.title': 'Uføretrygd og AFP (avtalefestet pensjon)',
   'stegvisning.ufoere.info':
     'Før du fyller 62 år må du velge mellom å få AFP eller å beholde uføretrygden. {br}{br} AFP og uføretrygd kan ikke kombineres. Hvis du ikke gir oss beskjed, mister du retten til AFP (men beholder uføretrygden).',

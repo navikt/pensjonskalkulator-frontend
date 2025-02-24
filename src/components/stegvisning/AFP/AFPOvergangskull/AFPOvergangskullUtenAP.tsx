@@ -72,7 +72,7 @@ export function AFPOvergangskullUtenAP({
       })
     } else if (jaAFPOffentlig && !simuleringstypeData) {
       const tekst = intl.formatMessage({
-        id: 'stegvisning.afp.validation_error',
+        id: 'stegvisning.afpOverganskull.validation_error',
       })
       setValidationError((prev) => ({ ...prev, skalBeregneAfp: tekst }))
       logger('skjema validering feilet', {
