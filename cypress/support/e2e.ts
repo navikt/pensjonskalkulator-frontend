@@ -199,7 +199,7 @@ beforeEach(() => {
   cy.intercept(
     {
       method: 'GET',
-      url: `https://g2by7q6m.apicdn.sanity.io/v2023-05-03/data/query/development?query=*%5B_type+%3D%3D+%22readmore%22+%26%26+language+%3D%3D+%22nb%22%5D&returnQuery=false`,
+      url: `https://g2by7q6m.apicdn.sanity.io/v2023-05-03/data/query/development?query=*%5B_type+%3D%3D+%22readmore%22+%26%26+language+%3D%3D+%22nb%22%5D*`,
     },
     { fixture: 'sanity-readmore-nb-data.json' }
   ).as('fetchSanityReadMoreDataNb')
@@ -207,7 +207,7 @@ beforeEach(() => {
   cy.intercept(
     {
       method: 'GET',
-      url: `https://g2by7q6m.apicdn.sanity.io/v2023-05-03/data/query/development?query=*%5B_type+%3D%3D+%22readmore%22+%26%26+language+%3D%3D+%22en%22%5D&returnQuery=false`,
+      url: `https://g2by7q6m.apicdn.sanity.io/v2023-05-03/data/query/development?query=*%5B_type+%3D%3D+%22readmore%22+%26%26+language+%3D%3D+%22en%22%5D*`,
     },
     { fixture: 'sanity-readmore-en-data.json' }
   ).as('fetchSanityReadMoreDataEn')

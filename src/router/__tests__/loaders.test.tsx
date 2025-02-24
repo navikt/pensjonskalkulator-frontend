@@ -605,6 +605,16 @@ describe('Loaders', () => {
                   navn: 'Aprikos',
                   sivilstand: 'UGIFT',
                   foedselsdato,
+                  pensjoneringAldre: {
+                    normertPensjoneringsalder: {
+                      aar: 67,
+                      maaneder: 0,
+                    },
+                    nedreAldersgrense: {
+                      aar: 62,
+                      maaneder: 0,
+                    },
+                  },
                 },
                 fulfilledTimeStamp: 1688046412103,
               },
@@ -625,6 +635,7 @@ describe('Loaders', () => {
       it('brukere med gradert uføretrygd som er eldre enn AFP-Uføre oppsigelsesalder, er redirigert', async () => {
         const minAlderYearsBeforeNow = add(endOfDay(new Date()), {
           years: -62,
+          months: -1,
         })
         const foedselsdato = format(minAlderYearsBeforeNow, DATE_BACKEND_FORMAT)
 
@@ -642,6 +653,16 @@ describe('Loaders', () => {
                   navn: 'Aprikos',
                   sivilstand: 'UGIFT',
                   foedselsdato,
+                  pensjoneringAldre: {
+                    normertPensjoneringsalder: {
+                      aar: 67,
+                      maaneder: 0,
+                    },
+                    nedreAldersgrense: {
+                      aar: 62,
+                      maaneder: 0,
+                    },
+                  },
                 },
                 fulfilledTimeStamp: 1688046412103,
               },

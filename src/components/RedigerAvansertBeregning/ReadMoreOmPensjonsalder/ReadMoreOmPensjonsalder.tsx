@@ -4,6 +4,9 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { BodyLong } from '@navikt/ds-react'
 
 import { ReadMore } from '@/components/common/ReadMore'
+import { useAppSelector } from '@/state/hooks'
+import { selectNormertPensjonsalder } from '@/state/userInput/selectors'
+import { formatUttaksalder } from '@/utils/alder'
 import { getFormatMessageValues } from '@/utils/translations'
 
 interface Props {
@@ -15,6 +18,11 @@ export const ReadMoreOmPensjonsalder: React.FC<Props> = ({
   isEndring,
 }) => {
   const intl = useIntl()
+  const normertPensjonsalder = useAppSelector(selectNormertPensjonsalder)
+  const formatertNormertPensjonsalder = formatUttaksalder(
+    intl,
+    normertPensjonsalder
+  )
 
   return (
     <ReadMore
@@ -34,7 +42,8 @@ export const ReadMoreOmPensjonsalder: React.FC<Props> = ({
                 : 'omufoeretrygd.readmore.gradert.avansert.ingress'
             }
             values={{
-              ...getFormatMessageValues(intl),
+              ...getFormatMessageValues(),
+              normertPensjonsalder: formatertNormertPensjonsalder,
             }}
           />
         </BodyLong>
@@ -48,7 +57,8 @@ export const ReadMoreOmPensjonsalder: React.FC<Props> = ({
                   : 'beregning.read_more.pensjonsalder.body'
               }
               values={{
-                ...getFormatMessageValues(intl),
+                ...getFormatMessageValues(),
+                normertPensjonsalder: formatertNormertPensjonsalder,
               }}
             />
           </BodyLong>

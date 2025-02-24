@@ -30,11 +30,9 @@ import {
   selectAarligInntektFoerUttakBeloep,
   selectAarligInntektFoerUttakBeloepFraSkatt,
   selectAarligInntektFoerUttakBeloepFraBrukerInput,
+  selectNormertPensjonsalder,
 } from '@/state/userInput/selectors'
-import {
-  DEFAULT_MAX_OPPTJENINGSALDER,
-  DEFAULT_UBETINGET_UTTAKSALDER,
-} from '@/utils/alder'
+import { DEFAULT_MAX_OPPTJENINGSALDER, formatUttaksalder } from '@/utils/alder'
 import { DATE_BACKEND_FORMAT, DATE_ENDUSER_FORMAT } from '@/utils/dates'
 import {
   formatInntekt,
@@ -58,6 +56,7 @@ export const RedigerAvansertBeregning: React.FC<{
   const dispatch = useAppDispatch()
 
   const foedselsdato = useAppSelector(selectFoedselsdato)
+  const normertPensjonsalder = useAppSelector(selectNormertPensjonsalder)
   const isEndring = useAppSelector(selectIsEndring)
   const inntektVsaHeltUttakInputRef = React.useRef<HTMLInputElement>(null)
   const inntektVsaGradertUttakInputRef = React.useRef<HTMLInputElement>(null)
@@ -72,6 +71,10 @@ export const RedigerAvansertBeregning: React.FC<{
   )
   const aarligInntektFoerUttakBeloep = useAppSelector(
     selectAarligInntektFoerUttakBeloep
+  )
+  const formatertNormertPensjonsalder = formatUttaksalder(
+    intl,
+    normertPensjonsalder
   )
   const { harAvansertSkjemaUnsavedChanges } = React.useContext(BeregningContext)
 
@@ -103,6 +106,7 @@ export const RedigerAvansertBeregning: React.FC<{
     uttaksalder,
     aarligInntektVsaHelPensjon,
     gradertUttaksperiode,
+    normertPensjonsalder,
   })
 
   const [
@@ -153,7 +157,7 @@ export const RedigerAvansertBeregning: React.FC<{
       loependeVedtak.ufoeretrygd.grad !== 100 &&
       alder?.aar &&
       alder?.maaneder !== undefined &&
-      alder?.aar >= DEFAULT_UBETINGET_UTTAKSALDER.aar
+      alder?.aar >= normertPensjonsalder.aar
     setValidationErrorUttaksalderGradertUttak('')
     if (shouldResetGradertUttak) {
       // Overførter verdien tilbake til helt uttak
@@ -345,6 +349,7 @@ export const RedigerAvansertBeregning: React.FC<{
                 gaaTilResultat,
                 {
                   foedselsdato: foedselsdato as string,
+                  normertPensjonsalder,
                   loependeVedtak,
                   localInntektFremTilUttak,
                   hasVilkaarIkkeOppfylt:
@@ -432,27 +437,31 @@ export const RedigerAvansertBeregning: React.FC<{
           </ReadMore>
         </div>
         <Divider noMargin />
-        {validationErrors[AVANSERT_FORM_NAMES.endringAlertFremtidigDato] && (
-          <Alert variant="warning" aria-live="polite">
-            <FormattedMessage
-              id="beregning.endring.alert.uttaksdato"
-              values={{
-                ...getFormatMessageValues(intl),
-                dato: validationErrors[
-                  AVANSERT_FORM_NAMES.endringAlertFremtidigDato
-                ],
-              }}
-            />
-          </Alert>
-        )}
-        {vilkaarsproeving &&
-          !vilkaarsproeving?.vilkaarErOppfylt &&
-          uttaksalder && (
-            <VilkaarsproevingAlert
-              vilkaarsproeving={vilkaarsproeving}
-              uttaksalder={uttaksalder}
-            />
+        <div className={styles.alertWrapper} aria-live="polite">
+          {validationErrors[AVANSERT_FORM_NAMES.endringAlertFremtidigDato] && (
+            <Alert variant="warning">
+              <FormattedMessage
+                id="beregning.endring.alert.uttaksdato"
+                values={{
+                  ...getFormatMessageValues(),
+                  dato: validationErrors[
+                    AVANSERT_FORM_NAMES.endringAlertFremtidigDato
+                  ],
+                }}
+              />
+            </Alert>
           )}
+        </div>
+        <div className={styles.alertWrapper} aria-live="polite">
+          {vilkaarsproeving &&
+            !vilkaarsproeving?.vilkaarErOppfylt &&
+            uttaksalder && (
+              <VilkaarsproevingAlert
+                vilkaarsproeving={vilkaarsproeving}
+                uttaksalder={uttaksalder}
+              />
+            )}
+        </div>
         <div>
           {localGradertUttak?.grad !== undefined &&
           localGradertUttak?.grad !== 100 ? (
@@ -473,7 +482,7 @@ export const RedigerAvansertBeregning: React.FC<{
               error={gradertUttakAgePickerError}
               minAlder={
                 loependeVedtak.ufoeretrygd.grad === 100
-                  ? DEFAULT_UBETINGET_UTTAKSALDER
+                  ? normertPensjonsalder
                   : brukerensAlderPlus1Maaned
               }
             />
@@ -495,7 +504,7 @@ export const RedigerAvansertBeregning: React.FC<{
               error={heltUttakAgePickerError}
               minAlder={
                 loependeVedtak.ufoeretrygd.grad === 100
-                  ? DEFAULT_UBETINGET_UTTAKSALDER
+                  ? normertPensjonsalder
                   : brukerensAlderPlus1Maaned
               }
             />
@@ -533,7 +542,8 @@ export const RedigerAvansertBeregning: React.FC<{
                       id: validationErrors[AVANSERT_FORM_NAMES.uttaksgrad],
                     },
                     {
-                      ...getFormatMessageValues(intl),
+                      ...getFormatMessageValues(),
+                      normertPensjonsalder: formatertNormertPensjonsalder,
                     }
                   )
                 : ''
@@ -576,7 +586,8 @@ export const RedigerAvansertBeregning: React.FC<{
                       : 'beregning.avansert.rediger.read_more.uttaksgrad.body'
                 }
                 values={{
-                  ...getFormatMessageValues(intl),
+                  ...getFormatMessageValues(),
+                  normertPensjonsalder: formatertNormertPensjonsalder,
                 }}
               />
             </BodyLong>
@@ -593,7 +604,7 @@ export const RedigerAvansertBeregning: React.FC<{
                     <FormattedMessage
                       id="beregning.avansert.rediger.radio.inntekt_vsa_gradert_uttak"
                       values={{
-                        ...getFormatMessageValues(intl),
+                        ...getFormatMessageValues(),
                         grad: localGradertUttak.grad,
                       }}
                     />
@@ -603,7 +614,7 @@ export const RedigerAvansertBeregning: React.FC<{
                       id={
                         loependeVedtak.ufoeretrygd.grad &&
                         localGradertUttak.uttaksalder.aar <
-                          DEFAULT_UBETINGET_UTTAKSALDER.aar
+                          normertPensjonsalder.aar
                           ? 'beregning.avansert.rediger.radio.inntekt_vsa_gradert_uttak.ufoeretrygd.description'
                           : 'beregning.avansert.rediger.radio.inntekt_vsa_gradert_uttak.description'
                       }
@@ -630,7 +641,7 @@ export const RedigerAvansertBeregning: React.FC<{
                             ],
                           },
                           {
-                            ...getFormatMessageValues(intl),
+                            ...getFormatMessageValues(),
                             grad: localGradertUttak.grad,
                           }
                         )
@@ -660,8 +671,7 @@ export const RedigerAvansertBeregning: React.FC<{
                   </Radio>
                 </RadioGroup>
                 {loependeVedtak.ufoeretrygd.grad &&
-                localGradertUttak.uttaksalder.aar <
-                  DEFAULT_UBETINGET_UTTAKSALDER.aar ? (
+                localGradertUttak.uttaksalder.aar < normertPensjonsalder.aar ? (
                   <ReadMore
                     name="Om inntekt og uføretrygd"
                     header={intl.formatMessage({
@@ -672,7 +682,7 @@ export const RedigerAvansertBeregning: React.FC<{
                       <FormattedMessage
                         id="inntekt.info_om_inntekt.ufoeretrygd.read_more.body"
                         values={{
-                          ...getFormatMessageValues(intl),
+                          ...getFormatMessageValues(),
                         }}
                       />
                     </BodyLong>
@@ -694,7 +704,7 @@ export const RedigerAvansertBeregning: React.FC<{
                       <FormattedMessage
                         id="beregning.avansert.rediger.inntekt_vsa_gradert_uttak.label"
                         values={{
-                          ...getFormatMessageValues(intl),
+                          ...getFormatMessageValues(),
                           grad: localGradertUttak.grad,
                         }}
                       />
@@ -713,7 +723,7 @@ export const RedigerAvansertBeregning: React.FC<{
                               ],
                             },
                             {
-                              ...getFormatMessageValues(intl),
+                              ...getFormatMessageValues(),
                               grad: localGradertUttak.grad,
                             }
                           )
@@ -735,7 +745,7 @@ export const RedigerAvansertBeregning: React.FC<{
                     <FormattedMessage
                       id="beregning.avansert.rediger.heltuttak.agepicker.label"
                       values={{
-                        ...getFormatMessageValues(intl),
+                        ...getFormatMessageValues(),
                       }}
                     />
                   }
@@ -744,7 +754,7 @@ export const RedigerAvansertBeregning: React.FC<{
                   error={heltUttakAgePickerError}
                   minAlder={
                     loependeVedtak.ufoeretrygd.grad
-                      ? DEFAULT_UBETINGET_UTTAKSALDER
+                      ? normertPensjonsalder
                       : brukerensAlderPlus1Maaned
                   }
                 />
@@ -760,7 +770,7 @@ export const RedigerAvansertBeregning: React.FC<{
                 legend={
                   <FormattedMessage
                     id="beregning.avansert.rediger.radio.inntekt_vsa_helt_uttak"
-                    values={{ ...getFormatMessageValues(intl) }}
+                    values={{ ...getFormatMessageValues() }}
                   />
                 }
                 description={
@@ -784,7 +794,7 @@ export const RedigerAvansertBeregning: React.FC<{
                             AVANSERT_FORM_NAMES.inntektVsaHeltUttakRadio
                           ],
                         },
-                        { ...getFormatMessageValues(intl) }
+                        { ...getFormatMessageValues() }
                       )
                     : ''
                 }
@@ -830,7 +840,7 @@ export const RedigerAvansertBeregning: React.FC<{
                   label={
                     <FormattedMessage
                       id="inntekt.endre_inntekt_vsa_pensjon_modal.textfield.label"
-                      values={{ ...getFormatMessageValues(intl) }}
+                      values={{ ...getFormatMessageValues() }}
                     />
                   }
                   description={intl.formatMessage({
@@ -844,7 +854,7 @@ export const RedigerAvansertBeregning: React.FC<{
                               AVANSERT_FORM_NAMES.inntektVsaHeltUttak
                             ],
                           },
-                          { ...getFormatMessageValues(intl) }
+                          { ...getFormatMessageValues() }
                         )
                       : undefined
                   }

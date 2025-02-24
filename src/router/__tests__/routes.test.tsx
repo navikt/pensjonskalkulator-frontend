@@ -300,6 +300,17 @@ describe('routes', () => {
           initialEntries: [`${BASE_PATH}${paths.forbehold}`],
         })
         render(<RouterProvider router={router} />, {
+          preloadedState: {
+            api: {
+              //@ts-ignore
+              queries: {
+                ...fulfilledGetPerson,
+              },
+            },
+            userInput: {
+              ...userInputInitialState,
+            },
+          },
           hasRouter: false,
         })
         expect(await screen.findByText('forbehold.title')).toBeInTheDocument()
@@ -789,6 +800,7 @@ describe('routes', () => {
           api: {
             queries: {
               ...fakeApiCalls,
+              ...fulfilledGetPerson,
               ...fulfilledGetLoependeVedtak0Ufoeregrad,
             },
           },
@@ -805,6 +817,7 @@ describe('routes', () => {
               // @ts-ignore
               queries: {
                 ...fakeApiCalls,
+                ...fulfilledGetPerson,
                 ...fulfilledGetLoependeVedtak0Ufoeregrad,
               },
             },
@@ -871,6 +884,7 @@ describe('routes', () => {
           api: {
             queries: {
               ...fakeApiCalls,
+              ...fulfilledGetPerson,
               ...fulfilledGetLoependeVedtak0Ufoeregrad,
             },
           },
@@ -887,6 +901,7 @@ describe('routes', () => {
               // @ts-ignore
               queries: {
                 ...fakeApiCalls,
+                ...fulfilledGetPerson,
                 ...fulfilledGetLoependeVedtak0Ufoeregrad,
               },
             },

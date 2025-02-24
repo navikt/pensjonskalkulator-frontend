@@ -18,8 +18,9 @@ import {
   selectFoedselsdato,
 } from '@/state/userInput/selectors'
 import {
-  isFoedselsdatoOverEllerLikMinUttaksalder,
+  isFoedselsdatoOverAlder,
   isFoedtFoer1963,
+  AFP_UFOERE_OPPSIGELSESALDER,
 } from '@/utils/alder'
 import { isLoependeVedtakEndring } from '@/utils/loependeVedtak'
 import { logger } from '@/utils/logging'
@@ -36,10 +37,11 @@ export async function authenticationGuard(): Promise<AuthenticationGuardLoader> 
 }
 
 export const directAccessGuard = async () => {
+  const state = store.getState()
   // Dersom ingen kall er registrert i store betyr det at brukeren prøver å aksessere en url direkte
   if (
-    store.getState().api?.queries === undefined ||
-    Object.keys(store.getState().api.queries).length === 0
+    state.api?.queries === undefined ||
+    Object.keys(state.api.queries).length === 0
   ) {
     return redirect(paths.start)
   }
@@ -146,7 +148,7 @@ export const stepStartAccessGuard =
         if (getLoependeVedtakRes.isError) {
           logger('info', {
             tekst: 'Redirect til /uventet-feil',
-            data: 'fra Step Start Loader pga. feil med getLoependeVedtak',
+            data: `fra Step Start Loader pga. feil med getLoependeVedtak med status: ${(getLoependeVedtakRes.error as FetchBaseQueryError).status}`,
           })
           return paths.uventetFeil
         }
@@ -190,7 +192,7 @@ export const stepStartAccessGuard =
           } else {
             logger('info', {
               tekst: 'Redirect til /uventet-feil',
-              data: 'fra Step Start Loader pga. feil med getPerson',
+              data: `fra Step Start Loader pga. feil med getPerson med status: ${(getPersonRes.error as FetchBaseQueryError).status}`,
             })
             return paths.uventetFeil
           }
@@ -273,26 +275,23 @@ export const stepAFPAccessGuard = async (): Promise<
   const shouldRedirectTo: Promise<string> = new Promise((resolve) => {
     resolveRedirectUrl = resolve
   })
+  const state = store.getState()
 
-  const foedselsdato = selectFoedselsdato(store.getState())
+  const foedselsdato = selectFoedselsdato(state)
 
-  const hasInntektPreviouslyFailed = apiSlice.endpoints.getInntekt.select(
-    undefined
-  )(store.getState()).isError
+  const hasInntektPreviouslyFailed =
+    apiSlice.endpoints.getInntekt.select(undefined)(state).isError
 
   const hasOmstillingsstoenadOgGjenlevendePreviouslyFailed =
     apiSlice.endpoints.getOmstillingsstoenadOgGjenlevende.select(undefined)(
-      store.getState()
+      state
     ).isError
 
   const hasEkskludertStatusPreviouslyFailed =
-    apiSlice.endpoints.getEkskludertStatus.select(undefined)(
-      store.getState()
-    ).isError
+    apiSlice.endpoints.getEkskludertStatus.select(undefined)(state).isError
 
-  const getLoependeVedtakResponse = apiSlice.endpoints.getLoependeVedtak.select(
-    undefined
-  )(store.getState())
+  const getLoependeVedtakResponse =
+    apiSlice.endpoints.getLoependeVedtak.select(undefined)(state)
 
   const { ufoeretrygd, afpPrivat, afpOffentlig } =
     getLoependeVedtakResponse.data as LoependeVedtak
@@ -312,7 +311,7 @@ export const stepAFPAccessGuard = async (): Promise<
       ufoeretrygd.grad === 100 ||
       (ufoeretrygd.grad &&
         foedselsdato &&
-        isFoedselsdatoOverEllerLikMinUttaksalder(foedselsdato))
+        isFoedselsdatoOverAlder(foedselsdato, AFP_UFOERE_OPPSIGELSESALDER))
     ) {
       return stepArrays[stepArrays.indexOf(paths.afp) + 1]
     } else {
@@ -336,16 +335,15 @@ export const stepAFPAccessGuard = async (): Promise<
         if (inntektRes.isError) {
           logger('info', {
             tekst: 'Redirect til /uventet-feil',
-            data: 'fra Step AFP Loader pga. feil med getInntekt',
+            data: `fra Step AFP Loader pga. feil med getInntekt med status: ${(inntektRes.error as FetchBaseQueryError).status}`,
           })
           resolveRedirectUrl(paths.uventetFeil)
         } else if (
           apiSlice.endpoints.getOmstillingsstoenadOgGjenlevende.select(
             undefined
-          )(store.getState()).isSuccess &&
-          apiSlice.endpoints.getEkskludertStatus.select(undefined)(
-            store.getState()
-          ).isSuccess
+          )(state).isSuccess &&
+          apiSlice.endpoints.getEkskludertStatus.select(undefined)(state)
+            .isSuccess
         ) {
           resolveRedirectUrl(redirectFromAFPSteg())
         }
@@ -362,15 +360,13 @@ export const stepAFPAccessGuard = async (): Promise<
         if (omstillingsstoenadOgGjenlevendeRes.isError) {
           logger('info', {
             tekst: 'Redirect til /uventet-feil',
-            data: 'fra Step AFP Loader pga. feil med getOmstillingsstoenadOgGjenlevende',
+            data: `fra Step AFP Loader pga. feil med getOmstillingsstoenadOgGjenlevende  med status: ${(omstillingsstoenadOgGjenlevendeRes.error as FetchBaseQueryError).status}`,
           })
           resolveRedirectUrl(paths.uventetFeil)
         } else if (
-          apiSlice.endpoints.getInntekt.select(undefined)(store.getState())
-            .isSuccess &&
-          apiSlice.endpoints.getEkskludertStatus.select(undefined)(
-            store.getState()
-          ).isSuccess
+          apiSlice.endpoints.getInntekt.select(undefined)(state).isSuccess &&
+          apiSlice.endpoints.getEkskludertStatus.select(undefined)(state)
+            .isSuccess
         ) {
           resolveRedirectUrl(redirectFromAFPSteg())
         }
@@ -385,7 +381,7 @@ export const stepAFPAccessGuard = async (): Promise<
         if (ekskludertStatusRes.isError) {
           logger('info', {
             tekst: 'Redirect til /uventet-feil',
-            data: 'fra Step AFP Loader pga. feil med getEkskludertStatus',
+            data: `fra Step AFP Loader pga. feil med getEkskludertStatus med status: ${(ekskludertStatusRes.error as FetchBaseQueryError).status}`,
           })
           resolveRedirectUrl(paths.uventetFeil)
         }
@@ -398,11 +394,10 @@ export const stepAFPAccessGuard = async (): Promise<
               `${paths.henvisning}/${henvisningUrlParams.apotekerne}`
             )
           } else if (
-            apiSlice.endpoints.getInntekt.select(undefined)(store.getState())
-              .isSuccess &&
+            apiSlice.endpoints.getInntekt.select(undefined)(state).isSuccess &&
             apiSlice.endpoints.getOmstillingsstoenadOgGjenlevende.select(
               undefined
-            )(store.getState()).isSuccess
+            )(state).isSuccess
           ) {
             resolveRedirectUrl(redirectFromAFPSteg())
           }
@@ -450,9 +445,10 @@ export const stepSamtykkeOffentligAFPAccessGuard =
       return redirect(paths.start)
     }
 
-    const afp = selectAfp(store.getState())
+    const state = store.getState()
+    const afp = selectAfp(state)
     const getLoependeVedtakResponse =
-      apiSlice.endpoints.getLoependeVedtak.select(undefined)(store.getState())
+      apiSlice.endpoints.getLoependeVedtak.select(undefined)(state)
 
     const stepArrays = isLoependeVedtakEndring(
       getLoependeVedtakResponse.data as LoependeVedtak
