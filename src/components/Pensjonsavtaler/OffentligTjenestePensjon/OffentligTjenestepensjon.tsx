@@ -125,7 +125,7 @@ export const OffentligTjenestepensjon = (props: {
           <Alert inline variant="warning">
             <FormattedMessage
               id="pensjonsavtaler.offentligtp.empty"
-              values={getFormatMessageValues(intl)}
+              values={getFormatMessageValues()}
             />
           </Alert>
         )
@@ -254,7 +254,7 @@ export const OffentligTjenestepensjon = (props: {
                 offentligTp.simulertTjenestepensjon?.simuleringsresultat
                   .betingetTjenestepensjonErInkludert
               )}
-              values={getFormatMessageValues(intl)}
+              values={getFormatMessageValues()}
             />
           </BodyLong>
         </>
