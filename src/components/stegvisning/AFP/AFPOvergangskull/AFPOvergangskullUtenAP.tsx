@@ -24,10 +24,10 @@ import { getFormatMessageValues } from '@/utils/translations'
 
 interface Props {
   afp: AfpRadio | null
-  skalBeregneAfp: BooleanRadio | null
+  skalBeregneAfp: boolean | null
   onCancel?: () => void
   onPrevious: () => void
-  onNext: (afpData: AfpRadio) => void
+  onNext: (afpData: { afp: AfpRadio; skalBeregneAfp: boolean | null }) => void
 }
 
 export function AFPOvergangskullUtenAP({
@@ -39,14 +39,13 @@ export function AFPOvergangskullUtenAP({
 }: Props) {
   const intl = useIntl()
 
-  const [validationError, setValidationError] = React.useState<string>('')
-  /* const [validationError, setValidationError] = React.useState<{
+  const [validationError, setValidationError] = React.useState<{
     afp?: string
     skalBeregneAfp?: string
   }>({
     afp: undefined,
     skalBeregneAfp: undefined,
-  }) */
+  })
   const [showVetIkkeAlert, setShowVetIkkeAlert] = React.useState<boolean>(
     afp === 'vet_ikke'
   )
@@ -57,7 +56,7 @@ export function AFPOvergangskullUtenAP({
 
     const data = new FormData(e.currentTarget)
     const afpData = data.get('afp') as AfpRadio | undefined
-    const simuleringstypeData = data.get('simuleringstype')
+    const simuleringstypeData = data.get('skalBeregneAfp') as BooleanRadio
 
     if (!afpData) {
       const tekst = intl.formatMessage({
@@ -93,13 +92,13 @@ export function AFPOvergangskullUtenAP({
       })
       onNext({
         afp: afpData,
-        simuleringstype: convertBooleanRadioToBoolean(simuleringstypeData),
+        skalBeregneAfp: convertBooleanRadioToBoolean(simuleringstypeData),
       })
     }
   }
 
   const handleRadioChange = (value: AfpRadio): void => {
-    setValidationError('')
+    setValidationError((prev) => ({ ...prev, afp: undefined }))
     setShowVetIkkeAlert(value === 'vet_ikke')
     setJaAFPOffentlig(value === 'ja_offentlig')
     if (value === 'vet_ikke') {
@@ -205,7 +204,9 @@ export function AFPOvergangskullUtenAP({
             }
             name="simuleringstype"
             defaultValue={skalBeregneAfp}
-            onChange={() => setValidationError('')}
+            onChange={() =>
+              setValidationError({ afp: undefined, skalBeregneAfp: undefined })
+            }
             error={validationError.skalBeregneAfp}
             role="radiogroup"
             aria-required="true"

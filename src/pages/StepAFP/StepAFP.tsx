@@ -46,10 +46,10 @@ export function StepAFP() {
 
   const onNextOvergangskull = (afpData: {
     afp: AfpRadio
-    simuleringstype: boolean | null
+    skalBeregneAfp: boolean | null
   }): void => {
     dispatch(userInputActions.setAfp(afpData.afp))
-    dispatch(userInputActions.setSkalBeregneAfp(afpData.simuleringstype))
+    dispatch(userInputActions.setSkalBeregneAfp(afpData.skalBeregneAfp))
     if (onStegvisningNext) {
       onStegvisningNext()
     }
