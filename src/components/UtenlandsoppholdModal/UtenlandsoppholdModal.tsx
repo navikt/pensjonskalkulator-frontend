@@ -121,7 +121,7 @@ export const UtenlandsoppholdModal: React.FC<Props> = ({
                         id: validationErrors[UTENLANDSOPPHOLD_FORM_NAMES.land],
                       },
                       {
-                        ...getFormatMessageValues(intl),
+                        ...getFormatMessageValues(),
                         land: validationErrors[
                           UTENLANDSOPPHOLD_FORM_NAMES.overlappende_land
                         ],
@@ -196,7 +196,7 @@ export const UtenlandsoppholdModal: React.FC<Props> = ({
                               ],
                             },
                             {
-                              ...getFormatMessageValues(intl),
+                              ...getFormatMessageValues(),
                               land: validationErrors[
                                 UTENLANDSOPPHOLD_FORM_NAMES.overlappende_land
                               ],
@@ -262,7 +262,7 @@ export const UtenlandsoppholdModal: React.FC<Props> = ({
                               ],
                             },
                             {
-                              ...getFormatMessageValues(intl),
+                              ...getFormatMessageValues(),
                               maxDato: format(maxDate, DATE_ENDUSER_FORMAT),
                               land: validationErrors[
                                 UTENLANDSOPPHOLD_FORM_NAMES.overlappende_land
@@ -314,7 +314,7 @@ export const UtenlandsoppholdModal: React.FC<Props> = ({
                               ],
                             },
                             {
-                              ...getFormatMessageValues(intl),
+                              ...getFormatMessageValues(),
                               maxDato: format(maxDate, DATE_ENDUSER_FORMAT),
                             }
                           )
