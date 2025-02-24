@@ -11,7 +11,10 @@ import {
   RadioGroup,
 } from '@navikt/ds-react'
 
-import { STEGVISNING_FORM_NAMES } from '../../utils'
+import {
+  convertBooleanRadioToBoolean,
+  STEGVISNING_FORM_NAMES,
+} from '../../utils'
 import styles from '../AFP.module.scss'
 import { Card } from '@/components/common/Card'
 import { ReadMore } from '@/components/common/ReadMore'
@@ -21,6 +24,7 @@ import { getFormatMessageValues } from '@/utils/translations'
 
 interface Props {
   afp: AfpRadio | null
+  skalBeregneAfp: BooleanRadio | null
   onCancel?: () => void
   onPrevious: () => void
   onNext: (afpData: AfpRadio) => void
@@ -28,6 +32,7 @@ interface Props {
 
 export function AFPOvergangskullUtenAP({
   afp,
+  skalBeregneAfp,
   onCancel,
   onPrevious,
   onNext,
@@ -36,11 +41,11 @@ export function AFPOvergangskullUtenAP({
 
   const [validationError, setValidationError] = React.useState<string>('')
   /* const [validationError, setValidationError] = React.useState<{
-    rettTilAFP?: string
-    beregning?: string
+    afp?: string
+    skalBeregneAfp?: string
   }>({
-    rettTilAFP: undefined,
-    beregning: undefined,
+    afp: undefined,
+    skalBeregneAfp: undefined,
   }) */
   const [showVetIkkeAlert, setShowVetIkkeAlert] = React.useState<boolean>(
     afp === 'vet_ikke'
@@ -52,12 +57,25 @@ export function AFPOvergangskullUtenAP({
 
     const data = new FormData(e.currentTarget)
     const afpData = data.get('afp') as AfpRadio | undefined
+    const simuleringstypeData = data.get('simuleringstype')
 
     if (!afpData) {
       const tekst = intl.formatMessage({
         id: 'stegvisning.afp.validation_error',
       })
-      setValidationError(tekst)
+      setValidationError((prev) => ({ ...prev, afp: tekst }))
+      logger('skjema validering feilet', {
+        skjemanavn: STEGVISNING_FORM_NAMES.afp,
+        data: intl.formatMessage({
+          id: 'stegvisning.afp.radio_label',
+        }),
+        tekst,
+      })
+    } else if (jaAFPOffentlig && !simuleringstypeData) {
+      const tekst = intl.formatMessage({
+        id: 'stegvisning.afp.validation_error',
+      })
+      setValidationError((prev) => ({ ...prev, skalBeregneAfp: tekst }))
       logger('skjema validering feilet', {
         skjemanavn: STEGVISNING_FORM_NAMES.afp,
         data: intl.formatMessage({
@@ -73,7 +91,10 @@ export function AFPOvergangskullUtenAP({
       logger('button klikk', {
         tekst: `Neste fra ${paths.afp}`,
       })
-      onNext(afpData)
+      onNext({
+        afp: afpData,
+        simuleringstype: convertBooleanRadioToBoolean(simuleringstypeData),
+      })
     }
   }
 
@@ -102,22 +123,22 @@ export function AFPOvergangskullUtenAP({
           name="Avtalefestet pensjon i offentlig sektor"
           className={styles.readmoreOffentlig}
           header={
-            <FormattedMessage id="stegvisning.afp.readmore_offentlig_title" />
+            <FormattedMessage id="stegvisning.afpOvergangskull.readmore_offentlig_title" />
           }
         >
           <FormattedMessage id="stegvisning.afp.readmore_offentlig_list_title" />
           <ul className={styles.list}>
             <li>
-              <FormattedMessage id="stegvisning.afp.readmore_offentlig_list_item1" />
+              <FormattedMessage id="stegvisning.afpOvergangskull.readmore_offentlig_list_item1" />
             </li>
             <li>
-              <FormattedMessage id="stegvisning.afp.readmore_offentlig_list_item2" />
+              <FormattedMessage id="stegvisning.afpOvergangskull.readmore_offentlig_list_item2" />
             </li>
             <li>
-              <FormattedMessage id="stegvisning.afp.readmore_offentlig_list_item3" />
+              <FormattedMessage id="stegvisning.afpOvergangskull.readmore_offentlig_list_item3" />
             </li>
           </ul>
-          <FormattedMessage id="stegvisning.afp.readmore_offentlig_ingress" />
+          <FormattedMessage id="stegvisning.afpOvergangskull.readmore_offentlig_ingress" />
         </ReadMore>
         <ReadMore
           name="Avtalefestet pensjon i privat sektor"
@@ -154,7 +175,7 @@ export function AFPOvergangskullUtenAP({
           name="afp"
           defaultValue={afp}
           onChange={handleRadioChange}
-          error={validationError}
+          error={validationError.afp}
           role="radiogroup"
           aria-required="true"
         >
@@ -182,6 +203,12 @@ export function AFPOvergangskullUtenAP({
             legend={
               <FormattedMessage id="stegvisning.afp.overgangskullUtenAP.radio_label" />
             }
+            name="simuleringstype"
+            defaultValue={skalBeregneAfp}
+            onChange={() => setValidationError('')}
+            error={validationError.skalBeregneAfp}
+            role="radiogroup"
+            aria-required="true"
           >
             <Radio value="ja">
               <FormattedMessage id="stegvisning.afp.overgangskullUtenAP.radio_ja" />
