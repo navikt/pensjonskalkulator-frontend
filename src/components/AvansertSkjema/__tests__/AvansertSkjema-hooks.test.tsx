@@ -10,7 +10,7 @@ import {
 } from '@/pages/Beregning/context'
 import { act, render, renderHook, screen } from '@/test-utils'
 
-describe('RedigerAvansertBeregning-hooks', () => {
+describe('AvansertSkjema-hooks', () => {
   describe('useFormLocalState', () => {
     const defaultContextValues = {
       avansertSkjemaModus: 'redigering' as AvansertBeregningModus,

@@ -7,7 +7,7 @@ import {
 import * as alderUtils from '@/utils/alder'
 import * as inntektUtils from '@/utils/inntekt'
 
-describe('RedigerAvansertBeregning-utils', () => {
+describe('AvansertSkjema-utils', () => {
   describe('onAvansertBeregningSubmit', () => {
     const formDataAllFieldsSwitch = (s: string) => {
       switch (s) {

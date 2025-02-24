@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
 
-import { RedigerAvansertBeregning } from '../RedigerAvansertBeregning'
-import { AVANSERT_FORM_NAMES } from '../utils'
-import * as RedigerAvansertBeregningUtils from '../utils'
+import { AvansertSkjemaForAndreBrukere } from '..'
+import { AVANSERT_FORM_NAMES } from '../../utils'
+import * as AvansertSkjemaForAndreBrukereUtils from '../../utils'
 import {
   fulfilledGetPerson,
   fulfilledGetLoependeVedtak0Ufoeregrad,
@@ -25,7 +25,8 @@ import {
 } from '@/state/userInput/userInputReducer'
 import { render, screen, fireEvent, userEvent } from '@/test-utils'
 
-describe('RedigerAvansertBeregning', () => {
+// TODO PEK-1026 tilpasse mocking
+describe('AvansertSkjemaForAndreBrukere', () => {
   const contextMockedValues = {
     avansertSkjemaModus: 'redigering' as AvansertBeregningModus,
     setAvansertSkjemaModus: vi.fn(),
@@ -50,7 +51,7 @@ describe('RedigerAvansertBeregning', () => {
           ...contextMockedValues,
         }}
       >
-        <RedigerAvansertBeregning gaaTilResultat={vi.fn()} />
+        <AvansertSkjemaForAndreBrukere />
       </BeregningContext.Provider>,
       {
         preloadedState: {
@@ -77,9 +78,9 @@ describe('RedigerAvansertBeregning', () => {
           ...contextMockedValues,
         }}
       >
-        <RedigerAvansertBeregning
-          gaaTilResultat={vi.fn()}
-          brukerensAlderPlus1Maaned={{ aar: 64, maaneder: 5 }}
+        <AvansertSkjemaForAndreBrukere
+
+        // brukerensAlderPlus1Maaned={{ aar: 64, maaneder: 5 }}
         />
       </BeregningContext.Provider>,
       {
@@ -271,7 +272,7 @@ describe('RedigerAvansertBeregning', () => {
           ...contextMockedValues,
         }}
       >
-        <RedigerAvansertBeregning gaaTilResultat={vi.fn()} />
+        <AvansertSkjemaForAndreBrukere />
       </BeregningContext.Provider>,
       {
         preloadedState: {
@@ -328,7 +329,7 @@ describe('RedigerAvansertBeregning', () => {
           ...contextMockedValues,
         }}
       >
-        <RedigerAvansertBeregning gaaTilResultat={vi.fn()} />
+        <AvansertSkjemaForAndreBrukere />
       </BeregningContext.Provider>,
       {
         preloadedState: {
@@ -596,7 +597,7 @@ describe('RedigerAvansertBeregning', () => {
           ...contextMockedValues,
         }}
       >
-        <RedigerAvansertBeregning gaaTilResultat={vi.fn()} />
+        <AvansertSkjemaForAndreBrukere />
       </BeregningContext.Provider>,
       {
         preloadedState: {
@@ -686,7 +687,7 @@ describe('RedigerAvansertBeregning', () => {
           ...contextMockedValues,
         }}
       >
-        <RedigerAvansertBeregning gaaTilResultat={vi.fn()} />
+        <AvansertSkjemaForAndreBrukere />
       </BeregningContext.Provider>,
       {
         preloadedState: {
@@ -807,7 +808,7 @@ describe('RedigerAvansertBeregning', () => {
           ...contextMockedValues,
         }}
       >
-        <RedigerAvansertBeregning gaaTilResultat={vi.fn()} />
+        <AvansertSkjemaForAndreBrukere />
       </BeregningContext.Provider>,
       {
         preloadedState: {
@@ -934,7 +935,7 @@ describe('RedigerAvansertBeregning', () => {
             ...contextMockedValues,
           }}
         >
-          <RedigerAvansertBeregning gaaTilResultat={vi.fn()} />
+          <AvansertSkjemaForAndreBrukere />
         </BeregningContext.Provider>,
         {
           preloadedState: {
@@ -1007,7 +1008,7 @@ describe('RedigerAvansertBeregning', () => {
 
     it('nullstiller feltene for gradert og overfører uttaksalder til helt uttak, når uttaksgrad settes tilbake til 100 %', async () => {
       const onSubmitMock = vi.spyOn(
-        RedigerAvansertBeregningUtils,
+        AvansertSkjemaForAndreBrukereUtils,
         'onAvansertBeregningSubmit'
       )
 
@@ -1018,7 +1019,7 @@ describe('RedigerAvansertBeregning', () => {
             ...contextMockedValues,
           }}
         >
-          <RedigerAvansertBeregning gaaTilResultat={vi.fn()} />
+          <AvansertSkjemaForAndreBrukere />
         </BeregningContext.Provider>,
         {
           preloadedState: {
@@ -1182,7 +1183,7 @@ describe('RedigerAvansertBeregning', () => {
             ...contextMockedValues,
           }}
         >
-          <RedigerAvansertBeregning gaaTilResultat={vi.fn()} />
+          <AvansertSkjemaForAndreBrukere />
         </BeregningContext.Provider>,
         {
           preloadedState: {
@@ -1335,7 +1336,7 @@ describe('RedigerAvansertBeregning', () => {
 
     it('Når uttaksgrad er ugyldig, håndteres den som om den var 100% og nullstiller feltene for gradert', async () => {
       const onSubmitMock = vi.spyOn(
-        RedigerAvansertBeregningUtils,
+        AvansertSkjemaForAndreBrukereUtils,
         'onAvansertBeregningSubmit'
       )
 
@@ -1346,7 +1347,7 @@ describe('RedigerAvansertBeregning', () => {
             ...contextMockedValues,
           }}
         >
-          <RedigerAvansertBeregning gaaTilResultat={vi.fn()} />
+          <AvansertSkjemaForAndreBrukere />
         </BeregningContext.Provider>,
         {
           preloadedState: {
@@ -1514,7 +1515,7 @@ describe('RedigerAvansertBeregning', () => {
             ...contextMockedValues,
           }}
         >
-          <RedigerAvansertBeregning gaaTilResultat={vi.fn()} />
+          <AvansertSkjemaForAndreBrukere />
         </BeregningContext.Provider>,
         {
           preloadedState: {
@@ -1615,9 +1616,8 @@ describe('RedigerAvansertBeregning', () => {
             ...contextMockedValues,
           }}
         >
-          <RedigerAvansertBeregning
-            gaaTilResultat={vi.fn()}
-            brukerensAlderPlus1Maaned={{ aar: 64, maaneder: 5 }}
+          <AvansertSkjemaForAndreBrukere
+          // brukerensAlderPlus1Maaned={{ aar: 64, maaneder: 5 }}
           />
         </BeregningContext.Provider>,
         {
@@ -1709,9 +1709,8 @@ describe('RedigerAvansertBeregning', () => {
             ...contextMockedValues,
           }}
         >
-          <RedigerAvansertBeregning
-            gaaTilResultat={vi.fn()}
-            brukerensAlderPlus1Maaned={{ aar: 66, maaneder: 0 }}
+          <AvansertSkjemaForAndreBrukere
+          // brukerensAlderPlus1Maaned={{ aar: 66, maaneder: 0 }}
           />
         </BeregningContext.Provider>,
         {
@@ -1771,7 +1770,7 @@ describe('RedigerAvansertBeregning', () => {
             ...contextMockedValues,
           }}
         >
-          <RedigerAvansertBeregning gaaTilResultat={vi.fn()} />
+          <AvansertSkjemaForAndreBrukere />
         </BeregningContext.Provider>,
         {
           preloadedState: {
@@ -1838,7 +1837,7 @@ describe('RedigerAvansertBeregning', () => {
             ...contextMockedValues,
           }}
         >
-          <RedigerAvansertBeregning gaaTilResultat={vi.fn()} />
+          <AvansertSkjemaForAndreBrukere />
         </BeregningContext.Provider>,
         {
           preloadedState: {
@@ -1902,7 +1901,7 @@ describe('RedigerAvansertBeregning', () => {
             ...contextMockedValues,
           }}
         >
-          <RedigerAvansertBeregning gaaTilResultat={vi.fn()} />
+          <AvansertSkjemaForAndreBrukere />
         </BeregningContext.Provider>,
         {
           preloadedState: {
@@ -2002,7 +2001,7 @@ describe('RedigerAvansertBeregning', () => {
             ...contextMockedValues,
           }}
         >
-          <RedigerAvansertBeregning gaaTilResultat={vi.fn()} />
+          <AvansertSkjemaForAndreBrukere />
         </BeregningContext.Provider>,
         {
           preloadedState: {
@@ -2119,7 +2118,7 @@ describe('RedigerAvansertBeregning', () => {
             ...contextMockedValues,
           }}
         >
-          <RedigerAvansertBeregning gaaTilResultat={vi.fn()} />
+          <AvansertSkjemaForAndreBrukere />
         </BeregningContext.Provider>,
         {
           preloadedState: {
@@ -2211,7 +2210,7 @@ describe('RedigerAvansertBeregning', () => {
           ...contextMockedValues,
         }}
       >
-        <RedigerAvansertBeregning gaaTilResultat={vi.fn()} />
+        <AvansertSkjemaForAndreBrukere />
       </BeregningContext.Provider>,
       {
         preloadedState: {
@@ -2412,7 +2411,7 @@ describe('RedigerAvansertBeregning', () => {
             ...contextMockedValues,
           }}
         >
-          <RedigerAvansertBeregning gaaTilResultat={vi.fn()} />
+          <AvansertSkjemaForAndreBrukere />
         </BeregningContext.Provider>,
         {
           preloadedState: {
@@ -2550,8 +2549,7 @@ describe('RedigerAvansertBeregning', () => {
             ...contextMockedValues,
           }}
         >
-          <RedigerAvansertBeregning
-            gaaTilResultat={vi.fn()}
+          <AvansertSkjemaForAndreBrukere
             vilkaarsproeving={vilkaarsproevingMock}
           />
         </BeregningContext.Provider>,
@@ -2583,9 +2581,8 @@ describe('RedigerAvansertBeregning', () => {
             ...contextMockedValues,
           }}
         >
-          <RedigerAvansertBeregning
-            gaaTilResultat={vi.fn()}
-            brukerensAlderPlus1Maaned={{ aar: 64, maaneder: 5 }}
+          <AvansertSkjemaForAndreBrukere
+          // brukerensAlderPlus1Maaned={{ aar: 64, maaneder: 5 }}
           />
         </BeregningContext.Provider>,
         {
@@ -2620,9 +2617,8 @@ describe('RedigerAvansertBeregning', () => {
             ...contextMockedValues,
           }}
         >
-          <RedigerAvansertBeregning
-            gaaTilResultat={vi.fn()}
-            brukerensAlderPlus1Maaned={{ aar: 64, maaneder: 5 }}
+          <AvansertSkjemaForAndreBrukere
+          // brukerensAlderPlus1Maaned={{ aar: 64, maaneder: 5 }}
           />
         </BeregningContext.Provider>,
         {
@@ -2684,9 +2680,8 @@ describe('RedigerAvansertBeregning', () => {
             ...contextMockedValues,
           }}
         >
-          <RedigerAvansertBeregning
-            gaaTilResultat={vi.fn()}
-            brukerensAlderPlus1Maaned={{ aar: 64, maaneder: 5 }}
+          <AvansertSkjemaForAndreBrukere
+          // brukerensAlderPlus1Maaned={{ aar: 64, maaneder: 5 }}
           />
         </BeregningContext.Provider>,
         {
@@ -2774,9 +2769,8 @@ describe('RedigerAvansertBeregning', () => {
             ...contextMockedValues,
           }}
         >
-          <RedigerAvansertBeregning
-            gaaTilResultat={vi.fn()}
-            brukerensAlderPlus1Maaned={{ aar: 64, maaneder: 5 }}
+          <AvansertSkjemaForAndreBrukere
+          // brukerensAlderPlus1Maaned={{ aar: 64, maaneder: 5 }}
           />
         </BeregningContext.Provider>,
         {
