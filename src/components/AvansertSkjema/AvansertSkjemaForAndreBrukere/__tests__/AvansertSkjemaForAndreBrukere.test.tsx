@@ -22,7 +22,7 @@ import { apiSlice } from '@/state/api/apiSlice'
 import {
   userInputInitialState,
   Simulation,
-} from '@/state/userInput/userInputReducer'
+} from '@/state/userInput/userInputSlice'
 import { render, screen, fireEvent, userEvent } from '@/test-utils'
 
 // TODO PEK-1026 tilpasse mocking
@@ -2536,7 +2536,6 @@ describe('AvansertSkjemaForAndreBrukere', () => {
       })
 
       const currentSimulation: Simulation = {
-        utenlandsperioder: [],
         formatertUttaksalderReadOnly: '62 år string.og 0 alder.maaned',
         uttaksalder: { aar: 62, maaneder: 0 },
         aarligInntektFoerUttakBeloep: null,
