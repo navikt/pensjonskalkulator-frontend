@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AvansertSkjemaForAndreBrukere > Gitt at en bruker har vedtak om alderspensjon > Når brukeren har gradert uføretrygd, vises det riktig label på feltene 1`] = `
+exports[`AvansertSkjemaForAndreBrukere > Gitt at en bruker har vedtak om alderspensjon,  > Når brukeren har gradert uføretrygd, vises det riktig label på feltene 1`] = `
 <DocumentFragment>
   <div
     class="_container_658086 _container__hasMobilePadding_658086"
@@ -53,7 +53,7 @@ exports[`AvansertSkjemaForAndreBrukere > Gitt at en bruker har vedtak om aldersp
              beregning.avansert.rediger.inntekt_frem_til_uttak.description
           </span>
           <dialog
-            aria-labelledby="rln"
+            aria-labelledby="rmu"
             class="navds-modal navds-modal--polyfilled navds-modal--small"
             role="dialog"
           >
@@ -68,7 +68,7 @@ exports[`AvansertSkjemaForAndreBrukere > Gitt at en bruker har vedtak om aldersp
                   class="navds-button__icon"
                 >
                   <svg
-                    aria-labelledby="title-rlp"
+                    aria-labelledby="title-rn0"
                     fill="none"
                     focusable="false"
                     height="1em"
@@ -78,7 +78,7 @@ exports[`AvansertSkjemaForAndreBrukere > Gitt at en bruker har vedtak om aldersp
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <title
-                      id="title-rlp"
+                      id="title-rn0"
                     >
                       Lukk
                     </title>
@@ -91,7 +91,7 @@ exports[`AvansertSkjemaForAndreBrukere > Gitt at en bruker har vedtak om aldersp
               </button>
               <h1
                 class="navds-heading navds-heading--medium"
-                id="rln"
+                id="rmu"
               >
                 inntekt.endre_inntekt_modal.title
               </h1>
@@ -116,7 +116,7 @@ exports[`AvansertSkjemaForAndreBrukere > Gitt at en bruker har vedtak om aldersp
                 >
                   Din pensjonsopptjening
                   <svg
-                    aria-labelledby="title-rlq"
+                    aria-labelledby="title-rn1"
                     fill="none"
                     focusable="false"
                     height="1.25rem"
@@ -126,7 +126,7 @@ exports[`AvansertSkjemaForAndreBrukere > Gitt at en bruker har vedtak om aldersp
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <title
-                      id="title-rlq"
+                      id="title-rn1"
                     >
                       application.global.external_link
                     </title>
@@ -154,21 +154,21 @@ exports[`AvansertSkjemaForAndreBrukere > Gitt at en bruker har vedtak om aldersp
                   >
                     <label
                       class="navds-form-field__label navds-label"
-                      for="textField-rlr"
+                      for="textField-rn2"
                     >
                       inntekt.endre_inntekt_modal.textfield.label
                     </label>
                     <div
                       class="navds-form-field__description navds-body-short navds-body-short--medium"
-                      id="textField-description-rlr"
+                      id="textField-description-rn2"
                     >
                       inntekt.endre_inntekt_modal.textfield.description.ufoere
                     </div>
                     <input
-                      aria-describedby="textField-description-rlr"
+                      aria-describedby="textField-description-rn2"
                       class="navds-text-field__input navds-body-short navds-body-short--medium"
                       data-testid="inntekt-textfield"
-                      id="textField-rlr"
+                      id="textField-rn2"
                       inputmode="numeric"
                       max="5"
                       name="inntekt"
@@ -179,7 +179,7 @@ exports[`AvansertSkjemaForAndreBrukere > Gitt at en bruker har vedtak om aldersp
                       aria-live="polite"
                       aria-relevant="additions removals"
                       class="navds-form-field__error"
-                      id="textField-error-rlr"
+                      id="textField-error-rn2"
                     />
                   </div>
                 </div>
@@ -381,7 +381,7 @@ exports[`AvansertSkjemaForAndreBrukere > Gitt at en bruker har vedtak om aldersp
             >
               <label
                 class="navds-form-field__label navds-label"
-                for="select-rlu"
+                for="select-rn5"
               >
                 Velg år
               </label>
@@ -394,7 +394,7 @@ exports[`AvansertSkjemaForAndreBrukere > Gitt at en bruker har vedtak om aldersp
                   class="navds-select__input navds-body-short navds-body-short--medium"
                   data-testid="age-picker-uttaksalder-helt-uttak-aar"
                   form="avansert-beregning"
-                  id="select-rlu"
+                  id="select-rn5"
                   name="uttaksalder-helt-uttak-aar"
                 >
                   <option
@@ -497,7 +497,7 @@ exports[`AvansertSkjemaForAndreBrukere > Gitt at en bruker har vedtak om aldersp
                 aria-live="polite"
                 aria-relevant="additions removals"
                 class="navds-form-field__error"
-                id="select-error-rlu"
+                id="select-error-rn5"
               />
             </div>
             <div
@@ -505,7 +505,7 @@ exports[`AvansertSkjemaForAndreBrukere > Gitt at en bruker har vedtak om aldersp
             >
               <label
                 class="navds-form-field__label navds-label"
-                for="select-rm0"
+                for="select-rn7"
               >
                 Velg måned
               </label>
@@ -519,7 +519,7 @@ exports[`AvansertSkjemaForAndreBrukere > Gitt at en bruker har vedtak om aldersp
                   data-testid="age-picker-uttaksalder-helt-uttak-maaneder"
                   disabled=""
                   form="avansert-beregning"
-                  id="select-rm0"
+                  id="select-rn7"
                   name="uttaksalder-helt-uttak-maaneder"
                 >
                   <option
@@ -552,7 +552,7 @@ exports[`AvansertSkjemaForAndreBrukere > Gitt at en bruker har vedtak om aldersp
                 aria-live="polite"
                 aria-relevant="additions removals"
                 class="navds-form-field__error"
-                id="select-error-rm0"
+                id="select-error-rn7"
               />
             </div>
             <span
@@ -642,13 +642,13 @@ exports[`AvansertSkjemaForAndreBrukere > Gitt at en bruker har vedtak om aldersp
         >
           <label
             class="navds-form-field__label navds-label"
-            for="select-rm3"
+            for="select-rna"
           >
             beregning.avansert.rediger.uttaksgrad.label
           </label>
           <div
             class="navds-form-field__description navds-body-short navds-body-short--medium"
-            id="select-description-rm3"
+            id="select-description-rna"
           >
             beregning.avansert.rediger.uttaksgrad.endring.description
           </div>
@@ -656,12 +656,12 @@ exports[`AvansertSkjemaForAndreBrukere > Gitt at en bruker har vedtak om aldersp
             class="navds-select__container"
           >
             <select
-              aria-describedby="select-description-rm3"
+              aria-describedby="select-description-rna"
               aria-required="true"
               class="navds-select__input navds-body-short navds-body-short--medium"
               data-testid="uttaksgrad"
               form="avansert-beregning"
-              id="select-rm3"
+              id="select-rna"
               name="uttaksgrad"
             >
               <option
@@ -729,7 +729,7 @@ exports[`AvansertSkjemaForAndreBrukere > Gitt at en bruker har vedtak om aldersp
             aria-live="polite"
             aria-relevant="additions removals"
             class="navds-form-field__error"
-            id="select-error-rm3"
+            id="select-error-rna"
           />
         </div>
         <div

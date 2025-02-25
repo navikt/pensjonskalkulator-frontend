@@ -19,14 +19,18 @@ import {
   AvansertBeregningModus,
 } from '@/pages/Beregning/context'
 import { apiSlice } from '@/state/api/apiSlice'
+import * as alderUtils from '@/utils/alder'
 import {
   userInputInitialState,
   Simulation,
 } from '@/state/userInput/userInputSlice'
 import { render, screen, fireEvent, userEvent } from '@/test-utils'
 
-// TODO PEK-1026 tilpasse mocking
 describe('AvansertSkjemaForAndreBrukere', () => {
+  afterEach(() => {
+    vi.resetAllMocks()
+  })
+
   const contextMockedValues = {
     avansertSkjemaModus: 'redigering' as AvansertBeregningModus,
     setAvansertSkjemaModus: vi.fn(),
@@ -68,9 +72,7 @@ describe('AvansertSkjemaForAndreBrukere', () => {
     expect(scrollToMock).toHaveBeenCalledWith(0, 0)
   })
 
-  // 2. Når bruker har 0 uføretrygd, er minimumsalder til AgePicker for helt uttak (uten gradert periode) eller gradert uttak
-  // 4. AgePicker: Når bruker har 0 uføretrygd og har lagt inn et gradert uttak, er minimumsalder til AgePicker for helt uttak
-  it('feltene rendres riktig som default, og når brukeren legger til en gradert periode', async () => {
+  it('Readmore med tilleggsinformasjon til bruker vises riktig', async () => {
     const user = userEvent.setup()
     render(
       <BeregningContext.Provider
@@ -78,10 +80,68 @@ describe('AvansertSkjemaForAndreBrukere', () => {
           ...contextMockedValues,
         }}
       >
-        <AvansertSkjemaForAndreBrukere
+        <AvansertSkjemaForAndreBrukere />
+      </BeregningContext.Provider>,
+      {
+        preloadedState: {
+          api: {
+            // @ts-ignore
+            queries: { ...mockedQueries },
+          },
+          userInput: {
+            ...userInputInitialState,
+          },
+        },
+      }
+    )
 
-        // brukerensAlderPlus1Maaned={{ aar: 64, maaneder: 5 }}
-        />
+    expect(
+      screen.getByText('inntekt.info_om_inntekt.read_more.label')
+    ).toBeVisible()
+    user.click(
+      screen.getByText('beregning.avansert.rediger.read_more.uttaksgrad.label')
+    )
+    expect(
+      screen.getByText(
+        'Uttaksgrad angir hvor stor del av månedlig alderspensjon du ønsker å ta ut',
+        { exact: false }
+      )
+    ).toBeVisible()
+    user.click(screen.getByText('beregning.read_more.pensjonsalder.label'))
+    expect(
+      screen.getByText('Aldersgrensene vil øke gradvis fra 1964-kullet', {
+        exact: false,
+      })
+    ).toBeVisible()
+
+    fireEvent.change(
+      await screen.findByTestId(AVANSERT_FORM_NAMES.uttaksgrad),
+      {
+        target: { value: '80 %' },
+      }
+    )
+
+    user.click(screen.getByText('beregning.read_more.pensjonsalder.label'))
+    expect(
+      screen.getByText('Aldersgrensene vil øke gradvis fra 1964-kullet', {
+        exact: false,
+      })
+    ).toBeVisible()
+  })
+
+  it('feltene rendres riktig som default, og når brukeren legger til en gradert periode', async () => {
+    vi.spyOn(alderUtils, 'getBrukerensAlderISluttenAvMaaneden').mockReturnValue(
+      { aar: 64, maaneder: 5 }
+    )
+
+    const user = userEvent.setup()
+    render(
+      <BeregningContext.Provider
+        value={{
+          ...contextMockedValues,
+        }}
+      >
+        <AvansertSkjemaForAndreBrukere />
       </BeregningContext.Provider>,
       {
         preloadedState: {
@@ -261,63 +321,6 @@ describe('AvansertSkjemaForAndreBrukere', () => {
     )
     expect(
       screen.getByTestId(AVANSERT_FORM_NAMES.inntektVsaGradertUttak)
-    ).toBeVisible()
-  })
-
-  it('Readmore med tilleggsinformasjon til bruker vises riktig', async () => {
-    const user = userEvent.setup()
-    render(
-      <BeregningContext.Provider
-        value={{
-          ...contextMockedValues,
-        }}
-      >
-        <AvansertSkjemaForAndreBrukere />
-      </BeregningContext.Provider>,
-      {
-        preloadedState: {
-          api: {
-            // @ts-ignore
-            queries: { ...mockedQueries },
-          },
-          userInput: {
-            ...userInputInitialState,
-          },
-        },
-      }
-    )
-
-    expect(
-      screen.getByText('inntekt.info_om_inntekt.read_more.label')
-    ).toBeVisible()
-    user.click(
-      screen.getByText('beregning.avansert.rediger.read_more.uttaksgrad.label')
-    )
-    expect(
-      screen.getByText(
-        'Uttaksgrad angir hvor stor del av månedlig alderspensjon du ønsker å ta ut',
-        { exact: false }
-      )
-    ).toBeVisible()
-    user.click(screen.getByText('beregning.read_more.pensjonsalder.label'))
-    expect(
-      screen.getByText('Aldersgrensene vil øke gradvis fra 1964-kullet', {
-        exact: false,
-      })
-    ).toBeVisible()
-
-    fireEvent.change(
-      await screen.findByTestId(AVANSERT_FORM_NAMES.uttaksgrad),
-      {
-        target: { value: '80 %' },
-      }
-    )
-
-    user.click(screen.getByText('beregning.read_more.pensjonsalder.label'))
-    expect(
-      screen.getByText('Aldersgrensene vil øke gradvis fra 1964-kullet', {
-        exact: false,
-      })
     ).toBeVisible()
   })
 
@@ -1504,9 +1507,8 @@ describe('AvansertSkjemaForAndreBrukere', () => {
     })
   })
 
-  describe('Gitt at en bruker mottar 100 % uføretrygd', () => {
-    // 4. Når bruker har 100% uføretrygd og har lagt inn et gradert uttak, er minimumsalder til AgePicker for helt uttak
-    it('vises informasjon om pensjonsalder og uføretrygd, og aldersvelgere begrenses fra ubetinget uttaksalder', async () => {
+  describe('Gitt at en bruker mottar 100 % uføretrygd og legger inn et gradert uttak, ', () => {
+    it('vises informasjon om pensjonsalder og uføretrygd, og aldersvelgere begrenses fra normert pensjonsalder', async () => {
       const user = userEvent.setup()
 
       const { store } = render(
@@ -1606,19 +1608,19 @@ describe('AvansertSkjemaForAndreBrukere', () => {
     })
   })
 
-  describe('Gitt at en bruker mottar gradert uføretrygd', () => {
-    // 2. Når bruker har gradert uføretrygd, er minimumsalder til AgePicker for helt uttak (uten gradert periode) eller gradert uttak
-    // 3. Når bruker har gradert uføretrygd og har lagt inn et gradert uttak, er minimumsalder til AgePicker for helt uttak lik ubetinget uttaksalder.
-    it('vises informasjon om pensjonsalder og uføretrygd, og kun aldersvelgeren for 100 % uttak begrenses fra ubetinget uttakssalder', async () => {
+  describe('Gitt at en bruker mottar gradert uføretrygd, ', () => {
+    it('vises informasjon om pensjonsalder og uføretrygd, og kun aldersvelgeren for 100 % uttak begrenses fra normert pensjonsalder', async () => {
+      vi.spyOn(
+        alderUtils,
+        'getBrukerensAlderISluttenAvMaaneden'
+      ).mockReturnValue({ aar: 64, maaneder: 5 })
       render(
         <BeregningContext.Provider
           value={{
             ...contextMockedValues,
           }}
         >
-          <AvansertSkjemaForAndreBrukere
-          // brukerensAlderPlus1Maaned={{ aar: 64, maaneder: 5 }}
-          />
+          <AvansertSkjemaForAndreBrukere />
         </BeregningContext.Provider>,
         {
           preloadedState: {
@@ -1702,16 +1704,18 @@ describe('AvansertSkjemaForAndreBrukere', () => {
       expect(optionAarElementsGradert?.[12].value).toBe('75')
     })
 
-    it('Når brukeren har lagt inn et gradert uttak, er minimum alder i aldersvelgeren for helt uttak lik ubetinget uttaksalder', async () => {
+    it('Når brukeren har lagt inn et gradert uttak, er minimum alder i aldersvelgeren for helt uttak lik normert pensjonsalder', async () => {
+      vi.spyOn(
+        alderUtils,
+        'getBrukerensAlderISluttenAvMaaneden'
+      ).mockReturnValue({ aar: 66, maaneder: 0 })
       render(
         <BeregningContext.Provider
           value={{
             ...contextMockedValues,
           }}
         >
-          <AvansertSkjemaForAndreBrukere
-          // brukerensAlderPlus1Maaned={{ aar: 66, maaneder: 0 }}
-          />
+          <AvansertSkjemaForAndreBrukere />
         </BeregningContext.Provider>,
         {
           preloadedState: {
@@ -1762,8 +1766,7 @@ describe('AvansertSkjemaForAndreBrukere', () => {
       expect(optionAarElementsHelt?.[6].value).toBe('75')
     })
 
-    // 7.  Hvis bruker har uføretrygd og hvis året til valgt uttaksalder for gradert er lavere enn ubetinget uttaksalder, vises det description om inntektsgrensen for uføretrygd.
-    it('vises ekstra informasjon om inntekt vsa pensjon og gradertuføretrygd når brukeren velger en alder før ubetinget uttaksalderen', async () => {
+    it('Når brukeren velger en alder før normert pensjonsalder, vises ekstra informasjon om inntekt vsa. pensjon og gradert uføretrygd ', async () => {
       render(
         <BeregningContext.Provider
           value={{
@@ -1830,7 +1833,7 @@ describe('AvansertSkjemaForAndreBrukere', () => {
       ).toBeInTheDocument()
     })
 
-    it('Når brukeren velger en alder før ubetinget uttaksalderen, begrenses valgene for uttaksgrad basert på uføregraden', async () => {
+    it('Når brukeren velger en alder før normert pensjonsalder, begrenses valgene for uttaksgrad basert på uføregraden', async () => {
       render(
         <BeregningContext.Provider
           value={{
@@ -1893,7 +1896,7 @@ describe('AvansertSkjemaForAndreBrukere', () => {
       expect(optionOppdatertUttaksgradElements?.length).toBe(2)
     })
 
-    it('Når brukeren velger uttaksgraden først og etterpå en alder før ubetinget uttaksalderen som gjør at uttaksgraden er ugyldig, begrenses ikke valgene for uttaksgrad og brukeren er informert gjennom valideringen', async () => {
+    it('Når brukeren velger uttaksgraden først og etterpå en alder før normert pensjonsalder som gjør at uttaksgraden er ugyldig, begrenses ikke valgene for uttaksgrad og brukeren er informert gjennom valideringen', async () => {
       const user = userEvent.setup()
       render(
         <BeregningContext.Provider
@@ -1992,8 +1995,7 @@ describe('AvansertSkjemaForAndreBrukere', () => {
       expect(uttaksgradSelect).toHaveErrorMessage(expect.stringContaining(''))
     })
 
-    // 6. bruker med gradert uføretrygd skal få valideringsfeil når valgt uttaksgrad overstiger tillat grad
-    it('Når brukeren velger en alder etter ubetinget uttaksalderen med en uttaksgrad og endrer til en alder før ubetinget uttaksalderen som gjør at uttaksgraden blir ugyldig, begrenses ikke valgene for uttaksgrad og brukeren er informert gjennom valideringen', async () => {
+    it('Når brukeren velger en alder etter normert pensjonsalder med en uttaksgrad og endrer til en alder før normert pensjonsalder som gjør at uttaksgraden blir ugyldig, begrenses ikke valgene for uttaksgrad og brukeren er informert gjennom valideringen', async () => {
       const user = userEvent.setup()
       render(
         <BeregningContext.Provider
@@ -2110,8 +2112,7 @@ describe('AvansertSkjemaForAndreBrukere', () => {
       expect(uttaksgradSelect).toHaveErrorMessage(expect.stringContaining(''))
     })
 
-    // 5. Fikset med mock av getPersonMedOekteAldersgrenser
-    it('Når brukeren velger en alder før ubetinget uttaksalderen så en avgrenset uttaksgrad så velger en uttaksalder etter ubetinget uttaksalderen, nullstilles uttaksgraden', async () => {
+    it('Når brukeren velger en alder før normert pensjonsalder så en avgrenset uttaksgrad så velger en uttaksalder etter normert pensjonsalder, nullstilles uttaksgraden', async () => {
       render(
         <BeregningContext.Provider
           value={{
@@ -2401,7 +2402,7 @@ describe('AvansertSkjemaForAndreBrukere', () => {
     )
   })
 
-  describe('Gitt at en bruker har vedtak om alderspensjon', () => {
+  describe('Gitt at en bruker har vedtak om alderspensjon, ', () => {
     it('Når brukeren har fylt alle feltene riktig og klikker på beregn mens datoen på vedtaket er mindre enn 12 md. til ønsket uttak, vises det alert og siden scrolles opp til toppen', async () => {
       const user = userEvent.setup()
 
@@ -2516,7 +2517,7 @@ describe('AvansertSkjemaForAndreBrukere', () => {
     })
   })
 
-  describe('Når simuleringen svarer med vilkaarIkkeOppfylt', () => {
+  describe('Når simuleringen svarer med vilkaarIkkeOppfylt, ', () => {
     it('viser alert med informasjon om alternativer', async () => {
       const vilkaarsproevingMock = {
         vilkaarErOppfylt: false,
@@ -2572,7 +2573,7 @@ describe('AvansertSkjemaForAndreBrukere', () => {
     })
   })
 
-  describe('Gitt at en bruker har vedtak om alderspensjon', () => {
+  describe('Gitt at en bruker har vedtak om alderspensjon, ', () => {
     it('vises informasjon om vedtaket', async () => {
       render(
         <BeregningContext.Provider
@@ -2580,9 +2581,7 @@ describe('AvansertSkjemaForAndreBrukere', () => {
             ...contextMockedValues,
           }}
         >
-          <AvansertSkjemaForAndreBrukere
-          // brukerensAlderPlus1Maaned={{ aar: 64, maaneder: 5 }}
-          />
+          <AvansertSkjemaForAndreBrukere />
         </BeregningContext.Provider>,
         {
           preloadedState: {
@@ -2616,9 +2615,7 @@ describe('AvansertSkjemaForAndreBrukere', () => {
             ...contextMockedValues,
           }}
         >
-          <AvansertSkjemaForAndreBrukere
-          // brukerensAlderPlus1Maaned={{ aar: 64, maaneder: 5 }}
-          />
+          <AvansertSkjemaForAndreBrukere />
         </BeregningContext.Provider>,
         {
           preloadedState: {
@@ -2679,9 +2676,7 @@ describe('AvansertSkjemaForAndreBrukere', () => {
             ...contextMockedValues,
           }}
         >
-          <AvansertSkjemaForAndreBrukere
-          // brukerensAlderPlus1Maaned={{ aar: 64, maaneder: 5 }}
-          />
+          <AvansertSkjemaForAndreBrukere />
         </BeregningContext.Provider>,
         {
           preloadedState: {
@@ -2768,9 +2763,7 @@ describe('AvansertSkjemaForAndreBrukere', () => {
             ...contextMockedValues,
           }}
         >
-          <AvansertSkjemaForAndreBrukere
-          // brukerensAlderPlus1Maaned={{ aar: 64, maaneder: 5 }}
-          />
+          <AvansertSkjemaForAndreBrukere />
         </BeregningContext.Provider>,
         {
           preloadedState: {
