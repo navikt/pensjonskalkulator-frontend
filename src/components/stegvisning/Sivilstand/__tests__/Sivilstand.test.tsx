@@ -1,10 +1,6 @@
 import { describe, it, vi } from 'vitest'
 
 import { Sivilstand } from '..'
-import {
-  convertBooleanRadioToBoolean,
-  convertBooleanToBooleanRadio,
-} from '../Sivilstand'
 import { RootState } from '@/state/store'
 import { screen, render, waitFor, userEvent, fireEvent } from '@/test-utils'
 

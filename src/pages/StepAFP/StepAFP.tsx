@@ -18,6 +18,8 @@ import {
   selectSkalBeregneAfp,
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputReducer'
+import { isAlderOver67, isFoedtFoer1963, isOvergangskull } from '@/utils/alder'
+import { isVedtakAlderspensjon } from '@/utils/loependeVedtak'
 
 export function StepAFP() {
   const intl = useIntl()
@@ -25,7 +27,7 @@ export function StepAFP() {
   const stepAFPAccessGuard =
     useLoaderData() as Promise<StepAFPAccessGuardLoader>
   const previousAfp = useAppSelector(selectAfp)
-  const skalBeregneAfp = useAppSelector(selectSkalBeregneAfp)
+  const previousSkalBeregneAfp = useAppSelector(selectSkalBeregneAfp)
   const isVeileder = useAppSelector(selectIsVeileder)
 
   const [{ onStegvisningNext, onStegvisningPrevious, onStegvisningCancel }] =
@@ -37,19 +39,12 @@ export function StepAFP() {
     })
   }, [])
 
-  const onNext = (afpData: AfpRadio): void => {
+  const onNext = (afpData: AfpRadio, skalBeregneAfp: null): void => {
     dispatch(userInputActions.setAfp(afpData))
-    if (onStegvisningNext) {
-      onStegvisningNext()
+    if (skalBeregneAfp !== null) {
+      dispatch(userInputActions.setSkalBeregneAfp(skalBeregneAfp))
     }
-  }
 
-  const onNextOvergangskull = (afpData: {
-    afp: AfpRadio
-    skalBeregneAfp: boolean | null
-  }): void => {
-    dispatch(userInputActions.setAfp(afpData.afp))
-    dispatch(userInputActions.setSkalBeregneAfp(afpData.skalBeregneAfp))
     if (onStegvisningNext) {
       onStegvisningNext()
     }
@@ -69,36 +64,42 @@ export function StepAFP() {
       }
     >
       <Await resolve={stepAFPAccessGuard}>
-        {(view: StepAFPAccessGuardLoader) => {
-          // TODO: Logikk som endrer på hvilket view som skal vises
-          if (view === 'VIEW1') {
-            /* return (
+        {({ person, loependeVedtak }) => {
+          if (
+            isFoedtFoer1963(person.foedselsdato) &&
+            (isAlderOver67(person.foedselsdato) ||
+              isVedtakAlderspensjon(loependeVedtak))
+          ) {
+            return (
               <AFPPrivat
                 afp={previousAfp}
                 onCancel={isVeileder ? undefined : onStegvisningCancel}
                 onPrevious={onStegvisningPrevious}
                 onNext={onNext}
               />
-            ) */
+            )
+          } else if (
+            isOvergangskull(person.foedselsdato) &&
+            !isVedtakAlderspensjon(loependeVedtak)
+          ) {
             return (
               <AFPOvergangskullUtenAP
                 afp={previousAfp}
-                skalBeregneAfp={skalBeregneAfp}
+                skalBeregneAfp={previousSkalBeregneAfp}
                 onCancel={isVeileder ? undefined : onStegvisningCancel}
                 onPrevious={onStegvisningPrevious}
-                onNext={onNextOvergangskull}
+                onNext={onNext}
               />
             )
-            /* return (
+          } else {
+            return (
               <AFP
                 afp={previousAfp}
                 onCancel={isVeileder ? undefined : onStegvisningCancel}
                 onPrevious={onStegvisningPrevious}
                 onNext={onNext}
               />
-            ) */
-          } else {
-            return <div>Noe annet</div>
+            )
           }
         }}
       </Await>

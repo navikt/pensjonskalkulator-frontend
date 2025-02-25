@@ -11,15 +11,16 @@ import {
   RadioGroup,
 } from '@navikt/ds-react'
 
-import {
-  convertBooleanRadioToBoolean,
-  STEGVISNING_FORM_NAMES,
-} from '../../utils'
+import { STEGVISNING_FORM_NAMES } from '../../utils'
 import styles from '../AFP.module.scss'
 import { Card } from '@/components/common/Card'
 import { ReadMore } from '@/components/common/ReadMore'
 import { paths } from '@/router/constants'
 import { logger, wrapLogger } from '@/utils/logging'
+import {
+  convertBooleanRadioToBoolean,
+  convertBooleanToBooleanRadio,
+} from '@/utils/radio'
 import { getFormatMessageValues } from '@/utils/translations'
 
 interface Props {
@@ -27,7 +28,7 @@ interface Props {
   skalBeregneAfp: boolean | null
   onCancel?: () => void
   onPrevious: () => void
-  onNext: (afpData: { afp: AfpRadio; skalBeregneAfp: boolean | null }) => void
+  onNext: (afpData: AfpRadio, skalBeregneAfp: boolean | null) => void
 }
 
 export function AFPOvergangskullUtenAP({
@@ -49,7 +50,9 @@ export function AFPOvergangskullUtenAP({
   const [showVetIkkeAlert, setShowVetIkkeAlert] = React.useState<boolean>(
     afp === 'vet_ikke'
   )
-  const [jaAFPOffentlig, setJaAFPOffentlig] = React.useState<boolean>(false)
+  const [jaAFPOffentlig, setJaAFPOffentlig] = React.useState<boolean>(
+    afp === 'ja_offentlig'
+  )
 
   const onSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
@@ -90,10 +93,13 @@ export function AFPOvergangskullUtenAP({
       logger('button klikk', {
         tekst: `Neste fra ${paths.afp}`,
       })
-      onNext({
-        afp: afpData,
-        skalBeregneAfp: convertBooleanRadioToBoolean(simuleringstypeData),
-      })
+
+      onNext(
+        afpData,
+        simuleringstypeData
+          ? convertBooleanRadioToBoolean(simuleringstypeData)
+          : null
+      )
     }
   }
 
@@ -110,7 +116,7 @@ export function AFPOvergangskullUtenAP({
   }
 
   return (
-    <Card hasLargePadding hasMargin>
+    <Card hasLargePadding hasMargin data-testid="afp-overganskull">
       <form onSubmit={onSubmit}>
         <Heading level="2" size="medium" spacing>
           <FormattedMessage id="stegvisning.afp.title" />
@@ -202,8 +208,8 @@ export function AFPOvergangskullUtenAP({
             legend={
               <FormattedMessage id="stegvisning.afp.overgangskullUtenAP.radio_label" />
             }
-            name="simuleringstype"
-            defaultValue={skalBeregneAfp}
+            name="skalBeregneAfp"
+            defaultValue={convertBooleanToBooleanRadio(skalBeregneAfp)}
             onChange={() =>
               setValidationError({ afp: undefined, skalBeregneAfp: undefined })
             }

@@ -9,6 +9,7 @@ import {
   isSameDay,
   parse,
   startOfMonth,
+  isAfter,
 } from 'date-fns'
 import { nb, nn, enGB } from 'date-fns/locale'
 
@@ -87,6 +88,30 @@ export const isAlderLikEllerOverAnnenAlder = (
   } else {
     return false
   }
+}
+
+export const getAlderFromFoedselsdato = (foedselsdato: string) => {
+  const TODAY = new Date()
+  return differenceInYears(TODAY, new Date(foedselsdato))
+}
+
+export const isAlderOver =
+  (lowestAlder: number) =>
+  (foedselsdato: string): boolean => {
+    const alderFromFoedselsdato = getAlderFromFoedselsdato(foedselsdato)
+    return alderFromFoedselsdato >= lowestAlder
+  }
+
+export const isAlderOver67 = isAlderOver(67)
+
+export const isOvergangskull = (foedselsdato: string) => {
+  const DATE_START = new Date(1954, 0, 0)
+  const DATE_STOP = new Date(1963, 0, 0)
+  const parsedFoedselsdato = new Date(foedselsdato)
+  return (
+    isAfter(parsedFoedselsdato, DATE_START) &&
+    isBefore(parsedFoedselsdato, DATE_STOP)
+  )
 }
 
 export const isAlderOverAnnenAlder = (

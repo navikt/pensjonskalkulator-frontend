@@ -257,7 +257,10 @@ export const stepSivilstandAccessGuard = async (): Promise<
 
 /// ////////////////////////////////////////////////////////////////////////
 
-export type StepAFPAccessGuardLoader = 'VIEW1' | 'VIEW2' | 'VIEW3' // TODO: Lag bedre navn
+export type StepAFPAccessGuardLoader = {
+  person: Person
+  loependeVedtak: LoependeVedtak
+}
 
 export const stepAFPAccessGuard = async (): Promise<
   Response | StepAFPAccessGuardLoader
@@ -266,13 +269,9 @@ export const stepAFPAccessGuard = async (): Promise<
     return redirect(paths.start)
   }
 
-  // TODO: Trenger vi denne?
-  const inntekt = await store
-    .dispatch(apiSlice.endpoints.getInntekt.initiate())
-    .unwrap()
-
-  // TODO: Trenger vi denne?
-  const omstillingsstoenadOgGjenlevendeRes = await store
+  // TODO: Flytte disse til der inntekt og omstillingstønad brukes
+  await store.dispatch(apiSlice.endpoints.getInntekt.initiate()).unwrap()
+  await store
     .dispatch(apiSlice.endpoints.getOmstillingsstoenadOgGjenlevende.initiate())
     .unwrap()
 
@@ -281,6 +280,7 @@ export const stepAFPAccessGuard = async (): Promise<
     .unwrap()
 
   if (
+    // TODO: Hva skjer om man _bare_ er eksludert, men ikke apoteker
     ekskludertStatus.ekskludert &&
     ekskludertStatus.aarsak === 'ER_APOTEKER'
   ) {
@@ -313,8 +313,10 @@ export const stepAFPAccessGuard = async (): Promise<
   ) {
     return redirect(stepArrays[stepArrays.indexOf(paths.afp) + 1])
   } else {
-    // TODO: Her kommer logikken for viewene
-    return 'VIEW1'
+    return {
+      person,
+      loependeVedtak,
+    }
   }
 }
 

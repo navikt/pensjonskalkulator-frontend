@@ -17,21 +17,6 @@ describe('stegvisning - AFP', () => {
   const onPreviousMock = vi.fn()
   const onNextMock = vi.fn()
 
-  it('kaller navigate når shouldRedirectTo er angitt', async () => {
-    const randomPath = '/random-path'
-
-    render(
-      <AFP
-        shouldRedirectTo={randomPath}
-        afp={null}
-        onCancel={onCancelMock}
-        onPrevious={onPreviousMock}
-        onNext={onNextMock}
-      />
-    )
-    expect(navigateMock).toHaveBeenCalledWith(randomPath)
-  })
-
   it('rendrer slik den skal når afp ikke er oppgitt', async () => {
     const user = userEvent.setup()
     const result = render(

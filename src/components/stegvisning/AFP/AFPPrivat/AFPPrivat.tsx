@@ -29,7 +29,7 @@ interface Props {
 export function AFPPrivat({ afp, onCancel, onPrevious, onNext }: Props) {
   const intl = useIntl()
 
-  const [validationError, setValidationError] = React.useState<string>('')
+  const [validationError, setValidationError] = React.useState<string>()
   const [showVetIkkeAlert, setShowVetIkkeAlert] = React.useState<boolean>(
     afp === 'vet_ikke'
   )
@@ -76,7 +76,7 @@ export function AFPPrivat({ afp, onCancel, onPrevious, onNext }: Props) {
   }
 
   return (
-    <Card hasLargePadding hasMargin>
+    <Card hasLargePadding hasMargin data-testid="afp-privat">
       <form onSubmit={onSubmit}>
         <Heading level="2" size="medium" spacing>
           <FormattedMessage id="stegvisning.afpPrivat.title" />
