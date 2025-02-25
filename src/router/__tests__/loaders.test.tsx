@@ -11,6 +11,7 @@ import {
   stepAFPAccessGuard,
   stepUfoeretrygdAFPAccessGuard,
   stepSamtykkeOffentligAFPAccessGuard,
+  StepAFPAccessGuardLoader,
 } from '../loaders'
 import {
   fulfilledGetPerson,
@@ -597,13 +598,10 @@ describe('Loaders', () => {
           return mockedState
         })
 
-        const returnedFromLoader = await stepAFPAccessGuard()
+        const returnedFromLoader =
+          (await stepAFPAccessGuard()) as StepAFPAccessGuardLoader
 
-        if ('person' in returnedFromLoader) {
-          expect(returnedFromLoader.person.foedselsdato).toBe('1963-04-30')
-        } else {
-          throw new Error('Unexpected response type')
-        }
+        expect(returnedFromLoader.person.foedselsdato).toBe('1963-04-30')
       })
 
       it('brukere med uføretrygd som er fylt minimum uttaksalder, er redirigert', async () => {
