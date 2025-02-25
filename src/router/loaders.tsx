@@ -17,8 +17,8 @@ import {
   selectFoedselsdato,
 } from '@/state/userInput/selectors'
 import {
-  isFoedselsdatoOverEllerLikAlder,
   AFP_UFOERE_OPPSIGELSESALDER,
+  isFoedselsdatoOverAlder,
 } from '@/utils/alder'
 import { isLoependeVedtakEndring } from '@/utils/loependeVedtak'
 import { logger } from '@/utils/logging'
@@ -244,10 +244,7 @@ export const stepAFPAccessGuard = async (): Promise<
       afpOffentlig ||
       (ufoeretrygd.grad &&
         foedselsdato &&
-        isFoedselsdatoOverEllerLikAlder(
-          foedselsdato,
-          AFP_UFOERE_OPPSIGELSESALDER
-        ))
+        isFoedselsdatoOverAlder(foedselsdato, AFP_UFOERE_OPPSIGELSESALDER))
     ) {
       return stepArrays[stepArrays.indexOf(paths.afp) + 1]
     } else {
@@ -271,7 +268,7 @@ export const stepAFPAccessGuard = async (): Promise<
         if (inntektRes.isError) {
           logger('info', {
             tekst: 'Redirect til /uventet-feil',
-            data: 'fra Step AFP Loader pga. feil med getInntekt',
+            data: `fra Step AFP Loader pga. feil med getInntekt med status: ${(inntektRes.error as FetchBaseQueryError).status}`,
           })
           resolveRedirectUrl(paths.uventetFeil)
         } else if (
@@ -296,7 +293,7 @@ export const stepAFPAccessGuard = async (): Promise<
         if (omstillingsstoenadOgGjenlevendeRes.isError) {
           logger('info', {
             tekst: 'Redirect til /uventet-feil',
-            data: 'fra Step AFP Loader pga. feil med getOmstillingsstoenadOgGjenlevende',
+            data: `fra Step AFP Loader pga. feil med getOmstillingsstoenadOgGjenlevende  med status: ${(omstillingsstoenadOgGjenlevendeRes.error as FetchBaseQueryError).status}`,
           })
           resolveRedirectUrl(paths.uventetFeil)
         } else if (
@@ -317,7 +314,7 @@ export const stepAFPAccessGuard = async (): Promise<
         if (ekskludertStatusRes.isError) {
           logger('info', {
             tekst: 'Redirect til /uventet-feil',
-            data: 'fra Step AFP Loader pga. feil med getEkskludertStatus',
+            data: `fra Step AFP Loader pga. feil med getEkskludertStatus med status: ${(ekskludertStatusRes.error as FetchBaseQueryError).status}`,
           })
           resolveRedirectUrl(paths.uventetFeil)
         }
@@ -366,11 +363,11 @@ export const stepUfoeretrygdAFPAccessGuard =
       ? stegvisningOrderEndring
       : stegvisningOrder
 
-    // Bruker med uføretrygd, som svarer ja til afp, og som er under nedre aldersgrense kan se steget
+    // Bruker med uføretrygd, som svarer ja eller vet_ikke til afp, og som er under AFP-Uføre aldersgrense kan se steget
     if (
       (getLoependeVedtakResponse.data as LoependeVedtak).ufoeretrygd.grad &&
       afp !== 'nei' &&
-      !isFoedselsdatoOverEllerLikAlder(
+      !isFoedselsdatoOverAlder(
         foedselsdato as string,
         AFP_UFOERE_OPPSIGELSESALDER
       )
