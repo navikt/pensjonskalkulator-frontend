@@ -49,9 +49,9 @@ import {
 } from '@/utils/inntekt'
 import { getFormatMessageValues } from '@/utils/translations'
 
-import styles from './AvansertSkjemaForAndreBrukere.module.scss'
+import styles from './AvansertSkjemaForBrukereMedGradertUfoeretrygd.module.scss'
 
-export const AvansertSkjemaForAndreBrukere: React.FC<{
+export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
   vilkaarsproeving?: Vilkaarsproeving
 }> = ({ vilkaarsproeving }) => {
   const intl = useIntl()
@@ -353,8 +353,8 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
         <div>
           <form
             id={AVANSERT_FORM_NAMES.form}
-            // TODO PEK-1026 midlertidig - bruk AVANSERT_SKJEMA_FOR_ANDRE_BRUKERE.form når den er lagd
-            data-testid={'AVANSERT_SKJEMA_FOR_ANDRE_BRUKERE'}
+            // TODO PEK-1026 midlertidig - bruk AVANSERT_SKJEMA_FOR_BRUKERE_MED_GRADERT_UFOERETRYGD.form når den er lagd
+            data-testid={'AVANSERT_SKJEMA_FOR_BRUKERE_MED_GRADERT_UFOERETRYGD'}
             method="dialog"
             onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
               e.preventDefault()

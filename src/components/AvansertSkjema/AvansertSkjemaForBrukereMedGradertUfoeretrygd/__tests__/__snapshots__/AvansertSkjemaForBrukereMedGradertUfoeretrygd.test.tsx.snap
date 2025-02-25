@@ -1,16 +1,16 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AvansertSkjemaForAndreBrukere > Gitt at en bruker har vedtak om alderspensjon,  > Når brukeren har gradert uføretrygd, vises det riktig label på feltene 1`] = `
+exports[`AvansertSkjemaForBrukereMedGradertUfoeretrygd > Gitt at en bruker har vedtak om alderspensjon,  > Når brukeren har gradert uføretrygd, vises det riktig label på feltene 1`] = `
 <DocumentFragment>
   <div
-    class="_container_658086 _container__hasMobilePadding_658086"
+    class="_container_db4c62 _container__hasMobilePadding_db4c62"
   >
     <div
-      class="_form_658086"
+      class="_form_db4c62"
     >
       <div>
         <form
-          data-testid="AVANSERT_SKJEMA_FOR_ANDRE_BRUKERE"
+          data-testid="AVANSERT_SKJEMA_FOR_BRUKERE_MED_GRADERT_UFOERETRYGD"
           id="avansert-beregning"
           method="dialog"
         />
@@ -28,24 +28,24 @@ exports[`AvansertSkjemaForAndreBrukere > Gitt at en bruker har vedtak om aldersp
           class="_divider_1adfb3"
         />
         <label
-          class="_label_658086 navds-label"
+          class="_label_db4c62 navds-label"
         >
           beregning.avansert.rediger.inntekt_frem_til_endring.label
         </label>
         <div
-          class="_description_658086"
+          class="_description_db4c62"
         >
           <span
-            class="_descriptionText_658086"
+            class="_descriptionText_db4c62"
           >
             beregning.avansert.rediger.inntekt_frem_til_uttak.description_ufoere
           </span>
         </div>
         <div
-          class="_description_658086"
+          class="_description_db4c62"
         >
           <span
-            class="_descriptionText_658086"
+            class="_descriptionText_db4c62"
           >
             <span
               class="nowrap"
@@ -243,7 +243,7 @@ exports[`AvansertSkjemaForAndreBrukere > Gitt at en bruker har vedtak om aldersp
           </button>
         </div>
         <div
-          class="_spacer_658086 _spacer__small_658086"
+          class="_spacer_db4c62 _spacer__small_db4c62"
         />
         <div
           class="navds-read-more navds-read-more--medium"
@@ -359,11 +359,11 @@ exports[`AvansertSkjemaForAndreBrukere > Gitt at en bruker har vedtak om aldersp
       />
       <div
         aria-live="polite"
-        class="_alertWrapper_658086"
+        class="_alertWrapper_db4c62"
       />
       <div
         aria-live="polite"
-        class="_alertWrapper_658086"
+        class="_alertWrapper_db4c62"
       />
       <div>
         <div
@@ -562,7 +562,7 @@ exports[`AvansertSkjemaForAndreBrukere > Gitt at en bruker har vedtak om aldersp
           </div>
         </div>
         <div
-          class="_spacer__small_658086"
+          class="_spacer__small_db4c62"
         />
         <div
           class="navds-read-more navds-read-more--medium"
@@ -639,7 +639,7 @@ exports[`AvansertSkjemaForAndreBrukere > Gitt at en bruker har vedtak om aldersp
       </div>
       <div>
         <div
-          class="_select_658086 navds-form-field navds-form-field--medium"
+          class="_select_db4c62 navds-form-field navds-form-field--medium"
         >
           <label
             class="navds-form-field__label navds-label"
@@ -734,7 +734,7 @@ exports[`AvansertSkjemaForAndreBrukere > Gitt at en bruker har vedtak om aldersp
           />
         </div>
         <div
-          class="_spacer__small_658086"
+          class="_spacer__small_db4c62"
         />
         <div
           class="navds-read-more navds-read-more--medium"

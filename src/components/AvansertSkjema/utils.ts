@@ -14,6 +14,10 @@ import { isLoependeVedtakEndring } from '@/utils/loependeVedtak'
 import { logger } from '@/utils/logging'
 import { ALLE_UTTAKSGRAD_AS_NUMBER } from '@/utils/uttaksgrad'
 
+// TODO PEK-1026 - utvide AVANSERT_FORM_NAMES for de 3 skjemaene:
+// AVANSERT_SKJEMA_FOR_BRUKERE_MED_GRADERT_UFOERETRYGD
+// AVANSERT_SKJEMA_FOR_ANDRE_BRUKERE
+// AVANSERT_SKJEMA_FOR_BRUKERE_MED_KAP19_AFP
 export type AvansertFormNames =
   (typeof AVANSERT_FORM_NAMES)[keyof typeof AVANSERT_FORM_NAMES]
 
