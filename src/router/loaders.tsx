@@ -420,8 +420,6 @@ export const stepUfoeretrygdAFPAccessGuard =
 
     const state = store.getState()
     const afp = selectAfp(state)
-    const foedselsdato = selectFoedselsdato(state)
-    if (!foedselsdato) throw new Error('Missing foedselsdato')
     const loependeVedtak =
       apiSlice.endpoints.getLoependeVedtak.select()(state).data
     if (!loependeVedtak) throw new Error('Missing loependeVedtak')
