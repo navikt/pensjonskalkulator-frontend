@@ -39,9 +39,9 @@ export function StepAFP() {
     })
   }, [])
 
-  const onNext = (afpData: AfpRadio, skalBeregneAfp: null): void => {
+  const onNext = (afpData: AfpRadio, skalBeregneAfp?: boolean | null): void => {
     dispatch(userInputActions.setAfp(afpData))
-    if (skalBeregneAfp !== null) {
+    if (skalBeregneAfp && skalBeregneAfp !== null) {
       dispatch(userInputActions.setSkalBeregneAfp(skalBeregneAfp))
     }
 

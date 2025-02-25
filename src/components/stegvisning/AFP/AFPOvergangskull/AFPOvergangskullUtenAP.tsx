@@ -28,7 +28,7 @@ interface Props {
   skalBeregneAfp: boolean | null
   onCancel?: () => void
   onPrevious: () => void
-  onNext: (afpData: AfpRadio, skalBeregneAfp: boolean | null) => void
+  onNext: (afpData: AfpRadio, skalBeregneAfp?: boolean | null) => void
 }
 
 export function AFPOvergangskullUtenAP({

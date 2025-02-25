@@ -4,6 +4,7 @@ import { DATE_BACKEND_FORMAT, DATE_ENDUSER_FORMAT } from '@/utils/dates'
 import { formatInntektToNumber } from '@/utils/inntekt'
 import { isLoependeVedtakEndring } from '@/utils/loependeVedtak'
 
+// TODO: Legg til logikk for "AFP_ETTERFULGT_AV_ALDERSPENSJON_GAMMEL"
 export const getSimuleringstypeFromRadioEllerVedtak = (
   loependeVedtak: LoependeVedtak,
   afp: AfpRadio | null
