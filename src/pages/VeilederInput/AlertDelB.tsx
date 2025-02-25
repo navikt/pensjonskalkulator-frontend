@@ -37,7 +37,7 @@ export const AlertDelB: React.FC<IAlertDelBProps> = ({ fnr }) => {
               beregningsdetaljer.
             </div>
             <Button size="small" variant="secondary-neutral" onClick={submit}>
-              Gå til detailert pensjonskalkulator
+              Gå til detaljert pensjonskalkulator
             </Button>
           </HStack>
         </Alert>
