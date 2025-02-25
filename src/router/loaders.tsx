@@ -420,9 +420,9 @@ export const stepUfoeretrygdAFPAccessGuard =
 
     const state = store.getState()
     const afp = selectAfp(state)
-    const loependeVedtak =
-      apiSlice.endpoints.getLoependeVedtak.select()(state).data
-    if (!loependeVedtak) throw new Error('Missing loependeVedtak')
+    const loependeVedtak = await store
+      .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
+      .unwrap()
 
     const stepArrays = isLoependeVedtakEndring(loependeVedtak)
       ? stegvisningOrderEndring
