@@ -20,6 +20,9 @@ import { ensureEnv } from './ensureEnv.js'
 type Person = components['schemas']['PersonV2']
 
 const isDevelopment = process.env.NODE_ENV === 'development'
+const unleashUrl = process.env.UNLEASH_SERVER_API_URL
+const unleashToken = process.env.UNLEASH_SERVER_API_TOKEN
+const unleashEnv = process.env.UNLEASH_SERVER_API_ENV
 
 const metricsMiddleware = promBundle({ includeMethod: true })
 
@@ -29,9 +32,6 @@ const logger = winston.createLogger({
 })
 
 const env = ensureEnv({
-  unleashUrl: 'UNLEASH_SERVER_API_URL',
-  unleashToken: 'UNLEASH_SERVER_API_TOKEN',
-  unleashEnv: 'UNLEASH_SERVER_API_ENV',
   detaljertKalkulatorUrl: 'DETALJERT_KALKULATOR_URL',
 })
 
@@ -44,11 +44,12 @@ export const isFoedtFoer1963 = (foedselsdato: string): boolean => {
 }
 
 const unleash = initialize({
-  url: `${env.unleashUrl}/api`,
+  disableAutoStart: !(unleashToken && unleashUrl && unleashEnv),
+  url: `${unleashUrl}/api`,
   appName: 'pensjonskalkulator-frontend',
-  environment: env.unleashEnv,
+  environment: unleashEnv,
   customHeaders: {
-    Authorization: env.unleashToken,
+    Authorization: unleashToken ?? '',
   },
 })
 
