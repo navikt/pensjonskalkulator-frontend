@@ -1,19 +1,12 @@
 import { describe, expect, it } from 'vitest'
 
 import { RedigerAvansertBeregning } from '..'
-import { AVANSERT_FORM_NAMES } from '../../utils'
-import * as AvansertSkjemaForBrukereMedGradertUfoeretrygdUtils from '../../utils'
 import {
   fulfilledGetPerson,
   fulfilledGetLoependeVedtak0Ufoeregrad,
   fulfilledGetLoependeVedtak75Ufoeregrad,
   fulfilledGetLoependeVedtak100Ufoeregrad,
-  fulfilledGetLoependeVedtakLoependeAlderspensjon,
-  fulfilledGetLoependeVedtakLoependeAlderspensjonOg40Ufoeretrygd,
-  fulfilledGetLoependeVedtakLoepende0Alderspensjon100Ufoeretrygd,
-  fulfilledGetPersonMedOekteAldersgrenser,
 } from '@/mocks/mockedRTKQueryApiCalls'
-import { mockResponse } from '@/mocks/server'
 import {
   BeregningContext,
   AvansertBeregningModus,

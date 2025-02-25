@@ -19,12 +19,12 @@ import {
   AvansertBeregningModus,
 } from '@/pages/Beregning/context'
 import { apiSlice } from '@/state/api/apiSlice'
-import * as alderUtils from '@/utils/alder'
 import {
   userInputInitialState,
   Simulation,
 } from '@/state/userInput/userInputSlice'
 import { render, screen, fireEvent, userEvent } from '@/test-utils'
+import * as alderUtils from '@/utils/alder'
 
 describe('AvansertSkjemaForAndreBrukere', () => {
   afterEach(() => {
