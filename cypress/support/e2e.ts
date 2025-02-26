@@ -70,6 +70,13 @@ beforeEach(() => {
 
   cy.intercept(
     {
+      url: 'https://dekoratoren.ekstern.dev.nav.no/css/client.css',
+    },
+    '.hhtest {}'
+  ).as('getDecoratorCSS')
+
+  cy.intercept(
+    {
       method: 'GET',
       url: `/user-menu?*`,
     },
