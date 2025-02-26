@@ -9,6 +9,10 @@ import { selectLoependeVedtak } from '@/state/userInput/selectors'
 export const RedigerAvansertBeregning: React.FC<{
   vilkaarsproeving?: Vilkaarsproeving
 }> = ({ vilkaarsproeving }) => {
+  React.useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
   const loependeVedtak = useAppSelector(selectLoependeVedtak)
 
   return loependeVedtak.ufoeretrygd.grad &&
