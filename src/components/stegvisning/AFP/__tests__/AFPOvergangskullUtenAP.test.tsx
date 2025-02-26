@@ -1,6 +1,6 @@
 import { describe, it, vi } from 'vitest'
 
-import { AFP } from '..'
+import { AFPOvergangskullUtenAP } from '..'
 import { screen, render, waitFor, userEvent } from '@/test-utils'
 
 const navigateMock = vi.fn()
@@ -12,16 +12,17 @@ vi.mock(import('react-router'), async (importOriginal) => {
   }
 })
 
-describe('stegvisning - AFP - født etter 1963', () => {
+describe('stegvisning - AFP - født mellom 1954-1962 uten vedtak om alderspensjon', () => {
   const onCancelMock = vi.fn()
   const onPreviousMock = vi.fn()
   const onNextMock = vi.fn()
 
-  it('rendrer slik den skal når afp ikke er oppgitt', async () => {
+  it('rendrer slik den skal når afp og skalBeregneAfp ikke er oppgitt', async () => {
     const user = userEvent.setup()
     const result = render(
-      <AFP
+      <AFPOvergangskullUtenAP
         afp={null}
+        skalBeregneAfp={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -33,7 +34,7 @@ describe('stegvisning - AFP - født etter 1963', () => {
 
     await user.click(screen.getByText('stegvisning.afp.readmore_privat_title'))
     await user.click(
-      screen.getByText('stegvisning.afp.readmore_offentlig_title')
+      screen.getByText('stegvisning.afpOvergangskull.readmore_offentlig_title')
     )
 
     expect(result.asFragment()).toMatchSnapshot()
@@ -56,8 +57,9 @@ describe('stegvisning - AFP - født etter 1963', () => {
 
   it('rendrer slik den skal når afp er oppgitt', async () => {
     const result = render(
-      <AFP
+      <AFPOvergangskullUtenAP
         afp="nei"
+        skalBeregneAfp={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -80,8 +82,9 @@ describe('stegvisning - AFP - født etter 1963', () => {
   it('viser riktig infomeldinger når brukeren klikker på de ulike valgene', async () => {
     const user = userEvent.setup()
     render(
-      <AFP
+      <AFPOvergangskullUtenAP
         afp={null}
+        skalBeregneAfp={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -123,8 +126,9 @@ describe('stegvisning - AFP - født etter 1963', () => {
   it('validerer, viser feilmelding, fjerner feilmelding og kaller onNext når brukeren klikker på Neste', async () => {
     const user = userEvent.setup()
     render(
-      <AFP
+      <AFPOvergangskullUtenAP
         afp={null}
+        skalBeregneAfp={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -144,7 +148,7 @@ describe('stegvisning - AFP - født etter 1963', () => {
     await user.click(radioButtons[0])
 
     expect(
-      screen.queryByText('stegvisning.afp.validation_error')
+      screen.queryByText('stegvisning.afpOverganskull.validation_error')
     ).not.toBeInTheDocument()
 
     await user.click(screen.getByText('stegvisning.neste'))
@@ -157,8 +161,9 @@ describe('stegvisning - AFP - født etter 1963', () => {
   it('kaller onNext når brukeren klikker på Neste', async () => {
     const user = userEvent.setup()
     render(
-      <AFP
+      <AFPOvergangskullUtenAP
         afp={null}
+        skalBeregneAfp={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -175,8 +180,9 @@ describe('stegvisning - AFP - født etter 1963', () => {
   it('kaller onPrevious når brukeren klikker på Tilbake', async () => {
     const user = userEvent.setup()
     render(
-      <AFP
+      <AFPOvergangskullUtenAP
         afp="ja_privat"
+        skalBeregneAfp={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -189,8 +195,9 @@ describe('stegvisning - AFP - født etter 1963', () => {
   it('kaller onCancelMock når brukeren klikker på Avbryt', async () => {
     const user = userEvent.setup()
     render(
-      <AFP
+      <AFPOvergangskullUtenAP
         afp="ja_privat"
+        skalBeregneAfp={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -208,8 +215,9 @@ describe('stegvisning - AFP - født etter 1963', () => {
 
   it('viser ikke avbryt knapp når onCancel ikke er definert', async () => {
     render(
-      <AFP
+      <AFPOvergangskullUtenAP
         afp={null}
+        skalBeregneAfp={null}
         onCancel={undefined}
         onPrevious={onPreviousMock}
         onNext={onNextMock}

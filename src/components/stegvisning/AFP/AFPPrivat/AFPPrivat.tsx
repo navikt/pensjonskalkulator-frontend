@@ -2,14 +2,7 @@ import { FormEvent } from 'react'
 import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 
-import {
-  Alert,
-  BodyLong,
-  Button,
-  Heading,
-  Radio,
-  RadioGroup,
-} from '@navikt/ds-react'
+import { BodyLong, Button, Heading, Radio, RadioGroup } from '@navikt/ds-react'
 
 import { STEGVISNING_FORM_NAMES } from '../../utils'
 import styles from '../AFP.module.scss'
@@ -30,9 +23,6 @@ export function AFPPrivat({ afp, onCancel, onPrevious, onNext }: Props) {
   const intl = useIntl()
 
   const [validationError, setValidationError] = React.useState<string>()
-  const [showVetIkkeAlert, setShowVetIkkeAlert] = React.useState<boolean>(
-    afp === 'vet_ikke'
-  )
 
   const onSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
@@ -61,17 +51,6 @@ export function AFPPrivat({ afp, onCancel, onPrevious, onNext }: Props) {
         tekst: `Neste fra ${paths.afp}`,
       })
       onNext(afpData)
-    }
-  }
-
-  const handleRadioChange = (value: AfpRadio): void => {
-    setValidationError('')
-    setShowVetIkkeAlert(value === 'vet_ikke')
-    if (value === 'vet_ikke') {
-      logger('alert vist', {
-        tekst: 'Rett til AFP: Vet ikke',
-        variant: 'info',
-      })
     }
   }
 
@@ -118,7 +97,7 @@ export function AFPPrivat({ afp, onCancel, onPrevious, onNext }: Props) {
           legend={<FormattedMessage id="stegvisning.afpPrivat.radio_label" />}
           name="afp"
           defaultValue={afp}
-          onChange={handleRadioChange}
+          onChange={() => setValidationError('')}
           error={validationError}
           role="radiogroup"
           aria-required="true"
@@ -129,11 +108,6 @@ export function AFPPrivat({ afp, onCancel, onPrevious, onNext }: Props) {
           <Radio value="nei">
             <FormattedMessage id="stegvisning.radio_nei" />
           </Radio>
-          {showVetIkkeAlert && (
-            <Alert className={styles.alert} variant="info" aria-live="polite">
-              <FormattedMessage id="stegvisning.afp.alert_vet_ikke" />
-            </Alert>
-          )}
         </RadioGroup>
         <Button type="submit" className={styles.button}>
           <FormattedMessage id="stegvisning.neste" />

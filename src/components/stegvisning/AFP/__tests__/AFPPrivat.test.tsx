@@ -1,6 +1,6 @@
 import { describe, it, vi } from 'vitest'
 
-import { AFP } from '..'
+import { AFPPrivat } from '..'
 import { screen, render, waitFor, userEvent } from '@/test-utils'
 
 const navigateMock = vi.fn()
@@ -12,7 +12,7 @@ vi.mock(import('react-router'), async (importOriginal) => {
   }
 })
 
-describe('stegvisning - AFP - født etter 1963', () => {
+describe('stegvisning - AFP - født før 1963 og og fylt 67 år, eller født før 1963 og har vedtak om alderspensjon', () => {
   const onCancelMock = vi.fn()
   const onPreviousMock = vi.fn()
   const onNextMock = vi.fn()
@@ -20,7 +20,7 @@ describe('stegvisning - AFP - født etter 1963', () => {
   it('rendrer slik den skal når afp ikke er oppgitt', async () => {
     const user = userEvent.setup()
     const result = render(
-      <AFP
+      <AFPPrivat
         afp={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
@@ -28,35 +28,23 @@ describe('stegvisning - AFP - født etter 1963', () => {
       />
     )
     expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
-      'stegvisning.afp.title'
+      'stegvisning.afpPrivat.title'
     )
 
     await user.click(screen.getByText('stegvisning.afp.readmore_privat_title'))
-    await user.click(
-      screen.getByText('stegvisning.afp.readmore_offentlig_title')
-    )
-
-    expect(result.asFragment()).toMatchSnapshot()
-    expect(
-      screen.getByRole('link', {
-        name: 'AFP i privat sektor på afp.no application.global.external_link',
-      })
-    ).toHaveAttribute('href', 'https://www.afp.no')
 
     const radioButtons = await screen.findAllByRole('radio')
     await waitFor(() => {
-      expect(radioButtons).toHaveLength(4)
+      expect(radioButtons).toHaveLength(2)
       expect(radioButtons[0]).not.toBeChecked()
       expect(radioButtons[1]).not.toBeChecked()
-      expect(radioButtons[2]).not.toBeChecked()
-      expect(radioButtons[3]).not.toBeChecked()
       expect(result.asFragment()).toMatchSnapshot()
     })
   })
 
   it('rendrer slik den skal når afp er oppgitt', async () => {
     const result = render(
-      <AFP
+      <AFPPrivat
         afp="nei"
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
@@ -64,66 +52,21 @@ describe('stegvisning - AFP - født etter 1963', () => {
       />
     )
     expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
-      'stegvisning.afp.title'
+      'stegvisning.afpPrivat.title'
     )
     const radioButtons = screen.getAllByRole('radio')
     await waitFor(() => {
-      expect(radioButtons).toHaveLength(4)
+      expect(radioButtons).toHaveLength(2)
       expect(radioButtons[0]).not.toBeChecked()
-      expect(radioButtons[1]).not.toBeChecked()
-      expect(radioButtons[2]).toBeChecked()
-      expect(radioButtons[3]).not.toBeChecked()
+      expect(radioButtons[1]).toBeChecked()
       expect(result.asFragment()).toMatchSnapshot()
     })
-  })
-
-  it('viser riktig infomeldinger når brukeren klikker på de ulike valgene', async () => {
-    const user = userEvent.setup()
-    render(
-      <AFP
-        afp={null}
-        onCancel={onCancelMock}
-        onPrevious={onPreviousMock}
-        onNext={onNextMock}
-      />
-    )
-    expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
-      'stegvisning.afp.title'
-    )
-    const radioButtons = screen.getAllByRole('radio')
-    expect(
-      screen.queryByText('stegvisning.afp.alert_vet_ikke')
-    ).not.toBeInTheDocument()
-
-    await user.click(radioButtons[0])
-
-    expect(
-      screen.queryByText('stegvisning.afp.alert_vet_ikke')
-    ).not.toBeInTheDocument()
-
-    await user.click(radioButtons[1])
-
-    expect(
-      screen.queryByText('stegvisning.afp.alert_vet_ikke')
-    ).not.toBeInTheDocument()
-
-    await user.click(radioButtons[2])
-
-    expect(
-      screen.queryByText('stegvisning.afp.alert_vet_ikke')
-    ).not.toBeInTheDocument()
-
-    await user.click(radioButtons[3])
-
-    expect(
-      screen.queryByText('stegvisning.afp.alert_vet_ikke')
-    ).toBeInTheDocument()
   })
 
   it('validerer, viser feilmelding, fjerner feilmelding og kaller onNext når brukeren klikker på Neste', async () => {
     const user = userEvent.setup()
     render(
-      <AFP
+      <AFPPrivat
         afp={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
@@ -136,7 +79,7 @@ describe('stegvisning - AFP - født etter 1963', () => {
 
     waitFor(() => {
       expect(
-        screen.getByText('stegvisning.afp.validation_error')
+        screen.getByText('stegvisning.afpPrivat.validation_error')
       ).toBeInTheDocument()
       expect(onNextMock).not.toHaveBeenCalled()
     })
@@ -144,7 +87,7 @@ describe('stegvisning - AFP - født etter 1963', () => {
     await user.click(radioButtons[0])
 
     expect(
-      screen.queryByText('stegvisning.afp.validation_error')
+      screen.queryByText('stegvisning.afpPrivat.validation_error')
     ).not.toBeInTheDocument()
 
     await user.click(screen.getByText('stegvisning.neste'))
@@ -157,7 +100,7 @@ describe('stegvisning - AFP - født etter 1963', () => {
   it('kaller onNext når brukeren klikker på Neste', async () => {
     const user = userEvent.setup()
     render(
-      <AFP
+      <AFPPrivat
         afp={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
@@ -175,7 +118,7 @@ describe('stegvisning - AFP - født etter 1963', () => {
   it('kaller onPrevious når brukeren klikker på Tilbake', async () => {
     const user = userEvent.setup()
     render(
-      <AFP
+      <AFPPrivat
         afp="ja_privat"
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
@@ -189,7 +132,7 @@ describe('stegvisning - AFP - født etter 1963', () => {
   it('kaller onCancelMock når brukeren klikker på Avbryt', async () => {
     const user = userEvent.setup()
     render(
-      <AFP
+      <AFPPrivat
         afp="ja_privat"
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
@@ -208,7 +151,7 @@ describe('stegvisning - AFP - født etter 1963', () => {
 
   it('viser ikke avbryt knapp når onCancel ikke er definert', async () => {
     render(
-      <AFP
+      <AFPPrivat
         afp={null}
         onCancel={undefined}
         onPrevious={onPreviousMock}
