@@ -15,6 +15,8 @@ export const RedigerAvansertBeregning: React.FC<{
 
   const loependeVedtak = useAppSelector(selectLoependeVedtak)
 
+  // TODO Ny komponent <AvansertSkjemaForBrukereMedKap19AFP />
+
   return loependeVedtak.ufoeretrygd.grad &&
     loependeVedtak.ufoeretrygd.grad !== 100 ? (
     <AvansertSkjemaForBrukereMedGradertUfoeretrygd

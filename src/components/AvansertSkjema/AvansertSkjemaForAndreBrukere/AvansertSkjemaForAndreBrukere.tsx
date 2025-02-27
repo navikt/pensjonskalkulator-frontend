@@ -867,6 +867,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
             </>
           )}
         <FormButtonRow
+          formId={AVANSERT_FORM_NAMES.form}
           resetForm={resetForm}
           gaaTilResultat={gaaTilResultat}
           hasVilkaarIkkeOppfylt={vilkaarsproeving?.vilkaarErOppfylt === false}

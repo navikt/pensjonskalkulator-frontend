@@ -887,6 +887,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
             </>
           )}
         <FormButtonRow
+          formId={AVANSERT_FORM_NAMES.form}
           resetForm={resetForm}
           gaaTilResultat={gaaTilResultat}
           hasVilkaarIkkeOppfylt={vilkaarsproeving?.vilkaarErOppfylt === false}
