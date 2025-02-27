@@ -70,13 +70,6 @@ beforeEach(() => {
 
   cy.intercept(
     {
-      url: 'https://dekoratoren.ekstern.dev.nav.no/css/client.css',
-    },
-    '.hhtest {}'
-  ).as('getDecoratorCSS')
-
-  cy.intercept(
-    {
       method: 'GET',
       url: `/user-menu?*`,
     },
@@ -202,6 +195,18 @@ beforeEach(() => {
     },
     { fixture: 'alderspensjon.json' }
   ).as('fetchAlderspensjon')
+
+  cy.intercept(
+    { url: 'https://g.nav.no/api/v1/grunnbel%C3%B8p' },
+    `{
+      dato: '2024-05-01',
+      grunnbeløp: 100000,
+      grunnbeløpPerMåned: 10000,
+      gjennomsnittPerÅr: 120000,
+      omregningsfaktor: 1,
+      virkningstidspunktForMinsteinntekt: '2024-06-03',
+    }`
+  ).as('getGrunnbeløp')
 
   cy.intercept(
     {
