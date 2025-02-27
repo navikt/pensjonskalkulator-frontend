@@ -197,6 +197,18 @@ beforeEach(() => {
   ).as('fetchAlderspensjon')
 
   cy.intercept(
+    { url: 'https://g.nav.no/api/v1/grunnbel%C3%B8p' },
+    `{
+      dato: '2024-05-01',
+      grunnbeløp: 100000,
+      grunnbeløpPerMåned: 10000,
+      gjennomsnittPerÅr: 120000,
+      omregningsfaktor: 1,
+      virkningstidspunktForMinsteinntekt: '2024-06-03',
+    }`
+  ).as('getGrunnbeløp')
+
+  cy.intercept(
     {
       method: 'GET',
       url: `https://g2by7q6m.apicdn.sanity.io/v2023-05-03/data/query/development?query=*%5B_type+%3D%3D+%22readmore%22+%26%26+language+%3D%3D+%22nb%22%5D*`,
