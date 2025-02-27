@@ -3,10 +3,15 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { useNavigate } from 'react-router'
 
 import { Alert, BodyLong, Link } from '@navikt/ds-react'
+import { PortableText } from '@portabletext/react'
 
 import { ReadMore } from '@/components/common/ReadMore'
+import { SanityContext } from '@/context/SanityContext'
 import { paths } from '@/router/constants'
-import { useGetOmstillingsstoenadOgGjenlevendeQuery } from '@/state/api/apiSlice'
+import {
+  useGetOmstillingsstoenadOgGjenlevendeQuery,
+  useGetSanityFeatureToggleQuery,
+} from '@/state/api/apiSlice'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
   selectNedreAldersgrense,
@@ -14,6 +19,7 @@ import {
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
 import { formatUttaksalder } from '@/utils/alder'
+import { getSanityPortableTextComponents } from '@/utils/sanity'
 import { getFormatMessageValues } from '@/utils/translations'
 
 import styles from './TidligstMuligUttaksalder.module.scss'
@@ -32,6 +38,14 @@ export const TidligstMuligUttaksalder: React.FC<Props> = ({
   const intl = useIntl()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+  const { readMoreData } = React.useContext(SanityContext)
+  const readMore1Hel = readMoreData['om_ufoeretrygd_og_alderspensjon_hel']
+  const readMore1Gradert =
+    readMoreData['om_ufoeretrygd_og_alderspensjon_gradert']
+  const readMore2Optional = readMoreData['om_pensjonsalder_enkelt_optional']
+  const readMore2 = readMoreData['om_pensjonsalder_enkelt']
+
+  const { data: sanityFeatureToggle } = useGetSanityFeatureToggleQuery()
   const { data: omstillingsstoenadOgGjenlevende } =
     useGetOmstillingsstoenadOgGjenlevendeQuery()
   const nedreAldersgrense = useAppSelector(selectNedreAldersgrense)
@@ -122,47 +136,112 @@ export const TidligstMuligUttaksalder: React.FC<Props> = ({
         )}
 
         {ufoeregrad ? (
-          <ReadMore
-            name="Om ufoeretrygd og alderspensjon"
-            className={styles.readmore}
-            header={<FormattedMessage id="omufoeretrygd.readmore.title" />}
-          >
-            <FormattedMessage
-              id={
-                ufoeregrad === 100
-                  ? 'omufoeretrygd.readmore.hel.ingress'
-                  : 'omufoeretrygd.readmore.gradert.ingress'
-              }
-              values={{
-                ...getFormatMessageValues(),
-                nedreAldersgrense: formatUttaksalder(intl, nedreAldersgrense),
-                normertPensjonsalder: formatertNormertPensjonsalder,
-              }}
-            />
-          </ReadMore>
-        ) : (
-          <ReadMore
-            name="Om pensjonsalder enkelt"
-            className={styles.readmore}
-            header={
-              <FormattedMessage id="beregning.read_more.pensjonsalder.label" />
-            }
-          >
-            {tidligstMuligUttak !== undefined && (
-              <FormattedMessage
-                id="beregning.read_more.pensjonsalder.body.optional"
-                values={{
-                  ...getFormatMessageValues(),
-                }}
-              />
+          <>
+            {sanityFeatureToggle?.enabled &&
+            readMore1Hel &&
+            readMore1Gradert ? (
+              <ReadMore
+                data-testid={
+                  ufoeregrad === 100 ? readMore1Hel.name : readMore1Gradert.name
+                }
+                name={
+                  ufoeregrad === 100 ? readMore1Hel.name : readMore1Gradert.name
+                }
+                header={
+                  ufoeregrad === 100
+                    ? readMore1Hel.overskrift
+                    : readMore1Gradert.overskrift
+                }
+                className={styles.readmore}
+              >
+                <PortableText
+                  value={
+                    ufoeregrad === 100
+                      ? readMore1Hel.innhold
+                      : readMore1Gradert.innhold
+                  }
+                  components={getSanityPortableTextComponents(intl)}
+                />
+              </ReadMore>
+            ) : (
+              <ReadMore
+                name="Om ufoeretrygd og alderspensjon"
+                className={styles.readmore}
+                header={<FormattedMessage id="omufoeretrygd.readmore.title" />}
+              >
+                <FormattedMessage
+                  id={
+                    ufoeregrad === 100
+                      ? 'omufoeretrygd.readmore.hel.ingress'
+                      : 'omufoeretrygd.readmore.gradert.ingress'
+                  }
+                  values={{
+                    ...getFormatMessageValues(),
+                    nedreAldersgrense: formatUttaksalder(
+                      intl,
+                      nedreAldersgrense
+                    ),
+                    normertPensjonsalder: formatertNormertPensjonsalder,
+                  }}
+                />
+              </ReadMore>
             )}
-            <FormattedMessage
-              id="beregning.read_more.pensjonsalder.body"
-              values={{
-                ...getFormatMessageValues(),
-              }}
-            />
-          </ReadMore>
+          </>
+        ) : (
+          <>
+            {sanityFeatureToggle?.enabled && readMore2Optional && readMore2 ? (
+              <ReadMore
+                data-testid={
+                  tidligstMuligUttak !== undefined
+                    ? readMore2Optional.name
+                    : readMore2.name
+                }
+                name={
+                  tidligstMuligUttak !== undefined
+                    ? readMore2Optional.name
+                    : readMore2.name
+                }
+                header={
+                  tidligstMuligUttak !== undefined
+                    ? readMore2Optional.overskrift
+                    : readMore2.overskrift
+                }
+                className={styles.readmore}
+              >
+                <PortableText
+                  value={
+                    tidligstMuligUttak !== undefined
+                      ? readMore2Optional.innhold
+                      : readMore2.innhold
+                  }
+                  components={getSanityPortableTextComponents(intl)}
+                />
+              </ReadMore>
+            ) : (
+              <ReadMore
+                name="Om pensjonsalder enkelt"
+                className={styles.readmore}
+                header={
+                  <FormattedMessage id="beregning.read_more.pensjonsalder.label" />
+                }
+              >
+                {tidligstMuligUttak !== undefined && (
+                  <FormattedMessage
+                    id="beregning.read_more.pensjonsalder.body.optional"
+                    values={{
+                      ...getFormatMessageValues(),
+                    }}
+                  />
+                )}
+                <FormattedMessage
+                  id="beregning.read_more.pensjonsalder.body"
+                  values={{
+                    ...getFormatMessageValues(),
+                  }}
+                />
+              </ReadMore>
+            )}
+          </>
         )}
       </div>
     </div>
