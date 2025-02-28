@@ -393,7 +393,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
             // PEK-1026 denne er felles med AvansertSkjemaForBrukereMedGradertUfoeretrygd
             // Vurdere å ha dette som egen komponent AvansertSkjemaIntroUfoeretrygd
           }
-          {loependeVedtak.ufoeretrygd.grad && (
+          {!!loependeVedtak.ufoeretrygd.grad && (
             <div className={styles.description}>
               <span className={styles.descriptionText}>
                 <FormattedMessage id="beregning.avansert.rediger.inntekt_frem_til_uttak.description_ufoere" />

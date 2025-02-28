@@ -3,7 +3,6 @@ import { useIntl } from 'react-intl'
 
 import { Button } from '@navikt/ds-react'
 
-import { AVANSERT_FORM_NAMES } from '../utils'
 import { BeregningContext } from '@/pages/Beregning/context'
 import { useAppSelector } from '@/state/hooks'
 import {
