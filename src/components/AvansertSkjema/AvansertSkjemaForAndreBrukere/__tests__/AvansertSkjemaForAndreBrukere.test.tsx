@@ -1959,7 +1959,19 @@ describe('AvansertSkjemaForAndreBrukere', () => {
           class="navds-body-long navds-body-long--medium"
           data-testid="om-uttaksgrad"
         >
-          beregning.avansert.rediger.read_more.uttaksgrad.endring.body
+          Uttaksgrad angir hvor stor del av månedlig alderspensjon du ønsker å ta ut. Du kan velge gradert uttak (20, 40, 50, 60 eller 
+          <span
+            class="nowrap"
+          >
+            80 %
+          </span>
+          ), eller hel alderspensjon (
+          <span
+            class="nowrap"
+          >
+            100 %
+          </span>
+          ).
         </p>
       `)
     })

@@ -562,7 +562,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
             <BodyLong data-testid="om-uttaksgrad">
               <FormattedMessage
                 id={
-                  isEndring
+                  isEndring && loependeVedtak.ufoeretrygd.grad === 0
                     ? 'beregning.avansert.rediger.read_more.uttaksgrad.endring.body'
                     : 'beregning.avansert.rediger.read_more.uttaksgrad.body'
                 }
