@@ -2218,6 +2218,11 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
 
   describe('Gitt at en bruker har vedtak om alderspensjon, ', () => {
     it('Når brukeren har fylt alle feltene riktig og klikker på beregn mens datoen på vedtaket er mindre enn 12 md. til ønsket uttak, vises det alert og siden scrolles opp til toppen', async () => {
+      const scrollToMock = vi.fn()
+      Object.defineProperty(global.window, 'scrollTo', {
+        value: scrollToMock,
+        writable: true,
+      })
       const user = userEvent.setup()
 
       render(
@@ -2328,6 +2333,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
           }
         )
       ).toBeVisible()
+      expect(scrollToMock).toHaveBeenCalledWith(0, 0)
     })
   })
 
