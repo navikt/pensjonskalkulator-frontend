@@ -1633,7 +1633,7 @@ describe('AvansertSkjemaForAndreBrukere', () => {
       }
     )
 
-    // Velger gradert uttak
+    // Velger helt uttak
     fireEvent.change(
       await screen.findByTestId(AVANSERT_FORM_NAMES.uttaksgrad),
       {
