@@ -16,6 +16,7 @@ import styles from './BorgerInformasjon.module.scss'
 
 interface IBorgerInformasjonProps {
   fnr: string
+  children?: React.ReactNode
 }
 const formatFnr = (fnr: string) => {
   return `${fnr.slice(0, 6)} ${fnr.slice(6)}`
@@ -23,6 +24,7 @@ const formatFnr = (fnr: string) => {
 
 export const BorgerInformasjon: React.FC<IBorgerInformasjonProps> = ({
   fnr,
+  children,
 }) => {
   const { data: person, isFetching: isPersonFetching } = useGetPersonQuery()
 
@@ -48,7 +50,8 @@ export const BorgerInformasjon: React.FC<IBorgerInformasjonProps> = ({
           <CopyButton size="small" copyText={fnr} />
         </HStack>
         <Spacer />
-        <div>
+        <HStack gap="2">
+          {children}
           <Button
             onClick={onNullstillClick}
             data-testid="borger-nullstill"
@@ -57,7 +60,7 @@ export const BorgerInformasjon: React.FC<IBorgerInformasjonProps> = ({
           >
             Nullstill bruker
           </Button>
-        </div>
+        </HStack>
       </HStack>
     </Box>
   )
