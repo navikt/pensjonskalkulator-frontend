@@ -259,7 +259,7 @@ const translations = {
   'stegvisning.afpOvergangskull.readmore_offentlig_list_item2':
     'reduseres mot inntekt',
   'stegvisning.afpOvergangskull.readmore_offentlig_list_item3':
-    'kan tas ut sammen med alderspensjon fra folketrygden (Nav) og tjenestepensjon',
+    'kan ikke tas ut sammen med alderspensjon fra folketrygden (Nav)',
   'stegvisning.afpOvergangskull.readmore_offentlig_ingress':
     'De fleste statlige, fylkeskommunale og kommunale arbeidsgivere har avtale om AFP. Enkelte arbeidsgivere i privat sektor kan ha avtaler i offentlig sektor. Hvis du er usikker på hva som gjelder for deg, sjekk hos arbeidsgiveren din.',
   'stegvisning.afp.radio_label': 'Har du rett til AFP?',
