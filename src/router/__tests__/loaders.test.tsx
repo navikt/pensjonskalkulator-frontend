@@ -748,6 +748,22 @@ describe('Loaders', () => {
       })
 
       it('brukere med 100% uføretrygd er redirigert', async () => {
+        mockResponse('/v3/vedtak/loepende-vedtak', {
+          json: {
+            alderspensjon: {
+              grad: 0,
+              fom: '2020-10-02',
+              sivilstand: 'UGIFT' as Sivilstand,
+            },
+            ufoeretrygd: {
+              grad: 100,
+            },
+            afpPrivat: {
+              fom: '2020-10-02',
+            },
+            harFremtidigLoependeVedtak: false,
+          },
+        })
         const mockedState = {
           api: {
             queries: {
@@ -759,11 +775,11 @@ describe('Loaders', () => {
           userInput: { ...userInputInitialState },
         }
         store.getState = vi.fn().mockImplementation(() => mockedState)
-        const returnedFromLoader = await stepAFPAccessGuard()
-        const shouldRedirectToResponse =
-          'shouldRedirectTo' in returnedFromLoader &&
-          (await returnedFromLoader.shouldRedirectTo)
-        expect(shouldRedirectToResponse).toBe(paths.ufoeretrygdAFP)
+        const returnedFromLoader = (await stepAFPAccessGuard()) as Response
+        expect(returnedFromLoader.status).toBe(302)
+        expect(returnedFromLoader.headers.get('location')).toBe(
+          paths.ufoeretrygdAFP
+        )
       })
     })
 
