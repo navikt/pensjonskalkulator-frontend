@@ -4,7 +4,6 @@ import { useIntl, FormattedMessage } from 'react-intl'
 import {
   Alert,
   BodyLong,
-  Heading,
   Label,
   Radio,
   RadioGroup,
@@ -12,17 +11,19 @@ import {
   TextField,
 } from '@navikt/ds-react'
 import clsx from 'clsx'
-import { format, parse } from 'date-fns'
 
-import { FormButtonRow } from '../FormButtonRow/FormButtonRow'
+import {
+  AvansertSkjemaIntroEndring,
+  AvansertSkjemaIntroInntekt,
+  AvansertSkjemaIntroUfoeretrygd,
+  FormButtonRow,
+  ReadMoreOmPensjonsalder,
+} from '../Felles'
 import { useFormLocalState, useFormValidationErrors } from '../hooks'
-import { ReadMoreOmPensjonsalder } from '../ReadMoreOmPensjonsalder'
 import { AVANSERT_FORM_NAMES, onAvansertBeregningSubmit } from '../utils'
 import { AgePicker } from '@/components/common/AgePicker'
 import { Divider } from '@/components/common/Divider'
 import { ReadMore } from '@/components/common/ReadMore'
-import { EndreInntekt } from '@/components/EndreInntekt'
-import { InfoOmInntekt } from '@/components/EndreInntekt/InfoOmInntekt'
 import { VilkaarsproevingAlert } from '@/components/VilkaarsproevingAlert'
 import { BeregningContext } from '@/pages/Beregning/context'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
@@ -42,11 +43,7 @@ import {
   formatUttaksalder,
   getBrukerensAlderISluttenAvMaaneden,
 } from '@/utils/alder'
-import { DATE_BACKEND_FORMAT, DATE_ENDUSER_FORMAT } from '@/utils/dates'
-import {
-  formatInntekt,
-  updateAndFormatInntektFromInputField,
-} from '@/utils/inntekt'
+import { updateAndFormatInntektFromInputField } from '@/utils/inntekt'
 import { getFormatMessageValues } from '@/utils/translations'
 
 import styles from './AvansertSkjemaForBrukereMedGradertUfoeretrygd.module.scss'
@@ -248,7 +245,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
   }
 
   const handleInntektVsaHeltUttakRadioChange = (s: BooleanRadio) => {
-    setLocalHarInntektVsaHeltUttakRadio(s === 'ja' ? true : false)
+    setLocalHarInntektVsaHeltUttakRadio(s === 'ja')
     setValidationErrors({
       [AVANSERT_FORM_NAMES.inntektVsaHeltUttakRadio]: '',
       [AVANSERT_FORM_NAMES.inntektVsaHeltUttak]: '',
@@ -265,7 +262,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
   }
 
   const handleInntektVsaGradertUttakRadioChange = (s: BooleanRadio) => {
-    setLocalHarInntektVsaGradertUttakRadio(s === 'ja' ? true : false)
+    setLocalHarInntektVsaGradertUttakRadio(s === 'ja')
     setValidationErrors({
       [AVANSERT_FORM_NAMES.inntektVsaGradertUttakRadio]: '',
       [AVANSERT_FORM_NAMES.inntektVsaGradertUttak]: '',
@@ -291,7 +288,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
           ...previous,
           aarligInntektVsaPensjon: {
             ...previous?.aarligInntektVsaPensjon,
-            beloep: s ? s : undefined,
+            beloep: s || undefined,
           },
         }))
       },
@@ -321,7 +318,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
       (s: string) => {
         setLocalGradertUttak((previous) => ({
           ...previous,
-          aarligInntektVsaPensjonBeloep: s ? s : undefined,
+          aarligInntektVsaPensjonBeloep: s || undefined,
         }))
       },
       setValidationErrorInntektVsaGradertUttak
@@ -370,34 +367,9 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
               )
             }}
           ></form>
-          {
-            // PEK-1026 denne er felles med AvansertSkjemaForAndreBrukere
-            // Vurdere å ha dette som egen komponent AvansertSkjemaIntroEndring
-          }
-          {isEndring && (
-            <>
-              <Heading level="2" size="medium">
-                <FormattedMessage id={'beregning.endring.rediger.title'} />
-              </Heading>
-              <BodyLong>
-                <FormattedMessage
-                  id={'beregning.endring.rediger.vedtak_status'}
-                  values={{
-                    dato: format(
-                      parse(
-                        loependeVedtak?.alderspensjon?.fom as string,
-                        DATE_BACKEND_FORMAT,
-                        new Date()
-                      ),
-                      DATE_ENDUSER_FORMAT
-                    ),
-                    grad: loependeVedtak?.alderspensjon?.grad,
-                  }}
-                />
-              </BodyLong>
-              <Divider />
-            </>
-          )}
+
+          <AvansertSkjemaIntroEndring />
+
           <Label
             className={clsx(styles.label, {
               [styles.label__margin]: !isEndring,
@@ -411,53 +383,18 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
               }
             />
           </Label>
-          {
-            // PEK-1026 denne er felles med AvansertSkjemaForAndreBrukere
-            // Vurdere å ha dette som egen komponent AvansertSkjemaIntroUfoeretrygd
-          }
-          <div className={styles.description}>
-            <span className={styles.descriptionText}>
-              <FormattedMessage id="beregning.avansert.rediger.inntekt_frem_til_uttak.description_ufoere" />
-            </span>
-          </div>
-          {
-            // PEK-1026 denne er felles med AvansertSkjemaForAndreBrukere
-            // Vurdere å ha dette som egen komponent AvansertSkjemaIntroInntekt
-          }
-          <div className={styles.description}>
-            <span className={styles.descriptionText}>
-              <span
-                className="nowrap"
-                data-testid="formatert-inntekt-frem-til-uttak"
-              >
-                {formatInntekt(
-                  localInntektFremTilUttak !== null
-                    ? localInntektFremTilUttak
-                    : aarligInntektFoerUttakBeloep
-                )}
-              </span>
-              {` ${intl.formatMessage({ id: 'beregning.avansert.rediger.inntekt_frem_til_uttak.description' })}`}
-            </span>
-            <EndreInntekt
-              visning="avansert"
-              buttonLabel="beregning.avansert.rediger.inntekt.button"
-              value={localInntektFremTilUttak}
-              onSubmit={(uformatertInntekt) => {
-                setLocalInntektFremTilUttak(formatInntekt(uformatertInntekt))
-              }}
-            />
-          </div>
-          <div className={`${styles.spacer} ${styles.spacer__small}`} />
-          <ReadMore
-            name="Endring av inntekt i avansert fane"
-            header={intl.formatMessage({
-              id: 'inntekt.info_om_inntekt.read_more.label',
-            })}
-          >
-            <InfoOmInntekt />
-          </ReadMore>
+
+          <AvansertSkjemaIntroUfoeretrygd />
+
+          <AvansertSkjemaIntroInntekt
+            localInntektFremTilUttak={localInntektFremTilUttak}
+            aarligInntektFoerUttakBeloep={aarligInntektFoerUttakBeloep}
+            setLocalInntektFremTilUttak={setLocalInntektFremTilUttak}
+          />
         </div>
+
         <Divider noMargin />
+
         <div className={styles.alertWrapper} aria-live="polite">
           {validationErrors[AVANSERT_FORM_NAMES.endringAlertFremtidigDato] && (
             <Alert variant="warning">
@@ -473,6 +410,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
             </Alert>
           )}
         </div>
+
         <div className={styles.alertWrapper} aria-live="polite">
           {vilkaarsproeving &&
             !vilkaarsproeving?.vilkaarErOppfylt &&
@@ -483,6 +421,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
               />
             )}
         </div>
+
         <div>
           {localGradertUttak?.grad !== undefined &&
           localGradertUttak?.grad !== 100 ? (
@@ -522,12 +461,15 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
               minAlder={brukerensAlderPlus1Maaned}
             />
           )}
+
           <div className={styles.spacer__small} />
+
           <ReadMoreOmPensjonsalder
             ufoeregrad={loependeVedtak.ufoeretrygd.grad}
             isEndring={isEndring}
           />
         </div>
+
         <div>
           <Select
             form={AVANSERT_FORM_NAMES.form}
@@ -572,7 +514,9 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
               </option>
             ))}
           </Select>
+
           <div className={styles.spacer__small} />
+
           <ReadMore
             name="Om uttaksgrad"
             header={intl.formatMessage({
@@ -594,6 +538,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
             </BodyLong>
           </ReadMore>
         </div>
+
         {localGradertUttak?.uttaksalder?.aar &&
           localGradertUttak?.uttaksalder?.maaneder !== undefined &&
           localGradertUttak?.grad !== undefined &&
@@ -662,6 +607,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                   >
                     <FormattedMessage id="stegvisning.radio_ja" />
                   </Radio>
+
                   <Radio
                     form={AVANSERT_FORM_NAMES.form}
                     data-testid={`${AVANSERT_FORM_NAMES.inntektVsaGradertUttakRadio}-nei`}
@@ -670,6 +616,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                     <FormattedMessage id="stegvisning.radio_nei" />
                   </Radio>
                 </RadioGroup>
+
                 {localGradertUttak.uttaksalder.aar <
                 normertPensjonsalder.aar ? (
                   <ReadMore
@@ -736,7 +683,9 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                   />
                 </div>
               )}
+
               <Divider noMargin />
+
               <div>
                 <AgePicker
                   form={AVANSERT_FORM_NAMES.form}
@@ -809,6 +758,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                 >
                   <FormattedMessage id="stegvisning.radio_ja" />
                 </Radio>
+
                 <Radio
                   form={AVANSERT_FORM_NAMES.form}
                   data-testid={`${AVANSERT_FORM_NAMES.inntektVsaHeltUttakRadio}-nei`}
@@ -860,6 +810,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                   aria-required="true"
                 />
               </div>
+
               <div>
                 <AgePicker
                   form={AVANSERT_FORM_NAMES.form}
@@ -886,6 +837,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
               </div>
             </>
           )}
+
         <FormButtonRow
           formId={AVANSERT_FORM_NAMES.form}
           resetForm={resetForm}
