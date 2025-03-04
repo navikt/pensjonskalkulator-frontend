@@ -13,6 +13,8 @@ interface Props {
   ufoeregrad: number
   isEndring: boolean
 }
+
+// PEK-1026 - Denne komponenten fases sannsynligvis ut etter at logikken med ufoeretrygd er splittet
 export const ReadMoreOmPensjonsalder: React.FC<Props> = ({
   ufoeregrad,
   isEndring,
@@ -42,7 +44,7 @@ export const ReadMoreOmPensjonsalder: React.FC<Props> = ({
                 : 'omufoeretrygd.readmore.gradert.avansert.ingress'
             }
             values={{
-              ...getFormatMessageValues(intl),
+              ...getFormatMessageValues(),
               normertPensjonsalder: formatertNormertPensjonsalder,
             }}
           />
@@ -57,7 +59,7 @@ export const ReadMoreOmPensjonsalder: React.FC<Props> = ({
                   : 'beregning.read_more.pensjonsalder.body'
               }
               values={{
-                ...getFormatMessageValues(intl),
+                ...getFormatMessageValues(),
                 normertPensjonsalder: formatertNormertPensjonsalder,
               }}
             />

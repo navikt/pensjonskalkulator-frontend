@@ -76,20 +76,6 @@ export const isFoedtFoer1964 = (foedselsdato: string): boolean => {
   )
 }
 
-export const isAlderLikEllerOverAnnenAlder = (
-  alder: Alder | Partial<Alder>,
-  alder2: Alder
-) => {
-  if (!alder.aar) {
-    return false
-  }
-  if (alder.aar >= alder2.aar) {
-    return true
-  } else {
-    return false
-  }
-}
-
 export const getAlderFromFoedselsdato = (foedselsdato: string) => {
   const TODAY = new Date()
   return differenceInYears(TODAY, new Date(foedselsdato))
@@ -130,16 +116,32 @@ export const isAlderOverAnnenAlder = (
   }
 }
 
-export const isFoedselsdatoOverEllerLikAlder = (
-  foedselsdato: string,
-  alder: Alder
+export const isAlderLikEllerOverAnnenAlder = (
+  stoersteAlder: Alder | Partial<Alder>,
+  minsteAlder: Alder
 ) => {
-  const birtdateJs = endOfDay(
-    parse(foedselsdato as string, DATE_BACKEND_FORMAT, new Date())
-  )
-  const currentDate = endOfDay(new Date())
-  const aar = differenceInYears(currentDate, birtdateJs)
-  return aar >= alder.aar
+  if (!stoersteAlder.aar) {
+    return false
+  }
+  if (stoersteAlder.aar > minsteAlder.aar) {
+    return true
+  } else if (
+    stoersteAlder.maaneder !== undefined &&
+    stoersteAlder.aar === minsteAlder.aar &&
+    stoersteAlder.maaneder >= minsteAlder.maaneder
+  ) {
+    return true
+  } else {
+    return false
+  }
+}
+
+export const isFoedselsdatoOverAlder = (
+  foedselsdato: string,
+  minsteAlder: Alder
+) => {
+  const brukerensAlder = transformFoedselsdatoToAlder(foedselsdato)
+  return isAlderOverAnnenAlder(brukerensAlder, minsteAlder)
 }
 
 export const getAlderPlus1Maaned = (alder: Alder) => {
@@ -177,11 +179,11 @@ export const transformFoedselsdatoToAlderMinus1md = (
 }
 
 export const getBrukerensAlderISluttenAvMaaneden = (
-  person: Person | undefined,
+  foedselsdato: string | undefined,
   nedreAldersgrense: Alder
 ): Alder => {
-  const brukerensAlder = person
-    ? transformFoedselsdatoToAlderMinus1md(person.foedselsdato)
+  const brukerensAlder = foedselsdato
+    ? transformFoedselsdatoToAlderMinus1md(foedselsdato)
     : getAlderMinus1Maaned(nedreAldersgrense)
   const beregnetMinAlder = getAlderPlus1Maaned(brukerensAlder)
   return isAlderOverAnnenAlder(beregnetMinAlder, nedreAldersgrense)

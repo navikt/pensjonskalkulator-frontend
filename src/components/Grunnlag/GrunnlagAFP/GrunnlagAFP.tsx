@@ -13,10 +13,12 @@ import {
   selectFoedselsdato,
   selectLoependeVedtak,
   selectSamtykkeOffentligAFP,
-  selectNedreAldersgrense,
 } from '@/state/userInput/selectors'
 import { formatAfp } from '@/utils/afp'
-import { isFoedselsdatoOverEllerLikAlder } from '@/utils/alder'
+import {
+  AFP_UFOERE_OPPSIGELSESALDER,
+  isFoedselsdatoOverAlder,
+} from '@/utils/alder'
 import { getFormatMessageValues } from '@/utils/translations'
 
 interface Props {
@@ -32,12 +34,11 @@ export const GrunnlagAFP: React.FC<Props> = ({ goToStart }) => {
   const isEndring = useAppSelector(selectIsEndring)
   const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const ufoeregrad = useAppSelector(selectUfoeregrad)
-  const nedreAldersgrense = useAppSelector(selectNedreAldersgrense)
 
   if (
     loependeVedtak.ufoeretrygd.grad &&
     foedselsdato &&
-    isFoedselsdatoOverEllerLikAlder(foedselsdato, nedreAldersgrense)
+    isFoedselsdatoOverAlder(foedselsdato, AFP_UFOERE_OPPSIGELSESALDER)
   ) {
     return null
   }
@@ -60,20 +61,29 @@ export const GrunnlagAFP: React.FC<Props> = ({ goToStart }) => {
     if (!harSamtykketOffentligAFP && !ufoeregrad && afp === 'ja_offentlig') {
       return `${afpString} (${intl.formatMessage({ id: 'grunnlag.afp.ikke_beregnet' })})`
     }
+
+    if (ufoeregrad === 100) {
+      return formatAfp(intl, 'nei')
+    }
+
     return afpString
   }, [afp])
 
   const formatertAfpIngress = React.useMemo(() => {
     if (isEndring && loependeVedtak.afpPrivat) {
-      return `grunnlag.afp.ingress.ja_privat.endring`
+      return 'grunnlag.afp.ingress.ja_privat.endring'
     }
 
     if (loependeVedtak.afpOffentlig) {
-      return `grunnlag.afp.ingress.ja_offentlig.endring`
+      return 'grunnlag.afp.ingress.ja_offentlig.endring'
     }
 
     if (isEndring && afp === 'nei') {
-      return `grunnlag.afp.ingress.nei.endring`
+      return 'grunnlag.afp.ingress.nei.endring'
+    }
+
+    if (ufoeregrad === 100) {
+      return 'grunnlag.afp.ingress.full_ufoeretrygd'
     }
 
     const afpString =
@@ -98,7 +108,7 @@ export const GrunnlagAFP: React.FC<Props> = ({ goToStart }) => {
             <FormattedMessage
               id={formatertAfpIngress}
               values={{
-                ...getFormatMessageValues(intl),
+                ...getFormatMessageValues(),
               }}
             />
 

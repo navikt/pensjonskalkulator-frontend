@@ -22,7 +22,7 @@ import { mockErrorResponse, mockResponse } from '@/mocks/server'
 import { HOST_BASEURL } from '@/paths'
 import { apiSlice } from '@/state/api/apiSlice'
 import { store } from '@/state/store'
-import { userInputInitialState } from '@/state/userInput/userInputReducer'
+import { userInputInitialState } from '@/state/userInput/userInputSlice'
 import { render, screen, waitFor } from '@/test-utils'
 
 const initialGetState = store.getState
@@ -556,16 +556,13 @@ describe('routes', () => {
               ...fulfilledGetLoependeVedtak75Ufoeregrad,
             },
           },
-          userInput: { ...userInputInitialState },
+          userInput: { ...userInputInitialState, afp: 'ja_offentlig' },
         }))
         const router = createMemoryRouter(routes, {
           basename: BASE_PATH,
           initialEntries: [`${BASE_PATH}${paths.ufoeretrygdAFP}`],
         })
         render(<RouterProvider router={router} />, {
-          preloadedState: {
-            userInput: { ...userInputInitialState, afp: 'ja_offentlig' },
-          },
           hasRouter: false,
         })
         expect(

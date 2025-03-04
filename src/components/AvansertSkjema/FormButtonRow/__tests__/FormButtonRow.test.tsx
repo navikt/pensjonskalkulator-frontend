@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'vitest'
 
+import { AVANSERT_FORM_NAMES } from '../../utils'
 import { FormButtonRow } from '../FormButtonRow'
-import { AVANSERT_FORM_NAMES } from '../utils'
 import { fulfilledGetLoependeVedtakLoependeAlderspensjon } from '@/mocks/mockedRTKQueryApiCalls'
 import {
   BeregningContext,
   AvansertBeregningModus,
 } from '@/pages/Beregning/context'
-import { userInputInitialState } from '@/state/userInput/userInputReducer'
+import { userInputInitialState } from '@/state/userInput/userInputSlice'
 import { render, screen, fireEvent } from '@/test-utils'
 
 describe('FormButtonRow', () => {
@@ -25,7 +25,11 @@ describe('FormButtonRow', () => {
             ...contextMockedValues,
           }}
         >
-          <FormButtonRow resetForm={vi.fn()} gaaTilResultat={vi.fn()} />
+          <FormButtonRow
+            formId={''}
+            resetForm={vi.fn()}
+            gaaTilResultat={vi.fn()}
+          />
         </BeregningContext.Provider>
       )
       expect(screen.getByText('beregning.avansert.button.beregn')).toBeVisible()
@@ -47,7 +51,11 @@ describe('FormButtonRow', () => {
             ...contextMockedValues,
           }}
         >
-          <FormButtonRow resetForm={vi.fn()} gaaTilResultat={vi.fn()} />
+          <FormButtonRow
+            formId={''}
+            resetForm={vi.fn()}
+            gaaTilResultat={vi.fn()}
+          />
         </BeregningContext.Provider>,
         {
           preloadedState: {
@@ -81,7 +89,11 @@ describe('FormButtonRow', () => {
             harAvansertSkjemaUnsavedChanges: true,
           }}
         >
-          <FormButtonRow resetForm={vi.fn()} gaaTilResultat={vi.fn()} />
+          <FormButtonRow
+            formId={''}
+            resetForm={vi.fn()}
+            gaaTilResultat={vi.fn()}
+          />
         </BeregningContext.Provider>,
         {
           preloadedState: {
@@ -117,6 +129,7 @@ describe('FormButtonRow', () => {
           }}
         >
           <FormButtonRow
+            formId={''}
             resetForm={vi.fn()}
             gaaTilResultat={vi.fn()}
             hasVilkaarIkkeOppfylt={true}
@@ -155,6 +168,7 @@ describe('FormButtonRow', () => {
           }}
         >
           <FormButtonRow
+            formId={''}
             resetForm={vi.fn()}
             gaaTilResultat={vi.fn()}
             hasVilkaarIkkeOppfylt={true}
@@ -193,7 +207,11 @@ describe('FormButtonRow', () => {
             ...contextMockedValues,
           }}
         >
-          <FormButtonRow resetForm={vi.fn()} gaaTilResultat={vi.fn()} />
+          <FormButtonRow
+            formId={''}
+            resetForm={vi.fn()}
+            gaaTilResultat={vi.fn()}
+          />
         </BeregningContext.Provider>,
         {
           preloadedState: {
@@ -231,7 +249,11 @@ describe('FormButtonRow', () => {
             harAvansertSkjemaUnsavedChanges: true,
           }}
         >
-          <FormButtonRow resetForm={vi.fn()} gaaTilResultat={vi.fn()} />
+          <FormButtonRow
+            formId={''}
+            resetForm={vi.fn()}
+            gaaTilResultat={vi.fn()}
+          />
         </BeregningContext.Provider>,
         {
           preloadedState: {
@@ -276,7 +298,11 @@ describe('FormButtonRow', () => {
           method="dialog"
           onSubmit={onSubmitMock}
         >
-          <FormButtonRow resetForm={vi.fn()} gaaTilResultat={vi.fn()} />
+          <FormButtonRow
+            formId={AVANSERT_FORM_NAMES.form}
+            resetForm={vi.fn()}
+            gaaTilResultat={vi.fn()}
+          />
         </form>
       </BeregningContext.Provider>
     )
@@ -293,7 +319,11 @@ describe('FormButtonRow', () => {
           ...contextMockedValues,
         }}
       >
-        <FormButtonRow resetForm={onResetMock} gaaTilResultat={vi.fn()} />
+        <FormButtonRow
+          formId={''}
+          resetForm={onResetMock}
+          gaaTilResultat={vi.fn()}
+        />
       </BeregningContext.Provider>
     )
 
@@ -311,6 +341,7 @@ describe('FormButtonRow', () => {
         }}
       >
         <FormButtonRow
+          formId={''}
           resetForm={vi.fn()}
           gaaTilResultat={gaaTilResultatMock}
         />

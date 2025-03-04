@@ -2,7 +2,7 @@ import { describe, it } from 'vitest'
 
 import { VilkaarsproevingAlert } from '..'
 import { fulfilledGetPerson } from '@/mocks/mockedRTKQueryApiCalls'
-import { userInputInitialState } from '@/state/userInput/userInputReducer'
+import { userInputInitialState } from '@/state/userInput/userInputSlice'
 import { render, screen } from '@/test-utils'
 
 describe('VilkaarsproevingAlert', () => {
@@ -25,7 +25,7 @@ describe('VilkaarsproevingAlert', () => {
       ...userInputInitialState,
     },
   }
-  it('Når det foreslåtte alternativet er den default ubetinget uttaksalder, vises det riktig tekst', () => {
+  it('Når det foreslåtte alternativet er den default normert pensjonsalder, vises det riktig tekst', () => {
     const { asFragment } = render(
       <VilkaarsproevingAlert
         vilkaarsproeving={{

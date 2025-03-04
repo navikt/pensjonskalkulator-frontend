@@ -1,8 +1,13 @@
 import 'cypress-axe'
 
-import { userInputActions } from '../../src/state/userInput/userInputReducer'
+import { userInputActions } from '../../src/state/userInput/userInputSlice'
 
 beforeEach(() => {
+  cy.setCookie(
+    'navno-consent',
+    '{%22consent%22:{%22analytics%22:false%2C%22surveys%22:false}%2C%22userActionTaken%22:true%2C%22meta%22:{%22createdAt%22:%222025-02-17T09:17:38.688Z%22%2C%22updatedAt%22:%222025-02-17T09:17:38.688Z%22%2C%22version%22:1}}'
+  ) // Skjuler cookiebanner (har ingenting å si for testene, er kun for å slippe å se det når tester lokalt)
+
   cy.intercept(
     {
       method: 'GET',
@@ -126,7 +131,7 @@ beforeEach(() => {
   cy.intercept(
     {
       method: 'GET',
-      url: '/pensjon/kalkulator/api/feature/pensjonskalkulator.otp-fra-klp',
+      url: '/pensjon/kalkulator/api/feature/pensjonskalkulator.vis-otp-fra-klp',
     },
     { fixture: 'toggle-otp-fra-klp.json' }
   ).as('getFeatureToggleOtpFraKlp')
@@ -192,9 +197,21 @@ beforeEach(() => {
   ).as('fetchAlderspensjon')
 
   cy.intercept(
+    { url: 'https://g.nav.no/api/v1/grunnbel%C3%B8p' },
+    {
+      dato: '2024-05-01',
+      grunnbeløp: 100000,
+      grunnbeløpPerMåned: 10000,
+      gjennomsnittPerÅr: 120000,
+      omregningsfaktor: 1,
+      virkningstidspunktForMinsteinntekt: '2024-06-03',
+    }
+  ).as('getGrunnbeløp')
+
+  cy.intercept(
     {
       method: 'GET',
-      url: `https://g2by7q6m.apicdn.sanity.io/v2023-05-03/data/query/development?query=*%5B_type+%3D%3D+%22readmore%22+%26%26+language+%3D%3D+%22nb%22%5D&returnQuery=false`,
+      url: `https://g2by7q6m.apicdn.sanity.io/v2023-05-03/data/query/development?query=*%5B_type+%3D%3D+%22readmore%22+%26%26+language+%3D%3D+%22nb%22%5D*`,
     },
     { fixture: 'sanity-readmore-nb-data.json' }
   ).as('fetchSanityReadMoreDataNb')
@@ -202,7 +219,7 @@ beforeEach(() => {
   cy.intercept(
     {
       method: 'GET',
-      url: `https://g2by7q6m.apicdn.sanity.io/v2023-05-03/data/query/development?query=*%5B_type+%3D%3D+%22readmore%22+%26%26+language+%3D%3D+%22en%22%5D&returnQuery=false`,
+      url: `https://g2by7q6m.apicdn.sanity.io/v2023-05-03/data/query/development?query=*%5B_type+%3D%3D+%22readmore%22+%26%26+language+%3D%3D+%22en%22%5D*`,
     },
     { fixture: 'sanity-readmore-en-data.json' }
   ).as('fetchSanityReadMoreDataEn')

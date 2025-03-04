@@ -1,15 +1,16 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`RedigerAvansertBeregning > Gitt at en bruker har vedtak om alderspensjon > Når brukeren har gradert uføretrygd, vises det riktig label på feltene 1`] = `
+exports[`AvansertSkjemaForBrukereMedGradertUfoeretrygd > Gitt at en bruker har vedtak om alderspensjon,  > Når brukeren har gradert uføretrygd, vises det riktig label på feltene 1`] = `
 <DocumentFragment>
   <div
-    class="_container_50fcfd _container__hasMobilePadding_50fcfd"
+    class="_container_db4c62 _container__hasMobilePadding_db4c62"
   >
     <div
-      class="_form_50fcfd"
+      class="_form_db4c62"
     >
       <div>
         <form
+          data-testid="AVANSERT_SKJEMA_FOR_BRUKERE_MED_GRADERT_UFOERETRYGD"
           id="avansert-beregning"
           method="dialog"
         />
@@ -27,24 +28,24 @@ exports[`RedigerAvansertBeregning > Gitt at en bruker har vedtak om alderspensjo
           class="_divider_1adfb3"
         />
         <label
-          class="_label_50fcfd navds-label"
+          class="_label_db4c62 navds-label"
         >
           beregning.avansert.rediger.inntekt_frem_til_endring.label
         </label>
         <div
-          class="_description_50fcfd"
+          class="_description_db4c62"
         >
           <span
-            class="_descriptionText_50fcfd"
+            class="_descriptionText_db4c62"
           >
             beregning.avansert.rediger.inntekt_frem_til_uttak.description_ufoere
           </span>
         </div>
         <div
-          class="_description_50fcfd"
+          class="_description_db4c62"
         >
           <span
-            class="_descriptionText_50fcfd"
+            class="_descriptionText_db4c62"
           >
             <span
               class="nowrap"
@@ -53,7 +54,7 @@ exports[`RedigerAvansertBeregning > Gitt at en bruker har vedtak om alderspensjo
              beregning.avansert.rediger.inntekt_frem_til_uttak.description
           </span>
           <dialog
-            aria-labelledby="rmu"
+            aria-labelledby="rl9"
             class="navds-modal navds-modal--polyfilled navds-modal--small"
             role="dialog"
           >
@@ -68,7 +69,7 @@ exports[`RedigerAvansertBeregning > Gitt at en bruker har vedtak om alderspensjo
                   class="navds-button__icon"
                 >
                   <svg
-                    aria-labelledby="title-rn0"
+                    aria-labelledby="title-rlb"
                     fill="none"
                     focusable="false"
                     height="1em"
@@ -78,7 +79,7 @@ exports[`RedigerAvansertBeregning > Gitt at en bruker har vedtak om alderspensjo
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <title
-                      id="title-rn0"
+                      id="title-rlb"
                     >
                       Lukk
                     </title>
@@ -91,7 +92,7 @@ exports[`RedigerAvansertBeregning > Gitt at en bruker har vedtak om alderspensjo
               </button>
               <h1
                 class="navds-heading navds-heading--medium"
-                id="rmu"
+                id="rl9"
               >
                 inntekt.endre_inntekt_modal.title
               </h1>
@@ -116,7 +117,7 @@ exports[`RedigerAvansertBeregning > Gitt at en bruker har vedtak om alderspensjo
                 >
                   Din pensjonsopptjening
                   <svg
-                    aria-labelledby="title-rn1"
+                    aria-labelledby="title-rlc"
                     fill="none"
                     focusable="false"
                     height="1.25rem"
@@ -126,7 +127,7 @@ exports[`RedigerAvansertBeregning > Gitt at en bruker har vedtak om alderspensjo
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <title
-                      id="title-rn1"
+                      id="title-rlc"
                     >
                       application.global.external_link
                     </title>
@@ -154,21 +155,21 @@ exports[`RedigerAvansertBeregning > Gitt at en bruker har vedtak om alderspensjo
                   >
                     <label
                       class="navds-form-field__label navds-label"
-                      for="textField-rn2"
+                      for="textField-rld"
                     >
                       inntekt.endre_inntekt_modal.textfield.label
                     </label>
                     <div
                       class="navds-form-field__description navds-body-short navds-body-short--medium"
-                      id="textField-description-rn2"
+                      id="textField-description-rld"
                     >
                       inntekt.endre_inntekt_modal.textfield.description.ufoere
                     </div>
                     <input
-                      aria-describedby="textField-description-rn2"
+                      aria-describedby="textField-description-rld"
                       class="navds-text-field__input navds-body-short navds-body-short--medium"
                       data-testid="inntekt-textfield"
-                      id="textField-rn2"
+                      id="textField-rld"
                       inputmode="numeric"
                       max="5"
                       name="inntekt"
@@ -179,7 +180,7 @@ exports[`RedigerAvansertBeregning > Gitt at en bruker har vedtak om alderspensjo
                       aria-live="polite"
                       aria-relevant="additions removals"
                       class="navds-form-field__error"
-                      id="textField-error-rn2"
+                      id="textField-error-rld"
                     />
                   </div>
                 </div>
@@ -242,7 +243,7 @@ exports[`RedigerAvansertBeregning > Gitt at en bruker har vedtak om alderspensjo
           </button>
         </div>
         <div
-          class="_spacer_50fcfd _spacer__small_50fcfd"
+          class="_spacer_db4c62 _spacer__small_db4c62"
         />
         <div
           class="navds-read-more navds-read-more--medium"
@@ -356,6 +357,14 @@ exports[`RedigerAvansertBeregning > Gitt at en bruker har vedtak om alderspensjo
       <hr
         class="_divider_1adfb3 _divider__noMargin_1adfb3"
       />
+      <div
+        aria-live="polite"
+        class="_alertWrapper_db4c62"
+      />
+      <div
+        aria-live="polite"
+        class="_alertWrapper_db4c62"
+      />
       <div>
         <div
           data-testid="age-picker-uttaksalder-helt-uttak"
@@ -373,7 +382,7 @@ exports[`RedigerAvansertBeregning > Gitt at en bruker har vedtak om alderspensjo
             >
               <label
                 class="navds-form-field__label navds-label"
-                for="select-rn5"
+                for="select-rlg"
               >
                 Velg år
               </label>
@@ -386,7 +395,7 @@ exports[`RedigerAvansertBeregning > Gitt at en bruker har vedtak om alderspensjo
                   class="navds-select__input navds-body-short navds-body-short--medium"
                   data-testid="age-picker-uttaksalder-helt-uttak-aar"
                   form="avansert-beregning"
-                  id="select-rn5"
+                  id="select-rlg"
                   name="uttaksalder-helt-uttak-aar"
                 >
                   <option
@@ -394,6 +403,16 @@ exports[`RedigerAvansertBeregning > Gitt at en bruker har vedtak om alderspensjo
                     value=""
                   >
                      
+                  </option>
+                  <option
+                    value="62"
+                  >
+                    62 alder.aar
+                  </option>
+                  <option
+                    value="63"
+                  >
+                    63 alder.aar
                   </option>
                   <option
                     value="64"
@@ -479,7 +498,7 @@ exports[`RedigerAvansertBeregning > Gitt at en bruker har vedtak om alderspensjo
                 aria-live="polite"
                 aria-relevant="additions removals"
                 class="navds-form-field__error"
-                id="select-error-rn5"
+                id="select-error-rlg"
               />
             </div>
             <div
@@ -487,7 +506,7 @@ exports[`RedigerAvansertBeregning > Gitt at en bruker har vedtak om alderspensjo
             >
               <label
                 class="navds-form-field__label navds-label"
-                for="select-rn7"
+                for="select-rli"
               >
                 Velg måned
               </label>
@@ -501,7 +520,7 @@ exports[`RedigerAvansertBeregning > Gitt at en bruker har vedtak om alderspensjo
                   data-testid="age-picker-uttaksalder-helt-uttak-maaneder"
                   disabled=""
                   form="avansert-beregning"
-                  id="select-rn7"
+                  id="select-rli"
                   name="uttaksalder-helt-uttak-maaneder"
                 >
                   <option
@@ -534,7 +553,7 @@ exports[`RedigerAvansertBeregning > Gitt at en bruker har vedtak om alderspensjo
                 aria-live="polite"
                 aria-relevant="additions removals"
                 class="navds-form-field__error"
-                id="select-error-rn7"
+                id="select-error-rli"
               />
             </div>
             <span
@@ -543,7 +562,7 @@ exports[`RedigerAvansertBeregning > Gitt at en bruker har vedtak om alderspensjo
           </div>
         </div>
         <div
-          class="_spacer__small_50fcfd"
+          class="_spacer__small_db4c62"
         />
         <div
           class="navds-read-more navds-read-more--medium"
@@ -596,7 +615,7 @@ exports[`RedigerAvansertBeregning > Gitt at en bruker har vedtak om alderspensjo
               <span
                 class="nowrap"
               >
-                67 år
+                67 alder.aar
               </span>
                betyr at du fordeler pensjonen din over flere år, og dermed får du mindre hvert år.
               <br />
@@ -620,17 +639,17 @@ exports[`RedigerAvansertBeregning > Gitt at en bruker har vedtak om alderspensjo
       </div>
       <div>
         <div
-          class="_select_50fcfd navds-form-field navds-form-field--medium"
+          class="_select_db4c62 navds-form-field navds-form-field--medium"
         >
           <label
             class="navds-form-field__label navds-label"
-            for="select-rna"
+            for="select-rll"
           >
             beregning.avansert.rediger.uttaksgrad.label
           </label>
           <div
             class="navds-form-field__description navds-body-short navds-body-short--medium"
-            id="select-description-rna"
+            id="select-description-rll"
           >
             beregning.avansert.rediger.uttaksgrad.endring.description
           </div>
@@ -638,12 +657,12 @@ exports[`RedigerAvansertBeregning > Gitt at en bruker har vedtak om alderspensjo
             class="navds-select__container"
           >
             <select
-              aria-describedby="select-description-rna"
+              aria-describedby="select-description-rll"
               aria-required="true"
               class="navds-select__input navds-body-short navds-body-short--medium"
               data-testid="uttaksgrad"
               form="avansert-beregning"
-              id="select-rna"
+              id="select-rll"
               name="uttaksgrad"
             >
               <option
@@ -711,11 +730,11 @@ exports[`RedigerAvansertBeregning > Gitt at en bruker har vedtak om alderspensjo
             aria-live="polite"
             aria-relevant="additions removals"
             class="navds-form-field__error"
-            id="select-error-rna"
+            id="select-error-rll"
           />
         </div>
         <div
-          class="_spacer__small_50fcfd"
+          class="_spacer__small_db4c62"
         />
         <div
           class="navds-read-more navds-read-more--medium"
@@ -769,7 +788,7 @@ exports[`RedigerAvansertBeregning > Gitt at en bruker har vedtak om alderspensjo
               <span
                 class="nowrap"
               >
-                67 år
+                67 alder.aar
               </span>
                kan du fritt velge gradert uttak (20, 40, 50, 60 eller 
               <span
@@ -798,14 +817,14 @@ exports[`RedigerAvansertBeregning > Gitt at en bruker har vedtak om alderspensjo
         </div>
       </div>
       <div
-        class="_wrapper_6b784e"
+        class="_wrapper_d1848f"
       >
         <hr
-          class="_separator_6b784e"
+          class="_separator_d1848f"
         />
         <div>
           <button
-            class="_button_6b784e _buttonSubmit_6b784e navds-button navds-button--primary navds-button--medium"
+            class="_button_d1848f _buttonSubmit_d1848f navds-button navds-button--primary navds-button--medium"
             form="avansert-beregning"
           >
             <span
@@ -815,7 +834,7 @@ exports[`RedigerAvansertBeregning > Gitt at en bruker har vedtak om alderspensjo
             </span>
           </button>
           <button
-            class="_button_6b784e navds-button navds-button--secondary navds-button--medium"
+            class="_button_d1848f navds-button navds-button--secondary navds-button--medium"
             type="button"
           >
             <span

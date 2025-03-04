@@ -10,7 +10,7 @@ import {
   isFoedtFoer1964,
   isAlderLikEllerOverAnnenAlder,
   isAlderOverAnnenAlder,
-  isFoedselsdatoOverEllerLikAlder,
+  isFoedselsdatoOverAlder,
   getAlderPlus1Maaned,
   getAlderMinus1Maaned,
   getBrukerensAlderISluttenAvMaaneden,
@@ -26,7 +26,6 @@ import {
   isAlderOver,
   getAlderFromFoedselsdato,
 } from '../alder'
-import { fulfilledGetPerson } from '@/mocks/mockedRTKQueryApiCalls'
 import { DATE_BACKEND_FORMAT } from '@/utils/dates'
 
 describe('alder-utils', () => {
@@ -116,143 +115,138 @@ describe('alder-utils', () => {
     })
   })
 
+  describe('isAlderOverAnnenAlder', () => {
+    const minsteAlder = { aar: 62, maaneder: 3 }
+    it('returnerer true når stoersteAlder er over den andre alderen', () => {
+      expect(
+        isAlderOverAnnenAlder({ aar: 62, maaneder: 4 }, minsteAlder)
+      ).toBeTruthy()
+      expect(
+        isAlderOverAnnenAlder({ aar: 63, maaneder: 0 }, minsteAlder)
+      ).toBeTruthy()
+      expect(
+        isAlderOverAnnenAlder({ aar: 70, maaneder: 0 }, minsteAlder)
+      ).toBeTruthy()
+    })
+
+    it('returnerer false når stoersteAlder er lik eller under den andre alderen', () => {
+      expect(
+        isAlderOverAnnenAlder({ aar: 62, maaneder: 3 }, minsteAlder)
+      ).toBeFalsy()
+      expect(
+        isAlderOverAnnenAlder({ aar: 62, maaneder: 0 }, minsteAlder)
+      ).toBeFalsy()
+      expect(
+        isAlderOverAnnenAlder({ aar: 62, maaneder: 1 }, minsteAlder)
+      ).toBeFalsy()
+      expect(
+        isAlderOverAnnenAlder({ aar: 61, maaneder: 11 }, minsteAlder)
+      ).toBeFalsy()
+      expect(
+        isAlderOverAnnenAlder({ aar: 61, maaneder: 0 }, minsteAlder)
+      ).toBeFalsy()
+    })
+  })
+
   describe('isAlderLikEllerOverAnnenAlder', () => {
-    const normertPensjonsalder = { aar: 67, maaneder: 0 }
-    it('returnerer true når alderen er lik eller over ubetinget uttaksalder', () => {
+    const minsteAlder = { aar: 67, maaneder: 3 }
+    it('returnerer true når stoersteAlder er lik eller over den andre alderen', () => {
+      expect(
+        isAlderLikEllerOverAnnenAlder({ aar: 68 }, minsteAlder)
+      ).toBeTruthy()
       expect(
         isAlderLikEllerOverAnnenAlder(
           { aar: 67, maaneder: 0 },
-          normertPensjonsalder
+          { aar: 67, maaneder: 0 }
         )
       ).toBeTruthy()
       expect(
-        isAlderLikEllerOverAnnenAlder(
-          { aar: 67, maaneder: 11 },
-          normertPensjonsalder
-        )
+        isAlderLikEllerOverAnnenAlder({ aar: 67, maaneder: 3 }, minsteAlder)
       ).toBeTruthy()
       expect(
-        isAlderLikEllerOverAnnenAlder(
-          { aar: 70, maaneder: 3 },
-          normertPensjonsalder
-        )
+        isAlderLikEllerOverAnnenAlder({ aar: 67, maaneder: 11 }, minsteAlder)
+      ).toBeTruthy()
+      expect(
+        isAlderLikEllerOverAnnenAlder({ aar: 70, maaneder: 3 }, minsteAlder)
       ).toBeTruthy()
     })
 
-    it('returnerer false når alderen er under 67 år', () => {
+    it('returnerer false når stoersteAlder er under den andre alderen', () => {
+      expect(isAlderLikEllerOverAnnenAlder({}, minsteAlder)).toBeFalsy()
       expect(
-        isAlderLikEllerOverAnnenAlder({}, normertPensjonsalder)
+        isAlderLikEllerOverAnnenAlder({ maaneder: 6 }, minsteAlder)
       ).toBeFalsy()
       expect(
-        isAlderLikEllerOverAnnenAlder({ maaneder: 6 }, normertPensjonsalder)
+        isAlderLikEllerOverAnnenAlder({ aar: 62 }, minsteAlder)
       ).toBeFalsy()
       expect(
-        isAlderLikEllerOverAnnenAlder(
-          { aar: 62, maaneder: 1 },
-          normertPensjonsalder
-        )
+        isAlderLikEllerOverAnnenAlder({ aar: 62, maaneder: 1 }, minsteAlder)
       ).toBeFalsy()
       expect(
-        isAlderLikEllerOverAnnenAlder(
-          { aar: 63, maaneder: 0 },
-          normertPensjonsalder
-        )
+        isAlderLikEllerOverAnnenAlder({ aar: 67, maaneder: 0 }, minsteAlder)
       ).toBeFalsy()
       expect(
-        isAlderLikEllerOverAnnenAlder(
-          { aar: 66, maaneder: 11 },
-          normertPensjonsalder
-        )
+        isAlderLikEllerOverAnnenAlder({ aar: 67, maaneder: 2 }, minsteAlder)
       ).toBeFalsy()
     })
   })
 
-  describe('isAlderOverAnnenAlder', () => {
-    it('returnerer false når alderen er lik eller under 62 år', () => {
-      expect(
-        isAlderOverAnnenAlder(
-          { aar: 61, maaneder: 11 },
-          { aar: 62, maaneder: 0 }
-        )
-      ).toBeFalsy()
-      expect(
-        isAlderOverAnnenAlder(
-          { aar: 62, maaneder: 0 },
-          { aar: 62, maaneder: 0 }
-        )
-      ).toBeFalsy()
-    })
+  describe('isFoedselsdatoOverAlder', () => {
+    const minsteAlder = { aar: 62, maaneder: 0 }
 
-    it('returnerer true når alderen er over 62 år', () => {
-      expect(
-        isAlderOverAnnenAlder(
-          { aar: 62, maaneder: 1 },
-          { aar: 62, maaneder: 0 }
-        )
-      ).toBeTruthy()
-
-      expect(
-        isAlderOverAnnenAlder(
-          { aar: 62, maaneder: 2 },
-          { aar: 62, maaneder: 0 }
-        )
-      ).toBeTruthy()
-      expect(
-        isAlderOverAnnenAlder(
-          { aar: 63, maaneder: 0 },
-          { aar: 62, maaneder: 0 }
-        )
-      ).toBeTruthy()
-      expect(
-        isAlderOverAnnenAlder(
-          { aar: 70, maaneder: 0 },
-          { aar: 62, maaneder: 0 }
-        )
-      ).toBeTruthy()
-    })
-
-    it('returnerer false når alder er lik og største alder er mindre enn minste alder', () => {
-      expect(
-        isAlderOverAnnenAlder(
-          { aar: 62, maaneder: 1 },
-          { aar: 62, maaneder: 5 }
-        )
-      ).toBeFalsy()
-    })
-  })
-
-  describe('isFoedselsdatoOverEllerLikAlder', () => {
-    const nedreAldersgrense = { aar: 62, maaneder: 0 }
-    it('returnerer true når fødselsdatoen er 62 år fra nå', () => {
-      const minAlderYearsBeforeNow = add(endOfDay(new Date()), {
-        years: -62,
-      })
-      const foedselsdato = format(minAlderYearsBeforeNow, DATE_BACKEND_FORMAT)
-      expect(
-        isFoedselsdatoOverEllerLikAlder(foedselsdato, nedreAldersgrense)
-      ).toBeTruthy()
-    })
-
-    it('returnerer true når fødselsdatoen er mer enn 62 år fra nå', () => {
-      const minAlderYearsBeforeNow = add(endOfDay(new Date()), {
-        years: -62,
-        months: -5,
-      })
-      const foedselsdato = format(minAlderYearsBeforeNow, DATE_BACKEND_FORMAT)
-      expect(
-        isFoedselsdatoOverEllerLikAlder(foedselsdato, nedreAldersgrense)
-      ).toBeTruthy()
-    })
-
-    it('returnerer false når fødselsdatoen er mindre enn 62 år fra nå', () => {
+    it('returnerer false når fødselsdatoen gir færre aar', () => {
       const minAlderYearsBeforeNow = add(endOfDay(new Date()), {
         years: -61,
         months: -11,
       })
       const foedselsdato = format(minAlderYearsBeforeNow, DATE_BACKEND_FORMAT)
+      expect(isFoedselsdatoOverAlder(foedselsdato, minsteAlder)).toBeFalsy()
+    })
+
+    it('returnerer false når fødselsdatoen gir færre måneder', () => {
+      const minAlderYearsBeforeNow = add(endOfDay(new Date()), {
+        years: -62,
+        months: -4,
+      })
+      const foedselsdato = format(minAlderYearsBeforeNow, DATE_BACKEND_FORMAT)
       expect(
-        isFoedselsdatoOverEllerLikAlder(foedselsdato, nedreAldersgrense)
+        isFoedselsdatoOverAlder(foedselsdato, { aar: 62, maaneder: 5 })
       ).toBeFalsy()
+    })
+
+    it('returnerer false når fødselsdatoen gir samme antall aar og måneder', () => {
+      const minAlderYearsBeforeNow = add(endOfDay(new Date()), {
+        years: -62,
+      })
+      const foedselsdato = format(minAlderYearsBeforeNow, DATE_BACKEND_FORMAT)
+      expect(isFoedselsdatoOverAlder(foedselsdato, minsteAlder)).toBeFalsy()
+    })
+
+    it('returnerer false når fødselsdatoen gir samme antall aar og måneder, og flere dager', () => {
+      vi.useFakeTimers().setSystemTime(new Date('2025-02-15'))
+      const minAlderYearsBeforeNow = add(endOfDay(new Date()), {
+        years: -62,
+        days: -5,
+      })
+      const foedselsdato = format(minAlderYearsBeforeNow, DATE_BACKEND_FORMAT)
+      expect(isFoedselsdatoOverAlder(foedselsdato, minsteAlder)).toBeFalsy()
+    })
+
+    it('returnerer true når fødselsdatoen gir samme antall aar og flere måneder', () => {
+      const minAlderYearsBeforeNow = add(endOfDay(new Date()), {
+        years: -62,
+        months: -5,
+      })
+      const foedselsdato = format(minAlderYearsBeforeNow, DATE_BACKEND_FORMAT)
+      expect(isFoedselsdatoOverAlder(foedselsdato, minsteAlder)).toBeTruthy()
+    })
+
+    it('returnerer true når fødselsdatoen gir flere aar', () => {
+      const minAlderYearsBeforeNow = add(endOfDay(new Date()), {
+        years: -63,
+      })
+      const foedselsdato = format(minAlderYearsBeforeNow, DATE_BACKEND_FORMAT)
+      expect(isFoedselsdatoOverAlder(foedselsdato, minsteAlder)).toBeTruthy()
     })
   })
 
@@ -298,11 +292,6 @@ describe('alder-utils', () => {
 
   describe('getBrukerensAlderISluttenAvMaaneden', () => {
     const nedreAldersgrense = { aar: 62, maaneder: 0 }
-    const person: Person = {
-      ...fulfilledGetPerson['getPerson(undefined)'].data,
-      sivilstand: fulfilledGetPerson['getPerson(undefined)'].data
-        .sivilstand as Person['sivilstand'],
-    }
 
     it('returnerer nedre aldersgrense når person er undefined', () => {
       const expectedAlder = getBrukerensAlderISluttenAvMaaneden(
@@ -314,13 +303,10 @@ describe('alder-utils', () => {
 
     it('returnerer alderen til personen når alderen er over nedre aldersgrense', () => {
       vi.useFakeTimers().setSystemTime(new Date('2025-01-04'))
-      const mock_person = {
-        ...person,
-        foedselsdato: '1960-01-01',
-      }
+
       // Brukeren er 65 år, 0 md og 3 dager den 4. januar 2025
       const expectedAlder = getBrukerensAlderISluttenAvMaaneden(
-        mock_person,
+        '1960-01-01',
         nedreAldersgrense
       )
       expect(expectedAlder).toStrictEqual({ aar: 65, maaneder: 0 })
@@ -329,13 +315,10 @@ describe('alder-utils', () => {
 
     it('returnerer nedre aldersgrense når alderen er lik nedre aldersgrense', () => {
       vi.useFakeTimers().setSystemTime(new Date('2025-01-01'))
-      const mock_person = {
-        ...person,
-        foedselsdato: '1963-01-01',
-      }
+
       // Brukeren er 62 år og 0 md den 1. januar 2025
       const expectedAlder = getBrukerensAlderISluttenAvMaaneden(
-        mock_person,
+        '1963-01-01',
         nedreAldersgrense
       )
       expect(expectedAlder).toStrictEqual({ aar: 62, maaneder: 0 })
@@ -344,13 +327,10 @@ describe('alder-utils', () => {
 
     it('returnerer alderen til personen når alderen er nedre aldersgrense + 1 måned', () => {
       vi.useFakeTimers().setSystemTime(new Date('2025-01-01'))
-      const mock_person = {
-        ...person,
-        foedselsdato: '1962-12-01',
-      }
+
       // Brukeren er 62 år og 1 md den 1. januar 2025
       const expectedAlder = getBrukerensAlderISluttenAvMaaneden(
-        mock_person,
+        '1962-12-01',
         nedreAldersgrense
       )
       expect(expectedAlder).toStrictEqual({ aar: 62, maaneder: 1 })
@@ -358,12 +338,8 @@ describe('alder-utils', () => {
     })
 
     it('returnerer nedre aldersgrense når alderen er under nedre aldersgrense', () => {
-      const mock_person = {
-        ...person,
-        foedselsdato: '1970-01-01',
-      }
       const expectedAlder = getBrukerensAlderISluttenAvMaaneden(
-        mock_person,
+        '1970-01-01',
         nedreAldersgrense
       )
       expect(expectedAlder).toStrictEqual(nedreAldersgrense)

@@ -12,13 +12,9 @@ import {
 } from '@/router/constants'
 import { apiSlice } from '@/state/api/apiSlice'
 import { store } from '@/state/store'
+import { selectIsVeileder, selectAfp } from '@/state/userInput/selectors'
 import {
-  selectIsVeileder,
-  selectAfp,
-  selectFoedselsdato,
-} from '@/state/userInput/selectors'
-import {
-  isFoedselsdatoOverEllerLikAlder,
+  isFoedselsdatoOverAlder,
   isFoedtFoer1963,
   AFP_UFOERE_OPPSIGELSESALDER,
 } from '@/utils/alder'
@@ -148,7 +144,7 @@ export const stepStartAccessGuard =
         if (getLoependeVedtakRes.isError) {
           logger('info', {
             tekst: 'Redirect til /uventet-feil',
-            data: 'fra Step Start Loader pga. feil med getLoependeVedtak',
+            data: `fra Step Start Loader pga. feil med getLoependeVedtak med status: ${(getLoependeVedtakRes.error as FetchBaseQueryError).status}`,
           })
           return paths.uventetFeil
         }
@@ -192,7 +188,7 @@ export const stepStartAccessGuard =
           } else {
             logger('info', {
               tekst: 'Redirect til /uventet-feil',
-              data: 'fra Step Start Loader pga. feil med getPerson',
+              data: `fra Step Start Loader pga. feil med getPerson med status: ${(getPersonRes.error as FetchBaseQueryError).status}`,
             })
             return paths.uventetFeil
           }
@@ -299,17 +295,16 @@ export const stepAFPAccessGuard = async (): Promise<
     ? stegvisningOrderEndring
     : stegvisningOrder
 
-  // Hvis brukeren mottar AFP skal hen ikke se AFP steget
-  // Hvis brukeren har uføretrygd og er eldre enn min uttaksalder skal hen ikke se AFP steget
+  // Hvis brukeren mottar AFP skal hen ikke se AFP-steget
+  // Hvis brukeren har 100% uføretrygd skal hen ikke se AFP-steget
+  // Hvis brukeren har gradert uføretrygd og er eldre enn AFP-Uføre oppsigelsesalder skal hen ikke se AFP-steget
   if (
     loependeVedtak.afpPrivat ||
     loependeVedtak.afpOffentlig ||
+    loependeVedtak.ufoeretrygd.grad === 100 ||
     (loependeVedtak.ufoeretrygd.grad &&
       person.foedselsdato &&
-      isFoedselsdatoOverEllerLikAlder(
-        person.foedselsdato,
-        AFP_UFOERE_OPPSIGELSESALDER
-      ))
+      isFoedselsdatoOverAlder(person.foedselsdato, AFP_UFOERE_OPPSIGELSESALDER))
   ) {
     return redirect(stepArrays[stepArrays.indexOf(paths.afp) + 1])
   } else {
@@ -330,25 +325,16 @@ export const stepUfoeretrygdAFPAccessGuard =
 
     const state = store.getState()
     const afp = selectAfp(state)
-    const foedselsdato = selectFoedselsdato(state)
-    const getLoependeVedtakResponse =
-      apiSlice.endpoints.getLoependeVedtak.select(undefined)(state)
+    const loependeVedtak =
+      apiSlice.endpoints.getLoependeVedtak.select()(state).data
+    if (!loependeVedtak) throw new Error('Missing loependeVedtak')
 
-    const stepArrays = isLoependeVedtakEndring(
-      getLoependeVedtakResponse.data as LoependeVedtak
-    )
+    const stepArrays = isLoependeVedtakEndring(loependeVedtak)
       ? stegvisningOrderEndring
       : stegvisningOrder
 
-    // Bruker med uføretrygd, som svarer ja til afp, og som er under nedre aldersgrense kan se steget
-    if (
-      (getLoependeVedtakResponse.data as LoependeVedtak).ufoeretrygd.grad &&
-      afp !== 'nei' &&
-      !isFoedselsdatoOverEllerLikAlder(
-        foedselsdato as string,
-        AFP_UFOERE_OPPSIGELSESALDER
-      )
-    ) {
+    // Brukere med uføretrygd som har svart ja eller vet_ikke til AFP kan se steget
+    if (loependeVedtak.ufoeretrygd.grad && afp && afp !== 'nei') {
       return null
     }
     return redirect(stepArrays[stepArrays.indexOf(paths.ufoeretrygdAFP) + 1])
@@ -372,6 +358,8 @@ export const stepSamtykkeOffentligAFPAccessGuard =
     )
       ? stegvisningOrderEndring
       : stegvisningOrder
+
+    // Bruker uten uføretrygd som svarer ja_offentlig til AFP kan se steget
     if (
       (getLoependeVedtakResponse.data as LoependeVedtak).ufoeretrygd.grad ===
         0 &&

@@ -17,7 +17,7 @@ import {
   selectIsVeileder,
   selectSkalBeregneAfp,
 } from '@/state/userInput/selectors'
-import { userInputActions } from '@/state/userInput/userInputReducer'
+import { userInputActions } from '@/state/userInput/userInputSlice'
 import { isAlderOver67, isFoedtFoer1963, isOvergangskull } from '@/utils/alder'
 import { isVedtakAlderspensjon } from '@/utils/loependeVedtak'
 

@@ -11,15 +11,15 @@ import {
 } from '@/state/userInput/selectors'
 import { wrapLogger } from '@/utils/logging'
 
-import { AVANSERT_FORM_NAMES } from './utils'
-
 import styles from './FormButtonRow.module.scss'
 
 export const FormButtonRow: React.FC<{
+  // TODO sterkere typing for formId etterhvert slik at bare de skjemaene som er definert kan brukes
+  formId: string
   resetForm: () => void
   gaaTilResultat: () => void
   hasVilkaarIkkeOppfylt?: boolean
-}> = ({ resetForm, gaaTilResultat, hasVilkaarIkkeOppfylt }) => {
+}> = ({ formId, resetForm, gaaTilResultat, hasVilkaarIkkeOppfylt }) => {
   const intl = useIntl()
   const { harAvansertSkjemaUnsavedChanges } = React.useContext(BeregningContext)
   const { uttaksalder } = useAppSelector(selectCurrentSimulation)
@@ -30,7 +30,7 @@ export const FormButtonRow: React.FC<{
       <hr className={styles.separator} />
       <div>
         <Button
-          form={AVANSERT_FORM_NAMES.form}
+          form={formId}
           className={`${styles.button} ${styles.buttonSubmit}`}
         >
           {intl.formatMessage({
