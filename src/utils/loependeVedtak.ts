@@ -5,7 +5,3 @@ export const isLoependeVedtakEndring = (loependeVedtak: LoependeVedtak) => {
 export const isVedtakAlderspensjon = (loependeVedtak: LoependeVedtak) => {
   return !!loependeVedtak.alderspensjon
 }
-
-export const isVedtakOffentligAFP = (loependeVedtak: LoependeVedtak) => {
-  return !!loependeVedtak.afpOffentlig
-}
