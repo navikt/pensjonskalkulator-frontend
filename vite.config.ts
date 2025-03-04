@@ -6,7 +6,6 @@ import stylelint from 'vite-plugin-stylelint'
 import sassDts from 'vite-plugin-sass-dts'
 import { visualizer } from 'rollup-plugin-visualizer'
 import CustomPostCSSLoader from './scripts/CustomPostCSSLoader'
-import path from 'path'
 import tsconfigPaths from 'vite-tsconfig-paths'
 
 // https://vitejs.dev/config/
@@ -56,7 +55,6 @@ export default defineConfig({
     process.env.NODE_ENV !== 'test' && eslint(),
     process.env.NODE_ENV !== 'test' && stylelint({ fix: true }),
     process.env.NODE_ENV !== 'test' && sassDts(),
-
     process.env.NODE_ENV !== 'test' &&
       visualizer({
         open: true,
@@ -64,6 +62,15 @@ export default defineConfig({
         brotliSize: true,
         filename: 'analice.html',
       }),
+    process.env.NODE_ENV === 'test' && {
+      name: 'caching',
+      configurePreviewServer(server) {
+        server.middlewares.use((req, res, next) => {
+          res.setHeader('Cache-Control', 'max-age=3600') // Speeds up Cypress
+          next()
+        })
+      },
+    },
   ],
   server: {
     proxy: {
