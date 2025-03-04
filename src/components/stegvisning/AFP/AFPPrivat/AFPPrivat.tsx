@@ -88,7 +88,7 @@ export function AFPPrivat({ afp, onCancel, onPrevious, onNext }: Props) {
           <FormattedMessage
             id="stegvisning.afp.readmore_privat_link"
             values={{
-              ...getFormatMessageValues(intl),
+              ...getFormatMessageValues(),
             }}
           />
         </ReadMore>

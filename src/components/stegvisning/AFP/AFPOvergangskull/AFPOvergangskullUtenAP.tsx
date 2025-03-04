@@ -170,7 +170,7 @@ export function AFPOvergangskullUtenAP({
           <FormattedMessage
             id="stegvisning.afp.readmore_privat_link"
             values={{
-              ...getFormatMessageValues(intl),
+              ...getFormatMessageValues(),
             }}
           />
         </ReadMore>
