@@ -1,8 +1,16 @@
-import { useIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
+
+import { Label } from '@navikt/ds-react'
+import clsx from 'clsx'
 
 import { ReadMore } from '@/components/common/ReadMore'
 import { EndreInntekt } from '@/components/EndreInntekt'
 import { InfoOmInntekt } from '@/components/EndreInntekt/InfoOmInntekt'
+import { useAppSelector } from '@/state/hooks'
+import {
+  selectIsEndring,
+  selectLoependeVedtak,
+} from '@/state/userInput/selectors'
 import { formatInntekt } from '@/utils/inntekt'
 
 import styles from './AvansertSkjemaIntroInntekt.module.scss'
@@ -13,15 +21,39 @@ interface Props {
   setLocalInntektFremTilUttak: (value: string | null) => void
 }
 
-export const AvansertSkjemaIntroInntekt = ({
+export const AvansertSkjemaInntekt = ({
   localInntektFremTilUttak,
   aarligInntektFoerUttakBeloep,
   setLocalInntektFremTilUttak,
 }: Props) => {
   const intl = useIntl()
+  const isEndring = useAppSelector(selectIsEndring)
+  const loependeVedtak = useAppSelector(selectLoependeVedtak)
 
   return (
     <>
+      <Label
+        className={clsx(styles.label, {
+          [styles.label__margin]: !isEndring,
+        })}
+      >
+        <FormattedMessage
+          id={
+            isEndring
+              ? 'beregning.avansert.rediger.inntekt_frem_til_endring.label'
+              : 'beregning.avansert.rediger.inntekt_frem_til_uttak.label'
+          }
+        />
+      </Label>
+
+      {!!loependeVedtak.ufoeretrygd.grad && (
+        <div className={styles.description}>
+          <span className={styles.descriptionText}>
+            <FormattedMessage id="beregning.avansert.rediger.inntekt_frem_til_uttak.description_ufoere" />
+          </span>
+        </div>
+      )}
+
       <div className={styles.description}>
         <span className={styles.descriptionText}>
           <span

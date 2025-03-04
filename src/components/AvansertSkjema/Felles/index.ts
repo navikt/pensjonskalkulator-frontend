@@ -1,5 +1,4 @@
 export { AvansertSkjemaIntroEndring } from './AvansertSkjemaIntroEndring/AvansertSkjemaIntroEndring'
-export { AvansertSkjemaIntroInntekt } from './AvansertSkjemaIntroInntekt/AvansertSkjemaIntroInntekt'
-export { AvansertSkjemaIntroUfoeretrygd } from './AvansertSkjemaIntroUfoeretrygd/AvansertSkjemaIntroUfoeretrygd'
+export { AvansertSkjemaInntekt } from './AvansertSkjemaInntekt/AvansertSkjemaInntekt'
 export { FormButtonRow } from './FormButtonRow/FormButtonRow'
 export { ReadMoreOmPensjonsalder } from './ReadMoreOmPensjonsalder/ReadMoreOmPensjonsalder'

@@ -4,18 +4,15 @@ import { useIntl, FormattedMessage } from 'react-intl'
 import {
   Alert,
   BodyLong,
-  Label,
   Radio,
   RadioGroup,
   Select,
   TextField,
 } from '@navikt/ds-react'
-import clsx from 'clsx'
 
 import {
   AvansertSkjemaIntroEndring,
-  AvansertSkjemaIntroInntekt,
-  AvansertSkjemaIntroUfoeretrygd,
+  AvansertSkjemaInntekt,
   FormButtonRow,
   ReadMoreOmPensjonsalder,
 } from '../Felles'
@@ -348,25 +345,9 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
 
           <AvansertSkjemaIntroEndring />
 
-          <Label
-            className={clsx(styles.label, {
-              [styles.label__margin]: !isEndring,
-            })}
-          >
-            <FormattedMessage
-              id={
-                isEndring
-                  ? 'beregning.avansert.rediger.inntekt_frem_til_endring.label'
-                  : 'beregning.avansert.rediger.inntekt_frem_til_uttak.label'
-              }
-            />
-          </Label>
+          <Divider />
 
-          {!!loependeVedtak.ufoeretrygd.grad && (
-            <AvansertSkjemaIntroUfoeretrygd />
-          )}
-
-          <AvansertSkjemaIntroInntekt
+          <AvansertSkjemaInntekt
             localInntektFremTilUttak={localInntektFremTilUttak}
             aarligInntektFoerUttakBeloep={aarligInntektFoerUttakBeloep}
             setLocalInntektFremTilUttak={setLocalInntektFremTilUttak}
