@@ -19,6 +19,14 @@
   }
 }
 
+.label {
+  display: block;
+
+  &__margin {
+    margin-top: var(--a-spacing-6);
+  }
+}
+
 .spacer {
   height: var(--a-spacing-4);
   width: 100%;

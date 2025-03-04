@@ -13,7 +13,7 @@ import {
 } from '@/state/userInput/selectors'
 import { formatInntekt } from '@/utils/inntekt'
 
-import styles from './AvansertSkjemaIntroInntekt.module.scss'
+import styles from './AvansertSkjemaInntekt.module.scss'
 
 interface Props {
   localInntektFremTilUttak: string | null

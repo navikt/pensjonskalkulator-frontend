@@ -28,24 +28,24 @@ exports[`AvansertSkjemaForBrukereMedGradertUfoeretrygd > Gitt at en bruker har v
           class="_divider_1adfb3"
         />
         <label
-          class="_label_db4c62 navds-label"
+          class="_label_2e4d09 navds-label"
         >
           beregning.avansert.rediger.inntekt_frem_til_endring.label
         </label>
         <div
-          class="_description_03b48e"
+          class="_description_2e4d09"
         >
           <span
-            class="_descriptionText_03b48e"
+            class="_descriptionText_2e4d09"
           >
             beregning.avansert.rediger.inntekt_frem_til_uttak.description_ufoere
           </span>
         </div>
         <div
-          class="_description_e1f0c5"
+          class="_description_2e4d09"
         >
           <span
-            class="_descriptionText_e1f0c5"
+            class="_descriptionText_2e4d09"
           >
             <span
               class="nowrap"
@@ -243,7 +243,7 @@ exports[`AvansertSkjemaForBrukereMedGradertUfoeretrygd > Gitt at en bruker har v
           </button>
         </div>
         <div
-          class="_spacer_e1f0c5 _spacer__small_e1f0c5"
+          class="_spacer_2e4d09 _spacer__small_2e4d09"
         />
         <div
           class="navds-read-more navds-read-more--medium"
