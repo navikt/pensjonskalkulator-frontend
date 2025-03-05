@@ -22,6 +22,16 @@ export const ReadMoreOmPensjonsalder = ({ ufoeregrad, isEndring }: Props) => {
     normertPensjonsalder
   )
 
+  let messageId = 'beregning.read_more.pensjonsalder.body'
+  if (ufoeregrad) {
+    messageId =
+      ufoeregrad === 100
+        ? 'omufoeretrygd.readmore.hel.ingress'
+        : 'omufoeretrygd.readmore.gradert.avansert.ingress'
+  } else if (isEndring) {
+    messageId = 'beregning.read_more.pensjonsalder.endring.body'
+  }
+
   return (
     <ReadMore
       name="Om pensjonsalder avansert"
@@ -31,35 +41,15 @@ export const ReadMoreOmPensjonsalder = ({ ufoeregrad, isEndring }: Props) => {
           : 'beregning.read_more.pensjonsalder.label',
       })}
     >
-      {ufoeregrad ? (
-        <BodyLong>
-          <FormattedMessage
-            id={
-              ufoeregrad === 100
-                ? 'omufoeretrygd.readmore.hel.ingress'
-                : 'omufoeretrygd.readmore.gradert.avansert.ingress'
-            }
-            values={{
-              ...getFormatMessageValues(),
-              normertPensjonsalder: formatertNormertPensjonsalder,
-            }}
-          />
-        </BodyLong>
-      ) : (
-        <BodyLong>
-          <FormattedMessage
-            id={
-              isEndring
-                ? 'beregning.read_more.pensjonsalder.endring.body'
-                : 'beregning.read_more.pensjonsalder.body'
-            }
-            values={{
-              ...getFormatMessageValues(),
-              normertPensjonsalder: formatertNormertPensjonsalder,
-            }}
-          />
-        </BodyLong>
-      )}
+      <BodyLong>
+        <FormattedMessage
+          id={messageId}
+          values={{
+            ...getFormatMessageValues(),
+            normertPensjonsalder: formatertNormertPensjonsalder,
+          }}
+        />
+      </BodyLong>
     </ReadMore>
   )
 }
