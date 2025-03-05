@@ -275,7 +275,7 @@ app.use(
   })
 )
 
-const redirect163Middleware = async (
+const redirect1963Middleware = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -323,7 +323,7 @@ app.get('/pensjon/kalkulator/veileder?*', (_req: Request, res: Response) => {
   }
 })
 
-app.get('*', redirect163Middleware, async (_req: Request, res: Response) => {
+app.get('*', redirect1963Middleware, async (_req: Request, res: Response) => {
   if (AUTH_PROVIDER === 'idporten') {
     res.sendFile(__dirname + '/index.html')
     return
