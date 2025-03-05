@@ -1,4 +1,3 @@
-import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 import { BodyLong } from '@navikt/ds-react'
@@ -15,10 +14,7 @@ interface Props {
 }
 
 // PEK-1026 - Denne komponenten fases sannsynligvis ut etter at logikken med ufoeretrygd er splittet
-export const ReadMoreOmPensjonsalder: React.FC<Props> = ({
-  ufoeregrad,
-  isEndring,
-}) => {
+export const ReadMoreOmPensjonsalder = ({ ufoeregrad, isEndring }: Props) => {
   const intl = useIntl()
   const normertPensjonsalder = useAppSelector(selectNormertPensjonsalder)
   const formatertNormertPensjonsalder = formatUttaksalder(
@@ -50,21 +46,19 @@ export const ReadMoreOmPensjonsalder: React.FC<Props> = ({
           />
         </BodyLong>
       ) : (
-        <>
-          <BodyLong>
-            <FormattedMessage
-              id={
-                isEndring
-                  ? 'beregning.read_more.pensjonsalder.endring.body'
-                  : 'beregning.read_more.pensjonsalder.body'
-              }
-              values={{
-                ...getFormatMessageValues(),
-                normertPensjonsalder: formatertNormertPensjonsalder,
-              }}
-            />
-          </BodyLong>
-        </>
+        <BodyLong>
+          <FormattedMessage
+            id={
+              isEndring
+                ? 'beregning.read_more.pensjonsalder.endring.body'
+                : 'beregning.read_more.pensjonsalder.body'
+            }
+            values={{
+              ...getFormatMessageValues(),
+              normertPensjonsalder: formatertNormertPensjonsalder,
+            }}
+          />
+        </BodyLong>
       )}
     </ReadMore>
   )
