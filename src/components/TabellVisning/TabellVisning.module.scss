@@ -4,11 +4,7 @@
   width: 100%;
 
   button {
-    margin: 0 auto;
-
-    @media (min-width: variables.$a-breakpoint-md) {
-      margin: 0;
-    }
+    margin: 0;
   }
 
   :global {
