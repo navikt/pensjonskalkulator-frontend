@@ -345,8 +345,6 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
 
           <AvansertSkjemaIntroEndring />
 
-          <Divider />
-
           <AvansertSkjemaInntekt
             localInntektFremTilUttak={localInntektFremTilUttak}
             aarligInntektFoerUttakBeloep={aarligInntektFoerUttakBeloep}
