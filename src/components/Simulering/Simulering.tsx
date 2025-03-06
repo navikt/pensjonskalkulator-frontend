@@ -182,6 +182,7 @@ export function Simulering(props: {
 
       {showButtonsAndTable && (
         <SimuleringEndringBanner
+          isLoading
           heltUttaksalder={uttaksalder}
           gradertUttaksperiode={gradertUttaksperiode ?? undefined}
           alderspensjonMaanedligVedEndring={alderspensjonMaanedligVedEndring}
