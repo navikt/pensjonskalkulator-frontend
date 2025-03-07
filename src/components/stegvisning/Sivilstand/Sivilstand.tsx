@@ -194,7 +194,7 @@ export function Sivilstand({
         : null,
       epsHarInntektOver2G: shouldShowInput.epsHarInntektOver2G
         ? convertBooleanRadioToBoolean(epsHarInntektOver2GInput)
-        : null,
+        : false,
     })
   }
 
