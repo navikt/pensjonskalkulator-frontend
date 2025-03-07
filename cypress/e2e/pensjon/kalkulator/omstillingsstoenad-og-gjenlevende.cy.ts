@@ -29,9 +29,7 @@ describe('med omstillingsstønad og gjenlevende', () => {
       })
 
       it('må jeg kunne trykke på Readmore for informasjon om tidspunktet for tidligst uttak.', () => {
-        cy.contains('Om tidspunktet for tidligst uttak')
-        cy.contains('Om tidspunktet for tidligst uttak').click()
-        cy.contains('Den oppgitte alderen er et estimat').should('exist')
+        cy.get('[data-testid="om_pensjonsalder_enkelt_optional"]').click()
       })
     })
 
@@ -72,12 +70,10 @@ describe('med omstillingsstønad og gjenlevende', () => {
         )
       })
 
-      it('forventer jeg tilpasset informasjon i Readmore «om pensjonsalder og uføretrygd».', () => {
-        cy.contains('Om pensjonsalder og uføretrygd')
-        cy.contains('Om pensjonsalder og uføretrygd').click()
-        cy.contains('Det er mulig å kombinere gradert uføretrygd').should(
-          'exist'
-        )
+      it('forventer jeg tilpasset informasjon i Readmore til gradert alderspensjon.', () => {
+        cy.get(
+          '[data-testid="om_ufoeretrygd_og_alderspensjon_gradert"]'
+        ).click()
       })
     })
   })
