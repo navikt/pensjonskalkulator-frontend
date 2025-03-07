@@ -218,7 +218,7 @@ describe('Endring av alderspensjon', () => {
           })
 
           it('forventer jeg å kunne endre inntekt frem til endring.', () => {
-            cy.contains('Pensjonsgivende inntekt frem til endring')
+            cy.contains('Pensjonsgivende årsinntekt frem til endring')
             cy.contains('button', 'Endre inntekt').click()
             cy.get('[data-testid="inntekt-textfield"]').clear().type('550000')
             cy.contains('button', 'Oppdater inntekt').click()
@@ -545,7 +545,7 @@ describe('Endring av alderspensjon', () => {
         })
 
         it('forventer jeg å kunne endre inntekt frem til endring.', () => {
-          cy.contains('Pensjonsgivende inntekt frem til endring')
+          cy.contains('Pensjonsgivende årsinntekt frem til endring')
           cy.contains('button', 'Endre inntekt').click()
           cy.get('[data-testid="inntekt-textfield"]').clear().type('550000')
           cy.contains('button', 'Oppdater inntekt').click()
@@ -871,7 +871,7 @@ describe('Endring av alderspensjon', () => {
         })
 
         it('forventer jeg å kunne endre inntekt frem til endring.', () => {
-          cy.contains('Pensjonsgivende inntekt frem til endring')
+          cy.contains('Pensjonsgivende årsinntekt frem til endring')
           cy.contains('button', 'Endre inntekt').click()
           cy.get('[data-testid="inntekt-textfield"]').clear().type('550000')
           cy.contains('button', 'Oppdater inntekt').click()
@@ -1196,7 +1196,7 @@ describe('Endring av alderspensjon', () => {
         })
 
         it('forventer jeg å kunne endre inntekt frem til endring.', () => {
-          cy.contains('Pensjonsgivende inntekt frem til endring')
+          cy.contains('Pensjonsgivende årsinntekt frem til endring')
           cy.contains('button', 'Endre inntekt').click()
           cy.get('[data-testid="inntekt-textfield"]').clear().type('550000')
           cy.contains('button', 'Oppdater inntekt').click()
@@ -1492,7 +1492,7 @@ describe('Endring av alderspensjon', () => {
         })
 
         it('forventer jeg å kunne endre inntekt frem til endring.', () => {
-          cy.contains('Pensjonsgivende inntekt frem til endring')
+          cy.contains('Pensjonsgivende årsinntekt frem til endring')
           cy.contains('button', 'Endre inntekt').click()
           cy.get('[data-testid="inntekt-textfield"]').clear().type('550000')
           cy.contains('button', 'Oppdater inntekt').click()
