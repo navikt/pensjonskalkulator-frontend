@@ -1,7 +1,6 @@
 import { FormEvent } from 'react'
 import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { useNavigate } from 'react-router'
 
 import {
   Alert,
@@ -12,7 +11,8 @@ import {
   RadioGroup,
 } from '@navikt/ds-react'
 
-import { STEGVISNING_FORM_NAMES } from '../utils'
+import { STEGVISNING_FORM_NAMES } from '../../utils'
+import styles from '../AFP.module.scss'
 import { Card } from '@/components/common/Card'
 import { ReadMore } from '@/components/common/ReadMore'
 import { SanityReadmore } from '@/components/common/SanityReadmore'
@@ -20,36 +20,20 @@ import { paths } from '@/router/constants'
 import { logger, wrapLogger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
 
-import styles from './AFP.module.scss'
-
 interface Props {
-  shouldRedirectTo?: string
   afp: AfpRadio | null
   onCancel?: () => void
   onPrevious: () => void
   onNext: (afpData: AfpRadio) => void
 }
 
-export function AFP({
-  shouldRedirectTo,
-  afp,
-  onCancel,
-  onPrevious,
-  onNext,
-}: Props) {
+export function AFP({ afp, onCancel, onPrevious, onNext }: Props) {
   const intl = useIntl()
-  const navigate = useNavigate()
 
   const [validationError, setValidationError] = React.useState<string>('')
   const [showVetIkkeAlert, setShowVetIkkeAlert] = React.useState<boolean>(
     afp === 'vet_ikke'
   )
-
-  React.useEffect(() => {
-    if (shouldRedirectTo) {
-      navigate(shouldRedirectTo)
-    }
-  }, [shouldRedirectTo])
 
   const onSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
@@ -92,12 +76,8 @@ export function AFP({
     }
   }
 
-  if (shouldRedirectTo) {
-    return null
-  }
-
   return (
-    <Card hasLargePadding hasMargin>
+    <Card hasLargePadding hasMargin data-testid="afp-etter-1963">
       <form onSubmit={onSubmit}>
         <Heading level="2" size="medium" spacing>
           <FormattedMessage id="stegvisning.afp.title" />
