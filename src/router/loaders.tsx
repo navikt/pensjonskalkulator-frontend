@@ -175,7 +175,7 @@ export const stepStartAccessGuard =
               tekst: 'Vedtak AFP Offentlig',
             })
           }
-          if (getLoependeVedtakRes.data?.harFremtidigLoependeVedtak) {
+          if (getLoependeVedtakRes.data?.fremtidigAlderspensjon) {
             logger('info', {
               tekst: 'Fremtidig vedtak',
             })
