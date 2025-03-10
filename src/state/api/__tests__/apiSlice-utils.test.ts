@@ -369,8 +369,8 @@ describe('apiSlice - utils', () => {
       loependeVedtak: {
         ufoeretrygd: { grad: 0 },
       } satisfies LoependeVedtak,
-      afp: 'ja_privat' as AfpRadio,
-      sivilstand: 'GIFT' as Sivilstand,
+      afp: 'ja_privat' as const,
+      sivilstand: 'GIFT' as const,
       epsHarInntektOver2G: null,
       epsHarPensjon: null,
       aarligInntektFoerUttakBeloep: '500 000',
@@ -488,13 +488,13 @@ describe('apiSlice - utils', () => {
       expect(
         generateAlderspensjonEnkelRequestBody({
           ...requestBody,
-          sivilstand: 'UGIFT' as Sivilstand,
+          sivilstand: 'UGIFT',
         })?.sivilstand
       ).toEqual('UGIFT')
       expect(
         generateAlderspensjonEnkelRequestBody({
           ...requestBody,
-          sivilstand: 'GIFT' as Sivilstand,
+          sivilstand: 'GIFT',
         })?.sivilstand
       ).toEqual('GIFT')
     })
@@ -555,8 +555,8 @@ describe('apiSlice - utils', () => {
       loependeVedtak: {
         ufoeretrygd: { grad: 0 },
       } satisfies LoependeVedtak,
-      afp: 'ja_privat' as AfpRadio,
-      sivilstand: 'GIFT' as Sivilstand,
+      afp: 'ja_privat' as const,
+      sivilstand: 'GIFT' as const,
       epsHarInntektOver2G: null,
       epsHarPensjon: null,
       aarligInntektFoerUttakBeloep: '500 000',
@@ -666,19 +666,19 @@ describe('apiSlice - utils', () => {
       expect(
         generateAlderspensjonRequestBody({
           ...requestBody,
-          sivilstand: 'SAMBOER' as Sivilstand,
+          sivilstand: 'SAMBOER',
         })?.sivilstand
       ).toEqual('SAMBOER')
       expect(
         generateAlderspensjonRequestBody({
           ...requestBody,
-          sivilstand: 'UGIFT' as Sivilstand,
+          sivilstand: 'UGIFT',
         })?.sivilstand
       ).toEqual('UGIFT')
       expect(
         generateAlderspensjonRequestBody({
           ...requestBody,
-          sivilstand: 'UGIFT' as Sivilstand,
+          sivilstand: 'UGIFT',
         })?.sivilstand
       ).toEqual('UGIFT')
     })

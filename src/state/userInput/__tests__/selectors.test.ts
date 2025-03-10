@@ -227,7 +227,7 @@ describe('userInput selectors', () => {
                 alderspensjon: {
                   grad: 100,
                   fom: '2020-10-02',
-                  sivilstand: 'GIFT' as Sivilstand,
+                  sivilstand: 'GIFT',
                 },
                 ufoeretrygd: { grad: 0 },
               } satisfies LoependeVedtak,
