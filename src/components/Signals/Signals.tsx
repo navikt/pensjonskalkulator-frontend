@@ -26,19 +26,57 @@ export const Signals = ({
   useEffect(() => {
     if (!embedRef.current) return
 
-    const embedElement =
-      embedRef.current.querySelector(`[data-uxsignals-embed="${id}"]`) ||
-      embedRef.current
+    // Function to check if the element is hidden
+    const checkIfHidden = () => {
+      const embedElement =
+        embedRef.current?.querySelector(`[data-uxsignals-embed="${id}"]`) ||
+        embedRef.current
 
-    const computedStyle = window.getComputedStyle(embedElement)
+      if (!embedElement) return
 
-    if (
-      computedStyle.display === 'none' ||
-      embedElement.getAttribute('style')?.includes('display: none')
-    ) {
-      setIsHidden(true)
+      const computedStyle = window.getComputedStyle(embedElement)
+      const inlineStyle = embedElement.getAttribute('style')
+
+      const isCurrentlyHidden = !!(
+        computedStyle.display === 'none' ||
+        inlineStyle?.includes('display: none')
+      )
+
+      setIsHidden(isCurrentlyHidden)
     }
-  }, []) // Runs only once on mount
+
+    // Check immediately
+    checkIfHidden()
+
+    // Set up a MutationObserver to detect style changes
+    const observer = new MutationObserver((mutations) => {
+      // Only check if we have style attribute changes
+      const hasStyleChanges = mutations.some(
+        (mutation) =>
+          mutation.type === 'attributes' && mutation.attributeName === 'style'
+      )
+
+      if (hasStyleChanges) {
+        checkIfHidden()
+      }
+    })
+
+    // We need to observe the parent container as well since UX Signals might
+    // create new elements or modify the DOM structure
+    if (embedRef.current) {
+      observer.observe(embedRef.current, {
+        attributes: true,
+        attributeFilter: ['style'],
+        childList: true, // Watch for added/removed children
+        subtree: true, // Watch all descendants
+      })
+    }
+
+    // Clean up
+    return () => {
+      observer.disconnect()
+    }
+  }, [id]) // Run when id changes
 
   if (!ready) return null
 
