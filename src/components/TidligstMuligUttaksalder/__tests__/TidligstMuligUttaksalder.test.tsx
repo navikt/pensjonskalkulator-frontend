@@ -191,7 +191,7 @@ describe('TidligstMuligUttaksalder', () => {
         ).toBeInTheDocument()
         expect(
           screen.getByText('Beregningen din viser at du kan ta ut', {
-            exact: false,   
+            exact: false,
           })
         ).toBeInTheDocument()
         expect(
