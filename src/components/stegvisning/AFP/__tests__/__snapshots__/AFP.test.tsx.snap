@@ -290,7 +290,6 @@ exports[`stegvisning - AFP > rendrer slik den skal når afp er oppgitt 1`] = `
           aria-live="polite"
           aria-relevant="additions removals"
           class="navds-fieldset__error"
-<<<<<<< HEAD
           id="fieldset-error-rl"
         />
       </fieldset>
@@ -2200,9 +2199,6 @@ exports[`stegvisning - AFP - født etter 1963 > rendrer slik den skal når afp i
           aria-relevant="additions removals"
           class="navds-fieldset__error"
           id="fieldset-error-r4"
-=======
-          id="fieldset-error-r16"
->>>>>>> main
         />
       </fieldset>
       <button
