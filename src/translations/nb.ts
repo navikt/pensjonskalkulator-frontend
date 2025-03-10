@@ -796,5 +796,6 @@ const translations = {
   'showmore.vis_mindre': 'Vis mindre',
   'showmore.vis_mer': 'Vis mer',
 }
+export default translations
 export const getTranslation_nb = () => translations
 export type Translations = typeof translations

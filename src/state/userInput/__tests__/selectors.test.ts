@@ -229,11 +229,8 @@ describe('userInput selectors', () => {
                   fom: '2020-10-02',
                   sivilstand: 'GIFT' as Sivilstand,
                 },
-                ufoeretrygd: {
-                  grad: 0,
-                },
-                harFremtidigLoependeVedtak: false,
-              },
+                ufoeretrygd: { grad: 0 },
+              } satisfies LoependeVedtak,
               fulfilledTimeStamp: 1688046412103,
             },
           },
@@ -438,14 +435,9 @@ describe('userInput selectors', () => {
           queries: { ...fulfilledGetLoependeVedtak75Ufoeregrad },
         },
       }
-      expect(selectLoependeVedtak(state)).toMatchInlineSnapshot(`
-        {
-          "harFremtidigLoependeVedtak": false,
-          "ufoeretrygd": {
-            "grad": 75,
-          },
-        }
-      `)
+      expect(selectLoependeVedtak(state)).toStrictEqual({
+        ufoeretrygd: { grad: 75 },
+      })
     })
   })
 
