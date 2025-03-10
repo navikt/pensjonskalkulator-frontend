@@ -10,17 +10,14 @@ import {
   Radio,
   RadioGroup,
 } from '@navikt/ds-react'
-import { PortableText } from '@portabletext/react'
 
 import { STEGVISNING_FORM_NAMES } from '../../utils'
 import styles from '../AFP.module.scss'
 import { Card } from '@/components/common/Card'
 import { ReadMore } from '@/components/common/ReadMore'
-import { SanityContext } from '@/context/SanityContext'
+import { SanityReadmore } from '@/components/common/SanityReadmore'
 import { paths } from '@/router/constants'
-import { useGetSanityFeatureToggleQuery } from '@/state/api/apiSlice'
 import { logger, wrapLogger } from '@/utils/logging'
-import { getSanityPortableTextComponents } from '@/utils/sanity'
 import { getFormatMessageValues } from '@/utils/translations'
 
 interface Props {
@@ -32,12 +29,6 @@ interface Props {
 
 export function AFP({ afp, onCancel, onPrevious, onNext }: Props) {
   const intl = useIntl()
-
-  const { readMoreData } = React.useContext(SanityContext)
-  const readMore1 = readMoreData['om_livsvarig_AFP_i_offentlig_sektor']
-  const readMore2 = readMoreData['om_livsvarig_AFP_i_privat_sektor']
-
-  const { data: sanityFeatureToggle } = useGetSanityFeatureToggleQuery()
 
   const [validationError, setValidationError] = React.useState<string>('')
   const [showVetIkkeAlert, setShowVetIkkeAlert] = React.useState<boolean>(
@@ -95,19 +86,10 @@ export function AFP({ afp, onCancel, onPrevious, onNext }: Props) {
           <FormattedMessage id="stegvisning.afp.ingress" />
         </BodyLong>
 
-        {sanityFeatureToggle?.enabled && readMore1 ? (
-          <ReadMore
-            data-testid={readMore1.name}
-            name={readMore1.name}
-            header={readMore1.overskrift}
-            className={styles.readmoreOffentlig}
-          >
-            <PortableText
-              value={readMore1.innhold}
-              components={getSanityPortableTextComponents(intl)}
-            />
-          </ReadMore>
-        ) : (
+        <SanityReadmore
+          id="om_livsvarig_AFP_i_offentlig_sektor"
+          className={styles.readmoreOffentlig}
+        >
           <ReadMore
             name="Avtalefestet pensjon i offentlig sektor"
             className={styles.readmoreOffentlig}
@@ -129,21 +111,12 @@ export function AFP({ afp, onCancel, onPrevious, onNext }: Props) {
             </ul>
             <FormattedMessage id="stegvisning.afp.readmore_offentlig_ingress" />
           </ReadMore>
-        )}
+        </SanityReadmore>
 
-        {sanityFeatureToggle?.enabled && readMore2 ? (
-          <ReadMore
-            data-testid={readMore2.name}
-            name={readMore2.name}
-            header={readMore2.overskrift}
-            className={styles.readmorePrivat}
-          >
-            <PortableText
-              value={readMore2.innhold}
-              components={getSanityPortableTextComponents(intl)}
-            />
-          </ReadMore>
-        ) : (
+        <SanityReadmore
+          id="om_livsvarig_AFP_i_privat_sektor"
+          className={styles.readmorePrivat}
+        >
           <ReadMore
             name="Avtalefestet pensjon i privat sektor"
             className={styles.readmorePrivat}
@@ -173,7 +146,7 @@ export function AFP({ afp, onCancel, onPrevious, onNext }: Props) {
               }}
             />
           </ReadMore>
-        )}
+        </SanityReadmore>
         <RadioGroup
           className={styles.radiogroup}
           legend={<FormattedMessage id="stegvisning.afp.radio_label" />}
