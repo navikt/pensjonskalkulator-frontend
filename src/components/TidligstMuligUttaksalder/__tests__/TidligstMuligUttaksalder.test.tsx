@@ -119,7 +119,9 @@ describe('TidligstMuligUttaksalder', () => {
         screen.queryByText('tidligstmuliguttak.error')
       ).not.toBeInTheDocument()
       await waitFor(() => {
-        expect(screen.getByTestId('om_pensjonsalder_enkelt_optional')).toBeVisible()
+        expect(
+          screen.getByTestId('om_pensjonsalder_enkelt_optional')
+        ).toBeVisible()
       })
       expect(
         screen.queryByText(
@@ -189,7 +191,7 @@ describe('TidligstMuligUttaksalder', () => {
         ).toBeInTheDocument()
         expect(
           screen.getByText('Beregningen din viser at du kan ta ut', {
-            exact: false,
+            exact: false,   
           })
         ).toBeInTheDocument()
         expect(
@@ -330,7 +332,9 @@ describe('TidligstMuligUttaksalder', () => {
       ).not.toBeInTheDocument()
       // Check for the data-testid for the ReadMore component when Sanity is enabled
       await waitFor(() => {
-        expect(screen.getByTestId('om_ufoeretrygd_og_alderspensjon_hel')).toBeVisible()
+        expect(
+          screen.getByTestId('om_ufoeretrygd_og_alderspensjon_hel')
+        ).toBeVisible()
       })
       expect(
         screen.queryByText(
@@ -378,7 +382,6 @@ describe('TidligstMuligUttaksalder', () => {
     })
 
     it('viser riktig innhold med 100 % ufoeretrygd.', async () => {
-      const user = userEvent.setup()
       render(
         <TidligstMuligUttaksalder
           tidligstMuligUttak={undefined}
@@ -399,7 +402,9 @@ describe('TidligstMuligUttaksalder', () => {
       )
       // Check for the data-testid for the ReadMore component when Sanity is enabled
       await waitFor(() => {
-        expect(screen.getByTestId('om_ufoeretrygd_og_alderspensjon_hel')).toBeVisible()
+        expect(
+          screen.getByTestId('om_ufoeretrygd_og_alderspensjon_hel')
+        ).toBeVisible()
       })
     })
 
@@ -442,12 +447,6 @@ describe('TidligstMuligUttaksalder', () => {
     })
 
     it('viser riktig innhold med gradert ufoeretrygd.', async () => {
-      const flushCurrentSimulationMock = vi.spyOn(
-        userInputReducerUtils.userInputActions,
-        'flushCurrentSimulation'
-      )
-
-      const user = userEvent.setup()
       render(
         <TidligstMuligUttaksalder
           tidligstMuligUttak={undefined}
@@ -468,7 +467,9 @@ describe('TidligstMuligUttaksalder', () => {
       )
       // Check for the data-testid for the ReadMore component when Sanity is enabled
       await waitFor(() => {
-        expect(screen.getByTestId('om_ufoeretrygd_og_alderspensjon_gradert')).toBeVisible()
+        expect(
+          screen.getByTestId('om_ufoeretrygd_og_alderspensjon_gradert')
+        ).toBeVisible()
       })
     })
 
