@@ -51,7 +51,6 @@ export const Signals = ({
         <div
           ref={embedRef}
           data-uxsignals-embed={id}
-          data-uxsignals-mode="demo"
           style={{ maxWidth: width }}
         />
       </section>
