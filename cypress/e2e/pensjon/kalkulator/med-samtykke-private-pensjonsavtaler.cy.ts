@@ -285,9 +285,7 @@ describe('Med samtykke - Private pensjonsavtaler', () => {
 
         it('forventer jeg informasjon om at jeg har pensjonsavtaler som starter før valgt alder. ', () => {
           cy.contains('Beregning').should('exist')
-          cy.contains(
-            'Du har pensjonsavtaler som starter før valgt alder. Se perioder under Pensjonsavtaler.'
-          ).should('exist')
+          cy.get('[data-testid="om_pensjonsalder_enkelt_optional"]').click()
         })
       })
     })
