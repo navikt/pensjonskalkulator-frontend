@@ -370,9 +370,7 @@ export const BeregningEnkel: React.FC = () => {
               <GrunnlagForbehold headingLevel="3" />
             </div>
 
-            <div className={styles.container}>
-              <Signals id="panel-qc608mkm1s" breakpoint="lg" />
-            </div>
+            <Signals id="panel-qc608mkm1s" breakpoint="lg" />
           </>
         )}
     </>
