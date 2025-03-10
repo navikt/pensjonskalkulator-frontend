@@ -97,7 +97,9 @@ describe('StepAFP', () => {
   it('rendrer AFPPrivat når personen enten er født før 1963 og har vedtak om alderspensjon, eller når personen er født før 1963 og fylt 67 år', async () => {
     vi.spyOn(alderUtils, 'isFoedtFoer1963').mockReturnValue(true)
     vi.spyOn(alderUtils, 'isAlderOver67').mockReturnValue(true)
-    vi.spyOn(loependeVedtakUtils, 'isVedtakAlderspensjon').mockReturnValue(true)
+    vi.spyOn(loependeVedtakUtils, 'isLoependeVedtakEndring').mockReturnValue(
+      true
+    )
 
     const router = createMemoryRouter(routes, {
       basename: BASE_PATH,
@@ -115,7 +117,7 @@ describe('StepAFP', () => {
   it('rendrer AFPOvergangskullUtenAP når personen er født mellom 1954-1962 (overgangskull) og ikke har vedtak alderspensjon', async () => {
     vi.spyOn(alderUtils, 'isFoedtFoer1963').mockReturnValue(false)
     vi.spyOn(alderUtils, 'isOvergangskull').mockReturnValue(true)
-    vi.spyOn(loependeVedtakUtils, 'isVedtakAlderspensjon').mockReturnValue(
+    vi.spyOn(loependeVedtakUtils, 'isLoependeVedtakEndring').mockReturnValue(
       false
     )
 
@@ -152,7 +154,7 @@ describe('StepAFP', () => {
   it('Når brukeren som er i overgangskullet uten vedtak om alderspensjon velger afp og klikker på Neste, registrerer afp og skalBeregneAfp, og navigerer videre til neste steg', async () => {
     vi.spyOn(alderUtils, 'isFoedtFoer1963').mockReturnValue(false)
     vi.spyOn(alderUtils, 'isOvergangskull').mockReturnValue(true)
-    vi.spyOn(loependeVedtakUtils, 'isVedtakAlderspensjon').mockReturnValue(
+    vi.spyOn(loependeVedtakUtils, 'isLoependeVedtakEndring').mockReturnValue(
       false
     )
 

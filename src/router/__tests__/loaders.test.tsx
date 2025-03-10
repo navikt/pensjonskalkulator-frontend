@@ -613,7 +613,7 @@ describe('Loaders', () => {
           months: -1,
         })
         const foedselsdato = format(minAlderYearsBeforeNow, DATE_BACKEND_FORMAT)
-        mockResponse('/v3/vedtak/loepende-vedtak', {
+        mockResponse('/v4/vedtak/loepende-vedtak', {
           json: {
             ufoeretrygd: {
               grad: 75,
@@ -682,7 +682,7 @@ describe('Loaders', () => {
       })
 
       it('brukere med vedtak om afp-offentlig, er redirigert', async () => {
-        mockResponse('/v3/vedtak/loepende-vedtak', {
+        mockResponse('/v4/vedtak/loepende-vedtak', {
           json: {
             ufoeretrygd: {
               grad: 0,
@@ -713,7 +713,7 @@ describe('Loaders', () => {
       })
 
       it('brukere med vedtak om afp-privat, er redirigert', async () => {
-        mockResponse('/v3/vedtak/loepende-vedtak', {
+        mockResponse('/v4/vedtak/loepende-vedtak', {
           json: {
             alderspensjon: {
               grad: 0,
@@ -751,7 +751,7 @@ describe('Loaders', () => {
       })
 
       it('brukere med 100% uføretrygd er redirigert', async () => {
-        mockResponse('/v3/vedtak/loepende-vedtak', {
+        mockResponse('/v4/vedtak/loepende-vedtak', {
           json: {
             alderspensjon: {
               grad: 0,

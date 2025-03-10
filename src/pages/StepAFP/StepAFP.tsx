@@ -19,7 +19,7 @@ import {
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
 import { isAlderOver67, isFoedtFoer1963, isOvergangskull } from '@/utils/alder'
-import { isVedtakAlderspensjon } from '@/utils/loependeVedtak'
+import { isLoependeVedtakEndring } from '@/utils/loependeVedtak'
 
 export function StepAFP() {
   const intl = useIntl()
@@ -68,7 +68,7 @@ export function StepAFP() {
           if (
             isFoedtFoer1963(person.foedselsdato) &&
             (isAlderOver67(person.foedselsdato) ||
-              isVedtakAlderspensjon(loependeVedtak))
+              isLoependeVedtakEndring(loependeVedtak))
           ) {
             return (
               <AFPPrivat
@@ -80,7 +80,7 @@ export function StepAFP() {
             )
           } else if (
             isOvergangskull(person.foedselsdato) &&
-            !isVedtakAlderspensjon(loependeVedtak)
+            !isLoependeVedtakEndring(loependeVedtak)
           ) {
             return (
               <AFPOvergangskullUtenAP
