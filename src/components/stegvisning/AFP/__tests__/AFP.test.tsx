@@ -1,6 +1,7 @@
 import { describe, it, vi } from 'vitest'
 
 import { AFP } from '..'
+import { mockErrorResponse } from '@/mocks/server'
 import { screen, render, waitFor, userEvent } from '@/test-utils'
 
 const navigateMock = vi.fn()
@@ -18,8 +19,7 @@ describe('stegvisning - AFP - født etter 1963', () => {
   const onNextMock = vi.fn()
 
   it('rendrer slik den skal når afp ikke er oppgitt', async () => {
-    const user = userEvent.setup()
-    const result = render(
+    render(
       <AFP
         afp={null}
         onCancel={onCancelMock}
@@ -27,21 +27,12 @@ describe('stegvisning - AFP - født etter 1963', () => {
         onNext={onNextMock}
       />
     )
+
     expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
       'stegvisning.afp.title'
     )
 
-    await user.click(screen.getByText('stegvisning.afp.readmore_privat_title'))
-    await user.click(
-      screen.getByText('stegvisning.afp.readmore_offentlig_title')
-    )
-
-    expect(result.asFragment()).toMatchSnapshot()
-    expect(
-      screen.getByRole('link', {
-        name: 'AFP i privat sektor på afp.no application.global.external_link',
-      })
-    ).toHaveAttribute('href', 'https://www.afp.no')
+    expect(screen.getByText('stegvisning.afp.ingress')).toBeVisible()
 
     const radioButtons = await screen.findAllByRole('radio')
     await waitFor(() => {
@@ -50,7 +41,48 @@ describe('stegvisning - AFP - født etter 1963', () => {
       expect(radioButtons[1]).not.toBeChecked()
       expect(radioButtons[2]).not.toBeChecked()
       expect(radioButtons[3]).not.toBeChecked()
-      expect(result.asFragment()).toMatchSnapshot()
+
+      expect(
+        screen.getByTestId('om_livsvarig_AFP_i_offentlig_sektor')
+      ).toBeVisible()
+      expect(
+        screen.getByTestId('om_livsvarig_AFP_i_privat_sektor')
+      ).toBeVisible()
+    })
+  })
+
+  it('rendrer slik den skal når tekstene fra sanity ikke kunne hentes', async () => {
+    mockErrorResponse('/feature/pensjonskalkulator.hent-tekster-fra-sanity')
+    render(
+      <AFP
+        afp={null}
+        onCancel={onCancelMock}
+        onPrevious={onPreviousMock}
+        onNext={onNextMock}
+      />
+    )
+
+    expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
+      'stegvisning.afp.title'
+    )
+
+    expect(screen.getByText('stegvisning.afp.ingress')).toBeVisible()
+
+    const radioButtons = await screen.findAllByRole('radio')
+    await waitFor(async () => {
+      expect(radioButtons).toHaveLength(4)
+      expect(radioButtons[0]).not.toBeChecked()
+      expect(radioButtons[1]).not.toBeChecked()
+      expect(radioButtons[2]).not.toBeChecked()
+      expect(radioButtons[3]).not.toBeChecked()
+
+      expect(
+        await screen.getByText('stegvisning.afp.readmore_offentlig_title')
+      ).toBeVisible()
+
+      expect(
+        await screen.getByText('stegvisning.afp.readmore_privat_title')
+      ).toBeVisible()
     })
   })
 
