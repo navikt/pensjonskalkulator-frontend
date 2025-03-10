@@ -219,7 +219,7 @@ export const BeregningAvansert: React.FC = () => {
                     setAvansertSkjemaModus('redigering')
                   }}
                 >
-                  <ArrowLeftIcon aria-hidden />
+                  <ArrowLeftIcon aria-hidden fontSize="1.5rem" />
                   <FormattedMessage
                     id={
                       isEndring
