@@ -366,6 +366,11 @@ const translations = {
   'velguttaksalder.title': 'When do you want to withdraw retirement pension?',
   'velguttaksalder.endring.title':
     'When do you want to change your retirement pension?',
+  'beregning.avansert.rediger.radio.beregningsvalg.label': 'MANGLER_TEKST',
+  'beregning.avansert.rediger.radio.beregningsvalg.alderspensjon_uten_afp_med_ufoeretrygd.label':
+    'MANGLER_TEKST',
+  'beregning.avansert.rediger.radio.beregningsvalg.alderspensjon_med_afp_uten_ufoeretrygd.label':
+    'MANGLER_TEKST',
   'beregning.toggle.enkel': 'Simple',
   'beregning.toggle.avansert': 'Advanced',
   'beregning.loading': 'Please wait while we calculate your pension.',

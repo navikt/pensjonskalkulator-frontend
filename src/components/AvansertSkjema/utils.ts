@@ -32,6 +32,7 @@ export const AVANSERT_FORM_NAMES = {
   inntektVsaHeltUttak: 'inntekt-vsa-helt-uttak',
   inntektVsaHeltUttakSluttAlder: 'inntekt-vsa-helt-uttak-slutt-alder',
   inntektVsaGradertUttak: 'inntekt-vsa-gradert-uttak',
+  beregningsType: 'beregnings-type',
 }
 
 const validateAlderForGradertUttak = (

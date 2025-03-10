@@ -43,6 +43,8 @@ import {
 import { updateAndFormatInntektFromInputField } from '@/utils/inntekt'
 import { getFormatMessageValues } from '@/utils/translations'
 
+import { Beregningsvalg } from './Beregningsvalg'
+
 import styles from './AvansertSkjemaForBrukereMedGradertUfoeretrygd.module.scss'
 
 export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
@@ -88,6 +90,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
   )
 
   const [
+    localBeregningsTypeRadio,
     localInntektFremTilUttak,
     localHeltUttak,
     localHarInntektVsaHeltUttakRadio,
@@ -96,6 +99,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
     minAlderInntektSluttAlder,
     muligeUttaksgrad,
     {
+      setLocalBeregningsTypeRadio,
       setLocalInntektFremTilUttak,
       setLocalHeltUttak,
       setLocalGradertUttak,
@@ -130,6 +134,10 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
   ] = useFormValidationErrors({
     grad: localGradertUttak?.grad,
   })
+
+  const handleBeregningsvalgChange = (value: Beregningsvalg) => {
+    setLocalBeregningsTypeRadio(value)
+  }
 
   const handleHeltUttaksalderChange = (alder: Partial<Alder> | undefined) => {
     setValidationErrorUttaksalderHeltUttak('')
@@ -324,6 +332,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
 
   const resetForm = (): void => {
     resetValidationErrors()
+    setLocalBeregningsTypeRadio(undefined)
     setLocalInntektFremTilUttak(
       aarligInntektFoerUttakBeloepFraBrukerSkatt?.beloep ?? null
     )
@@ -366,6 +375,11 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
           ></form>
 
           <AvansertSkjemaIntroEndring />
+
+          <Beregningsvalg
+            value={localBeregningsTypeRadio}
+            onChange={handleBeregningsvalgChange}
+          />
 
           <AvansertSkjemaInntekt
             localInntektFremTilUttak={localInntektFremTilUttak}

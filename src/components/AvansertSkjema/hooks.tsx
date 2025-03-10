@@ -31,6 +31,10 @@ export const useFormLocalState = (initialValues: {
   const { setHarAvansertSkjemaUnsavedChanges } =
     React.useContext(BeregningContext)
 
+  const [localBeregningsTypeRadio, setBeregningsTypeRadio] = React.useState<
+    'beregnPensjonUtenAfp' | 'beregnPensjonMedAfp' | undefined
+  >(undefined)
+
   const [localHarInntektVsaHeltUttakRadio, setHarInntektVsaHeltUttakRadio] =
     React.useState<boolean | null>(
       !uttaksalder ? null : aarligInntektVsaHelPensjon ? true : false
@@ -49,15 +53,11 @@ export const useFormLocalState = (initialValues: {
 
   const [localInntektFremTilUttak, setInntektFremTilUttak] = React.useState<
     string | null
-  >(
-    aarligInntektFoerUttakBeloepFraBrukerInput
-      ? aarligInntektFoerUttakBeloepFraBrukerInput
-      : null
-  )
+  >(aarligInntektFoerUttakBeloepFraBrukerInput ?? null)
   const [localHeltUttak, setHeltUttak] = React.useState<
     RecursivePartial<HeltUttak> | undefined
   >({
-    uttaksalder: uttaksalder !== null ? uttaksalder : undefined,
+    uttaksalder: uttaksalder ?? undefined,
     aarligInntektVsaPensjon: aarligInntektVsaHelPensjon
       ? {
           ...aarligInntektVsaHelPensjon,
@@ -193,6 +193,7 @@ export const useFormLocalState = (initialValues: {
 
   const handlers = React.useMemo(
     () => ({
+      setLocalBeregningsTypeRadio: setBeregningsTypeRadio,
       setLocalInntektFremTilUttak: setInntektFremTilUttak,
       setLocalHeltUttak: setHeltUttak,
       setLocalGradertUttak: setGradertUttak,
@@ -203,6 +204,7 @@ export const useFormLocalState = (initialValues: {
   )
 
   return [
+    localBeregningsTypeRadio,
     localInntektFremTilUttak,
     localHeltUttak,
     localHarInntektVsaHeltUttakRadio,
