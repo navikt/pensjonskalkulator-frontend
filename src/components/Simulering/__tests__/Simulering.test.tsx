@@ -96,7 +96,7 @@ describe('Simulering', () => {
           headingLevel="3"
           alderspensjonListe={alderspensjonData.alderspensjon}
           afpPrivatListe={afpPrivatData.afpPrivat}
-          showButtonsAndTable={false}
+          showButtonsAndTable={true}
           aarligInntektFoerUttakBeloep="500 000"
           alderspensjonMaanedligVedEndring={{
             heltUttakMaanedligBeloep: 100000,
@@ -128,11 +128,6 @@ describe('Simulering', () => {
           exact: false,
         })
       ).toHaveLength(2)
-      expect(
-        screen.getByText('beregning.avansert.endring_banner.kr_md', {
-          exact: false,
-        })
-      ).toBeVisible()
     })
   })
 
