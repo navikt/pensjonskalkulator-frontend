@@ -145,6 +145,9 @@ export const stepStartAccessGuard =
           return `${paths.henvisning}/${henvisningUrlParams.apotekerne}`
         }
 
+        // MIDLERTIDIG REDIRECT TIL UVENTET FEIL
+        return paths.uventetFeil
+
         if (getLoependeVedtakRes.isError) {
           logger('info', {
             tekst: 'Redirect til /uventet-feil',
@@ -166,6 +169,7 @@ export const stepStartAccessGuard =
           if (getLoependeVedtakRes.data?.alderspensjon) {
             logger('info', {
               tekst: 'Vedtak alderspensjon',
+              // @ts-expect-error MIDLERTIDIG
               data: getLoependeVedtakRes.data?.alderspensjon.grad,
             })
           }
