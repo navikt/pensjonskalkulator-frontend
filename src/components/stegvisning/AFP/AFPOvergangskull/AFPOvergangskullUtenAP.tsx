@@ -19,16 +19,16 @@ import {
 import { getFormatMessageValues } from '@/utils/translations'
 
 interface Props {
-  afp: AfpRadio | null
-  skalBeregneAfp: boolean | null
+  previousAfp: AfpRadio | null
+  previousSkalBeregneAfp: boolean | null
   onCancel?: () => void
   onPrevious: () => void
-  onNext: (afpData: AfpRadio, skalBeregneAfp?: boolean | null) => void
+  onNext: (afpInput: AfpRadio, skalBeregneAfp?: boolean | null) => void
 }
 
 export function AFPOvergangskullUtenAP({
-  afp,
-  skalBeregneAfp,
+  previousAfp,
+  previousSkalBeregneAfp,
   onCancel,
   onPrevious,
   onNext,
@@ -36,27 +36,27 @@ export function AFPOvergangskullUtenAP({
   const intl = useIntl()
 
   const [validationError, setValidationError] = React.useState<{
-    afp?: string
-    skalBeregneAfp?: string
+    afpError?: string
+    skalBeregneAfpError?: string
   }>({
-    afp: undefined,
-    skalBeregneAfp: undefined,
+    afpError: undefined,
+    skalBeregneAfpError: undefined,
   })
   const [showVetIkkeAlert, setShowVetIkkeAlert] = React.useState<boolean>(
-    afp === 'vet_ikke'
+    previousAfp === 'vet_ikke'
   )
   const [jaAFPOffentlig, setJaAFPOffentlig] = React.useState<boolean>(
-    afp === 'ja_offentlig'
+    previousAfp === 'ja_offentlig'
   )
 
   const onSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
 
     const data = new FormData(e.currentTarget)
-    const afpData = data.get('afp') as AfpRadio | undefined
-    const simuleringstypeData = data.get('skalBeregneAfp') as BooleanRadio
+    const afpInput = data.get('afp') as AfpRadio | null
+    const simuleringstypeInput = data.get('skalBeregneAfp') as BooleanRadio
 
-    if (!afpData) {
+    if (!afpInput) {
       const tekst = intl.formatMessage({
         id: 'stegvisning.afp.validation_error',
       })
@@ -68,7 +68,7 @@ export function AFPOvergangskullUtenAP({
         }),
         tekst,
       })
-    } else if (jaAFPOffentlig && !simuleringstypeData) {
+    } else if (jaAFPOffentlig && !simuleringstypeInput) {
       const tekst = intl.formatMessage({
         id: 'stegvisning.afpOverganskull.validation_error',
       })
@@ -83,16 +83,16 @@ export function AFPOvergangskullUtenAP({
     } else {
       logger('radiogroup valgt', {
         tekst: 'Rett til AFP',
-        valg: afpData,
+        valg: afpInput,
       })
       logger('button klikk', {
         tekst: `Neste fra ${paths.afp}`,
       })
 
       onNext(
-        afpData,
-        simuleringstypeData
-          ? convertBooleanRadioToBoolean(simuleringstypeData)
+        afpInput,
+        simuleringstypeInput
+          ? convertBooleanRadioToBoolean(simuleringstypeInput)
           : null
       )
     }
@@ -178,9 +178,9 @@ export function AFPOvergangskullUtenAP({
           </ReadMore>
         </SanityReadmore>
         <AFPRadioGroup
-          afp={afp}
+          afp={previousAfp}
           handleRadioChange={handleRadioChange}
-          validationError={validationError.afp}
+          validationError={validationError.afpError}
           showVetIkkeAlert={showVetIkkeAlert}
         />
         {jaAFPOffentlig && (
@@ -190,11 +190,14 @@ export function AFPOvergangskullUtenAP({
               <FormattedMessage id="stegvisning.afp.overgangskullUtenAP.radio_label" />
             }
             name="skalBeregneAfp"
-            defaultValue={convertBooleanToBooleanRadio(skalBeregneAfp)}
+            defaultValue={convertBooleanToBooleanRadio(previousSkalBeregneAfp)}
             onChange={() =>
-              setValidationError({ afp: undefined, skalBeregneAfp: undefined })
+              setValidationError({
+                afpError: undefined,
+                skalBeregneAfpError: undefined,
+              })
             }
-            error={validationError.skalBeregneAfp}
+            error={validationError.skalBeregneAfpError}
             role="radiogroup"
             aria-required="true"
           >

@@ -15,27 +15,27 @@ import { logger, wrapLogger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
 
 interface Props {
-  afp: AfpRadio | null
+  previousAfp: AfpRadio | null
   onCancel?: () => void
   onPrevious: () => void
-  onNext: (afpData: AfpRadio) => void
+  onNext: (afpInput: AfpRadio) => void
 }
 
-export function AFP({ afp, onCancel, onPrevious, onNext }: Props) {
+export function AFP({ previousAfp, onCancel, onPrevious, onNext }: Props) {
   const intl = useIntl()
 
   const [validationError, setValidationError] = React.useState<string>('')
   const [showVetIkkeAlert, setShowVetIkkeAlert] = React.useState<boolean>(
-    afp === 'vet_ikke'
+    previousAfp === 'vet_ikke'
   )
 
   const onSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
 
     const data = new FormData(e.currentTarget)
-    const afpData = data.get('afp') as AfpRadio | undefined
+    const afpInput = data.get('afp') as AfpRadio | undefined
 
-    if (!afpData) {
+    if (!afpInput) {
       const tekst = intl.formatMessage({
         id: 'stegvisning.afp.validation_error',
       })
@@ -50,12 +50,12 @@ export function AFP({ afp, onCancel, onPrevious, onNext }: Props) {
     } else {
       logger('radiogroup valgt', {
         tekst: 'Rett til AFP',
-        valg: afpData,
+        valg: afpInput,
       })
       logger('button klikk', {
         tekst: `Neste fra ${paths.afp}`,
       })
-      onNext(afpData)
+      onNext(afpInput)
     }
   }
 
@@ -140,7 +140,7 @@ export function AFP({ afp, onCancel, onPrevious, onNext }: Props) {
           </ReadMore>
         </SanityReadmore>
         <AFPRadioGroup
-          afp={afp}
+          afp={previousAfp}
           handleRadioChange={handleRadioChange}
           validationError={validationError}
           showVetIkkeAlert={showVetIkkeAlert}

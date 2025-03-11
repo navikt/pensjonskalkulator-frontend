@@ -14,13 +14,18 @@ import { logger, wrapLogger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
 
 interface Props {
-  afp: AfpRadio | null
+  previousAfp: AfpRadio | null
   onCancel?: () => void
   onPrevious: () => void
-  onNext: (afpData: AfpRadio) => void
+  onNext: (afpInput: AfpRadio) => void
 }
 
-export function AFPPrivat({ afp, onCancel, onPrevious, onNext }: Props) {
+export function AFPPrivat({
+  previousAfp,
+  onCancel,
+  onPrevious,
+  onNext,
+}: Props) {
   const intl = useIntl()
 
   const [validationError, setValidationError] = React.useState<string>()
@@ -29,9 +34,9 @@ export function AFPPrivat({ afp, onCancel, onPrevious, onNext }: Props) {
     e.preventDefault()
 
     const data = new FormData(e.currentTarget)
-    const afpData = data.get('afp') as AfpRadio | undefined
+    const afpInput = data.get('afp') as AfpRadio | undefined
 
-    if (!afpData) {
+    if (!afpInput) {
       const tekst = intl.formatMessage({
         id: 'stegvisning.afpPrivat.validation_error',
       })
@@ -46,12 +51,12 @@ export function AFPPrivat({ afp, onCancel, onPrevious, onNext }: Props) {
     } else {
       logger('radiogroup valgt', {
         tekst: 'Rett til AFP',
-        valg: afpData,
+        valg: afpInput,
       })
       logger('button klikk', {
         tekst: `Neste fra ${paths.afp}`,
       })
-      onNext(afpData)
+      onNext(afpInput)
     }
   }
 
@@ -100,7 +105,7 @@ export function AFPPrivat({ afp, onCancel, onPrevious, onNext }: Props) {
           className={styles.radiogroup}
           legend={<FormattedMessage id="stegvisning.afpPrivat.radio_label" />}
           name="afp"
-          defaultValue={afp}
+          defaultValue={previousAfp}
           onChange={() => setValidationError('')}
           error={validationError}
           role="radiogroup"

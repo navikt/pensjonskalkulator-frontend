@@ -39,8 +39,8 @@ export function StepAFP() {
     })
   }, [])
 
-  const onNext = (afpData: AfpRadio, skalBeregneAfp?: boolean | null): void => {
-    dispatch(userInputActions.setAfp(afpData))
+  const onNext = (afp: AfpRadio, skalBeregneAfp?: boolean | null): void => {
+    dispatch(userInputActions.setAfp(afp))
     if (skalBeregneAfp && skalBeregneAfp !== null) {
       dispatch(userInputActions.setSkalBeregneAfp(skalBeregneAfp))
     }
@@ -72,7 +72,7 @@ export function StepAFP() {
           ) {
             return (
               <AFPPrivat
-                afp={previousAfp}
+                previousAfp={previousAfp}
                 onCancel={isVeileder ? undefined : onStegvisningCancel}
                 onPrevious={onStegvisningPrevious}
                 onNext={onNext}
@@ -84,8 +84,8 @@ export function StepAFP() {
           ) {
             return (
               <AFPOvergangskullUtenAP
-                afp={previousAfp}
-                skalBeregneAfp={previousSkalBeregneAfp}
+                previousAfp={previousAfp}
+                previousSkalBeregneAfp={previousSkalBeregneAfp}
                 onCancel={isVeileder ? undefined : onStegvisningCancel}
                 onPrevious={onStegvisningPrevious}
                 onNext={onNext}
@@ -94,7 +94,7 @@ export function StepAFP() {
           } else {
             return (
               <AFP
-                afp={previousAfp}
+                previousAfp={previousAfp}
                 onCancel={isVeileder ? undefined : onStegvisningCancel}
                 onPrevious={onStegvisningPrevious}
                 onNext={onNext}
