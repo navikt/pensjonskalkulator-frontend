@@ -615,11 +615,8 @@ describe('Loaders', () => {
         const foedselsdato = format(minAlderYearsBeforeNow, DATE_BACKEND_FORMAT)
         mockResponse('/v4/vedtak/loepende-vedtak', {
           json: {
-            ufoeretrygd: {
-              grad: 75,
-            },
-            harFremtidigLoependeVedtak: false,
-          },
+            ufoeretrygd: { grad: 75 },
+          } satisfies LoependeVedtak,
         })
 
         mockResponse('/v4/person', {
@@ -690,8 +687,7 @@ describe('Loaders', () => {
             afpOffentlig: {
               fom: '2020-10-02',
             },
-            harFremtidigLoependeVedtak: false,
-          },
+          } satisfies LoependeVedtak,
         })
         const mockedState = {
           api: {
@@ -718,7 +714,7 @@ describe('Loaders', () => {
             alderspensjon: {
               grad: 0,
               fom: '2020-10-02',
-              sivilstand: 'UGIFT' as Sivilstand,
+              sivilstand: 'UGIFT',
             },
             ufoeretrygd: {
               grad: 0,
@@ -726,8 +722,7 @@ describe('Loaders', () => {
             afpPrivat: {
               fom: '2020-10-02',
             },
-            harFremtidigLoependeVedtak: false,
-          },
+          } satisfies LoependeVedtak,
         })
         const mockedState = {
           api: {
@@ -756,7 +751,7 @@ describe('Loaders', () => {
             alderspensjon: {
               grad: 0,
               fom: '2020-10-02',
-              sivilstand: 'UGIFT' as Sivilstand,
+              sivilstand: 'UGIFT',
             },
             ufoeretrygd: {
               grad: 100,
@@ -764,8 +759,7 @@ describe('Loaders', () => {
             afpPrivat: {
               fom: '2020-10-02',
             },
-            harFremtidigLoependeVedtak: false,
-          },
+          } satisfies LoependeVedtak,
         })
         const mockedState = {
           api: {
