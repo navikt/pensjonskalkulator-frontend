@@ -668,10 +668,24 @@ describe('alder-utils', () => {
 
   describe('isOvergangskull', () => {
     it('før overgangskull', () => {
-      const foedselsdato = '1944-01-01'
+      const foedselsdato = '1953-12-31'
 
       const actual = isOvergangskull(foedselsdato)
       expect(actual).toBe(false)
+    })
+
+    it('start av overgangskull', () => {
+      const foedselsdato = '1954-01-01'
+
+      const actual = isOvergangskull(foedselsdato)
+      expect(actual).toBe(true)
+    })
+
+    it('slutt av overgangskull', () => {
+      const foedselsdato = '1962-12-31'
+
+      const actual = isOvergangskull(foedselsdato)
+      expect(actual).toBe(true)
     })
 
     it('etter overgangskull', () => {
@@ -679,13 +693,6 @@ describe('alder-utils', () => {
 
       const actual = isOvergangskull(foedselsdato)
       expect(actual).toBe(false)
-    })
-
-    it('i overgangskull', () => {
-      const foedselsdato = '1961-01-01'
-
-      const actual = isOvergangskull(foedselsdato)
-      expect(actual).toBe(true)
     })
   })
 
