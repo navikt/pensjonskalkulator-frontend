@@ -87,6 +87,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
     : getBrukerensAlderISluttenAvMaaneden(foedselsdato, nedreAldersgrense)
 
   const [
+    localBeregningsTypeRadio,
     localInntektFremTilUttak,
     localHeltUttak,
     localHarInntektVsaHeltUttakRadio,

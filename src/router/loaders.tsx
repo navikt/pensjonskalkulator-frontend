@@ -455,11 +455,7 @@ export const stepSamtykkeOffentligAFPAccessGuard =
       : stegvisningOrder
 
     // Bruker uten uføretrygd som svarer ja_offentlig til AFP kan se steget
-    if (
-      (getLoependeVedtakResponse.data as LoependeVedtak).ufoeretrygd.grad ===
-        0 &&
-      afp === 'ja_offentlig'
-    ) {
+    if (afp === 'ja_offentlig') {
       return null
     }
     return redirect(

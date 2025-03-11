@@ -375,12 +375,16 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
           ></form>
 
           <AvansertSkjemaIntroEndring />
+        </div>
 
+        <div>
           <Beregningsvalg
             value={localBeregningsTypeRadio}
             onChange={handleBeregningsvalgChange}
           />
+        </div>
 
+        <div>
           <AvansertSkjemaInntekt
             localInntektFremTilUttak={localInntektFremTilUttak}
             aarligInntektFoerUttakBeloep={aarligInntektFoerUttakBeloep}

@@ -491,7 +491,7 @@ const translations = {
   'beregning.avansert.rediger.radio.beregningsvalg.alderspensjon_uten_afp_med_ufoeretrygd.label':
     'Alderspensjon og uføretrygd, uten AFP.',
   'beregning.avansert.rediger.radio.beregningsvalg.alderspensjon_med_afp_uten_ufoeretrygd.label':
-    'Alderspensjon og AFP, uten uføretrygd fra ',
+    'Alderspensjon og AFP, uten uføretrygd fra {nedreAldersgrense}',
   'beregning.avansert.button.beregn': 'Beregn pensjon',
   'beregning.avansert.button.beregn.endring': 'Beregn ny pensjon',
   'beregning.avansert.button.oppdater': 'Oppdater pensjon',

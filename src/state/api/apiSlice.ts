@@ -258,6 +258,15 @@ export const apiSlice = createApi({
         return response
       },
     }),
+    getBeregningsvalgFeatureToggle: builder.query<UnleashToggle, void>({
+      query: () => '/feature/pensjonskalkulator.enable-beregningsvalg',
+      transformResponse: (response: UnleashToggle) => {
+        if (!isUnleashToggle(response)) {
+          throw new Error(`Mottok ugyldig unleash response:`, response)
+        }
+        return response
+      },
+    }),
     getAnsattId: builder.query<Ansatt, void>({
       query: () => '/v1/ansatt-id',
     }),
@@ -280,5 +289,6 @@ export const {
   useGetRedirect1963FeatureToggleQuery,
   useGetSanityFeatureToggleQuery,
   useGetOtpKlpFeatureToggleQuery,
+  useGetBeregningsvalgFeatureToggleQuery,
   useGetUtvidetSimuleringsresultatFeatureToggleQuery,
 } = apiSlice
