@@ -131,6 +131,11 @@ describe('Simulering', () => {
           exact: false,
         })
       ).toHaveLength(2)
+      expect(
+        screen.getByText('beregning.avansert.endring_banner.kr_md', {
+          exact: false,
+        })
+      ).toBeVisible()
     })
   })
 
