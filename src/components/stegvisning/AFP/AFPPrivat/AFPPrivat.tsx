@@ -8,6 +8,7 @@ import { STEGVISNING_FORM_NAMES } from '../../utils'
 import styles from '../AFP.module.scss'
 import { Card } from '@/components/common/Card'
 import { ReadMore } from '@/components/common/ReadMore'
+import { SanityReadmore } from '@/components/common/SanityReadmore'
 import { paths } from '@/router/constants'
 import { logger, wrapLogger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
@@ -63,33 +64,38 @@ export function AFPPrivat({ afp, onCancel, onPrevious, onNext }: Props) {
         <BodyLong size="large">
           <FormattedMessage id="stegvisning.afp.ingress" />
         </BodyLong>
-        <ReadMore
-          name="Avtalefestet pensjon i privat sektor"
+        <SanityReadmore
+          id="om_livsvarig_AFP_i_privat_sektor"
           className={styles.readmorePrivat}
-          header={
-            <FormattedMessage id="stegvisning.afp.readmore_privat_title" />
-          }
         >
-          <FormattedMessage id="stegvisning.afp.readmore_privat_list_title" />
-          <ul className={styles.list}>
-            <li>
-              <FormattedMessage id="stegvisning.afp.readmore_privat_list_item1" />
-            </li>
-            <li>
-              <FormattedMessage id="stegvisning.afp.readmore_privat_list_item2" />
-            </li>
-            <li>
-              <FormattedMessage id="stegvisning.afp.readmore_privat_list_item3" />
-            </li>
-            <li>
-              <FormattedMessage id="stegvisning.afp.readmore_privat_list_item4" />
-            </li>
-          </ul>
-          <FormattedMessage
-            id="stegvisning.afp.readmore_privat_link"
-            values={{ ...getFormatMessageValues() }}
-          />
-        </ReadMore>
+          <ReadMore
+            name="Avtalefestet pensjon i privat sektor"
+            className={styles.readmorePrivat}
+            header={
+              <FormattedMessage id="stegvisning.afp.readmore_privat_title" />
+            }
+          >
+            <FormattedMessage id="stegvisning.afp.readmore_privat_list_title" />
+            <ul className={styles.list}>
+              <li>
+                <FormattedMessage id="stegvisning.afp.readmore_privat_list_item1" />
+              </li>
+              <li>
+                <FormattedMessage id="stegvisning.afp.readmore_privat_list_item2" />
+              </li>
+              <li>
+                <FormattedMessage id="stegvisning.afp.readmore_privat_list_item3" />
+              </li>
+              <li>
+                <FormattedMessage id="stegvisning.afp.readmore_privat_list_item4" />
+              </li>
+            </ul>
+            <FormattedMessage
+              id="stegvisning.afp.readmore_privat_link"
+              values={{ ...getFormatMessageValues() }}
+            />
+          </ReadMore>
+        </SanityReadmore>
         <RadioGroup
           className={styles.radiogroup}
           legend={<FormattedMessage id="stegvisning.afpPrivat.radio_label" />}
