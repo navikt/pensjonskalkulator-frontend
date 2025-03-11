@@ -146,7 +146,7 @@ export const stepStartAccessGuard =
         }
 
         // MIDLERTIDIG REDIRECT TIL UVENTET FEIL
-        return paths.uventetFeil
+        if (top?.location.hostname === 'www.nav.no') return paths.uventetFeil
 
         if (getLoependeVedtakRes.isError) {
           logger('info', {
@@ -169,7 +169,6 @@ export const stepStartAccessGuard =
           if (getLoependeVedtakRes.data?.alderspensjon) {
             logger('info', {
               tekst: 'Vedtak alderspensjon',
-              // @ts-expect-error MIDLERTIDIG
               data: getLoependeVedtakRes.data?.alderspensjon.grad,
             })
           }
