@@ -53,7 +53,7 @@ describe('StepAFP', () => {
     store.getState = initialGetState
   })
 
-  it('har riktig sidetittel mens loaderen fetcher data', async () => {
+  it('har riktig sidetittel', async () => {
     store.getState = vi.fn().mockImplementation(() => ({
       api: {
         queries: {
