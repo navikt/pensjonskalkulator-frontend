@@ -87,9 +87,7 @@ export function AFPPrivat({ afp, onCancel, onPrevious, onNext }: Props) {
           </ul>
           <FormattedMessage
             id="stegvisning.afp.readmore_privat_link"
-            values={{
-              ...getFormatMessageValues(),
-            }}
+            values={{ ...getFormatMessageValues() }}
           />
         </ReadMore>
         <RadioGroup
