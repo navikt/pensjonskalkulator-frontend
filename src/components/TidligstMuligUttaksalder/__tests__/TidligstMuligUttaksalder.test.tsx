@@ -327,15 +327,14 @@ describe('TidligstMuligUttaksalder', () => {
         screen.queryByText('tidligstmuliguttak.error')
       ).not.toBeInTheDocument()
 
-      expect(
-        screen.queryByText('beregning.read_more.pensjonsalder.label')
-      ).not.toBeInTheDocument()
-      // Check for the data-testid for the ReadMore component when Sanity is enabled
       await waitFor(() => {
         expect(
           screen.getByTestId('om_ufoeretrygd_og_alderspensjon_hel')
         ).toBeVisible()
       })
+      expect(
+        screen.queryByText('beregning.read_more.pensjonsalder.label')
+      ).not.toBeInTheDocument()
       expect(
         screen.queryByText(
           'tidligstmuliguttak.info_omstillingsstoenad_og_gjenlevende'
