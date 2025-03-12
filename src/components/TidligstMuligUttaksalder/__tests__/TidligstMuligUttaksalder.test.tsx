@@ -28,7 +28,7 @@ describe('TidligstMuligUttaksalder', () => {
   })
 
   describe('Gitt at en bruker ikke mottar uføretrygd, ', () => {
-    it('når tidligstMuligUttak ikke kunne hentes, vises riktig introduksjonstekst og readmore nederst har riktig tekst.', async () => {
+    it('vises riktig introduksjonstekst og readmore nederst har riktig tekst.', async () => {
       render(
         <TidligstMuligUttaksalder
           tidligstMuligUttak={undefined}
@@ -61,7 +61,7 @@ describe('TidligstMuligUttaksalder', () => {
       ).not.toBeInTheDocument()
     })
 
-    it('når tidligstMuligUttak ikke kunne hentes, vises riktig readmore nederst har riktig tekst, når tekstene fra sanity ikke kunne hentes', async () => {
+    it('vises riktig readmore nederst har riktig tekst, når tekstene fra sanity ikke kunne hentes', async () => {
       mockErrorResponse('/feature/pensjonskalkulator.hent-tekster-fra-sanity')
       render(
         <TidligstMuligUttaksalder
@@ -88,78 +88,10 @@ describe('TidligstMuligUttaksalder', () => {
         screen.getByText('beregning.read_more.pensjonsalder.label')
       ).toBeInTheDocument()
       expect(
-        screen.queryByText('beregning.read_more.pensjonsalder.body.optional', {
+        screen.queryByText('beregning.read_more.pensjonsalder.body', {
           exact: false,
         })
       ).not.toBeInTheDocument()
-    })
-
-    it('når tidligstMuligUttak kunne hentes, vises readmore nederst med riktig tekst.', async () => {
-      render(
-        <TidligstMuligUttaksalder
-          tidligstMuligUttak={{ aar: 65, maaneder: 3 }}
-          ufoeregrad={0}
-          show1963Text={false}
-        />,
-        {
-          preloadedState: {
-            api: {
-              //@ts-ignore
-              queries: {
-                ...fulfilledGetPerson,
-              },
-            },
-            userInput: {
-              ...userInputInitialState,
-            },
-          },
-        }
-      )
-      expect(
-        screen.queryByText('tidligstmuliguttak.error')
-      ).not.toBeInTheDocument()
-      await waitFor(() => {
-        expect(
-          screen.getByTestId('om_pensjonsalder_enkelt_optional')
-        ).toBeVisible()
-      })
-      expect(
-        screen.queryByText(
-          'tidligstmuliguttak.info_omstillingsstoenad_og_gjenlevende'
-        )
-      ).not.toBeInTheDocument()
-    })
-
-    it('når tidligstMuligUttak kunne hentes, vises readmore nederst med riktig tekst, når tekstene fra sanity ikke kunne hentes', async () => {
-      mockErrorResponse('/feature/pensjonskalkulator.hent-tekster-fra-sanity')
-      render(
-        <TidligstMuligUttaksalder
-          tidligstMuligUttak={{ aar: 65, maaneder: 3 }}
-          ufoeregrad={0}
-          show1963Text={false}
-        />,
-        {
-          preloadedState: {
-            api: {
-              //@ts-ignore
-              queries: {
-                ...fulfilledGetPerson,
-              },
-            },
-            userInput: {
-              ...userInputInitialState,
-            },
-          },
-        }
-      )
-      expect(
-        screen.getByText('beregning.read_more.pensjonsalder.label')
-      ).toBeInTheDocument()
-      expect(
-        screen.getByText('beregning.read_more.pensjonsalder.body.optional', {
-          exact: false,
-        })
-      ).toBeInTheDocument()
     })
 
     it('når brukeren er født etter 1963, vises riktig ingress.', async () => {
@@ -184,11 +116,6 @@ describe('TidligstMuligUttaksalder', () => {
         }
       )
       await waitFor(() => {
-        expect(
-          screen.getByText('beregning.read_more.pensjonsalder.body.optional', {
-            exact: false,
-          })
-        ).toBeInTheDocument()
         expect(
           screen.getByText('Beregningen din viser at du kan ta ut', {
             exact: false,
@@ -238,11 +165,6 @@ describe('TidligstMuligUttaksalder', () => {
         }
       )
       await waitFor(() => {
-        expect(
-          screen.getByText('beregning.read_more.pensjonsalder.body.optional', {
-            exact: false,
-          })
-        ).toBeInTheDocument()
         expect(
           screen.getByText('Beregningen din viser at du kan ta ut', {
             exact: false,

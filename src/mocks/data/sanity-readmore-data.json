@@ -121,28 +121,8 @@
       ]
     },
     {
-      "name": "om_pensjonsalder_enkelt_optional",
-      "overskrift": "Om pensjonsalder (optional)",
-      "innhold": [
-        {
-          "_key": "95267fac3892",
-          "markDefs": [],
-          "children": [
-            {
-              "_type": "span",
-              "marks": [],
-              "text": "Lorem",
-              "_key": "553475223f9e2"
-            }
-          ],
-          "_type": "block",
-          "style": "normal"
-        }
-      ]
-    },
-    {
       "name": "om_pensjonsalder_enkelt",
-      "overskrift": "Om pensjonsalder (optional)",
+      "overskrift": "Om pensjonsalder",
       "innhold": [
         {
           "_key": "95267fac3892",

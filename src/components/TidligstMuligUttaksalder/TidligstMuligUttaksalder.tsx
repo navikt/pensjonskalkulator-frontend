@@ -153,11 +153,7 @@ export const TidligstMuligUttaksalder: React.FC<Props> = ({
           </SanityReadmore>
         ) : (
           <SanityReadmore
-            id={
-              tidligstMuligUttak !== undefined
-                ? 'om_pensjonsalder_enkelt_optional'
-                : 'om_pensjonsalder_enkelt'
-            }
+            id={'om_pensjonsalder_enkelt'}
             className={styles.readmore}
           >
             <ReadMore
@@ -167,14 +163,14 @@ export const TidligstMuligUttaksalder: React.FC<Props> = ({
                 <FormattedMessage id="beregning.read_more.pensjonsalder.label" />
               }
             >
-              {tidligstMuligUttak !== undefined && (
+              {/* {tidligstMuligUttak !== undefined && (
                 <FormattedMessage
                   id="beregning.read_more.pensjonsalder.body.optional"
                   values={{
                     ...getFormatMessageValues(),
                   }}
                 />
-              )}
+              )} */}
               <FormattedMessage
                 id="beregning.read_more.pensjonsalder.body"
                 values={{
