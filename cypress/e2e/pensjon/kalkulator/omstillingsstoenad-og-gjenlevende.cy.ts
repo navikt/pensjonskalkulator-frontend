@@ -29,7 +29,7 @@ describe('med omstillingsstønad og gjenlevende', () => {
       })
 
       it('må jeg kunne trykke på Readmore for informasjon om tidspunktet for tidligst uttak.', () => {
-        cy.get('[data-testid="om_pensjonsalder_enkelt_optional"]').click()
+        cy.get('[data-testid="om_pensjonsalder_enkelt"]').click()
       })
     })
 

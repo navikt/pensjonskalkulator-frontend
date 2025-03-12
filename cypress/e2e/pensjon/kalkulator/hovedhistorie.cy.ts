@@ -447,9 +447,7 @@ describe('Hovedhistorie', () => {
         cy.login()
         cy.fillOutStegvisning({})
         cy.wait('@fetchTidligsteUttaksalder')
-        cy.get('[data-testid="om_pensjonsalder_enkelt_optional"]').should(
-          'exist'
-        )
+        cy.get('[data-testid="om_pensjonsalder_enkelt"]').should('exist')
       })
 
       it('forventer jeg å få knapper jeg kan trykke på for å velge og sammenligne ulike uttakstidspunkt. Bruker må også kunne sammenligne uttak mellom 62 år og 10 md. (første mulige) og 75 år.', () => {
