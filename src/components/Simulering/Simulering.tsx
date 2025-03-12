@@ -206,7 +206,9 @@ export function Simulering(props: {
           />
           <div className={styles['info-click']}>
             <HandFingerIcon />
-            <BodyShort size="small">Klikk på søylene for detaljer</BodyShort>
+            <BodyShort size="small">
+              <FormattedMessage id="beregning.highcharts.informasjon_klikk" />
+            </BodyShort>
           </div>
         </div>
       </div>
