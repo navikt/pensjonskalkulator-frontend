@@ -102,7 +102,7 @@ export const stepStartAccessGuard =
       if (getLoependeVedtakRes.isError) {
         logger('info', {
           tekst: 'Redirect til /uventet-feil',
-          data: 'fra Step Start Loader pga. feil med getLoependeVedtak',
+          data: `fra Step Start Loader pga. feil med getLoependeVedtak med status: ${(getLoependeVedtakRes.error as FetchBaseQueryError).status}`,
         })
         return paths.uventetFeil
       }
@@ -133,7 +133,7 @@ export const stepStartAccessGuard =
             tekst: 'Vedtak AFP Offentlig',
           })
         }
-        if (getLoependeVedtakRes.data?.harFremtidigLoependeVedtak) {
+        if (getLoependeVedtakRes.data?.fremtidigAlderspensjon) {
           logger('info', {
             tekst: 'Fremtidig vedtak',
           })
@@ -146,7 +146,7 @@ export const stepStartAccessGuard =
         } else {
           logger('info', {
             tekst: 'Redirect til /uventet-feil',
-            data: 'fra Step Start Loader pga. feil med getPerson',
+            data: `fra Step Start Loader pga. feil med getPerson med status: ${(getPersonRes.error as FetchBaseQueryError).status}`,
           })
           return paths.uventetFeil
         }

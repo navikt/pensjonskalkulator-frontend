@@ -89,7 +89,7 @@ export const getHandlers = (baseUrl: string = API_PATH) => [
     return HttpResponse.json(offentligTpResponse)
   }),
 
-  http.get(`${baseUrl}/v3/vedtak/loepende-vedtak`, async () => {
+  http.get(`${baseUrl}/v4/vedtak/loepende-vedtak`, async () => {
     await delay(TEST_DELAY)
     return HttpResponse.json(loependeVedtakResponse)
   }),
@@ -205,4 +205,9 @@ export const getHandlers = (baseUrl: string = API_PATH) => [
       virkningstidspunktForMinsteinntekt: '2024-06-03',
     })
   }),
+
+  http.get(
+    `${import.meta.env.VITE_REPRESENTASJON_BANNER}/api/representasjon/harRepresentasjonsforhold`,
+    async () => HttpResponse.json({ value: false })
+  ),
 ]

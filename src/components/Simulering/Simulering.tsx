@@ -115,6 +115,7 @@ export function Simulering(props: {
         generateOffentligTpRequestBody({
           afp,
           foedselsdato,
+          sivilstand,
           epsHarPensjon,
           epsHarInntektOver2G,
           aarligInntektFoerUttakBeloep: aarligInntektFoerUttakBeloep ?? '0',
@@ -126,6 +127,7 @@ export function Simulering(props: {
           utenlandsperioder,
         })
       )
+
       setPensjonsavtalerRequestBody(
         generatePensjonsavtalerRequestBody({
           ufoeregrad,
@@ -180,11 +182,14 @@ export function Simulering(props: {
         <FormattedMessage id="beregning.highcharts.title" />
       </Heading>
 
-      <SimuleringEndringBanner
-        heltUttaksalder={uttaksalder}
-        gradertUttaksperiode={gradertUttaksperiode ?? undefined}
-        alderspensjonMaanedligVedEndring={alderspensjonMaanedligVedEndring}
-      />
+      {showButtonsAndTable && (
+        <SimuleringEndringBanner
+          isLoading={isLoading}
+          heltUttaksalder={uttaksalder}
+          gradertUttaksperiode={gradertUttaksperiode ?? undefined}
+          alderspensjonMaanedligVedEndring={alderspensjonMaanedligVedEndring}
+        />
+      )}
 
       <div role="img" aria-labelledby="alt-chart-title">
         <div id="alt-chart-title" hidden>
