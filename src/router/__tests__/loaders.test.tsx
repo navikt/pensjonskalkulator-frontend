@@ -11,7 +11,6 @@ import {
   stepAFPAccessGuard,
   stepUfoeretrygdAFPAccessGuard,
   stepSamtykkeOffentligAFPAccessGuard,
-  StepAFPAccessGuardLoader,
 } from '../loaders'
 import {
   fulfilledGetPerson,
@@ -24,7 +23,10 @@ import { mockErrorResponse, mockResponse } from '@/mocks/server'
 import { externalUrls, henvisningUrlParams, paths } from '@/router/constants'
 import * as apiSliceUtils from '@/state/api/apiSlice'
 import { store } from '@/state/store'
-import { userInputInitialState } from '@/state/userInput/userInputSlice'
+import {
+  userInputInitialState,
+  UserInputState,
+} from '@/state/userInput/userInputSlice'
 import { waitFor } from '@/test-utils'
 import { DATE_BACKEND_FORMAT } from '@/utils/dates'
 
@@ -274,7 +276,7 @@ describe('Loaders', () => {
     })
 
     it('Når /vedtak/loepende-vedtak kall feiler redirigeres brukes til uventet-feil side', async () => {
-      mockErrorResponse('/v3/vedtak/loepende-vedtak')
+      mockErrorResponse('/v4/vedtak/loepende-vedtak')
 
       const mockedState = {
         userInput: { ...userInputInitialState },
@@ -552,8 +554,15 @@ describe('Loaders', () => {
         store.getState = vi.fn().mockImplementation(() => {
           return mockedState
         })
+
         const returnedFromLoader = stepAFPAccessGuard()
-        expect(returnedFromLoader).resolves.not.toThrow()
+        expect(returnedFromLoader).resolves.toMatchObject({
+          loependeVedtak: {
+            ufoeretrygd: {
+              grad: 0,
+            },
+          },
+        })
       })
 
       it('brukere med gradert uføretrygd som er yngre enn AFP-Uføre oppsigelsesalder, er ikke redirigert', async () => {
@@ -598,10 +607,13 @@ describe('Loaders', () => {
           return mockedState
         })
 
-        const returnedFromLoader =
-          (await stepAFPAccessGuard()) as StepAFPAccessGuardLoader
+        const returnedFromLoader = stepAFPAccessGuard()
 
-        expect(returnedFromLoader.person.foedselsdato).toBe('1963-04-30')
+        expect(returnedFromLoader).resolves.toMatchObject({
+          person: {
+            foedselsdato: '1963-04-30',
+          },
+        })
       })
 
       it('brukere med gradert uføretrygd som er eldre enn AFP-Uføre oppsigelsesalder, er redirigert', async () => {
@@ -610,13 +622,10 @@ describe('Loaders', () => {
           months: -1,
         })
         const foedselsdato = format(minAlderYearsBeforeNow, DATE_BACKEND_FORMAT)
-        mockResponse('/v3/vedtak/loepende-vedtak', {
+        mockResponse('/v4/vedtak/loepende-vedtak', {
           json: {
-            ufoeretrygd: {
-              grad: 75,
-            },
-            harFremtidigLoependeVedtak: false,
-          },
+            ufoeretrygd: { grad: 75 },
+          } satisfies LoependeVedtak,
         })
 
         mockResponse('/v4/person', {
@@ -671,15 +680,16 @@ describe('Loaders', () => {
         store.getState = vi.fn().mockImplementation(() => {
           return mockedState
         })
+
         const returnedFromLoader = (await stepAFPAccessGuard()) as Response
-        expect(returnedFromLoader?.status).toBe(302)
-        expect(returnedFromLoader?.headers.get('location')).toBe(
+        expect(returnedFromLoader.status).toBe(302)
+        expect(returnedFromLoader.headers.get('location')).toBe(
           paths.ufoeretrygdAFP
         )
       })
 
       it('brukere med vedtak om afp-offentlig, er redirigert', async () => {
-        mockResponse('/v3/vedtak/loepende-vedtak', {
+        mockResponse('/v4/vedtak/loepende-vedtak', {
           json: {
             ufoeretrygd: {
               grad: 0,
@@ -687,8 +697,7 @@ describe('Loaders', () => {
             afpOffentlig: {
               fom: '2020-10-02',
             },
-            harFremtidigLoependeVedtak: false,
-          },
+          } satisfies LoependeVedtak,
         })
         const mockedState = {
           api: {
@@ -710,12 +719,12 @@ describe('Loaders', () => {
       })
 
       it('brukere med vedtak om afp-privat, er redirigert', async () => {
-        mockResponse('/v3/vedtak/loepende-vedtak', {
+        mockResponse('/v4/vedtak/loepende-vedtak', {
           json: {
             alderspensjon: {
               grad: 0,
               fom: '2020-10-02',
-              sivilstand: 'UGIFT' as Sivilstand,
+              sivilstand: 'UGIFT',
             },
             ufoeretrygd: {
               grad: 0,
@@ -723,8 +732,7 @@ describe('Loaders', () => {
             afpPrivat: {
               fom: '2020-10-02',
             },
-            harFremtidigLoependeVedtak: false,
-          },
+          } satisfies LoependeVedtak,
         })
         const mockedState = {
           api: {
@@ -748,12 +756,12 @@ describe('Loaders', () => {
       })
 
       it('brukere med 100% uføretrygd er redirigert', async () => {
-        mockResponse('/v3/vedtak/loepende-vedtak', {
+        mockResponse('/v4/vedtak/loepende-vedtak', {
           json: {
             alderspensjon: {
               grad: 0,
               fom: '2020-10-02',
-              sivilstand: 'UGIFT' as Sivilstand,
+              sivilstand: 'UGIFT',
             },
             ufoeretrygd: {
               grad: 100,
@@ -761,8 +769,7 @@ describe('Loaders', () => {
             afpPrivat: {
               fom: '2020-10-02',
             },
-            harFremtidigLoependeVedtak: false,
-          },
+          } satisfies LoependeVedtak,
         })
         const mockedState = {
           api: {
@@ -818,9 +825,14 @@ describe('Loaders', () => {
 
       const returnedFromLoader = stepAFPAccessGuard()
       expect(returnedFromLoader).resolves.not.toThrow()
+      expect(returnedFromLoader).resolves.toMatchObject({
+        person: {
+          foedselsdato: '1963-04-30',
+        },
+      })
     })
 
-    it('Gitt at getInntekt har tidligere feilet og at den feiler igjen ved nytt kall, er brukeren redirigert', async () => {
+    it('Gitt at getInntekt har tidligere feilet og at den feiler igjen ved nytt kall, loader kaster feil', async () => {
       mockErrorResponse('/inntekt')
 
       const mockedState = {
@@ -847,6 +859,7 @@ describe('Loaders', () => {
       })
 
       const returnedFromLoader = stepAFPAccessGuard()
+      // Når denne kaster så blir den fanget opp av ErrorBoundary som viser uventet feil
       expect(returnedFromLoader).rejects.toThrow()
     })
 
@@ -886,7 +899,7 @@ describe('Loaders', () => {
       expect(returnedFromLoader).resolves.not.toThrow()
     })
 
-    it('Gitt at getOmstillingsstoenadOgGjenlevende har tidligere feilet og at den feiler igjen ved nytt kall, er brukeren redirigert', async () => {
+    it('Gitt at getOmstillingsstoenadOgGjenlevende har tidligere feilet og at den feiler igjen ved nytt kall, loader kaster feil', async () => {
       mockErrorResponse(
         '/v1/loepende-omstillingsstoenad-eller-gjenlevendeytelse'
       )
@@ -959,7 +972,7 @@ describe('Loaders', () => {
       )
     })
 
-    it('Gitt at getEkskludertStatus har tidligere feilet kalles den på nytt. Når den er vellykket i tillegg til de to andre kallene, er brukeren ikke redirigert', async () => {
+    it('Gitt at getEkskludertStatus har tidligere feilet kalles den på nytt. Når den er vellykket i tillegg til de to andre kallene', async () => {
       mockResponse('/v2/ekskludert', {
         status: 200,
         json: {
@@ -996,7 +1009,7 @@ describe('Loaders', () => {
       expect(returnedFromLoader).resolves.not.toThrow()
     })
 
-    it('Gitt at getEkskludertStatus har tidligere feilet og at den feiler igjen ved nytt kall, er brukeren redirigert', async () => {
+    it('Gitt at getEkskludertStatus har tidligere feilet og at den feiler igjen ved nytt kall, loader kaster feil', async () => {
       mockErrorResponse('/v2/ekskludert')
 
       const mockedState = {
@@ -1222,17 +1235,17 @@ describe('Loaders', () => {
               endpointName: 'getLoependeVedtak',
               requestId: 't1wLPiRKrfe_vchftk8s8',
               data: {
-                ufoeretrygd: {
-                  grad: 0,
-                },
-                harFremtidigLoependeVedtak: false,
-              },
+                ufoeretrygd: { grad: 0 },
+              } satisfies LoependeVedtak,
               startedTimeStamp: 1714725797072,
               fulfilledTimeStamp: 1714725797669,
             },
           },
         },
-        userInput: { ...userInputInitialState, afp: 'ja_offentlig' },
+        userInput: {
+          ...userInputInitialState,
+          afp: 'ja_offentlig',
+        } satisfies UserInputState,
       }
       store.getState = vi.fn().mockImplementation(() => {
         return mockedState
@@ -1251,17 +1264,17 @@ describe('Loaders', () => {
               endpointName: 'getLoependeVedtak',
               requestId: 't1wLPiRKrfe_vchftk8s8',
               data: {
-                ufoeretrygd: {
-                  grad: 50,
-                },
-                harFremtidigLoependeVedtak: false,
-              },
+                ufoeretrygd: { grad: 50 },
+              } satisfies LoependeVedtak,
               startedTimeStamp: 1714725797072,
               fulfilledTimeStamp: 1714725797669,
             },
           },
         },
-        userInput: { ...userInputInitialState, afp: 'ja_offentlig' },
+        userInput: {
+          ...userInputInitialState,
+          afp: 'ja_offentlig',
+        } satisfies UserInputState,
       }
       store.getState = vi.fn().mockImplementation(() => {
         return mockedState
@@ -1307,17 +1320,17 @@ describe('Loaders', () => {
               endpointName: 'getLoependeVedtak',
               requestId: 't1wLPiRKrfe_vchftk8s8',
               data: {
-                ufoeretrygd: {
-                  grad: 0,
-                },
-                harFremtidigLoependeVedtak: false,
-              },
+                ufoeretrygd: { grad: 0 },
+              } satisfies LoependeVedtak,
               startedTimeStamp: 1714725797072,
               fulfilledTimeStamp: 1714725797669,
             },
           },
         },
-        userInput: { ...userInputInitialState, afp: 'nei' },
+        userInput: {
+          ...userInputInitialState,
+          afp: 'nei',
+        } satisfies UserInputState,
       }
       store.getState = vi.fn().mockImplementation(() => {
         return mockedState

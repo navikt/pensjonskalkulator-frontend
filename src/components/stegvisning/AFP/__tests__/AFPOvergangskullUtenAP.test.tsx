@@ -21,8 +21,8 @@ describe('stegvisning - AFP - født mellom 1954-1962 uten vedtak om alderspensjo
     const user = userEvent.setup()
     const result = render(
       <AFPOvergangskullUtenAP
-        afp={null}
-        skalBeregneAfp={null}
+        previousAfp={null}
+        previousSkalBeregneAfp={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -58,8 +58,8 @@ describe('stegvisning - AFP - født mellom 1954-1962 uten vedtak om alderspensjo
   it('rendrer slik den skal når afp er oppgitt', async () => {
     const result = render(
       <AFPOvergangskullUtenAP
-        afp="nei"
-        skalBeregneAfp={null}
+        previousAfp="nei"
+        previousSkalBeregneAfp={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -83,8 +83,8 @@ describe('stegvisning - AFP - født mellom 1954-1962 uten vedtak om alderspensjo
     const user = userEvent.setup()
     render(
       <AFPOvergangskullUtenAP
-        afp={null}
-        skalBeregneAfp={null}
+        previousAfp={null}
+        previousSkalBeregneAfp={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -127,8 +127,8 @@ describe('stegvisning - AFP - født mellom 1954-1962 uten vedtak om alderspensjo
     const user = userEvent.setup()
     render(
       <AFPOvergangskullUtenAP
-        afp={null}
-        skalBeregneAfp={null}
+        previousAfp={null}
+        previousSkalBeregneAfp={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -162,8 +162,8 @@ describe('stegvisning - AFP - født mellom 1954-1962 uten vedtak om alderspensjo
     const user = userEvent.setup()
     render(
       <AFPOvergangskullUtenAP
-        afp={null}
-        skalBeregneAfp={null}
+        previousAfp={null}
+        previousSkalBeregneAfp={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -181,8 +181,8 @@ describe('stegvisning - AFP - født mellom 1954-1962 uten vedtak om alderspensjo
     const user = userEvent.setup()
     render(
       <AFPOvergangskullUtenAP
-        afp="ja_privat"
-        skalBeregneAfp={null}
+        previousAfp="ja_privat"
+        previousSkalBeregneAfp={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -196,8 +196,8 @@ describe('stegvisning - AFP - født mellom 1954-1962 uten vedtak om alderspensjo
     const user = userEvent.setup()
     render(
       <AFPOvergangskullUtenAP
-        afp="ja_privat"
-        skalBeregneAfp={null}
+        previousAfp="ja_privat"
+        previousSkalBeregneAfp={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -216,8 +216,8 @@ describe('stegvisning - AFP - født mellom 1954-1962 uten vedtak om alderspensjo
   it('viser ikke avbryt knapp når onCancel ikke er definert', async () => {
     render(
       <AFPOvergangskullUtenAP
-        afp={null}
-        skalBeregneAfp={null}
+        previousAfp={null}
+        previousSkalBeregneAfp={null}
         onCancel={undefined}
         onPrevious={onPreviousMock}
         onNext={onNextMock}

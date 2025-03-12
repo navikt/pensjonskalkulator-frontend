@@ -38,7 +38,7 @@ describe('Pensjonskalkulator', () => {
 
     // Sjekker AFP steg
     cy.contains('AFP (avtalefestet pensjon)')
-    cy.contains('button', 'Om AFP i privat sektor').click()
+    cy.get('[data-testid="om_livsvarig_AFP_i_offentlig_sektor"]').click()
     cy.get('[type="radio"]').first().check()
     cy.checkA11y('main')
     cy.contains('button', 'Neste').click()
@@ -87,7 +87,7 @@ describe('Pensjonskalkulator', () => {
       cy.contains('Avansert').click()
     })
     cy.injectAxe()
-    cy.contains('Pensjonsgivende inntekt frem til pensjon').should('exist')
+    cy.contains('Pensjonsgivende årsinntekt frem til pensjon').should('exist')
 
     cy.checkA11y('main')
 
@@ -149,7 +149,7 @@ describe('Pensjonskalkulator', () => {
     cy.contains('Beregn pensjon').click()
 
     cy.contains('Beregning').should('not.exist')
-    cy.contains('Pensjonsgivende inntekt frem til pensjon').should('exist')
+    cy.contains('Pensjonsgivende årsinntekt frem til pensjon').should('exist')
     cy.contains(
       'Opptjeningen din er ikke høy nok til ønsket uttak. Du må øke alderen eller sette ned uttaksgraden.'
     ).should('exist')

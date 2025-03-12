@@ -19,7 +19,7 @@ import {
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
 import { isAlderOver67, isFoedtFoer1963, isOvergangskull } from '@/utils/alder'
-import { isVedtakAlderspensjon } from '@/utils/loependeVedtak'
+import { isLoependeVedtakEndring } from '@/utils/loependeVedtak'
 
 export function StepAFP() {
   const intl = useIntl()
@@ -39,8 +39,8 @@ export function StepAFP() {
     })
   }, [])
 
-  const onNext = (afpData: AfpRadio, skalBeregneAfp?: boolean | null): void => {
-    dispatch(userInputActions.setAfp(afpData))
+  const onNext = (afp: AfpRadio, skalBeregneAfp?: boolean | null): void => {
+    dispatch(userInputActions.setAfp(afp))
     if (skalBeregneAfp && skalBeregneAfp !== null) {
       dispatch(userInputActions.setSkalBeregneAfp(skalBeregneAfp))
     }
@@ -68,11 +68,11 @@ export function StepAFP() {
           if (
             isFoedtFoer1963(person.foedselsdato) &&
             (isAlderOver67(person.foedselsdato) ||
-              isVedtakAlderspensjon(loependeVedtak))
+              isLoependeVedtakEndring(loependeVedtak))
           ) {
             return (
               <AFPPrivat
-                afp={previousAfp}
+                previousAfp={previousAfp}
                 onCancel={isVeileder ? undefined : onStegvisningCancel}
                 onPrevious={onStegvisningPrevious}
                 onNext={onNext}
@@ -80,12 +80,12 @@ export function StepAFP() {
             )
           } else if (
             isOvergangskull(person.foedselsdato) &&
-            !isVedtakAlderspensjon(loependeVedtak)
+            !isLoependeVedtakEndring(loependeVedtak)
           ) {
             return (
               <AFPOvergangskullUtenAP
-                afp={previousAfp}
-                skalBeregneAfp={previousSkalBeregneAfp}
+                previousAfp={previousAfp}
+                previousSkalBeregneAfp={previousSkalBeregneAfp}
                 onCancel={isVeileder ? undefined : onStegvisningCancel}
                 onPrevious={onStegvisningPrevious}
                 onNext={onNext}
@@ -94,7 +94,7 @@ export function StepAFP() {
           } else {
             return (
               <AFP
-                afp={previousAfp}
+                previousAfp={previousAfp}
                 onCancel={isVeileder ? undefined : onStegvisningCancel}
                 onPrevious={onStegvisningPrevious}
                 onNext={onNext}
