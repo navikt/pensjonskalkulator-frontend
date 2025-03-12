@@ -11,7 +11,6 @@ import {
   stepAFPAccessGuard,
   stepUfoeretrygdAFPAccessGuard,
   stepSamtykkeOffentligAFPAccessGuard,
-  StepAFPAccessGuardLoader,
 } from '../loaders'
 import {
   fulfilledGetPerson,
@@ -555,8 +554,15 @@ describe('Loaders', () => {
         store.getState = vi.fn().mockImplementation(() => {
           return mockedState
         })
+
         const returnedFromLoader = stepAFPAccessGuard()
-        expect(returnedFromLoader).resolves.not.toThrow()
+        expect(returnedFromLoader).resolves.toMatchObject({
+          loependeVedtak: {
+            ufoeretrygd: {
+              grad: 0,
+            },
+          },
+        })
       })
 
       it('brukere med gradert uføretrygd som er yngre enn AFP-Uføre oppsigelsesalder, er ikke redirigert', async () => {
@@ -601,10 +607,13 @@ describe('Loaders', () => {
           return mockedState
         })
 
-        const returnedFromLoader =
-          (await stepAFPAccessGuard()) as StepAFPAccessGuardLoader
+        const returnedFromLoader = stepAFPAccessGuard()
 
-        expect(returnedFromLoader.person.foedselsdato).toBe('1963-04-30')
+        expect(returnedFromLoader).resolves.toMatchObject({
+          person: {
+            foedselsdato: '1963-04-30',
+          },
+        })
       })
 
       it('brukere med gradert uføretrygd som er eldre enn AFP-Uføre oppsigelsesalder, er redirigert', async () => {
@@ -671,9 +680,10 @@ describe('Loaders', () => {
         store.getState = vi.fn().mockImplementation(() => {
           return mockedState
         })
+
         const returnedFromLoader = (await stepAFPAccessGuard()) as Response
-        expect(returnedFromLoader?.status).toBe(302)
-        expect(returnedFromLoader?.headers.get('location')).toBe(
+        expect(returnedFromLoader.status).toBe(302)
+        expect(returnedFromLoader.headers.get('location')).toBe(
           paths.ufoeretrygdAFP
         )
       })
@@ -815,9 +825,14 @@ describe('Loaders', () => {
 
       const returnedFromLoader = stepAFPAccessGuard()
       expect(returnedFromLoader).resolves.not.toThrow()
+      expect(returnedFromLoader).resolves.toMatchObject({
+        person: {
+          foedselsdato: '1963-04-30',
+        },
+      })
     })
 
-    it('Gitt at getInntekt har tidligere feilet og at den feiler igjen ved nytt kall, er brukeren redirigert', async () => {
+    it('Gitt at getInntekt har tidligere feilet og at den feiler igjen ved nytt kall, loader kaster feil', async () => {
       mockErrorResponse('/inntekt')
 
       const mockedState = {
@@ -844,6 +859,7 @@ describe('Loaders', () => {
       })
 
       const returnedFromLoader = stepAFPAccessGuard()
+      // Når denne kaster så blir den fanget opp av ErrorBoundary som viser uventet feil
       expect(returnedFromLoader).rejects.toThrow()
     })
 
@@ -883,7 +899,7 @@ describe('Loaders', () => {
       expect(returnedFromLoader).resolves.not.toThrow()
     })
 
-    it('Gitt at getOmstillingsstoenadOgGjenlevende har tidligere feilet og at den feiler igjen ved nytt kall, er brukeren redirigert', async () => {
+    it('Gitt at getOmstillingsstoenadOgGjenlevende har tidligere feilet og at den feiler igjen ved nytt kall, loader kaster feil', async () => {
       mockErrorResponse(
         '/v1/loepende-omstillingsstoenad-eller-gjenlevendeytelse'
       )
@@ -956,7 +972,7 @@ describe('Loaders', () => {
       )
     })
 
-    it('Gitt at getEkskludertStatus har tidligere feilet kalles den på nytt. Når den er vellykket i tillegg til de to andre kallene, er brukeren ikke redirigert', async () => {
+    it('Gitt at getEkskludertStatus har tidligere feilet kalles den på nytt. Når den er vellykket i tillegg til de to andre kallene', async () => {
       mockResponse('/v2/ekskludert', {
         status: 200,
         json: {
@@ -993,7 +1009,7 @@ describe('Loaders', () => {
       expect(returnedFromLoader).resolves.not.toThrow()
     })
 
-    it('Gitt at getEkskludertStatus har tidligere feilet og at den feiler igjen ved nytt kall, er brukeren redirigert', async () => {
+    it('Gitt at getEkskludertStatus har tidligere feilet og at den feiler igjen ved nytt kall, loader kaster feil', async () => {
       mockErrorResponse('/v2/ekskludert')
 
       const mockedState = {
