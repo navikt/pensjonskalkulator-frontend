@@ -506,6 +506,7 @@ export const onAvansertBeregningSubmit = (
     normertPensjonsalder: Alder
     loependeVedtak: LoependeVedtak
     localInntektFremTilUttak: string | null
+    localBeregningsTypeRadio: Beregningsvalg
     hasVilkaarIkkeOppfylt: boolean | undefined
     harAvansertSkjemaUnsavedChanges: boolean
   }
@@ -515,6 +516,7 @@ export const onAvansertBeregningSubmit = (
     normertPensjonsalder,
     loependeVedtak,
     localInntektFremTilUttak,
+    localBeregningsTypeRadio,
     hasVilkaarIkkeOppfylt,
     harAvansertSkjemaUnsavedChanges,
   } = previousData
@@ -649,6 +651,12 @@ export const onAvansertBeregningSubmit = (
     dispatch(
       userInputActions.setCurrentSimulationAarligInntektFoerUttakBeloep(
         localInntektFremTilUttak
+      )
+    )
+
+    dispatch(
+      userInputActions.setCurrentSimulationBeregningsvalg(
+        localBeregningsTypeRadio
       )
     )
 

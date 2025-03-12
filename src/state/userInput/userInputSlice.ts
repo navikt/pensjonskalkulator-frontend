@@ -8,7 +8,7 @@ export interface Simulation {
   aarligInntektFoerUttakBeloep: string | null // inntekt før uttak av pensjon - formatert string i nok - overskriver beløp fra Skatteetaten
   aarligInntektVsaHelPensjon?: AarligInntektVsaPensjon
   gradertUttaksperiode: GradertUttak | null
-  beregningsvalg: Beregningsvalg | null
+  beregningsvalg: Beregningsvalg
 }
 
 export interface UserInputState {
@@ -37,7 +37,7 @@ export const userInputInitialState: UserInputState = {
   epsHarInntektOver2G: null,
   epsHarPensjon: null,
   currentSimulation: {
-    beregningsvalg: null,
+    beregningsvalg: undefined,
     formatertUttaksalderReadOnly: null,
     uttaksalder: null,
     aarligInntektFoerUttakBeloep: null,
@@ -99,6 +99,12 @@ export const userInputSlice = createSlice({
       state.sivilstand = action.payload.sivilstand
       state.epsHarInntektOver2G = action.payload.epsHarInntektOver2G
       state.epsHarPensjon = action.payload.epsHarPensjon
+    },
+    setCurrentSimulationBeregningsvalg: (
+      state,
+      action: PayloadAction<Beregningsvalg>
+    ) => {
+      state.currentSimulation.beregningsvalg = action.payload ?? undefined
     },
     setCurrentSimulationUttaksalder: (
       state,

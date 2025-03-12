@@ -311,6 +311,7 @@ const translations = {
   'velguttaksalder.title': 'Kor tid vil du ta ut alderspensjon?',
   'velguttaksalder.endring.title': 'MANGLER_TEKST',
   'beregning.avansert.rediger.beregningsvalg.description': 'MANGLER_TEKST',
+  'beregning.avansert.rediger.beregningsvalg.om_valget_link': 'MANGLER_TEKST',
   'beregning.avansert.rediger.radio.beregningsvalg.label': 'MANGLER_TEKST',
   'beregning.avansert.rediger.radio.beregningsvalg.alderspensjon_uten_afp_med_ufoeretrygd.label':
     'MANGLER_TEKST',

@@ -18,26 +18,28 @@ export const AvansertSkjemaIntroEndring = () => {
   if (isEndring) {
     return (
       <>
-        <Heading level="2" size="medium">
-          <FormattedMessage id={'beregning.endring.rediger.title'} />
-        </Heading>
+        <div>
+          <Heading level="2" size="medium">
+            <FormattedMessage id={'beregning.endring.rediger.title'} />
+          </Heading>
 
-        <BodyLong>
-          <FormattedMessage
-            id={'beregning.endring.rediger.vedtak_status'}
-            values={{
-              dato: format(
-                parse(
-                  loependeVedtak?.alderspensjon?.fom as string,
-                  DATE_BACKEND_FORMAT,
-                  new Date()
+          <BodyLong>
+            <FormattedMessage
+              id={'beregning.endring.rediger.vedtak_status'}
+              values={{
+                dato: format(
+                  parse(
+                    loependeVedtak?.alderspensjon?.fom as string,
+                    DATE_BACKEND_FORMAT,
+                    new Date()
+                  ),
+                  DATE_ENDUSER_FORMAT
                 ),
-                DATE_ENDUSER_FORMAT
-              ),
-              grad: loependeVedtak?.alderspensjon?.grad,
-            }}
-          />
-        </BodyLong>
+                grad: loependeVedtak?.alderspensjon?.grad,
+              }}
+            />
+          </BodyLong>
+        </div>
 
         <Divider />
       </>

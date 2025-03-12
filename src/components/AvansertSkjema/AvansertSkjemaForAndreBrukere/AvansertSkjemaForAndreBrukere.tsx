@@ -317,41 +317,40 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
       className={`${styles.container} ${styles.container__hasMobilePadding}`}
     >
       <div className={styles.form}>
-        <div>
-          <form
-            id={AVANSERT_FORM_NAMES.form}
-            // TODO PEK-1026 midlertidig - bruk AVANSERT_SKJEMA_FOR_ANDRE_BRUKERE.form når den er lagd
-            data-testid={'AVANSERT_SKJEMA_FOR_ANDRE_BRUKERE'}
-            method="dialog"
-            onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
-              e.preventDefault()
-              const data = new FormData(e.currentTarget)
-              onAvansertBeregningSubmit(
-                data,
-                dispatch,
-                setValidationErrors,
-                gaaTilResultat,
-                {
-                  foedselsdato: foedselsdato as string,
-                  normertPensjonsalder,
-                  loependeVedtak,
-                  localInntektFremTilUttak,
-                  hasVilkaarIkkeOppfylt:
-                    vilkaarsproeving?.vilkaarErOppfylt === false,
-                  harAvansertSkjemaUnsavedChanges,
-                }
-              )
-            }}
-          ></form>
+        <form
+          id={AVANSERT_FORM_NAMES.form}
+          // TODO PEK-1026 midlertidig - bruk AVANSERT_SKJEMA_FOR_ANDRE_BRUKERE.form når den er lagd
+          data-testid={'AVANSERT_SKJEMA_FOR_ANDRE_BRUKERE'}
+          method="dialog"
+          onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+            e.preventDefault()
+            const data = new FormData(e.currentTarget)
+            onAvansertBeregningSubmit(
+              data,
+              dispatch,
+              setValidationErrors,
+              gaaTilResultat,
+              {
+                foedselsdato: foedselsdato as string,
+                normertPensjonsalder,
+                loependeVedtak,
+                localBeregningsTypeRadio,
+                localInntektFremTilUttak,
+                hasVilkaarIkkeOppfylt:
+                  vilkaarsproeving?.vilkaarErOppfylt === false,
+                harAvansertSkjemaUnsavedChanges,
+              }
+            )
+          }}
+        ></form>
 
-          <AvansertSkjemaIntroEndring />
+        <AvansertSkjemaIntroEndring />
 
-          <AvansertSkjemaInntekt
-            localInntektFremTilUttak={localInntektFremTilUttak}
-            aarligInntektFoerUttakBeloep={aarligInntektFoerUttakBeloep}
-            setLocalInntektFremTilUttak={setLocalInntektFremTilUttak}
-          />
-        </div>
+        <AvansertSkjemaInntekt
+          localInntektFremTilUttak={localInntektFremTilUttak}
+          aarligInntektFoerUttakBeloep={aarligInntektFoerUttakBeloep}
+          setLocalInntektFremTilUttak={setLocalInntektFremTilUttak}
+        />
 
         <Divider noMargin />
 

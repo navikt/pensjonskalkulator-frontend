@@ -3,24 +3,32 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { RadioGroup, Radio, BodyLong, Heading } from '@navikt/ds-react'
 
 import { AVANSERT_FORM_NAMES } from '../../utils'
-import { Divider } from '@/components/common/Divider'
 import { useGetBeregningsvalgFeatureToggleQuery } from '@/state/api/apiSlice'
 import { useAppSelector } from '@/state/hooks'
 import {
   selectAfp,
+  selectBeregningsvalg,
   selectNedreAldersgrense,
   selectSamtykkeOffentligAFP,
 } from '@/state/userInput/selectors'
 import { formatUttaksalder } from '@/utils/alder'
+import { getFormatMessageValues } from '@/utils/translations'
+
+import styles from './Beregningsvalg.module.scss'
+
 interface Props {
-  value: Beregningsvalg
-  onChange: (value: Beregningsvalg) => void
+  localBeregningsTypeRadio: Beregningsvalg
+  setLocalBeregningsTypeRadio: (value: Beregningsvalg) => void
 }
 
-export const Beregningsvalg = ({ value, onChange }: Props) => {
+export const Beregningsvalg = ({
+  localBeregningsTypeRadio,
+  setLocalBeregningsTypeRadio,
+}: Props) => {
   const intl = useIntl()
   const valgtAFP = useAppSelector(selectAfp)
   const isSamtykkeOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
+  const beregningsvalg = useAppSelector(selectBeregningsvalg)
   const nedreAldersgrense = useAppSelector(selectNedreAldersgrense)
   const { data: beregningsvalgFeatureToggle } =
     useGetBeregningsvalgFeatureToggleQuery()
@@ -35,23 +43,14 @@ export const Beregningsvalg = ({ value, onChange }: Props) => {
   ) {
     return (
       <div>
-        <div>
-          <BodyLong>
-            <FormattedMessage
-              id={'beregning.avansert.rediger.beregningsvalg.description'}
-            />
-            {/* TODO: Add a link to the read more page: 'Om valget mellom uføretrygd og AFP' */}
-          </BodyLong>
-        </div>
-
         <RadioGroup
           legend={intl.formatMessage({
             id: 'beregning.avansert.rediger.radio.beregningsvalg.label',
           })}
           role="radiogroup"
           aria-required="true"
-          value={value}
-          onChange={onChange}
+          defaultValue={beregningsvalg ?? localBeregningsTypeRadio}
+          onChange={(value) => setLocalBeregningsTypeRadio(value)}
         >
           <Radio
             form={AVANSERT_FORM_NAMES.form}
@@ -69,20 +68,22 @@ export const Beregningsvalg = ({ value, onChange }: Props) => {
             <FormattedMessage
               id="beregning.avansert.rediger.radio.beregningsvalg.alderspensjon_med_afp_uten_ufoeretrygd.label"
               values={{
+                ...getFormatMessageValues(),
                 nedreAldersgrense: formatUttaksalder(intl, nedreAldersgrense),
               }}
             />
           </Radio>
         </RadioGroup>
 
-        {value === 'beregnPensjonMedAfp' && (
-          <div>
+        {localBeregningsTypeRadio === 'beregnPensjonMedAfp' && (
+          <div className={styles.description}>
             <Heading level="2" size="medium">
               <FormattedMessage
                 id={
                   'beregning.avansert.rediger.beregningsvalg.alderspensjon_med_afp_uten_ufoeretrygd.title'
                 }
                 values={{
+                  ...getFormatMessageValues(),
                   nedreAldersgrense: formatUttaksalder(intl, nedreAldersgrense),
                 }}
               />
@@ -94,14 +95,13 @@ export const Beregningsvalg = ({ value, onChange }: Props) => {
                   'beregning.avansert.rediger.beregningsvalg.alderspensjon_med_afp_uten_ufoeretrygd.description'
                 }
                 values={{
+                  ...getFormatMessageValues(),
                   nedreAldersgrense: formatUttaksalder(intl, nedreAldersgrense),
                 }}
               />
             </BodyLong>
           </div>
         )}
-
-        <Divider />
       </div>
     )
   }

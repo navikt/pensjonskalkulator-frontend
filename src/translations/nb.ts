@@ -488,17 +488,19 @@ const translations = {
     'Når vil du ta ut <nowrap>100 %</nowrap> alderspensjon?',
 
   'beregning.avansert.rediger.beregningsvalg.description':
-    'Du har 50 % uføretrygd. Før du blir 62 år må du  velge enten uføretrygd eller AFP.<br>',
+    'Du har <nowrap>{ufoeregrad} %</nowrap> uføretrygd. Før du blir <nowrap>62 år</nowrap> må du velge enten uføretrygd eller AFP.{br}',
+  'beregning.avansert.rediger.beregningsvalg.om_valget_link':
+    'Om valget mellom uføretrygd og AFP',
   'beregning.avansert.rediger.radio.beregningsvalg.label':
     'Hva vil du beregne?',
   'beregning.avansert.rediger.radio.beregningsvalg.alderspensjon_uten_afp_med_ufoeretrygd.label':
     'Alderspensjon og uføretrygd, uten AFP.',
   'beregning.avansert.rediger.radio.beregningsvalg.alderspensjon_med_afp_uten_ufoeretrygd.label':
-    'Alderspensjon og AFP, uten uføretrygd fra {nedreAldersgrense}',
+    'Alderspensjon og AFP, uten uføretrygd fra <nowrap>{nedreAldersgrense}</nowrap>',
   'beregning.avansert.rediger.beregningsvalg.alderspensjon_med_afp_uten_ufoeretrygd.title':
-    'Alderspensjon og AFP fra {nedreAldersgrense}',
+    'Alderspensjon og AFP fra <nowrap>{nedreAldersgrense}</nowrap>',
   'beregning.avansert.rediger.beregningsvalg.alderspensjon_med_afp_uten_ufoeretrygd.description':
-    '{nedreAldersgrense} er laveste uttaksalder. Du må ha høy nok pensjonsopptjening for å kunne ta ut alderspensjon og AFP fra denne alderen.',
+    '<nowrap>{nedreAldersgrense}</nowrap> er laveste uttaksalder. Du må ha høy nok pensjonsopptjening for å kunne ta ut alderspensjon og AFP fra denne alderen.',
 
   'beregning.avansert.button.beregn': 'Beregn pensjon',
   'beregning.avansert.button.beregn.endring': 'Beregn ny pensjon',

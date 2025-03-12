@@ -114,6 +114,9 @@ export const selectFormatertUttaksalderReadOnly = (
 export const selectCurrentSimulation = (state: RootState): Simulation =>
   state.userInput.currentSimulation
 
+export const selectBeregningsvalg = (state: RootState): Beregningsvalg =>
+  state.userInput.currentSimulation.beregningsvalg
+
 export const selectLoependeVedtak = createSelector(
   selectLoependeVedtakResponse,
   (loependeVedtakResponse) => loependeVedtakResponse.data as LoependeVedtak

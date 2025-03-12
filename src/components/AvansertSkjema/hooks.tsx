@@ -26,14 +26,14 @@ export const useFormLocalState = (initialValues: {
     aarligInntektVsaHelPensjon,
     gradertUttaksperiode,
     normertPensjonsalder,
+    beregningsvalg,
   } = initialValues
 
   const { setHarAvansertSkjemaUnsavedChanges } =
     React.useContext(BeregningContext)
 
-  const [localBeregningsTypeRadio, setBeregningsTypeRadio] = React.useState<
-    'beregnPensjonUtenAfp' | 'beregnPensjonMedAfp' | undefined
-  >(undefined)
+  const [localBeregningsTypeRadio, setBeregningsTypeRadio] =
+    React.useState<Beregningsvalg>(beregningsvalg)
 
   const [localHarInntektVsaHeltUttakRadio, setHarInntektVsaHeltUttakRadio] =
     React.useState<boolean | null>(
