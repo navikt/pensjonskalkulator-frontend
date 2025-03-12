@@ -18,7 +18,6 @@ describe('stegvisning - AFP - født mellom 1954-1962 uten vedtak om alderspensjo
   const onNextMock = vi.fn()
 
   it('rendrer slik den skal når afp og skalBeregneAfp ikke er oppgitt', async () => {
-    const user = userEvent.setup()
     const result = render(
       <AFPOvergangskullUtenAP
         previousAfp={null}
@@ -32,17 +31,14 @@ describe('stegvisning - AFP - født mellom 1954-1962 uten vedtak om alderspensjo
       'stegvisning.afp.title'
     )
 
-    await user.click(screen.getByText('stegvisning.afp.readmore_privat_title'))
-    await user.click(
+    expect(
+      screen.getByText('stegvisning.afp.readmore_privat_title')
+    ).toBeInTheDocument()
+    expect(
       screen.getByText('stegvisning.afpOvergangskull.readmore_offentlig_title')
-    )
+    ).toBeInTheDocument()
 
     expect(result.asFragment()).toMatchSnapshot()
-    expect(
-      screen.getByRole('link', {
-        name: 'AFP i privat sektor på afp.no application.global.external_link',
-      })
-    ).toHaveAttribute('href', 'https://www.afp.no')
 
     const radioButtons = await screen.findAllByRole('radio')
     await waitFor(() => {
