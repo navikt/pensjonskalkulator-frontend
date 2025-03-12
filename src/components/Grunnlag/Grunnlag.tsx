@@ -141,7 +141,7 @@ export const Grunnlag: React.FC<Props> = ({
                   ...getFormatMessageValues(),
                 }}
               />
-              {pensjonsbeholdning && (
+              {!!pensjonsbeholdning && (
                 <FormattedMessage
                   id="grunnlag.alderspensjon.ingress.pensjonsbeholdning"
                   values={{
