@@ -310,10 +310,15 @@ const translations = {
   'omufoeretrygd.avansert_link': 'MANGLER_TEKST',
   'velguttaksalder.title': 'Kor tid vil du ta ut alderspensjon?',
   'velguttaksalder.endring.title': 'MANGLER_TEKST',
+  'beregning.avansert.rediger.beregningsvalg.description': 'MANGLER_TEKST',
   'beregning.avansert.rediger.radio.beregningsvalg.label': 'MANGLER_TEKST',
   'beregning.avansert.rediger.radio.beregningsvalg.alderspensjon_uten_afp_med_ufoeretrygd.label':
     'MANGLER_TEKST',
   'beregning.avansert.rediger.radio.beregningsvalg.alderspensjon_med_afp_uten_ufoeretrygd.label':
+    'MANGLER_TEKST',
+  'beregning.avansert.rediger.beregningsvalg.alderspensjon_med_afp_uten_ufoeretrygd.title':
+    'MANGLER_TEKST',
+  'beregning.avansert.rediger.beregningsvalg.alderspensjon_med_afp_uten_ufoeretrygd.description':
     'MANGLER_TEKST',
   'beregning.toggle.enkel': 'MANGLER_TEKST',
   'beregning.toggle.avansert': 'MANGLER_TEKST',

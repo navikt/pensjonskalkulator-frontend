@@ -1,8 +1,9 @@
 import { FormattedMessage, useIntl } from 'react-intl'
 
-import { RadioGroup, Radio } from '@navikt/ds-react'
+import { RadioGroup, Radio, BodyLong, Heading } from '@navikt/ds-react'
 
 import { AVANSERT_FORM_NAMES } from '../../utils'
+import { Divider } from '@/components/common/Divider'
 import { useGetBeregningsvalgFeatureToggleQuery } from '@/state/api/apiSlice'
 import { useAppSelector } from '@/state/hooks'
 import {
@@ -34,7 +35,14 @@ export const Beregningsvalg = ({ value, onChange }: Props) => {
   ) {
     return (
       <div>
-        <div>Show info here</div>
+        <div>
+          <BodyLong>
+            <FormattedMessage
+              id={'beregning.avansert.rediger.beregningsvalg.description'}
+            />
+            {/* TODO: Add a link to the read more page: 'Om valget mellom uføretrygd og AFP' */}
+          </BodyLong>
+        </div>
 
         <RadioGroup
           legend={intl.formatMessage({
@@ -67,7 +75,33 @@ export const Beregningsvalg = ({ value, onChange }: Props) => {
           </Radio>
         </RadioGroup>
 
-        <div>Show info here</div>
+        {value === 'beregnPensjonMedAfp' && (
+          <div>
+            <Heading level="2" size="medium">
+              <FormattedMessage
+                id={
+                  'beregning.avansert.rediger.beregningsvalg.alderspensjon_med_afp_uten_ufoeretrygd.title'
+                }
+                values={{
+                  nedreAldersgrense: formatUttaksalder(intl, nedreAldersgrense),
+                }}
+              />
+            </Heading>
+
+            <BodyLong>
+              <FormattedMessage
+                id={
+                  'beregning.avansert.rediger.beregningsvalg.alderspensjon_med_afp_uten_ufoeretrygd.description'
+                }
+                values={{
+                  nedreAldersgrense: formatUttaksalder(intl, nedreAldersgrense),
+                }}
+              />
+            </BodyLong>
+          </div>
+        )}
+
+        <Divider />
       </div>
     )
   }
