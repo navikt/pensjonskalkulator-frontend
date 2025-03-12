@@ -34,7 +34,7 @@ export function AFPPrivat({
     e.preventDefault()
 
     const data = new FormData(e.currentTarget)
-    const afpInput = data.get('afp') as AfpRadio | undefined
+    const afpInput = data.get('afp') as AfpRadio | null
 
     if (!afpInput) {
       const tekst = intl.formatMessage({
