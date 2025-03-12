@@ -32,20 +32,20 @@ export function AFP({ previousAfp, onCancel, onPrevious, onNext }: Props) {
   const onSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
 
-    const data = new FormData(e.currentTarget)
-    const afpInput = data.get('afp') as AfpRadio | undefined
+    const formData = new FormData(e.currentTarget)
+    const afpInput = formData.get('afp') as AfpRadio | null
 
     if (!afpInput) {
-      const tekst = intl.formatMessage({
+      const errorMessage = intl.formatMessage({
         id: 'stegvisning.afp.validation_error',
       })
-      setValidationError(tekst)
+      setValidationError(errorMessage)
       logger('skjema validering feilet', {
         skjemanavn: STEGVISNING_FORM_NAMES.afp,
         data: intl.formatMessage({
           id: 'stegvisning.afp.radio_label',
         }),
-        tekst,
+        tekst: errorMessage,
       })
     } else {
       logger('radiogroup valgt', {

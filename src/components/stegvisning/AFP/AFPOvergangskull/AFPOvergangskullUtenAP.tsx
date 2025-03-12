@@ -52,33 +52,33 @@ export function AFPOvergangskullUtenAP({
   const onSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
 
-    const data = new FormData(e.currentTarget)
-    const afpInput = data.get('afp') as AfpRadio | null
-    const simuleringstypeInput = data.get('skalBeregneAfp') as BooleanRadio
+    const formData = new FormData(e.currentTarget)
+    const afpInput = formData.get('afp') as AfpRadio | null
+    const simuleringstypeInput = formData.get('skalBeregneAfp') as BooleanRadio
 
     if (!afpInput) {
-      const tekst = intl.formatMessage({
+      const errorMessage = intl.formatMessage({
         id: 'stegvisning.afp.validation_error',
       })
-      setValidationError((prev) => ({ ...prev, afp: tekst }))
+      setValidationError((prev) => ({ ...prev, afp: errorMessage }))
       logger('skjema validering feilet', {
         skjemanavn: STEGVISNING_FORM_NAMES.afp,
         data: intl.formatMessage({
           id: 'stegvisning.afp.radio_label',
         }),
-        tekst,
+        tekst: errorMessage,
       })
     } else if (jaAFPOffentlig && !simuleringstypeInput) {
-      const tekst = intl.formatMessage({
+      const errorMessage = intl.formatMessage({
         id: 'stegvisning.afpOverganskull.validation_error',
       })
-      setValidationError((prev) => ({ ...prev, skalBeregneAfp: tekst }))
+      setValidationError((prev) => ({ ...prev, skalBeregneAfp: errorMessage }))
       logger('skjema validering feilet', {
         skjemanavn: STEGVISNING_FORM_NAMES.afp,
         data: intl.formatMessage({
           id: 'stegvisning.afp.radio_label',
         }),
-        tekst,
+        tekst: errorMessage,
       })
     } else {
       logger('radiogroup valgt', {

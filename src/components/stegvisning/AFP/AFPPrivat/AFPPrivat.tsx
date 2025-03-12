@@ -33,8 +33,8 @@ export function AFPPrivat({
   const onSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
 
-    const data = new FormData(e.currentTarget)
-    const afpInput = data.get('afp') as AfpRadio | undefined
+    const formData = new FormData(e.currentTarget)
+    const afpInput = formData.get('afp') as AfpRadio | null
 
     if (!afpInput) {
       const tekst = intl.formatMessage({
