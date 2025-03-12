@@ -119,32 +119,27 @@ export function AFPOvergangskullUtenAP({
         <BodyLong size="large">
           <FormattedMessage id="stegvisning.afp.ingress" />
         </BodyLong>
-        <SanityReadmore
-          id="om_livsvarig_AFP_i_offentlig_sektor"
+        <ReadMore
+          name="Avtalefestet pensjon i offentlig sektor"
           className={styles.readmoreOffentlig}
+          header={
+            <FormattedMessage id="stegvisning.afpOvergangskull.readmore_offentlig_title" />
+          }
         >
-          <ReadMore
-            name="Avtalefestet pensjon i offentlig sektor"
-            className={styles.readmoreOffentlig}
-            header={
-              <FormattedMessage id="stegvisning.afpOvergangskull.readmore_offentlig_title" />
-            }
-          >
-            <FormattedMessage id="stegvisning.afp.readmore_offentlig_list_title" />
-            <ul className={styles.list}>
-              <li>
-                <FormattedMessage id="stegvisning.afpOvergangskull.readmore_offentlig_list_item1" />
-              </li>
-              <li>
-                <FormattedMessage id="stegvisning.afpOvergangskull.readmore_offentlig_list_item2" />
-              </li>
-              <li>
-                <FormattedMessage id="stegvisning.afpOvergangskull.readmore_offentlig_list_item3" />
-              </li>
-            </ul>
-            <FormattedMessage id="stegvisning.afpOvergangskull.readmore_offentlig_ingress" />
-          </ReadMore>
-        </SanityReadmore>
+          <FormattedMessage id="stegvisning.afp.readmore_offentlig_list_title" />
+          <ul className={styles.list}>
+            <li>
+              <FormattedMessage id="stegvisning.afpOvergangskull.readmore_offentlig_list_item1" />
+            </li>
+            <li>
+              <FormattedMessage id="stegvisning.afpOvergangskull.readmore_offentlig_list_item2" />
+            </li>
+            <li>
+              <FormattedMessage id="stegvisning.afpOvergangskull.readmore_offentlig_list_item3" />
+            </li>
+          </ul>
+          <FormattedMessage id="stegvisning.afpOvergangskull.readmore_offentlig_ingress" />
+        </ReadMore>
         <SanityReadmore
           id="om_livsvarig_AFP_i_privat_sektor"
           className={styles.readmorePrivat}
