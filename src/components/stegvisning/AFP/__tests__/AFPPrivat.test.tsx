@@ -21,7 +21,7 @@ describe('stegvisning - AFP - født før 1963 og og fylt 67 år, eller født fø
     const user = userEvent.setup()
     const result = render(
       <AFPPrivat
-        afp={null}
+        previousAfp={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -45,7 +45,7 @@ describe('stegvisning - AFP - født før 1963 og og fylt 67 år, eller født fø
   it('rendrer slik den skal når afp er oppgitt', async () => {
     const result = render(
       <AFPPrivat
-        afp="nei"
+        previousAfp="nei"
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -67,7 +67,7 @@ describe('stegvisning - AFP - født før 1963 og og fylt 67 år, eller født fø
     const user = userEvent.setup()
     render(
       <AFPPrivat
-        afp={null}
+        previousAfp={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -101,7 +101,7 @@ describe('stegvisning - AFP - født før 1963 og og fylt 67 år, eller født fø
     const user = userEvent.setup()
     render(
       <AFPPrivat
-        afp={null}
+        previousAfp={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -119,7 +119,7 @@ describe('stegvisning - AFP - født før 1963 og og fylt 67 år, eller født fø
     const user = userEvent.setup()
     render(
       <AFPPrivat
-        afp="ja_privat"
+        previousAfp="ja_privat"
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -133,7 +133,7 @@ describe('stegvisning - AFP - født før 1963 og og fylt 67 år, eller født fø
     const user = userEvent.setup()
     render(
       <AFPPrivat
-        afp="ja_privat"
+        previousAfp="ja_privat"
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -152,7 +152,7 @@ describe('stegvisning - AFP - født før 1963 og og fylt 67 år, eller født fø
   it('viser ikke avbryt knapp når onCancel ikke er definert', async () => {
     render(
       <AFPPrivat
-        afp={null}
+        previousAfp={null}
         onCancel={undefined}
         onPrevious={onPreviousMock}
         onNext={onNextMock}

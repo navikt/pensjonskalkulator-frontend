@@ -21,7 +21,7 @@ describe('stegvisning - AFP - født etter 1963', () => {
   it('rendrer slik den skal når afp ikke er oppgitt', async () => {
     render(
       <AFP
-        afp={null}
+        previousAfp={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -55,7 +55,7 @@ describe('stegvisning - AFP - født etter 1963', () => {
     mockErrorResponse('/feature/pensjonskalkulator.hent-tekster-fra-sanity')
     render(
       <AFP
-        afp={null}
+        previousAfp={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -89,7 +89,7 @@ describe('stegvisning - AFP - født etter 1963', () => {
   it('rendrer slik den skal når afp er oppgitt', async () => {
     const result = render(
       <AFP
-        afp="nei"
+        previousAfp="nei"
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -113,7 +113,7 @@ describe('stegvisning - AFP - født etter 1963', () => {
     const user = userEvent.setup()
     render(
       <AFP
-        afp={null}
+        previousAfp={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -156,7 +156,7 @@ describe('stegvisning - AFP - født etter 1963', () => {
     const user = userEvent.setup()
     render(
       <AFP
-        afp={null}
+        previousAfp={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -190,7 +190,7 @@ describe('stegvisning - AFP - født etter 1963', () => {
     const user = userEvent.setup()
     render(
       <AFP
-        afp={null}
+        previousAfp={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -208,7 +208,7 @@ describe('stegvisning - AFP - født etter 1963', () => {
     const user = userEvent.setup()
     render(
       <AFP
-        afp="ja_privat"
+        previousAfp="ja_privat"
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -222,7 +222,7 @@ describe('stegvisning - AFP - født etter 1963', () => {
     const user = userEvent.setup()
     render(
       <AFP
-        afp="ja_privat"
+        previousAfp="ja_privat"
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -241,7 +241,7 @@ describe('stegvisning - AFP - født etter 1963', () => {
   it('viser ikke avbryt knapp når onCancel ikke er definert', async () => {
     render(
       <AFP
-        afp={null}
+        previousAfp={null}
         onCancel={undefined}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
