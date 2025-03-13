@@ -1,7 +1,8 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
 
-import { Heading, HeadingProps } from '@navikt/ds-react'
+import { HandFingerIcon } from '@navikt/aksel-icons'
+import { BodyShort, Heading, HeadingProps } from '@navikt/ds-react'
 import Highcharts, { SeriesColumnOptions, XAxisOptions } from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 
@@ -115,6 +116,7 @@ export function Simulering(props: {
         generateOffentligTpRequestBody({
           afp,
           foedselsdato,
+          sivilstand,
           epsHarPensjon,
           epsHarInntektOver2G,
           aarligInntektFoerUttakBeloep: aarligInntektFoerUttakBeloep ?? '0',
@@ -126,6 +128,7 @@ export function Simulering(props: {
           utenlandsperioder,
         })
       )
+
       setPensjonsavtalerRequestBody(
         generatePensjonsavtalerRequestBody({
           ufoeregrad,
@@ -180,22 +183,38 @@ export function Simulering(props: {
         <FormattedMessage id="beregning.highcharts.title" />
       </Heading>
 
-      <SimuleringEndringBanner
-        heltUttaksalder={uttaksalder}
-        gradertUttaksperiode={gradertUttaksperiode ?? undefined}
-        alderspensjonMaanedligVedEndring={alderspensjonMaanedligVedEndring}
-      />
+      {showButtonsAndTable && (
+        <SimuleringEndringBanner
+          isLoading={isLoading}
+          heltUttaksalder={uttaksalder}
+          gradertUttaksperiode={gradertUttaksperiode ?? undefined}
+          alderspensjonMaanedligVedEndring={alderspensjonMaanedligVedEndring}
+        />
+      )}
 
       <div role="img" aria-labelledby="alt-chart-title">
         <div id="alt-chart-title" hidden>
           <FormattedMessage id="beregning.alt_tekst" />
         </div>
-        <div data-testid="highcharts-aria-wrapper" aria-hidden={true}>
+        <div
+          className={styles.highchartsWrapper}
+          data-testid="highcharts-aria-wrapper"
+          aria-hidden={true}
+        >
           <HighchartsReact
             ref={chartRef}
             highcharts={Highcharts}
             options={chartOptions}
           />
+
+          <BodyShort
+            size="small"
+            textColor="subtle"
+            className={styles.infoClick}
+          >
+            <HandFingerIcon />
+            <FormattedMessage id="beregning.highcharts.informasjon_klikk" />
+          </BodyShort>
         </div>
       </div>
       {showButtonsAndTable && (

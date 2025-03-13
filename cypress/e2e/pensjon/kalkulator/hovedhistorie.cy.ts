@@ -91,12 +91,15 @@ describe('Hovedhistorie', () => {
           cy.intercept(
             {
               method: 'GET',
-              url: '/pensjon/kalkulator/api/v3/vedtak/loepende-vedtak',
+              url: '/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak',
             },
             {
               ...loependeVedtakMock,
-              harFremtidigLoependeVedtak: true,
-            }
+              fremtidigAlderspensjon: {
+                grad: 100,
+                fom: '2099-01-01',
+              },
+            } satisfies LoependeVedtak
           ).as('getLoependeVedtak')
           cy.login()
         })
@@ -478,6 +481,7 @@ describe('Hovedhistorie', () => {
         cy.contains('61').should('not.exist')
         cy.contains('69').should('be.visible')
         cy.contains('87+').should('exist')
+        cy.contains('Klikk på søylene for detaljer').should('exist')
       })
 
       it('forventer jeg en egen tabell med oversikt over mine pensjonsavtaler. Jeg må kunne trykke på trykk vis mer for å se all informasjon, og vis mindre for å skjule informasjon om pensjonsavtaler.', () => {

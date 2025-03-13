@@ -32,3 +32,4 @@ vite.config.ts.*
 *.sln
 *.sw?
 .qodo
+.fleet
