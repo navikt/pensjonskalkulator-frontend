@@ -24,6 +24,7 @@ import { Divider } from '@/components/common/Divider'
 import { ReadMore } from '@/components/common/ReadMore'
 import { VilkaarsproevingAlert } from '@/components/VilkaarsproevingAlert'
 import { BeregningContext } from '@/pages/Beregning/context'
+import { useGetBeregningsvalgFeatureToggleQuery } from '@/state/api/apiSlice'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
   selectFoedselsdato,
@@ -56,6 +57,11 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
   const dispatch = useAppDispatch()
 
   const { setAvansertSkjemaModus } = React.useContext(BeregningContext)
+
+  const { data: beregningsvalgFeatureToggle } =
+    useGetBeregningsvalgFeatureToggleQuery()
+
+  const beregningvalgToggleEnabled = beregningsvalgFeatureToggle?.enabled
 
   const foedselsdato = useAppSelector(selectFoedselsdato)
   const normertPensjonsalder = useAppSelector(selectNormertPensjonsalder)
@@ -378,14 +384,19 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
 
         <AvansertSkjemaIntroEndring />
 
-        <Beregningsvalg
-          localBeregningsTypeRadio={localBeregningsTypeRadio}
-          setLocalBeregningsTypeRadio={setLocalBeregningsTypeRadio}
-        />
+        {beregningvalgToggleEnabled && (
+          <>
+            <Beregningsvalg
+              localBeregningsTypeRadio={localBeregningsTypeRadio}
+              setLocalBeregningsTypeRadio={setLocalBeregningsTypeRadio}
+            />
 
-        <Divider noMargin />
+            <Divider noMargin />
+          </>
+        )}
 
-        {(localBeregningsTypeRadio !== undefined ||
+        {(!beregningvalgToggleEnabled ||
+          localBeregningsTypeRadio !== undefined ||
           beregningsvalg !== undefined) && (
           <>
             <AvansertSkjemaInntekt

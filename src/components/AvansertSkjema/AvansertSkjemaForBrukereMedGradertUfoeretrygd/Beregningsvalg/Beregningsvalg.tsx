@@ -3,7 +3,6 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { RadioGroup, Radio, BodyLong, Heading } from '@navikt/ds-react'
 
 import { AVANSERT_FORM_NAMES } from '../../utils'
-import { useGetBeregningsvalgFeatureToggleQuery } from '@/state/api/apiSlice'
 import { useAppSelector } from '@/state/hooks'
 import {
   selectAfp,
@@ -30,12 +29,6 @@ export const Beregningsvalg = ({
   const isSamtykkeOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
   const beregningsvalg = useAppSelector(selectBeregningsvalg)
   const nedreAldersgrense = useAppSelector(selectNedreAldersgrense)
-  const { data: beregningsvalgFeatureToggle } =
-    useGetBeregningsvalgFeatureToggleQuery()
-
-  if (!beregningsvalgFeatureToggle?.enabled) {
-    return null
-  }
 
   if (
     (valgtAFP === 'ja_offentlig' && isSamtykkeOffentligAFP) ||
