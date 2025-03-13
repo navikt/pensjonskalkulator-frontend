@@ -1785,6 +1785,7 @@ describe('AvansertSkjemaForAndreBrukere', () => {
       })
 
       const currentSimulation: Simulation = {
+        beregningsvalg: null,
         formatertUttaksalderReadOnly: '62 år string.og 0 alder.maaned',
         uttaksalder: { aar: 62, maaneder: 0 },
         aarligInntektFoerUttakBeloep: null,

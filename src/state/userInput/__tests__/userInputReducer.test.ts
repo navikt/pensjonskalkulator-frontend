@@ -377,6 +377,7 @@ describe('userInputSlice', () => {
           samtykkeOffentligAFP: true,
           afp: 'ja_offentlig',
           currentSimulation: {
+            beregningsvalg: null,
             formatertUttaksalderReadOnly:
               '66 alder.aar string.og 4 alder.maaneder',
             uttaksalder: { aar: 66, maaneder: 4 },
@@ -410,6 +411,7 @@ describe('userInputSlice', () => {
           samtykke: true,
           afp: 'ja_offentlig',
           currentSimulation: {
+            beregningsvalg: null,
             formatertUttaksalderReadOnly:
               '66 alder.aar string.og 4 alder.maaneder',
             uttaksalder: { aar: 66, maaneder: 4 },

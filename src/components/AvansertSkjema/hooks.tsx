@@ -194,18 +194,17 @@ export const useFormLocalState = (initialValues: {
 
   const handlers = React.useMemo(
     () => ({
-      setLocalBeregningsTypeRadio: setBeregningsTypeRadio,
       setLocalInntektFremTilUttak: setInntektFremTilUttak,
       setLocalHeltUttak: setHeltUttak,
       setLocalGradertUttak: setGradertUttak,
       setLocalHarInntektVsaHeltUttakRadio: setHarInntektVsaHeltUttakRadio,
       setLocalHarInntektVsaGradertUttakRadio: setHarInntektVsaGradertUttakRadio,
+      setLocalBeregningsTypeRadio: setBeregningsTypeRadio,
     }),
     []
   )
 
   return [
-    localBeregningsTypeRadio,
     localInntektFremTilUttak,
     localHeltUttak,
     localHarInntektVsaHeltUttakRadio,
@@ -214,6 +213,7 @@ export const useFormLocalState = (initialValues: {
     minAlderInntektSluttAlder,
     muligeUttaksgrad,
     handlers,
+    localBeregningsTypeRadio,
   ] as const
 }
 

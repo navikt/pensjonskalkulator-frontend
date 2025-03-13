@@ -54,6 +54,7 @@ describe('SavnerDuNoe', () => {
             userInput: {
               ...userInputInitialState,
               currentSimulation: {
+                beregningsvalg: null,
                 formatertUttaksalderReadOnly: '67 år string.og 1 alder.maaned',
                 uttaksalder: { aar: 67, maaneder: 1 },
                 aarligInntektFoerUttakBeloep: '0',

@@ -104,7 +104,7 @@ export const userInputSlice = createSlice({
       state,
       action: PayloadAction<Beregningsvalg>
     ) => {
-      state.currentSimulation.beregningsvalg = action.payload ?? undefined
+      state.currentSimulation.beregningsvalg = action.payload ?? null
     },
     setCurrentSimulationUttaksalder: (
       state,

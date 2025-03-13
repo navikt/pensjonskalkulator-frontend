@@ -107,7 +107,6 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
   )
 
   const [
-    localBeregningsTypeRadio,
     localInntektFremTilUttak,
     localHeltUttak,
     localHarInntektVsaHeltUttakRadio,
@@ -115,14 +114,8 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
     localHarInntektVsaGradertUttakRadio,
     minAlderInntektSluttAlder,
     muligeUttaksgrad,
-    {
-      setLocalBeregningsTypeRadio,
-      setLocalInntektFremTilUttak,
-      setLocalHeltUttak,
-      setLocalGradertUttak,
-      setLocalHarInntektVsaHeltUttakRadio,
-      setLocalHarInntektVsaGradertUttakRadio,
-    },
+    handlers,
+    localBeregningsTypeRadio,
   ] = useFormLocalState({
     isEndring,
     ufoeregrad: loependeVedtak.ufoeretrygd.grad,
@@ -135,6 +128,15 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
     normertPensjonsalder,
     beregningsvalg,
   })
+
+  const {
+    setLocalInntektFremTilUttak,
+    setLocalHeltUttak,
+    setLocalGradertUttak,
+    setLocalHarInntektVsaHeltUttakRadio,
+    setLocalHarInntektVsaGradertUttakRadio,
+    setLocalBeregningsTypeRadio,
+  } = handlers
 
   const [
     validationErrors,
@@ -346,7 +348,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
 
   const resetForm = (): void => {
     resetValidationErrors()
-    setLocalBeregningsTypeRadio(undefined)
+    setLocalBeregningsTypeRadio(null)
     setLocalInntektFremTilUttak(
       aarligInntektFoerUttakBeloepFraBrukerSkatt?.beloep ?? null
     )

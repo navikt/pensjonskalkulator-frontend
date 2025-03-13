@@ -87,7 +87,6 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
     : getBrukerensAlderISluttenAvMaaneden(foedselsdato, nedreAldersgrense)
 
   const [
-    localBeregningsTypeRadio,
     localInntektFremTilUttak,
     localHeltUttak,
     localHarInntektVsaHeltUttakRadio,
@@ -112,7 +111,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
     aarligInntektVsaHelPensjon,
     gradertUttaksperiode,
     normertPensjonsalder,
-    beregningsvalg: undefined,
+    beregningsvalg: null,
   })
 
   const [
@@ -335,7 +334,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
                 foedselsdato: foedselsdato as string,
                 normertPensjonsalder,
                 loependeVedtak,
-                localBeregningsTypeRadio,
+                localBeregningsTypeRadio: null,
                 localInntektFremTilUttak,
                 hasVilkaarIkkeOppfylt:
                   vilkaarsproeving?.vilkaarErOppfylt === false,
