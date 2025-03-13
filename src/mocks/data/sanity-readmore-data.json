@@ -81,7 +81,7 @@
       ]
     },
     {
-      "name": "om_ufoeretrygd_og_alderspensjon_hel",
+      "name": "om_pensjonsalder_UT_hel",
       "overskrift": "Om uføretrygd og alderspensjon (hel)",
       "innhold": [
         {
@@ -101,7 +101,7 @@
       ]
     },
     {
-      "name": "om_ufoeretrygd_og_alderspensjon_gradert",
+      "name": "om_pensjonsalder_UT_gradert_enkel",
       "overskrift": "Om uføretrygd og alderspensjon (gradert)",
       "innhold": [
         {
@@ -121,7 +121,7 @@
       ]
     },
     {
-      "name": "om_pensjonsalder_enkelt",
+      "name": "om_TMU",
       "overskrift": "Om pensjonsalder",
       "innhold": [
         {

@@ -127,8 +127,8 @@ export const TidligstMuligUttaksalder: React.FC<Props> = ({
           <SanityReadmore
             id={
               ufoeregrad === 100
-                ? 'om_ufoeretrygd_og_alderspensjon_hel'
-                : 'om_ufoeretrygd_og_alderspensjon_gradert'
+                ? 'om_pensjonsalder_UT_hel'
+                : 'om_pensjonsalder_UT_gradert_enkel'
             }
             className={styles.readmore}
           >
@@ -152,10 +152,7 @@ export const TidligstMuligUttaksalder: React.FC<Props> = ({
             </ReadMore>
           </SanityReadmore>
         ) : (
-          <SanityReadmore
-            id={'om_pensjonsalder_enkelt'}
-            className={styles.readmore}
-          >
+          <SanityReadmore id={'om_TMU'} className={styles.readmore}>
             <ReadMore
               name="Om pensjonsalder enkelt"
               className={styles.readmore}

@@ -52,7 +52,7 @@ describe('TidligstMuligUttaksalder', () => {
 
       expect(screen.getByText('tidligstmuliguttak.error')).toBeInTheDocument()
       await waitFor(() => {
-        expect(screen.getByTestId('om_pensjonsalder_enkelt')).toBeVisible()
+        expect(screen.getByTestId('om_TMU')).toBeVisible()
       })
       expect(
         screen.queryByText(
@@ -117,7 +117,7 @@ describe('TidligstMuligUttaksalder', () => {
       )
       await waitFor(() => {
         expect(
-          screen.getByTestId('om_pensjonsalder_enkelt', {
+          screen.getByTestId('om_TMU', {
             exact: false,
           })
         ).toBeInTheDocument()
@@ -223,7 +223,7 @@ describe('TidligstMuligUttaksalder', () => {
       )
       await waitFor(() => {
         expect(
-          screen.getByTestId('om_pensjonsalder_enkelt', {
+          screen.getByTestId('om_TMU', {
             exact: false,
           })
         ).toBeInTheDocument()
@@ -364,9 +364,7 @@ describe('TidligstMuligUttaksalder', () => {
       ).not.toBeInTheDocument()
 
       await waitFor(() => {
-        expect(
-          screen.getByTestId('om_ufoeretrygd_og_alderspensjon_hel')
-        ).toBeVisible()
+        expect(screen.getByTestId('om_pensjonsalder_UT_hel')).toBeVisible()
       })
       expect(
         screen.queryByText('beregning.read_more.pensjonsalder.label')
@@ -437,9 +435,7 @@ describe('TidligstMuligUttaksalder', () => {
       )
       // Check for the data-testid for the ReadMore component when Sanity is enabled
       await waitFor(() => {
-        expect(
-          screen.getByTestId('om_ufoeretrygd_og_alderspensjon_hel')
-        ).toBeVisible()
+        expect(screen.getByTestId('om_pensjonsalder_UT_hel')).toBeVisible()
       })
     })
 
@@ -503,7 +499,7 @@ describe('TidligstMuligUttaksalder', () => {
       // Check for the data-testid for the ReadMore component when Sanity is enabled
       await waitFor(() => {
         expect(
-          screen.getByTestId('om_ufoeretrygd_og_alderspensjon_gradert')
+          screen.getByTestId('om_pensjonsalder_UT_gradert_enkel')
         ).toBeVisible()
       })
     })
