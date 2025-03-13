@@ -195,7 +195,7 @@ export function Simulering(props: {
           <FormattedMessage id="beregning.alt_tekst" />
         </div>
         <div
-          className={styles['highcharts-wrapper']}
+          className={styles.highchartsWrapper}
           data-testid="highcharts-aria-wrapper"
           aria-hidden={true}
         >
@@ -204,12 +204,15 @@ export function Simulering(props: {
             highcharts={Highcharts}
             options={chartOptions}
           />
-          <div className={styles['info-click']}>
+
+          <BodyShort
+            size="small"
+            textColor="subtle"
+            className={styles.infoClick}
+          >
             <HandFingerIcon />
-            <BodyShort size="small">
-              <FormattedMessage id="beregning.highcharts.informasjon_klikk" />
-            </BodyShort>
-          </div>
+            <FormattedMessage id="beregning.highcharts.informasjon_klikk" />
+          </BodyShort>
         </div>
       </div>
       {showButtonsAndTable && (

@@ -40,12 +40,12 @@
   }
 }
 
-.info-click {
+.infoClick {
   display: none;
 }
 
 @media (min-width: variables.$a-breakpoint-lg) {
-  .info-click {
+  .infoClick {
     display: flex;
     position: absolute;
     top: 0.1rem;
@@ -53,18 +53,13 @@
     align-items: center;
     gap: 4px;
 
-    p {
-      color: var(--a-text-subtle);
-    }
-
-    svg {
-      color: var(--a-icon-subtle);
-      height: 24px;
+    & > svg {
       width: 24px;
+      height: 24px;
     }
   }
 
-  .highcharts-wrapper {
+  .highchartsWrapper {
     position: relative;
   }
 }
