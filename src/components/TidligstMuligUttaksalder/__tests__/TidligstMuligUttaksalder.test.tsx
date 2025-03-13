@@ -116,9 +116,7 @@ describe('TidligstMuligUttaksalder', () => {
         }
       )
       await waitFor(() => {
-        expect(
-          screen.getByTestId('om_TMU')
-        ).toBeInTheDocument()
+        expect(screen.getByTestId('om_TMU')).toBeInTheDocument()
         expect(
           screen.getByText('Beregningen din viser at du kan ta ut', {
             exact: false,
@@ -220,9 +218,7 @@ describe('TidligstMuligUttaksalder', () => {
         }
       )
       await waitFor(() => {
-        expect(
-          screen.getByTestId('om_TMU')
-        ).toBeInTheDocument()
+        expect(screen.getByTestId('om_TMU')).toBeInTheDocument()
         expect(
           screen.getByText('Beregningen din viser at du kan ta ut', {
             exact: false,
