@@ -454,17 +454,18 @@ export const stepSamtykkeOffentligAFPAccessGuard =
       ? stegvisningOrderEndring
       : stegvisningOrder
 
-    const getBeregningsvalgFeatureToggleQuery = store.dispatch(
-      apiSlice.endpoints.getBeregningsvalgFeatureToggle.initiate()
+    const getGradertUfoereAfpFeatureTogglequery = store.dispatch(
+      apiSlice.endpoints.getGradertUfoereAfpFeatureToggle.initiate()
     )
 
     // Wait for the feature toggle query to resolve
-    const toggleShowBeregningsvalg = await getBeregningsvalgFeatureToggleQuery
-      .unwrap()
-      .then((result) => result.enabled)
-      .catch(() => false)
+    const toggleShowGradertUfoereAfp =
+      await getGradertUfoereAfpFeatureTogglequery
+        .unwrap()
+        .then((result) => result.enabled)
+        .catch(() => false)
 
-    const showStep = toggleShowBeregningsvalg
+    const showStep = toggleShowGradertUfoereAfp
       ? afp === 'ja_offentlig'
       : (getLoependeVedtakResponse.data as LoependeVedtak).ufoeretrygd.grad ===
           0 && afp === 'ja_offentlig'

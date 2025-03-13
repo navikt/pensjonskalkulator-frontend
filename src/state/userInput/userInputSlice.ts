@@ -37,7 +37,7 @@ export const userInputInitialState: UserInputState = {
   epsHarInntektOver2G: null,
   epsHarPensjon: null,
   currentSimulation: {
-    beregningsvalg: undefined,
+    beregningsvalg: null,
     formatertUttaksalderReadOnly: null,
     uttaksalder: null,
     aarligInntektFoerUttakBeloep: null,

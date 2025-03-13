@@ -13,9 +13,9 @@ import sanityForbeholdAvsnittDataResponse from './data/sanity-forbehold-avsnitt-
 import sanityReadMoreDataResponse from './data/sanity-readmore-data.json' with { type: 'json' }
 import tidligstMuligHeltUttakResponse from './data/tidligstMuligHeltUttak.json' with { type: 'json' }
 import disableSpraakvelgerToggleResponse from './data/unleash-disable-spraakvelger.json' with { type: 'json' }
-import enableBeregningsvalgToggleResponse from './data/unleash-enable-beregningsvalg.json' with { type: 'json' }
 import enableRedirect1963ToggleResponse from './data/unleash-enable-redirect-1963.json' with { type: 'json' }
 import enableSanityToggleResponse from './data/unleash-enable-sanity.json' with { type: 'json' }
+import enableGradertUfoereAfpFeatureToggleResponse from './data/unleash-gradert-ufoere-afp.json' with { type: 'json' }
 import enableOtpFraKlpToggleResponse from './data/unleash-otp-fra-klp.json' with { type: 'json' }
 import enableUtvidetSimuleringsresultatPluginToggleResponse from './data/unleash-utvidet-simuleringsresultat.json' with { type: 'json' }
 
@@ -200,10 +200,10 @@ export const getHandlers = (baseUrl: string = API_PATH) => [
   ),
 
   http.get(
-    `${baseUrl}/feature/pensjonskalkulator.enable-beregningsvalg`,
+    `${baseUrl}/feature/pensjonskalkulator.gradert-ufoere-afp`,
     async () => {
       await delay(TEST_DELAY)
-      return HttpResponse.json(enableBeregningsvalgToggleResponse)
+      return HttpResponse.json(enableGradertUfoereAfpFeatureToggleResponse)
     }
   ),
 

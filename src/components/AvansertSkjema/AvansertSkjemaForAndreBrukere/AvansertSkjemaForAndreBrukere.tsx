@@ -112,6 +112,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
     aarligInntektVsaHelPensjon,
     gradertUttaksperiode,
     normertPensjonsalder,
+    beregningsvalg: undefined,
   })
 
   const [
@@ -344,7 +345,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
           }}
         ></form>
 
-        <AvansertSkjemaIntroEndring />
+        {isEndring && <AvansertSkjemaIntroEndring />}
 
         <AvansertSkjemaInntekt
           localInntektFremTilUttak={localInntektFremTilUttak}

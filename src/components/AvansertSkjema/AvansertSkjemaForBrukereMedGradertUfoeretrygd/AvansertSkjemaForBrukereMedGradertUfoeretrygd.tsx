@@ -24,7 +24,7 @@ import { Divider } from '@/components/common/Divider'
 import { ReadMore } from '@/components/common/ReadMore'
 import { VilkaarsproevingAlert } from '@/components/VilkaarsproevingAlert'
 import { BeregningContext } from '@/pages/Beregning/context'
-import { useGetBeregningsvalgFeatureToggleQuery } from '@/state/api/apiSlice'
+import { useGetGradertUfoereAfpFeatureToggleQuery } from '@/state/api/apiSlice'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
   selectFoedselsdato,
@@ -47,8 +47,8 @@ import {
 import { updateAndFormatInntektFromInputField } from '@/utils/inntekt'
 import { getFormatMessageValues } from '@/utils/translations'
 
-import { AvansertSkjemaIntro } from './AvansertSkjemaIntro'
 import { Beregningsvalg } from './Beregningsvalg'
+import { IntroAFP } from './IntroAFP'
 
 import styles from './AvansertSkjemaForBrukereMedGradertUfoeretrygd.module.scss'
 
@@ -60,10 +60,11 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
 
   const { setAvansertSkjemaModus } = React.useContext(BeregningContext)
 
-  const { data: beregningsvalgFeatureToggle } =
-    useGetBeregningsvalgFeatureToggleQuery()
+  const { data: getGradertUfoereAfpFeatureToggle } =
+    useGetGradertUfoereAfpFeatureToggleQuery()
 
-  const isBeregningvalgToggleEnabled = beregningsvalgFeatureToggle?.enabled
+  const isGradertUfoereAfpToggleEnabled =
+    getGradertUfoereAfpFeatureToggle?.enabled
 
   const valgtAFP = useAppSelector(selectAfp)
   const isSamtykkeOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
@@ -132,6 +133,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
     aarligInntektVsaHelPensjon,
     gradertUttaksperiode,
     normertPensjonsalder,
+    beregningsvalg,
   })
 
   const [
@@ -354,17 +356,14 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
     setLocalHarInntektVsaHeltUttakRadio(null)
   }
 
-  const hasSelectedBeregning =
-    localBeregningsTypeRadio !== undefined || beregningsvalg !== undefined
+  const hasSelectedBeregning = !!localBeregningsTypeRadio
 
   const hasSelectedAFP =
     (valgtAFP === 'ja_offentlig' && isSamtykkeOffentligAFP) ||
     valgtAFP === 'ja_privat'
 
   const showFormFields =
-    (isBeregningvalgToggleEnabled && hasSelectedBeregning) ||
-    !hasSelectedAFP ||
-    !isBeregningvalgToggleEnabled
+    hasSelectedBeregning || !hasSelectedAFP || !isGradertUfoereAfpToggleEnabled
 
   return (
     <div className={clsx(styles.container, styles.container__hasMobilePadding)}>
@@ -396,15 +395,17 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
           }}
         ></form>
 
-        <AvansertSkjemaIntro />
+        {isEndring && <AvansertSkjemaIntroEndring />}
 
-        <AvansertSkjemaIntroEndring />
+        {isGradertUfoereAfpToggleEnabled && hasSelectedAFP && (
+          <>
+            <IntroAFP />
 
-        {isBeregningvalgToggleEnabled && (
-          <Beregningsvalg
-            localBeregningsTypeRadio={localBeregningsTypeRadio}
-            setLocalBeregningsTypeRadio={setLocalBeregningsTypeRadio}
-          />
+            <Beregningsvalg
+              localBeregningsTypeRadio={localBeregningsTypeRadio}
+              setLocalBeregningsTypeRadio={setLocalBeregningsTypeRadio}
+            />
+          </>
         )}
 
         {showFormFields && (
@@ -564,6 +565,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                 </BodyLong>
               </ReadMore>
             </div>
+
             {localGradertUttak?.uttaksalder?.aar &&
               localGradertUttak?.uttaksalder?.maaneder !== undefined &&
               localGradertUttak?.grad !== undefined &&
@@ -734,6 +736,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                   </div>
                 </>
               )}
+
             {localHeltUttak?.uttaksalder?.aar &&
               localHeltUttak?.uttaksalder?.maaneder !== undefined &&
               localGradertUttak?.grad !== undefined && (
@@ -798,6 +801,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                   </RadioGroup>
                 </div>
               )}
+
             {localHeltUttak?.uttaksalder?.aar &&
               localHeltUttak?.uttaksalder?.maaneder !== undefined &&
               localHarInntektVsaHeltUttakRadio && (

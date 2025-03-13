@@ -26,7 +26,6 @@ export const getSimuleringstypeFromRadioEllerVedtak = (
       return 'ENDRING_ALDERSPENSJON'
     }
   } else {
-    // TODO: Oppdatere beregningsvalg
     if (loependeVedtak.ufoeretrygd.grad) {
       return 'ALDERSPENSJON'
     } else if (

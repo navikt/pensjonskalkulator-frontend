@@ -369,13 +369,12 @@ const translations = {
   'beregning.avansert.rediger.beregningsvalg.description': 'MANGLER_TEKST',
   'beregning.avansert.rediger.beregningsvalg.om_valget_link': 'MANGLER_TEKST',
   'beregning.avansert.rediger.radio.beregningsvalg.label': 'MANGLER_TEKST',
-  'beregning.avansert.rediger.radio.beregningsvalg.alderspensjon_uten_afp_med_ufoeretrygd.label':
+  'beregning.avansert.rediger.radio.beregningsvalg.uten_afp.label':
     'MANGLER_TEKST',
-  'beregning.avansert.rediger.radio.beregningsvalg.alderspensjon_med_afp_uten_ufoeretrygd.label':
+  'beregning.avansert.rediger.radio.beregningsvalg.med_afp.label':
     'MANGLER_TEKST',
-  'beregning.avansert.rediger.beregningsvalg.alderspensjon_med_afp_uten_ufoeretrygd.title':
-    'MANGLER_TEKST',
-  'beregning.avansert.rediger.beregningsvalg.alderspensjon_med_afp_uten_ufoeretrygd.description':
+  'beregning.avansert.rediger.beregningsvalg.med_afp.title': 'MANGLER_TEKST',
+  'beregning.avansert.rediger.beregningsvalg.med_afp.description':
     'MANGLER_TEKST',
   'beregning.toggle.enkel': 'Simple',
   'beregning.toggle.avansert': 'Advanced',

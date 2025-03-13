@@ -258,8 +258,8 @@ export const apiSlice = createApi({
         return response
       },
     }),
-    getBeregningsvalgFeatureToggle: builder.query<UnleashToggle, void>({
-      query: () => '/feature/pensjonskalkulator.enable-beregningsvalg',
+    getGradertUfoereAfpFeatureToggle: builder.query<UnleashToggle, void>({
+      query: () => '/feature/pensjonskalkulator.gradert-ufoere-afp',
       transformResponse: (response: UnleashToggle) => {
         if (!isUnleashToggle(response)) {
           throw new Error(`Mottok ugyldig unleash response:`, response)
@@ -289,6 +289,6 @@ export const {
   useGetRedirect1963FeatureToggleQuery,
   useGetSanityFeatureToggleQuery,
   useGetOtpKlpFeatureToggleQuery,
-  useGetBeregningsvalgFeatureToggleQuery,
+  useGetGradertUfoereAfpFeatureToggleQuery,
   useGetUtvidetSimuleringsresultatFeatureToggleQuery,
 } = apiSlice

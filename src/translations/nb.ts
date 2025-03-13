@@ -493,13 +493,13 @@ const translations = {
     'Om valget mellom uføretrygd og AFP',
   'beregning.avansert.rediger.radio.beregningsvalg.label':
     'Hva vil du beregne?',
-  'beregning.avansert.rediger.radio.beregningsvalg.alderspensjon_uten_afp_med_ufoeretrygd.label':
+  'beregning.avansert.rediger.radio.beregningsvalg.uten_afp.label':
     'Alderspensjon og uføretrygd, uten AFP.',
-  'beregning.avansert.rediger.radio.beregningsvalg.alderspensjon_med_afp_uten_ufoeretrygd.label':
+  'beregning.avansert.rediger.radio.beregningsvalg.med_afp.label':
     'Alderspensjon og AFP, uten uføretrygd fra <nowrap>{nedreAldersgrense}</nowrap>',
-  'beregning.avansert.rediger.beregningsvalg.alderspensjon_med_afp_uten_ufoeretrygd.title':
+  'beregning.avansert.rediger.beregningsvalg.med_afp.title':
     'Alderspensjon og AFP fra <nowrap>{nedreAldersgrense}</nowrap>',
-  'beregning.avansert.rediger.beregningsvalg.alderspensjon_med_afp_uten_ufoeretrygd.description':
+  'beregning.avansert.rediger.beregningsvalg.med_afp.description':
     '<nowrap>{nedreAldersgrense}</nowrap> er laveste uttaksalder. Du må ha høy nok pensjonsopptjening for å kunne ta ut alderspensjon og AFP fra denne alderen.',
 
   'beregning.avansert.button.beregn': 'Beregn pensjon',

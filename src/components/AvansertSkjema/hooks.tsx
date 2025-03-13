@@ -16,6 +16,7 @@ export const useFormLocalState = (initialValues: {
   aarligInntektVsaHelPensjon: AarligInntektVsaPensjon | undefined
   gradertUttaksperiode: GradertUttak | null
   normertPensjonsalder: Alder
+  beregningsvalg: Beregningsvalg
 }) => {
   const {
     isEndring,
