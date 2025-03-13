@@ -36,6 +36,8 @@ import {
   selectAarligInntektFoerUttakBeloepFraBrukerInput,
   selectNedreAldersgrense,
   selectNormertPensjonsalder,
+  selectAfp,
+  selectSamtykkeOffentligAFP,
 } from '@/state/userInput/selectors'
 import {
   DEFAULT_MAX_OPPTJENINGSALDER,
@@ -61,8 +63,10 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
   const { data: beregningsvalgFeatureToggle } =
     useGetBeregningsvalgFeatureToggleQuery()
 
-  const beregningvalgToggleEnabled = beregningsvalgFeatureToggle?.enabled
+  const isBeregningvalgToggleEnabled = beregningsvalgFeatureToggle?.enabled
 
+  const valgtAFP = useAppSelector(selectAfp)
+  const isSamtykkeOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
   const foedselsdato = useAppSelector(selectFoedselsdato)
   const normertPensjonsalder = useAppSelector(selectNormertPensjonsalder)
   const isEndring = useAppSelector(selectIsEndring)
@@ -350,6 +354,18 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
     setLocalHarInntektVsaHeltUttakRadio(null)
   }
 
+  const hasSelectedBeregning =
+    localBeregningsTypeRadio !== undefined || beregningsvalg !== undefined
+
+  const hasSelectedAFP =
+    (valgtAFP === 'ja_offentlig' && isSamtykkeOffentligAFP) ||
+    valgtAFP === 'ja_privat'
+
+  const showFormFields =
+    (isBeregningvalgToggleEnabled && hasSelectedBeregning) ||
+    !hasSelectedAFP ||
+    !isBeregningvalgToggleEnabled
+
   return (
     <div className={clsx(styles.container, styles.container__hasMobilePadding)}>
       <div className={styles.form}>
@@ -384,21 +400,17 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
 
         <AvansertSkjemaIntroEndring />
 
-        {beregningvalgToggleEnabled && (
-          <>
-            <Beregningsvalg
-              localBeregningsTypeRadio={localBeregningsTypeRadio}
-              setLocalBeregningsTypeRadio={setLocalBeregningsTypeRadio}
-            />
-
-            <Divider noMargin />
-          </>
+        {isBeregningvalgToggleEnabled && (
+          <Beregningsvalg
+            localBeregningsTypeRadio={localBeregningsTypeRadio}
+            setLocalBeregningsTypeRadio={setLocalBeregningsTypeRadio}
+          />
         )}
 
-        {(!beregningvalgToggleEnabled ||
-          localBeregningsTypeRadio !== undefined ||
-          beregningsvalg !== undefined) && (
+        {showFormFields && (
           <>
+            {hasSelectedBeregning && <Divider noMargin />}
+
             <AvansertSkjemaInntekt
               localInntektFremTilUttak={localInntektFremTilUttak}
               aarligInntektFoerUttakBeloep={aarligInntektFoerUttakBeloep}
