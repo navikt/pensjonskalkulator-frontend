@@ -160,14 +160,6 @@ export const TidligstMuligUttaksalder: React.FC<Props> = ({
                 <FormattedMessage id="beregning.read_more.pensjonsalder.label" />
               }
             >
-              {/* {tidligstMuligUttak !== undefined && (
-                <FormattedMessage
-                  id="beregning.read_more.pensjonsalder.body.optional"
-                  values={{
-                    ...getFormatMessageValues(),
-                  }}
-                />
-              )} */}
               <FormattedMessage
                 id="beregning.read_more.pensjonsalder.body"
                 values={{

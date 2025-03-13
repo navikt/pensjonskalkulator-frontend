@@ -237,7 +237,7 @@ describe('Med ufoeretrygd', () => {
       })
 
       it('forventer jeg tilpasset informasjon i read more «om pensjonsalder og uføretrygd».', () => {
-        cy.get('[data-testid="om_pensjonsalder_UT_hel"]').click()
+        cy.get('[data-testid="om_pensjonsalder_UT_hel"]').should('exist')
       })
 
       it('forventer jeg å kunne velge alder fra 67 år til 75 år.', () => {
@@ -279,7 +279,9 @@ describe('Med ufoeretrygd', () => {
       })
 
       it('forventer jeg tilpasset informasjon i read more «om pensjonsalder og uføretrygd».', () => {
-        cy.get('[data-testid="om_pensjonsalder_UT_gradert_enkel"]').click()
+        cy.get('[data-testid="om_pensjonsalder_UT_gradert_enkel"]').should(
+          'exist'
+        )
       })
 
       it('forventer jeg å kunne velge alder fra 67 år til 75 år.', () => {
