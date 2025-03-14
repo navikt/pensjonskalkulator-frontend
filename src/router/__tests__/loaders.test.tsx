@@ -972,7 +972,7 @@ describe('Loaders', () => {
       )
     })
 
-    it('Gitt at getEkskludertStatus har tidligere feilet kalles den på nytt. Når den er vellykket i tillegg til de to andre kallene', async () => {
+    it('Gitt at getEkskludertStatus har tidligere feilet kalles den på nytt. Når den er vellykket i tillegg til de to andre kallene kastes ikke feil', async () => {
       mockResponse('/v2/ekskludert', {
         status: 200,
         json: {
