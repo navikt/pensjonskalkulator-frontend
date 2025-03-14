@@ -145,6 +145,9 @@ export const stepStartAccessGuard =
           return `${paths.henvisning}/${henvisningUrlParams.apotekerne}`
         }
 
+        // MIDLERTIDIG REDIRECT TIL UVENTET FEIL
+        if (top?.location.hostname === 'www.nav.no') return paths.uventetFeil
+
         if (getLoependeVedtakRes.isError) {
           logger('info', {
             tekst: 'Redirect til /uventet-feil',
