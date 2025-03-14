@@ -331,6 +331,7 @@ export const BeregningEnkel: React.FC = () => {
               />
               {!isEndring && <Pensjonsavtaler headingLevel="3" />}
               <Grunnlag
+                isEndring={false}
                 visning="enkel"
                 headingLevel="3"
                 harForLiteTrygdetid={alderspensjon?.harForLiteTrygdetid}
