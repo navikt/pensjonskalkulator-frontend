@@ -54,7 +54,9 @@ export function AFPOvergangskullUtenAP({
 
     const formData = new FormData(e.currentTarget)
     const afpInput = formData.get('afp') as AfpRadio | null
-    const simuleringstypeInput = formData.get('skalBeregneAfp') as BooleanRadio
+    const simuleringstypeInput = formData.get(
+      'skalBeregneAfp'
+    ) as BooleanRadio | null
 
     if (!afpInput) {
       const errorMessage = intl.formatMessage({
