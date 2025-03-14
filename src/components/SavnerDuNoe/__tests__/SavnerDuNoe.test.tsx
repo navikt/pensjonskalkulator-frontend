@@ -69,6 +69,7 @@ describe('SavnerDuNoe', () => {
       expect(navigateMock).toHaveBeenCalledWith(paths.beregningAvansert)
       expect(store.getState().userInput.currentSimulation).toStrictEqual({
         aarligInntektFoerUttakBeloep: null,
+        beregningsvalg: null,
         formatertUttaksalderReadOnly: null,
         gradertUttaksperiode: null,
         uttaksalder: null,

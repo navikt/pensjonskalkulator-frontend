@@ -232,6 +232,7 @@ describe('userInputSlice', () => {
       expect(updatedState).toStrictEqual({
         ...userInputInitialState,
         currentSimulation: {
+          beregningsvalg: null,
           formatertUttaksalderReadOnly: null,
           uttaksalder: { aar: 65, maaneder: 4 },
           aarligInntektFoerUttakBeloep: null,
