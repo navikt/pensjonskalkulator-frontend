@@ -153,7 +153,7 @@ export const BeregningAvansert: React.FC = () => {
     if (alderspensjon && !alderspensjon?.vilkaarsproeving.vilkaarErOppfylt) {
       setAvansertSkjemaModus('redigering')
     }
-    if (alderspensjon && alderspensjon.vilkaarsproeving.vilkaarErOppfylt) {
+    if (alderspensjon?.vilkaarsproeving.vilkaarErOppfylt) {
       logger('resultat vist', { tekst: 'Beregning avansert' })
       logger('grunnlag for beregningen', {
         tekst: 'antall opphold',
@@ -182,6 +182,7 @@ export const BeregningAvansert: React.FC = () => {
       {avansertSkjemaModus === 'resultat' && (
         <>
           <InfoOmLoependeVedtak loependeVedtak={loependeVedtak} />
+
           <div
             className={`${styles.container} ${styles.container__hasMobilePadding} ${styles.container__hasTopMargin}`}
           >
@@ -190,9 +191,11 @@ export const BeregningAvansert: React.FC = () => {
                 <Heading level="2" size="small">
                   <FormattedMessage id="beregning.title" />
                 </Heading>
+
                 <AlertDashBorder onRetry={isError ? onRetry : undefined}>
                   {isError && <FormattedMessage id="beregning.error" />}
                 </AlertDashBorder>
+
                 <ResultatkortAvansertBeregning
                   onButtonClick={() => setAvansertSkjemaModus('redigering')}
                 />
@@ -214,6 +217,7 @@ export const BeregningAvansert: React.FC = () => {
                 >
                   <FormattedMessage id="beregning.avansert.button.endre_valgene_dine" />
                 </Button>
+
                 <Simulering
                   isLoading={isFetching}
                   headingLevel="2"
@@ -253,10 +257,13 @@ export const BeregningAvansert: React.FC = () => {
                       : undefined
                   }
                 />
+
                 <ResultatkortAvansertBeregning
                   onButtonClick={() => setAvansertSkjemaModus('redigering')}
                 />
+
                 {!isEndring && <Pensjonsavtaler headingLevel="2" />}
+
                 <Grunnlag
                   visning="avansert"
                   headingLevel="2"
@@ -273,6 +280,7 @@ export const BeregningAvansert: React.FC = () => {
               </>
             )}
           </div>
+
           {!isError && (
             <>
               <div
@@ -285,6 +293,7 @@ export const BeregningAvansert: React.FC = () => {
                   <SavnerDuNoe headingLevel="3" isEndring={isEndring} />
                 </div>
               </div>
+
               <div className={styles.container}>
                 <GrunnlagForbehold headingLevel="3" />
               </div>

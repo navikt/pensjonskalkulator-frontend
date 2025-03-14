@@ -8,12 +8,12 @@ exports[`AvansertSkjemaForBrukereMedGradertUfoeretrygd > Gitt at en bruker har v
     <div
       class="_form_db4c62"
     >
+      <form
+        data-testid="AVANSERT_SKJEMA_FOR_BRUKERE_MED_GRADERT_UFOERETRYGD"
+        id="avansert-beregning"
+        method="dialog"
+      />
       <div>
-        <form
-          data-testid="AVANSERT_SKJEMA_FOR_BRUKERE_MED_GRADERT_UFOERETRYGD"
-          id="avansert-beregning"
-          method="dialog"
-        />
         <h2
           class="navds-heading navds-heading--medium"
         >
@@ -24,9 +24,11 @@ exports[`AvansertSkjemaForBrukereMedGradertUfoeretrygd > Gitt at en bruker har v
         >
           Fra 02.10.2020 har du mottatt 100 % alderspensjon.
         </p>
-        <hr
-          class="_divider_1adfb3"
-        />
+      </div>
+      <hr
+        class="_divider_1adfb3"
+      />
+      <div>
         <label
           class="_label_2e4d09 navds-label"
         >

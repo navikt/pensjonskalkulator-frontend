@@ -23,6 +23,7 @@ describe('store', () => {
       epsHarPensjon: null,
       epsHarInntektOver2G: null,
       currentSimulation: {
+        beregningsvalg: null,
         formatertUttaksalderReadOnly: null,
         uttaksalder: null,
         aarligInntektFoerUttakBeloep: '500 000',
