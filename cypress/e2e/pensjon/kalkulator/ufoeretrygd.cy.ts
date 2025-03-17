@@ -21,14 +21,12 @@ describe('Med ufoeretrygd', () => {
       cy.intercept(
         {
           method: 'GET',
-          url: '/pensjon/kalkulator/api/v3/vedtak/loepende-vedtak',
+          url: '/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak',
         },
         {
           ...loependeVedtakMock,
-          ufoeretrygd: {
-            grad: 90,
-          },
-        }
+          ufoeretrygd: { grad: 90 },
+        } satisfies LoependeVedtak
       ).as('getLoependeVedtak')
       cy.login()
       cy.contains('button', 'Kom i gang').click()
@@ -49,14 +47,12 @@ describe('Med ufoeretrygd', () => {
       cy.intercept(
         {
           method: 'GET',
-          url: '/pensjon/kalkulator/api/v3/vedtak/loepende-vedtak',
+          url: '/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak',
         },
         {
           ...loependeVedtakMock,
-          ufoeretrygd: {
-            grad: 90,
-          },
-        }
+          ufoeretrygd: { grad: 90 },
+        } satisfies LoependeVedtak
       ).as('getLoependeVedtak')
       cy.login()
       cy.contains('button', 'Kom i gang').click()
@@ -195,14 +191,12 @@ describe('Med ufoeretrygd', () => {
       cy.intercept(
         {
           method: 'GET',
-          url: '/pensjon/kalkulator/api/v3/vedtak/loepende-vedtak',
+          url: '/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak',
         },
         {
           ...loependeVedtakMock,
-          ufoeretrygd: {
-            grad: 90,
-          },
-        }
+          ufoeretrygd: { grad: 90 },
+        } satisfies LoependeVedtak
       ).as('getLoependeVedtak')
       cy.login()
     })
@@ -224,14 +218,12 @@ describe('Med ufoeretrygd', () => {
       cy.intercept(
         {
           method: 'GET',
-          url: '/pensjon/kalkulator/api/v3/vedtak/loepende-vedtak',
+          url: '/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak',
         },
         {
           ...loependeVedtakMock,
-          ufoeretrygd: {
-            grad: 100,
-          },
-        }
+          ufoeretrygd: { grad: 100 },
+        } satisfies LoependeVedtak
       ).as('getLoependeVedtak')
       cy.login()
     })
@@ -245,10 +237,7 @@ describe('Med ufoeretrygd', () => {
       })
 
       it('forventer jeg tilpasset informasjon i read more «om pensjonsalder og uføretrygd».', () => {
-        cy.contains('Om pensjonsalder og uføretrygd').click()
-        cy.contains(
-          '100 % uføretrygd kan ikke kombineres med alderspensjon. Det er derfor ikke mulig å beregne alderspensjon før 67 år i kalkulatoren. Ved 67 år går 100 % uføretrygd automatisk over til 100 % alderspensjon.'
-        ).should('exist')
+        cy.get('[data-testid="om_pensjonsalder_UT_hel"]').should('exist')
       })
 
       it('forventer jeg å kunne velge alder fra 67 år til 75 år.', () => {
@@ -268,14 +257,12 @@ describe('Med ufoeretrygd', () => {
       cy.intercept(
         {
           method: 'GET',
-          url: '/pensjon/kalkulator/api/v3/vedtak/loepende-vedtak',
+          url: '/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak',
         },
         {
           ...loependeVedtakMock,
-          ufoeretrygd: {
-            grad: 75,
-          },
-        }
+          ufoeretrygd: { grad: 75 },
+        } satisfies LoependeVedtak
       ).as('getLoependeVedtak')
       cy.login()
     })
@@ -292,10 +279,9 @@ describe('Med ufoeretrygd', () => {
       })
 
       it('forventer jeg tilpasset informasjon i read more «om pensjonsalder og uføretrygd».', () => {
-        cy.contains('Om pensjonsalder og uføretrygd').click()
-        cy.contains(
-          'Det er mulig å kombinere gradert uføretrygd og gradert alderspensjon fra 62 år, så lenge du har høy nok opptjening til å ta ut alderspensjon. Graden av uføretrygd og alderspensjon kan ikke overstige 100 %.'
-        ).should('exist')
+        cy.get('[data-testid="om_pensjonsalder_UT_gradert_enkel"]').should(
+          'exist'
+        )
       })
 
       it('forventer jeg å kunne velge alder fra 67 år til 75 år.', () => {
@@ -315,14 +301,12 @@ describe('Med ufoeretrygd', () => {
       cy.intercept(
         {
           method: 'GET',
-          url: '/pensjon/kalkulator/api/v3/vedtak/loepende-vedtak',
+          url: '/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak',
         },
         {
           ...loependeVedtakMock,
-          ufoeretrygd: {
-            grad: 100,
-          },
-        }
+          ufoeretrygd: { grad: 100 },
+        } satisfies LoependeVedtak
       ).as('getLoependeVedtak')
       cy.login()
       cy.fillOutStegvisning({ afp: 'nei' })
@@ -382,14 +366,12 @@ describe('Med ufoeretrygd', () => {
       cy.intercept(
         {
           method: 'GET',
-          url: '/pensjon/kalkulator/api/v3/vedtak/loepende-vedtak',
+          url: '/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak',
         },
         {
           ...loependeVedtakMock,
-          ufoeretrygd: {
-            grad: 40,
-          },
-        }
+          ufoeretrygd: { grad: 40 },
+        } satisfies LoependeVedtak
       ).as('getLoependeVedtak')
       cy.login()
       cy.fillOutStegvisning({ afp: 'nei' })
