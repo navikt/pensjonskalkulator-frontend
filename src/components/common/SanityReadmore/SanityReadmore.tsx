@@ -20,28 +20,21 @@ export function SanityReadmore({ id, className, children }: IProps) {
   const { data: sanityFeatureToggle } = useGetSanityFeatureToggleQuery()
   const sanityContent = readMoreData[id]
 
-  const renderSanityContent = () => {
-    return (
-      <ReadMore
-        data-testid={sanityContent.name}
-        name={sanityContent.name}
-        header={sanityContent.overskrift}
-        className={className}
-      >
-        <PortableText
-          value={sanityContent.innhold}
-          components={getSanityPortableTextComponents(intl)}
-        />
-      </ReadMore>
-    )
-  }
-  if (!children) {
-    return renderSanityContent()
-  }
-
-  if (!sanityFeatureToggle?.enabled || !sanityContent) {
+  if (children && (!sanityFeatureToggle?.enabled || !sanityContent)) {
     return children
   }
 
-  return renderSanityContent()
+  return (
+    <ReadMore
+      data-testid={sanityContent.name}
+      name={sanityContent.name}
+      header={sanityContent.overskrift}
+      className={className}
+    >
+      <PortableText
+        value={sanityContent.innhold}
+        components={getSanityPortableTextComponents(intl)}
+      />
+    </ReadMore>
+  )
 }
