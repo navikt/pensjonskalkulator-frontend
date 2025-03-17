@@ -14,7 +14,7 @@ interface Props {
 }
 
 export function InfoOmFremtidigVedtak({ loependeVedtak, isCentered }: Props) {
-  // Vises hvis fremtidig vedtak, uten gjeldende vedtak
+  // Vis hvis fremtidig vedtak uten gjeldende vedtak
   if (!loependeVedtak.fremtidigAlderspensjon || loependeVedtak.alderspensjon)
     return null
 

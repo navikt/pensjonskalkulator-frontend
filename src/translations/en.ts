@@ -76,19 +76,19 @@ const translations = {
   'stegvisning.tilbake_start.modal.avbryt': 'Cancel',
   'stegvisning.fremtidigvedtak.alert': 'MANGLER_TEKST',
   'stegvisning.start.title': 'Hello',
-  'stegvisning.start.endring.ingress_1': `You currently have <strong>{grad} % retirement pension</strong>{
+  'stegvisning.start.endring.ingress_1a': `You currently have <strong>{grad} % retirement pension</strong>{
       ufoeretrygd,  select,     0 {} other { and <strong>{ufoeretrygd} % disability benefits</strong>}}{
       afpPrivat,    select, false {} other { and <strong>AFP in the private sector</strong>}}{
       afpOffentlig, select, false {} other { and <strong>AFP in the public sector</strong>}}. `,
-  'stegvisning.start.endring.ingress_2.uten_fremtidig':
+  'stegvisning.start.endring.ingress_1b.uten_fremtidig':
     'Here you can check what you can receive if you want to change your retirement pension.{br}{br}',
-  'stegvisning.start.endring.ingress_2.med_fremtidig': 'MANGLER_TEKST',
+  'stegvisning.start.endring.ingress_1b.med_fremtidig': 'MANGLER_TEKST',
   'stegvisning.start.ingress':
     'Welcome to the pension calculator which can show you:',
   'stegvisning.start.list_item1': 'retirement pension (Nav)',
   'stegvisning.start.list_item2': 'AFP (contractual pension)',
   'stegvisning.start.list_item3': 'pension agreements (employers, etc.)',
-  'stegvisning.start.endring.ingress_3':
+  'stegvisning.start.endring.ingress_2':
     'You must answer all the following questions.',
   'stegvisning.start.ingress_2':
     'To get an estimate of your pension, you must answer all the following questions.',

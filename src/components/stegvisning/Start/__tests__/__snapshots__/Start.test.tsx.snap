@@ -61,7 +61,7 @@ exports[`stegvisning - Start > rendrer slik den skal med navn, med riktig headin
           </li>
         </ul>
         <p
-          class="navds-body-long navds-body-long--large"
+          class="navds-body-long navds-body-long--medium"
         >
           stegvisning.start.ingress_2
         </p>

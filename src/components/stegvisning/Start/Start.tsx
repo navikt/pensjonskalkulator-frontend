@@ -67,7 +67,7 @@ export function Start({
               <>
                 <BodyLong size="large">
                   <FormattedMessage
-                    id="stegvisning.start.endring.ingress_1"
+                    id="stegvisning.start.endring.ingress_1a"
                     values={{
                       ...getFormatMessageValues(),
                       grad: loependeVedtak.alderspensjon?.grad,
@@ -78,7 +78,7 @@ export function Start({
                   />
                   {fremtidigAlderspensjon ? (
                     <FormattedMessage
-                      id="stegvisning.start.endring.ingress_2.med_fremtidig"
+                      id="stegvisning.start.endring.ingress_1b.med_fremtidig"
                       values={{
                         ...getFormatMessageValues(),
                         grad: fremtidigAlderspensjon.grad,
@@ -90,14 +90,14 @@ export function Start({
                     />
                   ) : (
                     <FormattedMessage
-                      id="stegvisning.start.endring.ingress_2.uten_fremtidig"
+                      id="stegvisning.start.endring.ingress_1b.uten_fremtidig"
                       values={getFormatMessageValues()}
                     />
                   )}
                 </BodyLong>
                 {!fremtidigAlderspensjon && (
                   <BodyLong size="medium">
-                    <FormattedMessage id="stegvisning.start.endring.ingress_3" />
+                    <FormattedMessage id="stegvisning.start.endring.ingress_2" />
                   </BodyLong>
                 )}
               </>

@@ -75,20 +75,20 @@ const translations = {
   'stegvisning.fremtidigvedtak.alert':
     'Du har vedtak om {grad} % alderspensjon fra {fom}. Du kan gjøre en ny beregning her frem til uttak.',
   'stegvisning.start.title': 'Hei',
-  'stegvisning.start.endring.ingress_1': `Du har nå <strong>{grad} % alderspensjon</strong>{
+  'stegvisning.start.endring.ingress_1a': `Du har nå <strong>{grad} % alderspensjon</strong>{
       ufoeretrygd,  select,     0 {} other { og <strong>{ufoeretrygd} % uføretrygd</strong>}}{
       afpPrivat,    select, false {} other { og <strong>AFP i privat sektor</strong>}}{
       afpOffentlig, select, false {} other { og <strong>AFP i offentlig sektor</strong>}}. `,
-  'stegvisning.start.endring.ingress_2.uten_fremtidig':
+  'stegvisning.start.endring.ingress_1b.uten_fremtidig':
     'Her kan du sjekke hva du kan få hvis du vil endre alderspensjonen din.{br}{br}',
-  'stegvisning.start.endring.ingress_2.med_fremtidig':
+  'stegvisning.start.endring.ingress_1b.med_fremtidig':
     'Du har endret til <strong>{grad} % alderspensjon fra {fom}</strong>. Du kan ikke gjøre en ny beregning her før denne datoen.{br}{br}Har du spørsmål, kan du kontakte oss på telefon 55 55 33 34.',
   'stegvisning.start.ingress':
     'Velkommen til pensjonskalkulatoren som kan vise deg:',
   'stegvisning.start.list_item1': 'alderspensjon (Nav)',
   'stegvisning.start.list_item2': 'AFP (avtalefestet pensjon)',
   'stegvisning.start.list_item3': 'pensjonsavtaler (arbeidsgivere m.m.)',
-  'stegvisning.start.endring.ingress_3':
+  'stegvisning.start.endring.ingress_2':
     'Du må svare på alle spørsmålene som kommer.',
   'stegvisning.start.ingress_2':
     'For å få et estimat på pensjonen din, må du svare på alle spørsmålene som kommer.',
