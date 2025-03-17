@@ -11,15 +11,13 @@ import { getSanityPortableTextComponents } from '@/utils/sanity'
 interface IProps {
   id: string
   className?: string
-  children: React.ReactNode
-  useFeatureToggle?: boolean
+  children?: React.ReactNode
 }
 
 export function SanityReadmore({
   id,
   className,
   children,
-  useFeatureToggle = true,
 }: IProps) {
   const intl = useIntl()
   const { readMoreData } = React.useContext(SanityContext)
@@ -41,8 +39,7 @@ export function SanityReadmore({
       </ReadMore>
     )
   }
-
-  if (useFeatureToggle === false) {
+  if (!children) {
     return renderSanityContent()
   }
 
