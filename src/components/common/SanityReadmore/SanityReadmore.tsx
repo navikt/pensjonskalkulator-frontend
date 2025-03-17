@@ -14,11 +14,7 @@ interface IProps {
   children?: React.ReactNode
 }
 
-export function SanityReadmore({
-  id,
-  className,
-  children,
-}: IProps) {
+export function SanityReadmore({ id, className, children }: IProps) {
   const intl = useIntl()
   const { readMoreData } = React.useContext(SanityContext)
   const { data: sanityFeatureToggle } = useGetSanityFeatureToggleQuery()

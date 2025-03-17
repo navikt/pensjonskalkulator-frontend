@@ -25,9 +25,7 @@ describe('SanityReadmore', () => {
     })
 
     it('rendrer ReadMore med korrekte props og innhold når children ikke finnes', async () => {
-      render(
-        <SanityReadmore id="hva_er_opphold_utenfor_norge" />
-      )
+      render(<SanityReadmore id="hva_er_opphold_utenfor_norge" />)
 
       const readMoreElement = await screen.findByTestId(
         'hva_er_opphold_utenfor_norge'
@@ -56,9 +54,7 @@ describe('SanityReadmore', () => {
     it('viser Sanity innhold når children ikke finnes, selv om feature toggle er deaktivert', async () => {
       mockErrorResponse('/feature/pensjonskalkulator.hent-tekster-fra-sanity')
 
-      render(
-        <SanityReadmore id="hva_er_opphold_utenfor_norge" />
-      )
+      render(<SanityReadmore id="hva_er_opphold_utenfor_norge" />)
 
       const readMoreElement = await screen.findByTestId(
         'hva_er_opphold_utenfor_norge'
@@ -84,9 +80,7 @@ describe('SanityReadmore', () => {
 
     it('kaster runtime error når id ikke finnes i readMoreData og children ikke finnes', async () => {
       expect(() => {
-        render(
-          <SanityReadmore id="non-existent-id" />
-        )
+        render(<SanityReadmore id="non-existent-id" />)
       }).toThrow()
     })
   })
