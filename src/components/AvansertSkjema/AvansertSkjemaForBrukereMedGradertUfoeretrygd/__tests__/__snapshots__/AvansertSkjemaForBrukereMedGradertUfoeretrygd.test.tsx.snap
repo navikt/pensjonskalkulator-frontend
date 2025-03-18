@@ -2,17 +2,17 @@
 
 exports[`AvansertSkjemaForBrukereMedGradertUfoeretrygd > Gitt at en bruker har vedtak om alderspensjon,  > Når brukeren har gradert uføretrygd, vises det riktig label på feltene 1`] = `
 <DocumentFragment>
+  <form
+    data-testid="AVANSERT_SKJEMA_FOR_BRUKERE_MED_GRADERT_UFOERETRYGD"
+    id="avansert-beregning"
+    method="dialog"
+  />
   <div
     class="_container_db4c62 _container__hasMobilePadding_db4c62"
   >
     <div
       class="_form_db4c62"
     >
-      <form
-        data-testid="AVANSERT_SKJEMA_FOR_BRUKERE_MED_GRADERT_UFOERETRYGD"
-        id="avansert-beregning"
-        method="dialog"
-      />
       <div>
         <h2
           class="navds-heading navds-heading--medium"
@@ -24,10 +24,10 @@ exports[`AvansertSkjemaForBrukereMedGradertUfoeretrygd > Gitt at en bruker har v
         >
           Fra 02.10.2020 har du mottatt 100 % alderspensjon.
         </p>
+        <hr
+          class="_divider_1adfb3 _divider__noMarginBottom_1adfb3"
+        />
       </div>
-      <hr
-        class="_divider_1adfb3"
-      />
       <div>
         <label
           class="_label_2e4d09 navds-label"
@@ -215,6 +215,7 @@ exports[`AvansertSkjemaForBrukereMedGradertUfoeretrygd > Gitt at en bruker har v
           </dialog>
           <button
             class="navds-button navds-button--tertiary navds-button--small"
+            type="button"
           >
             <span
               class="navds-button__icon"

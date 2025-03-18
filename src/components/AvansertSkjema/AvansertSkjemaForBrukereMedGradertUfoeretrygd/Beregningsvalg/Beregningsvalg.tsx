@@ -60,7 +60,7 @@ export const Beregningsvalg = ({
 
       {localBeregningsTypeRadio === 'med_afp' && (
         <div className={styles.description}>
-          <Heading level="2" size="medium">
+          <Heading level="2" size="medium" spacing>
             <FormattedMessage
               id={'beregning.avansert.rediger.beregningsvalg.med_afp.title'}
               values={{
