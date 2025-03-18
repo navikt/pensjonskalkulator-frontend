@@ -2566,4 +2566,93 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
       ).not.toBeInTheDocument()
     })
   })
+
+  describe('Beregningsvalg', () => {
+    beforeEach(() => {
+      mockResponse('/feature/pensjonskalkulator.gradert-ufoere-afp', {
+        status: 200,
+        json: { enabled: true },
+      })
+    })
+
+    it('Vis IntroAFP og Beregningsvalg når feature toggle er enabled', async () => {
+      render(
+        <BeregningContext.Provider
+          value={{
+            ...contextMockedValues,
+          }}
+        >
+          <AvansertSkjemaForBrukereMedGradertUfoeretrygd />
+        </BeregningContext.Provider>,
+        {
+          preloadedState: {
+            api: {
+              // @ts-ignore
+              queries: {
+                ...fulfilledGetPerson,
+                ...fulfilledGetLoependeVedtak75Ufoeregrad,
+              },
+            },
+            userInput: {
+              ...userInputInitialState,
+              afp: 'ja_offentlig',
+              samtykkeOffentligAFP: true,
+            },
+          },
+        }
+      )
+
+      expect(await screen.findByTestId('intro_afp')).toBeVisible()
+
+      expect(
+        await screen.findByTestId(AVANSERT_FORM_NAMES.beregningsTypeRadio)
+      ).toBeVisible()
+    })
+
+    it('Vis innhold under Beregningsvalg når man har gjort et valg i Beregningsvalg', async () => {
+      const user = userEvent.setup()
+
+      render(
+        <BeregningContext.Provider value={{ ...contextMockedValues }}>
+          <AvansertSkjemaForBrukereMedGradertUfoeretrygd />
+        </BeregningContext.Provider>,
+        {
+          preloadedState: {
+            api: {
+              // @ts-ignore
+              queries: {
+                ...fulfilledGetPerson,
+                ...fulfilledGetLoependeVedtak75Ufoeregrad,
+              },
+            },
+            userInput: {
+              ...userInputInitialState,
+              afp: 'ja_offentlig',
+              samtykkeOffentligAFP: true,
+            },
+          },
+        }
+      )
+      expect(
+        await screen.findByTestId(AVANSERT_FORM_NAMES.beregningsTypeRadio)
+      ).toBeVisible()
+
+      // Verify form fields are hidden initially
+      expect(
+        screen.queryByTestId(AVANSERT_FORM_NAMES.uttaksgrad)
+      ).not.toBeInTheDocument()
+
+      // Test med_afp selection shows form fields
+      await user.click(screen.getByTestId('med_afp'))
+      expect(
+        await screen.findByTestId(AVANSERT_FORM_NAMES.uttaksgrad)
+      ).toBeVisible()
+
+      // Test uten_afp selection also shows form fields
+      await user.click(screen.getByTestId('uten_afp'))
+      expect(
+        await screen.findByTestId(AVANSERT_FORM_NAMES.uttaksgrad)
+      ).toBeVisible()
+    })
+  })
 })

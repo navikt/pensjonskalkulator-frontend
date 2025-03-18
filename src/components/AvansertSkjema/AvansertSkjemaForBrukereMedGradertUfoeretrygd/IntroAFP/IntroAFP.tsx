@@ -12,10 +12,11 @@ export const IntroAFP = () => {
   const ufoeregrad = useAppSelector(selectUfoeregrad)
 
   return (
-    <div>
+    <div data-testid="intro_afp">
       <BodyLong>
         <FormattedMessage
           id={'beregning.avansert.rediger.beregningsvalg.description'}
+          data-testid="intro_afp_description"
           values={{
             ...getFormatMessageValues(),
             ufoeregrad,

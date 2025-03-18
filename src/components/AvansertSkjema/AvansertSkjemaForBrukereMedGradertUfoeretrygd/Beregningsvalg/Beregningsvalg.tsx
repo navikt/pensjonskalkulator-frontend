@@ -30,12 +30,14 @@ export const Beregningsvalg = ({
         })}
         role="radiogroup"
         aria-required="true"
+        name={AVANSERT_FORM_NAMES.beregningsTypeRadio}
+        data-testid={AVANSERT_FORM_NAMES.beregningsTypeRadio}
         defaultValue={localBeregningsTypeRadio}
         onChange={setLocalBeregningsTypeRadio}
       >
         <Radio
           form={AVANSERT_FORM_NAMES.form}
-          data-testid={AVANSERT_FORM_NAMES.beregningsType}
+          data-testid="uten_afp"
           value="uten_afp"
         >
           <FormattedMessage id="beregning.avansert.rediger.radio.beregningsvalg.uten_afp.label" />
@@ -43,7 +45,7 @@ export const Beregningsvalg = ({
 
         <Radio
           form={AVANSERT_FORM_NAMES.form}
-          data-testid={AVANSERT_FORM_NAMES.beregningsType}
+          data-testid="med_afp"
           value="med_afp"
         >
           <FormattedMessage
