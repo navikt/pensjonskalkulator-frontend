@@ -204,20 +204,6 @@ const translations = {
   'stegvisning.samtykke_pensjonsavtaler.title': 'Pensjonsavtaler',
   'stegvisning.samtykke_pensjonsavtaler.ingress':
     'Vil du se tjenestepensjon og andre pensjonsavtaler, må du samtykke til at Nav henter disse. Samtykket er frivillig.{br}{br} Hvis du svarer nei, får du beregnet alderspensjon (Nav) og eventuell AFP (avtalefestet pensjon).',
-  'stegvisning.samtykke_pensjonsavtaler.offentlig.readmore_title':
-    'Dette henter vi fra offentlige tjenestepensjonsordninger',
-  'stegvisning.samtykke_pensjonsavtaler.offentlig.readmore_ingress':
-    'Hvis du samtykker, sjekker vi om du er eller har vært medlem i en offentlig tjenestepensjonsordning. Hvis du har vært medlem hos flere, utveksler vi opplysninger for å finne ut hvor du sist var medlem.{br}{br}Vi henter beregning av tjenestepensjonen din fra den siste tjenestepensjonsordningen du var medlem i. Det inkluderer eventuell medlemstid fra andre offentlige tjenestepensjonsordninger.{br}{br}Vi kan bare hente inn pensjonsavtaler fra enkelte tjenestepensjonsordninger, bl.a. Statens pensjonskasse (SPK).',
-  'stegvisning.samtykke_pensjonsavtaler.privat.readmore_title':
-    'Dette henter vi fra Norsk Pensjon om pensjonsavtaler fra privat sektor',
-  'stegvisning.samtykke_pensjonsavtaler.privat.readmore_ingress':
-    'Hvis du samtykker, henter vi beregning av pensjonsavtaler i privat sektor fra Norsk Pensjon:',
-  'stegvisning.samtykke_pensjonsavtaler.privat.readmore_list_item1':
-    'tjenestepensjon fra arbeidsgiver (innskudds-, ytelses- eller hybridpensjon)',
-  'stegvisning.samtykke_pensjonsavtaler.privat.readmore_list_item2':
-    'fripoliser',
-  'stegvisning.samtykke_pensjonsavtaler.privat.readmore_list_item3':
-    'enkelte pensjonssparingsavtaler som du har tegnet selv',
   'stegvisning.samtykke_pensjonsavtaler.radio_label':
     'Skal vi hente pensjonsavtalene dine?',
   'stegvisning.samtykke_pensjonsavtaler.radio_description':
@@ -429,7 +415,8 @@ const translations = {
   'beregning.tabell.lukk': 'Lukk tabell av beregningen',
   'beregning.tabell.vis': 'Vis tabell av beregningen',
   'beregning.tabell.sum': 'Sum',
-  'beregning.avansert.button.endre_valgene_dine': 'Endre valgene dine',
+  'beregning.avansert.link.endre_valgene_dine': 'Endre valgene dine',
+  'beregning.avansert.link.endre_avanserte_valg': 'Endre avanserte valg',
   'beregning.avansert.endring_banner.title':
     'Alderspensjon før skatt når du er ',
   'beregning.avansert.endring_banner.kr_md': 'kr/md.',
@@ -500,6 +487,22 @@ const translations = {
     'Uttaksalder for <nowrap>100 %</nowrap> alderspensjon må være senere enn alder for gradert pensjon.',
   'beregning.avansert.rediger.heltuttak.agepicker.label':
     'Når vil du ta ut <nowrap>100 %</nowrap> alderspensjon?',
+
+  'beregning.avansert.rediger.beregningsvalg.description':
+    'Du har <nowrap>{ufoeregrad} %</nowrap> uføretrygd. Før du blir <nowrap>62 år</nowrap> må du velge enten uføretrygd eller AFP.{br}',
+  'beregning.avansert.rediger.beregningsvalg.om_valget_link':
+    'Om valget mellom uføretrygd og AFP',
+  'beregning.avansert.rediger.radio.beregningsvalg.label':
+    'Hva vil du beregne?',
+  'beregning.avansert.rediger.radio.beregningsvalg.uten_afp.label':
+    'Alderspensjon og uføretrygd, uten AFP.',
+  'beregning.avansert.rediger.radio.beregningsvalg.med_afp.label':
+    'Alderspensjon og AFP, uten uføretrygd fra <nowrap>{nedreAldersgrense}</nowrap>',
+  'beregning.avansert.rediger.beregningsvalg.med_afp.title':
+    'Alderspensjon og AFP fra <nowrap>{nedreAldersgrense}</nowrap>',
+  'beregning.avansert.rediger.beregningsvalg.med_afp.description':
+    '<nowrap>{nedreAldersgrense}</nowrap> er laveste uttaksalder. Du må ha høy nok pensjonsopptjening for å kunne ta ut alderspensjon og AFP fra denne alderen.',
+
   'beregning.avansert.button.beregn': 'Beregn pensjon',
   'beregning.avansert.button.beregn.endring': 'Beregn ny pensjon',
   'beregning.avansert.button.oppdater': 'Oppdater pensjon',

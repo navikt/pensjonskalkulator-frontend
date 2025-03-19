@@ -201,20 +201,6 @@ const translations = {
   'stegvisning.samtykke_pensjonsavtaler.title': 'Pension Agreements',
   'stegvisning.samtykke_pensjonsavtaler.ingress':
     'If you want to view occupational pensions and other pension agreements, you must consent to Nav retrieving this information. Consent is voluntary. If you answer no, you will calculate retirement pension (Nav) and any AFP (contractual pension).',
-  'stegvisning.samtykke_pensjonsavtaler.offentlig.readmore_title':
-    'We retrieve this from public occupational pension schemes.',
-  'stegvisning.samtykke_pensjonsavtaler.offentlig.readmore_ingress':
-    'If you consent, we will check whether you are or have been a member of a public occupational pension scheme. If you have been a member of several schemes, we will exchange information to determine where you were most recently a member.{br}{br}We will retrieve the calculation of your occupational pension from the last pension scheme you were a member of. This includes any membership time from other public occupational pension schemes.{br}{br}We can only retrieve pension agreements from certain occupational pension schemes, including the Norwegian Public Service Pension Fund (SPK).',
-  'stegvisning.samtykke_pensjonsavtaler.privat.readmore_title':
-    'What we retrieve from Norsk Pensjon about pension agreements from the private sector',
-  'stegvisning.samtykke_pensjonsavtaler.privat.readmore_ingress':
-    'If you consent, we will retrieve calculations of pension agreements in the private sector from Norsk Pensjon:',
-  'stegvisning.samtykke_pensjonsavtaler.privat.readmore_list_item1':
-    'occupational pension from the employer (defined contribution, defined benefit, or hybrid pension)',
-  'stegvisning.samtykke_pensjonsavtaler.privat.readmore_list_item2':
-    'free policies',
-  'stegvisning.samtykke_pensjonsavtaler.privat.readmore_list_item3':
-    'certain pension savings agreements you have taken out yourself',
   'stegvisning.samtykke_pensjonsavtaler.radio_label':
     'Should we retrieve your pension agreements?',
   'stegvisning.samtykke_pensjonsavtaler.radio_description': 'MANGLER_TEKST',
@@ -357,6 +343,16 @@ const translations = {
   'velguttaksalder.title': 'When do you want to withdraw retirement pension?',
   'velguttaksalder.endring.title':
     'When do you want to change your retirement pension?',
+  'beregning.avansert.rediger.beregningsvalg.description': 'MANGLER_TEKST',
+  'beregning.avansert.rediger.beregningsvalg.om_valget_link': 'MANGLER_TEKST',
+  'beregning.avansert.rediger.radio.beregningsvalg.label': 'MANGLER_TEKST',
+  'beregning.avansert.rediger.radio.beregningsvalg.uten_afp.label':
+    'MANGLER_TEKST',
+  'beregning.avansert.rediger.radio.beregningsvalg.med_afp.label':
+    'MANGLER_TEKST',
+  'beregning.avansert.rediger.beregningsvalg.med_afp.title': 'MANGLER_TEKST',
+  'beregning.avansert.rediger.beregningsvalg.med_afp.description':
+    'MANGLER_TEKST',
   'beregning.toggle.enkel': 'Simple',
   'beregning.toggle.avansert': 'Advanced',
   'beregning.loading': 'Please wait while we calculate your pension.',
@@ -401,7 +397,8 @@ const translations = {
   'beregning.tabell.lukk': 'Close calculation table',
   'beregning.tabell.vis': 'Show calculation table',
   'beregning.tabell.sum': 'Total',
-  'beregning.avansert.button.endre_valgene_dine': 'Change your choices',
+  'beregning.avansert.link.endre_valgene_dine': 'Change your choices',
+  'beregning.avansert.link.endre_avanserte_valg': 'Change advanced choices',
   'beregning.avansert.endring_banner.title':
     'retirement pension before tax when you are ',
   'beregning.avansert.endring_banner.kr_md': 'kr/mo.',
