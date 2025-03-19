@@ -11,7 +11,7 @@ import { getFormatMessageValues } from '@/utils/translations'
 import styles from './Beregningsvalg.module.scss'
 
 interface Props {
-  localBeregningsTypeRadio: Beregningsvalg
+  localBeregningsTypeRadio: Beregningsvalg | null
   setLocalBeregningsTypeRadio: (value: Beregningsvalg) => void
 }
 

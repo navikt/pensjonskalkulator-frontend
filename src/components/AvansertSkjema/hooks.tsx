@@ -16,7 +16,7 @@ export const useFormLocalState = (initialValues: {
   aarligInntektVsaHelPensjon: AarligInntektVsaPensjon | undefined
   gradertUttaksperiode: GradertUttak | null
   normertPensjonsalder: Alder
-  beregningsvalg: Beregningsvalg
+  beregningsvalg: Beregningsvalg | null
 }) => {
   const {
     isEndring,
@@ -34,7 +34,7 @@ export const useFormLocalState = (initialValues: {
     React.useContext(BeregningContext)
 
   const [localBeregningsTypeRadio, setBeregningsTypeRadio] =
-    React.useState<Beregningsvalg>(beregningsvalg)
+    React.useState<Beregningsvalg | null>(beregningsvalg)
 
   const [localHarInntektVsaHeltUttakRadio, setHarInntektVsaHeltUttakRadio] =
     React.useState<boolean | null>(

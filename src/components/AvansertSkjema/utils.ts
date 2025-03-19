@@ -506,7 +506,7 @@ export const onAvansertBeregningSubmit = (
     normertPensjonsalder: Alder
     loependeVedtak: LoependeVedtak
     localInntektFremTilUttak: string | null
-    localBeregningsTypeRadio: Beregningsvalg
+    localBeregningsTypeRadio: Beregningsvalg | null
     hasVilkaarIkkeOppfylt: boolean | undefined
     harAvansertSkjemaUnsavedChanges: boolean
   }
