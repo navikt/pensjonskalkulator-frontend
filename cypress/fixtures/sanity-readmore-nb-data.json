@@ -162,7 +162,7 @@
     },
     {
       "name": "dette_henter_vi_OFTP",
-      "overskrift": "Dette henter vi fra Norsk Pensjon om pensjonsavtaler fra offentlig sektor",
+      "overskrift": "Dette henter vi fra offentlige tjenestepensjonsordninger",
       "innhold": [
         {
           "_key": "95267fac3892",
