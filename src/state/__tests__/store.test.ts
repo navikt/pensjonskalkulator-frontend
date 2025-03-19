@@ -19,10 +19,12 @@ describe('store', () => {
       samtykke: true,
       samtykkeOffentligAFP: true,
       afp: null,
+      skalBeregneAfp: null,
       sivilstand: null,
       epsHarPensjon: null,
       epsHarInntektOver2G: null,
       currentSimulation: {
+        beregningsvalg: null,
         formatertUttaksalderReadOnly: null,
         uttaksalder: null,
         aarligInntektFoerUttakBeloep: '500 000',
