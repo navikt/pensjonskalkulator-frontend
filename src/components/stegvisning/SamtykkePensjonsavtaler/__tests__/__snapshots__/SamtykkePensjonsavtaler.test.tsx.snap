@@ -49,7 +49,7 @@ exports[`stegvisning - SamtykkePensjonsavtaler > rendrer slik den skal når samt
             />
           </svg>
           <span>
-            Dette henter vi fra Norsk Pensjon om pensjonsavtaler fra offentlig sektor
+            Dette henter vi fra offentlige tjenestepensjonsordninger
           </span>
         </button>
         <div
