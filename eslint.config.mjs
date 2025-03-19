@@ -54,7 +54,6 @@ export default [
   {
     files: ['**/*.test.ts', '**/*.test.tsx'],
     rules: {
-      'no-irregular-whitespace': 'off',
       '@typescript-eslint/ban-ts-comment': 'off',
     },
   },
@@ -65,6 +64,7 @@ export default [
     },
     rules: {
       'no-debugger': 'warn',
+      'no-irregular-whitespace': ['error', { skipTemplates: true }],
       '@typescript-eslint/no-unused-vars': 'warn',
       '@typescript-eslint/no-duplicate-enum-values': 'warn',
       '@typescript-eslint/no-shadow': ['error'],
