@@ -59,7 +59,7 @@ export function Ufoere({ onCancel, onPrevious, onNext }: Props) {
         {!isGradertUfoereAfpToggleEnabled ? (
           <BodyLong
             size="large"
-            data-testid="ufoere-ingress-gammel"
+            data-testid="ufoere-ingress"
             className={styles.paragraph}
           >
             <FormattedMessage
