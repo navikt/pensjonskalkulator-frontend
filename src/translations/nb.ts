@@ -206,20 +206,6 @@ const translations = {
   'stegvisning.samtykke_pensjonsavtaler.title': 'Pensjonsavtaler',
   'stegvisning.samtykke_pensjonsavtaler.ingress':
     'Vil du se tjenestepensjon og andre pensjonsavtaler, må du samtykke til at Nav henter disse. Samtykket er frivillig.{br}{br} Hvis du svarer nei, får du beregnet alderspensjon (Nav) og eventuell AFP (avtalefestet pensjon).',
-  'stegvisning.samtykke_pensjonsavtaler.offentlig.readmore_title':
-    'Dette henter vi fra offentlige tjenestepensjonsordninger',
-  'stegvisning.samtykke_pensjonsavtaler.offentlig.readmore_ingress':
-    'Hvis du samtykker, sjekker vi om du er eller har vært medlem i en offentlig tjenestepensjonsordning. Hvis du har vært medlem hos flere, utveksler vi opplysninger for å finne ut hvor du sist var medlem.{br}{br}Vi henter beregning av tjenestepensjonen din fra den siste tjenestepensjonsordningen du var medlem i. Det inkluderer eventuell medlemstid fra andre offentlige tjenestepensjonsordninger.{br}{br}Vi kan bare hente inn pensjonsavtaler fra enkelte tjenestepensjonsordninger, bl.a. Statens pensjonskasse (SPK).',
-  'stegvisning.samtykke_pensjonsavtaler.privat.readmore_title':
-    'Dette henter vi fra Norsk Pensjon om pensjonsavtaler fra privat sektor',
-  'stegvisning.samtykke_pensjonsavtaler.privat.readmore_ingress':
-    'Hvis du samtykker, henter vi beregning av pensjonsavtaler i privat sektor fra Norsk Pensjon:',
-  'stegvisning.samtykke_pensjonsavtaler.privat.readmore_list_item1':
-    'tjenestepensjon fra arbeidsgiver (innskudds-, ytelses- eller hybridpensjon)',
-  'stegvisning.samtykke_pensjonsavtaler.privat.readmore_list_item2':
-    'fripoliser',
-  'stegvisning.samtykke_pensjonsavtaler.privat.readmore_list_item3':
-    'enkelte pensjonssparingsavtaler som du har tegnet selv',
   'stegvisning.samtykke_pensjonsavtaler.radio_label':
     'Skal vi hente pensjonsavtalene dine?',
   'stegvisning.samtykke_pensjonsavtaler.radio_description':
@@ -282,9 +268,6 @@ const translations = {
   'stegvisning.ufoere.title': 'Uføretrygd og AFP (avtalefestet pensjon)',
   'stegvisning.ufoere.info':
     'Før du fyller 62 år må du velge mellom å få AFP eller å beholde uføretrygden. {br}{br} AFP og uføretrygd kan ikke kombineres. Hvis du ikke gir oss beskjed, mister du retten til AFP (men beholder uføretrygden).',
-  'stegvisning.ufoere.readmore_1.title': 'Om uføretrygd og AFP',
-  'stegvisning.ufoere.readmore_1.body':
-    'For å ha rett til AFP, kan du ikke ha fått utbetalt uføretrygd fra Nav etter den måneden du fyller 62 år. Det gjelder uansett om du har mottatt hel eller gradert uføretrygd, hvor lenge du har hatt uføretrygd og hvor mye du har fått utbetalt i uføretrygd.{br}{br}Hvis du er under 62 år, må du altså si fra deg uføretrygden innen utgangen av måneden du fyller 62 år for å få utbetalt AFP. Husk at alle de andre vilkårene for å ha rett til AFP også må være oppfylt.',
   'stegvisning.ufoere.ingress':
     'Du kan få hjelp til å vurdere alternativene dine. Kontakt tjenestepensjonsordningen din hvis du jobber i offentlig sektor. <planleggePensjonLink>Kontakt Nav</planleggePensjonLink> hvis du jobber i privat sektor. {br}{br} Kalkulatoren beregner ikke AFP for deg som får uføretrygd.{br}{br} Gå videre for å se alderspensjon fra Nav og pensjonsavtaler.',
   'stegvisning.samtykke_offentlig_afp.title':
@@ -434,7 +417,8 @@ const translations = {
   'beregning.tabell.lukk': 'Lukk tabell av beregningen',
   'beregning.tabell.vis': 'Vis tabell av beregningen',
   'beregning.tabell.sum': 'Sum',
-  'beregning.avansert.button.endre_valgene_dine': 'Endre valgene dine',
+  'beregning.avansert.link.endre_valgene_dine': 'Endre valgene dine',
+  'beregning.avansert.link.endre_avanserte_valg': 'Endre avanserte valg',
   'beregning.avansert.endring_banner.title':
     'Alderspensjon før skatt når du er ',
   'beregning.avansert.endring_banner.kr_md': 'kr/md.',
