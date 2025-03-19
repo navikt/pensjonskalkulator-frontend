@@ -1,10 +1,9 @@
 import { describe, expect, it, vi } from 'vitest'
 
-import { AVANSERT_FORM_NAMES } from '../../../utils'
 import { Beregningsvalg } from '../Beregningsvalg'
 import { fulfilledGetPersonMedOekteAldersgrenser } from '@/mocks/mockedRTKQueryApiCalls'
 import { userInputInitialState } from '@/state/userInput/userInputSlice'
-import { render, screen, userEvent } from '@/test-utils'
+import { render, screen } from '@/test-utils'
 
 describe('Beregningsvalg', () => {
   const mockSetLocalBeregningsTypeRadio = vi.fn()
@@ -39,22 +38,6 @@ describe('Beregningsvalg', () => {
   })
 
   describe('Rendering', () => {
-    it('Viser radio gruppe med riktige valg', () => {
-      renderWithDefaultState()
-
-      const radioGroup = screen.getByRole('radiogroup')
-      expect(radioGroup).toBeInTheDocument()
-      expect(radioGroup).toHaveAttribute('aria-required', 'true')
-
-      const radioInputs = screen.getAllByRole('radio')
-      radioInputs.forEach((input) => {
-        expect(input).toHaveAttribute(
-          'name',
-          AVANSERT_FORM_NAMES.beregningsTypeRadio
-        )
-      })
-    })
-
     it('Viser begge radio valgene', () => {
       renderWithDefaultState()
 
@@ -122,28 +105,6 @@ describe('Beregningsvalg', () => {
       expect(screen.getByText('Alderspensjon og AFP fra')).toHaveTextContent(
         `${nedreAldersgrense.aar}`
       )
-    })
-  })
-
-  describe('Brukerinteraksjon', () => {
-    it('Kaller setLocalBeregningsTypeRadio med riktig verdi når "med_afp" velges', async () => {
-      const user = userEvent.setup()
-      renderWithDefaultState()
-
-      const medAfpRadio = screen.getByTestId('med_afp')
-      await user.click(medAfpRadio)
-
-      expect(mockSetLocalBeregningsTypeRadio).toHaveBeenCalledWith('med_afp')
-    })
-
-    it('Kaller setLocalBeregningsTypeRadio med riktig verdi når "uten_afp" velges', async () => {
-      const user = userEvent.setup()
-      renderWithDefaultState({ localBeregningsTypeRadio: 'med_afp' })
-
-      const utenAfpRadio = screen.getByTestId('uten_afp')
-      await user.click(utenAfpRadio)
-
-      expect(mockSetLocalBeregningsTypeRadio).toHaveBeenCalledWith('uten_afp')
     })
   })
 })

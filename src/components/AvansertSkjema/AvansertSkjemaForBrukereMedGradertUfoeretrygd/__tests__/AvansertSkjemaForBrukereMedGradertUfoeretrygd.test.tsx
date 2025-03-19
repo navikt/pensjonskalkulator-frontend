@@ -2567,7 +2567,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
     })
   })
 
-  describe('Beregningsvalg', () => {
+  describe('Gitt at feature toggle for gradert uføretrygd og AFP er enabled', () => {
     beforeEach(() => {
       mockResponse('/feature/pensjonskalkulator.gradert-ufoere-afp', {
         status: 200,
@@ -2575,7 +2575,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
       })
     })
 
-    it('Vis IntroAFP og Beregningsvalg når feature toggle er enabled', async () => {
+    it('Vis intro tekst om AFP og beregningsvalg', async () => {
       render(
         <BeregningContext.Provider
           value={{
@@ -2609,7 +2609,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
       ).toBeVisible()
     })
 
-    it('Vis innhold under Beregningsvalg når man har gjort et valg i Beregningsvalg', async () => {
+    it('Vis resten av skjemaet når man har gjort et valg i Beregningsvalg', async () => {
       const user = userEvent.setup()
 
       render(
