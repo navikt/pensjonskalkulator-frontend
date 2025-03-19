@@ -182,6 +182,12 @@
 }
 
 :global {
+  @media (min-width: variables.$a-breakpoint-lg) {
+    .highcharts-container {
+      z-index: 1 !important;
+    }
+  }
+
   .highcharts-loading {
     opacity: 1 !important;
     background-color: rgb(255 255 255 / 70%) !important;
