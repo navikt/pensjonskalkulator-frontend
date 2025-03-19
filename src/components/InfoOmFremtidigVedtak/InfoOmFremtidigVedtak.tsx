@@ -18,21 +18,19 @@ export function InfoOmFremtidigVedtak({ loependeVedtak, isCentered }: Props) {
   }
 
   return (
-    <>
-      <Alert
-        className={clsx(styles.alert, { [styles.alert__centered]: isCentered })}
-        variant="info"
-        aria-live="polite"
-      >
-        <FormattedMessage
-          id={
-            loependeVedtak.alderspensjon
-              ? 'stegvisning.fremtidigvedtak.endring.alert'
-              : 'stegvisning.fremtidigvedtak.alert'
-          }
-          values={{ ...getFormatMessageValues() }}
-        />
-      </Alert>
-    </>
+    <Alert
+      className={clsx(styles.alert, { [styles.alert__centered]: isCentered })}
+      variant="info"
+      aria-live="polite"
+    >
+      <FormattedMessage
+        id={
+          loependeVedtak.alderspensjon
+            ? 'stegvisning.fremtidigvedtak.endring.alert'
+            : 'stegvisning.fremtidigvedtak.alert'
+        }
+        values={{ ...getFormatMessageValues() }}
+      />
+    </Alert>
   )
 }
