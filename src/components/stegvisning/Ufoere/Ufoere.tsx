@@ -13,9 +13,9 @@ import { getFormatMessageValues } from '@/utils/translations'
 import styles from './Ufoere.module.scss'
 
 interface Props {
-  readonly onCancel?: () => void
-  readonly onPrevious: () => void
-  readonly onNext?: () => void
+  onCancel?: () => void
+  onPrevious: () => void
+  onNext?: () => void
 }
 
 export function Ufoere({ onCancel, onPrevious, onNext }: Props) {
