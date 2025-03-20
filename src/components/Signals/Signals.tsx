@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import clsx from 'clsx'
 
@@ -6,92 +6,74 @@ import useSignals from './hooks'
 
 import styles from './Signals.module.scss'
 
+type ActiveEndpointRes = {
+  active: boolean
+  language: 'en' | 'no' | 'fi' | 'da'
+  widgetUrl: string
+  questionType: 'calendarStep' | 'checkboxes' | 'multipleChoice' | 'studyPanel'
+  header: string
+  description: string
+  options: Array<{
+    label: string
+    position: number
+    answerUrl: string
+  }>
+}
+
 interface Props {
   id: string
-  ready?: boolean
   width?: string
   breakpoint?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl'
+  demo?: boolean
 }
 
 export const Signals = ({
   id,
-  ready = true,
   width = '632px',
   breakpoint = 'xs',
+  demo = false,
 }: Props) => {
-  useSignals(ready)
-  const embedRef = useRef<HTMLDivElement>(null)
-  const [isHidden, setIsHidden] = useState(false)
+  const [isActive, setIsActive] = useState(demo || false)
 
+  // Check if the study is active
   useEffect(() => {
-    if (!embedRef.current) return
+    const checkActiveStatus = async () => {
+      try {
+        const response = await fetch(
+          `https://api.uxsignals.com/v2/study/id/${id}/active`
+        )
+        if (!response.ok) {
+          setIsActive(false)
+          return
+        }
 
-    // Function to check if the element is hidden
-    const checkIfHidden = () => {
-      const embedElement =
-        embedRef.current?.querySelector(`[data-uxsignals-embed="${id}"]`) ||
-        embedRef.current
-
-      if (!embedElement) return
-
-      const computedStyle = window.getComputedStyle(embedElement)
-      const inlineStyle = embedElement.getAttribute('style')
-
-      const isCurrentlyHidden = !!(
-        computedStyle.display === 'none' ||
-        inlineStyle?.includes('display: none')
-      )
-
-      setIsHidden(isCurrentlyHidden)
-    }
-
-    // Check immediately
-    checkIfHidden()
-
-    // Set up a MutationObserver to detect style changes
-    const observer = new MutationObserver((mutations) => {
-      // Only check if we have style attribute changes
-      const hasStyleChanges = mutations.some(
-        (mutation) =>
-          mutation.type === 'attributes' && mutation.attributeName === 'style'
-      )
-
-      if (hasStyleChanges) {
-        checkIfHidden()
+        const { active } = (await response.json()) as ActiveEndpointRes
+        setIsActive(active)
+      } catch {
+        setIsActive(false)
       }
-    })
-
-    // We need to observe the parent container as well since UX Signals might
-    // create new elements or modify the DOM structure
-    if (embedRef.current) {
-      observer.observe(embedRef.current, {
-        attributes: true,
-        attributeFilter: ['style'],
-        childList: true, // Watch for added/removed children
-        subtree: true, // Watch all descendants
-      })
     }
 
-    // Clean up
-    return () => {
-      observer.disconnect()
+    if (!demo) {
+      checkActiveStatus()
     }
-  }, [id]) // Run when id changes
+  }, [id, demo])
 
-  if (!ready) return null
+  useSignals(isActive)
+
+  if (!isActive) return null
 
   return (
-    <div
-      className={styles.container}
-      style={isHidden ? { display: 'none' } : undefined}
-    >
+    <div className={styles.container}>
       <section className={clsx(styles.section, styles[breakpoint])}>
         <div
-          ref={embedRef}
           data-uxsignals-embed={id}
+          data-uxsignals-mode={demo ? 'demo' : undefined}
           style={{ maxWidth: width }}
         />
       </section>
     </div>
   )
 }
+
+export default Signals
