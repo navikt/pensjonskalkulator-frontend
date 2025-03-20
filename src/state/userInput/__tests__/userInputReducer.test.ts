@@ -68,6 +68,15 @@ describe('userInputSlice', () => {
       })
     })
 
+    it('shallBeregneAfp', () => {
+      const skalBeregneAfpState = userInputReducer(
+        userInputInitialState,
+        userInputActions.setSkalBeregneAfp(true)
+      )
+
+      expect(skalBeregneAfpState.skalBeregneAfp).toBe(true)
+    })
+
     it('setUtenlandsperiode', () => {
       const utenlandsperiode: Utenlandsperiode = {
         id: '12345',
@@ -232,6 +241,7 @@ describe('userInputSlice', () => {
       expect(updatedState).toStrictEqual({
         ...userInputInitialState,
         currentSimulation: {
+          beregningsvalg: null,
           formatertUttaksalderReadOnly: null,
           uttaksalder: { aar: 65, maaneder: 4 },
           aarligInntektFoerUttakBeloep: null,
@@ -375,8 +385,10 @@ describe('userInputSlice', () => {
           harUtenlandsopphold: true,
           samtykke: true,
           samtykkeOffentligAFP: true,
+          skalBeregneAfp: true,
           afp: 'ja_offentlig',
           currentSimulation: {
+            beregningsvalg: null,
             formatertUttaksalderReadOnly:
               '66 alder.aar string.og 4 alder.maaneder',
             uttaksalder: { aar: 66, maaneder: 4 },
@@ -410,6 +422,7 @@ describe('userInputSlice', () => {
           samtykke: true,
           afp: 'ja_offentlig',
           currentSimulation: {
+            beregningsvalg: null,
             formatertUttaksalderReadOnly:
               '66 alder.aar string.og 4 alder.maaneder',
             uttaksalder: { aar: 66, maaneder: 4 },

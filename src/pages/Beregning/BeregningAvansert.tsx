@@ -2,8 +2,8 @@ import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { useNavigate } from 'react-router'
 
-import { PencilIcon } from '@navikt/aksel-icons'
-import { Button, Heading } from '@navikt/ds-react'
+import { ArrowLeftIcon } from '@navikt/aksel-icons'
+import { Heading, Link } from '@navikt/ds-react'
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
 import clsx from 'clsx'
 
@@ -184,7 +184,11 @@ export const BeregningAvansert: React.FC = () => {
           <InfoOmLoependeVedtak loependeVedtak={loependeVedtak} />
 
           <div
-            className={`${styles.container} ${styles.container__hasMobilePadding} ${styles.container__hasTopMargin}`}
+            className={clsx(
+              styles.container,
+              styles.container__hasMobilePadding,
+              styles.container__hasTopMargin
+            )}
           >
             {isError ? (
               <>
@@ -202,21 +206,28 @@ export const BeregningAvansert: React.FC = () => {
               </>
             ) : (
               <>
-                <Button
-                  type="button"
-                  data-testid="card-button-secondary"
-                  className={styles.button}
-                  variant="secondary"
-                  icon={<PencilIcon aria-hidden />}
-                  onClick={() => {
-                    logger('button klikk', {
-                      tekst: 'Beregning avansert: Endre valgene dine',
+                <Link
+                  href="#"
+                  className={styles.link}
+                  onClick={(e) => {
+                    e?.preventDefault()
+                    logger('link klikk', {
+                      tekst: isEndring
+                        ? 'Beregning avansert: Endre valgene dine'
+                        : 'Beregning avansert: Endre avanserte valg',
                     })
                     setAvansertSkjemaModus('redigering')
                   }}
                 >
-                  <FormattedMessage id="beregning.avansert.button.endre_valgene_dine" />
-                </Button>
+                  <ArrowLeftIcon aria-hidden fontSize="1.5rem" />
+                  <FormattedMessage
+                    id={
+                      isEndring
+                        ? 'beregning.avansert.link.endre_valgene_dine'
+                        : 'beregning.avansert.link.endre_avanserte_valg'
+                    }
+                  />
+                </Link>
 
                 <Simulering
                   isLoading={isFetching}

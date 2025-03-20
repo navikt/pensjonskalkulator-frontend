@@ -1,9 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`stegvisning - AFP > rendrer slik den skal når afp er oppgitt 1`] = `
+exports[`stegvisning - AFP - født etter 1963 > rendrer slik den skal når afp er oppgitt 1`] = `
 <DocumentFragment>
   <section
     class="_section_67454f _section__largePadding_67454f _section__marginBotton_67454f"
+    data-testid="afp-etter-1963"
   >
     <form>
       <h2

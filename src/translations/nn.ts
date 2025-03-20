@@ -66,12 +66,10 @@ const translations = {
   'stegvisning.tilbake_start.modal.bekreft': 'MANGLER_TEKST',
   'stegvisning.tilbake_start.modal.avbryt': 'MANGLER_TEKST',
   'stegvisning.fremtidigvedtak.alert': 'MANGLER_TEKST',
-  'stegvisning.fremtidigvedtak.endring.alert': 'MANGLER_TEKST',
   'stegvisning.start.title': 'Hei',
-  'stegvisning.start.endring.ingress': 'MANGLER_TEKST',
-  'stegvisning.start.endring.ufoeretrygd': 'MANGLER_TEKST',
-  'stegvisning.start.endring.afp.privat': 'MANGLER_TEKST',
-  'stegvisning.start.endring.afp.offentlig': 'MANGLER_TEKST',
+  'stegvisning.start.endring.ingress_1a': 'MANGLER_TEKST',
+  'stegvisning.start.endring.ingress_1b.uten_fremtidig': 'MANGLER_TEKST',
+  'stegvisning.start.endring.ingress_1b.med_fremtidig': 'MANGLER_TEKST',
   'stegvisning.start.ingress': 'MANGLER_TEKST',
   'stegvisning.start.list_item1': 'MANGLER_TEKST',
   'stegvisning.start.list_item2': 'MANGLER_TEKST',
@@ -180,19 +178,6 @@ const translations = {
   'stegvisning.samtykke_pensjonsavtaler.title': 'Pensjonen din',
   'stegvisning.samtykke_pensjonsavtaler.ingress':
     'I kalkulatoren får du fram alderspensjon fra folketrygden (Nav) og eventuell avtalefesta pensjon (AFP) i privat sektor. For å vise andre pensjonsavtalar og tenestepensjon frå arbeidsgjevarar, må vi ha ditt samtykke til å hente pensjonsavtalane dine.',
-  'stegvisning.samtykke_pensjonsavtaler.offentlig.readmore_title':
-    'Desse opplysningane hentar vi',
-  'stegvisning.samtykke_pensjonsavtaler.offentlig.readmore_ingress':
-    'Samtykket er frivillig. Om du svarar nei får du rekna ut alderspensjon (Nav) og eventuell avtalefesta pensjon (AFP) i privat sektor.',
-  'stegvisning.samtykke_pensjonsavtaler.privat.readmore_title': 'MANGLER_TEKST',
-  'stegvisning.samtykke_pensjonsavtaler.privat.readmore_ingress':
-    'MANGLER_TEKST',
-  'stegvisning.samtykke_pensjonsavtaler.privat.readmore_list_item1':
-    'tenestepensjon frå arbeidsgjevar (innskots-, ytings- eller hybridpensjon), fripolisar og einskilde avtalar om pensjonssparing.',
-  'stegvisning.samtykke_pensjonsavtaler.privat.readmore_list_item2':
-    'sjekkar vi om du er eller har vore medlem i offentleg tenestepensjonsordning, og viser at du kan ha rettar, utan å hente avtalane. ',
-  'stegvisning.samtykke_pensjonsavtaler.privat.readmore_list_item3':
-    'gjeld samtykket kun for denne utrekninga.',
   'stegvisning.samtykke_pensjonsavtaler.radio_label':
     'Skal vi hente dine pensjonsavtalar?',
   'stegvisning.samtykke_pensjonsavtaler.radio_description': 'MANGLER_TEKST',
@@ -234,8 +219,6 @@ const translations = {
   'stegvisning.afp.validation_error': 'Du må svare på om du har rett til AFP.',
   'stegvisning.ufoere.title': 'MANGLER_TEKST',
   'stegvisning.ufoere.info': 'MANGLER_TEKST',
-  'stegvisning.ufoere.readmore_1.title': 'MANGLER_TEKST',
-  'stegvisning.ufoere.readmore_1.body': 'MANGLER_TEKST',
   'stegvisning.ufoere.ingress': 'MANGLER_TEKST',
   'stegvisning.samtykke_offentlig_afp.title': 'MANGLER_TEKST',
   'stegvisning.samtykke_offentlig_afp.ingress': 'MANGLER_TEKST',
@@ -309,6 +292,16 @@ const translations = {
   'omufoeretrygd.avansert_link': 'MANGLER_TEKST',
   'velguttaksalder.title': 'Kor tid vil du ta ut alderspensjon?',
   'velguttaksalder.endring.title': 'MANGLER_TEKST',
+  'beregning.avansert.rediger.beregningsvalg.description': 'MANGLER_TEKST',
+  'beregning.avansert.rediger.beregningsvalg.om_valget_link': 'MANGLER_TEKST',
+  'beregning.avansert.rediger.radio.beregningsvalg.label': 'MANGLER_TEKST',
+  'beregning.avansert.rediger.radio.beregningsvalg.uten_afp.label':
+    'MANGLER_TEKST',
+  'beregning.avansert.rediger.radio.beregningsvalg.med_afp.label':
+    'MANGLER_TEKST',
+  'beregning.avansert.rediger.beregningsvalg.med_afp.title': 'MANGLER_TEKST',
+  'beregning.avansert.rediger.beregningsvalg.med_afp.description':
+    'MANGLER_TEKST',
   'beregning.toggle.enkel': 'MANGLER_TEKST',
   'beregning.toggle.avansert': 'MANGLER_TEKST',
   'beregning.loading': 'Vent litt medan vi reknar ut pensjonen din',
@@ -348,7 +341,8 @@ const translations = {
   'beregning.tabell.lukk': 'Lukk tabell av utrekninga',
   'beregning.tabell.vis': 'Vis tabell av utrekninga',
   'beregning.tabell.sum': 'Sum',
-  'beregning.avansert.button.endre_valgene_dine': 'MANGLER_TEKST',
+  'beregning.avansert.link.endre_valgene_dine': 'MANGLER_TEKST',
+  'beregning.avansert.link.endre_avanserte_valg': 'MANGLER_TEKST',
   'beregning.avansert.endring_banner.title': 'MANGLER_TEKST',
   'beregning.avansert.endring_banner.kr_md': 'MANGLER_TEKST',
   'beregning.avansert.resultatkort.tittel': 'MANGLER_TEKST',

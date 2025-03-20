@@ -5,6 +5,7 @@ import { formatInntektToNumber } from '@/utils/inntekt'
 import { isLoependeVedtakEndring } from '@/utils/loependeVedtak'
 import { checkHarSamboer } from '@/utils/sivilstand'
 
+// TODO: Legg til logikk for "AFP_ETTERFULGT_AV_ALDERSPENSJON_GAMMEL"
 export const getSimuleringstypeFromRadioEllerVedtak = (
   loependeVedtak: LoependeVedtak,
   afp: AfpRadio | null
@@ -101,22 +102,18 @@ export const generateTidligstMuligHeltUttakRequestBody = (args: {
       loependeVedtak,
       afp
     ),
-    epsHarInntektOver2G:
-      epsHarInntektOver2G === null
-        ? checkHarSamboer(sivilstand)
-        : epsHarInntektOver2G,
+    epsHarInntektOver2G: epsHarInntektOver2G ?? checkHarSamboer(sivilstand),
     epsHarPensjon: !!epsHarPensjon,
     aarligInntektFoerUttakBeloep: formatInntektToNumber(
       aarligInntektFoerUttakBeloep
     ),
     sivilstand: sivilstand ?? 'UOPPGITT',
-    aarligInntektVsaPensjon:
-      aarligInntektVsaPensjon && aarligInntektVsaPensjon.beloep
-        ? {
-            ...aarligInntektVsaPensjon,
-            beloep: formatInntektToNumber(aarligInntektVsaPensjon.beloep),
-          }
-        : undefined,
+    aarligInntektVsaPensjon: aarligInntektVsaPensjon?.beloep
+      ? {
+          ...aarligInntektVsaPensjon,
+          beloep: formatInntektToNumber(aarligInntektVsaPensjon.beloep),
+        }
+      : undefined,
     utenlandsperiodeListe: transformUtenlandsperioderArray(utenlandsperioder),
   }
 }
@@ -156,10 +153,7 @@ export const generateAlderspensjonRequestBody = (args: {
       afp
     ),
     foedselsdato: format(parseISO(foedselsdato), DATE_BACKEND_FORMAT),
-    epsHarInntektOver2G:
-      epsHarInntektOver2G === null
-        ? checkHarSamboer(sivilstand)
-        : epsHarInntektOver2G,
+    epsHarInntektOver2G: epsHarInntektOver2G ?? checkHarSamboer(sivilstand),
     epsHarPensjon: !!epsHarPensjon,
     aarligInntektFoerUttakBeloep: formatInntektToNumber(
       aarligInntektFoerUttakBeloep
@@ -221,10 +215,7 @@ export const generateAlderspensjonEnkelRequestBody = (args: {
       afp
     ),
     foedselsdato: format(parseISO(foedselsdato), DATE_BACKEND_FORMAT),
-    epsHarInntektOver2G:
-      epsHarInntektOver2G === null
-        ? checkHarSamboer(sivilstand)
-        : epsHarInntektOver2G,
+    epsHarInntektOver2G: epsHarInntektOver2G ?? checkHarSamboer(sivilstand),
     epsHarPensjon: !!epsHarPensjon,
     aarligInntektFoerUttakBeloep: formatInntektToNumber(
       aarligInntektFoerUttakBeloep
@@ -306,10 +297,7 @@ export const generatePensjonsavtalerRequestBody = (args: {
       },
     ],
     harAfp: !ufoeregrad && afp === 'ja_privat',
-    epsHarInntektOver2G:
-      epsHarInntektOver2G === null
-        ? checkHarSamboer(sivilstand)
-        : epsHarInntektOver2G,
+    epsHarInntektOver2G: epsHarInntektOver2G ?? checkHarSamboer(sivilstand),
     epsHarPensjon: !!epsHarPensjon,
     sivilstand,
   }
@@ -367,10 +355,7 @@ export const generateOffentligTpRequestBody = (args: {
       aarligInntektFoerUttakBeloep
     ),
     utenlandsperiodeListe: transformUtenlandsperioderArray(utenlandsperioder),
-    epsHarInntektOver2G:
-      epsHarInntektOver2G === null
-        ? checkHarSamboer(sivilstand)
-        : epsHarInntektOver2G,
+    epsHarInntektOver2G: epsHarInntektOver2G ?? checkHarSamboer(sivilstand),
     epsHarPensjon: !!epsHarPensjon,
     brukerBaOmAfp: afp === 'ja_offentlig' || afp === 'ja_privat',
   }
