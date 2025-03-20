@@ -3,11 +3,13 @@
 This document provides guidelines for Copilot to follow when suggesting code for this project.
 
 ## Project Overview
+
 - Frontend application for pension calculator for users born 1963 or later
 - React-based SPA using TypeScript, Vite, React Router, React-Intl for translations
 - Uses NAV design system (@navikt/ds-react and @navikt/ds-css)
 
 ## File Structure
+
 - Each component should be in its own directory (`ComponentName/`)
 - Component files should follow this pattern:
   - `ComponentName/ComponentName.tsx` - Main component file
@@ -17,9 +19,10 @@ This document provides guidelines for Copilot to follow when suggesting code for
 - Group related components in logical directories (e.g., `common/`, `Simulering/`)
 
 ## Component Guidelines
+
 - Use functional components with React hooks
 - TypeScript interfaces should be explicit for props
-- Export named components (not default exports) except for pages
+- Export named components (not default exports)
 - Use destructuring for props
 - Components should be:
   - Self-contained and reusable where possible
@@ -27,6 +30,7 @@ This document provides guidelines for Copilot to follow when suggesting code for
   - Well-typed with TypeScript
 
 ## Example Component Structure:
+
 ```tsx
 import React from 'react'
 import { useIntl } from 'react-intl'
@@ -47,36 +51,29 @@ export const ComponentName: React.FC<ComponentNameProps> = ({
   optionalProp = false,
 }) => {
   const intl = useIntl()
-  
-  return (
-    <div className={styles.container}>
-      {/* Component content */}
-    </div>
-  )
+
+  return <div className={styles.container}>{/* Component content */}</div>
 }
 ```
 
 ## Styling Conventions
+
 - Use CSS Modules (`.module.scss` files)
 - Follow BEM-like naming convention within modules
+- Use `clsx` when combining multiple class names
 - Import styles as `styles` and use as `className={styles.elementName}`
 - Prefer NAV design system components and styling where possible
 
 ## Testing Guidelines
+
 - Tests go in `__tests__` subdirectory within component directory
 - Use Vitest for testing
 - Test files should match component name: `ComponentName.test.tsx`
 - Use testing-library/react for component testing
 - Make use of test-utils.tsx wrappers for common testing patterns
 
-## Import Order
-- React imports first
-- External library imports (sorted alphabetically)
-- Internal imports with absolute paths (sorted alphabetically)
-- Relative imports (sorted alphabetically)
-- Style imports last
-
 ## Code Style
+
 - Use semicolons at the end of statements: No
 - Use single quotes for strings
 - 2 spaces for indentation
@@ -87,6 +84,7 @@ export const ComponentName: React.FC<ComponentNameProps> = ({
 - No unused variables or imports
 
 ## Best Practices
+
 - Use named exports instead of default exports
 - Prefer functional components over class components
 - Use React hooks appropriately
@@ -98,15 +96,18 @@ export const ComponentName: React.FC<ComponentNameProps> = ({
 - Follow accessibility best practices
 
 ## State Management
+
 - Use React hooks for local state
 - Use context API for shared state when appropriate
-- Redux is used for more complex global state
+- Redux is used for global state management
 
 ## Internationalization
+
 - All user-facing strings should use react-intl
 - Use formatMessage with IDs referencing keys in translation files
 
 ## Error Handling
+
 - Use error boundaries for component errors
 - Handle API errors gracefully
 - Provide meaningful error messages to users
