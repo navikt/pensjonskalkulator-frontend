@@ -419,6 +419,12 @@ const translations = {
   'beregning.vilkaarsproeving.alternativer.heltUttak': 'MANGLER_TEKST',
   'beregning.vilkaarsproeving.alternativer.gradertUttak': 'MANGLER_TEKST',
   'beregning.vilkaarsproeving.alternativer.heltOgGradertUttak': 'MANGLER_TEKST',
+  'beregning.vilkaarsproeving.intro.medAFP.optional': 'MANGLER_TEKST',
+  'beregning.vilkaarsproeving.alternativer.medAFP.heltUttak': 'MANGLER_TEKST',
+  'beregning.vilkaarsproeving.alternativer.medAFP.gradertUttak':
+    'MANGLER_TEKST',
+  'beregning.vilkaarsproeving.alternativer.medAFP.heltOgGradertUttak':
+    'MANGLER_TEKST',
   'grunnlag.title': 'Grunnlaget for utrekninga',
   'grunnlag.ingress': 'Beløpa er viste i dagens kroneverdi før skatt.',
   'grunnlag.uttaksgrad.title': 'Uttaksgrad',
