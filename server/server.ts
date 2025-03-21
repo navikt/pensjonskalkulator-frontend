@@ -19,7 +19,7 @@ import { ensureEnv } from './ensureEnv.js'
 
 type Person = components['schemas']['PersonV2']
 
-const isDevelopment = process.env.NODE_ENV === 'development'
+const isDevelopment = process.env.NODE_ENV?.startsWith('development')
 const unleashUrl = process.env.UNLEASH_SERVER_API_URL
 const unleashToken = process.env.UNLEASH_SERVER_API_TOKEN
 const unleashEnv = process.env.UNLEASH_SERVER_API_ENV
