@@ -9,14 +9,15 @@ import {
 
 import { apiSlice } from './api/apiSlice'
 import { createUttaksalderListener } from './listeners/uttaksalderListener'
-import { userInputInitialState } from './userInput/userInputSlice'
-import userInputReducer from './userInput/userInputSlice'
+import userInputReducer1, {
+  userInputInitialState,
+} from './userInput/userInputSlice'
 
 const listenerMiddleware = createListenerMiddleware()
 
 export const rootReducer = combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer,
-  userInput: userInputReducer,
+  userInput: userInputReducer1,
 })
 
 export const initialState = {
