@@ -58,6 +58,7 @@ export const LandingPage = () => {
         id: 'landingsside.button.enkel_kalkulator_utlogget',
       })
 
+  // eslint-disable-next-line react/no-unstable-nested-components
   const TopSection: React.FC<{ navigateTo?: string }> = ({ navigateTo }) => {
     React.useEffect(() => {
       if (navigateTo) {
@@ -88,7 +89,7 @@ export const LandingPage = () => {
                 <BodyLong>
                   <span
                     className={`${styles.ellipse} ${styles.ellipse__blue}`}
-                  ></span>
+                  />
                   <FormattedMessage id="stegvisning.start.list_item1" />
                 </BodyLong>
               </li>
@@ -96,7 +97,7 @@ export const LandingPage = () => {
                 <BodyLong>
                   <span
                     className={`${styles.ellipse} ${styles.ellipse__purple}`}
-                  ></span>
+                  />
                   <FormattedMessage id="stegvisning.start.list_item2" />{' '}
                 </BodyLong>
               </li>
@@ -104,7 +105,7 @@ export const LandingPage = () => {
                 <BodyLong>
                   <span
                     className={`${styles.ellipse} ${styles.ellipse__green}`}
-                  ></span>
+                  />
                   <FormattedMessage id="stegvisning.start.list_item3" />{' '}
                 </BodyLong>
               </li>
@@ -191,7 +192,7 @@ export const LandingPage = () => {
                   <BodyLong>
                     <span
                       className={`${styles.ellipse} ${styles.ellipse__blue}`}
-                    ></span>
+                    />
                     <FormattedMessage id="stegvisning.start.list_item1" />
                   </BodyLong>
                 </li>
@@ -199,7 +200,7 @@ export const LandingPage = () => {
                   <BodyLong>
                     <span
                       className={`${styles.ellipse} ${styles.ellipse__purple}`}
-                    ></span>
+                    />
                     <FormattedMessage id="stegvisning.start.list_item2" />{' '}
                   </BodyLong>
                 </li>
@@ -207,7 +208,7 @@ export const LandingPage = () => {
                   <BodyLong>
                     <span
                       className={`${styles.ellipse} ${styles.ellipse__green}`}
-                    ></span>
+                    />
                     <FormattedMessage id="stegvisning.start.list_item3" />{' '}
                   </BodyLong>
                 </li>

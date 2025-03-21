@@ -14,18 +14,15 @@ import { useGetPersonQuery } from '@/state/api/apiSlice'
 
 import styles from './BorgerInformasjon.module.scss'
 
-interface IBorgerInformasjonProps {
+interface Props {
   fnr: string
-  children?: React.ReactNode
 }
+
 const formatFnr = (fnr: string) => {
   return `${fnr.slice(0, 6)} ${fnr.slice(6)}`
 }
 
-export const BorgerInformasjon: React.FC<IBorgerInformasjonProps> = ({
-  fnr,
-  children,
-}) => {
+export const BorgerInformasjon = ({ fnr }: Props) => {
   const { data: person, isFetching: isPersonFetching } = useGetPersonQuery()
 
   const onNullstillClick = () => {
@@ -51,7 +48,6 @@ export const BorgerInformasjon: React.FC<IBorgerInformasjonProps> = ({
         </HStack>
         <Spacer />
         <HStack gap="2">
-          {children}
           <Button
             onClick={onNullstillClick}
             data-testid="borger-nullstill"

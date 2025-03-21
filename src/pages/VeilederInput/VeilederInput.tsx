@@ -172,7 +172,7 @@ export const VeilederInput = () => {
                     label="Fødselsnummer"
                     name="veilederBorgerFnr"
                     description="11 siffer"
-                  ></TextField>
+                  />
                   <HStack gap="2">
                     <Button
                       type="submit"
@@ -203,9 +203,7 @@ export const VeilederInput = () => {
           <Spacer />
           <InternalHeader.User name={ansatt?.id ?? ''} />
         </InternalHeader>
-        {veilederBorgerFnr && (
-          <BorgerInformasjon fnr={veilederBorgerFnr}></BorgerInformasjon>
-        )}
+        {veilederBorgerFnr && <BorgerInformasjon fnr={veilederBorgerFnr} />}
         <div className={styles.alert}>
           {showDelbWarning && <AlertDelB fnr={veilederBorgerFnr!} />}
         </div>
