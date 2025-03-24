@@ -82,6 +82,7 @@ export const ComponentName: React.FC<ComponentNameProps> = ({
 - End files with a newline
 - Maximum line length should be reasonable (no hard limit but keep readability in mind)
 - No unused variables or imports
+- Follow the conventions of eslint.config.mjs and .prettierrc.cjs
 
 ## Best Practices
 
