@@ -27,11 +27,15 @@ export const Beregningsvalg = ({
   const nedreAldersgrense = useAppSelector(selectNedreAldersgrense)
 
   const handleBeregningsvalgChange = (value: Beregningsvalg) => {
-    setLocalHeltUttak((previous) => ({
-      ...previous,
-      uttaksalder: AFP_UFOERE_OPPSIGELSESALDER,
-    }))
     setLocalBeregningsTypeRadio(value)
+
+    // Dersom brukeren velger å beregne med AFP, skal uttaksalder settes til AFP_UFOERE_OPPSIGELSESALDER
+    if (value === 'med_afp') {
+      setLocalHeltUttak((prevState) => ({
+        ...prevState,
+        uttaksalder: { ...AFP_UFOERE_OPPSIGELSESALDER },
+      }))
+    }
   }
 
   return (

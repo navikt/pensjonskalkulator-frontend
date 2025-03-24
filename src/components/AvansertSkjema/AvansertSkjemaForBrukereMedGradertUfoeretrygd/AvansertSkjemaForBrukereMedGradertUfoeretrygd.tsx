@@ -187,7 +187,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
       alder?.aar >= normertPensjonsalder.aar
     setValidationErrorUttaksalderGradertUttak('')
     if (shouldResetGradertUttak) {
-      // Overførter verdien tilbake til helt uttak
+      // Overfører verdien tilbake til helt uttak
       setLocalHeltUttak((previous) => ({
         ...previous,
         uttaksalder: alder,
@@ -409,6 +409,23 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                 setLocalBeregningsTypeRadio={setLocalBeregningsTypeRadio}
                 setLocalHeltUttak={setLocalHeltUttak}
               />
+
+              {localBeregningsTypeRadio === 'med_afp' && (
+                <>
+                  <input
+                    type="hidden"
+                    form={AVANSERT_FORM_NAMES.form}
+                    name={`${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`}
+                    value={localHeltUttak?.uttaksalder?.aar}
+                  />
+                  <input
+                    type="hidden"
+                    form={AVANSERT_FORM_NAMES.form}
+                    name={`${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`}
+                    value={localHeltUttak?.uttaksalder?.maaneder}
+                  />
+                </>
+              )}
             </>
           )}
 
@@ -552,26 +569,48 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
 
                 <div className={styles.spacer__small} />
 
-                <ReadMore
-                  name="Om uttaksgrad"
-                  header={intl.formatMessage({
-                    id: 'beregning.avansert.rediger.read_more.uttaksgrad.gradert_ufoeretrygd.label',
-                  })}
-                >
-                  <BodyLong data-testid="om-uttaksgrad">
-                    <FormattedMessage
-                      id={
-                        isEndring
-                          ? 'omufoeretrygd.readmore.endring.ingress'
-                          : 'beregning.avansert.rediger.read_more.uttaksgrad.gradert_ufoeretrygd.body'
-                      }
-                      values={{
-                        ...getFormatMessageValues(),
-                        normertPensjonsalder: formatertNormertPensjonsalder,
-                      }}
-                    />
-                  </BodyLong>
-                </ReadMore>
+                {localBeregningsTypeRadio === 'med_afp' ? (
+                  <ReadMore
+                    name="Om uttaksgrad"
+                    header={intl.formatMessage({
+                      id: 'beregning.avansert.rediger.read_more.uttaksgrad.label',
+                    })}
+                  >
+                    <BodyLong data-testid="om-uttaksgrad">
+                      <FormattedMessage
+                        id={
+                          isEndring && loependeVedtak.ufoeretrygd.grad === 0
+                            ? 'beregning.avansert.rediger.read_more.uttaksgrad.endring.body'
+                            : 'beregning.avansert.rediger.read_more.uttaksgrad.body'
+                        }
+                        values={{
+                          ...getFormatMessageValues(),
+                        }}
+                      />
+                    </BodyLong>
+                  </ReadMore>
+                ) : (
+                  <ReadMore
+                    name="Om uttaksgrad"
+                    header={intl.formatMessage({
+                      id: 'beregning.avansert.rediger.read_more.uttaksgrad.gradert_ufoeretrygd.label',
+                    })}
+                  >
+                    <BodyLong data-testid="om-uttaksgrad">
+                      <FormattedMessage
+                        id={
+                          isEndring
+                            ? 'omufoeretrygd.readmore.endring.ingress'
+                            : 'beregning.avansert.rediger.read_more.uttaksgrad.gradert_ufoeretrygd.body'
+                        }
+                        values={{
+                          ...getFormatMessageValues(),
+                          normertPensjonsalder: formatertNormertPensjonsalder,
+                        }}
+                      />
+                    </BodyLong>
+                  </ReadMore>
+                )}
               </div>
 
               {localGradertUttak?.uttaksalder?.aar &&
