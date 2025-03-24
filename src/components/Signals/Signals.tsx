@@ -22,18 +22,12 @@ type ActiveEndpointRes = {
 
 interface Props {
   id: string
-  width?: string
   breakpoint?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl'
   demo?: boolean
 }
 
-export const Signals = ({
-  id,
-  width = '632px',
-  breakpoint = 'xs',
-  demo = false,
-}: Props) => {
-  const [isActive, setIsActive] = useState(demo || false)
+export const Signals = ({ id, breakpoint = 'xs', demo = false }: Props) => {
+  const [isActive, setIsActive] = useState(demo)
 
   // Check if the study is active
   useEffect(() => {
@@ -69,7 +63,6 @@ export const Signals = ({
         <div
           data-uxsignals-embed={id}
           data-uxsignals-mode={demo ? 'demo' : undefined}
-          style={{ maxWidth: width }}
         />
       </section>
     </div>
