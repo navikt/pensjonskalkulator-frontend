@@ -5,7 +5,7 @@ import { RadioGroup, Radio, BodyLong, Heading } from '@navikt/ds-react'
 import { AVANSERT_FORM_NAMES } from '../../utils'
 import { useAppSelector } from '@/state/hooks'
 import { selectNedreAldersgrense } from '@/state/userInput/selectors'
-import { formatUttaksalder } from '@/utils/alder'
+import { AFP_UFOERE_OPPSIGELSESALDER, formatUttaksalder } from '@/utils/alder'
 import { getFormatMessageValues } from '@/utils/translations'
 
 import styles from './Beregningsvalg.module.scss'
@@ -13,14 +13,26 @@ import styles from './Beregningsvalg.module.scss'
 interface Props {
   localBeregningsTypeRadio: Beregningsvalg | null
   setLocalBeregningsTypeRadio: (value: Beregningsvalg) => void
+  setLocalHeltUttak: React.Dispatch<
+    React.SetStateAction<RecursivePartial<HeltUttak> | undefined>
+  >
 }
 
 export const Beregningsvalg = ({
   localBeregningsTypeRadio,
   setLocalBeregningsTypeRadio,
+  setLocalHeltUttak,
 }: Props) => {
   const intl = useIntl()
   const nedreAldersgrense = useAppSelector(selectNedreAldersgrense)
+
+  const handleBeregningsvalgChange = (value: Beregningsvalg) => {
+    setLocalHeltUttak((previous) => ({
+      ...previous,
+      uttaksalder: AFP_UFOERE_OPPSIGELSESALDER,
+    }))
+    setLocalBeregningsTypeRadio(value)
+  }
 
   return (
     <div>
@@ -33,7 +45,7 @@ export const Beregningsvalg = ({
         name={AVANSERT_FORM_NAMES.beregningsTypeRadio}
         data-testid={AVANSERT_FORM_NAMES.beregningsTypeRadio}
         defaultValue={localBeregningsTypeRadio}
-        onChange={setLocalBeregningsTypeRadio}
+        onChange={handleBeregningsvalgChange}
       >
         <Radio
           form={AVANSERT_FORM_NAMES.form}

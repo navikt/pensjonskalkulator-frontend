@@ -407,6 +407,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
               <Beregningsvalg
                 localBeregningsTypeRadio={localBeregningsTypeRadio}
                 setLocalBeregningsTypeRadio={setLocalBeregningsTypeRadio}
+                setLocalHeltUttak={setLocalHeltUttak}
               />
             </>
           )}
@@ -452,53 +453,55 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                   )}
               </div>
 
-              <div>
-                {localGradertUttak?.grad !== undefined &&
-                localGradertUttak?.grad !== 100 ? (
-                  <AgePicker
-                    form={AVANSERT_FORM_NAMES.form}
-                    name={AVANSERT_FORM_NAMES.uttaksalderGradertUttak}
-                    label={
-                      <FormattedMessage
-                        id={
-                          isEndring
-                            ? 'velguttaksalder.endring.title'
-                            : 'velguttaksalder.title'
-                        }
-                      />
-                    }
-                    value={localGradertUttak?.uttaksalder}
-                    onChange={handleGradertUttaksalderChange}
-                    error={gradertUttakAgePickerError}
-                    minAlder={brukerensAlderPlus1Maaned}
-                  />
-                ) : (
-                  <AgePicker
-                    form={AVANSERT_FORM_NAMES.form}
-                    name={AVANSERT_FORM_NAMES.uttaksalderHeltUttak}
-                    label={
-                      <FormattedMessage
-                        id={
-                          isEndring
-                            ? 'velguttaksalder.endring.title'
-                            : 'velguttaksalder.title'
-                        }
-                      />
-                    }
-                    value={localHeltUttak?.uttaksalder}
-                    onChange={handleHeltUttaksalderChange}
-                    error={heltUttakAgePickerError}
-                    minAlder={brukerensAlderPlus1Maaned}
-                  />
-                )}
+              {localBeregningsTypeRadio !== 'med_afp' && (
+                <div>
+                  {localGradertUttak?.grad !== undefined &&
+                  localGradertUttak?.grad !== 100 ? (
+                    <AgePicker
+                      form={AVANSERT_FORM_NAMES.form}
+                      name={AVANSERT_FORM_NAMES.uttaksalderGradertUttak}
+                      label={
+                        <FormattedMessage
+                          id={
+                            isEndring
+                              ? 'velguttaksalder.endring.title'
+                              : 'velguttaksalder.title'
+                          }
+                        />
+                      }
+                      value={localGradertUttak?.uttaksalder}
+                      onChange={handleGradertUttaksalderChange}
+                      error={gradertUttakAgePickerError}
+                      minAlder={brukerensAlderPlus1Maaned}
+                    />
+                  ) : (
+                    <AgePicker
+                      form={AVANSERT_FORM_NAMES.form}
+                      name={AVANSERT_FORM_NAMES.uttaksalderHeltUttak}
+                      label={
+                        <FormattedMessage
+                          id={
+                            isEndring
+                              ? 'velguttaksalder.endring.title'
+                              : 'velguttaksalder.title'
+                          }
+                        />
+                      }
+                      value={localHeltUttak?.uttaksalder}
+                      onChange={handleHeltUttaksalderChange}
+                      error={heltUttakAgePickerError}
+                      minAlder={brukerensAlderPlus1Maaned}
+                    />
+                  )}
 
-                <div className={styles.spacer__small} />
+                  <div className={styles.spacer__small} />
 
-                <ReadMoreOmPensjonsalder
-                  ufoeregrad={loependeVedtak.ufoeretrygd.grad}
-                  isEndring={isEndring}
-                />
-              </div>
+                  <ReadMoreOmPensjonsalder
+                    ufoeregrad={loependeVedtak.ufoeretrygd.grad}
+                    isEndring={isEndring}
+                  />
+                </div>
+              )}
 
               <div>
                 <Select
