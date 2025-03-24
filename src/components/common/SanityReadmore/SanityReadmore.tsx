@@ -1,7 +1,8 @@
 import React from 'react'
 import { useIntl } from 'react-intl'
-import clsx from 'clsx'
+
 import { PortableText } from '@portabletext/react'
+import clsx from 'clsx'
 
 import { ReadMore } from '@/components/common/ReadMore'
 import { SanityContext } from '@/context/SanityContext'
