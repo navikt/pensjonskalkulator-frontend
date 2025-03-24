@@ -287,6 +287,7 @@ export const BeregningAvansert: React.FC = () => {
                           .pensjonBeholdningFoerUttakBeloep
                       : undefined
                   }
+                  isEndring
                 />
               </>
             )}
