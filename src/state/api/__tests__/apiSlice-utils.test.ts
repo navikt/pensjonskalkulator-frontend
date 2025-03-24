@@ -584,6 +584,7 @@ describe('apiSlice - utils', () => {
       epsHarPensjon: null,
       aarligInntektFoerUttakBeloep: '500 000',
       foedselsdato: '1963-04-30',
+      gradertUttak: null,
       heltUttak: {
         uttaksalder: { aar: 68, maaneder: 3 },
         aarligInntektVsaPensjon: {

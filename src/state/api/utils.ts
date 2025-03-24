@@ -121,7 +121,7 @@ export const generateAlderspensjonRequestBody = (args: {
   epsHarPensjon: boolean | null
   foedselsdato: string | null | undefined
   aarligInntektFoerUttakBeloep: string
-  gradertUttak?: GradertUttak
+  gradertUttak: GradertUttak | null
   heltUttak?: HeltUttak
   utenlandsperioder: Utenlandsperiode[]
   beregningsvalg?: Beregningsvalg | null

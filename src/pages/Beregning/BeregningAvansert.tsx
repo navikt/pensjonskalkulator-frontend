@@ -84,9 +84,7 @@ export const BeregningAvansert: React.FC = () => {
           epsHarInntektOver2G: epsHarInntektOver2G,
           foedselsdato: person?.foedselsdato,
           aarligInntektFoerUttakBeloep: aarligInntektFoerUttakBeloep ?? '0',
-          gradertUttak: gradertUttaksperiode
-            ? { ...gradertUttaksperiode }
-            : undefined,
+          gradertUttak: gradertUttaksperiode,
           heltUttak: uttaksalder && {
             uttaksalder,
             aarligInntektVsaPensjon: aarligInntektVsaHelPensjon,
