@@ -1,7 +1,7 @@
 import React from 'react'
 import { useIntl } from 'react-intl'
 
-import { GuidePanel } from '@navikt/ds-react'
+import { GuidePanel, Heading } from '@navikt/ds-react'
 import { PortableText } from '@portabletext/react'
 
 import { SanityContext } from '@/context/SanityContext'
@@ -20,18 +20,24 @@ export const SanityGuidePanel = ({ id, className, children }: Props) => {
   const { data: sanityFeatureToggle } = useGetSanityFeatureToggleQuery()
   const sanityContent = guidePanelData[id]
 
-  if (children && (!sanityFeatureToggle?.enabled || !sanityContent)) {
-    return children
+  if (!sanityFeatureToggle?.enabled || !sanityContent) {
+    return null
   }
 
   return (
     <GuidePanel poster className={className} data-testid={sanityContent.name}>
-      {sanityContent.overskrift && <h2>{sanityContent.overskrift}</h2>}
+      {sanityContent.overskrift && (
+        <Heading level="2" size="medium">
+          {sanityContent.overskrift}
+        </Heading>
+      )}
 
       <PortableText
         value={sanityContent.innhold}
         components={getSanityPortableTextComponents(intl)}
       />
+
+      {children}
     </GuidePanel>
   )
 }

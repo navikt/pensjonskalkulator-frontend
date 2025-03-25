@@ -243,14 +243,6 @@ beforeEach(() => {
   cy.intercept(
     {
       method: 'GET',
-      url: `https://g2by7q6m.apicdn.sanity.io/v2023-05-03/data/query/development?query=*%5B_type+%3D%3D+%22guidepanel%22+%26%26+language+%3D%3D+%22en%22%5D*`,
-    },
-    { fixture: 'sanity-guidepanel-en-data.json' }
-  ).as('fetchSanityGuidePanelDataEn')
-
-  cy.intercept(
-    {
-      method: 'GET',
       url: `https://g2by7q6m.apicdn.sanity.io/v2023-05-03/data/query/development?query=*%5B_type+%3D%3D+%22forbeholdAvsnitt%22+%26%26*`,
     },
     { fixture: 'sanity-forbehold-avsnitt-data.json' }
