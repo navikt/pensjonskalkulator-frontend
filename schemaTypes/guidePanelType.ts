@@ -1,4 +1,4 @@
-import { InfoOutlineIcon } from '@sanity/icons'
+import { HelpCircleIcon } from '@sanity/icons'
 import { defineField, defineType } from 'sanity'
 
 import { supportedLanguages } from './supportedLanguages'
@@ -6,7 +6,7 @@ import { supportedLanguages } from './supportedLanguages'
 export const guidePanelType = defineType({
   name: 'guidepanel',
   title: 'GuidePanel',
-  icon: InfoOutlineIcon,
+  icon: HelpCircleIcon,
   type: 'document',
   preview: {
     select: {

@@ -29,6 +29,7 @@ const testHandlers =
           'https://g2by7q6m.apicdn.sanity.io/v2023-05-03/data/query/development',
           async ({ request }) => {
             // 'https://g2by7q6m.apicdn.sanity.io/v2023-05-03/data/query/development?query=*%5B_type+%3D%3D+%22readmore%22+%26%26'
+            // 'https://g2by7q6m.apicdn.sanity.io/v2023-05-03/data/query/development?query=*%5B_type+%3D%3D+%22guidepanel%22+%26%26'
             // 'https://g2by7q6m.apicdn.sanity.io/v2023-05-03/data/query/development?query=*%5B_type+%3D%3D+%22forbeholdAvsnitt%22+%26%26',
             const url = new URL(request.url)
             const type = url.searchParams.get('_type')
