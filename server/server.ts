@@ -195,7 +195,7 @@ const getUsernameFromAzureToken = async (req: Request) => {
   const parse = parseAzureUserToken(token)
 
   if (!parse.ok) {
-    logger.info('No token found in request', {
+    logger.error('Failed to parse Azure token', {
       'x_correlation-id': req.headers['x_correlation-id'],
     })
     throw new Error('403')
