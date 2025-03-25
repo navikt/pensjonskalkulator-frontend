@@ -268,10 +268,12 @@ export const BeregningAvansert: React.FC = () => {
               onButtonClick={() => setAvansertSkjemaModus('redigering')}
             />
 
-            <SanityGuidePanel
-              id="vurderer_du_a_velge_afp"
-              className={styles.guidePanel}
-            />
+            {beregningsvalg === 'med_afp' && (
+              <SanityGuidePanel
+                id="vurderer_du_a_velge_afp"
+                className={styles.guidePanel}
+              />
+            )}
 
             {!isEndring && <Pensjonsavtaler headingLevel="2" />}
 
