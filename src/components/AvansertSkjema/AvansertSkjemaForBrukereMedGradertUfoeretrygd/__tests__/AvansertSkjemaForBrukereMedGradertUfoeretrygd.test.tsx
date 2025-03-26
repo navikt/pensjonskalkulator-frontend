@@ -986,15 +986,8 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
         'beregning.avansert.rediger.radio.inntekt_vsa_gradert_uttak.ufoeretrygd.description'
       )
     ).toBeVisible()
-    expect(
-      await screen.findByText(
-        'inntekt.info_om_inntekt.ufoeretrygd.read_more.label'
-      )
-    ).toBeVisible()
-    expect(
-      await screen.findByText(
-        'inntekt.info_om_inntekt.ufoeretrygd.read_more.body'
-      )
+    await expect(
+      screen.getByTestId('om_alderspensjon_inntektsgrense_UT')
     ).toBeInTheDocument()
   })
 

@@ -22,6 +22,7 @@ import { AVANSERT_FORM_NAMES, onAvansertBeregningSubmit } from '../utils'
 import { AgePicker } from '@/components/common/AgePicker'
 import { Divider } from '@/components/common/Divider'
 import { ReadMore } from '@/components/common/ReadMore'
+import { SanityReadmore } from '@/components/common/SanityReadmore'
 import { VilkaarsproevingAlert } from '@/components/VilkaarsproevingAlert'
 import { BeregningContext } from '@/pages/Beregning/context'
 import { useGetGradertUfoereAfpFeatureToggleQuery } from '@/state/api/apiSlice'
@@ -654,21 +655,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
 
                       {localGradertUttak.uttaksalder.aar <
                       normertPensjonsalder.aar ? (
-                        <ReadMore
-                          name="Om inntekt og uføretrygd"
-                          header={intl.formatMessage({
-                            id: 'inntekt.info_om_inntekt.ufoeretrygd.read_more.label',
-                          })}
-                        >
-                          <BodyLong>
-                            <FormattedMessage
-                              id="inntekt.info_om_inntekt.ufoeretrygd.read_more.body"
-                              values={{
-                                ...getFormatMessageValues(),
-                              }}
-                            />
-                          </BodyLong>
-                        </ReadMore>
+                        <SanityReadmore id="om_alderspensjon_inntektsgrense_UT" />
                       ) : null}
                     </div>
 
