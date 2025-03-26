@@ -679,9 +679,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                           <BodyLong>
                             <FormattedMessage
                               id="inntekt.info_om_inntekt.ufoeretrygd.read_more.body"
-                              values={{
-                                ...getFormatMessageValues(),
-                              }}
+                              values={getFormatMessageValues()}
                             />
                           </BodyLong>
                         </ReadMore>
@@ -740,9 +738,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                       label={
                         <FormattedMessage
                           id="beregning.avansert.rediger.heltuttak.agepicker.label"
-                          values={{
-                            ...getFormatMessageValues(),
-                          }}
+                          values={getFormatMessageValues()}
                         />
                       }
                       value={localHeltUttak?.uttaksalder}
@@ -760,7 +756,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                     legend={
                       <FormattedMessage
                         id="beregning.avansert.rediger.radio.inntekt_vsa_helt_uttak"
-                        values={{ ...getFormatMessageValues() }}
+                        values={getFormatMessageValues()}
                       />
                     }
                     description={
@@ -831,7 +827,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                       label={
                         <FormattedMessage
                           id="inntekt.endre_inntekt_vsa_pensjon_modal.textfield.label"
-                          values={{ ...getFormatMessageValues() }}
+                          values={getFormatMessageValues()}
                         />
                       }
                       description={intl.formatMessage({
