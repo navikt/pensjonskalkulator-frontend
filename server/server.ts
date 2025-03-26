@@ -251,7 +251,7 @@ app.use(
       return
     }
 
-    return createProxyMiddleware({
+    createProxyMiddleware({
       target: `${PENSJONSKALKULATOR_BACKEND}/api`,
       changeOrigin: true,
       headers: {
