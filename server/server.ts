@@ -300,6 +300,7 @@ const redirect1963Middleware = async (
 
     const person = (await data.json()) as Person
     if (isFoedtFoer1963(person.foedselsdato)) {
+      logger.info('Redirecting person born before 1963')
       res.redirect(`${env.detaljertKalkulatorUrl}`)
       return
     }
