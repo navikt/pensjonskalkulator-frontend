@@ -60,12 +60,7 @@ export const useFormLocalState = (initialValues: {
     RecursivePartial<HeltUttak> | undefined
   >({
     uttaksalder: uttaksalder ?? undefined,
-    aarligInntektVsaPensjon: aarligInntektVsaHelPensjon
-      ? {
-          ...aarligInntektVsaHelPensjon,
-          beloep: aarligInntektVsaHelPensjon.beloep,
-        }
-      : undefined,
+    aarligInntektVsaPensjon: aarligInntektVsaHelPensjon,
   })
   const [localGradertUttak, setGradertUttak] = React.useState<
     RecursivePartial<GradertUttak> | undefined
