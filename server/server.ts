@@ -180,9 +180,8 @@ app.use(
 const getUsernameFromAzureToken = async (req: Request) => {
   let token = getToken(req)
 
-  // Returner access token fra env-var som det finnes sammen med at man utviklerer lokalt
   if (isDevelopment && process.env.ACCESS_TOKEN) {
-    logger.info('Using ACCESS_TOKEN fron environment')
+    logger.error('DEVELOPMENT: Using ACCESS_TOKEN from environment')
     token = process.env.ACCESS_TOKEN
   }
 
@@ -205,9 +204,8 @@ const getUsernameFromAzureToken = async (req: Request) => {
 }
 
 const getOboToken = async (req: Request) => {
-  // Returner access token fra env-var som det finnes sammen med at man utviklerer lokalt
   if (isDevelopment && process.env.ACCESS_TOKEN) {
-    logger.info('Using ACCESS_TOKEN fron environment')
+    logger.error('DEVELOPMENT: Using ACCESS_TOKEN from environment')
     return process.env.ACCESS_TOKEN
   }
 
