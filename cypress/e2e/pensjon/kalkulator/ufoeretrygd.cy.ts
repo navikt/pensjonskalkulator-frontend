@@ -463,9 +463,9 @@ describe('Med ufoeretrygd', () => {
           'button',
           'Om alderspensjon og inntektsgrensen for uføretrygd'
         ).click()
-        cy.contains(
-          'Alderspensjon er ikke pensjonsgivende inntekt og påvirker ikke inntektsgrensen for uføretrygden din. Du beholder inntektsgrensen din ved kombinasjon av uføretrygd og alderspensjon fra folketrygden.'
-        ).should('exist')
+        cy.get('[data-testid="om_alderspensjon_inntektsgrense_UT"]').should(
+          'exist'
+        )
       })
     })
 
