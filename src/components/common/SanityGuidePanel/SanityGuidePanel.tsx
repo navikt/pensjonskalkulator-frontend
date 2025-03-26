@@ -5,7 +5,6 @@ import { GuidePanel, Heading } from '@navikt/ds-react'
 import { PortableText } from '@portabletext/react'
 
 import { SanityContext } from '@/context/SanityContext'
-import { useGetSanityFeatureToggleQuery } from '@/state/api/apiSlice'
 import { getSanityPortableTextComponents } from '@/utils/sanity'
 
 interface Props {
@@ -17,10 +16,9 @@ interface Props {
 export const SanityGuidePanel = ({ id, className, children }: Props) => {
   const intl = useIntl()
   const { guidePanelData } = React.useContext(SanityContext)
-  const { data: sanityFeatureToggle } = useGetSanityFeatureToggleQuery()
   const sanityContent = guidePanelData[id]
 
-  if (!sanityFeatureToggle?.enabled || !sanityContent) {
+  if (!sanityContent) {
     return null
   }
 
