@@ -689,54 +689,47 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                     </div>
 
                     {localHarInntektVsaGradertUttakRadio && (
-                      <div>
-                        <TextField
-                          ref={inntektVsaGradertUttakInputRef}
-                          form={AVANSERT_FORM_NAMES.form}
-                          name={AVANSERT_FORM_NAMES.inntektVsaGradertUttak}
-                          data-testid={
+                      <TextField
+                        ref={inntektVsaGradertUttakInputRef}
+                        form={AVANSERT_FORM_NAMES.form}
+                        name={AVANSERT_FORM_NAMES.inntektVsaGradertUttak}
+                        data-testid={AVANSERT_FORM_NAMES.inntektVsaGradertUttak}
+                        type="text"
+                        inputMode="numeric"
+                        className={styles.textfield}
+                        label={
+                          <FormattedMessage
+                            id="beregning.avansert.rediger.inntekt_vsa_gradert_uttak.label"
+                            values={{
+                              ...getFormatMessageValues(),
+                              grad: localGradertUttak.grad,
+                            }}
+                          />
+                        }
+                        description={intl.formatMessage({
+                          id: 'beregning.avansert.rediger.inntekt_vsa_gradert_uttak.description',
+                        })}
+                        error={
+                          validationErrors[
                             AVANSERT_FORM_NAMES.inntektVsaGradertUttak
-                          }
-                          type="text"
-                          inputMode="numeric"
-                          className={styles.textfield}
-                          label={
-                            <FormattedMessage
-                              id="beregning.avansert.rediger.inntekt_vsa_gradert_uttak.label"
-                              values={{
-                                ...getFormatMessageValues(),
-                                grad: localGradertUttak.grad,
-                              }}
-                            />
-                          }
-                          description={intl.formatMessage({
-                            id: 'beregning.avansert.rediger.inntekt_vsa_gradert_uttak.description',
-                          })}
-                          error={
-                            validationErrors[
-                              AVANSERT_FORM_NAMES.inntektVsaGradertUttak
-                            ]
-                              ? intl.formatMessage(
-                                  {
-                                    id: validationErrors[
-                                      AVANSERT_FORM_NAMES.inntektVsaGradertUttak
-                                    ],
-                                  },
-                                  {
-                                    ...getFormatMessageValues(),
-                                    grad: localGradertUttak.grad,
-                                  }
-                                )
-                              : ''
-                          }
-                          onChange={handleInntektVsaGradertUttakChange}
-                          value={
-                            localGradertUttak?.aarligInntektVsaPensjonBeloep
-                          }
-                          max={5}
-                          aria-required="true"
-                        />
-                      </div>
+                          ]
+                            ? intl.formatMessage(
+                                {
+                                  id: validationErrors[
+                                    AVANSERT_FORM_NAMES.inntektVsaGradertUttak
+                                  ],
+                                },
+                                {
+                                  ...getFormatMessageValues(),
+                                  grad: localGradertUttak.grad,
+                                }
+                              )
+                            : ''
+                        }
+                        onChange={handleInntektVsaGradertUttakChange}
+                        value={localGradertUttak.aarligInntektVsaPensjonBeloep}
+                        aria-required="true"
+                      />
                     )}
 
                     <Divider noMargin />
@@ -824,7 +817,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                 )}
 
               {localHeltUttak?.uttaksalder?.aar &&
-                localHeltUttak?.uttaksalder?.maaneder !== undefined &&
+                localHeltUttak.uttaksalder.maaneder !== undefined &&
                 localHarInntektVsaHeltUttakRadio && (
                   <>
                     <TextField
@@ -859,8 +852,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                           : undefined
                       }
                       onChange={handleInntektVsaHeltUttakChange}
-                      value={localHeltUttak?.aarligInntektVsaPensjon?.beloep}
-                      max={5}
+                      value={localHeltUttak.aarligInntektVsaPensjon?.beloep}
                       aria-required="true"
                     />
 
@@ -870,9 +862,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                       label={intl.formatMessage({
                         id: 'inntekt.endre_inntekt_vsa_pensjon_modal.agepicker.label',
                       })}
-                      value={
-                        localHeltUttak?.aarligInntektVsaPensjon?.sluttAlder
-                      }
+                      value={localHeltUttak.aarligInntektVsaPensjon?.sluttAlder}
                       minAlder={minAlderInntektSluttAlder}
                       maxAlder={DEFAULT_MAX_OPPTJENINGSALDER}
                       onChange={handleInntektVsaHeltUttakSluttAlderChange}

@@ -641,8 +641,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
                         : ''
                     }
                     onChange={handleInntektVsaGradertUttakChange}
-                    value={localGradertUttak?.aarligInntektVsaPensjonBeloep}
-                    max={5}
+                    value={localGradertUttak.aarligInntektVsaPensjonBeloep}
                     aria-required="true"
                   />
                 )}
@@ -730,7 +729,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
             )}
 
           {localHeltUttak?.uttaksalder?.aar &&
-            localHeltUttak?.uttaksalder?.maaneder !== undefined &&
+            localHeltUttak.uttaksalder.maaneder !== undefined &&
             localHarInntektVsaHeltUttakRadio && (
               <>
                 <TextField
@@ -763,8 +762,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
                       : undefined
                   }
                   onChange={handleInntektVsaHeltUttakChange}
-                  value={localHeltUttak?.aarligInntektVsaPensjon?.beloep}
-                  max={5}
+                  value={localHeltUttak.aarligInntektVsaPensjon?.beloep}
                   aria-required="true"
                 />
 
