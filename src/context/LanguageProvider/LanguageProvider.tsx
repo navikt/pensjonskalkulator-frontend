@@ -65,7 +65,7 @@ export function LanguageProvider({ children }: Props) {
       })
     sanityClient
       .fetch(
-        `*[_type == "guidepanel" && language == "${locale}"] | order(order asc) | {name,overskrift,innhold}`
+        `*[_type == "guidepanel" && language == "${locale}"] | {name,overskrift,innhold}`
       )
       .then((sanityGuidePanelResponse) => {
         setSanityGuidePanelData(

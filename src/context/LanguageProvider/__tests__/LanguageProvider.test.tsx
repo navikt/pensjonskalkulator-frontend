@@ -133,7 +133,7 @@ describe('LanguageProvider', () => {
         '*[_type == "forbeholdAvsnitt" && language == "nb"] | order(order asc) | {overskrift,innhold}'
       )
       expect(sanityClientFetchMock.mock.calls[1][0]).toBe(
-        '*[_type == "guidepanel" && language == "nb"] | order(order asc) | {name,overskrift,innhold}'
+        '*[_type == "guidepanel" && language == "nb"] | {name,overskrift,innhold}'
       )
       expect(sanityClientFetchMock.mock.calls[2][0]).toBe(
         '*[_type == "readmore" && language == "nb"] | {name,overskrift,innhold}'
@@ -142,7 +142,7 @@ describe('LanguageProvider', () => {
         '*[_type == "forbeholdAvsnitt" && language == "en"] | order(order asc) | {overskrift,innhold}'
       )
       expect(sanityClientFetchMock.mock.calls[4][0]).toBe(
-        '*[_type == "guidepanel" && language == "en"] | order(order asc) | {name,overskrift,innhold}'
+        '*[_type == "guidepanel" && language == "en"] | {name,overskrift,innhold}'
       )
       expect(sanityClientFetchMock.mock.calls[5][0]).toBe(
         '*[_type == "readmore" && language == "en"] | {name,overskrift,innhold}'
