@@ -2,6 +2,8 @@ import React from 'react'
 
 import { Alert, Button, HStack } from '@navikt/ds-react'
 
+import { externalUrls } from '@/router/constants'
+
 interface IAlertDelBProps {
   fnr: string
 }
@@ -18,11 +20,7 @@ export const AlertDelB: React.FC<IAlertDelBProps> = ({ fnr }) => {
   }
 
   return (
-    <form
-      ref={formRef}
-      action="/pensjon/kalkulator/redirect/detaljert-kalkulator"
-      method="POST"
-    >
+    <form ref={formRef} action={externalUrls.detaljertKalkulator} method="POST">
       <input type="hidden" name="fnr" value={fnr} />
       <Alert variant="warning" onClose={() => setShowAlert(false)} closeButton>
         <HStack>
