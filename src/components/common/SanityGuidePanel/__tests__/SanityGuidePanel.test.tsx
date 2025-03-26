@@ -20,8 +20,8 @@ describe('SanityGuidePanel', () => {
       expect(guidePanelElement).toBeVisible()
 
       expect(screen.getByText(title)).toBeVisible()
-      expect(screen.getByText(content)).toBeInTheDocument()
-      expect(screen.queryByText('Child content')).toBeInTheDocument()
+      expect(screen.getByText(content)).toBeVisible()
+      expect(screen.queryByText('Child content')).toBeVisible()
     })
   })
 })
