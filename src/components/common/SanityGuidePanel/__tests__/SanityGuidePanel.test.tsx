@@ -8,7 +8,7 @@ const title = 'Vurderer du å velge AFP?'
 const content = 'Lorem'
 
 describe('SanityGuidePanel', () => {
-  describe('Gitt at Sanity er aktivert og innhold finnes', () => {
+  describe('Gitt at innhold finnes i Sanity', () => {
     it('rendrer SanityGuidePanel med korrekte props og innhold når children finnes', async () => {
       render(
         <SanityGuidePanel id={id}>
