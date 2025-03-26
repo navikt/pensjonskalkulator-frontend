@@ -10,6 +10,7 @@ import {
   stepAFPAccessGuard,
   stepUfoeretrygdAFPAccessGuard,
   stepSamtykkeOffentligAFPAccessGuard,
+  landingPageAccessGuard,
 } from '../loaders'
 import {
   fulfilledGetPerson,
@@ -32,6 +33,29 @@ import { DATE_BACKEND_FORMAT } from '@/utils/dates'
 describe('Loaders', () => {
   afterEach(() => {
     store.dispatch(apiSliceUtils.apiSlice.util.resetApiState())
+  })
+
+  describe('landingPageAccesGuard', () => {
+    it('kaller redirect til /start location når brukeren er veilder', async () => {
+      const mockedState = {
+        api: {
+          queries: {
+            ...fulfilledGetPerson,
+          },
+        },
+        userInput: { ...userInputInitialState, veilederBorgerFnr: '81549300' },
+      }
+      store.getState = vi.fn().mockImplementation(() => {
+        return mockedState
+      })
+
+      const returnedFromLoader = await landingPageAccessGuard()
+
+      // TODO: Check if redreict
+
+      expect(returnedFromLoader?.status).toBe(302)
+      expect(returnedFromLoader?.headers.get('location')).toBe('/start')
+    })
   })
 
   describe('directAccessGuard', () => {
