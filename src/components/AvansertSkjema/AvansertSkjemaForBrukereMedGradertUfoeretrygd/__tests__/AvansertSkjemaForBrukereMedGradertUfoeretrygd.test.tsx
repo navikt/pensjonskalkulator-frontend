@@ -1296,7 +1296,6 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
         foedselsdato: '1963-04-30',
         harAvansertSkjemaUnsavedChanges: false,
         hasVilkaarIkkeOppfylt: false,
-        localBeregningsTypeRadio: null,
         localInntektFremTilUttak: null,
         loependeVedtak: {
           ufoeretrygd: { grad: 75 },
@@ -1636,7 +1635,6 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
         foedselsdato: '1963-04-30',
         harAvansertSkjemaUnsavedChanges: false,
         hasVilkaarIkkeOppfylt: false,
-        localBeregningsTypeRadio: null,
         localInntektFremTilUttak: null,
         loependeVedtak: {
           ufoeretrygd: { grad: 75 },

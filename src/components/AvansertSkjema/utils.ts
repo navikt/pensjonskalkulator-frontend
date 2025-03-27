@@ -576,10 +576,6 @@ export const onAvansertBeregningSubmit = (
   }
 
   dispatch(
-    userInputActions.setCurrentSimulationBeregningsvalg(beregningsvalgFormData) // Bare relevant for brukere med gradert uføretrygd
-  )
-
-  dispatch(
     userInputActions.setCurrentSimulationUttaksalder({
       aar: parseInt(heltUttakAarFormData as string, 10),
       maaneder: parseInt(heltUttakMaanederFormData as string, 10),
@@ -657,6 +653,10 @@ export const onAvansertBeregningSubmit = (
     userInputActions.setCurrentSimulationAarligInntektFoerUttakBeloep(
       localInntektFremTilUttak
     )
+  )
+
+  dispatch(
+    userInputActions.setCurrentSimulationBeregningsvalg(beregningsvalgFormData) // Bare relevant for brukere med gradert uføretrygd
   )
 
   // Dersom vilkårene ikke var oppfylt, sjekk at noe ble endret for å sende til resultat
