@@ -43,7 +43,6 @@ import {
   selectEpsHarPensjon,
   selectEpsHarInntektOver2G,
   selectUtenlandsperioder,
-  selectSkalBeregneAfp,
 } from '@/state/userInput/selectors'
 import {
   isFoedtFoer1964,
@@ -60,7 +59,6 @@ export const BeregningEnkel: React.FC = () => {
 
   const harSamtykketOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
   const afp = useAppSelector(selectAfp)
-  const skalBeregneAfp = useAppSelector(selectSkalBeregneAfp)
   const sivilstand = useAppSelector(selectSivilstand)
   const ufoeregrad = useAppSelector(selectUfoeregrad)
   const isEndring = useAppSelector(selectIsEndring)
@@ -109,7 +107,6 @@ export const BeregningEnkel: React.FC = () => {
       const requestBody = generateTidligstMuligHeltUttakRequestBody({
         loependeVedtak,
         afp: afp === 'ja_offentlig' && !harSamtykketOffentligAFP ? null : afp,
-        skalBeregneAfp,
         sivilstand: sivilstand,
         epsHarPensjon,
         epsHarInntektOver2G,
@@ -132,7 +129,6 @@ export const BeregningEnkel: React.FC = () => {
       const requestBody = generateAlderspensjonEnkelRequestBody({
         loependeVedtak,
         afp: afp === 'ja_offentlig' && !harSamtykketOffentligAFP ? null : afp,
-        skalBeregneAfp,
         sivilstand: sivilstand ?? 'UOPPGITT',
         epsHarPensjon,
         epsHarInntektOver2G,

@@ -77,7 +77,6 @@ export const transformUtenlandsperioderArray = (
 export const generateTidligstMuligHeltUttakRequestBody = (args: {
   loependeVedtak: LoependeVedtak
   afp: AfpRadio | null
-  skalBeregneAfp?: boolean | null
   sivilstand?: Sivilstand | null | undefined
   epsHarInntektOver2G: boolean | null
   epsHarPensjon: boolean | null
@@ -88,7 +87,6 @@ export const generateTidligstMuligHeltUttakRequestBody = (args: {
   const {
     loependeVedtak,
     afp,
-    skalBeregneAfp,
     sivilstand,
     epsHarPensjon,
     epsHarInntektOver2G,
@@ -100,8 +98,7 @@ export const generateTidligstMuligHeltUttakRequestBody = (args: {
   return {
     simuleringstype: getSimuleringstypeFromRadioEllerVedtak(
       loependeVedtak,
-      afp,
-      skalBeregneAfp
+      afp
     ),
     epsHarInntektOver2G: epsHarInntektOver2G ?? checkHarSamboer(sivilstand),
     epsHarPensjon: !!epsHarPensjon,
@@ -195,7 +192,6 @@ export const generateAlderspensjonRequestBody = (args: {
 export const generateAlderspensjonEnkelRequestBody = (args: {
   loependeVedtak: LoependeVedtak
   afp: AfpRadio | null
-  skalBeregneAfp?: boolean | null
   sivilstand: Sivilstand
   epsHarInntektOver2G: boolean | null
   epsHarPensjon: boolean | null
@@ -207,7 +203,6 @@ export const generateAlderspensjonEnkelRequestBody = (args: {
   const {
     loependeVedtak,
     afp,
-    skalBeregneAfp,
     sivilstand,
     epsHarPensjon,
     epsHarInntektOver2G,
@@ -224,8 +219,7 @@ export const generateAlderspensjonEnkelRequestBody = (args: {
   return {
     simuleringstype: getSimuleringstypeFromRadioEllerVedtak(
       loependeVedtak,
-      afp,
-      skalBeregneAfp
+      afp
     ),
     foedselsdato: format(parseISO(foedselsdato), DATE_BACKEND_FORMAT),
     epsHarInntektOver2G: epsHarInntektOver2G ?? checkHarSamboer(sivilstand),
