@@ -504,7 +504,6 @@ export const onAvansertBeregningSubmit = (
     normertPensjonsalder: Alder
     loependeVedtak: LoependeVedtak
     localInntektFremTilUttak: string | null
-    localBeregningsTypeRadio: Beregningsvalg | null
     hasVilkaarIkkeOppfylt: boolean | undefined
     harAvansertSkjemaUnsavedChanges: boolean
   }
@@ -514,11 +513,13 @@ export const onAvansertBeregningSubmit = (
     normertPensjonsalder,
     loependeVedtak,
     localInntektFremTilUttak,
-    localBeregningsTypeRadio,
     hasVilkaarIkkeOppfylt,
     harAvansertSkjemaUnsavedChanges,
   } = previousData
 
+  const beregningsvalgFormData = data.get(
+    `${AVANSERT_FORM_NAMES.beregningsTypeRadio}`
+  ) as Beregningsvalg | null
   const gradertUttakAarFormData = data.get(
     `${AVANSERT_FORM_NAMES.uttaksalderGradertUttak}-aar`
   )
@@ -575,9 +576,7 @@ export const onAvansertBeregningSubmit = (
   }
 
   dispatch(
-    userInputActions.setCurrentSimulationBeregningsvalg(
-      localBeregningsTypeRadio
-    )
+    userInputActions.setCurrentSimulationBeregningsvalg(beregningsvalgFormData) // Bare relevant for brukere med gradert uføretrygd
   )
 
   dispatch(
