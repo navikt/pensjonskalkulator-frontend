@@ -55,7 +55,6 @@ describe('AvansertSkjema-utils', () => {
           loependeVedtak: {
             ufoeretrygd: { grad: 0 },
           },
-          localBeregningsTypeRadio: null,
           localInntektFremTilUttak: null,
           hasVilkaarIkkeOppfylt: undefined,
           harAvansertSkjemaUnsavedChanges: false,
@@ -117,7 +116,6 @@ describe('AvansertSkjema-utils', () => {
             loependeVedtak: {
               ufoeretrygd: { grad: 0 },
             },
-            localBeregningsTypeRadio: null,
             localInntektFremTilUttak: null,
             hasVilkaarIkkeOppfylt: undefined,
             harAvansertSkjemaUnsavedChanges: false,
@@ -183,7 +181,6 @@ describe('AvansertSkjema-utils', () => {
             loependeVedtak: {
               ufoeretrygd: { grad: 0 },
             },
-            localBeregningsTypeRadio: null,
             localInntektFremTilUttak: '500 000',
             hasVilkaarIkkeOppfylt: undefined,
             harAvansertSkjemaUnsavedChanges: false,
@@ -276,7 +273,6 @@ describe('AvansertSkjema-utils', () => {
             loependeVedtak: {
               ufoeretrygd: { grad: 0 },
             },
-            localBeregningsTypeRadio: null,
             localInntektFremTilUttak: '500 000',
             hasVilkaarIkkeOppfylt: undefined,
             harAvansertSkjemaUnsavedChanges: false,
@@ -335,7 +331,6 @@ describe('AvansertSkjema-utils', () => {
             loependeVedtak: {
               ufoeretrygd: { grad: 0 },
             },
-            localBeregningsTypeRadio: null,
             localInntektFremTilUttak: '500 000',
             hasVilkaarIkkeOppfylt: true,
             harAvansertSkjemaUnsavedChanges: false,
@@ -368,7 +363,6 @@ describe('AvansertSkjema-utils', () => {
             loependeVedtak: {
               ufoeretrygd: { grad: 0 },
             },
-            localBeregningsTypeRadio: null,
             localInntektFremTilUttak: '500 000',
             hasVilkaarIkkeOppfylt: true,
             harAvansertSkjemaUnsavedChanges: true,

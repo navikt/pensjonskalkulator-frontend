@@ -518,7 +518,7 @@ export const onAvansertBeregningSubmit = (
   } = previousData
 
   const beregningsvalgFormData = data.get(
-    `${AVANSERT_FORM_NAMES.beregningsTypeRadio}`
+    AVANSERT_FORM_NAMES.beregningsTypeRadio
   ) as Beregningsvalg | null
   const gradertUttakAarFormData = data.get(
     `${AVANSERT_FORM_NAMES.uttaksalderGradertUttak}-aar`
@@ -534,10 +534,10 @@ export const onAvansertBeregningSubmit = (
   )
   const uttaksgradFormData = data.get('uttaksgrad')
   const inntektVsaHeltUttakRadioFormData = data.get(
-    `${AVANSERT_FORM_NAMES.inntektVsaHeltUttakRadio}`
+    AVANSERT_FORM_NAMES.inntektVsaHeltUttakRadio
   )
   const inntektVsaGradertUttakRadioFormData = data.get(
-    `${AVANSERT_FORM_NAMES.inntektVsaGradertUttakRadio}`
+    AVANSERT_FORM_NAMES.inntektVsaGradertUttakRadio
   )
   const inntektVsaHeltUttakFormData = data.get(
     AVANSERT_FORM_NAMES.inntektVsaHeltUttak

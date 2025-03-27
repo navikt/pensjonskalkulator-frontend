@@ -6,11 +6,11 @@ import { userInputInitialState } from '@/state/userInput/userInputSlice'
 import { render, screen } from '@/test-utils'
 
 describe('Beregningsvalg', () => {
-  const mockSetLocalBeregningsTypeRadio = vi.fn()
+  const mockOnChange = vi.fn()
 
   const defaultProps = {
     localBeregningsTypeRadio: 'uten_afp' as const,
-    setLocalBeregningsTypeRadio: mockSetLocalBeregningsTypeRadio,
+    onChange: mockOnChange,
   }
 
   const renderWithDefaultState = (props = {}) => {
