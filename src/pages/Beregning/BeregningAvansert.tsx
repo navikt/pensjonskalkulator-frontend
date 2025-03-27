@@ -36,6 +36,7 @@ import {
   selectEpsHarInntektOver2G,
   selectSivilstand,
   selectUtenlandsperioder,
+  selectSkalBeregneAfp,
 } from '@/state/userInput/selectors'
 import { logger } from '@/utils/logging'
 
@@ -50,6 +51,7 @@ export const BeregningAvansert: React.FC = () => {
 
   const harSamtykketOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
   const afp = useAppSelector(selectAfp)
+  const skalBeregneAfp = useAppSelector(selectSkalBeregneAfp)
   const isEndring = useAppSelector(selectIsEndring)
   const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const aarligInntektFoerUttakBeloep = useAppSelector(
@@ -79,6 +81,7 @@ export const BeregningAvansert: React.FC = () => {
         return generateAlderspensjonRequestBody({
           loependeVedtak,
           afp: afp === 'ja_offentlig' && !harSamtykketOffentligAFP ? null : afp,
+          skalBeregneAfp: skalBeregneAfp,
           sivilstand: sivilstand,
           epsHarPensjon: epsHarPensjon,
           epsHarInntektOver2G: epsHarInntektOver2G,
@@ -91,6 +94,7 @@ export const BeregningAvansert: React.FC = () => {
           },
           utenlandsperioder,
           beregningsvalg,
+          afpInntektMaanedFoerUttak: 300000, //TODO: denne skal settes i avansertskjema for pre2025OffentligAfp
         })
       }
     }, [
@@ -230,6 +234,7 @@ export const BeregningAvansert: React.FC = () => {
               headingLevel="2"
               aarligInntektFoerUttakBeloep={aarligInntektFoerUttakBeloep ?? '0'}
               alderspensjonListe={alderspensjon?.alderspensjon}
+              pre2025OffentligAfp={alderspensjon?.pre2025OffentligAfp}
               afpPrivatListe={
                 !loependeVedtak.ufoeretrygd.grad &&
                 (afp === 'ja_privat' || loependeVedtak.afpPrivat) &&

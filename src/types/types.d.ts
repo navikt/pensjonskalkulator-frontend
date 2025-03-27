@@ -91,6 +91,8 @@ declare global {
     components['schemas']['PersonligSimuleringAarligInntektResultV8']
   type AlderspensjonMaanedligVedEndring =
     components['schemas']['PersonligSimuleringMaanedligPensjonResultV8']
+  type AfpEtterfulgtAvAlderspensjon =
+    components['schemas']['PersonligSimuleringPre2025OffentligAfpResultV8']
   type AarligInntektVsaPensjon = {
     beloep: string
     sluttAlder: Alder
