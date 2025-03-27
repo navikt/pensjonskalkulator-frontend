@@ -575,6 +575,12 @@ export const onAvansertBeregningSubmit = (
   }
 
   dispatch(
+    userInputActions.setCurrentSimulationBeregningsvalg(
+      localBeregningsTypeRadio
+    )
+  )
+
+  dispatch(
     userInputActions.setCurrentSimulationUttaksalder({
       aar: parseInt(heltUttakAarFormData as string, 10),
       maaneder: parseInt(heltUttakMaanederFormData as string, 10),
@@ -651,12 +657,6 @@ export const onAvansertBeregningSubmit = (
   dispatch(
     userInputActions.setCurrentSimulationAarligInntektFoerUttakBeloep(
       localInntektFremTilUttak
-    )
-  )
-
-  dispatch(
-    userInputActions.setCurrentSimulationBeregningsvalg(
-      localBeregningsTypeRadio
     )
   )
 

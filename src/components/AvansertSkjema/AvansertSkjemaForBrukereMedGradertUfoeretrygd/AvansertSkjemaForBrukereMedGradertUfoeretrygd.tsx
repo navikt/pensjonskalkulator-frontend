@@ -346,6 +346,17 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
     )
   }
 
+  const handleBeregningsvalgChange = (newBeregningsvalg: Beregningsvalg) => {
+    resetForm()
+    if (newBeregningsvalg === 'med_afp') {
+      setLocalHeltUttak((prevState) => ({
+        ...prevState,
+        uttaksalder: { ...nedreAldersgrense },
+      }))
+    }
+    setLocalBeregningsTypeRadio(newBeregningsvalg)
+  }
+
   const resetForm = (): void => {
     resetValidationErrors()
     setLocalBeregningsTypeRadio(null)
@@ -406,26 +417,8 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
 
               <Beregningsvalg
                 localBeregningsTypeRadio={localBeregningsTypeRadio}
-                setLocalBeregningsTypeRadio={setLocalBeregningsTypeRadio}
-                setLocalHeltUttak={setLocalHeltUttak}
+                onChange={handleBeregningsvalgChange}
               />
-
-              {localBeregningsTypeRadio === 'med_afp' && (
-                <>
-                  <input
-                    type="hidden"
-                    form={AVANSERT_FORM_NAMES.form}
-                    name={`${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`}
-                    value={localHeltUttak?.uttaksalder?.aar}
-                  />
-                  <input
-                    type="hidden"
-                    form={AVANSERT_FORM_NAMES.form}
-                    name={`${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`}
-                    value={localHeltUttak?.uttaksalder?.maaneder}
-                  />
-                </>
-              )}
             </>
           )}
 
@@ -461,8 +454,9 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
 
               <div className={styles.alertWrapper} aria-live="polite">
                 {vilkaarsproeving &&
-                  !vilkaarsproeving?.vilkaarErOppfylt &&
-                  uttaksalder && (
+                  !vilkaarsproeving.vilkaarErOppfylt &&
+                  uttaksalder &&
+                  localBeregningsTypeRadio === beregningsvalg && (
                     <VilkaarsproevingAlert
                       vilkaarsproeving={vilkaarsproeving}
                       uttaksalder={uttaksalder}
@@ -470,10 +464,43 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                   )}
               </div>
 
-              {localBeregningsTypeRadio !== 'med_afp' && (
+              {localBeregningsTypeRadio === 'med_afp' ? (
+                localGradertUttak?.grad !== undefined &&
+                localGradertUttak.grad !== 100 ? (
+                  <>
+                    <input
+                      type="hidden"
+                      form={AVANSERT_FORM_NAMES.form}
+                      name={`${AVANSERT_FORM_NAMES.uttaksalderGradertUttak}-aar`}
+                      value={localGradertUttak.uttaksalder?.aar}
+                    />
+                    <input
+                      type="hidden"
+                      form={AVANSERT_FORM_NAMES.form}
+                      name={`${AVANSERT_FORM_NAMES.uttaksalderGradertUttak}-maaneder`}
+                      value={localGradertUttak.uttaksalder?.maaneder}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <input
+                      type="hidden"
+                      form={AVANSERT_FORM_NAMES.form}
+                      name={`${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`}
+                      value={localHeltUttak?.uttaksalder?.aar}
+                    />
+                    <input
+                      type="hidden"
+                      form={AVANSERT_FORM_NAMES.form}
+                      name={`${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`}
+                      value={localHeltUttak?.uttaksalder?.maaneder}
+                    />
+                  </>
+                )
+              ) : (
                 <div>
                   {localGradertUttak?.grad !== undefined &&
-                  localGradertUttak?.grad !== 100 ? (
+                  localGradertUttak.grad !== 100 ? (
                     <AgePicker
                       form={AVANSERT_FORM_NAMES.form}
                       name={AVANSERT_FORM_NAMES.uttaksalderGradertUttak}
@@ -486,7 +513,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                           }
                         />
                       }
-                      value={localGradertUttak?.uttaksalder}
+                      value={localGradertUttak.uttaksalder}
                       onChange={handleGradertUttaksalderChange}
                       error={gradertUttakAgePickerError}
                       minAlder={brukerensAlderPlus1Maaned}
