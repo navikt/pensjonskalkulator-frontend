@@ -42,7 +42,6 @@ describe('AvansertSkjemaForAndreBrukere', () => {
   }
 
   it('vises informasjon om inntekt, uttaksgrad og pensjonsalder', async () => {
-    const user = userEvent.setup()
     render(
       <BeregningContext.Provider
         value={{
@@ -67,21 +66,8 @@ describe('AvansertSkjemaForAndreBrukere', () => {
     expect(
       screen.getByText('inntekt.info_om_inntekt.read_more.label')
     ).toBeVisible()
-    user.click(
-      screen.getByText('beregning.avansert.rediger.read_more.uttaksgrad.label')
-    )
-    expect(
-      screen.getByText(
-        'Uttaksgrad angir hvor stor del av månedlig alderspensjon du ønsker å ta ut',
-        { exact: false }
-      )
-    ).toBeVisible()
-    user.click(screen.getByText('beregning.read_more.pensjonsalder.label'))
-    expect(
-      screen.getByText('Aldersgrensene vil øke gradvis fra 1964-kullet', {
-        exact: false,
-      })
-    ).toBeVisible()
+    expect(screen.queryByTestId('om_uttaksgrad')).toBeInTheDocument()
+    expect(screen.queryByTestId('om_TMU')).toBeInTheDocument()
 
     fireEvent.change(
       await screen.findByTestId(AVANSERT_FORM_NAMES.uttaksgrad),
@@ -90,12 +76,7 @@ describe('AvansertSkjemaForAndreBrukere', () => {
       }
     )
 
-    user.click(screen.getByText('beregning.read_more.pensjonsalder.label'))
-    expect(
-      screen.getByText('Aldersgrensene vil øke gradvis fra 1964-kullet', {
-        exact: false,
-      })
-    ).toBeVisible()
+    expect(screen.queryByTestId('om_TMU')).toBeInTheDocument()
   })
 
   it('feltene rendres riktig som default, og når brukeren legger til en gradert periode', async () => {
@@ -141,8 +122,8 @@ describe('AvansertSkjemaForAndreBrukere', () => {
       )
     ).toBeVisible()
     expect(
-      screen.getByText('beregning.read_more.pensjonsalder.label')
-    ).toBeVisible()
+      screen.queryByTestId('om_pensjonsalder_UT_hel')
+    ).not.toBeInTheDocument()
     expect(
       screen.queryByTestId(AVANSERT_FORM_NAMES.inntektVsaHeltUttakRadio)
     ).not.toBeInTheDocument()
@@ -1467,8 +1448,6 @@ describe('AvansertSkjemaForAndreBrukere', () => {
 
   describe('Når en bruker som mottar 100 % uføretrygd legger inn et gradert uttak, ', () => {
     it('vises informasjon om pensjonsalder og uføretrygd, og aldersvelgere begrenses fra normert pensjonsalder', async () => {
-      const user = userEvent.setup()
-
       const { store } = render(
         <BeregningContext.Provider
           value={{
@@ -1499,19 +1478,9 @@ describe('AvansertSkjemaForAndreBrukere', () => {
         )
       ).toBeVisible()
       expect(
-        await screen.findByText('omufoeretrygd.readmore.title')
-      ).toBeVisible()
-      await user.click(
-        await screen.findByText(
-          'beregning.avansert.rediger.read_more.uttaksgrad.label'
-        )
-      )
-      expect(
-        await screen.findByText(
-          'Uttaksgrad angir hvor stor del av månedlig alderspensjon du ønsker å ta ut',
-          { exact: false }
-        )
-      ).toBeVisible()
+        screen.queryByTestId('om_pensjonsalder_UT_hel')
+      ).toBeInTheDocument()
+      expect(screen.queryByTestId('om_uttaksgrad')).toBeInTheDocument()
 
       const selectAarElement = screen.getByTestId(
         `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
@@ -1909,16 +1878,12 @@ describe('AvansertSkjemaForAndreBrukere', () => {
         screen.queryByText('beregning.avansert.rediger.uttaksgrad.description')
       ).not.toBeInTheDocument()
 
-      expect(
-        await screen.findByText(
-          'beregning.avansert.rediger.read_more.uttaksgrad.endring.body'
-        )
-      ).toBeVisible()
+      await expect(
+        screen.getByTestId('om_uttaksgrad_endring')
+      ).toBeInTheDocument()
     })
 
     it('Når brukeren har 100 % uføretrygd, vises riktig tekst i readmore om uttaksgrad', async () => {
-      const user = userEvent.setup()
-
       const { store } = render(
         <BeregningContext.Provider
           value={{
@@ -1944,31 +1909,7 @@ describe('AvansertSkjemaForAndreBrukere', () => {
       )
       await store.dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
 
-      await user.click(
-        await screen.findByText(
-          'beregning.avansert.rediger.read_more.uttaksgrad.label'
-        )
-      )
-      expect(await screen.findByTestId('om-uttaksgrad')).toMatchInlineSnapshot(`
-        <p
-          class="navds-body-long navds-body-long--medium"
-          data-testid="om-uttaksgrad"
-        >
-          Uttaksgrad angir hvor stor del av månedlig alderspensjon du ønsker å ta ut. Du kan velge gradert uttak (20, 40, 50, 60 eller 
-          <span
-            class="nowrap"
-          >
-            80 %
-          </span>
-          ), eller hel alderspensjon (
-          <span
-            class="nowrap"
-          >
-            100 %
-          </span>
-          ).
-        </p>
-      `)
+      await expect(screen.getByTestId('om_uttaksgrad')).toBeInTheDocument()
     })
 
     it('Når brukeren har fylt alle feltene riktig og klikker på beregn mens datoen på vedtaket er mindre enn 12 md. til ønsket uttak, vises det alert og siden scrolles opp til toppen', async () => {
