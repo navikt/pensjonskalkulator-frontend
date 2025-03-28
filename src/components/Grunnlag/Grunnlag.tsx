@@ -45,6 +45,12 @@ export const Grunnlag: React.FC<Props> = ({
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
+  const goToAFP: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
+    e.preventDefault()
+    dispatch(userInputActions.flushCurrentSimulation())
+    navigate(paths.afp)
+  }
+
   const goToAvansert: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     e.preventDefault()
     dispatch(userInputActions.flushCurrentSimulation())
@@ -160,7 +166,11 @@ export const Grunnlag: React.FC<Props> = ({
           </GrunnlagSection>
         </AccordionItem>
 
-        <GrunnlagAFP goToStart={goToStart} />
+        <GrunnlagAFP
+          goToStart={goToStart}
+          goToAvansert={goToAvansert}
+          goToAFP={goToAFP}
+        />
       </Accordion>
     </section>
   )

@@ -5,6 +5,7 @@ import { BodyLong, Link } from '@navikt/ds-react'
 
 import { GrunnlagSection } from '../GrunnlagSection'
 import { AccordionItem } from '@/components/common/AccordionItem'
+import { useGetGradertUfoereAfpFeatureToggleQuery } from '@/state/api/apiSlice'
 import { useAppSelector } from '@/state/hooks'
 import {
   selectAfp,
@@ -22,10 +23,16 @@ import {
 import { getFormatMessageValues } from '@/utils/translations'
 
 interface Props {
+  goToAFP: React.MouseEventHandler<HTMLAnchorElement>
+  goToAvansert: React.MouseEventHandler<HTMLAnchorElement>
   goToStart: React.MouseEventHandler<HTMLAnchorElement>
 }
 
-export const GrunnlagAFP: React.FC<Props> = ({ goToStart }) => {
+export const GrunnlagAFP: React.FC<Props> = ({
+  goToAFP,
+  goToAvansert,
+  goToStart,
+}) => {
   const intl = useIntl()
 
   const afp = useAppSelector(selectAfp)
@@ -34,6 +41,12 @@ export const GrunnlagAFP: React.FC<Props> = ({ goToStart }) => {
   const isEndring = useAppSelector(selectIsEndring)
   const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const ufoeregrad = useAppSelector(selectUfoeregrad)
+
+  const { data: getGradertUfoereAfpFeatureToggle } =
+    useGetGradertUfoereAfpFeatureToggleQuery()
+
+  const isGradertUfoereAfpToggleEnabled =
+    getGradertUfoereAfpFeatureToggle?.enabled
 
   if (
     loependeVedtak.ufoeretrygd.grad &&
@@ -92,6 +105,10 @@ export const GrunnlagAFP: React.FC<Props> = ({ goToStart }) => {
         : afp
     const ufoeregradString = ufoeregrad ? '.ufoeretrygd' : ''
 
+    // TODO: Remove this once when feature toggle is enabled in production.
+    if (!isGradertUfoereAfpToggleEnabled) {
+      return `grunnlag.afp.ingress.${afpString}${ufoeregradString}.gammel`
+    }
     return `grunnlag.afp.ingress.${afpString}${ufoeregradString}`
   }, [afp])
 
@@ -110,13 +127,35 @@ export const GrunnlagAFP: React.FC<Props> = ({ goToStart }) => {
               ...getFormatMessageValues(),
             }}
           />
-
           {!isEndring && !ufoeregrad && afp === 'nei' && (
             <>
               <Link href="#" onClick={goToStart}>
                 <FormattedMessage id="grunnlag.afp.reset_link" />
               </Link>
               .
+            </>
+          )}
+          {isGradertUfoereAfpToggleEnabled && (
+            <>
+              {(afp === 'ja_offentlig' || afp === 'ja_privat') && !!ufoeregrad && (
+                  <>
+                    <Link href="#" onClick={goToAvansert}>
+                      <FormattedMessage id="grunnlag.afp.avansert_link" />
+                    </Link>
+                    <FormattedMessage id="grunnlag.afp.avansert_link_postfix" />
+                  </>
+                )}
+
+              {afp === 'ja_offentlig' &&
+                !harSamtykketOffentligAFP &&
+                !ufoeregrad && (
+                  <>
+                    <Link href="#" onClick={goToAFP}>
+                      <FormattedMessage id="grunnlag.afp.afp_link" />
+                    </Link>
+                    .
+                  </>
+                )}
             </>
           )}
         </BodyLong>
