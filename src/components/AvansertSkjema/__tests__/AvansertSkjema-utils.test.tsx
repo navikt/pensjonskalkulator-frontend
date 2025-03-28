@@ -816,7 +816,7 @@ describe('AvansertSkjema-utils', () => {
       expect(updateErrorMessageMock).toHaveBeenCalledTimes(2)
     })
 
-    it('returnerer true når beregningsvalg=med_afp heltUttaksalder eller gradertUttaksalder er før normert pensjonsalder for en bruker med gradert uføretrygd', () => {
+    it('returnerer true når beregningsvalg=med_afp og heltUttaksalder eller gradertUttaksalder er før normert pensjonsalder for en bruker med gradert uføretrygd', () => {
       const updateErrorMessageMock = vi.fn()
       expect(
         validateAvansertBeregningSkjema(
