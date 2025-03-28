@@ -11,6 +11,7 @@ import {
 } from '@navikt/ds-react'
 
 import { AccordionItem } from '@/components/common/AccordionItem'
+import { BeregningContext } from '@/pages/Beregning/context'
 import { paths } from '@/router/constants'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import { selectSivilstand } from '@/state/userInput/selectors'
@@ -45,6 +46,9 @@ export const Grunnlag: React.FC<Props> = ({
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
+  const { avansertSkjemaModus, setAvansertSkjemaModus } =
+    React.useContext(BeregningContext)
+
   const goToAFP: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     e.preventDefault()
     dispatch(userInputActions.flushCurrentSimulation())
@@ -53,8 +57,12 @@ export const Grunnlag: React.FC<Props> = ({
 
   const goToAvansert: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     e.preventDefault()
-    dispatch(userInputActions.flushCurrentSimulation())
-    navigate(paths.beregningAvansert)
+    if (avansertSkjemaModus === 'resultat') {
+      setAvansertSkjemaModus('redigering')
+    } else {
+      dispatch(userInputActions.flushCurrentSimulation())
+      navigate(paths.beregningAvansert)
+    }
   }
 
   const goToStart: React.MouseEventHandler<HTMLAnchorElement> = (e): void => {

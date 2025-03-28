@@ -58,6 +58,8 @@ export const GrunnlagAFP: React.FC<Props> = ({
     return null
   }
 
+  const hasAFP = afp === 'ja_offentlig' || afp === 'ja_privat'
+  const hasOffentligAFP = afp === 'ja_offentlig'
   const isUfoerAndDontWantAfp = !!ufoeregrad && beregningsvalg !== 'med_afp'
 
   const formatertAfpHeader = React.useMemo(() => {
@@ -72,16 +74,8 @@ export const GrunnlagAFP: React.FC<Props> = ({
     }
 
     if (
-      isUfoerAndDontWantAfp &&
-      (afp === 'ja_offentlig' || afp === 'ja_privat')
-    ) {
-      return `${afpString} (${intl.formatMessage({ id: 'grunnlag.afp.ikke_beregnet' })})`
-    }
-
-    if (
-      !harSamtykketOffentligAFP &&
-      !isUfoerAndDontWantAfp &&
-      afp === 'ja_offentlig'
+      (hasAFP && isUfoerAndDontWantAfp) ||
+      (hasOffentligAFP && !harSamtykketOffentligAFP && !isUfoerAndDontWantAfp)
     ) {
       return `${afpString} (${intl.formatMessage({ id: 'grunnlag.afp.ikke_beregnet' })})`
     }
@@ -111,7 +105,7 @@ export const GrunnlagAFP: React.FC<Props> = ({
     }
 
     const afpString =
-      afp === 'ja_offentlig' && !harSamtykketOffentligAFP && !ufoeregrad
+      hasOffentligAFP && !harSamtykketOffentligAFP && !ufoeregrad
         ? 'ja_offentlig_utilgjengelig'
         : afp
     const ufoeregradString = isUfoerAndDontWantAfp ? '.ufoeretrygd' : ''
@@ -146,26 +140,23 @@ export const GrunnlagAFP: React.FC<Props> = ({
           )}
           {isGradertUfoereAfpToggleEnabled && (
             <>
-              {(afp === 'ja_offentlig' || afp === 'ja_privat') &&
-                isUfoerAndDontWantAfp && (
-                  <>
-                    <Link href="#" onClick={goToAvansert}>
-                      <FormattedMessage id="grunnlag.afp.avansert_link" />
-                    </Link>
-                    <FormattedMessage id="grunnlag.afp.avansert_link_postfix" />
-                  </>
-                )}
+              {hasAFP && isUfoerAndDontWantAfp && (
+                <>
+                  <Link href="#" onClick={goToAvansert}>
+                    <FormattedMessage id="grunnlag.afp.avansert_link" />
+                  </Link>
+                  <FormattedMessage id="grunnlag.afp.avansert_link_postfix" />
+                </>
+              )}
 
-              {afp === 'ja_offentlig' &&
-                !harSamtykketOffentligAFP &&
-                !ufoeregrad && (
-                  <>
-                    <Link href="#" onClick={goToAFP}>
-                      <FormattedMessage id="grunnlag.afp.afp_link" />
-                    </Link>
-                    .
-                  </>
-                )}
+              {hasOffentligAFP && !harSamtykketOffentligAFP && !ufoeregrad && (
+                <>
+                  <Link href="#" onClick={goToAFP}>
+                    <FormattedMessage id="grunnlag.afp.afp_link" />
+                  </Link>
+                  .
+                </>
+              )}
             </>
           )}
         </BodyLong>
