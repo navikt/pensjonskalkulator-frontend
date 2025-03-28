@@ -181,10 +181,12 @@ export const useFormLocalState = ({
         : previous
     })
   }, [
+    beregningsvalg,
     uttaksalder,
     aarligInntektFoerUttakBeloepFraBrukerInput,
     gradertUttaksperiode,
     aarligInntektVsaHelPensjon,
+    localBeregningsTypeRadio,
     localInntektFremTilUttak,
     localGradertUttak,
     localHeltUttak,
