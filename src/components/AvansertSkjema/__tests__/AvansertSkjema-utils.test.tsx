@@ -388,6 +388,7 @@ describe('AvansertSkjema-utils', () => {
 
   describe('validateAvansertBeregningSkjema', () => {
     const correctInputData = {
+      beregningsvalgFormData: null,
       gradertUttakAarFormData: '62',
       gradertUttakMaanederFormData: '5',
       heltUttakAarFormData: '67',
@@ -780,12 +781,13 @@ describe('AvansertSkjema-utils', () => {
       expect(updateErrorMessageMock).toHaveBeenCalledTimes(0)
     })
 
-    it('returnerer false når heltUttaksalder eller gradertUttaksalder er før normert pensjonsalder med et ugyldig uttaksgrad for en bruker med gradert uføretrygd', () => {
+    it('returnerer false når beregningsvalg=uten_afp og heltUttaksalder eller gradertUttaksalder er før normert pensjonsalder for en bruker med gradert uføretrygd', () => {
       const updateErrorMessageMock = vi.fn()
       expect(
         validateAvansertBeregningSkjema(
           {
             ...correctInputData,
+            beregningsvalgFormData: 'uten_afp',
             uttaksgradFormData: '100 %',
             heltUttakAarFormData: '63',
             heltUttakMaanederFormData: '0',
@@ -802,6 +804,7 @@ describe('AvansertSkjema-utils', () => {
         validateAvansertBeregningSkjema(
           {
             ...correctInputData,
+            beregningsvalgFormData: 'uten_afp',
             uttaksgradFormData: '50 %',
             gradertUttakAarFormData: '63',
             gradertUttakMaanederFormData: '0',
@@ -816,6 +819,7 @@ describe('AvansertSkjema-utils', () => {
         validateAvansertBeregningSkjema(
           {
             ...correctInputData,
+            beregningsvalgFormData: 'uten_afp',
             uttaksgradFormData: '40 %',
             gradertUttakAarFormData: '63',
             gradertUttakMaanederFormData: '0',
@@ -832,6 +836,7 @@ describe('AvansertSkjema-utils', () => {
         validateAvansertBeregningSkjema(
           {
             ...correctInputData,
+            beregningsvalgFormData: 'uten_afp',
             uttaksgradFormData: '40 %',
             gradertUttakAarFormData: '67',
             gradertUttakMaanederFormData: '0',
@@ -846,6 +851,42 @@ describe('AvansertSkjema-utils', () => {
       ).toBeTruthy()
 
       expect(updateErrorMessageMock).toHaveBeenCalledTimes(2)
+    })
+
+    it('returnerer true når beregningsvalg=med_afp heltUttaksalder eller gradertUttaksalder er før normert pensjonsalder for en bruker med gradert uføretrygd', () => {
+      const updateErrorMessageMock = vi.fn()
+      expect(
+        validateAvansertBeregningSkjema(
+          {
+            ...correctInputData,
+            beregningsvalgFormData: 'med_afp',
+            uttaksgradFormData: '100 %',
+            heltUttakAarFormData: '63',
+            heltUttakMaanederFormData: '0',
+            gradertUttakAarFormData: null,
+            gradertUttakMaanederFormData: null,
+          },
+          mockedFoedselsdato,
+          mockedNormertPensjonsalder,
+          mockedLoependeVedtak60,
+          updateErrorMessageMock
+        )
+      ).toBeTruthy()
+      expect(
+        validateAvansertBeregningSkjema(
+          {
+            ...correctInputData,
+            beregningsvalgFormData: 'med_afp',
+            uttaksgradFormData: '50 %',
+            gradertUttakAarFormData: '63',
+            gradertUttakMaanederFormData: '0',
+          },
+          mockedFoedselsdato,
+          mockedNormertPensjonsalder,
+          mockedLoependeVedtak60,
+          updateErrorMessageMock
+        )
+      ).toBeTruthy()
     })
 
     it('returnerer false når radio knapp for inntekt vsa. 100 % uttaksalder ikke er fylt ut', () => {
