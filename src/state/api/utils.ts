@@ -9,6 +9,7 @@ import { checkHarSamboer } from '@/utils/sivilstand'
 export const getSimuleringstypeFromRadioEllerVedtak = (
   loependeVedtak: LoependeVedtak,
   afp: AfpRadio | null,
+  skalBeregneAfp?: boolean | null,
   beregningsvalg?: Beregningsvalg | null
 ): AlderspensjonSimuleringstype => {
   const ufoeregrad = loependeVedtak.ufoeretrygd.grad
@@ -24,6 +25,8 @@ export const getSimuleringstypeFromRadioEllerVedtak = (
     } else {
       return 'ENDRING_ALDERSPENSJON'
     }
+  } else if (skalBeregneAfp) {
+    return 'PRE2025_OFFENTLIG_AFP_ETTERFULGT_AV_ALDERSPENSJON'
   } else {
     if (ufoeregrad && beregningsvalg !== 'med_afp') {
       return 'ALDERSPENSJON'
@@ -116,6 +119,7 @@ export const generateTidligstMuligHeltUttakRequestBody = (args: {
 export const generateAlderspensjonRequestBody = (args: {
   loependeVedtak: LoependeVedtak
   afp: AfpRadio | null
+  skalBeregneAfp?: boolean | null
   sivilstand?: Sivilstand | null | undefined
   epsHarInntektOver2G: boolean | null
   epsHarPensjon: boolean | null
@@ -125,10 +129,12 @@ export const generateAlderspensjonRequestBody = (args: {
   heltUttak?: HeltUttak
   utenlandsperioder: Utenlandsperiode[]
   beregningsvalg?: Beregningsvalg | null
+  afpInntektMaanedFoerUttak?: number
 }): AlderspensjonRequestBody | undefined => {
   const {
     loependeVedtak,
     afp,
+    skalBeregneAfp,
     sivilstand,
     epsHarInntektOver2G,
     epsHarPensjon,
@@ -138,6 +144,7 @@ export const generateAlderspensjonRequestBody = (args: {
     heltUttak,
     utenlandsperioder,
     beregningsvalg,
+    afpInntektMaanedFoerUttak,
   } = args
 
   if (!foedselsdato || !heltUttak) {
@@ -148,6 +155,7 @@ export const generateAlderspensjonRequestBody = (args: {
     simuleringstype: getSimuleringstypeFromRadioEllerVedtak(
       loependeVedtak,
       afp,
+      skalBeregneAfp,
       beregningsvalg
     ),
     foedselsdato: format(parseISO(foedselsdato), DATE_BACKEND_FORMAT),
@@ -177,6 +185,7 @@ export const generateAlderspensjonRequestBody = (args: {
         : undefined,
     },
     utenlandsperiodeListe: transformUtenlandsperioderArray(utenlandsperioder),
+    afpInntektMaanedFoerUttak,
   }
 }
 
