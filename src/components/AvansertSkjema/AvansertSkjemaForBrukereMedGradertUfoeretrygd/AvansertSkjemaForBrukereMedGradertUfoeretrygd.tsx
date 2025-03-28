@@ -1,14 +1,7 @@
 import React from 'react'
 import { useIntl, FormattedMessage } from 'react-intl'
 
-import {
-  Alert,
-  BodyLong,
-  Radio,
-  RadioGroup,
-  Select,
-  TextField,
-} from '@navikt/ds-react'
+import { Alert, Radio, RadioGroup, Select, TextField } from '@navikt/ds-react'
 import clsx from 'clsx'
 
 import {
@@ -21,7 +14,6 @@ import { useFormLocalState, useFormValidationErrors } from '../hooks'
 import { AVANSERT_FORM_NAMES, onAvansertBeregningSubmit } from '../utils'
 import { AgePicker } from '@/components/common/AgePicker'
 import { Divider } from '@/components/common/Divider'
-import { ReadMore } from '@/components/common/ReadMore'
 import { SanityReadmore } from '@/components/common/SanityReadmore'
 import { VilkaarsproevingAlert } from '@/components/VilkaarsproevingAlert'
 import { BeregningContext } from '@/pages/Beregning/context'
@@ -551,40 +543,15 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                 <div className={styles.spacer__small} />
 
                 {localBeregningsTypeRadio === 'med_afp' ? (
-                  <ReadMore
-                    name="Om uttaksgrad"
-                    header={intl.formatMessage({
-                      id: 'beregning.avansert.rediger.read_more.uttaksgrad.label',
-                    })}
-                  >
-                    <BodyLong data-testid="om-uttaksgrad">
-                      <FormattedMessage
-                        id="beregning.avansert.rediger.read_more.uttaksgrad.body"
-                        values={getFormatMessageValues()}
-                      />
-                    </BodyLong>
-                  </ReadMore>
+                  <SanityReadmore id="om_uttaksgrad" />
                 ) : (
-                  <ReadMore
-                    name="Om uttaksgrad"
-                    header={intl.formatMessage({
-                      id: 'beregning.avansert.rediger.read_more.uttaksgrad.gradert_ufoeretrygd.label',
-                    })}
-                  >
-                    <BodyLong data-testid="om-uttaksgrad-og-ufoeretrygd">
-                      <FormattedMessage
-                        id={
-                          isEndring
-                            ? 'omufoeretrygd.readmore.endring.ingress'
-                            : 'beregning.avansert.rediger.read_more.uttaksgrad.gradert_ufoeretrygd.body'
-                        }
-                        values={{
-                          ...getFormatMessageValues(),
-                          normertPensjonsalder: formatertNormertPensjonsalder,
-                        }}
-                      />
-                    </BodyLong>
-                  </ReadMore>
+                  <SanityReadmore
+                    id={
+                      isEndring
+                        ? 'om_uttaksgrad_UT_gradert_endring'
+                        : 'om_uttaksgrad_UT_gradert'
+                    }
+                  />
                 )}
               </div>
 

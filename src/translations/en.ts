@@ -427,16 +427,6 @@ const translations = {
     'Choose withdrawal degree',
   'beregning.avansert.rediger.uttaksgrad.endring.description':
     'Choose new withdrawal degree',
-  'beregning.avansert.rediger.read_more.uttaksgrad.label':
-    'About withdrawal degree',
-  'beregning.avansert.rediger.read_more.uttaksgrad.gradert_ufoeretrygd.label':
-    'About withdrawal degree and disability benefits',
-  'beregning.avansert.rediger.read_more.uttaksgrad.body':
-    'Withdrawal degree indicates how much of the monthly retirement pension you wish to withdraw. You can choose graded withdrawal (20, 40, 50, 60, or <nowrap>80 %</nowrap>), or full retirement pension (<nowrap>100 %</nowrap>).',
-  'beregning.avansert.rediger.read_more.uttaksgrad.endring.body':
-    'Withdrawal degree indicates how much of the monthly retirement pension you wish to withdraw. If you want to change the degree to 20, 40, 50, 60, or 80 %, at least 12 months must have elapsed since you started withdrawing retirement pension or changed the withdrawal degree. You can change to 0 % and 100 % as often as you wish.',
-  'beregning.avansert.rediger.read_more.uttaksgrad.gradert_ufoeretrygd.body':
-    'Withdrawal degree indicates how much of the monthly retirement pension you wish to withdraw. The degree of disability benefits and retirement pension cannot together exceed 100 %. From 67 years you can freely choose graded withdrawal (20, 40, 50, 60, or 80 %), or full retirement pension (100 %).',
   'beregning.avansert.rediger.radio.inntekt_vsa_helt_uttak':
     'Do you expect to have income at the same time as you withdraw <nowrap>100 %</nowrap> pension?',
   'beregning.avansert.rediger.radio.inntekt_vsa_helt_uttak.description':
@@ -674,10 +664,6 @@ const translations = {
   'inntekt.endre_inntekt_vsa_pensjon_modal.button.legg_til': 'Add Income',
   'inntekt.endre_inntekt_vsa_pensjon_modal.button.endre': 'Update Income',
   'inntekt.info_om_inntekt.read_more.label': 'About Pensionable income',
-  'inntekt.info_om_inntekt.ufoeretrygd.read_more.label':
-    'About retirement pension and the income limit for disability benefits',
-  'inntekt.info_om_inntekt.ufoeretrygd.read_more.body':
-    'retirement pension is not Pensionable income and does not affect the income limit for your disability benefits. You retain your income limit when combining disability benefits and retirement pension from the National Insurance Scheme.',
   'inntekt.info_om_inntekt.open.link': 'What is Pensionable income?',
   'inntekt.info_om_inntekt.intro':
     'We use the last available annual income from the Tax Administration as future income. If you change it in the calculator, we will use that instead.{br}{br}',

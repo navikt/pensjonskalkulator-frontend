@@ -259,6 +259,46 @@
           "style": "normal"
         }
       ]
+    },
+    {
+      "name": "om_uttaksgrad_UT_gradert_endring",
+      "overskrift": "Om uttaksgrad",
+      "innhold": [
+        {
+          "_key": "95267fac3892",
+          "markDefs": [],
+          "children": [
+            {
+              "_type": "span",
+              "marks": [],
+              "text": "Lorem",
+              "_key": "553475223f9e2"
+            }
+          ],
+          "_type": "block",
+          "style": "normal"
+        }
+      ]
+    },
+    {
+      "name": "om_uttaksgrad_UT_gradert",
+      "overskrift": "Om uttaksgrad",
+      "innhold": [
+        {
+          "_key": "95267fac3892",
+          "markDefs": [],
+          "children": [
+            {
+              "_type": "span",
+              "marks": [],
+              "text": "Lorem",
+              "_key": "553475223f9e2"
+            }
+          ],
+          "_type": "block",
+          "style": "normal"
+        }
+      ]
     }
   ],
   "syncTags": ["s1:EmCcjQ"],

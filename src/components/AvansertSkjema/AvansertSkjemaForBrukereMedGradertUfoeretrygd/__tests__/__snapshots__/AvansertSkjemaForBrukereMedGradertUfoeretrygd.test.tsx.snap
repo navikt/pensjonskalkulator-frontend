@@ -740,14 +740,14 @@ exports[`AvansertSkjemaForBrukereMedGradertUfoeretrygd > Gitt at en bruker har v
           class="_spacer__small_db4c62"
         />
         <div
-          class="navds-read-more navds-read-more--medium"
+          class="navds-read-more navds-read-more--medium _wrapper_11f63f"
           data-volume="low"
         >
           <button
             aria-expanded="false"
             class="navds-read-more__button navds-body-short"
             data-state="closed"
-            data-testid="readmore"
+            data-testid="om_uttaksgrad_UT_gradert_endring"
             type="button"
           >
             <svg
@@ -769,7 +769,7 @@ exports[`AvansertSkjemaForBrukereMedGradertUfoeretrygd > Gitt at en bruker har v
               />
             </svg>
             <span>
-              beregning.avansert.rediger.read_more.uttaksgrad.gradert_ufoeretrygd.label
+              Om uttaksgrad
             </span>
           </button>
           <div
@@ -777,44 +777,8 @@ exports[`AvansertSkjemaForBrukereMedGradertUfoeretrygd > Gitt at en bruker har v
             class="navds-read-more__content navds-read-more__content--closed navds-body-long navds-body-long--medium"
             data-state="closed"
           >
-            <p
-              class="navds-body-long navds-body-long--medium"
-              data-testid="om-uttaksgrad-og-ufoeretrygd"
-            >
-              Uttaksgrad angir hvor stor del av månedlig alderspensjon du ønsker å ta ut. Grad av uføretrygd og alderspensjon kan til sammen ikke overstige 
-              <span
-                class="nowrap"
-              >
-                100 %
-              </span>
-              . Fra 
-              <span
-                class="nowrap"
-              >
-                67 alder.aar
-              </span>
-               kan du fritt velge gradert uttak (20, 40, 50, 60 eller 
-              <span
-                class="nowrap"
-              >
-                80 %
-              </span>
-              ), eller hel alderspensjon (
-              <span
-                class="nowrap"
-              >
-                100 %
-              </span>
-              ).
-              <br />
-              <br />
-              Hvis du vil endre gradering må det ha gått minimum 12 måneder siden du startet uttak av alderspensjon eller endret uttaksgrad. Du kan likevel endre til 
-              <span
-                class="nowrap"
-              >
-                0 %
-              </span>
-               når du vil.
+            <p>
+              Lorem
             </p>
           </div>
         </div>

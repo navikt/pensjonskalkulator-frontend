@@ -445,10 +445,7 @@ describe('Med ufoeretrygd', () => {
       })
 
       it('forventer jeg å få tilpasset informasjon i read more "om uttaksgrad og uføretrygd".', () => {
-        cy.contains('button', 'Om uttaksgrad og uføretrygd').click()
-        cy.contains(
-          'Uttaksgrad angir hvor stor del av månedlig alderspensjon du ønsker å ta ut. Grad av uføretrygd og alderspensjon kan til sammen ikke overstige 100 %. Fra 67 år kan du fritt velge gradert uttak (20, 40, 50, 60 eller 80 %), eller hel alderspensjon (100 %).'
-        ).should('exist')
+        cy.get('[data-testid="om_uttaksgrad_UT_gradert"]').should('exist')
       })
 
       it('forventer jeg tilpasset informasjon om inntekt samtidig som uttak av pensjon.', () => {
@@ -489,10 +486,7 @@ describe('Med ufoeretrygd', () => {
       })
 
       it('forventer jeg å få tilpasset informasjon i read more "om uttaksgrad og uføretrygd".', () => {
-        cy.contains('button', 'Om uttaksgrad og uføretrygd').click()
-        cy.contains(
-          'Uttaksgrad angir hvor stor del av månedlig alderspensjon du ønsker å ta ut. Grad av uføretrygd og alderspensjon kan til sammen ikke overstige 100 %. Fra 67 år kan du fritt velge gradert uttak (20, 40, 50, 60 eller 80 %), eller hel alderspensjon (100 %).'
-        ).should('exist')
+        cy.get('[data-testid="om_uttaksgrad_UT_gradert"]').should('exist')
       })
 
       it('forventer jeg vanlig informasjon om inntekt samtidig som uttak av pensjon.', () => {

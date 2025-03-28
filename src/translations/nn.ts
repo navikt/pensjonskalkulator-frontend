@@ -363,14 +363,6 @@ const translations = {
   'beregning.avansert.rediger.uttaksgrad.label': 'MANGLER_TEKST',
   'beregning.avansert.rediger.uttaksgrad.description': 'MANGLER_TEKST',
   'beregning.avansert.rediger.uttaksgrad.endring.description': 'MANGLER_TEKST',
-  'beregning.avansert.rediger.read_more.uttaksgrad.label': 'MANGLER_TEKST',
-  'beregning.avansert.rediger.read_more.uttaksgrad.gradert_ufoeretrygd.label':
-    'MANGLER_TEKST',
-  'beregning.avansert.rediger.read_more.uttaksgrad.body': 'MANGLER_TEKST',
-  'beregning.avansert.rediger.read_more.uttaksgrad.endring.body':
-    'MANGLER_TEKST',
-  'beregning.avansert.rediger.read_more.uttaksgrad.gradert_ufoeretrygd.body':
-    'MANGLER_TEKST',
   'beregning.avansert.rediger.radio.inntekt_vsa_helt_uttak': 'MANGLER_TEKST',
   'beregning.avansert.rediger.radio.inntekt_vsa_helt_uttak.description':
     'MANGLER_TEKST',
@@ -550,8 +542,6 @@ const translations = {
   'inntekt.endre_inntekt_vsa_pensjon_modal.button.legg_til': 'MANGLER_TEKST',
   'inntekt.endre_inntekt_vsa_pensjon_modal.button.endre': 'MANGLER_TEKST',
   'inntekt.info_om_inntekt.read_more.label': 'MANGLER_TEKST',
-  'inntekt.info_om_inntekt.ufoeretrygd.read_more.label': 'MANGLER_TEKST',
-  'inntekt.info_om_inntekt.ufoeretrygd.read_more.body': 'MANGLER_TEKST',
   'inntekt.info_om_inntekt.open.link': 'Kva er pensjonsgjevande inntekt?',
   'inntekt.info_om_inntekt.intro': 'MANGLER_TEKST',
   'inntekt.info_om_inntekt.subtitle_1': 'MANGLER_TEKST',

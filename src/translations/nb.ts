@@ -445,15 +445,6 @@ const translations = {
   'beregning.avansert.rediger.uttaksgrad.description': 'Velg uttaksgrad',
   'beregning.avansert.rediger.uttaksgrad.endring.description':
     'Velg ny uttaksgrad',
-  'beregning.avansert.rediger.read_more.uttaksgrad.label': 'Om uttaksgrad',
-  'beregning.avansert.rediger.read_more.uttaksgrad.gradert_ufoeretrygd.label':
-    'Om uttaksgrad og uføretrygd',
-  'beregning.avansert.rediger.read_more.uttaksgrad.body':
-    'Uttaksgrad angir hvor stor del av månedlig alderspensjon du ønsker å ta ut. Du kan velge gradert uttak (20, 40, 50, 60 eller <nowrap>80 %</nowrap>), eller hel alderspensjon (<nowrap>100 %</nowrap>).',
-  'beregning.avansert.rediger.read_more.uttaksgrad.endring.body':
-    'Uttaksgrad angir hvor stor del av månedlig alderspensjon du ønsker å ta ut. Hvis du vil endre gradering til 20, 40, 50, 60 eller 80 % må det ha gått minimum 12 måneder siden du startet uttak av alderspensjon eller endret uttaksgrad. Du kan endre til 0 % og 100 % så ofte du vil.',
-  'beregning.avansert.rediger.read_more.uttaksgrad.gradert_ufoeretrygd.body':
-    'Uttaksgrad angir hvor stor del av månedlig alderspensjon du ønsker å ta ut. Grad av uføretrygd og alderspensjon kan til sammen ikke overstige 100 %. Fra {normertPensjonsalder} kan du fritt velge gradert uttak (20, 40, 50, 60 eller 80 %), eller hel alderspensjon (100 %).',
   'beregning.avansert.rediger.radio.inntekt_vsa_helt_uttak':
     'Forventer du å ha inntekt samtidig som du tar ut <nowrap>100 %</nowrap> pensjon?',
   'beregning.avansert.rediger.radio.inntekt_vsa_helt_uttak.description':
@@ -715,10 +706,6 @@ const translations = {
   'inntekt.endre_inntekt_vsa_pensjon_modal.button.legg_til': 'Legg til inntekt',
   'inntekt.endre_inntekt_vsa_pensjon_modal.button.endre': 'Oppdater inntekt',
   'inntekt.info_om_inntekt.read_more.label': 'Om pensjonsgivende inntekt',
-  'inntekt.info_om_inntekt.ufoeretrygd.read_more.label':
-    'Om alderspensjon og inntektsgrensen for uføretrygd',
-  'inntekt.info_om_inntekt.ufoeretrygd.read_more.body':
-    'Alderspensjon er ikke pensjonsgivende inntekt og påvirker ikke inntektsgrensen for uføretrygden din. Du beholder inntektsgrensen din ved kombinasjon av uføretrygd og alderspensjon fra folketrygden.',
   'inntekt.info_om_inntekt.open.link': 'Hva er pensjonsgivende inntekt?',
   'inntekt.info_om_inntekt.intro':
     'Vi bruker siste tilgjengelige årsinntekt fra Skatteetaten som fremtidig inntekt. Hvis du endrer den i kalkulatoren, bruker vi den i stedet.{br}{br}',
