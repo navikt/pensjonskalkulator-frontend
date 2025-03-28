@@ -1,7 +1,6 @@
 import React from 'react'
 
-import { Loader } from '@navikt/ds-react'
-import { Accordion } from '@navikt/ds-react'
+import { Accordion, Loader } from '@navikt/ds-react'
 
 import { AccordionContext } from '@/components/common/AccordionItem'
 
@@ -11,7 +10,7 @@ interface Props {
   headerTitle: string
   headerValue?: string
   isLoading?: boolean
-  children: React.JSX.Element
+  children: React.ReactNode
 }
 
 export const GrunnlagSection = React.forwardRef(
@@ -53,3 +52,4 @@ export const GrunnlagSection = React.forwardRef(
     )
   }
 )
+GrunnlagSection.displayName = 'GrunnlagSection'

@@ -2,19 +2,22 @@ import React from 'react'
 import { useIntl } from 'react-intl'
 
 import { PortableText } from '@portabletext/react'
+import clsx from 'clsx'
 
 import { ReadMore } from '@/components/common/ReadMore'
 import { SanityContext } from '@/context/SanityContext'
 import { useGetSanityFeatureToggleQuery } from '@/state/api/apiSlice'
 import { getSanityPortableTextComponents } from '@/utils/sanity'
 
-interface IProps {
+import styles from './SanityReadmore.module.scss'
+
+interface Props {
   id: string
   className?: string
   children?: React.ReactNode
 }
 
-export function SanityReadmore({ id, className, children }: IProps) {
+export const SanityReadmore = ({ id, className, children }: Props) => {
   const intl = useIntl()
   const { readMoreData } = React.useContext(SanityContext)
   const { data: sanityFeatureToggle } = useGetSanityFeatureToggleQuery()
@@ -29,7 +32,7 @@ export function SanityReadmore({ id, className, children }: IProps) {
       data-testid={sanityContent.name}
       name={sanityContent.name}
       header={sanityContent.overskrift}
-      className={className}
+      className={clsx(styles.wrapper, className)}
     >
       <PortableText
         value={sanityContent.innhold}
