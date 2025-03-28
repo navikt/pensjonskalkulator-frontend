@@ -590,6 +590,7 @@ const translations = {
     'You have AFP in the private sector. Your AFP is not affected by your change in retirement pension. It continues as before.',
   'grunnlag.afp.ingress.nei.endring':
     'You have indicated that you do not have the right to AFP. If you are unsure whether you have AFP, you should ask your employer. AFP can affect when you can withdraw retirement pension.',
+  'grunnlag.afp.ingress.full_ufoeretrygd': 'MANGLER_TEKST',
 
   'grunnlag.afp.ingress.ja_offentlig.gammel':
     'You have indicated AFP in the public sector. Nav has not assessed whether you meet the conditions for AFP, but assumes that you do. For more information on the conditions, check with your occupational pension scheme.',
@@ -609,12 +610,6 @@ const translations = {
     'If you start a job with an employer that has an AFP agreement, we recommend that you make a ',
   'grunnlag.afp.ingress.nei.ufoeretrygd.gammel':
     'If you start a job with an employer that has an AFP agreement, you must be aware that AFP and disability benefits cannot be combined. You must choose between AFP and disability benefits before you turn 62.',
-  'grunnlag.afp.ingress.ja_offentlig.endring.gammel':
-    'You have AFP in the public sector. Your AFP is not affected by your change in retirement pension. It continues as before.',
-  'grunnlag.afp.ingress.ja_privat.endring.gammel':
-    'You have AFP in the private sector. Your AFP is not affected by your change in retirement pension. It continues as before.',
-  'grunnlag.afp.ingress.nei.endring.gammel':
-    'You have indicated that you do not have the right to AFP. If you are unsure whether you have AFP, you should ask your employer. AFP can affect when you can withdraw retirement pension.',
 
   'grunnlag.forbehold.ingress_1':
     'The pension has been calculated based on the information we have about you and the information you have provided. The calculation has been made in accordance with current regulations. This is a preliminary estimate of what you can expect to receive in pension. Nav is not responsible for the amounts obtained from other sources.',
