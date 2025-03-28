@@ -49,12 +49,6 @@ export const Grunnlag: React.FC<Props> = ({
   const { avansertSkjemaModus, setAvansertSkjemaModus } =
     React.useContext(BeregningContext)
 
-  const goToAFP: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
-    e.preventDefault()
-    dispatch(userInputActions.flushCurrentSimulation())
-    navigate(paths.afp)
-  }
-
   const goToAvansert: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     e.preventDefault()
     if (avansertSkjemaModus === 'resultat') {
@@ -63,12 +57,6 @@ export const Grunnlag: React.FC<Props> = ({
       dispatch(userInputActions.flushCurrentSimulation())
       navigate(paths.beregningAvansert)
     }
-  }
-
-  const goToStart: React.MouseEventHandler<HTMLAnchorElement> = (e): void => {
-    e.preventDefault()
-    dispatch(userInputActions.flush())
-    navigate(paths.start)
   }
 
   const intl = useIntl()
@@ -174,11 +162,7 @@ export const Grunnlag: React.FC<Props> = ({
           </GrunnlagSection>
         </AccordionItem>
 
-        <GrunnlagAFP
-          goToStart={goToStart}
-          goToAvansert={goToAvansert}
-          goToAFP={goToAFP}
-        />
+        <GrunnlagAFP />
       </Accordion>
     </section>
   )
