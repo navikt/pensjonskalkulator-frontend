@@ -42,7 +42,6 @@ describe('AvansertSkjemaForAndreBrukere', () => {
   }
 
   it('vises informasjon om inntekt, uttaksgrad og pensjonsalder', async () => {
-    const user = userEvent.setup()
     render(
       <BeregningContext.Provider
         value={{
@@ -67,13 +66,8 @@ describe('AvansertSkjemaForAndreBrukere', () => {
     expect(
       screen.getByText('inntekt.info_om_inntekt.read_more.label')
     ).toBeVisible()
-    await expect(screen.getByTestId('om_uttaksgrad')).toBeInTheDocument()
-    user.click(screen.getByText('beregning.read_more.pensjonsalder.label'))
-    expect(
-      screen.getByText('Aldersgrensene vil øke gradvis fra 1964-kullet', {
-        exact: false,
-      })
-    ).toBeVisible()
+    expect(screen.queryByTestId('om_uttaksgrad')).toBeInTheDocument()
+    expect(screen.queryByTestId('om_TMU')).toBeInTheDocument()
 
     fireEvent.change(
       await screen.findByTestId(AVANSERT_FORM_NAMES.uttaksgrad),
@@ -82,12 +76,7 @@ describe('AvansertSkjemaForAndreBrukere', () => {
       }
     )
 
-    user.click(screen.getByText('beregning.read_more.pensjonsalder.label'))
-    expect(
-      screen.getByText('Aldersgrensene vil øke gradvis fra 1964-kullet', {
-        exact: false,
-      })
-    ).toBeVisible()
+    expect(screen.queryByTestId('om_TMU')).toBeInTheDocument()
   })
 
   it('feltene rendres riktig som default, og når brukeren legger til en gradert periode', async () => {
@@ -133,8 +122,8 @@ describe('AvansertSkjemaForAndreBrukere', () => {
       )
     ).toBeVisible()
     expect(
-      screen.getByText('beregning.read_more.pensjonsalder.label')
-    ).toBeVisible()
+      screen.queryByTestId('om_pensjonsalder_UT_hel')
+    ).not.toBeInTheDocument()
     expect(
       screen.queryByTestId(AVANSERT_FORM_NAMES.inntektVsaHeltUttakRadio)
     ).not.toBeInTheDocument()
@@ -1491,9 +1480,9 @@ describe('AvansertSkjemaForAndreBrukere', () => {
         )
       ).toBeVisible()
       expect(
-        await screen.findByText('omufoeretrygd.readmore.title')
-      ).toBeVisible()
-      await expect(screen.getByTestId('om_uttaksgrad')).toBeInTheDocument()
+        screen.queryByTestId('om_pensjonsalder_UT_hel')
+      ).toBeInTheDocument()
+      expect(screen.queryByTestId('om_uttaksgrad')).toBeInTheDocument()
 
       const selectAarElement = screen.getByTestId(
         `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`

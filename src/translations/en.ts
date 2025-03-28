@@ -324,8 +324,6 @@ const translations = {
     'About the earliest withdrawal date',
   'beregning.read_more.pensjonsalder.body':
     'Your earning record in the National Insurance Scheme determines when you can start withdrawing your retirement pension. The retirement age limits will gradually increase from the 1964 birth cohort by one to two months per year, but the pension calculator does not account for this.{br}{br}If you have provided information about AFP (contractual pension) and/or periods spent abroad, this is included in the assessment of when you can withdraw your retirement pension.{br}{br}If you cannot withdraw a full (100%) retirement pension from your desired age, you can adjust the withdrawal percentage to see if you can start earlier. If you withdraw a graded pension, the timing for when you can withdraw 100% may be delayed.',
-  'beregning.read_more.pensjonsalder.endring.body':
-    'Your accrual in the National Insurance Scheme determines how much retirement pension you can withdraw. By 67, your pension must at least correspond to the guarantee pension. Withdrawing before 67 means that you distribute your pension over multiple years, and thus receive less each year.{br}{br}If you have AFP, AFP is included in the assessment of how much retirement pension you can withdraw.',
   'beregning.alt_tekst':
     'Annual income and pension after withdrawal in kroner.',
   'omufoeretrygd.hel.ingress':
@@ -337,10 +335,6 @@ const translations = {
     '<nowrap>100 %</nowrap> disability benefits cannot be combined with retirement pension. Therefore, it is not possible to calculate retirement pension before 67 in the calculator. At 67, <nowrap>100 %</nowrap> disability benefits automatically convert to <nowrap>100 %</nowrap> retirement pension. If you have questions, you can contact us at 55 55 33 34.',
   'omufoeretrygd.readmore.gradert.ingress':
     'It is possible to combine graded disability benefits and graded retirement pension from 62 as long as you have enough accrual to withdraw retirement pension. The degree of disability and retirement pension cannot exceed <nowrap>100 %</nowrap>. If you have questions, you can contact us at 55 55 33 34.',
-  'omufoeretrygd.readmore.gradert.avansert.ingress':
-    'Your accrual in the National Insurance Scheme determines when you can withdraw retirement pension. By 67, your pension must at least correspond to the guarantee pension. Withdrawing before 67 means that you distribute your pension over multiple years, and thus receive less each year.{br}{br}At 67, graded disability benefits automatically convert to graded retirement pension at the nearest withdrawal degree. If you want <nowrap>100 %</nowrap> retirement pension, you have to apply for it.',
-  'omufoeretrygd.readmore.endring.ingress':
-    'Withdrawal degree indicates how much of the monthly retirement pension you wish to withdraw. The degree of disability benefits and retirement pension can together not exceed 100 %. From 67 years you can freely choose graded withdrawal (20, 40, 50, 60, or 80 %), or full retirement pension (100 %).{br}{br}If you want to change the degree, at least 12 months must have passed since you started withdrawing retirement pension or changed the withdrawal degree. You can, however, change to 0 % whenever you want.',
   'omufoeretrygd.avansert_link': 'Advanced',
   'velguttaksalder.title': 'When do you want to withdraw retirement pension?',
   'velguttaksalder.endring.title':

@@ -568,14 +568,14 @@ exports[`AvansertSkjemaForBrukereMedGradertUfoeretrygd > Gitt at en bruker har v
           class="_spacer__small_db4c62"
         />
         <div
-          class="navds-read-more navds-read-more--medium"
+          class="navds-read-more navds-read-more--medium _wrapper_11f63f"
           data-volume="low"
         >
           <button
             aria-expanded="false"
             class="navds-read-more__button navds-body-short"
             data-state="closed"
-            data-testid="readmore"
+            data-testid="om_pensjonsalder_UT_gradert_avansert"
             type="button"
           >
             <svg
@@ -597,7 +597,7 @@ exports[`AvansertSkjemaForBrukereMedGradertUfoeretrygd > Gitt at en bruker har v
               />
             </svg>
             <span>
-              omufoeretrygd.readmore.title
+              Om pensjonsalder og uføretrygd
             </span>
           </button>
           <div
@@ -605,37 +605,8 @@ exports[`AvansertSkjemaForBrukereMedGradertUfoeretrygd > Gitt at en bruker har v
             class="navds-read-more__content navds-read-more__content--closed navds-body-long navds-body-long--medium"
             data-state="closed"
           >
-            <p
-              class="navds-body-long navds-body-long--medium"
-            >
-              Din opptjening i folketrygden bestemmer når du kan ta ut alderspensjon. Ved 
-              <span
-                class="nowrap"
-              >
-                67 alder.aar
-              </span>
-               må pensjonen minst tilsvare garantipensjon. Uttak før 
-              <span
-                class="nowrap"
-              >
-                67 alder.aar
-              </span>
-               betyr at du fordeler pensjonen din over flere år, og dermed får du mindre hvert år.
-              <br />
-              <br />
-              Ved 
-              <span
-                class="nowrap"
-              >
-                67 alder.aar
-              </span>
-               går gradert uføretrygd automatisk over til gradert alderspensjon med nærmeste uttaksgrad. Hvis du vil ha 
-              <span
-                class="nowrap"
-              >
-                100 %
-              </span>
-               alderspensjon må du selv søke om dette.
+            <p>
+              Lorem
             </p>
           </div>
         </div>
