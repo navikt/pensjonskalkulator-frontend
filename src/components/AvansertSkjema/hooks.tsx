@@ -8,7 +8,7 @@ import { ALLE_UTTAKSGRAD_AS_NUMBER } from '@/utils/uttaksgrad'
 
 import { AvansertFormNames, AVANSERT_FORM_NAMES } from './utils'
 
-export const useFormLocalState = (initialValues: {
+interface UseFormLocalStateProps {
   isEndring: boolean
   ufoeregrad: number
   aarligInntektFoerUttakBeloepFraBrukerSkattBeloep: string | undefined
@@ -18,19 +18,19 @@ export const useFormLocalState = (initialValues: {
   gradertUttaksperiode: GradertUttak | null
   normertPensjonsalder: Alder
   beregningsvalg: Beregningsvalg | null
-}) => {
-  const {
-    isEndring,
-    ufoeregrad,
-    aarligInntektFoerUttakBeloepFraBrukerSkattBeloep,
-    aarligInntektFoerUttakBeloepFraBrukerInput,
-    uttaksalder,
-    aarligInntektVsaHelPensjon,
-    gradertUttaksperiode,
-    normertPensjonsalder,
-    beregningsvalg,
-  } = initialValues
+}
 
+export const useFormLocalState = ({
+  isEndring,
+  ufoeregrad,
+  aarligInntektFoerUttakBeloepFraBrukerSkattBeloep,
+  aarligInntektFoerUttakBeloepFraBrukerInput,
+  uttaksalder,
+  aarligInntektVsaHelPensjon,
+  gradertUttaksperiode,
+  normertPensjonsalder,
+  beregningsvalg,
+}: UseFormLocalStateProps) => {
   const { setHarAvansertSkjemaUnsavedChanges } =
     React.useContext(BeregningContext)
 
@@ -137,6 +137,7 @@ export const useFormLocalState = (initialValues: {
   }, [ufoeregrad, localBeregningsTypeRadio, localGradertUttak, localHeltUttak])
 
   React.useEffect(() => {
+    const hasBeregningsvalgChanged = beregningsvalg !== localBeregningsTypeRadio
     const hasInntektFremTilUnntakChanged =
       (aarligInntektFoerUttakBeloepFraBrukerInput !== null &&
         localInntektFremTilUttak !==
@@ -166,6 +167,7 @@ export const useFormLocalState = (initialValues: {
       JSON.stringify(aarligInntektVsaHelPensjon?.sluttAlder)
 
     const updatedHasUnsavedChanges =
+      hasBeregningsvalgChanged ||
       hasInntektFremTilUnntakChanged ||
       hasGradChanged ||
       hasGradertUttaksalderChanged ||
@@ -180,10 +182,12 @@ export const useFormLocalState = (initialValues: {
         : previous
     })
   }, [
+    beregningsvalg,
     uttaksalder,
     aarligInntektFoerUttakBeloepFraBrukerInput,
     gradertUttaksperiode,
     aarligInntektVsaHelPensjon,
+    localBeregningsTypeRadio,
     localInntektFremTilUttak,
     localGradertUttak,
     localHeltUttak,
