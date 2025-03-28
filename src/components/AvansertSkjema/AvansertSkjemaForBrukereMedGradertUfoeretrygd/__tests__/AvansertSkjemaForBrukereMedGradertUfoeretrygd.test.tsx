@@ -1279,7 +1279,6 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
         foedselsdato: '1963-04-30',
         harAvansertSkjemaUnsavedChanges: false,
         hasVilkaarIkkeOppfylt: false,
-        localBeregningsTypeRadio: null,
         localInntektFremTilUttak: null,
         loependeVedtak: {
           ufoeretrygd: { grad: 75 },
@@ -1619,7 +1618,6 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
         foedselsdato: '1963-04-30',
         harAvansertSkjemaUnsavedChanges: false,
         hasVilkaarIkkeOppfylt: false,
-        localBeregningsTypeRadio: null,
         localInntektFremTilUttak: null,
         loependeVedtak: {
           ufoeretrygd: { grad: 75 },
@@ -2586,7 +2584,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
       ).toBeVisible()
     })
 
-    it('Viser riktig innhold når man har valgt beregning med AFP', async () => {
+    it('Viser riktig innhold når man har valgt beregning uten AFP', async () => {
       render(
         <BeregningContext.Provider value={{ ...contextMockedValues }}>
           <AvansertSkjemaForBrukereMedGradertUfoeretrygd />
@@ -2605,14 +2603,65 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
               afp: 'ja_privat',
               currentSimulation: {
                 ...userInputInitialState.currentSimulation,
-                beregningsvalg: 'med_afp',
+                beregningsvalg: 'uten_afp',
               },
             },
           },
         }
       )
 
-      expect(screen.getByTestId('om_uttaksgrad')).toBeInTheDocument()
+      // Viser AgePicker
+      expect(screen.getByRole('combobox', { name: 'Velg år' })).toBeVisible()
+    })
+
+    it('Setter uttaksalder fast og viser riktig innhold når man velger beregning med AFP', async () => {
+      const user = userEvent.setup()
+      render(
+        <BeregningContext.Provider value={{ ...contextMockedValues }}>
+          <AvansertSkjemaForBrukereMedGradertUfoeretrygd />
+        </BeregningContext.Provider>,
+        {
+          preloadedState: {
+            api: {
+              // @ts-ignore
+              queries: {
+                ...fulfilledGetPerson,
+                ...fulfilledGetLoependeVedtak75Ufoeregrad,
+              },
+            },
+            userInput: {
+              ...userInputInitialState,
+              afp: 'ja_privat',
+            },
+          },
+        }
+      )
+
+      await user.click(await screen.findByTestId('med_afp'))
+
+      // Rendrer skjulte felter for uttaksalder med riktige verdier
+      const yearInput = screen.getByDisplayValue('62')
+      const monthInput = screen.getByDisplayValue('0')
+      expect(yearInput).toBeInTheDocument()
+      expect(monthInput).toBeInTheDocument()
+      expect(yearInput).toHaveAttribute('type', 'hidden')
+      expect(monthInput).toHaveAttribute('type', 'hidden')
+      expect(yearInput).toHaveAttribute(
+        'name',
+        `${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
+      )
+      expect(monthInput).toHaveAttribute(
+        'name',
+        `${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`
+      )
+
+      // Rendrer ikke AgePicker
+      expect(
+        screen.queryByRole('combobox', { name: 'Velg år' })
+      ).not.toBeInTheDocument()
+
+      // Viser riktig readmore om uttaksgrad
+      expect(screen.queryByTestId('om_uttaksgrad')).toBeInTheDocument()
       expect(
         screen.queryByTestId('om_uttaksgrad_UT_gradert_endring')
       ).not.toBeInTheDocument()

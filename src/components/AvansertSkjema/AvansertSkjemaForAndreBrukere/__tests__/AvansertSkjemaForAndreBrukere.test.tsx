@@ -1109,7 +1109,6 @@ describe('AvansertSkjemaForAndreBrukere', () => {
         foedselsdato: '1963-04-30',
         harAvansertSkjemaUnsavedChanges: false,
         hasVilkaarIkkeOppfylt: false,
-        localBeregningsTypeRadio: null,
         localInntektFremTilUttak: null,
         loependeVedtak: {
           ufoeretrygd: { grad: 0 },
@@ -1435,7 +1434,6 @@ describe('AvansertSkjemaForAndreBrukere', () => {
         foedselsdato: '1963-04-30',
         harAvansertSkjemaUnsavedChanges: false,
         hasVilkaarIkkeOppfylt: false,
-        localBeregningsTypeRadio: null,
         localInntektFremTilUttak: null,
         loependeVedtak: {
           ufoeretrygd: { grad: 0 },
