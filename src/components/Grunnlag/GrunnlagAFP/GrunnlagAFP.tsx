@@ -137,7 +137,8 @@ export const GrunnlagAFP: React.FC<Props> = ({
           )}
           {isGradertUfoereAfpToggleEnabled && (
             <>
-              {(afp === 'ja_offentlig' || afp === 'ja_privat') && !!ufoeregrad && (
+              {(afp === 'ja_offentlig' || afp === 'ja_privat') &&
+                !!ufoeregrad && (
                   <>
                     <Link href="#" onClick={goToAvansert}>
                       <FormattedMessage id="grunnlag.afp.avansert_link" />
