@@ -14,6 +14,7 @@ import {
   selectFoedselsdato,
   selectLoependeVedtak,
   selectSamtykkeOffentligAFP,
+  selectCurrentSimulation,
 } from '@/state/userInput/selectors'
 import { formatAfp } from '@/utils/afp'
 import {
@@ -41,6 +42,7 @@ export const GrunnlagAFP: React.FC<Props> = ({
   const isEndring = useAppSelector(selectIsEndring)
   const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const ufoeregrad = useAppSelector(selectUfoeregrad)
+  const { beregningsvalg } = useAppSelector(selectCurrentSimulation)
 
   const { data: getGradertUfoereAfpFeatureToggle } =
     useGetGradertUfoereAfpFeatureToggleQuery()
@@ -56,6 +58,8 @@ export const GrunnlagAFP: React.FC<Props> = ({
     return null
   }
 
+  const isUfoerAndDontWantAfp = !!ufoeregrad && beregningsvalg !== 'med_afp'
+
   const formatertAfpHeader = React.useMemo(() => {
     const afpString = formatAfp(intl, afp ?? 'vet_ikke')
 
@@ -67,11 +71,18 @@ export const GrunnlagAFP: React.FC<Props> = ({
       return `${formatAfp(intl, 'ja_offentlig')} (${intl.formatMessage({ id: 'grunnlag.afp.endring' })})`
     }
 
-    if (ufoeregrad && (afp === 'ja_offentlig' || afp === 'ja_privat')) {
+    if (
+      isUfoerAndDontWantAfp &&
+      (afp === 'ja_offentlig' || afp === 'ja_privat')
+    ) {
       return `${afpString} (${intl.formatMessage({ id: 'grunnlag.afp.ikke_beregnet' })})`
     }
 
-    if (!harSamtykketOffentligAFP && !ufoeregrad && afp === 'ja_offentlig') {
+    if (
+      !harSamtykketOffentligAFP &&
+      !isUfoerAndDontWantAfp &&
+      afp === 'ja_offentlig'
+    ) {
       return `${afpString} (${intl.formatMessage({ id: 'grunnlag.afp.ikke_beregnet' })})`
     }
 
@@ -103,7 +114,7 @@ export const GrunnlagAFP: React.FC<Props> = ({
       afp === 'ja_offentlig' && !harSamtykketOffentligAFP && !ufoeregrad
         ? 'ja_offentlig_utilgjengelig'
         : afp
-    const ufoeregradString = ufoeregrad ? '.ufoeretrygd' : ''
+    const ufoeregradString = isUfoerAndDontWantAfp ? '.ufoeretrygd' : ''
 
     // TODO: Remove this once when feature toggle is enabled in production.
     if (!isGradertUfoereAfpToggleEnabled) {
@@ -123,9 +134,7 @@ export const GrunnlagAFP: React.FC<Props> = ({
         <BodyLong>
           <FormattedMessage
             id={formatertAfpIngress}
-            values={{
-              ...getFormatMessageValues(),
-            }}
+            values={getFormatMessageValues()}
           />
           {!isEndring && !ufoeregrad && afp === 'nei' && (
             <>
@@ -138,7 +147,7 @@ export const GrunnlagAFP: React.FC<Props> = ({
           {isGradertUfoereAfpToggleEnabled && (
             <>
               {(afp === 'ja_offentlig' || afp === 'ja_privat') &&
-                !!ufoeregrad && (
+                isUfoerAndDontWantAfp && (
                   <>
                     <Link href="#" onClick={goToAvansert}>
                       <FormattedMessage id="grunnlag.afp.avansert_link" />
