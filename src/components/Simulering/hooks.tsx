@@ -90,10 +90,10 @@ export const useSimuleringChartLocalState = (initialValues: {
   const pre2025OffentligAfpListe: AfpPrivatPensjonsberegning[] =
     pre2025OffentligAfp
       ? Array.from(
-          { length: 67 - pre2025OffentligAfp.alderAar + 1 },
+          { length: 67 - pre2025OffentligAfp.alderAar - 1 },
           (_, index) => ({
             alder: pre2025OffentligAfp.alderAar + index,
-            beloep: pre2025OffentligAfp.totaltAfpBeloep,
+            beloep: pre2025OffentligAfp.totaltAfpBeloep * 12,
           })
         )
       : []
@@ -237,6 +237,7 @@ export const useSimuleringChartLocalState = (initialValues: {
                 } as SeriesOptionsType,
               ]
             : []),
+
           ...(pre2025OffentligAfp
             ? [
                 {
@@ -247,9 +248,9 @@ export const useSimuleringChartLocalState = (initialValues: {
                   /* c8 ignore next 1 */
                   data: processAfpPensjonsberegningArray(
                     pre2025OffentligAfp.alderAar,
-                    67 - pre2025OffentligAfp.alderAar + 1,
+                    67 - pre2025OffentligAfp.alderAar,
                     pre2025OffentligAfpListe,
-                    false // Adjust `isEndring` as needed
+                    isEndring
                   ),
                 } as SeriesOptionsType,
               ]
@@ -319,7 +320,8 @@ export const useSimuleringChartLocalState = (initialValues: {
             data: processPensjonsberegningArray(
               alderspensjonListe,
               isEndring,
-              xAxis.length
+              xAxis.length,
+              startAar
             ),
           } as SeriesOptionsType,
         ],
