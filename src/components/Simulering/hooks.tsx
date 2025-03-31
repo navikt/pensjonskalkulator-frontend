@@ -39,6 +39,7 @@ export const useSimuleringChartLocalState = (initialValues: {
   aarligInntektVsaHelPensjon?: AarligInntektVsaPensjon
   isLoading: boolean
   alderspensjonListe?: AlderspensjonPensjonsberegning[]
+  pre2025OffentligAfp: AfpEtterfulgtAvAlderspensjon
   afpPrivatListe?: AfpPrivatPensjonsberegning[]
   afpOffentligListe?: AfpPrivatPensjonsberegning[]
   pensjonsavtaler: {
@@ -64,6 +65,7 @@ export const useSimuleringChartLocalState = (initialValues: {
     aarligInntektVsaHelPensjon,
     isLoading,
     alderspensjonListe,
+    pre2025OffentligAfp,
     afpPrivatListe,
     afpOffentligListe,
     pensjonsavtaler,
@@ -221,6 +223,24 @@ export const useSimuleringChartLocalState = (initialValues: {
                       : undefined,
                     xAxisLength: xAxis.length,
                   }),
+                } as SeriesOptionsType,
+              ]
+            : []),
+          ...(pre2025OffentligAfp
+            ? [
+                {
+                  ...SERIES_DEFAULT.SERIE_AFP,
+                  name: intl.formatMessage({
+                    id: SERIES_DEFAULT.SERIE_AFP.name,
+                  }),
+                  /* c8 ignore next 1 */
+                  data: Array.from(
+                    { length: 67 - pre2025OffentligAfp.alderAar + 1 },
+                    (_, index) => ({
+                      x: pre2025OffentligAfp.alderAar + index,
+                      y: pre2025OffentligAfp.totaltAfpBeloep,
+                    })
+                  ),
                 } as SeriesOptionsType,
               ]
             : []),
