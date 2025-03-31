@@ -167,7 +167,11 @@ const AvansertStepEvent = (chunks: React.ReactNode) => {
     }
   }
   return (
-    <Link href="#" onClick={goToAvansert} data-testid="grunnlag.afp.avansert_link">
+    <Link
+      href="#"
+      onClick={goToAvansert}
+      data-testid="grunnlag.afp.avansert_link"
+    >
       {chunks}
     </Link>
   )
