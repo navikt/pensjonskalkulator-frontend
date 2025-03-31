@@ -353,10 +353,7 @@ describe('Med ufoeretrygd', () => {
       })
 
       it('forventer jeg å få tilpasset informasjon i read more «Om pensjonsalder og uføretrygd».', () => {
-        cy.contains('Om pensjonsalder og uføretrygd').click()
-        cy.contains(
-          '100 % uføretrygd kan ikke kombineres med alderspensjon. Det er derfor ikke mulig å beregne alderspensjon før 67 år i kalkulatoren. Ved 67 år går 100 % uføretrygd automatisk over til 100 % alderspensjon.'
-        ).should('exist')
+        cy.get('[data-testid="om_pensjonsalder_UT_hel"]').should('exist')
       })
     })
   })
@@ -418,10 +415,9 @@ describe('Med ufoeretrygd', () => {
       })
 
       it('forventer jeg å få tilpasset informasjon i read more «Om pensjonsalder og uføretrygd».', () => {
-        cy.contains('Om pensjonsalder og uføretrygd').click()
-        cy.contains(
-          'Din opptjening i folketrygden bestemmer når du kan ta ut alderspensjon. Ved 67 år må pensjonen minst tilsvare garantipensjon. Uttak før 67 år betyr at du fordeler pensjonen din over flere år, og dermed får du mindre hvert år.'
-        ).should('exist')
+        cy.get('[data-testid="om_pensjonsalder_UT_gradert_avansert"]').should(
+          'exist'
+        )
       })
     })
 
