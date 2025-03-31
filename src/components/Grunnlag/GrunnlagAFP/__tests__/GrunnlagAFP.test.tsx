@@ -9,6 +9,7 @@ import {
   fulfilledGetLoependeVedtakLoependeAFPoffentlig,
   fulfilledGetLoependeVedtakLoependeAFPprivat,
 } from '@/mocks/mockedRTKQueryApiCalls'
+import { paths } from '@/router/constants'
 import { userInputInitialState } from '@/state/userInput/userInputSlice'
 import { render, screen, userEvent } from '@/test-utils'
 import { DATE_BACKEND_FORMAT } from '@/utils/dates'
@@ -25,28 +26,21 @@ vi.mock(import('react-router'), async (importOriginal) => {
 describe('Grunnlag - AFP', () => {
   it('Når brukeren har valgt AFP offentlig og samtykket til beregning av den, viser riktig tittel med formatert inntekt og tekst', async () => {
     const user = userEvent.setup()
-    render(
-      <GrunnlagAFP
-        goToAFP={vi.fn()}
-        goToAvansert={vi.fn()}
-        goToStart={vi.fn()}
-      />,
-      {
-        preloadedState: {
-          api: {
-            //@ts-ignore
-            queries: {
-              ...fulfilledGetLoependeVedtak0Ufoeregrad,
-            },
-          },
-          userInput: {
-            ...userInputInitialState,
-            afp: 'ja_offentlig',
-            samtykkeOffentligAFP: true,
+    render(<GrunnlagAFP />, {
+      preloadedState: {
+        api: {
+          //@ts-ignore
+          queries: {
+            ...fulfilledGetLoependeVedtak0Ufoeregrad,
           },
         },
-      }
-    )
+        userInput: {
+          ...userInputInitialState,
+          afp: 'ja_offentlig',
+          samtykkeOffentligAFP: true,
+        },
+      },
+    })
     expect(screen.getByText('grunnlag.afp.title')).toBeVisible()
     expect(screen.getByText('afp.offentlig')).toBeVisible()
 
@@ -63,28 +57,21 @@ describe('Grunnlag - AFP', () => {
 
   it('Når brukeren har valgt AFP offentlig og ikke samtykket til beregning av den, viser riktig tittel med formatert inntekt og tekst', async () => {
     const user = userEvent.setup()
-    render(
-      <GrunnlagAFP
-        goToAFP={vi.fn()}
-        goToAvansert={vi.fn()}
-        goToStart={vi.fn()}
-      />,
-      {
-        preloadedState: {
-          api: {
-            //@ts-ignore
-            queries: {
-              ...fulfilledGetLoependeVedtak0Ufoeregrad,
-            },
-          },
-          userInput: {
-            ...userInputInitialState,
-            afp: 'ja_offentlig',
-            samtykkeOffentligAFP: false,
+    render(<GrunnlagAFP />, {
+      preloadedState: {
+        api: {
+          //@ts-ignore
+          queries: {
+            ...fulfilledGetLoependeVedtak0Ufoeregrad,
           },
         },
-      }
-    )
+        userInput: {
+          ...userInputInitialState,
+          afp: 'ja_offentlig',
+          samtykkeOffentligAFP: false,
+        },
+      },
+    })
     expect(screen.getByText('grunnlag.afp.title')).toBeVisible()
     expect(
       screen.getByText('afp.offentlig (grunnlag.afp.ikke_beregnet)')
@@ -95,36 +82,28 @@ describe('Grunnlag - AFP', () => {
     await user.click(buttons[6])
 
     expect(
-      await screen.findByText(
-        'grunnlag.afp.ingress.ja_offentlig_utilgjengelig',
-        { exact: false }
+      await screen.findByTestId(
+        'grunnlag.afp.ingress.ja_offentlig_utilgjengelig'
       )
     ).toBeVisible()
   })
 
   it('Når brukeren har valgt AFP privat, viser riktig tittel med formatert inntekt og tekst', async () => {
     const user = userEvent.setup()
-    render(
-      <GrunnlagAFP
-        goToAFP={vi.fn()}
-        goToAvansert={vi.fn()}
-        goToStart={vi.fn()}
-      />,
-      {
-        preloadedState: {
-          api: {
-            //@ts-ignore
-            queries: {
-              ...fulfilledGetLoependeVedtak0Ufoeregrad,
-            },
-          },
-          userInput: {
-            ...userInputInitialState,
-            afp: 'ja_privat',
+    render(<GrunnlagAFP />, {
+      preloadedState: {
+        api: {
+          //@ts-ignore
+          queries: {
+            ...fulfilledGetLoependeVedtak0Ufoeregrad,
           },
         },
-      }
-    )
+        userInput: {
+          ...userInputInitialState,
+          afp: 'ja_privat',
+        },
+      },
+    })
     expect(screen.getByText('grunnlag.afp.title')).toBeVisible()
     expect(screen.getByText('afp.privat')).toBeVisible()
     const buttons = screen.getAllByRole('button')
@@ -139,30 +118,21 @@ describe('Grunnlag - AFP', () => {
   })
 
   it('Når brukeren har valgt uten AFP, viser riktig tittel med formatert inntekt, tekst og lenke', async () => {
-    const goToStartMock = vi.fn()
-
     const user = userEvent.setup()
-    render(
-      <GrunnlagAFP
-        goToAFP={vi.fn()}
-        goToAvansert={vi.fn()}
-        goToStart={goToStartMock}
-      />,
-      {
-        preloadedState: {
-          api: {
-            //@ts-ignore
-            queries: {
-              ...fulfilledGetLoependeVedtak0Ufoeregrad,
-            },
-          },
-          userInput: {
-            ...userInputInitialState,
-            afp: 'nei',
+    render(<GrunnlagAFP />, {
+      preloadedState: {
+        api: {
+          //@ts-ignore
+          queries: {
+            ...fulfilledGetLoependeVedtak0Ufoeregrad,
           },
         },
-      }
-    )
+        userInput: {
+          ...userInputInitialState,
+          afp: 'nei',
+        },
+      },
+    })
     expect(screen.getByText('grunnlag.afp.title')).toBeVisible()
     expect(screen.getByText('afp.nei')).toBeVisible()
     const buttons = screen.getAllByRole('button')
@@ -170,36 +140,29 @@ describe('Grunnlag - AFP', () => {
     await user.click(buttons[6])
 
     expect(
-      await screen.findByText('grunnlag.afp.ingress.nei', { exact: false })
+      await screen.findByTestId('grunnlag.afp.ingress.nei', { exact: false })
     ).toBeVisible()
-    expect(await screen.findByText('grunnlag.afp.reset_link')).toBeVisible()
-    await user.click(await screen.findByText('grunnlag.afp.reset_link'))
-    expect(goToStartMock).toHaveBeenCalled()
+    expect(await screen.findByTestId('grunnlag.afp.reset_link')).toBeVisible()
+    await user.click(await screen.findByTestId('grunnlag.afp.reset_link'))
+    expect(navigateMock).toHaveBeenCalledWith(paths.start)
   })
 
   it('Når brukeren har svart "vet ikke" på AFP, viser riktig tittel med formatert inntekt og tekst', async () => {
     const user = userEvent.setup()
-    render(
-      <GrunnlagAFP
-        goToAFP={vi.fn()}
-        goToAvansert={vi.fn()}
-        goToStart={vi.fn()}
-      />,
-      {
-        preloadedState: {
-          api: {
-            //@ts-ignore
-            queries: {
-              ...fulfilledGetLoependeVedtak0Ufoeregrad,
-            },
-          },
-          userInput: {
-            ...userInputInitialState,
-            afp: 'vet_ikke',
+    render(<GrunnlagAFP />, {
+      preloadedState: {
+        api: {
+          //@ts-ignore
+          queries: {
+            ...fulfilledGetLoependeVedtak0Ufoeregrad,
           },
         },
-      }
-    )
+        userInput: {
+          ...userInputInitialState,
+          afp: 'vet_ikke',
+        },
+      },
+    })
     expect(screen.getByText('grunnlag.afp.title')).toBeVisible()
     expect(screen.getByText('afp.vet_ikke')).toBeVisible()
     const buttons = screen.getAllByRole('button')
@@ -246,25 +209,18 @@ describe('Grunnlag - AFP', () => {
       }
 
       it('returneres null', async () => {
-        const { asFragment } = render(
-          <GrunnlagAFP
-            goToAFP={vi.fn()}
-            goToAvansert={vi.fn()}
-            goToStart={vi.fn()}
-          />,
-          {
-            preloadedState: {
-              api: {
-                // @ts-ignore
-                queries: { ...mockedQueries },
-              },
-              userInput: {
-                ...userInputInitialState,
-                afp: 'ja_offentlig',
-              },
+        const { asFragment } = render(<GrunnlagAFP />, {
+          preloadedState: {
+            api: {
+              // @ts-ignore
+              queries: { ...mockedQueries },
             },
-          }
-        )
+            userInput: {
+              ...userInputInitialState,
+              afp: 'ja_offentlig',
+            },
+          },
+        })
         expect(asFragment()).toMatchInlineSnapshot('<DocumentFragment />')
       })
     })
@@ -303,25 +259,19 @@ describe('Grunnlag - AFP', () => {
       }
 
       it('Når hen har valgt AFP offentlig, viser riktig tittel med formatert inntekt og tekst', async () => {
-        render(
-          <GrunnlagAFP
-            goToAFP={vi.fn()}
-            goToAvansert={vi.fn()}
-            goToStart={vi.fn()}
-          />,
-          {
-            preloadedState: {
-              api: {
-                // @ts-ignore
-                queries: { ...mockedQueries },
-              },
-              userInput: {
-                ...userInputInitialState,
-                afp: 'ja_offentlig',
-              },
+        render(<GrunnlagAFP />, {
+          preloadedState: {
+            api: {
+              // @ts-ignore
+              queries: { ...mockedQueries },
             },
-          }
-        )
+            userInput: {
+              ...userInputInitialState,
+              afp: 'ja_offentlig',
+              samtykkeOffentligAFP: true,
+            },
+          },
+        })
 
         expect(screen.getByText('grunnlag.afp.title')).toBeVisible()
         expect(
@@ -336,25 +286,18 @@ describe('Grunnlag - AFP', () => {
       })
 
       it('Når hen har valgt AFP privat, viser riktig tittel med formatert inntekt og tekst', async () => {
-        render(
-          <GrunnlagAFP
-            goToAFP={vi.fn()}
-            goToAvansert={vi.fn()}
-            goToStart={vi.fn()}
-          />,
-          {
-            preloadedState: {
-              api: {
-                // @ts-ignore
-                queries: { ...mockedQueries },
-              },
-              userInput: {
-                ...userInputInitialState,
-                afp: 'ja_privat',
-              },
+        render(<GrunnlagAFP />, {
+          preloadedState: {
+            api: {
+              // @ts-ignore
+              queries: { ...mockedQueries },
             },
-          }
-        )
+            userInput: {
+              ...userInputInitialState,
+              afp: 'ja_privat',
+            },
+          },
+        })
         expect(screen.getByText('grunnlag.afp.title')).toBeVisible()
         expect(
           screen.getByText('afp.privat (grunnlag.afp.ikke_beregnet)')
@@ -368,25 +311,18 @@ describe('Grunnlag - AFP', () => {
       })
 
       it('Når hen har valgt uten AFP, viser riktig tittel med formatert inntekt og tekst', async () => {
-        render(
-          <GrunnlagAFP
-            goToAFP={vi.fn()}
-            goToAvansert={vi.fn()}
-            goToStart={vi.fn()}
-          />,
-          {
-            preloadedState: {
-              api: {
-                // @ts-ignore
-                queries: { ...mockedQueries },
-              },
-              userInput: {
-                ...userInputInitialState,
-                afp: 'nei',
-              },
+        render(<GrunnlagAFP />, {
+          preloadedState: {
+            api: {
+              // @ts-ignore
+              queries: { ...mockedQueries },
             },
-          }
-        )
+            userInput: {
+              ...userInputInitialState,
+              afp: 'nei',
+            },
+          },
+        })
         expect(screen.getByText('grunnlag.afp.title')).toBeVisible()
         expect(screen.getByText('afp.nei')).toBeVisible()
         expect(
@@ -397,25 +333,18 @@ describe('Grunnlag - AFP', () => {
       })
 
       it('Når hen har svart "vet ikke" på AFP, viser riktig tittel med formatert inntekt og tekst', async () => {
-        render(
-          <GrunnlagAFP
-            goToAFP={vi.fn()}
-            goToAvansert={vi.fn()}
-            goToStart={vi.fn()}
-          />,
-          {
-            preloadedState: {
-              api: {
-                // @ts-ignore
-                queries: { ...mockedQueries },
-              },
-              userInput: {
-                ...userInputInitialState,
-                afp: 'vet_ikke',
-              },
+        render(<GrunnlagAFP />, {
+          preloadedState: {
+            api: {
+              // @ts-ignore
+              queries: { ...mockedQueries },
             },
-          }
-        )
+            userInput: {
+              ...userInputInitialState,
+              afp: 'vet_ikke',
+            },
+          },
+        })
         expect(screen.getByText('grunnlag.afp.title')).toBeVisible()
         expect(screen.getByText('afp.vet_ikke')).toBeVisible()
         expect(
@@ -429,22 +358,15 @@ describe('Grunnlag - AFP', () => {
 
   describe('Gitt at brukeren har 100% uføretrygd,', () => {
     it('Viser riktig tittel og tekst', () => {
-      render(
-        <GrunnlagAFP
-          goToAFP={vi.fn()}
-          goToAvansert={vi.fn()}
-          goToStart={vi.fn()}
-        />,
-        {
-          preloadedState: {
-            api: {
-              // @ts-ignore
-              queries: { ...fulfilledGetLoependeVedtak100Ufoeregrad },
-            },
-            userInput: { ...userInputInitialState },
+      render(<GrunnlagAFP />, {
+        preloadedState: {
+          api: {
+            // @ts-ignore
+            queries: { ...fulfilledGetLoependeVedtak100Ufoeregrad },
           },
-        }
-      )
+          userInput: { ...userInputInitialState },
+        },
+      })
 
       expect(screen.getByText('grunnlag.afp.title')).toBeVisible()
       expect(screen.getByText('afp.nei')).toBeVisible()
@@ -460,25 +382,18 @@ describe('Grunnlag - AFP', () => {
   describe('Gitt at brukeren har vedtak om alderspensjon,', () => {
     it('Når hen har valgt AFP privat, viser riktig tittel med formatert inntekt og tekst', async () => {
       const user = userEvent.setup()
-      render(
-        <GrunnlagAFP
-          goToAFP={vi.fn()}
-          goToAvansert={vi.fn()}
-          goToStart={vi.fn()}
-        />,
-        {
-          preloadedState: {
-            api: {
-              // @ts-ignore
-              queries: { ...fulfilledGetLoependeVedtakLoepende50Alderspensjon },
-            },
-            userInput: {
-              ...userInputInitialState,
-              afp: 'ja_privat',
-            },
+      render(<GrunnlagAFP />, {
+        preloadedState: {
+          api: {
+            // @ts-ignore
+            queries: { ...fulfilledGetLoependeVedtakLoepende50Alderspensjon },
           },
-        }
-      )
+          userInput: {
+            ...userInputInitialState,
+            afp: 'ja_privat',
+          },
+        },
+      })
       expect(screen.getByText('grunnlag.afp.title')).toBeVisible()
       expect(screen.getByText('afp.privat')).toBeVisible()
       const buttons = screen.getAllByRole('button')
@@ -494,28 +409,21 @@ describe('Grunnlag - AFP', () => {
 
     it('Når hen har valgt AFP offentlig og samtykket til beregning av den, viser riktig tittel med formatert inntekt og tekst', async () => {
       const user = userEvent.setup()
-      render(
-        <GrunnlagAFP
-          goToAFP={vi.fn()}
-          goToAvansert={vi.fn()}
-          goToStart={vi.fn()}
-        />,
-        {
-          preloadedState: {
-            api: {
-              //@ts-ignore
-              queries: {
-                ...fulfilledGetLoependeVedtakLoepende50Alderspensjon,
-              },
-            },
-            userInput: {
-              ...userInputInitialState,
-              afp: 'ja_offentlig',
-              samtykkeOffentligAFP: true,
+      render(<GrunnlagAFP />, {
+        preloadedState: {
+          api: {
+            //@ts-ignore
+            queries: {
+              ...fulfilledGetLoependeVedtakLoepende50Alderspensjon,
             },
           },
-        }
-      )
+          userInput: {
+            ...userInputInitialState,
+            afp: 'ja_offentlig',
+            samtykkeOffentligAFP: true,
+          },
+        },
+      })
       expect(screen.getByText('grunnlag.afp.title')).toBeVisible()
       expect(screen.getByText('afp.offentlig')).toBeVisible()
 
@@ -532,28 +440,21 @@ describe('Grunnlag - AFP', () => {
 
     it('Når hen har valgt AFP offentlig og ikke samtykket til beregning av den, viser riktig tittel med formatert inntekt og tekst', async () => {
       const user = userEvent.setup()
-      render(
-        <GrunnlagAFP
-          goToAFP={vi.fn()}
-          goToAvansert={vi.fn()}
-          goToStart={vi.fn()}
-        />,
-        {
-          preloadedState: {
-            api: {
-              //@ts-ignore
-              queries: {
-                ...fulfilledGetLoependeVedtakLoepende50Alderspensjon,
-              },
-            },
-            userInput: {
-              ...userInputInitialState,
-              afp: 'ja_offentlig',
-              samtykkeOffentligAFP: false,
+      render(<GrunnlagAFP />, {
+        preloadedState: {
+          api: {
+            //@ts-ignore
+            queries: {
+              ...fulfilledGetLoependeVedtakLoepende50Alderspensjon,
             },
           },
-        }
-      )
+          userInput: {
+            ...userInputInitialState,
+            afp: 'ja_offentlig',
+            samtykkeOffentligAFP: false,
+          },
+        },
+      })
       expect(screen.getByText('grunnlag.afp.title')).toBeVisible()
       expect(
         screen.getByText('afp.offentlig (grunnlag.afp.ikke_beregnet)')
@@ -564,7 +465,7 @@ describe('Grunnlag - AFP', () => {
       await user.click(buttons[6])
 
       expect(
-        await screen.findByText(
+        await screen.findByTestId(
           'grunnlag.afp.ingress.ja_offentlig_utilgjengelig',
           { exact: false }
         )
@@ -573,27 +474,20 @@ describe('Grunnlag - AFP', () => {
 
     it('Når hen har valgt uten AFP, viser riktig tittel med formatert inntekt, tekst og lenke', async () => {
       const user = userEvent.setup()
-      render(
-        <GrunnlagAFP
-          goToAFP={vi.fn()}
-          goToAvansert={vi.fn()}
-          goToStart={vi.fn()}
-        />,
-        {
-          preloadedState: {
-            api: {
-              //@ts-ignore
-              queries: {
-                ...fulfilledGetLoependeVedtakLoepende50Alderspensjon,
-              },
-            },
-            userInput: {
-              ...userInputInitialState,
-              afp: 'nei',
+      render(<GrunnlagAFP />, {
+        preloadedState: {
+          api: {
+            //@ts-ignore
+            queries: {
+              ...fulfilledGetLoependeVedtakLoepende50Alderspensjon,
             },
           },
-        }
-      )
+          userInput: {
+            ...userInputInitialState,
+            afp: 'nei',
+          },
+        },
+      })
       expect(screen.getByText('grunnlag.afp.title')).toBeVisible()
       expect(screen.getByText('afp.nei')).toBeVisible()
       const buttons = screen.getAllByRole('button')
@@ -610,27 +504,20 @@ describe('Grunnlag - AFP', () => {
 
     it('Når hen har svart "vet ikke" på AFP, viser riktig tittel med formatert inntekt og tekst', async () => {
       const user = userEvent.setup()
-      render(
-        <GrunnlagAFP
-          goToAFP={vi.fn()}
-          goToAvansert={vi.fn()}
-          goToStart={vi.fn()}
-        />,
-        {
-          preloadedState: {
-            api: {
-              //@ts-ignore
-              queries: {
-                ...fulfilledGetLoependeVedtakLoepende50Alderspensjon,
-              },
-            },
-            userInput: {
-              ...userInputInitialState,
-              afp: 'vet_ikke',
+      render(<GrunnlagAFP />, {
+        preloadedState: {
+          api: {
+            //@ts-ignore
+            queries: {
+              ...fulfilledGetLoependeVedtakLoepende50Alderspensjon,
             },
           },
-        }
-      )
+          userInput: {
+            ...userInputInitialState,
+            afp: 'vet_ikke',
+          },
+        },
+      })
       expect(screen.getByText('grunnlag.afp.title')).toBeVisible()
       expect(screen.getByText('afp.vet_ikke')).toBeVisible()
       const buttons = screen.getAllByRole('button')
@@ -648,27 +535,20 @@ describe('Grunnlag - AFP', () => {
   describe('Gitt at brukeren har vedtak om AFP-privat,', () => {
     it('hen får ikke velge AFP, og det vises riktig tittel med formatert inntekt og tekst', async () => {
       const user = userEvent.setup()
-      render(
-        <GrunnlagAFP
-          goToAFP={vi.fn()}
-          goToAvansert={vi.fn()}
-          goToStart={vi.fn()}
-        />,
-        {
-          preloadedState: {
-            api: {
-              //@ts-ignore
-              queries: {
-                ...fulfilledGetLoependeVedtakLoependeAFPprivat,
-              },
-            },
-            userInput: {
-              ...userInputInitialState,
-              afp: null,
+      render(<GrunnlagAFP />, {
+        preloadedState: {
+          api: {
+            //@ts-ignore
+            queries: {
+              ...fulfilledGetLoependeVedtakLoependeAFPprivat,
             },
           },
-        }
-      )
+          userInput: {
+            ...userInputInitialState,
+            afp: null,
+          },
+        },
+      })
       expect(screen.getByText('grunnlag.afp.title')).toBeVisible()
       expect(
         screen.getByText('afp.privat (grunnlag.afp.endring)')
@@ -686,27 +566,20 @@ describe('Grunnlag - AFP', () => {
   describe('Gitt at brukeren har vedtak om AFP-offentlig,', () => {
     it('hen får ikke velge AFP, og det vises riktig tittel med formatert inntekt og tekst', async () => {
       const user = userEvent.setup()
-      render(
-        <GrunnlagAFP
-          goToAFP={vi.fn()}
-          goToAvansert={vi.fn()}
-          goToStart={vi.fn()}
-        />,
-        {
-          preloadedState: {
-            api: {
-              //@ts-ignore
-              queries: {
-                ...fulfilledGetLoependeVedtakLoependeAFPoffentlig,
-              },
-            },
-            userInput: {
-              ...userInputInitialState,
-              afp: null,
+      render(<GrunnlagAFP />, {
+        preloadedState: {
+          api: {
+            //@ts-ignore
+            queries: {
+              ...fulfilledGetLoependeVedtakLoependeAFPoffentlig,
             },
           },
-        }
-      )
+          userInput: {
+            ...userInputInitialState,
+            afp: null,
+          },
+        },
+      })
       expect(screen.getByText('grunnlag.afp.title')).toBeVisible()
       expect(
         screen.getByText('afp.offentlig (grunnlag.afp.endring)')

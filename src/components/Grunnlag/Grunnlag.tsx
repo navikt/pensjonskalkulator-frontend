@@ -74,10 +74,12 @@ export const Grunnlag: React.FC<Props> = ({
         <Heading level={headingLevel} size="medium">
           <FormattedMessage id="grunnlag.title" />
         </Heading>
+
         <BodyLong>
           <FormattedMessage id="grunnlag.ingress" />
         </BodyLong>
       </div>
+
       <Accordion>
         {visning === 'enkel' && (
           <AccordionItem name="Grunnlag: Uttaksgrad">
@@ -103,7 +105,9 @@ export const Grunnlag: React.FC<Props> = ({
             </GrunnlagSection>
           </AccordionItem>
         )}
+
         {visning === 'enkel' && <GrunnlagInntekt goToAvansert={goToAvansert} />}
+
         <AccordionItem name="Gunnlag: Sivilstand">
           <GrunnlagSection
             headerTitle={intl.formatMessage({

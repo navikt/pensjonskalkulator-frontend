@@ -119,7 +119,7 @@ export const GrunnlagAFP: React.FC = () => {
         })}
         headerValue={formatertAfpHeader}
       >
-        <BodyLong>
+        <BodyLong data-testid={formatertAfpIngress}>
           <FormattedMessage
             id={formatertAfpIngress}
             values={{
@@ -145,7 +145,7 @@ const AfpStepEvent = (chunks: React.ReactNode) => {
     navigate(paths.afp)
   }
   return (
-    <Link href="#" onClick={goToAFP}>
+    <Link href="#" onClick={goToAFP} data-testid="grunnlag.afp.afp_link">
       {chunks}
     </Link>
   )
@@ -167,7 +167,7 @@ const AvansertStepEvent = (chunks: React.ReactNode) => {
     }
   }
   return (
-    <Link href="#" onClick={goToAvansert}>
+    <Link href="#" onClick={goToAvansert} data-testid="grunnlag.afp.avansert_link">
       {chunks}
     </Link>
   )
@@ -182,7 +182,7 @@ const StartStepEvent = (chunks: React.ReactNode) => {
     navigate(paths.start)
   }
   return (
-    <Link href="#" onClick={goToStart}>
+    <Link href="#" onClick={goToStart} data-testid="grunnlag.afp.reset_link">
       {chunks}
     </Link>
   )
