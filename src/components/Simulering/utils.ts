@@ -126,13 +126,20 @@ export const processInntektArray = (args: {
 export const processPensjonsberegningArray = (
   pensjonsberegninger: AfpPrivatPensjonsberegning[] = [],
   isEndring: boolean,
-  xAxisLength: number
+  xAxisLength: number,
+  startAlder: number
 ): number[] => {
   const arrayLength = Math.max(
     xAxisLength,
     isEndring ? pensjonsberegninger.length + 1 : pensjonsberegninger.length + 2
   )
-  const dataArray = isEndring ? [] : new Array(1).fill(0)
+  const dataArray = isEndring
+    ? new Array(pensjonsberegninger[0].alder - startAlder).fill(0)
+    : new Array(pensjonsberegninger[0].alder - startAlder + 1).fill(0)
+  // TODO:
+  // Gang opp AFP med 12, slik det blir årlig beløp
+  // Ikke vis AFP etter 66
+  // Fiks for isEndring
 
   const livsvarigPensjonsbeloep =
     pensjonsberegninger[pensjonsberegninger.length - 1]?.beloep ?? 0
@@ -148,6 +155,8 @@ export const processPensjonsberegningArray = (
   }
   return dataArray
 }
+
+// [0, afp*12, afg]
 
 export const processAfpPensjonsberegningArray = (
   xAxisStartAar: number, // uttaksaar, (uttaksaar minus 1 for førstegangsøkere)

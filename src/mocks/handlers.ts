@@ -118,6 +118,16 @@ export const getHandlers = (baseUrl: string = API_PATH) => [
     const mergedData = JSON.parse(JSON.stringify(data.default))
     let afpPrivat: AfpPrivatPensjonsberegning[] = []
     let afpOffentlig: AfpPrivatPensjonsberegning[] = []
+
+    if (
+      (body as AlderspensjonRequestBody).simuleringstype ===
+      'PRE2025_OFFENTLIG_AFP_ETTERFULGT_AV_ALDERSPENSJON'
+    ) {
+      const afpPre2025Response = JSON.parse(
+        JSON.stringify(await import(`./data/afp-etterfulgt-alderspensjon.json`))
+      )
+      return HttpResponse.json(afpPre2025Response)
+    }
     if (
       (body as AlderspensjonRequestBody).simuleringstype ===
         'ALDERSPENSJON_MED_AFP_PRIVAT' ||
