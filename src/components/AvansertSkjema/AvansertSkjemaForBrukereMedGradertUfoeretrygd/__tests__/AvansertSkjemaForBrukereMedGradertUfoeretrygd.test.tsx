@@ -68,8 +68,8 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
     )
 
     expect(
-      screen.getByText('inntekt.info_om_inntekt.read_more.label')
-    ).toBeVisible()
+      screen.queryByTestId('om_pensjonsgivende_inntekt')
+    ).toBeInTheDocument()
 
     expect(
       await screen.findByText(

@@ -359,6 +359,26 @@
           "style": "normal"
         }
       ]
+    },
+    {
+      "name": "om_pensjonsgivende_inntekt",
+      "overskrift": "Om pensjonsgivende inntekt",
+      "innhold": [
+        {
+          "_key": "95267fac3892",
+          "markDefs": [],
+          "children": [
+            {
+              "_type": "span",
+              "marks": [],
+              "text": "Lorem",
+              "_key": "553475223f9e2"
+            }
+          ],
+          "_type": "block",
+          "style": "normal"
+        }
+      ]
     }
   ],
   "syncTags": ["s1:EmCcjQ"],

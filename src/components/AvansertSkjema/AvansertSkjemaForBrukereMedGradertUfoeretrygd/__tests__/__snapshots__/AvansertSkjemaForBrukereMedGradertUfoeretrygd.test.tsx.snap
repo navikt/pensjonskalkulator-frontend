@@ -249,14 +249,14 @@ exports[`AvansertSkjemaForBrukereMedGradertUfoeretrygd > Gitt at en bruker har v
           class="_spacer_2e4d09 _spacer__small_2e4d09"
         />
         <div
-          class="navds-read-more navds-read-more--medium"
+          class="navds-read-more navds-read-more--medium _wrapper_11f63f"
           data-volume="low"
         >
           <button
             aria-expanded="false"
             class="navds-read-more__button navds-body-short"
             data-state="closed"
-            data-testid="readmore"
+            data-testid="om_pensjonsgivende_inntekt"
             type="button"
           >
             <svg
@@ -278,7 +278,7 @@ exports[`AvansertSkjemaForBrukereMedGradertUfoeretrygd > Gitt at en bruker har v
               />
             </svg>
             <span>
-              inntekt.info_om_inntekt.read_more.label
+              Om pensjonsgivende inntekt
             </span>
           </button>
           <div
@@ -286,73 +286,8 @@ exports[`AvansertSkjemaForBrukereMedGradertUfoeretrygd > Gitt at en bruker har v
             class="navds-read-more__content navds-read-more__content--closed navds-body-long navds-body-long--medium"
             data-state="closed"
           >
-            <p
-              class="navds-body-long navds-body-long--medium"
-            >
-              Vi bruker siste tilgjengelige årsinntekt fra Skatteetaten som fremtidig inntekt. Hvis du endrer den i kalkulatoren, bruker vi den i stedet.
-              <br />
-              <br />
-            </p>
-            <h2
-              class="navds-label"
-            >
-              inntekt.info_om_inntekt.subtitle_1
-            </h2>
-            <ul>
-              <li>
-                inntekt.info_om_inntekt.list_item1
-              </li>
-              <li>
-                inntekt.info_om_inntekt.list_item2
-              </li>
-              <li>
-                inntekt.info_om_inntekt.list_item3
-              </li>
-              <li>
-                inntekt.info_om_inntekt.list_item4
-              </li>
-              <li>
-                inntekt.info_om_inntekt.list_item5
-              </li>
-              <li>
-                inntekt.info_om_inntekt.list_item6
-              </li>
-              <li>
-                inntekt.info_om_inntekt.list_item7
-              </li>
-              <li>
-                inntekt.info_om_inntekt.list_item8
-              </li>
-              <li>
-                inntekt.info_om_inntekt.list_item9
-              </li>
-            </ul>
-            <h2
-              class="navds-label"
-            >
-              inntekt.info_om_inntekt.subtitle_2
-            </h2>
-            <ul>
-              <li>
-                inntekt.info_om_inntekt.ikke_inntekt.list_item1
-              </li>
-              <li>
-                inntekt.info_om_inntekt.ikke_inntekt.list_item2
-              </li>
-              <li>
-                inntekt.info_om_inntekt.ikke_inntekt.list_item3
-              </li>
-              <li>
-                inntekt.info_om_inntekt.ikke_inntekt.list_item4
-              </li>
-            </ul>
-            <p
-              class="navds-body-long navds-body-long--medium"
-            >
-              Listen er ikke uttømmende.
-              <br />
-              <br />
-              Pensjonsgivende inntekt har betydning for retten til og størrelsen på alderspensjon og andre pensjonsytelser.
+            <p>
+              Lorem
             </p>
           </div>
         </div>

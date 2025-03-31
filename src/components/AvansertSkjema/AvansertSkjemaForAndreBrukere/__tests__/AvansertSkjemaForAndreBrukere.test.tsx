@@ -64,8 +64,8 @@ describe('AvansertSkjemaForAndreBrukere', () => {
     )
 
     expect(
-      screen.getByText('inntekt.info_om_inntekt.read_more.label')
-    ).toBeVisible()
+      screen.queryByTestId('om_pensjonsgivende_inntekt')
+    ).toBeInTheDocument()
     expect(screen.queryByTestId('om_uttaksgrad')).toBeInTheDocument()
     expect(screen.queryByTestId('om_TMU')).toBeInTheDocument()
 
