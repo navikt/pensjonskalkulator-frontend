@@ -72,8 +72,6 @@ export const useSimuleringChartLocalState = (initialValues: {
     offentligTp,
   } = initialValues
 
-  console.log(pre2025OffentligAfp)
-
   const { isLoading: isPensjonsavtalerLoading, data: pensjonsavtalerData } =
     pensjonsavtaler
   const { isLoading: isOffentligTpLoading, data: offentligTpData } = offentligTp
