@@ -32,7 +32,7 @@ export const GrunnlagAFP: React.FC = () => {
 
   const afp = useAppSelector(selectAfp)
   const foedselsdato = useAppSelector(selectFoedselsdato)
-  const harSamtykketOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
+  const samtykkeOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
   const isEndring = useAppSelector(selectIsEndring)
   const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const ufoeregrad = useAppSelector(selectUfoeregrad)
@@ -69,7 +69,7 @@ export const GrunnlagAFP: React.FC = () => {
 
     if (
       (hasAFP && isUfoerAndDontWantAfp) ||
-      (hasOffentligAFP && !harSamtykketOffentligAFP && !isUfoerAndDontWantAfp)
+      (hasOffentligAFP && !samtykkeOffentligAFP && !isUfoerAndDontWantAfp)
     ) {
       return `${afpString} (${intl.formatMessage({ id: 'grunnlag.afp.ikke_beregnet' })})`
     }
@@ -98,7 +98,7 @@ export const GrunnlagAFP: React.FC = () => {
       return 'grunnlag.afp.ingress.full_ufoeretrygd'
     }
 
-    if (hasOffentligAFP && !harSamtykketOffentligAFP) {
+    if (hasOffentligAFP && samtykkeOffentligAFP === false) {
       return 'grunnlag.afp.ingress.ja_offentlig_utilgjengelig'
     }
 
