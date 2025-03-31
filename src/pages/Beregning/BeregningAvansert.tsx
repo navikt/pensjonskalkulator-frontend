@@ -134,9 +134,12 @@ export const BeregningAvansert: React.FC = () => {
 
   React.useEffect(() => {
     if (
-      error &&
-      ((error as FetchBaseQueryError).status === 503 ||
-        (error as FetchBaseQueryError).status === 'PARSING_ERROR')
+      (error &&
+        ((error as FetchBaseQueryError).status === 503 ||
+          (error as FetchBaseQueryError).status === 'PARSING_ERROR')) ||
+      (alderspensjon?.afpOffentlig?.length === 0 &&
+        alderspensjonRequestBody?.simuleringstype ===
+          'ALDERSPENSJON_MED_AFP_OFFENTLIG_LIVSVARIG')
     ) {
       navigate(paths.uventetFeil)
       logger('info', {
@@ -144,7 +147,7 @@ export const BeregningAvansert: React.FC = () => {
         data: 'fra Beregning Avansert',
       })
     }
-  }, [error])
+  }, [error, alderspensjon])
 
   // Skal redigerer tilbake når alderspensjon er refetchet ferdig, og
   React.useEffect(() => {

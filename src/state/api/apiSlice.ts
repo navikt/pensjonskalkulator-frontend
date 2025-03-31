@@ -19,6 +19,7 @@ import {
   isEkskludertStatus,
   isOmstillingsstoenadOgGjenlevende,
   isLoependeVedtak,
+  isUttaksalderError,
 } from './typeguards'
 
 export const apiSlice = createApi({
@@ -149,7 +150,7 @@ export const apiSlice = createApi({
     }),
 
     tidligstMuligHeltUttak: builder.query<
-      Alder,
+      Alder | UttaksalderError,
       TidligstMuligHeltUttakRequestBody | void
     >({
       query: (body) => ({
@@ -157,7 +158,11 @@ export const apiSlice = createApi({
         method: 'POST',
         body,
       }),
-      transformResponse: (response: Alder) => {
+      transformResponse: (response: Alder | UttaksalderError, meta) => {
+        if (meta?.response?.status === 500 && isUttaksalderError(response)) {
+          return response as UttaksalderError
+        }
+
         if (!isAlder(response)) {
           throw new Error(`Mottok ugyldig uttaksalder: ${response}`)
         }
