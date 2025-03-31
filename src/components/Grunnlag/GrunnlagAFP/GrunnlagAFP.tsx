@@ -44,14 +44,6 @@ export const GrunnlagAFP: React.FC = () => {
   const isGradertUfoereAfpToggleEnabled =
     getGradertUfoereAfpFeatureToggle?.enabled
 
-  if (
-    loependeVedtak.ufoeretrygd.grad &&
-    foedselsdato &&
-    isFoedselsdatoOverAlder(foedselsdato, AFP_UFOERE_OPPSIGELSESALDER)
-  ) {
-    return null
-  }
-
   const hasAFP = afp === 'ja_offentlig' || afp === 'ja_privat'
   const hasOffentligAFP = afp === 'ja_offentlig'
   const isUfoerAndDontWantAfp = !!ufoeregrad && beregningsvalg !== 'med_afp'
@@ -79,7 +71,17 @@ export const GrunnlagAFP: React.FC = () => {
     }
 
     return afpString
-  }, [afp])
+  }, [
+    afp,
+    hasAFP,
+    hasOffentligAFP,
+    samtykkeOffentligAFP,
+    isEndring,
+    isUfoerAndDontWantAfp,
+    intl,
+    loependeVedtak,
+    ufoeregrad,
+  ])
 
   const formatertAfpIngress = React.useMemo(() => {
     if (isEndring && loependeVedtak.afpPrivat) {
@@ -109,7 +111,24 @@ export const GrunnlagAFP: React.FC = () => {
       return `grunnlag.afp.ingress.${afp}${ufoeregradString}.gammel`
     }
     return `grunnlag.afp.ingress.${afp}${ufoeregradString}`
-  }, [afp])
+  }, [
+    afp,
+    hasOffentligAFP,
+    samtykkeOffentligAFP,
+    isEndring,
+    isUfoerAndDontWantAfp,
+    isGradertUfoereAfpToggleEnabled,
+    loependeVedtak,
+    ufoeregrad,
+  ])
+
+  if (
+    loependeVedtak.ufoeretrygd.grad &&
+    foedselsdato &&
+    isFoedselsdatoOverAlder(foedselsdato, AFP_UFOERE_OPPSIGELSESALDER)
+  ) {
+    return null
+  }
 
   return (
     <AccordionItem name="Grunnlag: AFP">
