@@ -87,6 +87,17 @@ export const useSimuleringChartLocalState = (initialValues: {
   const [isPensjonsavtaleFlagVisible, setIsPensjonsavtaleFlagVisible] =
     React.useState<boolean>(false)
 
+  const pre2025OffentligAfpListe: AfpPrivatPensjonsberegning[] =
+    pre2025OffentligAfp
+      ? Array.from(
+          { length: 67 - pre2025OffentligAfp.alderAar + 1 },
+          (_, index) => ({
+            alder: pre2025OffentligAfp.alderAar + index,
+            beloep: pre2025OffentligAfp.totaltAfpBeloep,
+          })
+        )
+      : []
+
   const [chartOptions, setChartOptions] = React.useState<Highcharts.Options>(
     getChartOptions(
       styles,
@@ -234,12 +245,11 @@ export const useSimuleringChartLocalState = (initialValues: {
                     id: SERIES_DEFAULT.SERIE_AFP.name,
                   }),
                   /* c8 ignore next 1 */
-                  data: Array.from(
-                    { length: 67 - pre2025OffentligAfp.alderAar + 1 },
-                    (_, index) => ({
-                      x: pre2025OffentligAfp.alderAar + index,
-                      y: pre2025OffentligAfp.totaltAfpBeloep,
-                    })
+                  data: processAfpPensjonsberegningArray(
+                    pre2025OffentligAfp.alderAar,
+                    67 - pre2025OffentligAfp.alderAar + 1,
+                    pre2025OffentligAfpListe,
+                    false // Adjust `isEndring` as needed
                   ),
                 } as SeriesOptionsType,
               ]
