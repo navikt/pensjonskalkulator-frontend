@@ -495,6 +495,8 @@ const translations = {
     'MANGLER_TEKST',
   'beregning.vilkaarsproeving.alternativer.medAFP.heltOgGradertUttak':
     'MANGLER_TEKST',
+  'beregning.vilkaarsproeving.alternativer.medAFP.ikkeNokOpptjening':
+    'MANGLER_TEKST',
   'grunnlag.title': 'Other Basis for Calculation',
   'beregning.avansert.avbryt_modal.title':
     'If you exit Advanced, you will lose all your choices.',

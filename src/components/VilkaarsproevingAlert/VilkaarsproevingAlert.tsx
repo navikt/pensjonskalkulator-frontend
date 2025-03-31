@@ -14,13 +14,13 @@ import { formatUttaksalder } from '@/utils/alder'
 import { getFormatMessageValues } from '@/utils/translations'
 
 export interface Props {
-  vilkaarsproeving: Vilkaarsproeving
+  alternativ: Vilkaarsproeving['alternativ']
   uttaksalder: Alder
   hasAFP?: boolean
 }
 
 export const VilkaarsproevingAlert = ({
-  vilkaarsproeving,
+  alternativ,
   uttaksalder,
   hasAFP = false,
 }: Props) => {
@@ -36,146 +36,164 @@ export const VilkaarsproevingAlert = ({
 
   const harIkkeNokOpptjening = React.useMemo(() => {
     return (
-      JSON.stringify(vilkaarsproeving.alternativ?.heltUttaksalder) ===
-        JSON.stringify(normertPensjonsalder) &&
-      !vilkaarsproeving.alternativ?.gradertUttaksalder
+      JSON.stringify(alternativ?.heltUttaksalder) ===
+        JSON.stringify(normertPensjonsalder) && !alternativ?.gradertUttaksalder
     )
-  }, [vilkaarsproeving])
+  }, [alternativ])
 
   const isHeltUttaksalderLik = React.useMemo(() => {
     return (
-      JSON.stringify(vilkaarsproeving.alternativ?.heltUttaksalder) ===
+      JSON.stringify(alternativ?.heltUttaksalder) ===
       JSON.stringify(uttaksalder)
     )
-  }, [vilkaarsproeving])
+  }, [alternativ])
 
-  const gradertUttaksalder = vilkaarsproeving?.alternativ?.gradertUttaksalder
-  const heltUttaksalder = vilkaarsproeving?.alternativ?.heltUttaksalder
-  const uttaksgrad = vilkaarsproeving?.alternativ?.uttaksgrad
+  const gradertUttaksalder = alternativ?.gradertUttaksalder
+  const heltUttaksalder = alternativ?.heltUttaksalder
+  const uttaksgrad = alternativ?.uttaksgrad
+
+  if (isGradertUfoereAfpToggleEnabled && hasAFP) {
+    return (
+      <Alert variant="warning">
+        {alternativ ? (
+          <>
+            <FormattedMessage id="beregning.vilkaarsproeving.intro" />
+
+            <FormattedMessage
+              id={
+                harIkkeNokOpptjening
+                  ? 'beregning.vilkaarsproeving.intro.ikke_nok_opptjening'
+                  : 'beregning.vilkaarsproeving.intro.medAFP.optional'
+              }
+              values={{
+                ...getFormatMessageValues(),
+                normertPensjonsalder: formatUttaksalder(
+                  intl,
+                  normertPensjonsalder
+                ),
+              }}
+            />
+
+            {
+              // TODO: Se om denne kan fjernes
+              // 1. Hvis forslag om ny alder for helt uttak uten forslag for gradert uttak
+              !harIkkeNokOpptjening && !gradertUttaksalder && (
+                <FormattedMessage
+                  id="beregning.vilkaarsproeving.alternativer.medAFP.heltUttak"
+                  values={{
+                    ...getFormatMessageValues(),
+                    alternativtHeltStartAar: heltUttaksalder?.aar,
+                    alternativtHeltStartMaaned: heltUttaksalder?.maaneder,
+                  }}
+                />
+              )
+            }
+            {
+              // 2. Hvis forslag om ny alder for gradert uttak uten forslag for helt uttak
+              isHeltUttaksalderLik && gradertUttaksalder && (
+                <FormattedMessage
+                  id="beregning.vilkaarsproeving.alternativer.medAFP.gradertUttak"
+                  values={{
+                    ...getFormatMessageValues(),
+                    alternativtGrad: uttaksgrad,
+                    nedreAldersgrense: formatUttaksalder(
+                      intl,
+                      nedreAldersgrense
+                    ),
+                  }}
+                />
+              )
+            }
+            {
+              // 3. Hvis forslag om ny alder for helt uttak og ny alder for gradert uttak
+              !isHeltUttaksalderLik && gradertUttaksalder && (
+                <FormattedMessage
+                  id="beregning.vilkaarsproeving.alternativer.medAFP.heltOgGradertUttak"
+                  values={{
+                    ...getFormatMessageValues(),
+                    alternativtGrad: uttaksgrad,
+                    nedreAldersgrense: formatUttaksalder(
+                      intl,
+                      nedreAldersgrense
+                    ),
+                    alternativtHeltStartAar: heltUttaksalder?.aar,
+                    alternativtHeltStartMaaned: heltUttaksalder?.maaneder,
+                  }}
+                />
+              )
+            }
+          </>
+        ) : (
+          // 4. Opptjeningen er ikke høy nok til uttak av alderspensjon ved nedre aldersgrense
+          <FormattedMessage
+            id="beregning.vilkaarsproeving.alternativer.medAFP.ikkeNokOpptjening"
+            values={{
+              ...getFormatMessageValues(),
+              nedreAldersgrense: formatUttaksalder(intl, nedreAldersgrense),
+            }}
+          />
+        )}
+      </Alert>
+    )
+  }
 
   return (
     <Alert variant="warning">
       <FormattedMessage id="beregning.vilkaarsproeving.intro" />
-
-      {isGradertUfoereAfpToggleEnabled && hasAFP ? (
-        <>
+      <FormattedMessage
+        id={
+          harIkkeNokOpptjening
+            ? 'beregning.vilkaarsproeving.intro.ikke_nok_opptjening'
+            : 'beregning.vilkaarsproeving.intro.optional'
+        }
+        values={{
+          ...getFormatMessageValues(),
+          normertPensjonsalder: formatUttaksalder(intl, normertPensjonsalder),
+        }}
+      />
+      {
+        // 1. Hvis forslag om ny alder for helt uttak uten forslag for gradert uttak
+        !harIkkeNokOpptjening && !gradertUttaksalder && heltUttaksalder && (
           <FormattedMessage
-            id={
-              harIkkeNokOpptjening
-                ? 'beregning.vilkaarsproeving.intro.ikke_nok_opptjening'
-                : 'beregning.vilkaarsproeving.intro.medAFP.optional'
-            }
+            id="beregning.vilkaarsproeving.alternativer.heltUttak"
             values={{
               ...getFormatMessageValues(),
-              normertPensjonsalder: formatUttaksalder(
-                intl,
-                normertPensjonsalder
-              ),
+              alternativtHeltStartAar: heltUttaksalder.aar,
+              alternativtHeltStartMaaned: heltUttaksalder.maaneder,
             }}
           />
-          {
-            // 1. Hvis forslag om ny alder for helt uttak uten forslag for gradert uttak
-            !harIkkeNokOpptjening && !gradertUttaksalder && (
-              <FormattedMessage
-                id="beregning.vilkaarsproeving.alternativer.medAFP.heltUttak"
-                values={{
-                  ...getFormatMessageValues(),
-                  alternativtHeltStartAar: heltUttaksalder?.aar,
-                  alternativtHeltStartMaaned: heltUttaksalder?.maaneder,
-                }}
-              />
-            )
-          }
-          {
-            // 2. Hvis forslag om ny alder for gradert uttak uten forslag for helt uttak
-            isHeltUttaksalderLik && gradertUttaksalder && (
-              <FormattedMessage
-                id="beregning.vilkaarsproeving.alternativer.medAFP.gradertUttak"
-                values={{
-                  ...getFormatMessageValues(),
-                  alternativtGrad: uttaksgrad,
-                  nedreAldersgrense: formatUttaksalder(intl, nedreAldersgrense),
-                }}
-              />
-            )
-          }
-          {
-            // 3. Hvis forslag om ny alder for helt uttak og ny alder for gradert uttak
-            !isHeltUttaksalderLik && gradertUttaksalder && (
-              <FormattedMessage
-                id="beregning.vilkaarsproeving.alternativer.medAFP.heltOgGradertUttak"
-                values={{
-                  ...getFormatMessageValues(),
-                  alternativtGrad: uttaksgrad,
-                  nedreAldersgrense: formatUttaksalder(intl, nedreAldersgrense),
-                  alternativtHeltStartAar: heltUttaksalder?.aar,
-                  alternativtHeltStartMaaned: heltUttaksalder?.maaneder,
-                }}
-              />
-            )
-          }
-        </>
-      ) : (
-        <>
+        )
+      }
+      {
+        // 2. Hvis forslag om ny alder for gradert uttak uten forslag for helt uttak
+        isHeltUttaksalderLik && gradertUttaksalder && (
           <FormattedMessage
-            id={
-              harIkkeNokOpptjening
-                ? 'beregning.vilkaarsproeving.intro.ikke_nok_opptjening'
-                : 'beregning.vilkaarsproeving.intro.optional'
-            }
+            id="beregning.vilkaarsproeving.alternativer.gradertUttak"
             values={{
               ...getFormatMessageValues(),
-              normertPensjonsalder: formatUttaksalder(
-                intl,
-                normertPensjonsalder
-              ),
+              alternativtGrad: uttaksgrad,
+              alternativtGradertStartAar: gradertUttaksalder.aar,
+              alternativtGradertStartMaaned: gradertUttaksalder.maaneder,
             }}
           />
-          {
-            // 1. Hvis forslag om ny alder for helt uttak uten forslag for gradert uttak
-            !harIkkeNokOpptjening && !gradertUttaksalder && (
-              <FormattedMessage
-                id="beregning.vilkaarsproeving.alternativer.heltUttak"
-                values={{
-                  ...getFormatMessageValues(),
-                  alternativtHeltStartAar: heltUttaksalder?.aar,
-                  alternativtHeltStartMaaned: heltUttaksalder?.maaneder,
-                }}
-              />
-            )
-          }
-          {
-            // 2. Hvis forslag om ny alder for gradert uttak uten forslag for helt uttak
-            isHeltUttaksalderLik && gradertUttaksalder && (
-              <FormattedMessage
-                id="beregning.vilkaarsproeving.alternativer.gradertUttak"
-                values={{
-                  ...getFormatMessageValues(),
-                  alternativtGrad: uttaksgrad,
-                  alternativtGradertStartAar: gradertUttaksalder?.aar,
-                  alternativtGradertStartMaaned: gradertUttaksalder?.maaneder,
-                }}
-              />
-            )
-          }
-          {
-            // 3. Hvis forslag om ny alder for helt uttak og ny alder for gradert uttak
-            !isHeltUttaksalderLik && gradertUttaksalder && (
-              <FormattedMessage
-                id="beregning.vilkaarsproeving.alternativer.heltOgGradertUttak"
-                values={{
-                  ...getFormatMessageValues(),
-                  alternativtGrad: uttaksgrad,
-                  alternativtGradertStartAar: gradertUttaksalder?.aar,
-                  alternativtGradertStartMaaned: gradertUttaksalder?.maaneder,
-                  alternativtHeltStartAar: heltUttaksalder?.aar,
-                  alternativtHeltStartMaaned: heltUttaksalder?.maaneder,
-                }}
-              />
-            )
-          }
-        </>
-      )}
+        )
+      }
+      {
+        // 3. Hvis forslag om ny alder for helt uttak og ny alder for gradert uttak
+        !isHeltUttaksalderLik && gradertUttaksalder && heltUttaksalder && (
+          <FormattedMessage
+            id="beregning.vilkaarsproeving.alternativer.heltOgGradertUttak"
+            values={{
+              ...getFormatMessageValues(),
+              alternativtGrad: uttaksgrad,
+              alternativtGradertStartAar: gradertUttaksalder.aar,
+              alternativtGradertStartMaaned: gradertUttaksalder.maaneder,
+              alternativtHeltStartAar: heltUttaksalder.aar,
+              alternativtHeltStartMaaned: heltUttaksalder.maaneder,
+            }}
+          />
+        )
+      }
     </Alert>
   )
 }

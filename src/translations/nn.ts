@@ -426,6 +426,8 @@ const translations = {
     'MANGLER_TEKST',
   'beregning.vilkaarsproeving.alternativer.medAFP.heltOgGradertUttak':
     'MANGLER_TEKST',
+  'beregning.vilkaarsproeving.alternativer.medAFP.ikkeNokOpptjening':
+    'MANGLER_TEKST',
   'grunnlag.title': 'Grunnlaget for utrekninga',
   'grunnlag.ingress': 'Beløpa er viste i dagens kroneverdi før skatt.',
   'grunnlag.uttaksgrad.title': 'Uttaksgrad',

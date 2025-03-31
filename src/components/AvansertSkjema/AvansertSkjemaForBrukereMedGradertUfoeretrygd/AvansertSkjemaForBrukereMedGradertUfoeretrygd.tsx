@@ -457,7 +457,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                   uttaksalder &&
                   localBeregningsTypeRadio === beregningsvalg && (
                     <VilkaarsproevingAlert
-                      vilkaarsproeving={vilkaarsproeving}
+                      alternativ={vilkaarsproeving?.alternativ}
                       uttaksalder={uttaksalder}
                       hasAFP={localBeregningsTypeRadio === 'med_afp'}
                     />
