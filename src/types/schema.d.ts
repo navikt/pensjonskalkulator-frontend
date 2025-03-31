@@ -304,26 +304,6 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/api/v1/vedtak/loepende-vedtak': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /**
-     * Har løpende vedtak
-     * @description Hvorvidt den innloggede brukeren har løpende uføretrygd med uttaksgrad, alderspensjon med uttaksgrad, AFP i privat eller offentlig sektor
-     */
-    get: operations['hentLoependeVedtakV1']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
   '/api/v1/ufoeregrad': {
     parameters: {
       query?: never
@@ -574,6 +554,7 @@ export interface components {
       /** @enum {string} */
       simuleringstype:
         | 'ALDERSPENSJON'
+        | 'PRE2025_OFFENTLIG_AFP_ETTERFULGT_AV_ALDERSPENSJON'
         | 'ALDERSPENSJON_MED_AFP_PRIVAT'
         | 'ALDERSPENSJON_MED_AFP_OFFENTLIG_LIVSVARIG'
         | 'ENDRING_ALDERSPENSJON'
@@ -602,6 +583,17 @@ export interface components {
         | 'SAMBOER'
       epsHarInntektOver2G: boolean
       epsHarPensjon: boolean
+      /** Format: int32 */
+      afpInntektMaanedFoerUttak?: number
+      /** @enum {string} */
+      afpOrdning?:
+        | 'AFPKOM'
+        | 'AFPSTAT'
+        | 'FINANS'
+        | 'KONV_K'
+        | 'KONV_O'
+        | 'LONHO'
+        | 'NAVO'
     }
     PersonligSimuleringUtenlandsperiodeSpecV8: {
       /** Format: date */
@@ -679,9 +671,36 @@ export interface components {
       /** Format: int32 */
       heltUttakMaanedligBeloep: number
     }
+    PersonligSimuleringPre2025OffentligAfpResultV8: {
+      /** Format: int32 */
+      alderAar: number
+      /** Format: int32 */
+      totaltAfpBeloep: number
+      /** Format: int32 */
+      tidligereArbeidsinntekt: number
+      /** Format: int32 */
+      grunnbeloep: number
+      /** Format: double */
+      sluttpoengtall: number
+      /** Format: int32 */
+      trygdetid: number
+      /** Format: int32 */
+      poengaarTom1991: number
+      /** Format: int32 */
+      poengaarFom1992: number
+      /** Format: int32 */
+      grunnpensjon: number
+      /** Format: int32 */
+      tilleggspensjon: number
+      /** Format: int32 */
+      afpTillegg: number
+      /** Format: int32 */
+      saertillegg: number
+    }
     PersonligSimuleringResultV8: {
       alderspensjon: components['schemas']['PersonligSimuleringAlderspensjonResultV8'][]
       alderspensjonMaanedligVedEndring?: components['schemas']['PersonligSimuleringMaanedligPensjonResultV8']
+      pre2025OffentligAfp?: components['schemas']['PersonligSimuleringPre2025OffentligAfpResultV8']
       afpPrivat?: components['schemas']['PersonligSimuleringAarligPensjonResultV8'][]
       afpOffentlig?: components['schemas']['PersonligSimuleringAarligPensjonResultV8'][]
       vilkaarsproeving: components['schemas']['PersonligSimuleringVilkaarsproevingResultV8']
@@ -780,6 +799,7 @@ export interface components {
       /** @enum {string} */
       simuleringstype?:
         | 'ALDERSPENSJON'
+        | 'PRE2025_OFFENTLIG_AFP_ETTERFULGT_AV_ALDERSPENSJON'
         | 'ALDERSPENSJON_MED_AFP_PRIVAT'
         | 'ALDERSPENSJON_MED_AFP_OFFENTLIG_LIVSVARIG'
         | 'ENDRING_ALDERSPENSJON'
@@ -813,6 +833,11 @@ export interface components {
       tom?: string
       landkode: string
       arbeidetUtenlands: boolean
+    }
+    UttaksalderError: {
+      /** @enum {string} */
+      errorCode: 'AFP_IKKE_I_VILKAARSPROEVING'
+      cause?: string
     }
     UttaksalderResultV2: {
       /** Format: int32 */
@@ -966,6 +991,7 @@ export interface components {
       /** @enum {string} */
       simuleringstype?:
         | 'ALDERSPENSJON'
+        | 'PRE2025_OFFENTLIG_AFP_ETTERFULGT_AV_ALDERSPENSJON'
         | 'ALDERSPENSJON_MED_AFP_PRIVAT'
         | 'ALDERSPENSJON_MED_AFP_OFFENTLIG_LIVSVARIG'
         | 'ENDRING_ALDERSPENSJON'
@@ -1292,19 +1318,6 @@ export interface components {
       /** @enum {string} */
       aarsak: 'NONE' | 'ER_APOTEKER'
     }
-    LoependeVedtakDetaljerV1: {
-      loepende: boolean
-      /** Format: int32 */
-      grad: number
-      /** Format: date */
-      fom?: string
-    }
-    LoependeVedtakV1: {
-      alderspensjon: components['schemas']['LoependeVedtakDetaljerV1']
-      ufoeretrygd: components['schemas']['LoependeVedtakDetaljerV1']
-      afpPrivat: components['schemas']['LoependeVedtakDetaljerV1']
-      afpOffentlig: components['schemas']['LoependeVedtakDetaljerV1']
-    }
     UfoeregradDto: {
       /** Format: int32 */
       ufoeregrad: number
@@ -1455,7 +1468,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          '*/*': unknown
+          '*/*': components['schemas']['UttaksalderError']
         }
       }
     }
@@ -1822,35 +1835,6 @@ export interface operations {
         }
       }
       /** @description Sjekking av ekskludering kunne ikke utføres av tekniske årsaker */
-      503: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          '*/*': unknown
-        }
-      }
-    }
-  }
-  hentLoependeVedtakV1: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description Henting av løpende vedtak utført */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          '*/*': components['schemas']['LoependeVedtakV1']
-        }
-      }
-      /** @description Henting av løpende vedtak kunne ikke utføres av tekniske årsaker */
       503: {
         headers: {
           [name: string]: unknown
