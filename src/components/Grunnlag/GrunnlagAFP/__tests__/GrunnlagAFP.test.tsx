@@ -49,9 +49,7 @@ describe('Grunnlag - AFP', () => {
     await user.click(buttons[6])
 
     expect(
-      await screen.findByText('grunnlag.afp.ingress.ja_offentlig', {
-        exact: false,
-      })
+      await screen.findByText('grunnlag.afp.ingress.ja_offentlig.gammel')
     ).toBeVisible()
   })
 
@@ -140,7 +138,7 @@ describe('Grunnlag - AFP', () => {
     await user.click(buttons[6])
 
     expect(
-      await screen.findByTestId('grunnlag.afp.ingress.nei', { exact: false })
+      await screen.findByTestId('grunnlag.afp.ingress.nei.gammel')
     ).toBeVisible()
     expect(await screen.findByTestId('grunnlag.afp.reset_link')).toBeVisible()
     await user.click(await screen.findByTestId('grunnlag.afp.reset_link'))
@@ -170,7 +168,7 @@ describe('Grunnlag - AFP', () => {
     await user.click(buttons[6])
 
     expect(
-      await screen.findByText('grunnlag.afp.ingress.vet_ikke', { exact: false })
+      await screen.findByText('grunnlag.afp.ingress.vet_ikke.gammel')
     ).toBeVisible()
   })
 
@@ -326,9 +324,7 @@ describe('Grunnlag - AFP', () => {
         expect(screen.getByText('grunnlag.afp.title')).toBeVisible()
         expect(screen.getByText('afp.nei')).toBeVisible()
         expect(
-          screen.getByText('grunnlag.afp.ingress.nei.ufoeretrygd', {
-            exact: false,
-          })
+          screen.getByText('grunnlag.afp.ingress.nei.ufoeretrygd.gammel')
         ).toBeInTheDocument()
       })
 
@@ -348,9 +344,7 @@ describe('Grunnlag - AFP', () => {
         expect(screen.getByText('grunnlag.afp.title')).toBeVisible()
         expect(screen.getByText('afp.vet_ikke')).toBeVisible()
         expect(
-          screen.getByText('grunnlag.afp.ingress.vet_ikke.ufoeretrygd', {
-            exact: false,
-          })
+          screen.getByText('grunnlag.afp.ingress.vet_ikke.ufoeretrygd.gammel')
         ).toBeInTheDocument()
       })
     })
@@ -432,9 +426,7 @@ describe('Grunnlag - AFP', () => {
       await user.click(buttons[6])
 
       expect(
-        await screen.findByText('grunnlag.afp.ingress.ja_offentlig', {
-          exact: false,
-        })
+        await screen.findByText('grunnlag.afp.ingress.ja_offentlig.gammel')
       ).toBeVisible()
     })
 
@@ -466,8 +458,7 @@ describe('Grunnlag - AFP', () => {
 
       expect(
         await screen.findByTestId(
-          'grunnlag.afp.ingress.ja_offentlig_utilgjengelig',
-          { exact: false }
+          'grunnlag.afp.ingress.ja_offentlig_utilgjengelig'
         )
       ).toBeVisible()
     })
@@ -525,9 +516,7 @@ describe('Grunnlag - AFP', () => {
       await user.click(buttons[6])
 
       expect(
-        await screen.findByText('grunnlag.afp.ingress.vet_ikke', {
-          exact: false,
-        })
+        await screen.findByText('grunnlag.afp.ingress.vet_ikke.gammel')
       ).toBeVisible()
     })
   })

@@ -106,7 +106,6 @@ export const GrunnlagAFP: React.FC = () => {
 
     const ufoeregradString = isUfoerAndDontWantAfp ? '.ufoeretrygd' : ''
 
-    // TODO: Remove this once when feature toggle is enabled in production.
     if (!isGradertUfoereAfpToggleEnabled) {
       return `grunnlag.afp.ingress.${afp}${ufoeregradString}.gammel`
     }
@@ -143,9 +142,9 @@ export const GrunnlagAFP: React.FC = () => {
             id={formatertAfpIngress}
             values={{
               ...getFormatMessageValues(),
-              afpStepEvent: AfpStepEvent,
-              avansertStepEvent: AvansertStepEvent,
-              startStepEvent: StartStepEvent,
+              goToAFP: GoToAFP,
+              goToAvansert: GoToAvansert,
+              goToStart: GoToStart,
             }}
           />
         </BodyLong>
@@ -154,29 +153,29 @@ export const GrunnlagAFP: React.FC = () => {
   )
 }
 
-const AfpStepEvent = (chunks: React.ReactNode) => {
+const GoToAFP = (chunks: React.ReactNode) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
-  const goToAFP: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
+  const onClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     e.preventDefault()
     dispatch(userInputActions.flushCurrentSimulation())
     navigate(paths.afp)
   }
   return (
-    <Link href="#" onClick={goToAFP} data-testid="grunnlag.afp.afp_link">
+    <Link href="#" onClick={onClick} data-testid="grunnlag.afp.afp_link">
       {chunks}
     </Link>
   )
 }
-const AvansertStepEvent = (chunks: React.ReactNode) => {
+const GoToAvansert = (chunks: React.ReactNode) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
   const { avansertSkjemaModus, setAvansertSkjemaModus } =
     React.useContext(BeregningContext)
 
-  const goToAvansert: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
+  const onClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     e.preventDefault()
     if (avansertSkjemaModus === 'resultat') {
       setAvansertSkjemaModus('redigering')
@@ -186,26 +185,22 @@ const AvansertStepEvent = (chunks: React.ReactNode) => {
     }
   }
   return (
-    <Link
-      href="#"
-      onClick={goToAvansert}
-      data-testid="grunnlag.afp.avansert_link"
-    >
+    <Link href="#" onClick={onClick} data-testid="grunnlag.afp.avansert_link">
       {chunks}
     </Link>
   )
 }
-const StartStepEvent = (chunks: React.ReactNode) => {
+const GoToStart = (chunks: React.ReactNode) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
-  const goToStart: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
+  const onClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     e.preventDefault()
     dispatch(userInputActions.flush())
     navigate(paths.start)
   }
   return (
-    <Link href="#" onClick={goToStart} data-testid="grunnlag.afp.reset_link">
+    <Link href="#" onClick={onClick} data-testid="grunnlag.afp.reset_link">
       {chunks}
     </Link>
   )

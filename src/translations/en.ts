@@ -576,7 +576,7 @@ const translations = {
   'grunnlag.afp.ingress.vet_ikke.ufoeretrygd':
     'If you are unsure whether you have AFP, you should ask your employer. AFP and disability benefits cannot be combined, and if you receive disability benefits after turning 62, you lose the right to AFP. Therefore, you should check whether you have the right to AFP and choose between AFP and disability benefits before you are 62 years old.',
   'grunnlag.afp.ingress.nei':
-    'If you start a job with an employer that has an AFP agreement, we recommend that you make a <startStepEvent>new calculation</startStepEvent>.',
+    'If you start a job with an employer that has an AFP agreement, we recommend that you make a <goToStart>new calculation</goToStart>.',
   'grunnlag.afp.ingress.nei.ufoeretrygd':
     'If you start a job with an employer that has an AFP agreement, you must be aware that AFP and disability benefits cannot be combined. You must choose between AFP and disability benefits before you turn 62.',
   'grunnlag.afp.ingress.ja_offentlig.endring':
@@ -601,7 +601,7 @@ const translations = {
   'grunnlag.afp.ingress.vet_ikke.ufoeretrygd.gammel':
     'If you are unsure whether you have AFP, you should ask your employer. AFP and disability benefits cannot be combined, and if you receive disability benefits after turning 62, you lose the right to AFP. Therefore, you should check whether you have the right to AFP and choose between AFP and disability benefits before you are 62 years old.',
   'grunnlag.afp.ingress.nei.gammel':
-    'If you start a job with an employer that has an AFP agreement, we recommend that you make a <startStepEvent>new calculation</startStepEvent>.',
+    'If you start a job with an employer that has an AFP agreement, we recommend that you make a <goToStart>new calculation</goToStart>.',
   'grunnlag.afp.ingress.nei.ufoeretrygd.gammel':
     'If you start a job with an employer that has an AFP agreement, you must be aware that AFP and disability benefits cannot be combined. You must choose between AFP and disability benefits before you turn 62.',
   'grunnlag.forbehold.ingress_1':
