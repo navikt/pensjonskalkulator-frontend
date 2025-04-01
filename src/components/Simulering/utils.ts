@@ -133,9 +133,13 @@ export const processPensjonsberegningArray = (
     xAxisLength,
     isEndring ? pensjonsberegninger.length + 1 : pensjonsberegninger.length + 2
   )
+  const fillArrayLength = pensjonsberegninger[0]
+    ? Math.max(0, pensjonsberegninger[0].alder - startAlder)
+    : 0
+
   const dataArray = isEndring
-    ? new Array(pensjonsberegninger[0].alder - startAlder).fill(0)
-    : new Array(pensjonsberegninger[0].alder - startAlder + 1).fill(0)
+    ? new Array(fillArrayLength).fill(0)
+    : new Array(fillArrayLength + 1).fill(0)
 
   const livsvarigPensjonsbeloep =
     pensjonsberegninger[pensjonsberegninger.length - 1]?.beloep ?? 0
