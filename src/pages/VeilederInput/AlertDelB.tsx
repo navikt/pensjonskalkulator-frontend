@@ -8,19 +8,14 @@ interface IAlertDelBProps {
   fnr: string
 }
 export const AlertDelB: React.FC<IAlertDelBProps> = ({ fnr }) => {
-  const formRef = React.useRef<HTMLFormElement>(null)
   const [showAlert, setShowAlert] = React.useState(true)
-
-  const submit = () => {
-    formRef.current?.submit()
-  }
 
   if (!showAlert) {
     return null
   }
 
   return (
-    <form ref={formRef} action={externalUrls.detaljertKalkulator} method="POST">
+    <form action={externalUrls.detaljertKalkulator} method="POST">
       <input type="hidden" name="fnr" value={fnr} />
       <Alert variant="warning" onClose={() => setShowAlert(false)} closeButton>
         <HStack>
@@ -29,7 +24,7 @@ export const AlertDelB: React.FC<IAlertDelBProps> = ({ fnr }) => {
             for å beregne AFP i offentlig sektor, lagre og se
             beregningsdetaljer.
           </div>
-          <Button size="small" variant="secondary-neutral" onClick={submit}>
+          <Button size="small" variant="secondary-neutral" type="submit">
             Gå til detaljert pensjonskalkulator
           </Button>
         </HStack>
