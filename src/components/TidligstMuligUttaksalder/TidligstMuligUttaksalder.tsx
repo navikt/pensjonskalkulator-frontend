@@ -7,11 +7,16 @@ import { Alert, BodyLong, Link } from '@navikt/ds-react'
 import { SanityReadmore } from '../common/SanityReadmore'
 import { ReadMore } from '@/components/common/ReadMore'
 import { paths } from '@/router/constants'
-import { useGetOmstillingsstoenadOgGjenlevendeQuery } from '@/state/api/apiSlice'
+import {
+  useGetGradertUfoereAfpFeatureToggleQuery,
+  useGetOmstillingsstoenadOgGjenlevendeQuery,
+} from '@/state/api/apiSlice'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
+  selectAfp,
   selectNedreAldersgrense,
   selectNormertPensjonsalder,
+  selectSamtykkeOffentligAFP,
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
 import { formatUttaksalder } from '@/utils/alder'
@@ -34,20 +39,37 @@ export const TidligstMuligUttaksalder: React.FC<Props> = ({
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
+  const { data: getGradertUfoereAfpFeatureToggle } =
+    useGetGradertUfoereAfpFeatureToggleQuery()
   const { data: omstillingsstoenadOgGjenlevende } =
     useGetOmstillingsstoenadOgGjenlevendeQuery()
+
+  const afp = useAppSelector(selectAfp)
   const nedreAldersgrense = useAppSelector(selectNedreAldersgrense)
   const normertPensjonsalder = useAppSelector(selectNormertPensjonsalder)
+  const samtykkeOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
+
+  const formatertNedreAldersgrense = formatUttaksalder(intl, nedreAldersgrense)
   const formatertNormertPensjonsalder = formatUttaksalder(
     intl,
     normertPensjonsalder
   )
+
+  const isGradertUfoereAfpToggleEnabled =
+    getGradertUfoereAfpFeatureToggle?.enabled
+  const hasAFP =
+    isGradertUfoereAfpToggleEnabled &&
+    ((afp === 'ja_offentlig' && samtykkeOffentligAFP) || afp === 'ja_privat')
 
   const goToAvansert: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     e.preventDefault()
     dispatch(userInputActions.flushCurrentSimulation())
     navigate(paths.beregningAvansert)
   }
+
+  const gradertIngress = hasAFP
+    ? 'omufoeretrygd.gradert.ingress.afp'
+    : 'omufoeretrygd.gradert.ingress'
 
   return (
     <div className={styles.wrapper} data-testid="tidligst-mulig-uttak">
@@ -69,17 +91,18 @@ export const TidligstMuligUttaksalder: React.FC<Props> = ({
               id={
                 ufoeregrad === 100
                   ? 'omufoeretrygd.hel.ingress'
-                  : 'omufoeretrygd.gradert.ingress'
+                  : gradertIngress
               }
               values={{
                 ...getFormatMessageValues(),
-                normertPensjonsalder: formatertNormertPensjonsalder,
                 grad: ufoeregrad,
                 link: (
                   <Link href="#" onClick={goToAvansert}>
                     <FormattedMessage id="omufoeretrygd.avansert_link" />
                   </Link>
                 ),
+                nedreAldersgrense: formatertNedreAldersgrense,
+                normertPensjonsalder: formatertNormertPensjonsalder,
               }}
             />
           </BodyLong>
@@ -95,9 +118,11 @@ export const TidligstMuligUttaksalder: React.FC<Props> = ({
                 }}
               />
             </BodyLong>
+
             <BodyLong size="medium" className={styles.highlighted}>
               {formatUttaksalder(intl, tidligstMuligUttak)}.
             </BodyLong>
+
             <BodyLong size="medium" className={styles.ingress}>
               <FormattedMessage
                 id={`tidligstmuliguttak.${
@@ -145,7 +170,7 @@ export const TidligstMuligUttaksalder: React.FC<Props> = ({
                 }
                 values={{
                   ...getFormatMessageValues(),
-                  nedreAldersgrense: formatUttaksalder(intl, nedreAldersgrense),
+                  nedreAldersgrense: formatertNedreAldersgrense,
                   normertPensjonsalder: formatertNormertPensjonsalder,
                 }}
               />
