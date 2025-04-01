@@ -23,6 +23,7 @@ import {
   processPensjonsberegningArray,
   processAfpPensjonsberegningArray,
   processPensjonsavtalerArray,
+  processPre2025OffentligAfpPensjonsberegningArray,
 } from './utils'
 import { getChartOptions, onPointUnclick } from './utils-highcharts'
 
@@ -101,9 +102,6 @@ export const useSimuleringChartLocalState = (initialValues: {
           })
         )
       : []
-
-  console.log(pre2025OffentligAfpListe)
-  console.log(uttaksalder?.maaneder)
 
   const [chartOptions, setChartOptions] = React.useState<Highcharts.Options>(
     getChartOptions(
@@ -253,9 +251,8 @@ export const useSimuleringChartLocalState = (initialValues: {
                     id: SERIES_DEFAULT.SERIE_AFP.name,
                   }),
                   /* c8 ignore next 1 */
-                  data: processAfpPensjonsberegningArray(
-                    pre2025OffentligAfp.alderAar,
-                    pre2025OffentligAfpListe.length,
+                  data: processPre2025OffentligAfpPensjonsberegningArray(
+                    pre2025OffentligAfpListe.length - 1,
                     pre2025OffentligAfpListe,
                     isEndring
                   ),
