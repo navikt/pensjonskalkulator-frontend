@@ -93,7 +93,11 @@ export const useSimuleringChartLocalState = (initialValues: {
           { length: 67 - pre2025OffentligAfp.alderAar - 1 },
           (_, index) => ({
             alder: pre2025OffentligAfp.alderAar + index,
-            beloep: pre2025OffentligAfp.totaltAfpBeloep * 12,
+            beloep:
+              index === 0
+                ? pre2025OffentligAfp.totaltAfpBeloep *
+                  ((uttaksalder?.maaneder ?? 0) + 1)
+                : pre2025OffentligAfp.totaltAfpBeloep * 12,
           })
         )
       : []
