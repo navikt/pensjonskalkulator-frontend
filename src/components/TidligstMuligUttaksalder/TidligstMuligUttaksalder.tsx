@@ -53,7 +53,7 @@ export const TidligstMuligUttaksalder: React.FC<Props> = ({
     <div className={styles.wrapper} data-testid="tidligst-mulig-uttak">
       <div className={styles.wrapperCard} aria-live="polite">
         {!ufoeregrad && !tidligstMuligUttak && (
-          <BodyLong size="medium" className={`${styles.ingress}`}>
+          <BodyLong size="medium" className={styles.ingress}>
             <FormattedMessage
               id="tidligstmuliguttak.error"
               values={{
@@ -64,7 +64,7 @@ export const TidligstMuligUttaksalder: React.FC<Props> = ({
         )}
 
         {!!ufoeregrad && (
-          <BodyLong size="medium" className={`${styles.ingress}`}>
+          <BodyLong size="medium" className={styles.ingress}>
             <FormattedMessage
               id={
                 ufoeregrad === 100
@@ -87,7 +87,7 @@ export const TidligstMuligUttaksalder: React.FC<Props> = ({
 
         {tidligstMuligUttak && (
           <>
-            <BodyLong size="medium" className={`${styles.ingress}`}>
+            <BodyLong size="medium" className={styles.ingress}>
               <FormattedMessage
                 id="tidligstmuliguttak.ingress_1"
                 values={{
@@ -98,7 +98,7 @@ export const TidligstMuligUttaksalder: React.FC<Props> = ({
             <BodyLong size="medium" className={styles.highlighted}>
               {formatUttaksalder(intl, tidligstMuligUttak)}.
             </BodyLong>
-            <BodyLong size="medium" className={`${styles.ingress}`}>
+            <BodyLong size="medium" className={styles.ingress}>
               <FormattedMessage
                 id={`tidligstmuliguttak.${
                   show1963Text ? '1963' : '1964'
