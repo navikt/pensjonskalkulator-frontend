@@ -156,6 +156,41 @@ export const processPensjonsberegningArray = (
   return dataArray
 }
 
+//TODO: refaktorer processAfpPensjonsberegningArray. I refaktoreringen burde processPre2025OffentligAfpPensjonsberegningArray bli inkludert
+export const processPre2025OffentligAfpPensjonsberegningArray = (
+  xAxisLength: number,
+  pensjonsberegninger: AfpPrivatPensjonsberegning[] = [],
+  isEndring: boolean
+): number[] => {
+  if (pensjonsberegninger.length === 0) {
+    return []
+  }
+  const arrayLength = Math.max(
+    xAxisLength,
+    isEndring ? pensjonsberegninger.length : pensjonsberegninger.length + 1
+  )
+
+  const dataArray = isEndring ? [] : new Array(1).fill(0)
+  const startIndex = isEndring ? 0 : 1
+
+  const livsvarigPensjonsbeloep =
+    pensjonsberegninger[pensjonsberegninger.length - 1]?.beloep ?? 0
+
+  for (let index = isEndring ? 0 : 1; index < arrayLength; index++) {
+    if (startIndex > index) {
+      dataArray.push(0)
+    } else {
+      const pensjonsBeregningAtIndex = pensjonsberegninger[index - startIndex]
+      dataArray.push(
+        pensjonsBeregningAtIndex
+          ? pensjonsBeregningAtIndex.beloep
+          : livsvarigPensjonsbeloep
+      )
+    }
+  }
+  return dataArray
+}
+
 export const processAfpPensjonsberegningArray = (
   xAxisStartAar: number, // uttaksaar, (uttaksaar minus 1 for førstegangsøkere)
   xAxisLength: number,
