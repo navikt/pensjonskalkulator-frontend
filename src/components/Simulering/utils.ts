@@ -136,10 +136,6 @@ export const processPensjonsberegningArray = (
   const dataArray = isEndring
     ? new Array(pensjonsberegninger[0].alder - startAlder).fill(0)
     : new Array(pensjonsberegninger[0].alder - startAlder + 1).fill(0)
-  // TODO:
-  // Gang opp AFP med 12, slik det blir årlig beløp
-  // Ikke vis AFP etter 66
-  // Fiks for isEndring
 
   const livsvarigPensjonsbeloep =
     pensjonsberegninger[pensjonsberegninger.length - 1]?.beloep ?? 0
