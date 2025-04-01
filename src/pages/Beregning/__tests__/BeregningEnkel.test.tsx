@@ -287,6 +287,45 @@ describe('BeregningEnkel', () => {
     })
   })
 
+  describe('Når brukeren får vite tidligst mulige uttaksalder', () => {
+    it('vises uvventet feil side dersom backend svarer med 500 error', async () => {
+      mockResponse('/v2/tidligste-hel-uttaksalder', {
+        status: 500,
+        method: 'post',
+        json: {
+          errorCode: 'AFP_IKKE_I_VILKAARSPROEVING',
+        },
+      })
+      const router = createMemoryRouter([
+        {
+          path: '/',
+          element: <BeregningEnkel />,
+          ErrorBoundary: RouteErrorBoundary,
+        },
+      ])
+      render(<RouterProvider router={router} />, {
+        hasRouter: false,
+        preloadedState: {
+          tidligstMuligHeltUttakRequestBody: { test: true },
+          api: {
+            // @ts-ignore
+            queries: {
+              ...fulfilledGetPerson,
+              ...fulfilledGetInntekt,
+              ...fulfilledGetLoependeVedtak0Ufoeregrad,
+            },
+          },
+          userInput: {
+            ...userInputInitialState,
+          },
+        },
+      })
+      await waitFor(() => {
+        expect(navigateMock).toHaveBeenCalledWith(paths.uventetFeil)
+      })
+    })
+  })
+
   describe('Når brukeren velger uttaksalder', () => {
     it('viser en loader mens beregning av alderspensjon pågår, oppdaterer valgt knapp og tegner graph og viser tabell, Pensjonsavtaler, Grunnlag og Forbehold, gitt at beregning av alderspensjon var vellykket', async () => {
       const user = userEvent.setup()
@@ -778,6 +817,61 @@ describe('BeregningEnkel', () => {
       })
 
       await user.click(await screen.findByText('68 alder.aar'))
+      await waitFor(() => {
+        expect(navigateMock).toHaveBeenCalledWith(paths.uventetFeil)
+      })
+    })
+
+    it('viser ErrorPageUnexpected når simuleringstype er AFP offentlig og AFP fra backend er tom liste', async () => {
+      mockResponse('/v2/tidligste-hel-uttaksalder', {
+        status: 200,
+      })
+      mockResponse('/v8/alderspensjon/simulering', {
+        status: 200,
+        method: 'post',
+        json: {
+          alderspensjon: [],
+          afpOffentlig: [],
+          vilkaarsproeving: {
+            vilkaarErOppfylt: true,
+            alternativ: {},
+          },
+          harForLiteTrygdetid: false,
+        },
+      })
+      const router = createMemoryRouter([
+        {
+          path: '/',
+          element: <BeregningEnkel />,
+          ErrorBoundary: RouteErrorBoundary,
+        },
+      ])
+      render(<RouterProvider router={router} />, {
+        hasRouter: false,
+        preloadedState: {
+          tidligstMuligHeltUttakRequestBody: { test: true },
+          api: {
+            // @ts-ignore
+            queries: {
+              ...fulfilledGetPerson,
+              ...fulfilledGetInntekt,
+              ...fulfilledGetLoependeVedtak0Ufoeregrad,
+            },
+          },
+          userInput: {
+            ...userInputInitialState,
+            afp: 'ja_offentlig',
+            samtykkeOffentligAFP: true,
+            currentSimulation: {
+              beregningsvalg: null,
+              formatertUttaksalderReadOnly: '67 år string.og 6 alder.maaned',
+              uttaksalder: { aar: 67, maaneder: 6 },
+              aarligInntektFoerUttakBeloep: null,
+              gradertUttaksperiode: null,
+            },
+          },
+        },
+      })
       await waitFor(() => {
         expect(navigateMock).toHaveBeenCalledWith(paths.uventetFeil)
       })

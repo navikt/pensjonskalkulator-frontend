@@ -707,6 +707,64 @@ describe('BeregningAvansert', () => {
           expect(navigateMock).toHaveBeenCalledWith(paths.uventetFeil)
         })
       })
+      it('Når simulering svarer at AFP offentlig er tom og bruker ba om simulering med AFP, vises ErrorPageUnexpected ', async () => {
+        // Må bruke mockResponse for å få riktig status (mockErrorResponse returnerer "originalStatus")
+        mockResponse('/v8/alderspensjon/simulering', {
+          status: 200,
+          method: 'post',
+          json: {
+            alderspensjon: [],
+            afpOffentlig: [],
+            vilkaarsproeving: {
+              vilkaarErOppfylt: true,
+              alternativ: {},
+            },
+            harForLiteTrygdetid: false,
+          },
+        })
+
+        const router = createMemoryRouter([
+          {
+            path: '/',
+            element: (
+              <BeregningContext.Provider
+                value={{
+                  ...contextMockedValues,
+                }}
+              >
+                <BeregningAvansert />
+              </BeregningContext.Provider>
+            ),
+            ErrorBoundary: RouteErrorBoundary,
+          },
+        ])
+
+        render(<RouterProvider router={router} />, {
+          hasRouter: false,
+          preloadedState: {
+            // @ts-ignore
+            api: {
+              ...preloadedState.api,
+            },
+            userInput: {
+              ...preloadedState.userInput,
+              afp: 'ja_offentlig',
+              samtykkeOffentligAFP: true,
+              currentSimulation: {
+                beregningsvalg: null,
+                formatertUttaksalderReadOnly: '67 år string.og 6 alder.maaned',
+                uttaksalder: { aar: 67, maaneder: 6 },
+                aarligInntektFoerUttakBeloep: null,
+                gradertUttaksperiode: null,
+              },
+            },
+          },
+        })
+
+        await waitFor(() => {
+          expect(navigateMock).toHaveBeenCalledWith(paths.uventetFeil)
+        })
+      })
     })
   })
 

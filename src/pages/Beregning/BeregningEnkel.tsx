@@ -191,16 +191,25 @@ export const BeregningEnkel: React.FC = () => {
   }, [uttaksalder, isError, alderspensjon])
 
   React.useEffect(() => {
-    if (
-      (error &&
-        ((error as FetchBaseQueryError).status === 503 ||
-          (error as FetchBaseQueryError).status === 'PARSING_ERROR')) ||
-      (tidligstMuligUttakError &&
-        isUttaksalderError(tidligstMuligUttakError)) ||
-      (alderspensjon?.afpOffentlig?.length === 0 &&
-        alderspensjonEnkelRequestBody?.simuleringstype ===
-          'ALDERSPENSJON_MED_AFP_OFFENTLIG_LIVSVARIG')
-    ) {
+    const fetchError = error as FetchBaseQueryError | undefined
+    const uttakError = tidligstMuligUttakError as
+      | FetchBaseQueryError
+      | undefined
+
+    const isFetchError =
+      fetchError?.status === 503 || fetchError?.status === 'PARSING_ERROR'
+    const isUttakError =
+      uttakError &&
+      isUttaksalderError(uttakError.data) &&
+      (uttakError.data as UttaksalderError).errorCode ===
+        'AFP_IKKE_I_VILKAARSPROEVING'
+
+    const isAfpOffentligMismatch =
+      alderspensjon?.afpOffentlig?.length === 0 &&
+      alderspensjonEnkelRequestBody?.simuleringstype ===
+        'ALDERSPENSJON_MED_AFP_OFFENTLIG_LIVSVARIG'
+
+    if (isFetchError || isUttakError || isAfpOffentligMismatch) {
       navigate(paths.uventetFeil)
       logger('info', {
         tekst: 'Redirect til /uventet-feil',
