@@ -8,6 +8,7 @@ import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
 import clsx from 'clsx'
 
 import { Alert as AlertDashBorder } from '@/components/common/Alert'
+import { SanityGuidePanel } from '@/components/common/SanityGuidePanel'
 import { Grunnlag } from '@/components/Grunnlag'
 import { GrunnlagForbehold } from '@/components/GrunnlagForbehold'
 import { InfoOmLoependeVedtak } from '@/components/InfoOmLoependeVedtak'
@@ -151,7 +152,7 @@ export const BeregningAvansert: React.FC = () => {
 
   // Skal redigerer tilbake når alderspensjon er refetchet ferdig, og
   React.useEffect(() => {
-    if (alderspensjon && !alderspensjon?.vilkaarsproeving.vilkaarErOppfylt) {
+    if (alderspensjon && !alderspensjon.vilkaarsproeving.vilkaarErOppfylt) {
       setAvansertSkjemaModus('redigering')
     }
     if (alderspensjon?.vilkaarsproeving.vilkaarErOppfylt) {
@@ -236,14 +237,12 @@ export const BeregningAvansert: React.FC = () => {
               alderspensjonListe={alderspensjon?.alderspensjon}
               pre2025OffentligAfp={alderspensjon?.pre2025OffentligAfp}
               afpPrivatListe={
-                !loependeVedtak.ufoeretrygd.grad &&
                 (afp === 'ja_privat' || loependeVedtak.afpPrivat) &&
                 alderspensjon?.afpPrivat
                   ? alderspensjon?.afpPrivat
                   : undefined
               }
               afpOffentligListe={
-                !loependeVedtak.ufoeretrygd.grad &&
                 afp === 'ja_offentlig' &&
                 harSamtykketOffentligAFP &&
                 alderspensjon?.afpOffentlig
@@ -271,6 +270,13 @@ export const BeregningAvansert: React.FC = () => {
             <ResultatkortAvansertBeregning
               onButtonClick={() => setAvansertSkjemaModus('redigering')}
             />
+
+            {beregningsvalg === 'med_afp' && (
+              <SanityGuidePanel
+                id="vurderer_du_a_velge_afp"
+                className={styles.guidePanel}
+              />
+            )}
 
             {!isEndring && <Pensjonsavtaler headingLevel="2" />}
 
