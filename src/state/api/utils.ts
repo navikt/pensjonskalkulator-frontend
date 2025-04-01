@@ -28,7 +28,7 @@ export const getSimuleringstypeFromRadioEllerVedtak = (
   } else if (skalBeregneAfp) {
     return 'PRE2025_OFFENTLIG_AFP_ETTERFULGT_AV_ALDERSPENSJON'
   } else {
-    if (ufoeregrad && (!beregningsvalg || beregningsvalg === 'uten_afp')) {
+    if (ufoeregrad && beregningsvalg !== 'med_afp') {
       return 'ALDERSPENSJON'
     } else if (!ufoeregrad && loependeVedtak.afpOffentlig) {
       return 'ENDRING_ALDERSPENSJON_MED_AFP_OFFENTLIG_LIVSVARIG'
