@@ -4,7 +4,6 @@ import { FormattedMessage, useIntl } from 'react-intl'
 
 import { Alert } from '@navikt/ds-react'
 
-import { useGetGradertUfoereAfpFeatureToggleQuery } from '@/state/api/apiSlice'
 import { useAppSelector } from '@/state/hooks'
 import {
   selectNedreAldersgrense,
@@ -16,23 +15,17 @@ import { getFormatMessageValues } from '@/utils/translations'
 export interface Props {
   alternativ: Vilkaarsproeving['alternativ']
   uttaksalder: Alder
-  hasAFP?: boolean
+  withAFP?: boolean
 }
 
 export const VilkaarsproevingAlert = ({
   alternativ,
   uttaksalder,
-  hasAFP = false,
+  withAFP = false,
 }: Props) => {
   const intl = useIntl()
   const normertPensjonsalder = useAppSelector(selectNormertPensjonsalder)
   const nedreAldersgrense = useAppSelector(selectNedreAldersgrense)
-
-  const { data: getGradertUfoereAfpFeatureToggle } =
-    useGetGradertUfoereAfpFeatureToggleQuery()
-
-  const isGradertUfoereAfpToggleEnabled =
-    getGradertUfoereAfpFeatureToggle?.enabled
 
   const harIkkeNokOpptjening = React.useMemo(() => {
     return (
@@ -52,7 +45,7 @@ export const VilkaarsproevingAlert = ({
   const heltUttaksalder = alternativ?.heltUttaksalder
   const uttaksgrad = alternativ?.uttaksgrad
 
-  if (isGradertUfoereAfpToggleEnabled && hasAFP) {
+  if (withAFP) {
     return (
       <Alert variant="warning">
         {alternativ ? (
