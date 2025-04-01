@@ -326,6 +326,10 @@ describe('Simulering-hooks', () => {
             {
               "color": "var(--a-deepblue-500)",
               "data": [
+                0,
+                0,
+                0,
+                0,
                 234518,
                 234722,
                 234756,
@@ -940,6 +944,10 @@ describe('Simulering-hooks', () => {
             {
               "color": "var(--a-deepblue-500)",
               "data": [
+                0,
+                0,
+                0,
+                0,
                 234518,
                 234722,
                 234756,
@@ -1260,6 +1268,10 @@ describe('Simulering-hooks', () => {
             {
               "color": "var(--a-deepblue-500)",
               "data": [
+                0,
+                0,
+                0,
+                0,
                 234518,
                 234722,
                 234756,
@@ -1581,6 +1593,10 @@ describe('Simulering-hooks', () => {
             {
               "color": "var(--a-deepblue-500)",
               "data": [
+                0,
+                0,
+                0,
+                0,
                 234518,
                 234722,
                 234756,
