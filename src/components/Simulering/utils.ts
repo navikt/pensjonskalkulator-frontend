@@ -156,8 +156,6 @@ export const processPensjonsberegningArray = (
   return dataArray
 }
 
-// [0, afp*12, afg]
-
 export const processAfpPensjonsberegningArray = (
   xAxisStartAar: number, // uttaksaar, (uttaksaar minus 1 for førstegangsøkere)
   xAxisLength: number,
