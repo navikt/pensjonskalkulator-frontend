@@ -7,13 +7,10 @@ import { render, screen } from '@/test-utils'
 
 describe('VilkaarsproevingAlert', () => {
   const uttaksalder = { aar: 63, maaneder: 3 }
-  const vilkaarsproeving = {
-    vilkaarErOppfylt: false,
-    alternativ: {
-      gradertUttaksalder: undefined,
-      uttaksgrad: undefined,
-      heltUttaksalder: { aar: 65, maaneder: 3 },
-    },
+  const alternativ = {
+    gradertUttaksalder: undefined,
+    uttaksgrad: undefined,
+    heltUttaksalder: { aar: 65, maaneder: 3 },
   }
   const mockedState = {
     api: {
@@ -28,14 +25,11 @@ describe('VilkaarsproevingAlert', () => {
   it('Når det foreslåtte alternativet er den default normert pensjonsalder, vises det riktig tekst', () => {
     const { asFragment } = render(
       <VilkaarsproevingAlert
-        vilkaarsproeving={{
-          ...vilkaarsproeving,
-          alternativ: {
-            ...vilkaarsproeving.alternativ,
-            heltUttaksalder: {
-              aar: 67,
-              maaneder: 0,
-            },
+        alternativ={{
+          ...alternativ,
+          heltUttaksalder: {
+            aar: 67,
+            maaneder: 0,
           },
         }}
         uttaksalder={uttaksalder}
@@ -73,7 +67,7 @@ describe('VilkaarsproevingAlert', () => {
   it('Når det foreslåtte alternativet er uttaksalder for 100% uten gradering, vises det riktig tekst', () => {
     const { asFragment } = render(
       <VilkaarsproevingAlert
-        vilkaarsproeving={vilkaarsproeving}
+        alternativ={alternativ}
         uttaksalder={uttaksalder}
       />,
       {
@@ -118,14 +112,11 @@ describe('VilkaarsproevingAlert', () => {
   it('Når det foreslåtte alternativet er lik uttaksalder med ny gradering, vises det riktig tekst', () => {
     const { asFragment } = render(
       <VilkaarsproevingAlert
-        vilkaarsproeving={{
-          ...vilkaarsproeving,
-          alternativ: {
-            ...vilkaarsproeving.alternativ,
-            heltUttaksalder: { ...uttaksalder },
-            gradertUttaksalder: { aar: 65, maaneder: 3 },
-            uttaksgrad: 40,
-          },
+        alternativ={{
+          ...alternativ,
+          heltUttaksalder: { ...uttaksalder },
+          gradertUttaksalder: { aar: 65, maaneder: 3 },
+          uttaksgrad: 40,
         }}
         uttaksalder={uttaksalder}
       />,
@@ -171,13 +162,10 @@ describe('VilkaarsproevingAlert', () => {
   it('Når det foreslåtte alternativet er ulik uttaksalder med ny gradering, vises det riktig tekst', () => {
     const { asFragment } = render(
       <VilkaarsproevingAlert
-        vilkaarsproeving={{
-          ...vilkaarsproeving,
-          alternativ: {
-            ...vilkaarsproeving.alternativ,
-            gradertUttaksalder: { aar: 68, maaneder: 5 },
-            uttaksgrad: 40,
-          },
+        alternativ={{
+          ...alternativ,
+          gradertUttaksalder: { aar: 68, maaneder: 5 },
+          uttaksgrad: 40,
         }}
         uttaksalder={uttaksalder}
       />,
