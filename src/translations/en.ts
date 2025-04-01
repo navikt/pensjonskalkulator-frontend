@@ -657,7 +657,6 @@ const translations = {
     'Until which age do you expect to have the income?',
   'inntekt.endre_inntekt_vsa_pensjon_modal.button.legg_til': 'Add Income',
   'inntekt.endre_inntekt_vsa_pensjon_modal.button.endre': 'Update Income',
-  'inntekt.info_om_inntekt.read_more.label': 'About Pensionable income',
   'inntekt.info_om_inntekt.open.link': 'What is Pensionable income?',
   'inntekt.info_om_inntekt.intro':
     'We use the last available annual income from the Tax Administration as future income. If you change it in the calculator, we will use that instead.{br}{br}',

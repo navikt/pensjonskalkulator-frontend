@@ -538,7 +538,6 @@ const translations = {
   'inntekt.endre_inntekt_vsa_pensjon_modal.agepicker.label': 'MANGLER_TEKST',
   'inntekt.endre_inntekt_vsa_pensjon_modal.button.legg_til': 'MANGLER_TEKST',
   'inntekt.endre_inntekt_vsa_pensjon_modal.button.endre': 'MANGLER_TEKST',
-  'inntekt.info_om_inntekt.read_more.label': 'MANGLER_TEKST',
   'inntekt.info_om_inntekt.open.link': 'Kva er pensjonsgjevande inntekt?',
   'inntekt.info_om_inntekt.intro': 'MANGLER_TEKST',
   'inntekt.info_om_inntekt.subtitle_1': 'MANGLER_TEKST',
