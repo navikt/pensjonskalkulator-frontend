@@ -90,7 +90,7 @@ export const useSimuleringChartLocalState = (initialValues: {
   const pre2025OffentligAfpListe: AfpPrivatPensjonsberegning[] =
     pre2025OffentligAfp
       ? Array.from(
-          Array(Math.max(1, 67 - pre2025OffentligAfp.alderAar - 1)).keys(),
+          Array(Math.max(1, 67 - pre2025OffentligAfp.alderAar)).keys(),
           (_, index) => ({
             alder: pre2025OffentligAfp.alderAar + index,
             beloep:
