@@ -218,6 +218,60 @@ describe('AFP', () => {
           'Du har oppgitt AFP i offentlig sektor. Nav har ikke vurdert om du fyller vilkårene for AFP, men forutsetter at du gjør det. For mer informasjon om vilkårene, sjekk tjenestepensjonsordningen din.'
         ).should('exist')
       })
+      describe('Hvis AFP offentlig ikke er inkludert i simuleringsresponsen', () => {
+        it('redirects to /uventet-feil når simulering returnerer tom AFP og vi ber om AFP', () => {
+          cy.intercept(
+            'POST',
+            '/pensjon/kalkulator/api/v8/alderspensjon/simulering',
+            {
+              statusCode: 200,
+              body: {
+                alderspensjon: [],
+                afpOffentlig: [],
+                vilkaarsproeving: {
+                  vilkaarErOppfylt: true,
+                  alternativ: {},
+                },
+                harForLiteTrygdetid: false,
+              },
+            }
+          ).as('getAlderspensjonError')
+
+          cy.contains('button', 'Neste').click()
+          cy.get('[type="radio"]').eq(0).check()
+          cy.contains('button', 'Neste').click()
+          cy.get('[type="radio"]').first().check()
+          cy.contains('button', 'Neste').click()
+
+          cy.contains('button', '62 år og 10 md.').click()
+
+          cy.wait('@getAlderspensjonError')
+          cy.url().should('include', '/uventet-feil')
+        })
+      })
+      describe('Hvis AFP offentlig ikke er inkludert i tidligst uttaksalder', () => {
+        it('redirects to /uventet-feil når tidligste-hel-uttaksalder returnerer feil', () => {
+          cy.intercept(
+            'POST',
+            '/pensjon/kalkulator/api/v2/tidligste-hel-uttaksalder',
+            {
+              statusCode: 500,
+              body: {
+                errorCode: 'AFP_IKKE_I_VILKAARSPROEVING',
+              },
+            }
+          ).as('getHeltuttakError')
+
+          cy.contains('button', 'Neste').click()
+          cy.get('[type="radio"]').eq(0).check()
+          cy.contains('button', 'Neste').click()
+          cy.get('[type="radio"]').first().check()
+          cy.contains('button', 'Neste').click()
+
+          cy.wait('@getHeltuttakError')
+          cy.url().should('include', '/uventet-feil')
+        })
+      })
     })
 
     describe('Når jeg svarer "ja, offentlig" på spørsmål om AFP men samtykker ikke til beregning av AFP-offentlig', () => {
