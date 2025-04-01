@@ -16,16 +16,15 @@ describe('Henvisning', () => {
       cy.contains('Du kan dessverre ikke bruke enkel kalkulator').should(
         'exist'
       )
+
       cy.contains('button', 'Detaljert pensjonskalkulator').click()
-      cy.origin('https://login.idporten.no', () => {
-        cy.get('h1').contains('Velg innloggingsmetode')
-      })
+      cy.location('pathname').should(
+        'eq',
+        '/pensjon/kalkulator/redirect/detaljert-kalkulator'
+      )
       cy.visit('/pensjon/kalkulator/start')
       cy.contains('button', 'Avbryt').click()
-      cy.location('href').should(
-        'eq',
-        'http://localhost:4173/pensjon/kalkulator/login'
-      )
+      cy.location('pathname').should('eq', '/pensjon/kalkulator/login')
     })
   })
 })
