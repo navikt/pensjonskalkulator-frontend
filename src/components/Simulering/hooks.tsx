@@ -90,7 +90,7 @@ export const useSimuleringChartLocalState = (initialValues: {
   const pre2025OffentligAfpListe: AfpPrivatPensjonsberegning[] =
     pre2025OffentligAfp
       ? Array.from(
-          { length: 67 - pre2025OffentligAfp.alderAar },
+          { length: Math.max(1, 67 - pre2025OffentligAfp.alderAar - 1) },
           (_, index) => ({
             alder: pre2025OffentligAfp.alderAar + index,
             beloep:
@@ -101,6 +101,9 @@ export const useSimuleringChartLocalState = (initialValues: {
           })
         )
       : []
+
+  console.log(pre2025OffentligAfpListe)
+  console.log(uttaksalder?.maaneder)
 
   const [chartOptions, setChartOptions] = React.useState<Highcharts.Options>(
     getChartOptions(
