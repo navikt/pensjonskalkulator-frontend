@@ -63,11 +63,9 @@ describe('AvansertSkjemaForAndreBrukere', () => {
       }
     )
 
-    expect(
-      screen.queryByTestId('om_pensjonsgivende_inntekt')
-    ).toBeInTheDocument()
-    expect(screen.queryByTestId('om_uttaksgrad')).toBeInTheDocument()
-    expect(screen.queryByTestId('om_TMU')).toBeInTheDocument()
+    expect(screen.queryByTestId('om_pensjonsgivende_inntekt')).toBeVisible()
+    expect(screen.queryByTestId('om_uttaksgrad')).toBeVisible()
+    expect(screen.queryByTestId('om_TMU')).toBeVisible()
 
     fireEvent.change(
       await screen.findByTestId(AVANSERT_FORM_NAMES.uttaksgrad),
@@ -76,7 +74,7 @@ describe('AvansertSkjemaForAndreBrukere', () => {
       }
     )
 
-    expect(screen.queryByTestId('om_TMU')).toBeInTheDocument()
+    expect(screen.queryByTestId('om_TMU')).toBeVisible()
   })
 
   it('feltene rendres riktig som default, og når brukeren legger til en gradert periode', async () => {
@@ -1477,10 +1475,8 @@ describe('AvansertSkjemaForAndreBrukere', () => {
           'beregning.avansert.rediger.inntekt_frem_til_uttak.description_ufoere'
         )
       ).toBeVisible()
-      expect(
-        screen.queryByTestId('om_pensjonsalder_UT_hel')
-      ).toBeInTheDocument()
-      expect(screen.queryByTestId('om_uttaksgrad')).toBeInTheDocument()
+      expect(screen.queryByTestId('om_pensjonsalder_UT_hel')).toBeVisible()
+      expect(screen.queryByTestId('om_uttaksgrad')).toBeVisible()
 
       const selectAarElement = screen.getByTestId(
         `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
@@ -1878,9 +1874,7 @@ describe('AvansertSkjemaForAndreBrukere', () => {
         screen.queryByText('beregning.avansert.rediger.uttaksgrad.description')
       ).not.toBeInTheDocument()
 
-      await expect(
-        screen.getByTestId('om_uttaksgrad_endring')
-      ).toBeInTheDocument()
+      await expect(screen.getByTestId('om_uttaksgrad_endring')).toBeVisible()
     })
 
     it('Når brukeren har 100 % uføretrygd, vises riktig tekst i readmore om uttaksgrad', async () => {
@@ -1909,7 +1903,7 @@ describe('AvansertSkjemaForAndreBrukere', () => {
       )
       await store.dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
 
-      await expect(screen.getByTestId('om_uttaksgrad')).toBeInTheDocument()
+      await expect(screen.getByTestId('om_uttaksgrad')).toBeVisible()
     })
 
     it('Når brukeren har fylt alle feltene riktig og klikker på beregn mens datoen på vedtaket er mindre enn 12 md. til ønsket uttak, vises det alert og siden scrolles opp til toppen', async () => {

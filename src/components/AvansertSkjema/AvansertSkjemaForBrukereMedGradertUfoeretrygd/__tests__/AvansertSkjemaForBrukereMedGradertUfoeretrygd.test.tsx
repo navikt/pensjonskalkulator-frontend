@@ -67,9 +67,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
       }
     )
 
-    expect(
-      screen.queryByTestId('om_pensjonsgivende_inntekt')
-    ).toBeInTheDocument()
+    expect(screen.queryByTestId('om_pensjonsgivende_inntekt')).toBeVisible()
 
     expect(
       await screen.findByText(
@@ -980,7 +978,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
     ).toBeVisible()
     await expect(
       screen.getByTestId('om_alderspensjon_inntektsgrense_UT')
-    ).toBeInTheDocument()
+    ).toBeVisible()
   })
 
   it('Når brukeren velger en alder før normert pensjonsalder, begrenses valgene for uttaksgrad basert på uføregraden', async () => {
@@ -2492,7 +2490,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
       expect(asFragment()).toMatchSnapshot()
       expect(
         screen.queryByTestId('om_uttaksgrad_UT_gradert_endring')
-      ).toBeInTheDocument()
+      ).toBeVisible()
     })
   })
 
@@ -2661,7 +2659,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
       ).not.toBeInTheDocument()
 
       // Viser riktig readmore om uttaksgrad
-      expect(screen.queryByTestId('om_uttaksgrad')).toBeInTheDocument()
+      expect(screen.queryByTestId('om_uttaksgrad')).toBeVisible()
       expect(
         screen.queryByTestId('om_uttaksgrad_UT_gradert_endring')
       ).not.toBeInTheDocument()

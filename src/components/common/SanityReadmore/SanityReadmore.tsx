@@ -27,8 +27,6 @@ export const SanityReadmore = ({ id, className, children }: Props) => {
     return children
   }
 
-  console.log(sanityContent)
-
   return (
     <ReadMore
       data-testid={sanityContent.name}
