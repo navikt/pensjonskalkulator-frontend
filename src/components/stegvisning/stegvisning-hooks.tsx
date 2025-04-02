@@ -6,7 +6,11 @@ import {
   stegvisningOrder,
   stegvisningOrderEndring,
 } from '@/router/constants'
-import { useGetLoependeVedtakQuery } from '@/state/api/apiSlice'
+import { shouldShowStepSamtykkeOffentligAFP } from '@/router/loaders'
+import {
+  useGetGradertUfoereAfpFeatureToggleQuery,
+  useGetLoependeVedtakQuery,
+} from '@/state/api/apiSlice'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
   selectUfoeregrad,
@@ -29,6 +33,8 @@ export const useStegvisningNavigation = (currentPath: Path) => {
   const afp = useAppSelector(selectAfp)
 
   const { isFetching, data: loependeVedtak } = useGetLoependeVedtakQuery()
+  const isGradertUfoereAfpFeatureEnabled =
+    useGetGradertUfoereAfpFeatureToggleQuery().data?.enabled ?? false
 
   const onStegvisningNext = () => {
     const stepArrays =
@@ -72,12 +78,16 @@ export const useStegvisningNavigation = (currentPath: Path) => {
       }
     }
 
-    // Hvis brukeren er forbi samtykkeOffentligAFP steget (gjelder både endring og vanlig flyt)
-    if (currentPathIndex > stepArrays.indexOf(paths.samtykkeOffentligAFP)) {
-      // Bruker med uføretrygd eller brukere som har svart noe annet enn "ja_offentlig" på afp steget har ikke fått info steg om samtykkeOffentligAFP og skal navigere tilbake forbi den
-      if (ufoeregrad || afp !== 'ja_offentlig') {
-        antallStepTilbake = antallStepTilbake + 1
-      }
+    // Hvis brukeren er forbi samtykkeOffentligAFP steget, men ikke skal se det, naviger tilbake forbi den (gjelder både endring og vanlig flyt)
+    if (
+      currentPathIndex > stepArrays.indexOf(paths.samtykkeOffentligAFP) &&
+      !shouldShowStepSamtykkeOffentligAFP(
+        afp,
+        ufoeregrad,
+        isGradertUfoereAfpFeatureEnabled
+      )
+    ) {
+      antallStepTilbake = antallStepTilbake + 1
     }
 
     navigate(stepArrays[currentPathIndex - antallStepTilbake])

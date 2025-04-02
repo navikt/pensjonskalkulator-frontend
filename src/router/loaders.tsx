@@ -350,33 +350,27 @@ export const stepSamtykkeOffentligAFPAccessGuard =
 
     const state = store.getState()
     const afp = selectAfp(state)
-    const getLoependeVedtakResponse =
-      apiSlice.endpoints.getLoependeVedtak.select(undefined)(state)
+    const loependeVedtak = await store
+      .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
+      .unwrap()
 
-    const stepArrays = isLoependeVedtakEndring(
-      getLoependeVedtakResponse.data as LoependeVedtak
-    )
+    const stepArrays = isLoependeVedtakEndring(loependeVedtak)
       ? stegvisningOrderEndring
       : stegvisningOrder
 
-    const getGradertUfoereAfpFeatureTogglequery = store.dispatch(
-      apiSlice.endpoints.getGradertUfoereAfpFeatureToggle.initiate()
-    )
+    const isGradertUfoereAfpFeatureEnabled = await store
+      .dispatch(apiSlice.endpoints.getGradertUfoereAfpFeatureToggle.initiate())
+      .unwrap()
+      .then((result) => result.enabled)
+      .catch(() => false)
 
-    // Wait for the feature toggle query to resolve
-    const toggleShowGradertUfoereAfp =
-      await getGradertUfoereAfpFeatureTogglequery
-        .unwrap()
-        .then((result) => result.enabled)
-        .catch(() => false)
-
-    const showStep = toggleShowGradertUfoereAfp
-      ? afp === 'ja_offentlig'
-      : (getLoependeVedtakResponse.data as LoependeVedtak).ufoeretrygd.grad ===
-          0 && afp === 'ja_offentlig'
-
-    // Bruker uten uføretrygd som svarer ja_offentlig til AFP kan se steget
-    if (showStep) {
+    if (
+      shouldShowStepSamtykkeOffentligAFP(
+        afp,
+        loependeVedtak.ufoeretrygd.grad,
+        isGradertUfoereAfpFeatureEnabled
+      )
+    ) {
       return null
     }
 
@@ -384,5 +378,16 @@ export const stepSamtykkeOffentligAFPAccessGuard =
       stepArrays[stepArrays.indexOf(paths.samtykkeOffentligAFP) + 1]
     )
   }
+
+// Bruker uten uføretrygd som har svart ja_offentlig til AFP kan se steget
+// Hvis feature toggle er på, kan alle brukere som har svart ja_offentlig til AFP se steget
+export const shouldShowStepSamtykkeOffentligAFP = (
+  afp: AfpRadio | null,
+  ufoeregrad: number,
+  isGradertUfoereAfpFeatureEnabled: boolean
+) =>
+  isGradertUfoereAfpFeatureEnabled
+    ? afp === 'ja_offentlig'
+    : ufoeregrad === 0 && afp === 'ja_offentlig'
 
 // ////////////////////////////////////////
