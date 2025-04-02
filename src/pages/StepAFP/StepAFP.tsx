@@ -15,7 +15,7 @@ import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
   selectAfp,
   selectIsVeileder,
-  selectSkalBeregneAfp,
+  selectSkalBeregneAfpKap19,
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
 import { isAlderOver67, isFoedtFoer1963, isOvergangskull } from '@/utils/alder'
@@ -27,7 +27,7 @@ export function StepAFP() {
   const stepAFPAccessGuard =
     useLoaderData() as Promise<StepAFPAccessGuardLoader>
   const previousAfp = useAppSelector(selectAfp)
-  const previousSkalBeregneAfp = useAppSelector(selectSkalBeregneAfp)
+  const previousSkalBeregneAfpKap19 = useAppSelector(selectSkalBeregneAfpKap19)
   const isVeileder = useAppSelector(selectIsVeileder)
 
   const [{ onStegvisningNext, onStegvisningPrevious, onStegvisningCancel }] =
@@ -39,10 +39,13 @@ export function StepAFP() {
     })
   }, [])
 
-  const onNext = (afp: AfpRadio, skalBeregneAfp?: boolean | null): void => {
+  const onNext = (
+    afp: AfpRadio,
+    skalBeregneAfpKap19?: boolean | null
+  ): void => {
     dispatch(userInputActions.setAfp(afp))
-    if (skalBeregneAfp && skalBeregneAfp !== null) {
-      dispatch(userInputActions.setSkalBeregneAfp(skalBeregneAfp))
+    if (skalBeregneAfpKap19 && skalBeregneAfpKap19 !== null) {
+      dispatch(userInputActions.setSkalBeregneAfpKap19(skalBeregneAfpKap19))
     }
 
     if (onStegvisningNext) {
@@ -85,7 +88,7 @@ export function StepAFP() {
             return (
               <AFPOvergangskullUtenAP
                 previousAfp={previousAfp}
-                previousSkalBeregneAfp={previousSkalBeregneAfp}
+                previousSkalBeregneAfpKap19={previousSkalBeregneAfpKap19}
                 onCancel={isVeileder ? undefined : onStegvisningCancel}
                 onPrevious={onStegvisningPrevious}
                 onNext={onNext}

@@ -9,7 +9,7 @@ import { checkHarSamboer } from '@/utils/sivilstand'
 export const getSimuleringstypeFromRadioEllerVedtak = (
   loependeVedtak: LoependeVedtak,
   afp: AfpRadio | null,
-  skalBeregneAfp?: boolean | null,
+  skalBeregneAfpKap19?: boolean | null,
   beregningsvalg?: Beregningsvalg | null
 ): AlderspensjonSimuleringstype => {
   const ufoeregrad = loependeVedtak.ufoeretrygd.grad
@@ -25,7 +25,7 @@ export const getSimuleringstypeFromRadioEllerVedtak = (
     } else {
       return 'ENDRING_ALDERSPENSJON'
     }
-  } else if (skalBeregneAfp) {
+  } else if (skalBeregneAfpKap19) {
     return 'PRE2025_OFFENTLIG_AFP_ETTERFULGT_AV_ALDERSPENSJON'
   } else {
     if (ufoeregrad && beregningsvalg !== 'med_afp') {
@@ -119,7 +119,7 @@ export const generateTidligstMuligHeltUttakRequestBody = (args: {
 export const generateAlderspensjonRequestBody = (args: {
   loependeVedtak: LoependeVedtak
   afp: AfpRadio | null
-  skalBeregneAfp?: boolean | null
+  skalBeregneAfpKap19?: boolean | null
   sivilstand?: Sivilstand | null | undefined
   epsHarInntektOver2G: boolean | null
   epsHarPensjon: boolean | null
@@ -134,7 +134,7 @@ export const generateAlderspensjonRequestBody = (args: {
   const {
     loependeVedtak,
     afp,
-    skalBeregneAfp,
+    skalBeregneAfpKap19,
     sivilstand,
     epsHarInntektOver2G,
     epsHarPensjon,
@@ -155,7 +155,7 @@ export const generateAlderspensjonRequestBody = (args: {
     simuleringstype: getSimuleringstypeFromRadioEllerVedtak(
       loependeVedtak,
       afp,
-      skalBeregneAfp,
+      skalBeregneAfpKap19,
       beregningsvalg
     ),
     foedselsdato: format(parseISO(foedselsdato), DATE_BACKEND_FORMAT),
