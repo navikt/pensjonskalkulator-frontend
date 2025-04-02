@@ -75,7 +75,9 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
       )
     ).toBeVisible()
     expect(screen.queryByTestId('om_uttaksgrad_UT_gradert')).toBeVisible()
-    expect(screen.queryByTestId('om_pensjonsalder_UT_gradert_avansert')).toBeVisible()
+    expect(
+      screen.queryByTestId('om_pensjonsalder_UT_gradert_avansert')
+    ).toBeVisible()
 
     const selectAarElement = screen.getByTestId(
       `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`

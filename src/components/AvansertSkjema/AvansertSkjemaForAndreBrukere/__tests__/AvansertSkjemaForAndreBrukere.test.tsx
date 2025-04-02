@@ -119,9 +119,7 @@ describe('AvansertSkjemaForAndreBrukere', () => {
         `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
       )
     ).toBeVisible()
-    expect(
-      screen.queryByTestId('om_TMU')
-    ).toBeVisible()
+    expect(screen.queryByTestId('om_TMU')).toBeVisible()
     expect(
       screen.queryByTestId(AVANSERT_FORM_NAMES.inntektVsaHeltUttakRadio)
     ).not.toBeInTheDocument()
