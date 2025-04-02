@@ -360,7 +360,7 @@ describe('Simulering', () => {
       const xAxisLabels = container
         .getElementsByClassName('highcharts-xaxis-labels')[0]
         .querySelectorAll('text')
-      expect(xAxisLabels).toHaveLength(23)
+      expect(xAxisLabels).toHaveLength(18)
       expect(xAxisLabels[0]).toHaveTextContent('61')
       expect(xAxisLabels[17]).toHaveTextContent('77+')
     })
