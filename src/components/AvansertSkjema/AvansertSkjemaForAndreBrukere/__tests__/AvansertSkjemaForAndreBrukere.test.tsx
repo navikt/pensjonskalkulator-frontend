@@ -120,8 +120,8 @@ describe('AvansertSkjemaForAndreBrukere', () => {
       )
     ).toBeVisible()
     expect(
-      screen.queryByTestId('om_pensjonsalder_UT_hel')
-    ).not.toBeInTheDocument()
+      screen.queryByTestId('om_TMU')
+    ).toBeVisible()
     expect(
       screen.queryByTestId(AVANSERT_FORM_NAMES.inntektVsaHeltUttakRadio)
     ).not.toBeInTheDocument()
