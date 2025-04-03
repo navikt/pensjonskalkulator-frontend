@@ -139,7 +139,7 @@ export const processPensjonsberegningArray = (
     : 0
 
   const dataArray = new Array(
-    isEndring ? filledArrayLength - 1 : filledArrayLength
+    isEndring ? filledArrayLength : filledArrayLength + 1
   ).fill(0)
 
   const livsvarigPensjonsbeloep =
