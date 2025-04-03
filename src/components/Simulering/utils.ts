@@ -147,7 +147,7 @@ export const processPensjonsberegningArray = (
 
   for (
     let index = isEndring ? 0 : 1;
-    index < arrayLength - filledArrayLength;
+    index < pensjonsberegninger.length;
     index++
   ) {
     const pensjonsBeregningAtIndex =
