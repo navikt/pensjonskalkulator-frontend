@@ -131,7 +131,7 @@ export const processPensjonsberegningArray = (
 ): number[] => {
   const arrayLength = Math.max(
     xAxisLength,
-    isEndring ? pensjonsberegninger.length + 1 : pensjonsberegninger.length + 2
+    isEndring ? pensjonsberegninger.length : pensjonsberegninger.length + 1
   )
 
   const filledArrayLength = pensjonsberegninger[0]
@@ -145,11 +145,7 @@ export const processPensjonsberegningArray = (
   const livsvarigPensjonsbeloep =
     pensjonsberegninger[pensjonsberegninger.length - 1]?.beloep ?? 0
 
-  for (
-    let index = isEndring ? 0 : 1;
-    index < pensjonsberegninger.length;
-    index++
-  ) {
+  for (let index = isEndring ? 0 : 1; index < arrayLength; index++) {
     const pensjonsBeregningAtIndex =
       pensjonsberegninger[isEndring ? index : index - 1]
     dataArray.push(
