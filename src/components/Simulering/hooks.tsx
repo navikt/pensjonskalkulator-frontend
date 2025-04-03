@@ -23,6 +23,7 @@ import {
   processPensjonsberegningArray,
   processAfpPensjonsberegningArray,
   processPensjonsavtalerArray,
+  processPre2025OffentligAfpPensjonsberegningArray,
 } from './utils'
 import { getChartOptions, onPointUnclick } from './utils-highcharts'
 
@@ -39,6 +40,7 @@ export const useSimuleringChartLocalState = (initialValues: {
   aarligInntektVsaHelPensjon?: AarligInntektVsaPensjon
   isLoading: boolean
   alderspensjonListe?: AlderspensjonPensjonsberegning[]
+  pre2025OffentligAfp?: AfpEtterfulgtAvAlderspensjon
   afpPrivatListe?: AfpPrivatPensjonsberegning[]
   afpOffentligListe?: AfpPrivatPensjonsberegning[]
   pensjonsavtaler: {
@@ -64,6 +66,7 @@ export const useSimuleringChartLocalState = (initialValues: {
     aarligInntektVsaHelPensjon,
     isLoading,
     alderspensjonListe,
+    pre2025OffentligAfp,
     afpPrivatListe,
     afpOffentligListe,
     pensjonsavtaler,
@@ -84,6 +87,21 @@ export const useSimuleringChartLocalState = (initialValues: {
     React.useState<boolean>(false)
   const [isPensjonsavtaleFlagVisible, setIsPensjonsavtaleFlagVisible] =
     React.useState<boolean>(false)
+
+  const pre2025OffentligAfpListe: AfpPrivatPensjonsberegning[] =
+    pre2025OffentligAfp
+      ? Array.from(
+          Array(67 - pre2025OffentligAfp.alderAar).keys(),
+          (_, index) => ({
+            alder: pre2025OffentligAfp.alderAar + index,
+            beloep:
+              index === 0
+                ? pre2025OffentligAfp.totaltAfpBeloep *
+                  (12 - (uttaksalder?.maaneder ?? 0))
+                : pre2025OffentligAfp.totaltAfpBeloep * 12,
+          })
+        )
+      : []
 
   const [chartOptions, setChartOptions] = React.useState<Highcharts.Options>(
     getChartOptions(
@@ -224,6 +242,23 @@ export const useSimuleringChartLocalState = (initialValues: {
                 } as SeriesOptionsType,
               ]
             : []),
+
+          ...(pre2025OffentligAfp
+            ? [
+                {
+                  ...SERIES_DEFAULT.SERIE_AFP,
+                  name: intl.formatMessage({
+                    id: SERIES_DEFAULT.SERIE_AFP.name,
+                  }),
+                  /* c8 ignore next 1 */
+                  data: processPre2025OffentligAfpPensjonsberegningArray(
+                    pre2025OffentligAfpListe.length - 1,
+                    pre2025OffentligAfpListe,
+                    isEndring
+                  ),
+                } as SeriesOptionsType,
+              ]
+            : []),
           ...(afpPrivatListe && afpPrivatListe.length > 0
             ? [
                 {
@@ -289,7 +324,8 @@ export const useSimuleringChartLocalState = (initialValues: {
             data: processPensjonsberegningArray(
               alderspensjonListe,
               isEndring,
-              xAxis.length
+              xAxis.length,
+              startAar
             ),
           } as SeriesOptionsType,
         ],

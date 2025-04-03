@@ -46,6 +46,7 @@ export function Simulering(props: {
   headingLevel: HeadingProps['level']
   aarligInntektFoerUttakBeloep: string
   alderspensjonListe?: AlderspensjonPensjonsberegning[]
+  pre2025OffentligAfp?: AfpEtterfulgtAvAlderspensjon
   afpPrivatListe?: AfpPrivatPensjonsberegning[]
   afpOffentligListe?: AfpPrivatPensjonsberegning[]
   alderspensjonMaanedligVedEndring?: AlderspensjonMaanedligVedEndring
@@ -60,6 +61,7 @@ export function Simulering(props: {
     headingLevel,
     aarligInntektFoerUttakBeloep,
     alderspensjonListe,
+    pre2025OffentligAfp,
     afpPrivatListe,
     afpOffentligListe,
     alderspensjonMaanedligVedEndring,
@@ -165,6 +167,7 @@ export function Simulering(props: {
     aarligInntektVsaHelPensjon,
     isLoading,
     alderspensjonListe,
+    pre2025OffentligAfp,
     afpPrivatListe,
     afpOffentligListe,
     pensjonsavtaler: {
@@ -248,6 +251,7 @@ export function Simulering(props: {
         <Simuleringsdetaljer
           alderspensjonListe={alderspensjonListe}
           detaljer={detaljer}
+          pre2025OffentligAfp={pre2025OffentligAfp}
         />
       )}
     </section>

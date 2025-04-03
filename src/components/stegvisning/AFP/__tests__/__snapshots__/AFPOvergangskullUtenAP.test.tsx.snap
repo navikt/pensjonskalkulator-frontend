@@ -328,7 +328,7 @@ exports[`stegvisning - AFP - født mellom 1954-1962 uten vedtak om alderspensjon
 </DocumentFragment>
 `;
 
-exports[`stegvisning - AFP - født mellom 1954-1962 uten vedtak om alderspensjon > rendrer slik den skal når afp og skalBeregneAfp ikke er oppgitt 1`] = `
+exports[`stegvisning - AFP - født mellom 1954-1962 uten vedtak om alderspensjon > rendrer slik den skal når afp og skalBeregneAfpKap19 ikke er oppgitt 1`] = `
 <DocumentFragment>
   <section
     class="_section_67454f _section__largePadding_67454f _section__marginBotton_67454f"
@@ -655,7 +655,7 @@ exports[`stegvisning - AFP - født mellom 1954-1962 uten vedtak om alderspensjon
 </DocumentFragment>
 `;
 
-exports[`stegvisning - AFP - født mellom 1954-1962 uten vedtak om alderspensjon > rendrer slik den skal når afp og skalBeregneAfp ikke er oppgitt 2`] = `
+exports[`stegvisning - AFP - født mellom 1954-1962 uten vedtak om alderspensjon > rendrer slik den skal når afp og skalBeregneAfpKap19 ikke er oppgitt 2`] = `
 <DocumentFragment>
   <section
     class="_section_67454f _section__largePadding_67454f _section__marginBotton_67454f"
