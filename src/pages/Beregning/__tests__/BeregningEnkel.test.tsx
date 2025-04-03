@@ -822,9 +822,6 @@ describe('BeregningEnkel', () => {
     })
 
     it('viser ErrorPageUnexpected når simuleringstype er AFP offentlig og AFP fra backend er tom liste', async () => {
-      mockResponse('/v2/tidligste-hel-uttaksalder', {
-        status: 200,
-      })
       mockResponse('/v8/alderspensjon/simulering', {
         status: 200,
         method: 'post',
