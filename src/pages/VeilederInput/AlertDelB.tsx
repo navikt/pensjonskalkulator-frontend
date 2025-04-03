@@ -15,7 +15,11 @@ export const AlertDelB: React.FC<IAlertDelBProps> = ({ fnr }) => {
   }
 
   return (
-    <form action={externalUrls.detaljertKalkulator} method="POST">
+    <form
+      action={externalUrls.detaljertKalkulator}
+      method="POST"
+      data-testid="alert-del-b"
+    >
       <input type="hidden" name="fnr" value={fnr} />
       <Alert variant="warning" onClose={() => setShowAlert(false)} closeButton>
         <HStack>
