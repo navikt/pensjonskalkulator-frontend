@@ -281,7 +281,6 @@ const translations = {
   'beregning.read_more.pensjonsalder.label': 'MANGLER_TEKST',
   'beregning.read_more.pensjonsalder.body': 'MANGLER_TEKST',
   'beregning.read_more.pensjonsalder.endring.body': 'MANGLER_TEKST',
-  'beregning.alt_tekst': 'MANGLER_TEKST',
   'omufoeretrygd.hel.ingress': 'MANGLER_TEKST',
   'omufoeretrygd.gradert.ingress': 'MANGLER_TEKST',
   'omufoeretrygd.gradert.ingress.afp': 'MANGLER_TEKST',
