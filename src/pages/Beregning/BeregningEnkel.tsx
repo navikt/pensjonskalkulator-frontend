@@ -201,8 +201,7 @@ export const BeregningEnkel: React.FC = () => {
     const isUttakError =
       uttakError &&
       isUttaksalderError(uttakError.data) &&
-      (uttakError.data as UttaksalderError).errorCode ===
-        'AFP_IKKE_I_VILKAARSPROEVING'
+      uttakError.data.errorCode === 'AFP_IKKE_I_VILKAARSPROEVING'
 
     const isAfpOffentligMismatch =
       alderspensjon?.afpOffentlig?.length === 0 &&
