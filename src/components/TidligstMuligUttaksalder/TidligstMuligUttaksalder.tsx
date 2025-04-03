@@ -1,7 +1,8 @@
-import { Alert, BodyLong, Link } from '@navikt/ds-react'
 import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useNavigate } from 'react-router'
+
+import { Alert, BodyLong, Link } from '@navikt/ds-react'
 
 import { ReadMore } from '@/components/common/ReadMore'
 import { paths } from '@/router/constants'
