@@ -1,6 +1,10 @@
 import { describe, it } from 'vitest'
 
 import { VeilederInput } from '../'
+import {
+  fulfilledGetPerson,
+  fulfilledPre1963GetPerson,
+} from '@/mocks/mockedRTKQueryApiCalls'
 import { BASE_PATH } from '@/router/constants'
 import * as apiSliceUtils from '@/state/api/apiSlice'
 import { userInputInitialState } from '@/state/userInput/userInputSlice'
@@ -187,6 +191,48 @@ describe('VeilederInput', () => {
       })
       await waitFor(async () => {
         expect(screen.getByTestId('inaktiv-alert')).toBeInTheDocument()
+      })
+    })
+
+    it('viser advarsel om delB når bruker er født før 1963', async () => {
+      render(<VeilederInput />, {
+        hasRouter: false,
+        preloadedState: {
+          api: {
+            // @ts-ignore
+            queries: { ...fulfilledPre1963GetPerson },
+          },
+          userInput: {
+            ...userInputInitialState,
+            veilederBorgerFnr: '12345678901',
+            veilederBorgerEncryptedFnr: 'encrypted123',
+          },
+        },
+      })
+
+      await waitFor(() => {
+        expect(screen.getByTestId('alert-del-b')).toBeInTheDocument()
+      })
+    })
+
+    it('viser ikke advarsel om delB når bruker er født etter 1962', async () => {
+      render(<VeilederInput />, {
+        hasRouter: false,
+        preloadedState: {
+          api: {
+            // @ts-ignore
+            queries: { ...fulfilledGetPerson },
+          },
+          userInput: {
+            ...userInputInitialState,
+            veilederBorgerFnr: '12345678901',
+            veilederBorgerEncryptedFnr: 'encrypted123',
+          },
+        },
+      })
+
+      await waitFor(() => {
+        expect(screen.queryByTestId('alert-del-b')).not.toBeInTheDocument()
       })
     })
   })
