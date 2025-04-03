@@ -325,7 +325,7 @@ export const useSimuleringChartLocalState = (initialValues: {
               alderspensjonListe,
               isEndring,
               xAxis.length,
-              startAar
+              pre2025OffentligAfpListe ? startAar : 0
             ),
           } as SeriesOptionsType,
         ],
