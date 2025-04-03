@@ -6,7 +6,7 @@ import { userInputInitialState } from '@/state/userInput/userInputSlice'
 import { render, screen } from '@/test-utils'
 
 describe('VilkaarsproevingAlert', () => {
-  describe('VilkaarsproevingAlert - Uten AFP', () => {
+  describe('Uten gradert uføretrygd eller ikke valgt å beregne AFP', () => {
     const uttaksalder = { aar: 63, maaneder: 3 }
     const alternativ = {
       gradertUttaksalder: undefined,
@@ -213,7 +213,7 @@ describe('VilkaarsproevingAlert', () => {
     })
   })
 
-  describe('VilkaarsproevingAlert - Med AFP', () => {
+  describe('Når brukeren har gradert uføretrygd og har valgt å beregne med AFP', () => {
     const uttaksalder = { aar: 63, maaneder: 3 }
     const alternativ = {
       gradertUttaksalder: undefined,

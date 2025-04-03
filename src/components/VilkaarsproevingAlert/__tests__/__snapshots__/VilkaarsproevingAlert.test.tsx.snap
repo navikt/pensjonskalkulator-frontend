@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`VilkaarsproevingAlert > VilkaarsproevingAlert - Med AFP > Når det er gradert uttak med samme helt uttaksalder, vises det riktig tekst 1`] = `
+exports[`VilkaarsproevingAlert > Når brukeren har gradert uføretrygd og har valgt å beregne med AFP > Når det er gradert uttak med samme helt uttaksalder, vises det riktig tekst 1`] = `
 <DocumentFragment>
   <div
     class="navds-alert navds-alert--warning navds-alert--medium"
@@ -43,7 +43,7 @@ exports[`VilkaarsproevingAlert > VilkaarsproevingAlert - Med AFP > Når det er g
 </DocumentFragment>
 `;
 
-exports[`VilkaarsproevingAlert > VilkaarsproevingAlert - Med AFP > Når det er gradert uttak med ulik helt uttaksalder, vises det riktig tekst 1`] = `
+exports[`VilkaarsproevingAlert > Når brukeren har gradert uføretrygd og har valgt å beregne med AFP > Når det er gradert uttak med ulik helt uttaksalder, vises det riktig tekst 1`] = `
 <DocumentFragment>
   <div
     class="navds-alert navds-alert--warning navds-alert--medium"
@@ -92,7 +92,7 @@ exports[`VilkaarsproevingAlert > VilkaarsproevingAlert - Med AFP > Når det er g
 </DocumentFragment>
 `;
 
-exports[`VilkaarsproevingAlert > VilkaarsproevingAlert - Med AFP > Når det ikke er nok opptjening, vises det riktig tekst 1`] = `
+exports[`VilkaarsproevingAlert > Når brukeren har gradert uføretrygd og har valgt å beregne med AFP > Når det ikke er nok opptjening, vises det riktig tekst 1`] = `
 <DocumentFragment>
   <div
     class="navds-alert navds-alert--warning navds-alert--medium"
@@ -129,7 +129,7 @@ exports[`VilkaarsproevingAlert > VilkaarsproevingAlert - Med AFP > Når det ikke
 </DocumentFragment>
 `;
 
-exports[`VilkaarsproevingAlert > VilkaarsproevingAlert - Uten AFP > Når det foreslåtte alternativet er den default normert pensjonsalder, vises det riktig tekst 1`] = `
+exports[`VilkaarsproevingAlert > Uten gradert uføretrygd eller ikke valgt å beregne AFP > Når det foreslåtte alternativet er den default normert pensjonsalder, vises det riktig tekst 1`] = `
 <DocumentFragment>
   <div
     class="navds-alert navds-alert--warning navds-alert--medium"
@@ -169,7 +169,7 @@ exports[`VilkaarsproevingAlert > VilkaarsproevingAlert - Uten AFP > Når det for
 </DocumentFragment>
 `;
 
-exports[`VilkaarsproevingAlert > VilkaarsproevingAlert - Uten AFP > Når det foreslåtte alternativet er lik uttaksalder med ny gradering, vises det riktig tekst 1`] = `
+exports[`VilkaarsproevingAlert > Uten gradert uføretrygd eller ikke valgt å beregne AFP > Når det foreslåtte alternativet er lik uttaksalder med ny gradering, vises det riktig tekst 1`] = `
 <DocumentFragment>
   <div
     class="navds-alert navds-alert--warning navds-alert--medium"
@@ -215,7 +215,7 @@ exports[`VilkaarsproevingAlert > VilkaarsproevingAlert - Uten AFP > Når det for
 </DocumentFragment>
 `;
 
-exports[`VilkaarsproevingAlert > VilkaarsproevingAlert - Uten AFP > Når det foreslåtte alternativet er ulik uttaksalder med ny gradering, vises det riktig tekst 1`] = `
+exports[`VilkaarsproevingAlert > Uten gradert uføretrygd eller ikke valgt å beregne AFP > Når det foreslåtte alternativet er ulik uttaksalder med ny gradering, vises det riktig tekst 1`] = `
 <DocumentFragment>
   <div
     class="navds-alert navds-alert--warning navds-alert--medium"
@@ -267,7 +267,7 @@ exports[`VilkaarsproevingAlert > VilkaarsproevingAlert - Uten AFP > Når det for
 </DocumentFragment>
 `;
 
-exports[`VilkaarsproevingAlert > VilkaarsproevingAlert - Uten AFP > Når det foreslåtte alternativet er uttaksalder for 100% uten gradering, vises det riktig tekst 1`] = `
+exports[`VilkaarsproevingAlert > Uten gradert uføretrygd eller ikke valgt å beregne AFP > Når det foreslåtte alternativet er uttaksalder for 100% uten gradering, vises det riktig tekst 1`] = `
 <DocumentFragment>
   <div
     class="navds-alert navds-alert--warning navds-alert--medium"
