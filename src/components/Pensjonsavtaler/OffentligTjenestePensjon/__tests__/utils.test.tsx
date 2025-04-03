@@ -8,7 +8,7 @@ import {
   getLeverandoerHeading,
 } from '../utils'
 import { renderHook } from '@/test-utils'
-import { getTranslation_nb } from '@/translations/nb'
+import translations_nb from '@/translations/nb'
 
 const wrappedGetLeverandoerHeading = (
   tpNummer: string,
@@ -18,7 +18,7 @@ const wrappedGetLeverandoerHeading = (
     () => getLeverandoerHeading(useIntl(), tpNummer, leverandoer),
     {
       wrapper: ({ children }) => (
-        <IntlProvider locale="nb" messages={getTranslation_nb()}>
+        <IntlProvider locale="nb" messages={translations_nb}>
           {children}
         </IntlProvider>
       ),

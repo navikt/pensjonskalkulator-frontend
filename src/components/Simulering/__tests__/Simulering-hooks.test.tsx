@@ -10,7 +10,7 @@ import afpPrivatData from '../../../mocks/data/afp-privat/67.json' with { type: 
 import alderspensjonData from '../../../mocks/data/alderspensjon/67.json' with { type: 'json' }
 import offentligTpData from '../../../mocks/data/offentlig-tp.json' with { type: 'json' }
 import pensjonsavtalerData from '../../../mocks/data/pensjonsavtaler/67.json' with { type: 'json' }
-import { getTranslation_nb } from '../../../translations/nb'
+import translations_nb from '../../../translations/nb'
 import { useSimuleringChartLocalState } from '../hooks'
 import { renderHook } from '@/test-utils'
 import { DATE_BACKEND_FORMAT } from '@/utils/dates'
@@ -20,7 +20,7 @@ import globalClassNames from './Simulering.module.scss'
 describe('Simulering-hooks', () => {
   const wrapper = ({ children }: { children: React.ReactNode }) => {
     return (
-      <IntlProvider locale="nb" messages={getTranslation_nb()}>
+      <IntlProvider locale="nb" messages={translations_nb}>
         {children}
       </IntlProvider>
     )
