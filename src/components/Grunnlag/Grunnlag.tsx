@@ -66,10 +66,6 @@ export const Grunnlag: React.FC<Props> = ({
         <Heading level={headingLevel} size="medium">
           <FormattedMessage id="grunnlag.title" />
         </Heading>
-
-        <BodyLong>
-          <FormattedMessage id="grunnlag.ingress" />
-        </BodyLong>
       </div>
 
       <Accordion>

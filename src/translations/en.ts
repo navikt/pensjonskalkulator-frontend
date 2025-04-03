@@ -326,8 +326,6 @@ const translations = {
     'Your earning record in the National Insurance Scheme determines when you can start withdrawing your retirement pension. The retirement age limits will gradually increase from the 1964 birth cohort by one to two months per year, but the pension calculator does not account for this.{br}{br}If you have provided information about AFP (contractual pension) and/or periods spent abroad, this is included in the assessment of when you can withdraw your retirement pension.{br}{br}If you cannot withdraw a full (100%) retirement pension from your desired age, you can adjust the withdrawal percentage to see if you can start earlier. If you withdraw a graded pension, the timing for when you can withdraw 100% may be delayed.',
   'beregning.read_more.pensjonsalder.endring.body':
     'Your accrual in the National Insurance Scheme determines how much retirement pension you can withdraw. By 67, your pension must at least correspond to the guarantee pension. Withdrawing before 67 means that you distribute your pension over multiple years, and thus receive less each year.{br}{br}If you have AFP, AFP is included in the assessment of how much retirement pension you can withdraw.',
-  'beregning.alt_tekst':
-    'Annual income and pension after withdrawal in kroner.',
   'omufoeretrygd.hel.ingress':
     'You have <nowrap>100 %</nowrap> disability benefits. Here you can calculate <nowrap>100 %</nowrap> retirement pension from 67 years. Upcoming legal changes will gradually increase the retirement age for those born in 1964 or later.',
   'omufoeretrygd.gradert.ingress':
@@ -345,6 +343,11 @@ const translations = {
   'velguttaksalder.title': 'When do you want to withdraw retirement pension?',
   'velguttaksalder.endring.title':
     'When do you want to change your retirement pension?',
+  'beregning.intro.title': 'MANGLER_TEKST',
+  'beregning.intro.description_1': 'MANGLER_TEKST',
+  'beregning.intro.description_2.med_afp': 'MANGLER_TEKST',
+  'beregning.intro.description_2.uten_afp.hel': 'MANGLER_TEKST',
+  'beregning.intro.description_2.uten_afp.gradert': 'MANGLER_TEKST',
   'beregning.avansert.rediger.beregningsvalg.description': 'MANGLER_TEKST',
   'beregning.avansert.rediger.beregningsvalg.om_valget_link': 'MANGLER_TEKST',
   'beregning.avansert.rediger.radio.beregningsvalg.label': 'MANGLER_TEKST',
@@ -380,11 +383,14 @@ const translations = {
     'This calculation may not show everything. We could not check whether you have pension agreements in the public sector and we could not retrieve <scrollTo>your private pension agreements</scrollTo>.',
   'beregning.pensjonsavtaler.alert.avtaler_foer_alder':
     'You have pension agreements that start before the age you selected. See periods under <scrollTo>Pension Agreements</scrollTo>.',
-  'beregning.title': 'Calculation',
+  'beregning.title': 'MANGLER_TEKST',
   'beregning.alert.inntekt':
     'Because you have changed your income, your pension accrual changes.',
   'beregning.highcharts.informasjon_klikk': 'MANGLER_TEKST',
   'beregning.highcharts.title': 'Calculation',
+  'beregning.highcharts.ingress': 'MANGLER_TEKST',
+  'beregning.highcharts.alt_tekst':
+    'Annual income and pension after withdrawal in kroner.',
   'beregning.highcharts.xaxis': 'Annual Income and Pension after Withdrawal',
   'beregning.highcharts.yaxis': 'Currency',
   'beregning.highcharts.yaxis.mobile': 'Thousand currency',
@@ -506,8 +512,6 @@ const translations = {
     'You currently have <strong><nowrap>{grad} %</nowrap> retirement pension</strong>. ',
   'beregning.endring.rediger.vedtak_betaling_status':
     'In {maaned}, this was <strong><nowrap>{beloep} kr</nowrap></strong> before tax.',
-  'grunnlag.ingress':
-    'The amounts are shown in today’s currency value before tax.',
   'grunnlag.uttaksgrad.title': 'Withdrawal Degree',
   'grunnlag.uttaksgrad.avansert_link': 'Go to advanced calculator',
   'grunnlag.uttaksgrad.ingress':
