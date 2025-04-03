@@ -7,7 +7,12 @@ module.exports = {
   trailingComma: 'es5',
   useTabs: false,
   plugins: ['@trivago/prettier-plugin-sort-imports'],
-  importOrder: ['^@navikt', '^@/', '^[./]'],
+  importOrder: [
+    '^@formatjs/intl-numberformat/locale-data/', // For å sørge for at polyfill-force kommer før locale-data i LanguageProvider.tsx
+    '^@navikt',
+    '^@/',
+    '^[./]',
+  ],
   importOrderSeparation: true,
   importOrderSortSpecifiers: true,
 }
