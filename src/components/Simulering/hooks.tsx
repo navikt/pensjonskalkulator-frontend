@@ -1,6 +1,3 @@
-import React from 'react'
-import { useIntl } from 'react-intl'
-
 import Highcharts, {
   Chart,
   Point,
@@ -8,25 +5,26 @@ import Highcharts, {
   SeriesOptionsType,
 } from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
+import React from 'react'
+import { useIntl } from 'react-intl'
 
 import {
-  transformFoedselsdatoToAlder,
   getAlderMinus1Maaned,
+  transformFoedselsdatoToAlder,
 } from '@/utils/alder'
 import { formatInntektToNumber } from '@/utils/inntekt'
 
+import globalClassNames from './Simulering.module.scss'
 import { SERIES_DEFAULT } from './constants'
 import {
-  getChartDefaults,
   generateXAxis,
-  processInntektArray,
-  processPensjonsberegningArray,
+  getChartDefaults,
   processAfpPensjonsberegningArray,
+  processInntektArray,
   processPensjonsavtalerArray,
+  processPensjonsberegningArray,
 } from './utils'
 import { getChartOptions, onPointUnclick } from './utils-highcharts'
-
-import globalClassNames from './Simulering.module.scss'
 
 export const useSimuleringChartLocalState = (initialValues: {
   styles: Partial<typeof globalClassNames>

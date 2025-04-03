@@ -1,19 +1,16 @@
 import React from 'react'
-import { Provider } from 'react-redux'
-import { createBrowserRouter, RouterProvider } from 'react-router'
-
 import ReactDOM from 'react-dom/client'
+import { Provider } from 'react-redux'
+import { RouterProvider, createBrowserRouter } from 'react-router'
 
 import { LanguageProvider } from '@/context/LanguageProvider'
 import { initializeLogs } from '@/faro'
 import { BASE_PATH } from '@/router/constants'
 import { routes } from '@/router/routes'
-
-import { store } from './state/store'
+import '@/utils/logging'
 
 import './scss/designsystem.scss'
-
-import '@/utils/logging'
+import { store } from './state/store'
 
 const root = document.getElementById('root')
 

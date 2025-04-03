@@ -26,15 +26,14 @@ import {
 } from '@/state/api/apiSlice'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
-  selectVeilederBorgerFnr,
   selectVeilederBorgerEncryptedFnr,
+  selectVeilederBorgerFnr,
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
 import { findRoutesWithoutLoaders } from '@/utils/veileder'
 
-import { VeilederInputRequestError } from './VeilederInputRequestError'
-
 import styles from './VeilederInput.module.scss'
+import { VeilederInputRequestError } from './VeilederInputRequestError'
 
 const router = createBrowserRouter(routes, {
   basename: `${BASE_PATH}/veileder`,

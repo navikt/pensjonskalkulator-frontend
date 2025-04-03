@@ -1,5 +1,4 @@
 import { RouteObject } from 'react-router'
-
 import { describe, expect, it } from 'vitest'
 
 import { findRoutesWithoutLoaders } from '../veileder'

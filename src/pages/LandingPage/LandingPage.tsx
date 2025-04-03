@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import {
@@ -11,16 +12,15 @@ import { ExternalLinkIcon } from '@navikt/aksel-icons'
 import {
   BodyLong,
   Button,
-  Heading,
   HStack,
+  Heading,
   Link,
   VStack,
 } from '@navikt/ds-react'
-import clsx from 'clsx'
 
 import { Loader } from '@/components/common/Loader'
 import { externalUrls, paths } from '@/router/constants'
-import { LoginContext, LandingPageAccessGuardLoader } from '@/router/loaders'
+import { LandingPageAccessGuardLoader, LoginContext } from '@/router/loaders'
 import { logOpenLink, wrapLogger } from '@/utils/logging'
 
 import styles from './LandingPage.module.scss'

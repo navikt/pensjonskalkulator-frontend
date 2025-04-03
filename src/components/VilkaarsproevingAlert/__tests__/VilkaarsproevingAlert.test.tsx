@@ -1,9 +1,10 @@
 import { describe, it } from 'vitest'
 
-import { VilkaarsproevingAlert } from '..'
 import { fulfilledGetPerson } from '@/mocks/mockedRTKQueryApiCalls'
 import { userInputInitialState } from '@/state/userInput/userInputSlice'
 import { render, screen } from '@/test-utils'
+
+import { VilkaarsproevingAlert } from '..'
 
 describe('VilkaarsproevingAlert', () => {
   const uttaksalder = { aar: 63, maaneder: 3 }

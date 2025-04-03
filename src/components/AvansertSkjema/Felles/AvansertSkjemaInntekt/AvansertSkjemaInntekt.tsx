@@ -1,11 +1,11 @@
+import clsx from 'clsx'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 import { Label } from '@navikt/ds-react'
-import clsx from 'clsx'
 
-import { ReadMore } from '@/components/common/ReadMore'
 import { EndreInntekt } from '@/components/EndreInntekt'
 import { InfoOmInntekt } from '@/components/EndreInntekt/InfoOmInntekt'
+import { ReadMore } from '@/components/common/ReadMore'
 import { useAppSelector } from '@/state/hooks'
 import {
   selectIsEndring,

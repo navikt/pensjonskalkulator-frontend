@@ -1,6 +1,24 @@
-import { createMemoryRouter, RouterProvider } from 'react-router'
-
+import { RouterProvider, createMemoryRouter } from 'react-router'
 import { describe, vi } from 'vitest'
+
+import {
+  fulfilledGetEkskludertStatus,
+  fulfilledGetGrunnbelop,
+  fulfilledGetInntekt,
+  fulfilledGetLoependeVedtak0Ufoeregrad,
+  fulfilledGetLoependeVedtak75Ufoeregrad,
+  fulfilledGetOmstillingsstoenadOgGjenlevendeUtenSak,
+  fulfilledGetPerson,
+} from '@/mocks/mockedRTKQueryApiCalls'
+import { mockErrorResponse, mockResponse } from '@/mocks/server'
+import { HOST_BASEURL } from '@/paths'
+import { apiSlice } from '@/state/api/apiSlice'
+import { store } from '@/state/store'
+import {
+  UserInputState,
+  userInputInitialState,
+} from '@/state/userInput/userInputSlice'
+import { render, screen, waitFor } from '@/test-utils'
 
 import {
   BASE_PATH,
@@ -9,24 +27,6 @@ import {
   paths,
 } from '../constants'
 import { routes } from '../routes'
-import {
-  fulfilledGetPerson,
-  fulfilledGetInntekt,
-  fulfilledGetEkskludertStatus,
-  fulfilledGetLoependeVedtak0Ufoeregrad,
-  fulfilledGetLoependeVedtak75Ufoeregrad,
-  fulfilledGetOmstillingsstoenadOgGjenlevendeUtenSak,
-  fulfilledGetGrunnbelop,
-} from '@/mocks/mockedRTKQueryApiCalls'
-import { mockErrorResponse, mockResponse } from '@/mocks/server'
-import { HOST_BASEURL } from '@/paths'
-import { apiSlice } from '@/state/api/apiSlice'
-import { store } from '@/state/store'
-import {
-  userInputInitialState,
-  UserInputState,
-} from '@/state/userInput/userInputSlice'
-import { render, screen, waitFor } from '@/test-utils'
 
 const initialGetState = store.getState
 
