@@ -199,8 +199,7 @@ const translations = {
   'utenlandsopphold.slette_modal.button.avbryt': 'Cancel',
   'utenlandsopphold.slette_modal.button.slett': 'Delete Stay',
   'stegvisning.samtykke_pensjonsavtaler.title': 'Pension Agreements',
-  'stegvisning.samtykke_pensjonsavtaler.ingress':
-    'If you want to view occupational pensions and other pension agreements, you must consent to Nav retrieving this information. Consent is voluntary. If you answer no, you will calculate retirement pension (Nav) and any AFP (contractual pension).',
+  'stegvisning.samtykke_pensjonsavtaler.ingress': 'MANGLER_TEKST',
   'stegvisning.samtykke_pensjonsavtaler.radio_label':
     'Should we retrieve your pension agreements?',
   'stegvisning.samtykke_pensjonsavtaler.radio_description': 'MANGLER_TEKST',
@@ -327,9 +326,10 @@ const translations = {
   'beregning.alt_tekst':
     'Annual income and pension after withdrawal in kroner.',
   'omufoeretrygd.hel.ingress':
-    'You have <nowrap>100 %</nowrap> disability benefits. Here you can calculate <nowrap>100 %</nowrap> retirement pension from 67 years. Upcoming legal changes will gradually increase the retirement age for those born in 1964 or later.',
+    'You have <nowrap>100 %</nowrap> disability benefits. Here you can calculate <nowrap>100 %</nowrap> retirement pension from 67 years.{br}{br}Upcoming legal changes will gradually increase the retirement age for those born in 1964 or later.',
   'omufoeretrygd.gradert.ingress':
-    'You have <nowrap>{grad} %</nowrap> disability benefits. Here you can calculate <nowrap>100 %</nowrap> retirement pension from 67 years. If you want to calculate withdrawal before 67, you must go to {link}. {br}{br}Upcoming legal changes will gradually increase the retirement age for those born in 1964 or later.',
+    'You have <nowrap>{grad} %</nowrap> disability benefits. Here you can calculate <nowrap>100 %</nowrap> retirement pension from 67 years. If you want to calculate withdrawal before 67, you must go to {link}.{br}{br}Upcoming legal changes will gradually increase the retirement age for those born in 1964 or later.',
+  'omufoeretrygd.gradert.ingress.afp': 'MANGLER_TEKST',
   'omufoeretrygd.readmore.title': 'About Pension Age and Disability Benefits',
   'omufoeretrygd.readmore.hel.ingress':
     '<nowrap>100 %</nowrap> disability benefits cannot be combined with retirement pension. Therefore, it is not possible to calculate retirement pension before 67 in the calculator. At 67, <nowrap>100 %</nowrap> disability benefits automatically convert to <nowrap>100 %</nowrap> retirement pension. If you have questions, you can contact us at 55 55 33 34.',
@@ -547,29 +547,44 @@ const translations = {
   'grunnlag.afp.ingress.null': '-',
   'grunnlag.afp.ingress.ja_offentlig':
     'You have indicated AFP in the public sector. Nav has not assessed whether you meet the conditions for AFP, but assumes that you do. For more information on the conditions, check with your occupational pension scheme.',
-  'grunnlag.afp.ingress.ja_offentlig.ufoeretrygd':
-    'When you receive disability benefits, you cannot calculate AFP in the calculator. AFP and disability benefits cannot be combined, and if you receive disability benefits after you turn 62, you lose the right to AFP. You must therefore choose between AFP and disability benefits before you turn 62.{br}{br}For more information about AFP, contact your occupational pension scheme.',
-  'grunnlag.afp.ingress.ja_offentlig_utilgjengelig':
-    'You have indicated AFP in the public sector, but you have not consented to Nav calculating it. Therefore, AFP is not shown in the calculation.',
+  'grunnlag.afp.ingress.ja_offentlig.endring':
+    'You have AFP in the public sector. Your AFP is not affected by your change in retirement pension. It continues as before.',
+  'grunnlag.afp.ingress.ja_offentlig.ufoeretrygd': 'MANGLER_TEKST',
+  'grunnlag.afp.ingress.ja_offentlig_utilgjengelig': 'MANGLER_TEKST',
   'grunnlag.afp.ingress.ja_privat':
     'You have indicated AFP in the private sector. Nav has not assessed whether you meet the criteria for AFP but assumes that you do. Some private sector employers may have agreements in the public sector. Check with your employer to see what applies to you. Read more about the AFP conditions and how to apply at <afpLink>Fellesordningen for AFP</afpLink>.',
-  'grunnlag.afp.ingress.ja_privat.ufoeretrygd':
-    'When you receive disability benefits, you cannot calculate AFP in the calculator. AFP and disability benefits cannot be combined, and if you receive disability benefits after turning 62, you lose the right to AFP. Therefore, you must choose between AFP and disability benefits before you are 62 years old.{br}{br}You can read more about this at <afpPrivatLink>nav.no</afpPrivatLink>. If you need help assessing your options, <planleggePensjonLink>contact Nav</planleggePensjonLink>.',
+  'grunnlag.afp.ingress.ja_privat.endring':
+    'You have AFP in the private sector. Your AFP is not affected by your change in retirement pension. It continues as before.',
+  'grunnlag.afp.ingress.ja_privat.ufoeretrygd': 'MANGLER_TEKST',
   'grunnlag.afp.ingress.vet_ikke':
     'If you are unsure whether you have AFP, you should ask your employer. AFP can affect when you can withdraw retirement pension.',
   'grunnlag.afp.ingress.vet_ikke.ufoeretrygd':
     'If you are unsure whether you have AFP, you should ask your employer. AFP and disability benefits cannot be combined, and if you receive disability benefits after turning 62, you lose the right to AFP. Therefore, you should check whether you have the right to AFP and choose between AFP and disability benefits before you are 62 years old.',
   'grunnlag.afp.ingress.nei':
-    'If you start a job with an employer that has an AFP agreement, we recommend that you make a ',
-  'grunnlag.afp.ingress.nei.ufoeretrygd':
-    'If you start a job with an employer that has an AFP agreement, you must be aware that AFP and disability benefits cannot be combined. You must choose between AFP and disability benefits before you turn 62.',
-  'grunnlag.afp.ingress.ja_offentlig.endring':
-    'You have AFP in the public sector. Your AFP is not affected by your change in retirement pension. It continues as before.',
-  'grunnlag.afp.ingress.ja_privat.endring':
-    'You have AFP in the private sector. Your AFP is not affected by your change in retirement pension. It continues as before.',
+    'If you start a job with an employer that has an AFP agreement, we recommend that you make a <goToStart>new calculation</goToStart>.',
   'grunnlag.afp.ingress.nei.endring':
     'You have indicated that you do not have the right to AFP. If you are unsure whether you have AFP, you should ask your employer. AFP can affect when you can withdraw retirement pension.',
-  'grunnlag.afp.reset_link': 'new calculation',
+  'grunnlag.afp.ingress.nei.ufoeretrygd':
+    'If you start a job with an employer that has an AFP agreement, you must be aware that AFP and disability benefits cannot be combined. You must choose between AFP and disability benefits before you turn 62.',
+  'grunnlag.afp.ingress.full_ufoeretrygd': 'MANGLER_TEKST',
+  'grunnlag.afp.ingress.ja_offentlig.gammel':
+    'You have indicated AFP in the public sector. Nav has not assessed whether you meet the conditions for AFP, but assumes that you do. For more information on the conditions, check with your occupational pension scheme.',
+  'grunnlag.afp.ingress.ja_offentlig.ufoeretrygd.gammel':
+    'When you receive disability benefits, you cannot calculate AFP in the calculator. AFP and disability benefits cannot be combined, and if you receive disability benefits after you turn 62, you lose the right to AFP. You must therefore choose between AFP and disability benefits before you turn 62.{br}{br}For more information about AFP, contact your occupational pension scheme.',
+  'grunnlag.afp.ingress.ja_offentlig_utilgjengelig.gammel':
+    'You have indicated AFP in the public sector, but you have not consented to Nav calculating it. Therefore, AFP is not shown in the calculation.',
+  'grunnlag.afp.ingress.ja_privat.gammel':
+    'You have indicated AFP in the private sector. Nav has not assessed whether you meet the criteria for AFP but assumes that you do. Some private sector employers may have agreements in the public sector. Check with your employer to see what applies to you. Read more about the AFP conditions and how to apply at <afpLink>Fellesordningen for AFP</afpLink>.',
+  'grunnlag.afp.ingress.ja_privat.ufoeretrygd.gammel':
+    'When you receive disability benefits, you cannot calculate AFP in the calculator. AFP and disability benefits cannot be combined, and if you receive disability benefits after turning 62, you lose the right to AFP. Therefore, you must choose between AFP and disability benefits before you are 62 years old.{br}{br}You can read more about this at <afpPrivatLink>nav.no</afpPrivatLink>. If you need help assessing your options, <planleggePensjonLink>contact Nav</planleggePensjonLink>.',
+  'grunnlag.afp.ingress.vet_ikke.gammel':
+    'If you are unsure whether you have AFP, you should ask your employer. AFP can affect when you can withdraw retirement pension.',
+  'grunnlag.afp.ingress.vet_ikke.ufoeretrygd.gammel':
+    'If you are unsure whether you have AFP, you should ask your employer. AFP and disability benefits cannot be combined, and if you receive disability benefits after turning 62, you lose the right to AFP. Therefore, you should check whether you have the right to AFP and choose between AFP and disability benefits before you are 62 years old.',
+  'grunnlag.afp.ingress.nei.gammel':
+    'If you start a job with an employer that has an AFP agreement, we recommend that you make a <goToStart>new calculation</goToStart>.',
+  'grunnlag.afp.ingress.nei.ufoeretrygd.gammel':
+    'If you start a job with an employer that has an AFP agreement, you must be aware that AFP and disability benefits cannot be combined. You must choose between AFP and disability benefits before you turn 62.',
   'grunnlag.forbehold.ingress_1':
     'The pension has been calculated based on the information we have about you and the information you have provided. The calculation has been made in accordance with current regulations. This is a preliminary estimate of what you can expect to receive in pension. Nav is not responsible for the amounts obtained from other sources.',
   'grunnlag.forbehold.link': 'All reservations',
