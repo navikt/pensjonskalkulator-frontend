@@ -37,7 +37,7 @@ import {
   selectEpsHarInntektOver2G,
   selectSivilstand,
   selectUtenlandsperioder,
-  selectSkalBeregneAfp,
+  selectSkalBeregneAfpKap19,
 } from '@/state/userInput/selectors'
 import { logger } from '@/utils/logging'
 
@@ -52,7 +52,7 @@ export const BeregningAvansert: React.FC = () => {
 
   const harSamtykketOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
   const afp = useAppSelector(selectAfp)
-  const skalBeregneAfp = useAppSelector(selectSkalBeregneAfp)
+  const skalBeregneAfpKap19 = useAppSelector(selectSkalBeregneAfpKap19)
   const isEndring = useAppSelector(selectIsEndring)
   const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const aarligInntektFoerUttakBeloep = useAppSelector(
@@ -82,7 +82,7 @@ export const BeregningAvansert: React.FC = () => {
         return generateAlderspensjonRequestBody({
           loependeVedtak,
           afp: afp === 'ja_offentlig' && !harSamtykketOffentligAFP ? null : afp,
-          skalBeregneAfp: skalBeregneAfp,
+          skalBeregneAfpKap19: skalBeregneAfpKap19,
           sivilstand: sivilstand,
           epsHarPensjon: epsHarPensjon,
           epsHarInntektOver2G: epsHarInntektOver2G,

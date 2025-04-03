@@ -19,15 +19,15 @@ import { getFormatMessageValues } from '@/utils/translations'
 
 interface Props {
   previousAfp: AfpRadio | null
-  previousSkalBeregneAfp: boolean | null
+  previousSkalBeregneAfpKap19: boolean | null
   onCancel?: () => void
   onPrevious: () => void
-  onNext: (afpInput: AfpRadio, skalBeregneAfp?: boolean | null) => void
+  onNext: (afpInput: AfpRadio, skalBeregneAfpKap19?: boolean | null) => void
 }
 
 export function AFPOvergangskullUtenAP({
   previousAfp,
-  previousSkalBeregneAfp,
+  previousSkalBeregneAfpKap19,
   onCancel,
   onPrevious,
   onNext,
@@ -36,10 +36,10 @@ export function AFPOvergangskullUtenAP({
 
   const [validationError, setValidationError] = React.useState<{
     afpError?: string
-    skalBeregneAfpError?: string
+    skalBeregneAfpKap19Error?: string
   }>({
     afpError: undefined,
-    skalBeregneAfpError: undefined,
+    skalBeregneAfpKap19Error: undefined,
   })
   const [showVetIkkeAlert, setShowVetIkkeAlert] = React.useState<boolean>(
     previousAfp === 'vet_ikke'
@@ -54,7 +54,7 @@ export function AFPOvergangskullUtenAP({
     const formData = new FormData(e.currentTarget)
     const afpInput = formData.get('afp') as AfpRadio | null
     const simuleringstypeInput = formData.get(
-      'skalBeregneAfp'
+      'skalBeregneAfpKap19'
     ) as BooleanRadio | null
 
     if (!afpInput) {
@@ -73,7 +73,10 @@ export function AFPOvergangskullUtenAP({
       const errorMessage = intl.formatMessage({
         id: 'stegvisning.afpOverganskull.validation_error',
       })
-      setValidationError((prev) => ({ ...prev, skalBeregneAfp: errorMessage }))
+      setValidationError((prev) => ({
+        ...prev,
+        skalBeregneAfpKap19: errorMessage,
+      }))
       logger('skjema validering feilet', {
         skjemanavn: STEGVISNING_FORM_NAMES.afp,
         data: intl.formatMessage({
@@ -185,15 +188,17 @@ export function AFPOvergangskullUtenAP({
             legend={
               <FormattedMessage id="stegvisning.afp.overgangskullUtenAP.radio_label" />
             }
-            name="skalBeregneAfp"
-            defaultValue={convertBooleanToBooleanRadio(previousSkalBeregneAfp)}
+            name="skalBeregneAfpKap19"
+            defaultValue={convertBooleanToBooleanRadio(
+              previousSkalBeregneAfpKap19
+            )}
             onChange={() =>
               setValidationError({
                 afpError: undefined,
-                skalBeregneAfpError: undefined,
+                skalBeregneAfpKap19Error: undefined,
               })
             }
-            error={validationError.skalBeregneAfpError}
+            error={validationError.skalBeregneAfpKap19Error}
             role="radiogroup"
             aria-required="true"
           >
