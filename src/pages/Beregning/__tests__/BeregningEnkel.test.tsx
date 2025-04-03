@@ -306,7 +306,6 @@ describe('BeregningEnkel', () => {
       render(<RouterProvider router={router} />, {
         hasRouter: false,
         preloadedState: {
-          tidligstMuligHeltUttakRequestBody: { test: true },
           api: {
             // @ts-ignore
             queries: {
