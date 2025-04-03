@@ -41,6 +41,9 @@ const testHandlers =
             }
           }
         ),
+        http.get('https://api.uxsignals.com/v2/study/id/*/active', async () =>
+          HttpResponse.json({ active: false })
+        ),
       ]
     : []
 
