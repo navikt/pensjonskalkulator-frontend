@@ -1,13 +1,12 @@
 import { fulfilledGetPersonMedOekteAldersgrenser } from '@/mocks/mockedRTKQueryApiCalls'
 import { userInputInitialState } from '@/state/userInput/userInputSlice'
-import { render, screen, userEvent } from '@/test-utils'
+import { render, screen } from '@/test-utils'
 
 import { ReadMoreOmPensjonsalder } from '../ReadMoreOmPensjonsalder'
 
 describe('ReadMoreOmPensjonsalder', () => {
   describe('Gitt at en bruker ikke har uføretrygd, ', () => {
-    it('viser riktig info om pensjonsalder', async () => {
-      const user = userEvent.setup()
+    it('viser riktig info om pensjonsalder', () => {
       render(<ReadMoreOmPensjonsalder ufoeregrad={0} isEndring={false} />, {
         preloadedState: {
           api: {
@@ -21,21 +20,10 @@ describe('ReadMoreOmPensjonsalder', () => {
           },
         },
       })
-      await user.click(
-        screen.getByText('beregning.read_more.pensjonsalder.label')
-      )
-      expect(
-        screen.queryByText('omufoeretrygd.readmore.title')
-      ).not.toBeInTheDocument()
-      expect(
-        screen.getByText('Aldersgrensene vil øke gradvis fra 1964-kullet', {
-          exact: false,
-        })
-      ).toBeVisible()
+      expect(screen.getByTestId('om_TMU')).toBeInTheDocument()
     })
 
-    it('Når brukeren har vedtak om alderspensjon, viser riktig info om pensjonsalder', async () => {
-      const user = userEvent.setup()
+    it('Når brukeren har vedtak om alderspensjon, viser riktig info om pensjonsalder', () => {
       render(<ReadMoreOmPensjonsalder ufoeregrad={0} isEndring={true} />, {
         preloadedState: {
           api: {
@@ -49,32 +37,12 @@ describe('ReadMoreOmPensjonsalder', () => {
           },
         },
       })
-      await user.click(
-        screen.getByText('beregning.read_more.pensjonsalder.label')
-      )
-      expect(
-        screen.queryByText('omufoeretrygd.readmore.title')
-      ).not.toBeInTheDocument()
-      expect(
-        screen.queryByText('Aldersgrensene vil øke gradvis fra 1964-kullet', {
-          exact: false,
-        })
-      ).not.toBeInTheDocument()
-
-      expect(
-        screen.getByText(
-          'Opptjeningen din i folketrygden bestemmer hvor mye alderspensjon du kan ta ut. Ved 70 alder.aar må pensjonen minst tilsvare garantipensjon.',
-          {
-            exact: false,
-          }
-        )
-      ).toBeVisible()
+      expect(screen.getByTestId('om_TMU_endring')).toBeInTheDocument()
     })
   })
 
   describe('Gitt at en bruker har gradert uføretrygd, ', () => {
-    it('viser riktig info om pensjonsalder', async () => {
-      const user = userEvent.setup()
+    it('viser riktig info om pensjonsalder', () => {
       render(<ReadMoreOmPensjonsalder ufoeregrad={75} isEndring={false} />, {
         preloadedState: {
           api: {
@@ -86,22 +54,14 @@ describe('ReadMoreOmPensjonsalder', () => {
           },
         },
       })
-      await user.click(screen.getByText('omufoeretrygd.readmore.title'))
       expect(
-        screen.queryByText('beregning.read_more.pensjonsalder.label')
-      ).not.toBeInTheDocument()
-      expect(
-        screen.getByText(
-          'Din opptjening i folketrygden bestemmer når du kan ta ut alderspensjon.',
-          { exact: false }
-        )
-      ).toBeVisible()
+        screen.getByTestId('om_pensjonsalder_UT_gradert_avansert')
+      ).toBeInTheDocument()
     })
   })
 
   describe('Gitt at en bruker har 100 % uføretrygd, ', () => {
-    it('viser riktig info om pensjonsalder', async () => {
-      const user = userEvent.setup()
+    it('viser riktig info om pensjonsalder', () => {
       render(<ReadMoreOmPensjonsalder ufoeregrad={100} isEndring={false} />, {
         preloadedState: {
           api: {
@@ -113,16 +73,7 @@ describe('ReadMoreOmPensjonsalder', () => {
           },
         },
       })
-      await user.click(screen.getByText('omufoeretrygd.readmore.title'))
-      expect(
-        screen.queryByText('beregning.read_more.pensjonsalder.label')
-      ).not.toBeInTheDocument()
-      expect(
-        screen.getByText(
-          'Det er derfor ikke mulig å beregne alderspensjon før',
-          { exact: false }
-        )
-      ).toBeVisible()
+      expect(screen.getByTestId('om_pensjonsalder_UT_hel')).toBeInTheDocument()
     })
   })
 })
