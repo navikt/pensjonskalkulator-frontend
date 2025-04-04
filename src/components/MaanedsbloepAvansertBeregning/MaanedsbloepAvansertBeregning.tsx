@@ -1,23 +1,11 @@
 import React from 'react'
-import { FormattedMessage, useIntl } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 
-import { useGetPersonQuery } from '@/state/api/apiSlice'
-import { useAppSelector } from '@/state/hooks'
-import {
-  selectAarligInntektFoerUttakBeloep,
-  selectCurrentSimulation,
-  selectIsEndring,
-} from '@/state/userInput/selectors'
-import {
-  BodyLong,
-  BodyShort,
-  Box,
-  Heading,
-  HStack,
-  VStack,
-} from '@navikt/ds-react'
-import { getFormatMessageValues } from '@/utils/translations'
+import { BodyLong, Box, Heading, VStack } from '@navikt/ds-react'
+
 import { formatInntekt } from '@/utils/inntekt'
+import { getFormatMessageValues } from '@/utils/translations'
+
 import styles from './MaanedsbloepAvansertBeregning.module.scss'
 
 interface Props {
