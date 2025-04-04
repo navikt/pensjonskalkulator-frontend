@@ -44,7 +44,7 @@ export const ResultatkortAvansertBeregning: React.FC<Props> = ({
     >
       <ExpansionCardAksel.Header>
         <ExpansionCardAksel.Title id="expansion-card-label" size="small">
-          <FormattedMessage id="beregning.avansert.resultatkort.tittel" />
+          <FormattedMessage id="beregning.cavansert.resultatkort.tittel" />
         </ExpansionCardAksel.Title>
 
         <ExpansionCardAksel.Description>

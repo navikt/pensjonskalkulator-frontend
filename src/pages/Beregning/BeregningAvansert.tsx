@@ -44,6 +44,7 @@ import { logger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
 
 import styles from './BeregningAvansert.module.scss'
+import { MaanedsbloepAvansertBeregning } from '@/components/MaanedsbloepAvansertBeregning'
 
 export const BeregningAvansert = () => {
   const intl = useIntl()
@@ -329,10 +330,13 @@ export const BeregningAvansert = () => {
               }
             />
 
-            <ResultatkortAvansertBeregning
-              onButtonClick={() => setAvansertSkjemaModus('redigering')}
+            <MaanedsbloepAvansertBeregning
+              alderpensjonHel={
+                alderspensjon?.alderspensjonMaanedligVedEndring
+                  ?.heltUttakMaanedligBeloep ?? 0
+              }
+              afp={alderspensjon?.afpOffentlig?.at(0)?.beloep}
             />
-
             {beregningsvalg === 'med_afp' && (
               <SanityGuidePanel
                 id="vurderer_du_a_velge_afp"
