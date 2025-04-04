@@ -1,6 +1,5 @@
-import { IntlShape } from 'react-intl'
-
 import { AxisLabelsFormatterContextObject, Chart, Point } from 'highcharts'
+import { IntlShape } from 'react-intl'
 import { describe, expect, it, vi } from 'vitest'
 
 import { SERIES_DEFAULT } from '../constants'
@@ -15,10 +14,8 @@ import {
   onPointUnclick,
   tooltipFormatter,
 } from '../utils-highcharts'
-
-import { getChartMock } from './chart-mock'
-
 import globalClassNames from './Simulering.module.scss'
+import { getChartMock } from './chart-mock'
 
 describe('Simulering-utils-highcharts', () => {
   describe('labelFormatterMobile', () => {

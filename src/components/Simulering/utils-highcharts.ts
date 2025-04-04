@@ -1,8 +1,6 @@
-import { IntlShape } from 'react-intl'
-
 import {
-  AxisLabelsFormatterContextObject,
   Axis,
+  AxisLabelsFormatterContextObject,
   Chart,
   Options,
   Point,
@@ -10,25 +8,25 @@ import {
   Tooltip,
   TooltipPositionerPointObject,
 } from 'highcharts'
+import { IntlShape } from 'react-intl'
 
 import { cleanAndAddEventListener } from '@/utils/events'
 import { formatInntekt } from '@/utils/inntekt'
 import { logger } from '@/utils/logging'
 
+import globalClassNames from './Simulering.module.scss'
 import {
-  highchartsScrollingSelector,
   SERIES_DEFAULT,
   TOOLTIP_YPOS,
+  highchartsScrollingSelector,
 } from './constants'
 import {
-  getTooltipTitle,
   getHoverColor,
   getNormalColor,
+  getTooltipTitle,
   handleChartScroll,
   resetColumnColors,
 } from './utils'
-
-import globalClassNames from './Simulering.module.scss'
 
 export type ExtendedAxis = Axis & {
   height: number

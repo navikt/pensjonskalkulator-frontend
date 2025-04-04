@@ -1,8 +1,8 @@
+import clsx from 'clsx'
 import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 import { Chips, Heading } from '@navikt/ds-react'
-import clsx from 'clsx'
 
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
@@ -13,9 +13,8 @@ import { userInputActions } from '@/state/userInput/userInputSlice'
 import { unformatUttaksalder } from '@/utils/alder'
 import { logger } from '@/utils/logging'
 
-import { getFormaterteAldere } from './utils'
-
 import styles from './VelgUttaksalder.module.scss'
+import { getFormaterteAldere } from './utils'
 
 interface Props {
   tidligstMuligUttak?: Alder

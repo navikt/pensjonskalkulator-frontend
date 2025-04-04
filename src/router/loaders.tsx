@@ -1,6 +1,5 @@
-import { redirect } from 'react-router'
-
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
+import { redirect } from 'react-router'
 
 import { HOST_BASEURL } from '@/paths'
 import {
@@ -12,11 +11,11 @@ import {
 } from '@/router/constants'
 import { apiSlice } from '@/state/api/apiSlice'
 import { store } from '@/state/store'
-import { selectIsVeileder, selectAfp } from '@/state/userInput/selectors'
+import { selectAfp, selectIsVeileder } from '@/state/userInput/selectors'
 import {
+  AFP_UFOERE_OPPSIGELSESALDER,
   isFoedselsdatoOverAlder,
   isFoedtFoer1963,
-  AFP_UFOERE_OPPSIGELSESALDER,
 } from '@/utils/alder'
 import { isLoependeVedtakEndring } from '@/utils/loependeVedtak'
 import { logger } from '@/utils/logging'

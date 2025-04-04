@@ -1,11 +1,11 @@
-import path from 'path'
-
 import { ecsFormat } from '@elastic/ecs-winston-format'
-import { getToken, requestOboToken, validateToken } from '@navikt/oasis'
 import express, { NextFunction, Request, Response } from 'express'
 import promBundle from 'express-prom-bundle'
 import { createProxyMiddleware } from 'http-proxy-middleware'
+import path from 'path'
 import winston from 'winston'
+
+import { getToken, requestOboToken, validateToken } from '@navikt/oasis'
 
 const metricsMiddleware = promBundle({ includeMethod: true })
 
