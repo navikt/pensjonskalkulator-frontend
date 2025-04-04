@@ -15,6 +15,7 @@ declare global {
   type BeregningVisning = 'enkel' | 'avansert'
   type Beregningsvalg = 'uten_afp' | 'med_afp'
   type Alder = components['schemas']['Alder']
+  type UttaksalderError = components['schemas']['UttaksalderError']
 
   type UnleashToggle = components['schemas']['EnablementDto']
 

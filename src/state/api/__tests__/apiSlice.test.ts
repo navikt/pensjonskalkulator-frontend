@@ -1,3 +1,5 @@
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
+
 import alderspensjonResponse from '../../../mocks/data/alderspensjon/67.json' with { type: 'json' }
 import ekskludertStatusResponse from '../../../mocks/data/ekskludert-status.json' with { type: 'json' }
 import inntektResponse from '../../../mocks/data/inntekt.json' with { type: 'json' }
@@ -468,6 +470,26 @@ describe('apiSlice', () => {
             expect(result.data).toBe(undefined)
           })
       })
+    })
+    it('returnerer UttaksalderError ved 500 status og gyldig UttaksalderError respons', async () => {
+      const storeRef = setupStore(undefined, true)
+      const mockUttaksalderErrorResponse = {
+        errorCode: 'AFP_IKKE_I_VILKAARSPROEVING',
+      } as UttaksalderError
+      mockResponse('/v2/tidligste-hel-uttaksalder', {
+        status: 500,
+        json: mockUttaksalderErrorResponse,
+        method: 'post',
+      })
+
+      return storeRef
+        .dispatch(apiSlice.endpoints.tidligstMuligHeltUttak.initiate())
+        .then((result) => {
+          expect(result.status).toBe('rejected')
+          expect((result.error as FetchBaseQueryError)?.data).toMatchObject(
+            mockUttaksalderErrorResponse
+          )
+        })
     })
   })
 

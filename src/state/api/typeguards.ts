@@ -326,6 +326,17 @@ export const isAlder = (data?: any): data is Alder => {
   )
 }
 
+export const isUttaksalderError = (
+  data?: unknown
+): data is UttaksalderError => {
+  return (
+    typeof data === 'object' &&
+    data !== null &&
+    'errorCode' in data &&
+    typeof data.errorCode === 'string'
+  )
+}
+
 export const isSomeEnumKey =
   <T extends { [s: string]: unknown }>(e: T) =>
   (token: unknown): token is T[keyof T] => {

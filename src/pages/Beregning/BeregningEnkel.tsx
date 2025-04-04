@@ -23,6 +23,7 @@ import {
   useTidligstMuligHeltUttakQuery,
   useAlderspensjonQuery,
 } from '@/state/api/apiSlice'
+import { isUttaksalderError } from '@/state/api/typeguards'
 import {
   generateTidligstMuligHeltUttakRequestBody,
   generateAlderspensjonEnkelRequestBody,
@@ -85,6 +86,7 @@ export const BeregningEnkel: React.FC = () => {
     data: tidligstMuligUttak,
     isLoading: isTidligstMuligUttakLoading,
     isSuccess: isTidligstMuligUttakSuccess,
+    error: tidligstMuligUttakError,
   } = useTidligstMuligHeltUttakQuery(tidligstMuligHeltUttakRequestBody, {
     skip: !tidligstMuligHeltUttakRequestBody || !!ufoeregrad,
   })
@@ -189,18 +191,31 @@ export const BeregningEnkel: React.FC = () => {
   }, [uttaksalder, isError, alderspensjon])
 
   React.useEffect(() => {
-    if (
-      error &&
-      ((error as FetchBaseQueryError).status === 503 ||
-        (error as FetchBaseQueryError).status === 'PARSING_ERROR')
-    ) {
+    const fetchError = error as FetchBaseQueryError | undefined
+    const uttakError = tidligstMuligUttakError as
+      | FetchBaseQueryError
+      | undefined
+
+    const isFetchError =
+      fetchError?.status === 503 || fetchError?.status === 'PARSING_ERROR'
+    const isUttakError =
+      uttakError &&
+      isUttaksalderError(uttakError.data) &&
+      uttakError.data.errorCode === 'AFP_IKKE_I_VILKAARSPROEVING'
+
+    const isAfpOffentligMismatch =
+      alderspensjon?.afpOffentlig?.length === 0 &&
+      alderspensjonEnkelRequestBody?.simuleringstype ===
+        'ALDERSPENSJON_MED_AFP_OFFENTLIG_LIVSVARIG'
+
+    if (isFetchError || isUttakError || isAfpOffentligMismatch) {
       navigate(paths.uventetFeil)
       logger('info', {
         tekst: 'Redirect til /uventet-feil',
         data: 'fra Beregning Enkel',
       })
     }
-  }, [error])
+  }, [error, tidligstMuligUttakError, alderspensjon])
 
   const show1963Text = React.useMemo(() => {
     return isPersonSuccess && isFoedtFoer1964(person?.foedselsdato)
@@ -249,7 +264,9 @@ export const BeregningEnkel: React.FC = () => {
         <div className={styles.container}>
           <TidligstMuligUttaksalder
             tidligstMuligUttak={
-              isTidligstMuligUttakSuccess ? tidligstMuligUttak : undefined
+              isTidligstMuligUttakSuccess
+                ? (tidligstMuligUttak as Alder)
+                : undefined
             }
             ufoeregrad={ufoeregrad}
             show1963Text={show1963Text}
@@ -263,7 +280,7 @@ export const BeregningEnkel: React.FC = () => {
             ufoeregrad
               ? normertPensjonsalder
               : isTidligstMuligUttakSuccess
-                ? tidligstMuligUttak
+                ? (tidligstMuligUttak as Alder)
                 : getBrukerensAlderISluttenAvMaaneden(
                     person?.foedselsdato,
                     nedreAldersgrense
