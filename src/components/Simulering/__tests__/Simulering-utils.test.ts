@@ -745,6 +745,7 @@ describe('Simulering-utils', () => {
               startAlder: { aar: 70, maaneder: 0 },
               sluttAlder: { aar: 71, maaneder: 11 },
               aarligUtbetaling: 50000,
+              maanedligUtbetaling: 4167,
             },
           ]
         )
@@ -786,6 +787,7 @@ describe('Simulering-utils', () => {
               startAlder: { aar: 67, maaneder: 6 },
               sluttAlder: { aar: 69, maaneder: 11 },
               aarligUtbetaling: 100000,
+              maanedligUtbetaling: 8333,
             },
           ]
         )
@@ -852,11 +854,13 @@ describe('Simulering-utils', () => {
               startAlder: { aar: 67, maaneder: 6 },
               sluttAlder: { aar: 69, maaneder: 11 },
               aarligUtbetaling: 100000,
+              maanedligUtbetaling: 8333,
             },
             {
               startAlder: { aar: 75, maaneder: 0 },
               sluttAlder: { aar: 76, maaneder: 6 },
               aarligUtbetaling: 100000,
+              maanedligUtbetaling: 8333,
             },
           ]
         )
@@ -918,11 +922,13 @@ describe('Simulering-utils', () => {
               startAlder: { aar: 67, maaneder: 6 },
               sluttAlder: { aar: 69, maaneder: 11 },
               aarligUtbetaling: 100000,
+              maanedligUtbetaling: 8333,
             },
             {
               startAlder: { aar: 75, maaneder: 0 },
               sluttAlder: undefined,
               aarligUtbetaling: 100000,
+              maanedligUtbetaling: 8333,
             },
           ]
         )
@@ -1066,6 +1072,7 @@ describe('Simulering-utils', () => {
           {
             startAlder: { aar: 70, maaneder: 0 },
             aarligUtbetaling: 100000,
+            maanedligUtbetaling: 8333,
           },
         ],
         setIsPensjonsavtaleFlagVisibleMock
@@ -1168,6 +1175,7 @@ describe('Simulering-utils', () => {
             startAlder: { aar: 70, maaneder: 0 },
             sluttAlder: { aar: 72, maaneder: 0 },
             aarligUtbetaling: 100000,
+            maanedligUtbetaling: 8333,
           },
         ],
         setIsPensjonsavtaleFlagVisibleMock
@@ -1240,6 +1248,7 @@ describe('Simulering-utils', () => {
             startAlder: { aar: 68, maaneder: 0 },
             sluttAlder: { aar: 72, maaneder: 0 },
             aarligUtbetaling: 100000,
+            maanedligUtbetaling: 8333,
           },
         ],
         setIsPensjonsavtaleFlagVisibleMock
@@ -1308,6 +1317,7 @@ describe('Simulering-utils', () => {
             startAlder: { aar: 55, maaneder: 0 },
             sluttAlder: { aar: 80, maaneder: 0 },
             aarligUtbetaling: 100000,
+            maanedligUtbetaling: 8333,
           },
         ],
         setIsPensjonsavtaleFlagVisibleMock
