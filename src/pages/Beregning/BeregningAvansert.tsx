@@ -175,6 +175,8 @@ export const BeregningAvansert = () => {
     }
   }
 
+  const maanedtligbeloep = alderspensjon?.afpOffentlig?.at(0)?.beloep
+
   if (avansertSkjemaModus === 'redigering')
     return (
       <RedigerAvansertBeregning
@@ -322,7 +324,9 @@ export const BeregningAvansert = () => {
                 alderspensjon?.alderspensjonMaanedligVedEndring
                   ?.heltUttakMaanedligBeloep ?? 0
               }
-              afp={alderspensjon?.afpOffentlig?.at(0)?.beloep}
+              afp={
+                maanedtligbeloep ? Math.round(maanedtligbeloep / 12) : undefined
+              }
             />
             {beregningsvalg === 'med_afp' && (
               <SanityGuidePanel
