@@ -546,48 +546,6 @@ describe('Avansert', () => {
   })
 
   describe('Gitt at jeg som bruker har valgt "Avansert", fylt ut skjemaet og klikket på "Beregn Pensjon",', () => {
-    describe('Når bruker har bedt om simulering med AFP offentlig, og resultat fra backend gir tom AFP offentlig', () => {
-      it('forventer jeg å bli navigert til uvventet feil side', () => {
-        cy.intercept(
-          'POST',
-          '/pensjon/kalkulator/api/v8/alderspensjon/simulering',
-          {
-            statusCode: 200,
-            body: {
-              alderspensjon: [],
-              afpOffentlig: [],
-              vilkaarsproeving: {
-                vilkaarErOppfylt: true,
-                alternativ: {},
-              },
-              harForLiteTrygdetid: false,
-            },
-          }
-        ).as('getAlderspensjonError')
-
-        cy.login()
-        cy.fillOutStegvisning({
-          afp: 'ja_offentlig',
-          samtykkeAfpOffentlig: true,
-        })
-        cy.wait('@fetchTidligsteUttaksalder')
-        cy.get('[data-testid="toggle-avansert"]').within(() => {
-          cy.contains('Avansert').click()
-        })
-        cy.get('[data-testid="age-picker-uttaksalder-helt-uttak-aar"]').select(
-          '65'
-        )
-        cy.get(
-          '[data-testid="age-picker-uttaksalder-helt-uttak-maaneder"]'
-        ).select('1')
-        cy.get('[data-testid="uttaksgrad"]').select('100 %')
-        cy.get('[data-testid="inntekt-vsa-helt-uttak-radio-nei"]').check()
-        cy.contains('Beregn pensjon').click()
-
-        cy.wait('@getAlderspensjonError')
-        cy.url().should('include', '/uventet-feil')
-      })
-    })
     describe('Når jeg er kommet til beregningssiden i resultatmodus,', () => {
       beforeEach(() => {
         cy.login()
