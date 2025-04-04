@@ -514,7 +514,7 @@ const translations = {
   'beregning.vilkaarsproeving.alternativer.medAFP.heltOgGradertUttak':
     'Et alternativ er at du ved {nedreAldersgrense} kan ta ut <nowrap>{alternativtGrad} %</nowrap> alderspensjon hvis du tar ut <nowrap>100 %</nowrap> alderspensjon ved {alternativtHeltStartAar} år og {alternativtHeltStartMaaned} måneder eller senere. Prøv gjerne andre kombinasjoner.',
   'beregning.vilkaarsproeving.alternativer.medAFP.ikkeNokOpptjening':
-    'Opptjeningen din er ikke høy nok til uttak av alderspensjon ved <nedreAldersgrense>.{br}{br}Kalkulatoren kan ikke beregne uttak etter <nedreAldersgrense>. Hvis du tar ut alderspensjon og AFP senere enn dette, vil du i perioden fra du er 62 år frem til uttak ikke få uføretrygd. Kontakt Nav for veiledning hvis du vurderer å si fra deg uføretrygden.{br}{br}Har du rett til livsvarig AFP i offentlig sektor kan du ta ut AFP før alderspensjon. Kontakt tjenestepensjonsordningen din for veiledning.',
+    'Opptjeningen din er ikke høy nok til uttak av alderspensjon ved {nedreAldersgrense}.{br}{br}Kalkulatoren kan ikke beregne uttak etter {nedreAldersgrense}. Hvis du tar ut alderspensjon og AFP senere enn dette, vil du i perioden fra du er 62 år frem til uttak ikke få uføretrygd. Kontakt Nav for veiledning hvis du vurderer å si fra deg uføretrygden.{br}{br}Har du rett til livsvarig AFP i offentlig sektor kan du ta ut AFP før alderspensjon. Kontakt tjenestepensjonsordningen din for veiledning.',
   'grunnlag.title': 'Øvrig grunnlag for beregningen',
   'beregning.avansert.avbryt_modal.title':
     'Hvis du går ut av Avansert, mister du alle valgene dine.',

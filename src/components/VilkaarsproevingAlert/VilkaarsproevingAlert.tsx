@@ -50,7 +50,10 @@ export const VilkaarsproevingAlert = ({
       <Alert variant="warning">
         {alternativ ? (
           <>
-            <FormattedMessage id="beregning.vilkaarsproeving.medAFP.intro" />
+            <FormattedMessage
+              id="beregning.vilkaarsproeving.medAFP.intro"
+              values={getFormatMessageValues()}
+            />
 
             {isHeltUttaksalderLik && gradertUttaksalder && (
               <FormattedMessage

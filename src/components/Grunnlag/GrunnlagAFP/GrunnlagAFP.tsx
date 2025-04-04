@@ -30,7 +30,7 @@ import { getFormatMessageValues } from '@/utils/translations'
 export const GrunnlagAFP: React.FC = () => {
   const intl = useIntl()
 
-  const afp = useAppSelector(selectAfp)
+  const afp = useAppSelector(selectAfp) ?? 'vet_ikke' // Vi har fallback for å unngå "missing translation" error ved flush() i GoToStart
   const foedselsdato = useAppSelector(selectFoedselsdato)
   const samtykkeOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
   const isEndring = useAppSelector(selectIsEndring)

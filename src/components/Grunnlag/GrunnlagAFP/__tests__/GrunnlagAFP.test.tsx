@@ -1,3 +1,4 @@
+import { Accordion } from '@navikt/ds-react'
 import { add, endOfDay, format } from 'date-fns'
 
 import { GrunnlagAFP } from '..'
@@ -23,10 +24,16 @@ vi.mock(import('react-router'), async (importOriginal) => {
   }
 })
 
+const WrappedGrunnlagAFP = () => (
+  <Accordion>
+    <GrunnlagAFP />
+  </Accordion>
+)
+
 describe('Grunnlag - AFP', () => {
   it('Når brukeren har valgt AFP offentlig og samtykket til beregning av den, viser riktig tittel med formatert inntekt og tekst', async () => {
     const user = userEvent.setup()
-    render(<GrunnlagAFP />, {
+    render(<WrappedGrunnlagAFP />, {
       preloadedState: {
         api: {
           //@ts-ignore
@@ -55,7 +62,7 @@ describe('Grunnlag - AFP', () => {
 
   it('Når brukeren har valgt AFP offentlig og ikke samtykket til beregning av den, viser riktig tittel med formatert inntekt og tekst', async () => {
     const user = userEvent.setup()
-    render(<GrunnlagAFP />, {
+    render(<WrappedGrunnlagAFP />, {
       preloadedState: {
         api: {
           //@ts-ignore
@@ -88,7 +95,7 @@ describe('Grunnlag - AFP', () => {
 
   it('Når brukeren har valgt AFP privat, viser riktig tittel med formatert inntekt og tekst', async () => {
     const user = userEvent.setup()
-    render(<GrunnlagAFP />, {
+    render(<WrappedGrunnlagAFP />, {
       preloadedState: {
         api: {
           //@ts-ignore
@@ -117,7 +124,7 @@ describe('Grunnlag - AFP', () => {
 
   it('Når brukeren har valgt uten AFP, viser riktig tittel med formatert inntekt, tekst og lenke', async () => {
     const user = userEvent.setup()
-    render(<GrunnlagAFP />, {
+    render(<WrappedGrunnlagAFP />, {
       preloadedState: {
         api: {
           //@ts-ignore
@@ -147,7 +154,7 @@ describe('Grunnlag - AFP', () => {
 
   it('Når brukeren har svart "vet ikke" på AFP, viser riktig tittel med formatert inntekt og tekst', async () => {
     const user = userEvent.setup()
-    render(<GrunnlagAFP />, {
+    render(<WrappedGrunnlagAFP />, {
       preloadedState: {
         api: {
           //@ts-ignore
@@ -257,7 +264,7 @@ describe('Grunnlag - AFP', () => {
       }
 
       it('Når hen har valgt AFP offentlig, viser riktig tittel med formatert inntekt og tekst', async () => {
-        render(<GrunnlagAFP />, {
+        render(<WrappedGrunnlagAFP />, {
           preloadedState: {
             api: {
               // @ts-ignore
@@ -284,7 +291,7 @@ describe('Grunnlag - AFP', () => {
       })
 
       it('Når hen har valgt AFP privat, viser riktig tittel med formatert inntekt og tekst', async () => {
-        render(<GrunnlagAFP />, {
+        render(<WrappedGrunnlagAFP />, {
           preloadedState: {
             api: {
               // @ts-ignore
@@ -309,7 +316,7 @@ describe('Grunnlag - AFP', () => {
       })
 
       it('Når hen har valgt uten AFP, viser riktig tittel med formatert inntekt og tekst', async () => {
-        render(<GrunnlagAFP />, {
+        render(<WrappedGrunnlagAFP />, {
           preloadedState: {
             api: {
               // @ts-ignore
@@ -329,7 +336,7 @@ describe('Grunnlag - AFP', () => {
       })
 
       it('Når hen har svart "vet ikke" på AFP, viser riktig tittel med formatert inntekt og tekst', async () => {
-        render(<GrunnlagAFP />, {
+        render(<WrappedGrunnlagAFP />, {
           preloadedState: {
             api: {
               // @ts-ignore
@@ -352,7 +359,7 @@ describe('Grunnlag - AFP', () => {
 
   describe('Gitt at brukeren har 100% uføretrygd,', () => {
     it('Viser riktig tittel og tekst', () => {
-      render(<GrunnlagAFP />, {
+      render(<WrappedGrunnlagAFP />, {
         preloadedState: {
           api: {
             // @ts-ignore
@@ -376,7 +383,7 @@ describe('Grunnlag - AFP', () => {
   describe('Gitt at brukeren har vedtak om alderspensjon,', () => {
     it('Når hen har valgt AFP privat, viser riktig tittel med formatert inntekt og tekst', async () => {
       const user = userEvent.setup()
-      render(<GrunnlagAFP />, {
+      render(<WrappedGrunnlagAFP />, {
         preloadedState: {
           api: {
             // @ts-ignore
@@ -403,7 +410,7 @@ describe('Grunnlag - AFP', () => {
 
     it('Når hen har valgt AFP offentlig og samtykket til beregning av den, viser riktig tittel med formatert inntekt og tekst', async () => {
       const user = userEvent.setup()
-      render(<GrunnlagAFP />, {
+      render(<WrappedGrunnlagAFP />, {
         preloadedState: {
           api: {
             //@ts-ignore
@@ -432,7 +439,7 @@ describe('Grunnlag - AFP', () => {
 
     it('Når hen har valgt AFP offentlig og ikke samtykket til beregning av den, viser riktig tittel med formatert inntekt og tekst', async () => {
       const user = userEvent.setup()
-      render(<GrunnlagAFP />, {
+      render(<WrappedGrunnlagAFP />, {
         preloadedState: {
           api: {
             //@ts-ignore
@@ -465,7 +472,7 @@ describe('Grunnlag - AFP', () => {
 
     it('Når hen har valgt uten AFP, viser riktig tittel med formatert inntekt, tekst og lenke', async () => {
       const user = userEvent.setup()
-      render(<GrunnlagAFP />, {
+      render(<WrappedGrunnlagAFP />, {
         preloadedState: {
           api: {
             //@ts-ignore
@@ -495,7 +502,7 @@ describe('Grunnlag - AFP', () => {
 
     it('Når hen har svart "vet ikke" på AFP, viser riktig tittel med formatert inntekt og tekst', async () => {
       const user = userEvent.setup()
-      render(<GrunnlagAFP />, {
+      render(<WrappedGrunnlagAFP />, {
         preloadedState: {
           api: {
             //@ts-ignore
@@ -524,7 +531,7 @@ describe('Grunnlag - AFP', () => {
   describe('Gitt at brukeren har vedtak om AFP-privat,', () => {
     it('hen får ikke velge AFP, og det vises riktig tittel med formatert inntekt og tekst', async () => {
       const user = userEvent.setup()
-      render(<GrunnlagAFP />, {
+      render(<WrappedGrunnlagAFP />, {
         preloadedState: {
           api: {
             //@ts-ignore
@@ -555,7 +562,7 @@ describe('Grunnlag - AFP', () => {
   describe('Gitt at brukeren har vedtak om AFP-offentlig,', () => {
     it('hen får ikke velge AFP, og det vises riktig tittel med formatert inntekt og tekst', async () => {
       const user = userEvent.setup()
-      render(<GrunnlagAFP />, {
+      render(<WrappedGrunnlagAFP />, {
         preloadedState: {
           api: {
             //@ts-ignore
