@@ -884,6 +884,8 @@ export interface components {
       sluttAlder?: components['schemas']['Alder']
       /** Format: int32 */
       aarligUtbetaling: number
+      /** Format: int32 */
+      maanedligUtbetaling?: number
     }
     PensjonsavtaleAlderSpecV2: {
       /** Format: int32 */
