@@ -32,6 +32,7 @@ export const AVANSERT_FORM_NAMES = {
   inntektVsaHeltUttak: 'inntekt-vsa-helt-uttak',
   inntektVsaHeltUttakSluttAlder: 'inntekt-vsa-helt-uttak-slutt-alder',
   inntektVsaGradertUttak: 'inntekt-vsa-gradert-uttak',
+  afpInntektMaanedFoerUttakRadio: 'afp-inntekt-maaned-foer-uttak-radio',
   beregningsTypeRadio: 'beregnings-type-radio',
 }
 
