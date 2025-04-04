@@ -12,6 +12,7 @@ import { SanityGuidePanel } from '@/components/common/SanityGuidePanel'
 import { Grunnlag } from '@/components/Grunnlag'
 import { GrunnlagForbehold } from '@/components/GrunnlagForbehold'
 import { InfoOmLoependeVedtak } from '@/components/InfoOmLoependeVedtak'
+import { MaanedsbloepAvansertBeregning } from '@/components/MaanedsbloepAvansertBeregning'
 import { Pensjonsavtaler } from '@/components/Pensjonsavtaler'
 import { RedigerAvansertBeregning } from '@/components/RedigerAvansertBeregning'
 import { ResultatkortAvansertBeregning } from '@/components/ResultatkortAvansertBeregning'
@@ -44,7 +45,6 @@ import { logger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
 
 import styles from './BeregningAvansert.module.scss'
-import { MaanedsbloepAvansertBeregning } from '@/components/MaanedsbloepAvansertBeregning'
 
 export const BeregningAvansert = () => {
   const intl = useIntl()

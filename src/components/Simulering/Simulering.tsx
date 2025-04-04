@@ -55,7 +55,7 @@ interface Props {
     trygdetid?: number
     opptjeningsgrunnlag?: SimulertOpptjeningGrunnlag[]
   }
-  type: 'enkel' | 'avansert'
+  type?: 'enkel' | 'avansert'
 }
 
 export const Simulering = ({
