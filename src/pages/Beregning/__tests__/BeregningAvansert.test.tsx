@@ -708,7 +708,6 @@ describe('BeregningAvansert', () => {
         })
       })
       it('Når simulering svarer at AFP offentlig er tom og bruker ba om simulering med AFP, vises ErrorPageUnexpected ', async () => {
-        // Må bruke mockResponse for å få riktig status (mockErrorResponse returnerer "originalStatus")
         mockResponse('/v8/alderspensjon/simulering', {
           status: 200,
           method: 'post',
