@@ -326,12 +326,14 @@ export const isAlder = (data?: any): data is Alder => {
   )
 }
 
-export const isUttaksalderError = (data?: any): data is UttaksalderError => {
+export const isUttaksalderError = (
+  data?: unknown
+): data is UttaksalderError => {
   return (
     typeof data === 'object' &&
     data !== null &&
-    !Array.isArray(data) &&
-    typeof (data as UttaksalderError).errorCode === 'string'
+    'errorCode' in data &&
+    typeof data.errorCode === 'string'
   )
 }
 
