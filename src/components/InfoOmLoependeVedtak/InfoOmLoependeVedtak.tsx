@@ -2,6 +2,7 @@ import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 import { BodyLong } from '@navikt/ds-react'
+import clsx from 'clsx'
 import { format, parse } from 'date-fns'
 import { nb, nn, enGB } from 'date-fns/locale'
 
@@ -16,17 +17,21 @@ interface Props {
   loependeVedtak?: LoependeVedtak
 }
 
-export function InfoOmLoependeVedtak({ loependeVedtak }: Props) {
+export const InfoOmLoependeVedtak = ({ loependeVedtak }: Props) => {
   const intl = useIntl()
 
   const formatertMaaned = React.useMemo(() => {
-    if (
-      !loependeVedtak ||
-      !loependeVedtak.alderspensjon ||
-      !loependeVedtak.alderspensjon.sisteUtbetaling
-    ) {
+    if (!loependeVedtak?.alderspensjon?.sisteUtbetaling) {
       return ''
     }
+
+    let locale = nb
+    if ((intl.locale as Locales) === 'en') {
+      locale = enGB
+    } else if ((intl.locale as Locales) === 'nn') {
+      locale = nn
+    }
+
     return format(
       parse(
         loependeVedtak.alderspensjon.sisteUtbetaling.utbetalingsdato,
@@ -34,25 +39,16 @@ export function InfoOmLoependeVedtak({ loependeVedtak }: Props) {
         new Date()
       ),
       'LLLL',
-      {
-        locale:
-          (intl.locale as Locales) === 'en'
-            ? enGB
-            : (intl.locale as Locales) === 'nn'
-              ? nn
-              : nb,
-      }
+      { locale }
     )
   }, [loependeVedtak])
 
-  if (!loependeVedtak || !loependeVedtak?.alderspensjon) {
+  if (!loependeVedtak?.alderspensjon) {
     return null
   }
 
   return (
-    <div
-      className={`${styles.container} ${styles.container__hasMobilePadding}`}
-    >
+    <div className={clsx(styles.container, styles.container__hasMobilePadding)}>
       <BodyLong>
         <FormattedMessage
           id="beregning.endring.rediger.vedtak_grad_status"
@@ -75,6 +71,7 @@ export function InfoOmLoependeVedtak({ loependeVedtak }: Props) {
             />
           )}
       </BodyLong>
+
       <Divider smallMargin />
     </div>
   )

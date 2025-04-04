@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useNavigate } from 'react-router'
 
@@ -80,7 +80,7 @@ export const BeregningEnkel: React.FC = () => {
   const [
     tidligstMuligHeltUttakRequestBody,
     setTidligstMuligHeltUttakRequestBody,
-  ] = React.useState<TidligstMuligHeltUttakRequestBody | undefined>(undefined)
+  ] = useState<TidligstMuligHeltUttakRequestBody | undefined>(undefined)
   // Hent tidligst mulig uttaksalder
   const {
     data: tidligstMuligUttak,
@@ -94,17 +94,17 @@ export const BeregningEnkel: React.FC = () => {
   const utenlandsperioder = useAppSelector(selectUtenlandsperioder)
   const { uttaksalder } = useAppSelector(selectCurrentSimulation)
   const [alderspensjonEnkelRequestBody, setAlderspensjonEnkelRequestBody] =
-    React.useState<AlderspensjonRequestBody | undefined>(undefined)
+    useState<AlderspensjonRequestBody | undefined>(undefined)
   const [showInntektAlert, setShowInntektAlert] = React.useState<boolean>(false)
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Show alert når: inntekt fra bruker er ikke null (det betyr at brukeren har endret den) og at startAlder er null (betyr at de ble nettopp nullstilt fra GrunnlagInntekt)
     setShowInntektAlert(
       !!aarligInntektFoerUttakBeloepFraBrukerInput && uttaksalder === null
     )
   }, [aarligInntektFoerUttakBeloepFraBrukerInput, uttaksalder])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!ufoeregrad) {
       const requestBody = generateTidligstMuligHeltUttakRequestBody({
         loependeVedtak,
@@ -126,7 +126,7 @@ export const BeregningEnkel: React.FC = () => {
     epsHarInntektOver2G,
   ])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (uttaksalder) {
       const requestBody = generateAlderspensjonEnkelRequestBody({
         loependeVedtak,
@@ -164,7 +164,7 @@ export const BeregningEnkel: React.FC = () => {
     }
   )
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (alderspensjon?.vilkaarsproeving.vilkaarErOppfylt) {
       logger('resultat vist', { tekst: 'Beregning enkel' })
       logger('grunnlag for beregningen', {
@@ -174,7 +174,7 @@ export const BeregningEnkel: React.FC = () => {
     }
   }, [alderspensjon])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (uttaksalder !== null) {
       if (alderspensjon && !alderspensjon?.vilkaarsproeving.vilkaarErOppfylt) {
         logger('alert vist', {
@@ -190,7 +190,7 @@ export const BeregningEnkel: React.FC = () => {
     }
   }, [uttaksalder, isError, alderspensjon])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (
       (error &&
         ((error as FetchBaseQueryError).status === 503 ||
@@ -209,7 +209,7 @@ export const BeregningEnkel: React.FC = () => {
     }
   }, [error, tidligstMuligUttakError, alderspensjon])
 
-  const show1963Text = React.useMemo(() => {
+  const show1963Text = useMemo(() => {
     return isPersonSuccess && isFoedtFoer1964(person?.foedselsdato)
   }, [person])
 
@@ -252,6 +252,7 @@ export const BeregningEnkel: React.FC = () => {
           </Alert>
         </div>
       )}
+
       <div className={clsx(styles.background, styles.background__lightgray)}>
         <div className={styles.container}>
           <TidligstMuligUttaksalder
@@ -283,7 +284,7 @@ export const BeregningEnkel: React.FC = () => {
 
       {uttaksalder !== null && (
         <div
-          className={`${styles.container} ${styles.container__hasMobilePadding}`}
+          className={clsx(styles.container, styles.container__hasMobilePadding)}
         >
           {isError ||
           (alderspensjon &&
@@ -291,9 +292,10 @@ export const BeregningEnkel: React.FC = () => {
             uttaksalder &&
             uttaksalder.aar < normertPensjonsalder.aar) ? (
             <>
-              <Heading level="2" size="small">
+              <Heading level="2" size="medium">
                 <FormattedMessage id="beregning.title" />
               </Heading>
+
               <AlertDashBorder onRetry={isError ? onRetry : undefined}>
                 {isError ? (
                   <FormattedMessage id="beregning.error" />
@@ -308,8 +310,9 @@ export const BeregningEnkel: React.FC = () => {
           ) : (
             <>
               <Simulering
+                type="enkel"
                 isLoading={isFetching}
-                headingLevel="3"
+                headingLevel="2"
                 aarligInntektFoerUttakBeloep={
                   aarligInntektFoerUttakBeloep ?? '0'
                 }
@@ -341,7 +344,9 @@ export const BeregningEnkel: React.FC = () => {
                     : undefined
                 }
               />
+
               {!isEndring && <Pensjonsavtaler headingLevel="3" />}
+
               <Grunnlag
                 visning="enkel"
                 headingLevel="3"
@@ -359,6 +364,7 @@ export const BeregningEnkel: React.FC = () => {
           )}
         </div>
       )}
+
       {uttaksalder !== null &&
         alderspensjon &&
         alderspensjon?.vilkaarsproeving.vilkaarErOppfylt && (
