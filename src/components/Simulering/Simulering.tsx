@@ -7,6 +7,7 @@ import clsx from 'clsx'
 import Highcharts, { SeriesColumnOptions, XAxisOptions } from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 
+import { MaanedsbloepAvansertBeregning } from '../MaanedsbloepAvansertBeregning'
 import { TabellVisning } from '@/components/TabellVisning'
 import {
   usePensjonsavtalerQuery,
@@ -270,6 +271,17 @@ export const Simulering = ({
           detaljer={detaljer}
         />
       )}
+
+      <MaanedsbloepAvansertBeregning
+        alderspensjonMaanedligVedEndring={alderspensjonMaanedligVedEndring}
+        afpPrivatListe={afpPrivatListe}
+        afpOffentligListe={afpOffentligListe}
+        pensjonsavtaler={pensjonsavtalerData?.avtaler}
+        offentligTp={
+          offentligTpData?.simulertTjenestepensjon?.simuleringsresultat
+            .utbetalingsperioder
+        }
+      />
     </section>
   )
 }
