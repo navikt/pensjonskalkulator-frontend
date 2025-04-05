@@ -49,10 +49,10 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
   )
 
   const foedselsdato = useAppSelector(selectFoedselsdato)
-  const sumPensjonsavtaler = hentSumPensjonsavtalerVedUttak(
-    pensjonsavtaler!,
-    uttaksalder!
-  )
+  const sumPensjonsavtaler =
+    pensjonsavtaler && uttaksalder
+      ? hentSumPensjonsavtalerVedUttak(pensjonsavtaler, uttaksalder)
+      : undefined
 
   const summerYtelser = (type: string) => {
     return (
