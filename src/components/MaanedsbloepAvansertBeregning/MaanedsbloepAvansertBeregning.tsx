@@ -55,10 +55,22 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
       : undefined
 
   const summerYtelser = (type: string) => {
+    const sumAvtaler =
+      pensjonsavtaler && uttaksalder
+        ? type === 'gradert'
+          ? hentSumPensjonsavtalerVedUttak(pensjonsavtaler, uttaksalder)
+          : gradertUttaksperiode
+            ? hentSumPensjonsavtalerVedUttak(
+                pensjonsavtaler,
+                gradertUttaksperiode?.uttaksalder
+              )
+            : 0
+        : 0
+
     return (
       (afpOffentlig || 0) +
       (afpPrivat || 0) +
-      (sumPensjonsavtaler || 0) +
+      (sumAvtaler || 0) +
       ((type === 'gradert' ? alderspeonsjonGradert : alderpensjonHel) || 0)
     )
   }
