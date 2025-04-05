@@ -12,7 +12,6 @@ import { SanityGuidePanel } from '@/components/common/SanityGuidePanel'
 import { Grunnlag } from '@/components/Grunnlag'
 import { GrunnlagForbehold } from '@/components/GrunnlagForbehold'
 import { InfoOmLoependeVedtak } from '@/components/InfoOmLoependeVedtak'
-import { MaanedsbloepAvansertBeregning } from '@/components/MaanedsbloepAvansertBeregning'
 import { Pensjonsavtaler } from '@/components/Pensjonsavtaler'
 import { RedigerAvansertBeregning } from '@/components/RedigerAvansertBeregning'
 import { ResultatkortAvansertBeregning } from '@/components/ResultatkortAvansertBeregning'
@@ -178,8 +177,6 @@ export const BeregningAvansert = () => {
     }
   }
 
-  const maanedtligbeloep = alderspensjon?.afpOffentlig?.at(0)?.beloep
-
   if (avansertSkjemaModus === 'redigering')
     return (
       <RedigerAvansertBeregning
@@ -321,8 +318,6 @@ export const BeregningAvansert = () => {
                   : undefined
               }
             />
-
-            <MaanedsbloepAvansertBeregning alderspensjon={alderspensjon} />
 
             {beregningsvalg === 'med_afp' && (
               <SanityGuidePanel

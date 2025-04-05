@@ -3,6 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl'
 
 import { BodyLong, Box, Heading, HStack, VStack } from '@navikt/ds-react'
 
+import { hentSumPensjonsavtalerVedUttak } from '../Pensjonsavtaler/utils'
 import { useAppSelector } from '@/state/hooks'
 import {
   selectCurrentSimulation,
@@ -14,34 +15,50 @@ import { formatInntekt } from '@/utils/inntekt'
 import styles from './MaanedsbloepAvansertBeregning.module.scss'
 
 interface Props {
-  pensjonsavtaler?: number
-  alderspensjon?: AlderspensjonResponseBody
+  afpPrivatListe?: AfpPrivatPensjonsberegning[]
+  afpOffentligListe?: AfpPrivatPensjonsberegning[]
+  alderspensjonMaanedligVedEndring?: AlderspensjonMaanedligVedEndring
+  pensjonsavtaler?: Pensjonsavtale[]
+  offentligTp?: UtbetalingsperiodeOffentligTP[]
 }
 
 export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
+  alderspensjonMaanedligVedEndring,
+  afpPrivatListe,
+  afpOffentligListe,
   pensjonsavtaler,
-  alderspensjon,
 }) => {
   const intl = useIntl()
 
   const alderpensjonHel =
-    alderspensjon?.alderspensjonMaanedligVedEndring?.heltUttakMaanedligBeloep
+    alderspensjonMaanedligVedEndring?.heltUttakMaanedligBeloep
 
   const alderspeonsjonGradert =
-    alderspensjon?.alderspensjonMaanedligVedEndring?.gradertUttakMaanedligBeloep
+    alderspensjonMaanedligVedEndring?.gradertUttakMaanedligBeloep
 
-  const afp = alderspensjon?.afpOffentlig?.[0].beloep
+  const afpOffentlig = afpOffentligListe?.[0].beloep
+    ? Math.round(afpOffentligListe?.[0].beloep / 12)
+    : undefined
+
+  const afpPrivat = afpPrivatListe?.[0].beloep
+    ? Math.round(afpPrivatListe?.[0].beloep / 12)
+    : undefined
 
   const { uttaksalder, gradertUttaksperiode } = useAppSelector(
     selectCurrentSimulation
   )
 
   const foedselsdato = useAppSelector(selectFoedselsdato)
+  const sumPensjonsavtaler = hentSumPensjonsavtalerVedUttak(
+    pensjonsavtaler!,
+    uttaksalder!
+  )
 
   const summerYtelser = (type: string) => {
     return (
-      (afp || 0) +
-      (pensjonsavtaler || 0) +
+      (afpOffentlig || 0) +
+      (afpPrivat || 0) +
+      (sumPensjonsavtaler || 0) +
       ((type === 'gradert' ? alderspeonsjonGradert : alderpensjonHel) || 0)
     )
   }
@@ -87,13 +104,13 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
                 />
                 {formatertAlderTittel(gradertUttaksperiode.uttaksalder)}
               </BodyLong>
-              {afp && (
+              {(afpOffentlig || afpPrivat) && (
                 <div>
                   <BodyLong size="medium">
                     <FormattedMessage id="beregning.avansert.maanedsbeloep.afp" />
                     :
                   </BodyLong>
-                  {formatInntekt(afp)} kr
+                  {formatInntekt((afpOffentlig ?? 0) + (afpPrivat ?? 0))} kr
                 </div>
               )}
               {pensjonsavtaler && (
@@ -102,7 +119,7 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
                     <FormattedMessage id="beregning.avansert.maanedsbeloep.pensjonsavtaler" />
                     :
                   </BodyLong>
-                  {formatInntekt(pensjonsavtaler)} kr
+                  {formatInntekt(0)} kr
                 </div>
               )}
               {gradertUttaksperiode && (
@@ -115,8 +132,7 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
                     :
                   </BodyLong>
                   {formatInntekt(
-                    alderspensjon?.alderspensjonMaanedligVedEndring
-                      ?.gradertUttakMaanedligBeloep
+                    alderspensjonMaanedligVedEndring?.gradertUttakMaanedligBeloep
                   )}{' '}
                   kr
                 </div>
@@ -158,13 +174,13 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
               />
               {formatertAlderTittel(uttaksalder!)}
             </BodyLong>
-            {afp && (
+            {(afpOffentlig || afpPrivat) && (
               <div>
                 <BodyLong size="medium">
                   <FormattedMessage id="beregning.avansert.maanedsbeloep.afp" />
                   :
                 </BodyLong>
-                {formatInntekt(afp)} kr
+                {formatInntekt((afpOffentlig ?? 0) + (afpPrivat ?? 0))} kr
               </div>
             )}
             {pensjonsavtaler && (
@@ -173,7 +189,7 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
                   <FormattedMessage id="beregning.avansert.maanedsbeloep.pensjonsavtaler" />
                   :
                 </BodyLong>
-                {formatInntekt(pensjonsavtaler)} kr
+                {formatInntekt(sumPensjonsavtaler ?? 0)} kr
               </div>
             )}
             {alderpensjonHel && (
