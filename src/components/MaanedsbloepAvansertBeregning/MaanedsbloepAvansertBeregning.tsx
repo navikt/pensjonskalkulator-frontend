@@ -57,12 +57,12 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
   const summerYtelser = (type: string) => {
     const sumAvtaler =
       pensjonsavtaler && uttaksalder
-        ? type === 'gradert'
+        ? type === 'helt'
           ? hentSumPensjonsavtalerVedUttak(pensjonsavtaler, uttaksalder)
           : gradertUttaksperiode
             ? hentSumPensjonsavtalerVedUttak(
                 pensjonsavtaler,
-                gradertUttaksperiode?.uttaksalder
+                gradertUttaksperiode.uttaksalder
               )
             : 0
         : 0
