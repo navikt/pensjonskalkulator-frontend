@@ -14,33 +14,37 @@ import { formatInntekt } from '@/utils/inntekt'
 import styles from './MaanedsbloepAvansertBeregning.module.scss'
 
 interface Props {
-  alderpensjonHel: number
-  alderspeonsjonGradert?: number
-  afp?: number
   pensjonsavtaler?: number
   alderspensjon?: AlderspensjonResponseBody
 }
 
 export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
-  alderpensjonHel,
-  alderspeonsjonGradert,
-  afp,
   pensjonsavtaler,
   alderspensjon,
 }) => {
   const intl = useIntl()
 
-  const sum =
-    alderpensjonHel +
-    (alderspeonsjonGradert || 0) +
-    (afp || 0) +
-    (pensjonsavtaler || 0)
+  const alderpensjonHel =
+    alderspensjon?.alderspensjonMaanedligVedEndring?.heltUttakMaanedligBeloep
+
+  const alderspeonsjonGradert =
+    alderspensjon?.alderspensjonMaanedligVedEndring?.gradertUttakMaanedligBeloep
+
+  const afp = alderspensjon?.afpOffentlig?.[0].beloep
 
   const { uttaksalder, gradertUttaksperiode } = useAppSelector(
     selectCurrentSimulation
   )
 
   const foedselsdato = useAppSelector(selectFoedselsdato)
+
+  const summerYtelser = (type: string) => {
+    return (
+      (afp || 0) +
+      (pensjonsavtaler || 0) +
+      ((type === 'gradert' ? alderspeonsjonGradert : alderpensjonHel) || 0)
+    )
+  }
 
   const formatertAlderTittel = (alder: Alder) => {
     return formatUttaksalder(intl, {
@@ -129,7 +133,7 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
                   />
                   :
                 </BodyLong>
-                {formatInntekt(sum)} kr
+                {formatInntekt(summerYtelser('gradert'))} kr
               </div>
             </VStack>
           </Box>
@@ -192,7 +196,7 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
                 />
                 :
               </BodyLong>
-              {formatInntekt(sum)} kr
+              {formatInntekt(summerYtelser('helt'))} kr
             </div>
           </VStack>
         </Box>
