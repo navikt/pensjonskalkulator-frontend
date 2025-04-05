@@ -7,6 +7,7 @@ import { FormattedMessage } from 'react-intl'
 import { HandFingerIcon } from '@navikt/aksel-icons'
 import { BodyLong, BodyShort, Heading, HeadingProps } from '@navikt/ds-react'
 
+import { MaanedsbloepAvansertBeregning } from '../MaanedsbloepAvansertBeregning'
 import { TabellVisning } from '@/components/TabellVisning'
 import {
   useGetUtvidetSimuleringsresultatFeatureToggleQuery,
@@ -276,6 +277,17 @@ export const Simulering = ({
           detaljer={detaljer}
         />
       )}
+
+      <MaanedsbloepAvansertBeregning
+        alderspensjonMaanedligVedEndring={alderspensjonMaanedligVedEndring}
+        afpPrivatListe={afpPrivatListe}
+        afpOffentligListe={afpOffentligListe}
+        pensjonsavtaler={pensjonsavtalerData?.avtaler}
+        offentligTp={
+          offentligTpData?.simulertTjenestepensjon?.simuleringsresultat
+            .utbetalingsperioder
+        }
+      />
     </section>
   )
 }
