@@ -29,12 +29,12 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
   const alderspensjonGradert =
     alderspensjonMaanedligVedEndring?.gradertUttakMaanedligBeloep
 
-  const afpOffentlig = afpOffentligListe?.[0].beloep
-    ? Math.round(afpOffentligListe?.[0].beloep / 12)
+  const afpOffentlig = afpOffentligListe?.length
+    ? Math.round(afpOffentligListe[0].beloep / 12)
     : undefined
 
-  const afpPrivat = afpPrivatListe?.[0].beloep
-    ? Math.round(afpPrivatListe?.[0].beloep / 12)
+  const afpPrivat = afpPrivatListe?.length
+    ? Math.round(afpPrivatListe[0].beloep / 12)
     : undefined
 
   const { uttaksalder, gradertUttaksperiode } = useAppSelector(
