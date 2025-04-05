@@ -4,6 +4,7 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { BodyLong, Box, Heading, HStack, VStack } from '@navikt/ds-react'
 
 import { hentSumPensjonsavtalerVedUttak } from '../Pensjonsavtaler/utils'
+import { getSelectedLanguage } from '@/context/LanguageProvider/utils'
 import { useAppSelector } from '@/state/hooks'
 import {
   selectCurrentSimulation,
@@ -79,12 +80,19 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
     })
   }
 
-  const hentUttaksmaaned = (uttak: Alder) => {
+  const hentUttaksmaanedOgAar = (uttak: Alder) => {
     const date = transformUttaksalderToDate(uttak, foedselsdato!)
-    const [day, month, year] = date!.split('.')
-    return new Date(`${year}-${month}-${day}`).toLocaleDateString('no-NO', {
-      month: 'long',
-    })
+    const [day, month, year] = date.split('.')
+    const maaned = new Date(`${year}-${month}-${day}`).toLocaleDateString(
+      getSelectedLanguage(),
+      {
+        month: 'long',
+      }
+    )
+    return {
+      maaned,
+      aar: year,
+    }
   }
 
   return (
@@ -151,9 +159,9 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
                   <FormattedMessage
                     id="beregning.avansert.maanedsbeloep.sum"
                     values={{
-                      maaned: hentUttaksmaaned(
+                      maaned: hentUttaksmaanedOgAar(
                         gradertUttaksperiode.uttaksalder!
-                      ),
+                      ).maaned,
                     }}
                   />
                   :
@@ -217,7 +225,9 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
               <BodyLong size="medium">
                 <FormattedMessage
                   id="beregning.avansert.maanedsbeloep.sum"
-                  values={{ maaned: hentUttaksmaaned(uttaksalder!) }}
+                  values={{
+                    maaned: hentUttaksmaanedOgAar(uttaksalder!).maaned,
+                  }}
                 />
                 :
               </BodyLong>
