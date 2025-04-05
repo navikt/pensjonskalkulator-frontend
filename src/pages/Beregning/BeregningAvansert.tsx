@@ -322,15 +322,8 @@ export const BeregningAvansert = () => {
               }
             />
 
-            <MaanedsbloepAvansertBeregning
-              alderpensjonHel={
-                alderspensjon?.alderspensjonMaanedligVedEndring
-                  ?.heltUttakMaanedligBeloep ?? 0
-              }
-              afp={
-                maanedtligbeloep ? Math.round(maanedtligbeloep / 12) : undefined
-              }
-            />
+            <MaanedsbloepAvansertBeregning alderspensjon={alderspensjon} />
+
             {beregningsvalg === 'med_afp' && (
               <SanityGuidePanel
                 id="vurderer_du_a_velge_afp"
