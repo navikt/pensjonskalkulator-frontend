@@ -26,7 +26,7 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
   const alderpensjonHel =
     alderspensjonMaanedligVedEndring?.heltUttakMaanedligBeloep
 
-  const alderspeonsjonGradert =
+  const alderspensjonGradert =
     alderspensjonMaanedligVedEndring?.gradertUttakMaanedligBeloep
 
   const afpOffentlig = afpOffentligListe?.[0].beloep
@@ -65,7 +65,7 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
             grad={gradertUttaksperiode.grad}
             afp={afpOffentlig || afpPrivat}
             pensjonsavtale={sumPensjonsavtaler('gradert')}
-            alderspensjon={alderspeonsjonGradert}
+            alderspensjon={alderspensjonGradert}
           />
         )}
         {uttaksalder && (
