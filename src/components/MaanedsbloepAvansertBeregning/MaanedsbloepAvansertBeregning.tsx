@@ -49,23 +49,20 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
   )
 
   const foedselsdato = useAppSelector(selectFoedselsdato)
-  const sumPensjonsavtaler =
+  const sumPensjonsavtaler = (type: 'gradert' | 'helt') =>
     pensjonsavtaler && uttaksalder
-      ? hentSumPensjonsavtalerVedUttak(pensjonsavtaler, uttaksalder)
-      : undefined
+      ? type === 'helt'
+        ? hentSumPensjonsavtalerVedUttak(pensjonsavtaler, uttaksalder)
+        : gradertUttaksperiode
+          ? hentSumPensjonsavtalerVedUttak(
+              pensjonsavtaler,
+              gradertUttaksperiode.uttaksalder
+            )
+          : 0
+      : 0
 
-  const summerYtelser = (type: string) => {
-    const sumAvtaler =
-      pensjonsavtaler && uttaksalder
-        ? type === 'helt'
-          ? hentSumPensjonsavtalerVedUttak(pensjonsavtaler, uttaksalder)
-          : gradertUttaksperiode
-            ? hentSumPensjonsavtalerVedUttak(
-                pensjonsavtaler,
-                gradertUttaksperiode.uttaksalder
-              )
-            : 0
-        : 0
+  const summerYtelser = (type: 'gradert' | 'helt') => {
+    const sumAvtaler = sumPensjonsavtaler(type)
 
     return (
       (afpOffentlig || 0) +
@@ -131,7 +128,7 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
                     <FormattedMessage id="beregning.avansert.maanedsbeloep.pensjonsavtaler" />
                     :
                   </BodyLong>
-                  {formatInntekt(0)} kr
+                  {formatInntekt(sumPensjonsavtaler('gradert'))} kr
                 </div>
               )}
               {gradertUttaksperiode && (
@@ -201,7 +198,7 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
                   <FormattedMessage id="beregning.avansert.maanedsbeloep.pensjonsavtaler" />
                   :
                 </BodyLong>
-                {formatInntekt(sumPensjonsavtaler ?? 0)} kr
+                {formatInntekt(sumPensjonsavtaler('helt') ?? 0)} kr
               </div>
             )}
             {alderpensjonHel && (
