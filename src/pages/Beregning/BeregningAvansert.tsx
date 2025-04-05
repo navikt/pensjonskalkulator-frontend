@@ -339,6 +339,7 @@ export const BeregningAvansert = () => {
               afp={
                 maanedtligbeloep ? Math.round(maanedtligbeloep / 12) : undefined
               }
+              alderspensjon={alderspensjon}
             />
             {beregningsvalg === 'med_afp' && (
               <SanityGuidePanel
