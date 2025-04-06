@@ -1,25 +1,23 @@
 import React from 'react'
-import { FormattedMessage, useIntl } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 
-import { BodyLong, Box, Heading, HStack, VStack } from '@navikt/ds-react'
+import { Heading, HStack } from '@navikt/ds-react'
 
-import { hentSumPensjonsavtalerVedUttak } from '../Pensjonsavtaler/utils'
-import { useAppSelector } from '@/state/hooks'
 import {
-  selectCurrentSimulation,
-  selectFoedselsdato,
-} from '@/state/userInput/selectors'
-import { formatUttaksalder, transformUttaksalderToDate } from '@/utils/alder'
-import { formatInntekt } from '@/utils/inntekt'
+  hentSumOffentligTjenestepensjonVedUttak,
+  hentSumPensjonsavtalerVedUttak,
+} from '../Pensjonsavtaler/utils'
+import { useAppSelector } from '@/state/hooks'
+import { selectCurrentSimulation } from '@/state/userInput/selectors'
 
-import styles from './MaanedsbloepAvansertBeregning.module.scss'
+import { MaanedsbeloepBoks } from './MaanedsbeleopBoks'
 
 interface Props {
   afpPrivatListe?: AfpPrivatPensjonsberegning[]
   afpOffentligListe?: AfpPrivatPensjonsberegning[]
   alderspensjonMaanedligVedEndring?: AlderspensjonMaanedligVedEndring
   pensjonsavtaler?: Pensjonsavtale[]
-  offentligTp?: UtbetalingsperiodeOffentligTP[]
+  offentligTp?: OffentligTp
 }
 
 export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
@@ -27,28 +25,26 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
   afpPrivatListe,
   afpOffentligListe,
   pensjonsavtaler,
+  offentligTp,
 }) => {
-  const intl = useIntl()
-
   const alderpensjonHel =
     alderspensjonMaanedligVedEndring?.heltUttakMaanedligBeloep
 
-  const alderspeonsjonGradert =
+  const alderspensjonGradert =
     alderspensjonMaanedligVedEndring?.gradertUttakMaanedligBeloep
 
-  const afpOffentlig = afpOffentligListe?.[0].beloep
-    ? Math.round(afpOffentligListe?.[0].beloep / 12)
+  const afpOffentlig = afpOffentligListe?.length
+    ? Math.round(afpOffentligListe[0].beloep / 12)
     : undefined
 
-  const afpPrivat = afpPrivatListe?.[0].beloep
-    ? Math.round(afpPrivatListe?.[0].beloep / 12)
+  const afpPrivat = afpPrivatListe?.length
+    ? Math.round(afpPrivatListe[0].beloep / 12)
     : undefined
 
   const { uttaksalder, gradertUttaksperiode } = useAppSelector(
     selectCurrentSimulation
   )
 
-  const foedselsdato = useAppSelector(selectFoedselsdato)
   const sumPensjonsavtaler = (type: 'gradert' | 'helt') =>
     pensjonsavtaler && uttaksalder
       ? type === 'helt'
@@ -61,30 +57,17 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
           : 0
       : 0
 
-  const summerYtelser = (type: 'gradert' | 'helt') => {
-    const sumAvtaler = sumPensjonsavtaler(type)
-
-    return (
-      (afpOffentlig || 0) +
-      (afpPrivat || 0) +
-      (sumAvtaler || 0) +
-      ((type === 'gradert' ? alderspeonsjonGradert : alderpensjonHel) || 0)
-    )
-  }
-
-  const formatertAlderTittel = (alder: Alder) => {
-    return formatUttaksalder(intl, {
-      aar: alder.aar,
-      maaneder: alder.maaneder,
-    })
-  }
-
-  const hentUttaksmaaned = (uttak: Alder) => {
-    const date = transformUttaksalderToDate(uttak, foedselsdato!)
-    const [day, month, year] = date!.split('.')
-    return new Date(`${year}-${month}-${day}`).toLocaleDateString('no-NO', {
-      month: 'long',
-    })
+  const sumTjenestepensjon = (type: 'gradert' | 'helt') => {
+    return offentligTp && uttaksalder
+      ? type === 'helt'
+        ? hentSumOffentligTjenestepensjonVedUttak(offentligTp, uttaksalder)
+        : gradertUttaksperiode
+          ? hentSumOffentligTjenestepensjonVedUttak(
+              offentligTp,
+              gradertUttaksperiode.uttaksalder
+            )
+          : 0
+      : 0
   }
 
   return (
@@ -94,137 +77,27 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
       </Heading>
       <HStack gap="8" width="100%">
         {gradertUttaksperiode && (
-          <Box
-            marginBlock="1 0"
-            borderRadius="medium"
-            paddingInline="6"
-            paddingBlock="4"
-            background="bg-subtle"
-            flexGrow="1"
-          >
-            <VStack className={styles.maanedsbeloep} gap="1">
-              <BodyLong size="medium" weight="semibold">
-                <FormattedMessage
-                  id="beregning.avansert.maanedsbeloep.tittel_1"
-                  values={{
-                    aar: uttaksalder?.aar,
-                    maaned: uttaksalder?.maaneder,
-                  }}
-                />
-                {formatertAlderTittel(gradertUttaksperiode.uttaksalder)}
-              </BodyLong>
-              {(afpOffentlig || afpPrivat) && (
-                <div>
-                  <BodyLong size="medium">
-                    <FormattedMessage id="beregning.avansert.maanedsbeloep.afp" />
-                    :
-                  </BodyLong>
-                  {formatInntekt((afpOffentlig ?? 0) + (afpPrivat ?? 0))} kr
-                </div>
-              )}
-              {pensjonsavtaler && (
-                <div>
-                  <BodyLong size="medium">
-                    <FormattedMessage id="beregning.avansert.maanedsbeloep.pensjonsavtaler" />
-                    :
-                  </BodyLong>
-                  {formatInntekt(sumPensjonsavtaler('gradert'))} kr
-                </div>
-              )}
-              {gradertUttaksperiode && (
-                <div>
-                  <BodyLong size="medium">
-                    <FormattedMessage
-                      id="beregning.avansert.maanedsbeloep.alderspensjon"
-                      values={{ prosent: gradertUttaksperiode.grad }}
-                    />
-                    :
-                  </BodyLong>
-                  {formatInntekt(
-                    alderspensjonMaanedligVedEndring?.gradertUttakMaanedligBeloep
-                  )}{' '}
-                  kr
-                </div>
-              )}
-              <div>
-                <BodyLong size="medium">
-                  <FormattedMessage
-                    id="beregning.avansert.maanedsbeloep.sum"
-                    values={{
-                      maaned: hentUttaksmaaned(
-                        gradertUttaksperiode.uttaksalder!
-                      ),
-                    }}
-                  />
-                  :
-                </BodyLong>
-                {formatInntekt(summerYtelser('gradert'))} kr
-              </div>
-            </VStack>
-          </Box>
+          <MaanedsbeloepBoks
+            alder={gradertUttaksperiode.uttaksalder}
+            grad={gradertUttaksperiode.grad}
+            afp={afpOffentlig || afpPrivat}
+            pensjonsavtale={
+              sumPensjonsavtaler('gradert') + sumTjenestepensjon('gradert')
+            }
+            alderspensjon={alderspensjonGradert}
+          />
         )}
-        <Box
-          marginBlock="1 0"
-          borderRadius="medium"
-          paddingInline="6"
-          paddingBlock="4"
-          background="bg-subtle"
-          maxWidth="500px"
-          flexGrow="1"
-        >
-          <VStack className={styles.maanedsbeloep} gap="1">
-            <BodyLong size="medium" weight="semibold">
-              <FormattedMessage
-                id="beregning.avansert.maanedsbeloep.tittel_1"
-                values={{
-                  aar: uttaksalder?.aar,
-                  maaned: uttaksalder?.maaneder,
-                }}
-              />
-              {formatertAlderTittel(uttaksalder!)}
-            </BodyLong>
-            {(afpOffentlig || afpPrivat) && (
-              <div>
-                <BodyLong size="medium">
-                  <FormattedMessage id="beregning.avansert.maanedsbeloep.afp" />
-                  :
-                </BodyLong>
-                {formatInntekt((afpOffentlig ?? 0) + (afpPrivat ?? 0))} kr
-              </div>
-            )}
-            {pensjonsavtaler && (
-              <div>
-                <BodyLong size="medium">
-                  <FormattedMessage id="beregning.avansert.maanedsbeloep.pensjonsavtaler" />
-                  :
-                </BodyLong>
-                {formatInntekt(sumPensjonsavtaler('helt') ?? 0)} kr
-              </div>
-            )}
-            {alderpensjonHel && (
-              <div>
-                <BodyLong size="medium">
-                  <FormattedMessage
-                    id="beregning.avansert.maanedsbeloep.alderspensjon"
-                    values={{ prosent: 100 }}
-                  />
-                  :
-                </BodyLong>
-                {formatInntekt(alderpensjonHel)} kr
-              </div>
-            )}
-            <div>
-              <BodyLong size="medium">
-                <FormattedMessage
-                  id="beregning.avansert.maanedsbeloep.sum"
-                  values={{ maaned: hentUttaksmaaned(uttaksalder!) }}
-                />
-                :
-              </BodyLong>
-              {formatInntekt(summerYtelser('helt'))} kr
-            </div>
-          </VStack>
-        </Box>
+        {uttaksalder && (
+          <MaanedsbeloepBoks
+            alder={uttaksalder}
+            grad={100}
+            afp={afpOffentlig || afpPrivat}
+            pensjonsavtale={
+              sumPensjonsavtaler('helt') + sumTjenestepensjon('helt')
+            }
+            alderspensjon={alderpensjonHel}
+          />
+        )}
       </HStack>
     </>
   )
