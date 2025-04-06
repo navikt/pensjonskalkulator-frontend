@@ -20,41 +20,52 @@ export const groupPensjonsavtalerByType = (
   return record
 }
 
-export const finnAllePensjonsavtalerVedUttak = (
-  pensjonsavtaler: Pensjonsavtale[],
+export const finnAllePensjonsavtalerVedUttak = <
+  T extends { startAlder: Alder; sluttAlder?: Alder },
+>(
+  utbetalingsperioder: T[],
   uttak: Alder
 ) => {
-  const pensjonsavtalerVedUttak = pensjonsavtaler.filter((pensjonsavtale) => {
-    const { utbetalingsperioder } = pensjonsavtale
+  const utbetalingsperioderVedUttak = utbetalingsperioder.filter(
+    (utbetalingsperiode) => {
+      const { startAlder, sluttAlder } = utbetalingsperiode
 
-    const utbetalingsperioderVedUttak = utbetalingsperioder.filter(
-      (utbetalingsperiode) => {
-        const { startAlder, sluttAlder } = utbetalingsperiode
-
-        return (
-          (uttak.aar > startAlder.aar ||
-            (uttak.aar === startAlder.aar &&
-              uttak.maaneder >= startAlder.maaneder)) &&
-          ((sluttAlder && uttak.aar < sluttAlder.aar) ||
-            (sluttAlder &&
-              uttak.aar === sluttAlder.aar &&
-              uttak.maaneder <= sluttAlder.maaneder) ||
-            !sluttAlder)
-        )
-      }
-    )
-    return utbetalingsperioderVedUttak.length > 0
-  })
-
-  return pensjonsavtalerVedUttak
+      return (
+        (uttak.aar > startAlder.aar ||
+          (uttak.aar === startAlder.aar &&
+            uttak.maaneder >= startAlder.maaneder)) &&
+        ((sluttAlder && uttak.aar < sluttAlder.aar) ||
+          (sluttAlder &&
+            uttak.aar === sluttAlder.aar &&
+            uttak.maaneder <= sluttAlder.maaneder) ||
+          !sluttAlder)
+      )
+    }
+  )
+  return utbetalingsperioderVedUttak
 }
 
 export const hentSumPensjonsavtalerVedUttak = (
   pensjonsavtaler: Pensjonsavtale[],
   uttaksalder: Alder
 ) => {
-  return finnAllePensjonsavtalerVedUttak(pensjonsavtaler, uttaksalder)
-    .map((avtale) => avtale.utbetalingsperioder)
+  return finnAllePensjonsavtalerVedUttak(
+    pensjonsavtaler.map((avtale) => avtale.utbetalingsperioder).flat(),
+    uttaksalder
+  )
     .flat()
     .reduce((acc, curr) => acc + Math.round(curr.aarligUtbetaling / 12), 0)
+}
+
+export const hentSumOffentligTjenestepensjonVedUttak = (
+  tjenestepensjonsavtaler: OffentligTp,
+  alder: Alder
+) => {
+  return finnAllePensjonsavtalerVedUttak(
+    tjenestepensjonsavtaler.simulertTjenestepensjon?.simuleringsresultat
+      .utbetalingsperioder || [].flat(),
+    alder
+  )
+    .flat()
+    .reduce((acc, curr) => acc + Math.round(curr.maanedligUtbetaling ?? 0), 0)
 }
