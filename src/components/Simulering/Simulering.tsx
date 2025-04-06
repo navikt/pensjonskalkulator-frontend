@@ -278,16 +278,15 @@ export const Simulering = ({
         />
       )}
 
-      <MaanedsbloepAvansertBeregning
-        alderspensjonMaanedligVedEndring={alderspensjonMaanedligVedEndring}
-        afpPrivatListe={afpPrivatListe}
-        afpOffentligListe={afpOffentligListe}
-        pensjonsavtaler={pensjonsavtalerData?.avtaler}
-        offentligTp={
-          offentligTpData?.simulertTjenestepensjon?.simuleringsresultat
-            .utbetalingsperioder
-        }
-      />
+      {!(isOffentligTpLoading || isLoading || isPensjonsavtalerLoading) && (
+        <MaanedsbloepAvansertBeregning
+          alderspensjonMaanedligVedEndring={alderspensjonMaanedligVedEndring}
+          afpPrivatListe={afpPrivatListe}
+          afpOffentligListe={afpOffentligListe}
+          pensjonsavtaler={pensjonsavtalerData?.avtaler}
+          offentligTp={offentligTpData}
+        />
+      )}
     </section>
   )
 }

@@ -3,7 +3,10 @@ import { FormattedMessage } from 'react-intl'
 
 import { Heading, HStack } from '@navikt/ds-react'
 
-import { hentSumPensjonsavtalerVedUttak } from '../Pensjonsavtaler/utils'
+import {
+  hentSumOffentligTjenestepensjonVedUttak,
+  hentSumPensjonsavtalerVedUttak,
+} from '../Pensjonsavtaler/utils'
 import { useAppSelector } from '@/state/hooks'
 import { selectCurrentSimulation } from '@/state/userInput/selectors'
 
@@ -14,7 +17,7 @@ interface Props {
   afpOffentligListe?: AfpPrivatPensjonsberegning[]
   alderspensjonMaanedligVedEndring?: AlderspensjonMaanedligVedEndring
   pensjonsavtaler?: Pensjonsavtale[]
-  offentligTp?: UtbetalingsperiodeOffentligTP[]
+  offentligTp?: OffentligTp
 }
 
 export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
@@ -22,6 +25,7 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
   afpPrivatListe,
   afpOffentligListe,
   pensjonsavtaler,
+  offentligTp,
 }) => {
   const alderpensjonHel =
     alderspensjonMaanedligVedEndring?.heltUttakMaanedligBeloep
@@ -53,6 +57,19 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
           : 0
       : 0
 
+  const sumTjenestepensjon = (type: 'gradert' | 'helt') => {
+    return offentligTp && uttaksalder
+      ? type === 'helt'
+        ? hentSumOffentligTjenestepensjonVedUttak(offentligTp, uttaksalder)
+        : gradertUttaksperiode
+          ? hentSumOffentligTjenestepensjonVedUttak(
+              offentligTp,
+              gradertUttaksperiode.uttaksalder
+            )
+          : 0
+      : 0
+  }
+
   return (
     <>
       <Heading size="small" level="3">
@@ -64,7 +81,9 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
             alder={gradertUttaksperiode.uttaksalder}
             grad={gradertUttaksperiode.grad}
             afp={afpOffentlig || afpPrivat}
-            pensjonsavtale={sumPensjonsavtaler('gradert')}
+            pensjonsavtale={
+              sumPensjonsavtaler('gradert') + sumTjenestepensjon('gradert')
+            }
             alderspensjon={alderspensjonGradert}
           />
         )}
@@ -73,7 +92,9 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
             alder={uttaksalder}
             grad={100}
             afp={afpOffentlig || afpPrivat}
-            pensjonsavtale={sumPensjonsavtaler('helt')}
+            pensjonsavtale={
+              sumPensjonsavtaler('helt') + sumTjenestepensjon('helt')
+            }
             alderspensjon={alderpensjonHel}
           />
         )}
