@@ -199,8 +199,7 @@ const translations = {
   'utenlandsopphold.slette_modal.button.avbryt': 'Cancel',
   'utenlandsopphold.slette_modal.button.slett': 'Delete Stay',
   'stegvisning.samtykke_pensjonsavtaler.title': 'Pension Agreements',
-  'stegvisning.samtykke_pensjonsavtaler.ingress':
-    'If you want to view occupational pensions and other pension agreements, you must consent to Nav retrieving this information. Consent is voluntary. If you answer no, you will calculate retirement pension (Nav) and any AFP (contractual pension).',
+  'stegvisning.samtykke_pensjonsavtaler.ingress': 'MANGLER_TEKST',
   'stegvisning.samtykke_pensjonsavtaler.radio_label':
     'Should we retrieve your pension agreements?',
   'stegvisning.samtykke_pensjonsavtaler.radio_description': 'MANGLER_TEKST',
@@ -324,23 +323,18 @@ const translations = {
     'About the earliest withdrawal date',
   'beregning.read_more.pensjonsalder.body':
     'Your earning record in the National Insurance Scheme determines when you can start withdrawing your retirement pension. The retirement age limits will gradually increase from the 1964 birth cohort by one to two months per year, but the pension calculator does not account for this.{br}{br}If you have provided information about AFP (contractual pension) and/or periods spent abroad, this is included in the assessment of when you can withdraw your retirement pension.{br}{br}If you cannot withdraw a full (100%) retirement pension from your desired age, you can adjust the withdrawal percentage to see if you can start earlier. If you withdraw a graded pension, the timing for when you can withdraw 100% may be delayed.',
-  'beregning.read_more.pensjonsalder.endring.body':
-    'Your accrual in the National Insurance Scheme determines how much retirement pension you can withdraw. By 67, your pension must at least correspond to the guarantee pension. Withdrawing before 67 means that you distribute your pension over multiple years, and thus receive less each year.{br}{br}If you have AFP, AFP is included in the assessment of how much retirement pension you can withdraw.',
   'beregning.alt_tekst':
     'Annual income and pension after withdrawal in kroner.',
   'omufoeretrygd.hel.ingress':
-    'You have <nowrap>100 %</nowrap> disability benefits. Here you can calculate <nowrap>100 %</nowrap> retirement pension from 67 years. Upcoming legal changes will gradually increase the retirement age for those born in 1964 or later.',
+    'You have <nowrap>100 %</nowrap> disability benefits. Here you can calculate <nowrap>100 %</nowrap> retirement pension from 67 years.{br}{br}Upcoming legal changes will gradually increase the retirement age for those born in 1964 or later.',
   'omufoeretrygd.gradert.ingress':
-    'You have <nowrap>{grad} %</nowrap> disability benefits. Here you can calculate <nowrap>100 %</nowrap> retirement pension from 67 years. If you want to calculate withdrawal before 67, you must go to {link}. {br}{br}Upcoming legal changes will gradually increase the retirement age for those born in 1964 or later.',
+    'You have <nowrap>{grad} %</nowrap> disability benefits. Here you can calculate <nowrap>100 %</nowrap> retirement pension from 67 years. If you want to calculate withdrawal before 67, you must go to {link}.{br}{br}Upcoming legal changes will gradually increase the retirement age for those born in 1964 or later.',
+  'omufoeretrygd.gradert.ingress.afp': 'MANGLER_TEKST',
   'omufoeretrygd.readmore.title': 'About Pension Age and Disability Benefits',
   'omufoeretrygd.readmore.hel.ingress':
     '<nowrap>100 %</nowrap> disability benefits cannot be combined with retirement pension. Therefore, it is not possible to calculate retirement pension before 67 in the calculator. At 67, <nowrap>100 %</nowrap> disability benefits automatically convert to <nowrap>100 %</nowrap> retirement pension. If you have questions, you can contact us at 55 55 33 34.',
   'omufoeretrygd.readmore.gradert.ingress':
     'It is possible to combine graded disability benefits and graded retirement pension from 62 as long as you have enough accrual to withdraw retirement pension. The degree of disability and retirement pension cannot exceed <nowrap>100 %</nowrap>. If you have questions, you can contact us at 55 55 33 34.',
-  'omufoeretrygd.readmore.gradert.avansert.ingress':
-    'Your accrual in the National Insurance Scheme determines when you can withdraw retirement pension. By 67, your pension must at least correspond to the guarantee pension. Withdrawing before 67 means that you distribute your pension over multiple years, and thus receive less each year.{br}{br}At 67, graded disability benefits automatically convert to graded retirement pension at the nearest withdrawal degree. If you want <nowrap>100 %</nowrap> retirement pension, you have to apply for it.',
-  'omufoeretrygd.readmore.endring.ingress':
-    'Withdrawal degree indicates how much of the monthly retirement pension you wish to withdraw. The degree of disability benefits and retirement pension can together not exceed 100 %. From 67 years you can freely choose graded withdrawal (20, 40, 50, 60, or 80 %), or full retirement pension (100 %).{br}{br}If you want to change the degree, at least 12 months must have passed since you started withdrawing retirement pension or changed the withdrawal degree. You can, however, change to 0 % whenever you want.',
   'omufoeretrygd.avansert_link': 'Advanced',
   'velguttaksalder.title': 'When do you want to withdraw retirement pension?',
   'velguttaksalder.endring.title':
@@ -427,16 +421,6 @@ const translations = {
     'Choose withdrawal degree',
   'beregning.avansert.rediger.uttaksgrad.endring.description':
     'Choose new withdrawal degree',
-  'beregning.avansert.rediger.read_more.uttaksgrad.label':
-    'About withdrawal degree',
-  'beregning.avansert.rediger.read_more.uttaksgrad.gradert_ufoeretrygd.label':
-    'About withdrawal degree and disability benefits',
-  'beregning.avansert.rediger.read_more.uttaksgrad.body':
-    'Withdrawal degree indicates how much of the monthly retirement pension you wish to withdraw. You can choose graded withdrawal (20, 40, 50, 60, or <nowrap>80 %</nowrap>), or full retirement pension (<nowrap>100 %</nowrap>).',
-  'beregning.avansert.rediger.read_more.uttaksgrad.endring.body':
-    'Withdrawal degree indicates how much of the monthly retirement pension you wish to withdraw. If you want to change the degree to 20, 40, 50, 60, or 80 %, at least 12 months must have elapsed since you started withdrawing retirement pension or changed the withdrawal degree. You can change to 0 % and 100 % as often as you wish.',
-  'beregning.avansert.rediger.read_more.uttaksgrad.gradert_ufoeretrygd.body':
-    'Withdrawal degree indicates how much of the monthly retirement pension you wish to withdraw. The degree of disability benefits and retirement pension cannot together exceed 100 %. From 67 years you can freely choose graded withdrawal (20, 40, 50, 60, or 80 %), or full retirement pension (100 %).',
   'beregning.avansert.rediger.radio.inntekt_vsa_helt_uttak':
     'Do you expect to have income at the same time as you withdraw <nowrap>100 %</nowrap> pension?',
   'beregning.avansert.rediger.radio.inntekt_vsa_helt_uttak.description':
@@ -489,6 +473,13 @@ const translations = {
     'One alternative is that you can withdraw <nowrap>{alternativtGrad} %</nowrap> retirement pension at {alternativtGradertStartAar} years and {alternativtGradertStartMaaned} months. Feel free to try other combinations.',
   'beregning.vilkaarsproeving.alternativer.heltOgGradertUttak':
     'One alternative is that you can withdraw <nowrap>{alternativtGrad} %</nowrap> retirement pension at {alternativtGradertStartAar} years and {alternativtGradertStartMaaned} months if you withdraw <nowrap>100 %</nowrap> retirement pension at {alternativtHeltStartAar} years and {alternativtHeltStartMaaned} months or later. Feel free to try other combinations.',
+  'beregning.vilkaarsproeving.medAFP.intro': 'MANGLER_TEKST',
+  'beregning.vilkaarsproeving.alternativer.medAFP.gradertUttak':
+    'MANGLER_TEKST',
+  'beregning.vilkaarsproeving.alternativer.medAFP.heltOgGradertUttak':
+    'MANGLER_TEKST',
+  'beregning.vilkaarsproeving.alternativer.medAFP.ikkeNokOpptjening':
+    'MANGLER_TEKST',
   'grunnlag.title': 'Other Basis for Calculation',
   'beregning.avansert.avbryt_modal.title':
     'If you exit Advanced, you will lose all your choices.',
@@ -563,29 +554,44 @@ const translations = {
   'grunnlag.afp.ingress.null': '-',
   'grunnlag.afp.ingress.ja_offentlig':
     'You have indicated AFP in the public sector. Nav has not assessed whether you meet the conditions for AFP, but assumes that you do. For more information on the conditions, check with your occupational pension scheme.',
-  'grunnlag.afp.ingress.ja_offentlig.ufoeretrygd':
-    'When you receive disability benefits, you cannot calculate AFP in the calculator. AFP and disability benefits cannot be combined, and if you receive disability benefits after you turn 62, you lose the right to AFP. You must therefore choose between AFP and disability benefits before you turn 62.{br}{br}For more information about AFP, contact your occupational pension scheme.',
-  'grunnlag.afp.ingress.ja_offentlig_utilgjengelig':
-    'You have indicated AFP in the public sector, but you have not consented to Nav calculating it. Therefore, AFP is not shown in the calculation.',
+  'grunnlag.afp.ingress.ja_offentlig.endring':
+    'You have AFP in the public sector. Your AFP is not affected by your change in retirement pension. It continues as before.',
+  'grunnlag.afp.ingress.ja_offentlig.ufoeretrygd': 'MANGLER_TEKST',
+  'grunnlag.afp.ingress.ja_offentlig_utilgjengelig': 'MANGLER_TEKST',
   'grunnlag.afp.ingress.ja_privat':
     'You have indicated AFP in the private sector. Nav has not assessed whether you meet the criteria for AFP but assumes that you do. Some private sector employers may have agreements in the public sector. Check with your employer to see what applies to you. Read more about the AFP conditions and how to apply at <afpLink>Fellesordningen for AFP</afpLink>.',
-  'grunnlag.afp.ingress.ja_privat.ufoeretrygd':
-    'When you receive disability benefits, you cannot calculate AFP in the calculator. AFP and disability benefits cannot be combined, and if you receive disability benefits after turning 62, you lose the right to AFP. Therefore, you must choose between AFP and disability benefits before you are 62 years old.{br}{br}You can read more about this at <afpPrivatLink>nav.no</afpPrivatLink>. If you need help assessing your options, <planleggePensjonLink>contact Nav</planleggePensjonLink>.',
+  'grunnlag.afp.ingress.ja_privat.endring':
+    'You have AFP in the private sector. Your AFP is not affected by your change in retirement pension. It continues as before.',
+  'grunnlag.afp.ingress.ja_privat.ufoeretrygd': 'MANGLER_TEKST',
   'grunnlag.afp.ingress.vet_ikke':
     'If you are unsure whether you have AFP, you should ask your employer. AFP can affect when you can withdraw retirement pension.',
   'grunnlag.afp.ingress.vet_ikke.ufoeretrygd':
     'If you are unsure whether you have AFP, you should ask your employer. AFP and disability benefits cannot be combined, and if you receive disability benefits after turning 62, you lose the right to AFP. Therefore, you should check whether you have the right to AFP and choose between AFP and disability benefits before you are 62 years old.',
   'grunnlag.afp.ingress.nei':
-    'If you start a job with an employer that has an AFP agreement, we recommend that you make a ',
-  'grunnlag.afp.ingress.nei.ufoeretrygd':
-    'If you start a job with an employer that has an AFP agreement, you must be aware that AFP and disability benefits cannot be combined. You must choose between AFP and disability benefits before you turn 62.',
-  'grunnlag.afp.ingress.ja_offentlig.endring':
-    'You have AFP in the public sector. Your AFP is not affected by your change in retirement pension. It continues as before.',
-  'grunnlag.afp.ingress.ja_privat.endring':
-    'You have AFP in the private sector. Your AFP is not affected by your change in retirement pension. It continues as before.',
+    'If you start a job with an employer that has an AFP agreement, we recommend that you make a <goToStart>new calculation</goToStart>.',
   'grunnlag.afp.ingress.nei.endring':
     'You have indicated that you do not have the right to AFP. If you are unsure whether you have AFP, you should ask your employer. AFP can affect when you can withdraw retirement pension.',
-  'grunnlag.afp.reset_link': 'new calculation',
+  'grunnlag.afp.ingress.nei.ufoeretrygd':
+    'If you start a job with an employer that has an AFP agreement, you must be aware that AFP and disability benefits cannot be combined. You must choose between AFP and disability benefits before you turn 62.',
+  'grunnlag.afp.ingress.full_ufoeretrygd': 'MANGLER_TEKST',
+  'grunnlag.afp.ingress.ja_offentlig.gammel':
+    'You have indicated AFP in the public sector. Nav has not assessed whether you meet the conditions for AFP, but assumes that you do. For more information on the conditions, check with your occupational pension scheme.',
+  'grunnlag.afp.ingress.ja_offentlig.ufoeretrygd.gammel':
+    'When you receive disability benefits, you cannot calculate AFP in the calculator. AFP and disability benefits cannot be combined, and if you receive disability benefits after you turn 62, you lose the right to AFP. You must therefore choose between AFP and disability benefits before you turn 62.{br}{br}For more information about AFP, contact your occupational pension scheme.',
+  'grunnlag.afp.ingress.ja_offentlig_utilgjengelig.gammel':
+    'You have indicated AFP in the public sector, but you have not consented to Nav calculating it. Therefore, AFP is not shown in the calculation.',
+  'grunnlag.afp.ingress.ja_privat.gammel':
+    'You have indicated AFP in the private sector. Nav has not assessed whether you meet the criteria for AFP but assumes that you do. Some private sector employers may have agreements in the public sector. Check with your employer to see what applies to you. Read more about the AFP conditions and how to apply at <afpLink>Fellesordningen for AFP</afpLink>.',
+  'grunnlag.afp.ingress.ja_privat.ufoeretrygd.gammel':
+    'When you receive disability benefits, you cannot calculate AFP in the calculator. AFP and disability benefits cannot be combined, and if you receive disability benefits after turning 62, you lose the right to AFP. Therefore, you must choose between AFP and disability benefits before you are 62 years old.{br}{br}You can read more about this at <afpPrivatLink>nav.no</afpPrivatLink>. If you need help assessing your options, <planleggePensjonLink>contact Nav</planleggePensjonLink>.',
+  'grunnlag.afp.ingress.vet_ikke.gammel':
+    'If you are unsure whether you have AFP, you should ask your employer. AFP can affect when you can withdraw retirement pension.',
+  'grunnlag.afp.ingress.vet_ikke.ufoeretrygd.gammel':
+    'If you are unsure whether you have AFP, you should ask your employer. AFP and disability benefits cannot be combined, and if you receive disability benefits after turning 62, you lose the right to AFP. Therefore, you should check whether you have the right to AFP and choose between AFP and disability benefits before you are 62 years old.',
+  'grunnlag.afp.ingress.nei.gammel':
+    'If you start a job with an employer that has an AFP agreement, we recommend that you make a <goToStart>new calculation</goToStart>.',
+  'grunnlag.afp.ingress.nei.ufoeretrygd.gammel':
+    'If you start a job with an employer that has an AFP agreement, you must be aware that AFP and disability benefits cannot be combined. You must choose between AFP and disability benefits before you turn 62.',
   'grunnlag.forbehold.ingress_1':
     'The pension has been calculated based on the information we have about you and the information you have provided. The calculation has been made in accordance with current regulations. This is a preliminary estimate of what you can expect to receive in pension. Nav is not responsible for the amounts obtained from other sources.',
   'grunnlag.forbehold.link': 'All reservations',
@@ -673,11 +679,6 @@ const translations = {
     'Until which age do you expect to have the income?',
   'inntekt.endre_inntekt_vsa_pensjon_modal.button.legg_til': 'Add Income',
   'inntekt.endre_inntekt_vsa_pensjon_modal.button.endre': 'Update Income',
-  'inntekt.info_om_inntekt.read_more.label': 'About Pensionable income',
-  'inntekt.info_om_inntekt.ufoeretrygd.read_more.label':
-    'About retirement pension and the income limit for disability benefits',
-  'inntekt.info_om_inntekt.ufoeretrygd.read_more.body':
-    'retirement pension is not Pensionable income and does not affect the income limit for your disability benefits. You retain your income limit when combining disability benefits and retirement pension from the National Insurance Scheme.',
   'inntekt.info_om_inntekt.open.link': 'What is Pensionable income?',
   'inntekt.info_om_inntekt.intro':
     'We use the last available annual income from the Tax Administration as future income. If you change it in the calculator, we will use that instead.{br}{br}',
