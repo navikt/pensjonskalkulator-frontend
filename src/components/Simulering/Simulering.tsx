@@ -278,15 +278,16 @@ export const Simulering = ({
         />
       )}
 
-      {!(isOffentligTpLoading || isLoading || isPensjonsavtalerLoading) && (
-        <MaanedsbloepAvansertBeregning
-          alderspensjonMaanedligVedEndring={alderspensjonMaanedligVedEndring}
-          afpPrivatListe={afpPrivatListe}
-          afpOffentligListe={afpOffentligListe}
-          pensjonsavtaler={pensjonsavtalerData?.avtaler}
-          offentligTp={offentligTpData}
-        />
-      )}
+      {!(isOffentligTpLoading || isLoading || isPensjonsavtalerLoading) &&
+        type === 'avansert' && (
+          <MaanedsbloepAvansertBeregning
+            alderspensjonMaanedligVedEndring={alderspensjonMaanedligVedEndring}
+            afpPrivatListe={afpPrivatListe}
+            afpOffentligListe={afpOffentligListe}
+            pensjonsavtaler={pensjonsavtalerData?.avtaler}
+            offentligTp={offentligTpData}
+          />
+        )}
     </section>
   )
 }
