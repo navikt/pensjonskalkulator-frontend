@@ -1,12 +1,5 @@
-// OBS: polyfill-force må importeres før locale-data
-import '@formatjs/intl-numberformat/polyfill-force'
 import { ReactNode, useEffect, useState } from 'react'
 import { IntlProvider } from 'react-intl'
-
-import '@formatjs/intl-numberformat/locale-data/en'
-import '@formatjs/intl-numberformat/locale-data/nb'
-import '@formatjs/intl-numberformat/locale-data/nn'
-
 import { Provider as AkselProvider } from '@navikt/ds-react'
 import { en, nb, nn } from '@navikt/ds-react/locales'
 import {
@@ -23,6 +16,10 @@ import {
 import { useGetSpraakvelgerFeatureToggleQuery } from '@/state/api/apiSlice'
 import { logger } from '@/utils/logging'
 import { sanityClient } from '@/utils/sanity'
+import '@formatjs/intl-numberformat/polyfill-force'
+import '@formatjs/intl-numberformat/locale-data/en'
+import '@formatjs/intl-numberformat/locale-data/nb'
+import '@formatjs/intl-numberformat/locale-data/nn'
 
 import { getCookie, getTranslations, setCookie, updateLanguage } from './utils'
 

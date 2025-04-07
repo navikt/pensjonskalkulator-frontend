@@ -7,10 +7,11 @@ import { LanguageProvider } from '@/context/LanguageProvider'
 import { initializeLogs } from '@/faro'
 import { BASE_PATH } from '@/router/constants'
 import { routes } from '@/router/routes'
-import '@/utils/logging'
+
+import { store } from './state/store'
 
 import './scss/designsystem.scss'
-import { store } from './state/store'
+import '@/utils/logging'
 
 const root = document.getElementById('root')
 
