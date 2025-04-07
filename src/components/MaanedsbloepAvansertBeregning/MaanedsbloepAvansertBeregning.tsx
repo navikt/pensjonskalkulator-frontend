@@ -63,17 +63,17 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
       : 0
   }
 
-  const afpVedUttak = (type: 'offentlig' | 'privat', alder: Alder | null) => {
-    if (!alder) return undefined
-    if (type === 'offentlig') {
-      return afpOffentligListe?.length
-        ? Math.round(afpOffentligListe[0].beloep / (12 - alder.maaneder))
-        : undefined
-    } else {
-      return afpPrivatListe?.length
-        ? Math.round(afpPrivatListe[0].beloep / (12 - alder.maaneder))
-        : undefined
-    }
+  const afpVedUttak = (
+    ordning: 'offentlig' | 'privat',
+    type: 'gradert' | 'helt'
+  ) => {
+    const liste = ordning === 'offentlig' ? afpOffentligListe : afpPrivatListe
+
+    if (!liste?.length) return undefined
+
+    return type === 'gradert'
+      ? liste[0].maanedligBeloep
+      : liste[liste.length - 1]?.maanedligBeloep
   }
 
   return (
@@ -87,8 +87,8 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
             alder={gradertUttaksperiode.uttaksalder}
             grad={gradertUttaksperiode.grad}
             afp={
-              afpVedUttak('offentlig', gradertUttaksperiode.uttaksalder) ||
-              afpVedUttak('privat', gradertUttaksperiode.uttaksalder)
+              afpVedUttak('offentlig', 'gradert') ||
+              afpVedUttak('privat', 'gradert')
             }
             pensjonsavtale={
               sumPensjonsavtaler('gradert') + sumTjenestepensjon('gradert')
@@ -101,8 +101,7 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
             alder={uttaksalder}
             grad={100}
             afp={
-              afpVedUttak('offentlig', uttaksalder) ||
-              afpVedUttak('privat', uttaksalder)
+              afpVedUttak('offentlig', 'helt') || afpVedUttak('privat', 'helt')
             }
             pensjonsavtale={
               sumPensjonsavtaler('helt') + sumTjenestepensjon('helt')

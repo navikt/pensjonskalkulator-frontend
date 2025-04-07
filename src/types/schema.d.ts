@@ -614,6 +614,8 @@ export interface components {
       alder: number
       /** Format: int32 */
       beloep: number
+      /** Format: int32 */
+      maanedligBeloep?: number
     }
     PersonligSimuleringAlderResultV8: {
       /** Format: int32 */
