@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useNavigate } from 'react-router'
 
@@ -52,7 +52,7 @@ import { logger } from '@/utils/logging'
 
 import styles from './BeregningEnkel.module.scss'
 
-export const BeregningEnkel: React.FC = () => {
+export const BeregningEnkel = () => {
   const intl = useIntl()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -93,7 +93,7 @@ export const BeregningEnkel: React.FC = () => {
   const { uttaksalder } = useAppSelector(selectCurrentSimulation)
   const [alderspensjonEnkelRequestBody, setAlderspensjonEnkelRequestBody] =
     useState<AlderspensjonRequestBody | undefined>(undefined)
-  const [showInntektAlert, setShowInntektAlert] = React.useState<boolean>(false)
+  const [showInntektAlert, setShowInntektAlert] = useState<boolean>(false)
 
   useEffect(() => {
     // Show alert når: inntekt fra bruker er ikke null (det betyr at brukeren har endret den) og at startAlder er null (betyr at de ble nettopp nullstilt fra GrunnlagInntekt)
