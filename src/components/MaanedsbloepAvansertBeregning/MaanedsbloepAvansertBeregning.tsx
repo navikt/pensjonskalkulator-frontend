@@ -69,11 +69,13 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
   ) => {
     const liste = ordning === 'offentlig' ? afpOffentligListe : afpPrivatListe
 
+    const alder =
+      type === 'helt' ? uttaksalder : gradertUttaksperiode?.uttaksalder
+
     if (!liste?.length) return undefined
 
-    return type === 'gradert'
-      ? liste[0].maanedligBeloep
-      : liste[liste.length - 1]?.maanedligBeloep
+    return liste.find((utbetaling) => utbetaling.alder === alder?.aar)
+      ?.maanedligBeloep
   }
 
   return (
