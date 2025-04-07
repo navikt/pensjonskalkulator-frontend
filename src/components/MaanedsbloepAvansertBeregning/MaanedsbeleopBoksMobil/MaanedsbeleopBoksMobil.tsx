@@ -19,7 +19,7 @@ interface Props {
   alderspensjon?: number
 }
 
-export const MaanedsbeloepBoks: React.FC<Props> = ({
+export const MaanedsbeleopBoksMobil: React.FC<Props> = ({
   alder,
   pensjonsavtale,
   afp,
