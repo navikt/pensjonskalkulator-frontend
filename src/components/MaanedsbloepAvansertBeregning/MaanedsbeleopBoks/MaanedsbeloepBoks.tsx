@@ -14,7 +14,7 @@ import styles from './MaanedsbeloepBoks.module.scss'
 interface Props {
   alder: Alder
   grad: number
-  pensjonsavtale?: number
+  pensjonsavtale: number
   afp?: number
   alderspensjon?: number
 }
@@ -85,7 +85,7 @@ export const MaanedsbeloepBoks: React.FC<Props> = ({
             {formatInntekt(afp ?? 0)} kr
           </div>
         )}
-        {pensjonsavtale && (
+        {pensjonsavtale > 0 && (
           <div>
             <BodyLong size="medium">
               <FormattedMessage id="beregning.avansert.maanedsbeloep.pensjonsavtaler" />
