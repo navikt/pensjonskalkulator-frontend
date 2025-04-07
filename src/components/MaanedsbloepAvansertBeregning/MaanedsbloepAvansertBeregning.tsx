@@ -33,14 +33,6 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
   const alderspensjonGradert =
     alderspensjonMaanedligVedEndring?.gradertUttakMaanedligBeloep
 
-  const afpOffentlig = afpOffentligListe?.length
-    ? Math.round(afpOffentligListe[0].beloep / 12)
-    : undefined
-
-  const afpPrivat = afpPrivatListe?.length
-    ? Math.round(afpPrivatListe[0].beloep / 12)
-    : undefined
-
   const { uttaksalder, gradertUttaksperiode } = useAppSelector(
     selectCurrentSimulation
   )
@@ -71,6 +63,19 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
       : 0
   }
 
+  const afpVedUttak = (type: 'offentlig' | 'privat', alder: Alder | null) => {
+    if (!alder) return undefined
+    if (type === 'offentlig') {
+      return afpOffentligListe?.length
+        ? Math.round(afpOffentligListe[0].beloep / (12 - alder.maaneder))
+        : undefined
+    } else {
+      return afpPrivatListe?.length
+        ? Math.round(afpPrivatListe[0].beloep / (12 - alder.maaneder))
+        : undefined
+    }
+  }
+
   return (
     <>
       <Heading size="small" level="3">
@@ -81,7 +86,10 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
           <MaanedsbeloepBoks
             alder={gradertUttaksperiode.uttaksalder}
             grad={gradertUttaksperiode.grad}
-            afp={afpOffentlig || afpPrivat}
+            afp={
+              afpVedUttak('offentlig', gradertUttaksperiode.uttaksalder) ||
+              afpVedUttak('privat', gradertUttaksperiode.uttaksalder)
+            }
             pensjonsavtale={
               sumPensjonsavtaler('gradert') + sumTjenestepensjon('gradert')
             }
@@ -92,7 +100,10 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
           <MaanedsbeloepBoks
             alder={uttaksalder}
             grad={100}
-            afp={afpOffentlig || afpPrivat}
+            afp={
+              afpVedUttak('offentlig', uttaksalder) ||
+              afpVedUttak('privat', uttaksalder)
+            }
             pensjonsavtale={
               sumPensjonsavtaler('helt') + sumTjenestepensjon('helt')
             }
