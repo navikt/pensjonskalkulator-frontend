@@ -470,7 +470,7 @@ const translations = {
   'beregning.avansert.button.nullstill': 'Reset Choices',
   'beregning.avansert.button.avbryt': 'Cancel Change',
   'beregning.vilkaarsproeving.intro':
-    'Your accrual is not high enough for the desired withdrawal.',
+    'Your accrual is not high enough for the desired withdrawal. ',
   'beregning.vilkaarsproeving.intro.ikke_nok_opptjening':
     '{br}{br}You can earliest withdraw retirement pension at 67 years.',
   'beregning.vilkaarsproeving.intro.optional':
