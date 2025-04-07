@@ -1,7 +1,6 @@
 import { describe, it, vi } from 'vitest'
 
 import { AFP } from '..'
-import { mockErrorResponse } from '@/mocks/server'
 import { screen, render, waitFor, userEvent } from '@/test-utils'
 
 const navigateMock = vi.fn()

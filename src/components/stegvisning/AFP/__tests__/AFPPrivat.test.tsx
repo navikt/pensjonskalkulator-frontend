@@ -18,7 +18,6 @@ describe('stegvisning - AFP - født før 1963 og og fylt 67 år, eller født fø
   const onNextMock = vi.fn()
 
   it('rendrer slik den skal når afp ikke er oppgitt', async () => {
-    const user = userEvent.setup()
     const result = render(
       <AFPPrivat
         previousAfp={null}

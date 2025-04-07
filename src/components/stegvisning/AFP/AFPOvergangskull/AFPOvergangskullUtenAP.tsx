@@ -15,7 +15,6 @@ import {
   convertBooleanRadioToBoolean,
   convertBooleanToBooleanRadio,
 } from '@/utils/radio'
-import { getFormatMessageValues } from '@/utils/translations'
 
 interface Props {
   previousAfp: AfpRadio | null
