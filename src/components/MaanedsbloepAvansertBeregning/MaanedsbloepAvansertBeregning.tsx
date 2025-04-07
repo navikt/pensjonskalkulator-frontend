@@ -45,28 +45,29 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
     selectCurrentSimulation
   )
 
-  const sumPensjonsavtaler = (type: 'gradert' | 'helt') =>
-    pensjonsavtaler && uttaksalder
-      ? type === 'helt'
-        ? hentSumPensjonsavtalerVedUttak(pensjonsavtaler, uttaksalder)
-        : gradertUttaksperiode
-          ? hentSumPensjonsavtalerVedUttak(
-              pensjonsavtaler,
-              gradertUttaksperiode.uttaksalder
-            )
-          : 0
+  const sumPensjonsavtaler = (type: 'gradert' | 'helt') => {
+    if (!pensjonsavtaler || !uttaksalder) return 0
+
+    if (type === 'helt') {
+      return hentSumPensjonsavtalerVedUttak(pensjonsavtaler, uttaksalder)
+    }
+
+    return gradertUttaksperiode
+      ? hentSumPensjonsavtalerVedUttak(
+          pensjonsavtaler,
+          gradertUttaksperiode.uttaksalder
+        )
       : 0
+  }
 
   const sumTjenestepensjon = (type: 'gradert' | 'helt') => {
-    return offentligTp && uttaksalder
-      ? type === 'helt'
-        ? hentSumOffentligTjenestepensjonVedUttak(offentligTp, uttaksalder)
-        : gradertUttaksperiode
-          ? hentSumOffentligTjenestepensjonVedUttak(
-              offentligTp,
-              gradertUttaksperiode.uttaksalder
-            )
-          : 0
+    if (!offentligTp || !uttaksalder) return 0
+
+    const alder =
+      type === 'helt' ? uttaksalder : gradertUttaksperiode?.uttaksalder
+
+    return alder
+      ? hentSumOffentligTjenestepensjonVedUttak(offentligTp, alder)
       : 0
   }
 
