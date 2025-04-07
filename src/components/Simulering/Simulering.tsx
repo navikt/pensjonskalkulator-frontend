@@ -55,7 +55,7 @@ interface Props {
     trygdetid?: number
     opptjeningsgrunnlag?: SimulertOpptjeningGrunnlag[]
   }
-  type: 'enkel' | 'avansert'
+  visning?: BeregningVisning
 }
 
 export const Simulering = ({
@@ -68,7 +68,7 @@ export const Simulering = ({
   alderspensjonMaanedligVedEndring,
   showButtonsAndTable,
   detaljer,
-  type,
+  visning,
 }: Props) => {
   const harSamtykket = useAppSelector(selectSamtykke)
   const ufoeregrad = useAppSelector(selectUfoeregrad)
@@ -181,18 +181,20 @@ export const Simulering = ({
     },
   })
 
+  const isEnkel = visning === 'enkel'
+
   return (
     <section className={styles.section}>
-      <div className={clsx({ [styles.intro]: type === 'enkel' })}>
+      <div className={clsx({ [styles.intro]: isEnkel })}>
         <Heading
-          className={clsx({ [styles.introTitle]: type === 'enkel' })}
+          className={clsx({ [styles.introTitle]: isEnkel })}
           level={headingLevel}
           size={headingLevel === '2' ? 'medium' : 'small'}
         >
           <FormattedMessage id="beregning.highcharts.title" />
         </Heading>
 
-        {type === 'enkel' && (
+        {isEnkel && (
           <BodyLong>
             <FormattedMessage id="beregning.highcharts.ingress" />
           </BodyLong>

@@ -573,6 +573,7 @@ const translations = {
   'grunnlag.afp.ingress.nei.ufoeretrygd':
     'If you start a job with an employer that has an AFP agreement, you must be aware that AFP and disability benefits cannot be combined. You must choose between AFP and disability benefits before you turn 62.',
   'grunnlag.afp.ingress.full_ufoeretrygd': 'MANGLER_TEKST',
+  'grunnlag.afp.ingress.null.gammel': '-',
   'grunnlag.afp.ingress.ja_offentlig.gammel':
     'You have indicated AFP in the public sector. Nav has not assessed whether you meet the conditions for AFP, but assumes that you do. For more information on the conditions, check with your occupational pension scheme.',
   'grunnlag.afp.ingress.ja_offentlig.ufoeretrygd.gammel':

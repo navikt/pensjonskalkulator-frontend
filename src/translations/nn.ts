@@ -476,6 +476,7 @@ const translations = {
   'grunnlag.afp.ingress.nei.endring': 'MANGLER_TEKST',
   'grunnlag.afp.ingress.nei.ufoeretrygd': 'MANGLER_TEKST',
   'grunnlag.afp.ingress.full_ufoeretrygd': 'MANGLER_TEKST',
+  'grunnlag.afp.ingress.null.gammel': '-',
   'grunnlag.afp.ingress.ja_offentlig.gammel':
     'Vi kan ikkje vise din AFP fordi regelverket for ny AFP i offentleg sektor ikkje er endeleg avklart. For meir informasjon, sjekk tenestepensjonsordninga di.',
   'grunnlag.afp.ingress.ja_offentlig.ufoeretrygd.gammel': 'MANGLER_TEKST',

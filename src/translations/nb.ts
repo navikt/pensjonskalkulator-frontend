@@ -619,6 +619,7 @@ const translations = {
     'Starter du i jobb hos en arbeidsgiver som har avtale om AFP, må du være oppmerksom på at AFP og uføretrygd ikke kan kombineres. Du må velge mellom AFP og uføretrygd før du er 62 år.',
   'grunnlag.afp.ingress.full_ufoeretrygd':
     'For å ha rett til AFP, må du være ansatt i offentlig sektor eller i en bedrift med AFP-ordning i privat sektor. Det gjelder de siste årene og helt fram til du tar ut AFP. Hvis du mottar full uføretrygd, har du derfor normalt ikke rett til AFP.{br}{br}Du kan ikke kombinere AFP og uføretrygd. Får du utbetalt uføretrygd etter du fyller 62 år mister du retten til AFP.{br}{br}Vil du vite mer? Les mer om <ufoeretrygdOgAfpLink>Uføretrygd og AFP</ufoeretrygdOgAfpLink>.',
+  'grunnlag.afp.ingress.null.gammel': '-',
   'grunnlag.afp.ingress.ja_offentlig.gammel':
     'Du har oppgitt AFP i offentlig sektor. Nav har ikke vurdert om du fyller vilkårene for AFP, men forutsetter at du gjør det. For mer informasjon om vilkårene, sjekk tjenestepensjonsordningen din.',
   'grunnlag.afp.ingress.ja_offentlig.ufoeretrygd.gammel':

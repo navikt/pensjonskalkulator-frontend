@@ -301,7 +301,7 @@ export const BeregningEnkel: React.FC = () => {
           ) : (
             <>
               <Simulering
-                type="enkel"
+                visning="enkel"
                 isLoading={isFetching}
                 headingLevel="2"
                 aarligInntektFoerUttakBeloep={
