@@ -73,8 +73,9 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
       type === 'helt' ? uttaksalder : gradertUttaksperiode?.uttaksalder
 
     if (!liste?.length) return undefined
+    if (!alder) return undefined
 
-    return liste.find((utbetaling) => utbetaling.alder === alder?.aar)
+    return liste.find((utbetaling) => alder.aar >= utbetaling.alder)
       ?.maanedligBeloep
   }
 
