@@ -1,7 +1,8 @@
 import { describe, it, vi } from 'vitest'
 
+import { render, screen, waitFor } from '@/test-utils'
+
 import { StepKalkulatorVirkerIkke } from '..'
-import { screen, render, waitFor } from '@/test-utils'
 
 const navigateMock = vi.fn()
 vi.mock(import('react-router'), async (importOriginal) => {

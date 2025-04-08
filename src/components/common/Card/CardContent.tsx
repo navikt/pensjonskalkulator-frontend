@@ -3,10 +3,11 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { BodyLong, Button, Heading, Link } from '@navikt/ds-react'
 
 import { Loader } from '@/components/common/Loader'
+import { externalUrls } from '@/router/constants'
+
+import { ExternalLink } from '../ExternalLink'
 
 import styles from './CardContent.module.scss'
-import { externalUrls } from '@/router/constants'
-import { ExternalLink } from '../ExternalLink'
 
 export interface CardContentProps {
   text?: {
