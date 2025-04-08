@@ -104,12 +104,14 @@ jobs:
 
       - name: Create Docker image
         id: image-creation
+        if: steps.check-labels.outputs.should_deploy == 'true'
         uses: nais/docker-build-push@v0
         with:
           dockerfile: .docker/Dockerfile
           team: pensjonskalkulator
 
       - name: Deploy borger to dev
+        if: steps.check-labels.outputs.should_deploy == 'true'
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
@@ -119,6 +121,7 @@ jobs:
           PRINT_PAYLOAD: true
 
       - name: Comment on PR with links
+        if: steps.check-labels.outputs.should_deploy == 'true'
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
