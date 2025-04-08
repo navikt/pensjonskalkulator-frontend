@@ -1,7 +1,7 @@
 import {
+  FetchBaseQueryError,
   createApi,
   fetchBaseQuery,
-  FetchBaseQueryError,
 } from '@reduxjs/toolkit/query/react'
 
 import { tpNummerTilNavn } from '@/components/Pensjonsavtaler/OffentligTjenestePensjon/utils'
@@ -9,16 +9,16 @@ import { API_BASEURL } from '@/paths'
 import { RootState } from '@/state/store'
 
 import {
-  isInntekt,
-  isAlderspensjonSimulering,
-  isPerson,
-  isPensjonsavtale,
-  isOffentligTp,
-  isUnleashToggle,
   isAlder,
+  isAlderspensjonSimulering,
   isEkskludertStatus,
-  isOmstillingsstoenadOgGjenlevende,
+  isInntekt,
   isLoependeVedtak,
+  isOffentligTp,
+  isOmstillingsstoenadOgGjenlevende,
+  isPensjonsavtale,
+  isPerson,
+  isUnleashToggle,
 } from './typeguards'
 
 export const apiSlice = createApi({
@@ -219,15 +219,6 @@ export const apiSlice = createApi({
         return response
       },
     }),
-    getRedirect1963FeatureToggle: builder.query<UnleashToggle, void>({
-      query: () => '/feature/pensjonskalkulator.enable-redirect-1963',
-      transformResponse: (response: UnleashToggle) => {
-        if (!isUnleashToggle(response)) {
-          throw new Error(`Mottok ugyldig unleash response:`, response)
-        }
-        return response
-      },
-    }),
     getSanityFeatureToggle: builder.query<UnleashToggle, void>({
       query: () => '/feature/pensjonskalkulator.hent-tekster-fra-sanity',
       transformResponse: (response: UnleashToggle) => {
@@ -295,7 +286,6 @@ export const {
   useAlderspensjonQuery,
   usePensjonsavtalerQuery,
   useGetSpraakvelgerFeatureToggleQuery,
-  useGetRedirect1963FeatureToggleQuery,
   useGetSanityFeatureToggleQuery,
   useGetOtpKlpFeatureToggleQuery,
   useGetGradertUfoereAfpFeatureToggleQuery,

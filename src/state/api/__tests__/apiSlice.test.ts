@@ -1,3 +1,8 @@
+import { mockErrorResponse, mockResponse } from '@/mocks/server'
+import { apiSlice } from '@/state/api/apiSlice'
+import { setupStore } from '@/state/store'
+import { swallowErrorsAsync } from '@/test-utils'
+
 import alderspensjonResponse from '../../../mocks/data/alderspensjon/67.json' with { type: 'json' }
 import ekskludertStatusResponse from '../../../mocks/data/ekskludert-status.json' with { type: 'json' }
 import inntektResponse from '../../../mocks/data/inntekt.json' with { type: 'json' }
@@ -8,14 +13,9 @@ import pensjonsavtalerResponse from '../../../mocks/data/pensjonsavtaler/67.json
 import personResponse from '../../../mocks/data/person.json' with { type: 'json' }
 import tidligstMuligHeltUttakResponse from '../../../mocks/data/tidligstMuligHeltUttak.json' with { type: 'json' }
 import spraakvelgerToggleResponse from '../../../mocks/data/unleash-disable-spraakvelger.json' with { type: 'json' }
-import enableRedirect1963ToggleResponse from '../../../mocks/data/unleash-enable-redirect-1963.json' with { type: 'json' }
 import enableSanityToggleResponse from '../../../mocks/data/unleash-enable-sanity.json' with { type: 'json' }
 import enableOtpFraKlpToggleResponse from '../../../mocks/data/unleash-otp-fra-klp.json' with { type: 'json' }
 import utvidetSimuleringsresultatToggleResponse from '../../../mocks/data/unleash-utvidet-simuleringsresultat.json' with { type: 'json' }
-import { mockErrorResponse, mockResponse } from '@/mocks/server'
-import { apiSlice } from '@/state/api/apiSlice'
-import { setupStore } from '@/state/store'
-import { swallowErrorsAsync } from '@/test-utils'
 
 describe('apiSlice', () => {
   it('eksponerer riktig endepunkter', async () => {
@@ -619,48 +619,6 @@ describe('apiSlice', () => {
       await swallowErrorsAsync(async () => {
         await storeRef
           .dispatch(apiSlice.endpoints.getSpraakvelgerFeatureToggle.initiate())
-          .then((result) => {
-            expect(result).toThrow(Error)
-            expect(result.status).toBe('rejected')
-            expect(result.data).toBe(undefined)
-          })
-      })
-    })
-  })
-
-  describe('getRedirect1963FeatureToggle', () => {
-    it('returnerer data ved vellykket query', async () => {
-      const storeRef = setupStore(undefined, true)
-      return storeRef
-        .dispatch(apiSlice.endpoints.getRedirect1963FeatureToggle.initiate())
-        .then((result) => {
-          expect(result.status).toBe('fulfilled')
-          expect(result.data).toMatchObject(enableRedirect1963ToggleResponse)
-        })
-    })
-
-    it('returnerer undefined ved feilende query', async () => {
-      const storeRef = setupStore(undefined, true)
-      mockErrorResponse('/feature/pensjonskalkulator.enable-redirect-1963')
-      return storeRef
-        .dispatch(apiSlice.endpoints.getRedirect1963FeatureToggle.initiate())
-        .then((result) => {
-          expect(result.status).toBe('rejected')
-          expect(result.data).toBe(undefined)
-        })
-    })
-
-    it('kaster feil ved uventet format på responsen', async () => {
-      const storeRef = setupStore(undefined, true)
-
-      mockResponse('/feature/pensjonskalkulator.enable-redirect-1963', {
-        status: 200,
-        json: { lorem: 'ipsum' },
-      })
-
-      await swallowErrorsAsync(async () => {
-        await storeRef
-          .dispatch(apiSlice.endpoints.getRedirect1963FeatureToggle.initiate())
           .then((result) => {
             expect(result).toThrow(Error)
             expect(result.status).toBe('rejected')
