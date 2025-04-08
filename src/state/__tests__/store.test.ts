@@ -2,8 +2,8 @@ import { describe, it } from 'vitest'
 
 import { setupStore } from '../store'
 import {
-  userInputInitialState,
   UserInputState,
+  userInputInitialState,
 } from '../userInput/userInputSlice'
 
 describe('store', () => {
