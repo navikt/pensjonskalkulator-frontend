@@ -3,9 +3,9 @@ import translations_nb from '../../../translations/nb'
 import translations_nn from '../../../translations/nn'
 import {
   getCookie,
-  setCookie,
   getSelectedLanguage,
   getTranslations,
+  setCookie,
   updateLanguage,
 } from '../utils'
 
