@@ -277,6 +277,8 @@ const translations = {
     ' Jo lenger du ventar, dess meir får du i året.',
   'tidligstmuliguttak.1964.ingress_2': 'MANGLER_TEKST',
   'tidligstmuliguttak.info_omstillingsstoenad_og_gjenlevende': 'MANGLER_TEKST',
+  'tidligstmuliguttak.info_omstillingsstoenad_og_gjenlevende.link':
+    '55 55 33 34',
   'tidligstmuliguttak.error': 'MANGLER_TEKST',
   'beregning.read_more.pensjonsalder.label': 'MANGLER_TEKST',
   'beregning.read_more.pensjonsalder.body': 'MANGLER_TEKST',

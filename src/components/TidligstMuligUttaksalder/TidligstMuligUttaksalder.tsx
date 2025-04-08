@@ -144,6 +144,15 @@ export const TidligstMuligUttaksalder: React.FC<Props> = ({
               values={{
                 ...getFormatMessageValues(),
                 normertPensjonsalder: formatertNormertPensjonsalder,
+                link: (
+                  <Link
+                    href={`tel:${intl.formatMessage({
+                      id: 'tidligstmuliguttak.info_omstillingsstoenad_og_gjenlevende.link',
+                    })}`}
+                  >
+                    <FormattedMessage id="tidligstmuliguttak.info_omstillingsstoenad_og_gjenlevende.link" />
+                  </Link>
+                ),
               }}
             />
           </Alert>

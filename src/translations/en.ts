@@ -316,7 +316,9 @@ const translations = {
   'tidligstmuliguttak.1964.ingress_2':
     ' It may be later due to the increased retirement age.',
   'tidligstmuliguttak.info_omstillingsstoenad_og_gjenlevende':
-    'retirement pension cannot be combined with a survivor´s pension or adjustment benefits. If you wish to withdraw retirement pension before 67, you must forfeit the survivor´s pension or adjustment benefit when you withdraw your retirement pension. If you have questions, you can contact us at 55 55 33 34.',
+    'retirement pension cannot be combined with a survivor´s pension or adjustment benefits. If you wish to withdraw retirement pension before 67, you must forfeit the survivor´s pension or adjustment benefit when you withdraw your retirement pension. If you have questions, you can contact us at <nowrap>{link}</nowrap>.',
+  'tidligstmuliguttak.info_omstillingsstoenad_og_gjenlevende.link':
+    '55 55 33 34',
   'tidligstmuliguttak.error':
     'In Advanced, you can choose a more accurate pension age.',
   'beregning.read_more.pensjonsalder.label':
