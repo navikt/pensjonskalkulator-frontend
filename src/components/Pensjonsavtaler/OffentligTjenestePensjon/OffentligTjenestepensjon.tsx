@@ -11,7 +11,6 @@ import {
   VStack,
 } from '@navikt/ds-react'
 
-import { Divider } from '@/components/common/Divider'
 import { Loader } from '@/components/common/Loader'
 import { useAppSelector } from '@/state/hooks'
 import { selectAfp } from '@/state/userInput/selectors'
@@ -64,7 +63,6 @@ export const OffentligTjenestepensjon = (props: {
 
   return (
     <VStack gap="3">
-      <Divider smallMargin />
       <Heading id="tpo-heading" level={headingLevel} size="small">
         {intl.formatMessage({ id: 'pensjonsavtaler.offentligtp.title' })}
       </Heading>

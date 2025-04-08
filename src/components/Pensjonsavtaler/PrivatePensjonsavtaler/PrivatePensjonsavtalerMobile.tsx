@@ -44,6 +44,7 @@ const AvtaleGruppe: React.FC<AvtaleGruppeProps> = ({
           <Heading level={subHeadingLevel} size="xsmall">
             {pensjonsavtale.produktbetegnelse}
           </Heading>
+          <Divider smallMarginMobile />
           <table className={styles.table}>
             <tbody>
               {pensjonsavtale.utbetalingsperioder.map((utbetalingsperiode) => (
@@ -70,6 +71,7 @@ const AvtaleGruppe: React.FC<AvtaleGruppeProps> = ({
                   </td>
                 </tr>
               ))}
+              <Divider withMarginBottom />
             </tbody>
           </table>
         </div>
@@ -95,14 +97,13 @@ export const PrivatePensjonsavtalerMobile: React.FC<Props> = ({
 
   return (
     <VStack data-testid="private-pensjonsavtaler-mobile">
-      {avtaleGrupper.map(([avtaleGruppe, gruppePensjonsavtaler], index) => (
+      {avtaleGrupper.map(([avtaleGruppe, gruppePensjonsavtaler]) => (
         <div key={`${avtaleGruppe}-gruppe-mobil`}>
           <AvtaleGruppe
             headingLevel={headingLevel}
             avtale={avtaleGruppe}
             pensjonsavtaler={gruppePensjonsavtaler}
           />
-          {index < avtaleGrupper.length - 1 && <Divider />}
         </div>
       ))}
     </VStack>

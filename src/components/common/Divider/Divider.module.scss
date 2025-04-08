@@ -8,11 +8,20 @@
     margin: var(--a-spacing-4) 0;
   }
 
+  &__smallMarginMobile {
+    margin: var(--a-spacing-2) 0;
+  }
+
   &__noMargin {
     margin: 0;
   }
 
   &__noMarginBottom {
     margin-bottom: 0;
+  }
+
+  &__withMarginBottom {
+    margin-top: var(--a-spacing-2);
+    margin-bottom: var(--a-spacing-5);
   }
 }
