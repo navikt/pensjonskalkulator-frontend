@@ -45,7 +45,7 @@ const translations = {
   'error.virker_ikke.ingress':
     'En feil har skjedd hos oss som gjør at du dessverre ikke kan bruke kalkulatoren. Vi jobber med å rette feilen. Prøv igjen senere.{br}{br}Hvis problemet vedvarer, kan du {kontaktoss} ',
   'error.virker_ikke.link': 'kontakte oss',
-  'error.virker_ikke.button': 'Gå til din pensjon',
+  'error.virker_ikke.button': 'Gå til Din pensjon',
   'landingsside.for.deg.foedt.foer.1963': 'For deg født før 1963',
   'landingsside.du.maa.bruke.detaljert':
     'Du må bruke vår detaljerte kalkulator. Den gir deg et estimat på',

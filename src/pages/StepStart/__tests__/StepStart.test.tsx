@@ -51,65 +51,6 @@ describe('StepStart', () => {
     })
   })
 
-  it('navigerer til kalkulator-virker-ikke når skruAvKalkulatorFeatureToggle endres fra false til true', async () => {
-    const mockedState = {
-      api: {
-        queries: {
-          ...fulfilledGetPerson,
-          ...fulfilledGetLoependeVedtak0Ufoeregrad,
-        },
-        mutations: {},
-        provided: {},
-        subscriptions: {},
-        config: {},
-      },
-      userInput: { ...userInputInitialState },
-    }
-    store.getState = vi.fn().mockImplementation(() => mockedState)
-
-    const mockRefetch = vi.fn()
-
-    let toggleData = {
-      data: false,
-      isLoading: false,
-      isError: false,
-      isSuccess: true,
-      refetch: mockRefetch,
-    }
-
-    vi.spyOn(
-      apiSliceUtils,
-      'useGetSkruAvKalkluatorFeatureToggleQuery'
-    ).mockImplementation(() => toggleData)
-
-    const router = createMemoryRouter(routes, {
-      basename: BASE_PATH,
-      initialEntries: [`${BASE_PATH}${paths.start}`],
-    })
-    render(<RouterProvider router={router} />, {
-      preloadedState: {
-        userInput: {
-          ...userInputInitialState,
-          veilederBorgerFnr: '81549300',
-        },
-      },
-      hasRouter: false,
-    })
-
-    // Simulate the toggle changing from false to true
-    toggleData = {
-      data: true,
-      isLoading: false,
-      isError: false,
-      isSuccess: true,
-      refetch: mockRefetch,
-    }
-
-    await waitFor(() => {
-      expect(navigateMock).toHaveBeenCalledWith(paths.kalkulatorVirkerIkke)
-    })
-  })
-
   describe('Gitt at brukeren ikke har noe vedtak om alderspensjon eller AFP', () => {
     it('henter personopplysninger og viser hilsen med navnet til brukeren', async () => {
       const router = createMemoryRouter(routes, {

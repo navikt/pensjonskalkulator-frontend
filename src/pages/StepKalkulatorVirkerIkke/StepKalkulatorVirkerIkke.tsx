@@ -7,8 +7,8 @@ import { externalUrls } from '@/router/constants'
 export function StepKalkulatorVirkerIkke() {
   const intl = useIntl()
 
-  const a = () => {
-    window.location.href = externalUrls.dinPensjon
+  const navigateToDinPensjon = () => {
+    window.location.href = externalUrls.dinPensjonInnlogget
   }
 
   React.useEffect(() => {
@@ -31,7 +31,7 @@ export function StepKalkulatorVirkerIkke() {
           ingress: 'error.virker_ikke.ingress',
           primaryButton: 'error.virker_ikke.button',
         }}
-        onPrimaryButtonClick={a}
+        onPrimaryButtonClick={navigateToDinPensjon}
       />
     </Card>
   )
