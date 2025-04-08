@@ -1,7 +1,6 @@
-import { is } from 'date-fns/locale'
 import React from 'react'
 import { useIntl } from 'react-intl'
-import { Await, useLoaderData, useNavigate } from 'react-router'
+import { Await, useLoaderData } from 'react-router'
 
 import { Loader } from '@/components/common/Loader'
 import { Start } from '@/components/stegvisning/Start'
