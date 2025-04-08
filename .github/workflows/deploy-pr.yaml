@@ -118,7 +118,7 @@ jobs:
         env:
           CLUSTER: dev-gcp
           IMAGE: ${{ steps.image-creation.outputs.image }}
-          RESOURCE: .nais/deploy-pr.yml
+          RESOURCE: .nais/deploy-dev.yaml
           VAR: name=${{ steps.branch.outputs.branch_name }}
           PRINT_PAYLOAD: true
 
