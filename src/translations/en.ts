@@ -1,4 +1,4 @@
-const translations = {
+export default {
   'application.title': 'Pension Calculator – Pension',
   'application.title.stegvisning.start': 'Start – Pension Calculator',
   'application.title.stegvisning.sivilstand':
@@ -774,4 +774,3 @@ const translations = {
   'showmore.vis_mer': 'Show more',
   'link.telefon_pensjon': '55 55 33 34',
 }
-export const getTranslation_en = () => translations

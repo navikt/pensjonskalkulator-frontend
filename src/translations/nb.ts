@@ -822,5 +822,5 @@ const translations = {
   'showmore.vis_mer': 'Vis mer',
   'link.telefon_pensjon': '55 55 33 34',
 }
-export const getTranslation_nb = () => translations
+export default translations
 export type Translations = typeof translations
