@@ -1,12 +1,13 @@
 import { describe, it, vi } from 'vitest'
 
-import { Utenlandsopphold } from '..'
 import { RootState } from '@/state/store'
 import {
   userInputActions,
   userInputInitialState,
 } from '@/state/userInput/userInputSlice'
-import { screen, render, waitFor, userEvent } from '@/test-utils'
+import { render, screen, userEvent, waitFor } from '@/test-utils'
+
+import { Utenlandsopphold } from '..'
 
 describe('stegvisning - Utenlandsopphold', () => {
   const onCancelMock = vi.fn()
