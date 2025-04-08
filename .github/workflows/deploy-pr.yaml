@@ -3,8 +3,7 @@ name: Build and Deploy PR
 on:
   pull_request:
     types: [opened, synchronize]
-    branches:
-      - feature/PEK-1168-pull-request
+    branches: [feature/PEK-1168-pull-request]
   workflow_dispatch:
 
 jobs:
