@@ -41,6 +41,17 @@ export const directAccessGuard = async () => {
   return null
 }
 
+export const featureToggleAccessGuard = async () => {
+  const featureToggle = await store
+    .dispatch(
+      apiSlice.endpoints.getUtvidetSimuleringsresultatFeatureToggle.initiate()
+    )
+    .unwrap()
+  if (featureToggle.enabled) {
+    return redirect(paths.kalkulatorVirkerIkke)
+  }
+}
+
 // ////////////////////////////////////////
 
 export type LandingPageAccessGuardLoader = { shouldRedirectTo: Promise<string> }
@@ -62,6 +73,8 @@ export type StepStartAccessGuardLoader = {
 
 export const stepStartAccessGuard =
   async (): Promise<StepStartAccessGuardLoader> => {
+    await featureToggleAccessGuard()
+
     // Sørger for at brukeren er redirigert til henvisningsside iht. fødselsdato
     const getPersonQuery = store.dispatch(
       apiSlice.endpoints.getPerson.initiate()

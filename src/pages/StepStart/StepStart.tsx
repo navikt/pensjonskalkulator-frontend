@@ -1,27 +1,17 @@
 import React from 'react'
 import { useIntl } from 'react-intl'
-import { Await, useLoaderData, useNavigate } from 'react-router'
+import { Await, useLoaderData } from 'react-router'
 
 import { Loader } from '@/components/common/Loader'
 import { Start } from '@/components/stegvisning/Start'
 import { useStegvisningNavigation } from '@/components/stegvisning/stegvisning-hooks'
 import { paths } from '@/router/constants'
 import { StepStartAccessGuardLoader } from '@/router/loaders'
-import { useGetSkruAvKalkluatorFeatureToggleQuery } from '@/state/api/apiSlice'
 import { useAppSelector } from '@/state/hooks'
 import { selectIsVeileder } from '@/state/userInput/selectors'
 
 export function StepStart() {
   const intl = useIntl()
-  const navigate = useNavigate()
-
-  const { data: skruAvKalkulatorFeatureToggle, isSuccess } =
-    useGetSkruAvKalkluatorFeatureToggleQuery()
-  const skruAvKalkulatorFeatureTogglePromise = React.useMemo(() => {
-    return Promise.resolve(
-      isSuccess ? skruAvKalkulatorFeatureToggle.enabled : false
-    )
-  }, [skruAvKalkulatorFeatureToggle, isSuccess])
 
   const { getPersonQuery, getLoependeVedtakQuery, shouldRedirectTo } =
     useLoaderData() as StepStartAccessGuardLoader
@@ -56,20 +46,13 @@ export function StepStart() {
           getPersonQuery,
           getLoependeVedtakQuery,
           shouldRedirectTo,
-          skruAvKalkulatorFeatureTogglePromise,
         ])}
       >
         {({
           0: getPersonQueryResponse,
           1: getLoependeVedtakQueryResponse,
           2: shouldRedirectToResponse,
-          3: skruAvKalkulatorFeatureToggleResponse,
         }: [GetPersonQuery, GetLoependeVedtakQuery, string, boolean]) => {
-          if (skruAvKalkulatorFeatureToggleResponse) {
-            navigate(paths.kalkulatorVirkerIkke)
-            return null
-          }
-
           return (
             <Start
               shouldRedirectTo={shouldRedirectToResponse}
