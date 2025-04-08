@@ -176,8 +176,7 @@ export default {
   'utenlandsopphold.slette_modal.button.avbryt': 'MANGLER_TEKST',
   'utenlandsopphold.slette_modal.button.slett': 'MANGLER_TEKST',
   'stegvisning.samtykke_pensjonsavtaler.title': 'Pensjonen din',
-  'stegvisning.samtykke_pensjonsavtaler.ingress':
-    'I kalkulatoren får du fram alderspensjon fra folketrygden (Nav) og eventuell avtalefesta pensjon (AFP) i privat sektor. For å vise andre pensjonsavtalar og tenestepensjon frå arbeidsgjevarar, må vi ha ditt samtykke til å hente pensjonsavtalane dine.',
+  'stegvisning.samtykke_pensjonsavtaler.ingress': 'MANGLER_TEKST',
   'stegvisning.samtykke_pensjonsavtaler.radio_label':
     'Skal vi hente dine pensjonsavtalar?',
   'stegvisning.samtykke_pensjonsavtaler.radio_description': 'MANGLER_TEKST',
@@ -281,7 +280,6 @@ export default {
   'tidligstmuliguttak.error': 'MANGLER_TEKST',
   'beregning.read_more.pensjonsalder.label': 'MANGLER_TEKST',
   'beregning.read_more.pensjonsalder.body': 'MANGLER_TEKST',
-  'beregning.read_more.pensjonsalder.endring.body': 'MANGLER_TEKST',
   'beregning.alt_tekst': 'MANGLER_TEKST',
   'omufoeretrygd.hel.ingress': 'MANGLER_TEKST',
   'omufoeretrygd.gradert.ingress': 'MANGLER_TEKST',
@@ -289,8 +287,6 @@ export default {
   'omufoeretrygd.readmore.title': 'MANGLER_TEKST',
   'omufoeretrygd.readmore.hel.ingress': 'MANGLER_TEKST',
   'omufoeretrygd.readmore.gradert.ingress': 'MANGLER_TEKST',
-  'omufoeretrygd.readmore.gradert.avansert.ingress': 'MANGLER_TEKST',
-  'omufoeretrygd.readmore.endring.ingress': 'MANGLER_TEKST',
   'omufoeretrygd.avansert_link': 'MANGLER_TEKST',
   'velguttaksalder.title': 'Kor tid vil du ta ut alderspensjon?',
   'velguttaksalder.endring.title': 'MANGLER_TEKST',
@@ -364,14 +360,6 @@ export default {
   'beregning.avansert.rediger.uttaksgrad.label': 'MANGLER_TEKST',
   'beregning.avansert.rediger.uttaksgrad.description': 'MANGLER_TEKST',
   'beregning.avansert.rediger.uttaksgrad.endring.description': 'MANGLER_TEKST',
-  'beregning.avansert.rediger.read_more.uttaksgrad.label': 'MANGLER_TEKST',
-  'beregning.avansert.rediger.read_more.uttaksgrad.gradert_ufoeretrygd.label':
-    'MANGLER_TEKST',
-  'beregning.avansert.rediger.read_more.uttaksgrad.body': 'MANGLER_TEKST',
-  'beregning.avansert.rediger.read_more.uttaksgrad.endring.body':
-    'MANGLER_TEKST',
-  'beregning.avansert.rediger.read_more.uttaksgrad.gradert_ufoeretrygd.body':
-    'MANGLER_TEKST',
   'beregning.avansert.rediger.radio.inntekt_vsa_helt_uttak': 'MANGLER_TEKST',
   'beregning.avansert.rediger.radio.inntekt_vsa_helt_uttak.description':
     'MANGLER_TEKST',
@@ -421,6 +409,13 @@ export default {
   'beregning.vilkaarsproeving.alternativer.heltUttak': 'MANGLER_TEKST',
   'beregning.vilkaarsproeving.alternativer.gradertUttak': 'MANGLER_TEKST',
   'beregning.vilkaarsproeving.alternativer.heltOgGradertUttak': 'MANGLER_TEKST',
+  'beregning.vilkaarsproeving.medAFP.intro': 'MANGLER_TEKST',
+  'beregning.vilkaarsproeving.alternativer.medAFP.gradertUttak':
+    'MANGLER_TEKST',
+  'beregning.vilkaarsproeving.alternativer.medAFP.heltOgGradertUttak':
+    'MANGLER_TEKST',
+  'beregning.vilkaarsproeving.alternativer.medAFP.ikkeNokOpptjening':
+    'MANGLER_TEKST',
   'grunnlag.title': 'Grunnlaget for utrekninga',
   'grunnlag.ingress': 'Beløpa er viste i dagens kroneverdi før skatt.',
   'grunnlag.uttaksgrad.title': 'Uttaksgrad',
@@ -563,9 +558,6 @@ export default {
   'inntekt.endre_inntekt_vsa_pensjon_modal.agepicker.label': 'MANGLER_TEKST',
   'inntekt.endre_inntekt_vsa_pensjon_modal.button.legg_til': 'MANGLER_TEKST',
   'inntekt.endre_inntekt_vsa_pensjon_modal.button.endre': 'MANGLER_TEKST',
-  'inntekt.info_om_inntekt.read_more.label': 'MANGLER_TEKST',
-  'inntekt.info_om_inntekt.ufoeretrygd.read_more.label': 'MANGLER_TEKST',
-  'inntekt.info_om_inntekt.ufoeretrygd.read_more.body': 'MANGLER_TEKST',
   'inntekt.info_om_inntekt.open.link': 'Kva er pensjonsgjevande inntekt?',
   'inntekt.info_om_inntekt.intro': 'MANGLER_TEKST',
   'inntekt.info_om_inntekt.subtitle_1': 'MANGLER_TEKST',
