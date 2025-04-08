@@ -1,9 +1,10 @@
 import { Accordion } from '@navikt/ds-react'
 
-import { GrunnlagInntekt } from '..'
 import { mockResponse } from '@/mocks/server'
 import { apiSlice } from '@/state/api/apiSlice'
 import { render, screen, userEvent } from '@/test-utils'
+
+import { GrunnlagInntekt } from '..'
 
 const WrappedGrunnlagInntekt = (
   props: React.ComponentProps<typeof GrunnlagInntekt>
