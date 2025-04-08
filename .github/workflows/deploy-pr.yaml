@@ -129,8 +129,8 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const branch = '${{ steps.branch.outputs.branch_name }}';
-            const borgerUrl = `https://${branch}.pensjonskalkulator.ekstern.dev.nav.no/pensjon/kalkulator`;
-            const veilederUrl = `https://${branch}.veileder-pensjonskalkulator.ansatt.dev.nav.no/pensjon/kalkulator`;
+            const borgerUrl = `https://${branch}-pensjonskalkulator.ekstern.dev.nav.no/pensjon/kalkulator`;
+            const veilederUrl = `https://${branch}-veileder-pensjonskalkulator.ansatt.dev.nav.no/pensjon/kalkulator`;
 
             // Check for existing comments
             const { data: comments } = await github.rest.issues.listComments({
