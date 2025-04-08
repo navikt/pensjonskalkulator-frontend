@@ -21,7 +21,7 @@ export function StepStart() {
   const skruAvKalkulatorFeatureTogglePromise = React.useMemo(() => {
     return new Promise((resolve) => {
       if (skruAvKalkulatorFeatureToggle?.enabled) {
-        resolve(true)
+        resolve(skruAvKalkulatorFeatureToggle.enabled)
       }
     })
   }, [skruAvKalkulatorFeatureToggle])
@@ -67,12 +67,7 @@ export function StepStart() {
           1: getLoependeVedtakQueryResponse,
           2: shouldRedirectToResponse,
           3: skruAvKalkulatorFeatureToggleResponse,
-        }: [
-          GetPersonQuery,
-          GetLoependeVedtakQuery,
-          string,
-          boolean
-        ]) => {
+        }: [GetPersonQuery, GetLoependeVedtakQuery, string, boolean]) => {
           if (skruAvKalkulatorFeatureToggleResponse) {
             navigate(paths.kalkulatorVirkerIkke)
             return null
