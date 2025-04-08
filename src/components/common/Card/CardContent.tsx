@@ -5,8 +5,6 @@ import { BodyLong, Button, Heading, Link } from '@navikt/ds-react'
 import { Loader } from '@/components/common/Loader'
 
 import styles from './CardContent.module.scss'
-import { getFormatMessageValues } from '@/utils/translations'
-import { PrinterSmallIcon } from '@navikt/aksel-icons'
 import { externalUrls } from '@/router/constants'
 import { ExternalLink } from '../ExternalLink'
 
