@@ -1,10 +1,15 @@
-import clsx from 'clsx'
 import { compareAsc, parse } from 'date-fns'
 import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 import { PencilIcon, PlusCircleIcon } from '@navikt/aksel-icons'
-import { BodyShort, Button, Heading, Modal } from '@navikt/ds-react'
+import {
+  BodyShort,
+  Button,
+  ErrorMessage,
+  Heading,
+  Modal,
+} from '@navikt/ds-react'
 
 import { UtenlandsoppholdModal } from '@/components/UtenlandsoppholdModal'
 import { getSelectedLanguage } from '@/context/LanguageProvider/utils'
@@ -248,12 +253,9 @@ export function UtenlandsoppholdListe({
         </Button>
       )}
       {validationError && (
-        <BodyShort
-          size="medium"
-          className={clsx('navds-error-message navds-label', styles.error)}
-        >
+        <ErrorMessage showIcon className={styles.error}>
           {validationError}
-        </BodyShort>
+        </ErrorMessage>
       )}
     </section>
   )
