@@ -91,7 +91,12 @@ export const PrivatePensjonsavtaler: React.FC<PrivatePensjonsavtalerProps> = ({
           </div>
         )}
 
-      <BodyLong className={styles.paragraph} size="small">
+      <BodyLong
+        className={
+          isMobile ? styles['paragraph--mobile'] : styles['paragraph--desktop']
+        }
+        size="small"
+      >
         <FormattedMessage
           id="pensjonsavtaler.private.ingress.norsk_pensjon"
           values={{
