@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { compareAsc, parse } from 'date-fns'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 import { PencilIcon, PlusCircleIcon } from '@navikt/aksel-icons'
@@ -9,7 +10,6 @@ import {
   Heading,
   Modal,
 } from '@navikt/ds-react'
-import { compareAsc, parse } from 'date-fns'
 
 import { UtenlandsoppholdModal } from '@/components/UtenlandsoppholdModal'
 import { getSelectedLanguage } from '@/context/LanguageProvider/utils'
