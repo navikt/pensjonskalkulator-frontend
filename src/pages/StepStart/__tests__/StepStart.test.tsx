@@ -69,7 +69,13 @@ describe('StepStart', () => {
 
     const mockRefetch = vi.fn()
 
-    let toggleData = { data: false, isLoading: false, isError: false, isSuccess: true, refetch: mockRefetch }
+    let toggleData = {
+      data: false,
+      isLoading: false,
+      isError: false,
+      isSuccess: true,
+      refetch: mockRefetch,
+    }
 
     vi.spyOn(
       apiSliceUtils,
@@ -91,7 +97,13 @@ describe('StepStart', () => {
     })
 
     // Simulate the toggle changing from false to true
-    toggleData = { data: true, isLoading: false, isError: false, isSuccess: true, refetch: mockRefetch }
+    toggleData = {
+      data: true,
+      isLoading: false,
+      isError: false,
+      isSuccess: true,
+      refetch: mockRefetch,
+    }
 
     await waitFor(() => {
       expect(navigateMock).toHaveBeenCalledWith(paths.kalkulatorVirkerIkke)
