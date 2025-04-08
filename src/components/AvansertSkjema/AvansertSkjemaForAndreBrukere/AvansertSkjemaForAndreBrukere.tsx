@@ -37,6 +37,7 @@ import {
 } from '../Felles'
 import { useFormLocalState, useFormValidationErrors } from '../hooks'
 import { AVANSERT_FORM_NAMES, onAvansertBeregningSubmit } from '../utils'
+
 import styles from './AvansertSkjemaForAndreBrukere.module.scss'
 
 export const AvansertSkjemaForAndreBrukere: React.FC<{

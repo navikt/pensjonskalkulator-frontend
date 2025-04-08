@@ -14,8 +14,9 @@ import { selectUtenlandsperioder } from '@/state/userInput/selectors'
 import { wrapLogger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
 
-import styles from './Utenlandsopphold.module.scss'
 import { onSubmit } from './utils'
+
+import styles from './Utenlandsopphold.module.scss'
 
 interface Props {
   harUtenlandsopphold: boolean | null

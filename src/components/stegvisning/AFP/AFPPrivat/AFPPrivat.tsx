@@ -11,6 +11,7 @@ import { logger, wrapLogger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
 
 import { STEGVISNING_FORM_NAMES } from '../../utils'
+
 import styles from '../AFP.module.scss'
 
 interface Props {

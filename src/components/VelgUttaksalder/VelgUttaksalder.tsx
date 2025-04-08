@@ -13,8 +13,9 @@ import { userInputActions } from '@/state/userInput/userInputSlice'
 import { unformatUttaksalder } from '@/utils/alder'
 import { logger } from '@/utils/logging'
 
-import styles from './VelgUttaksalder.module.scss'
 import { getFormaterteAldere } from './utils'
+
+import styles from './VelgUttaksalder.module.scss'
 
 interface Props {
   tidligstMuligUttak?: Alder

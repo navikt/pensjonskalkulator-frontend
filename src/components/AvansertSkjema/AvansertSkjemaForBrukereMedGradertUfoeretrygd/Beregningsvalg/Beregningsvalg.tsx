@@ -8,6 +8,7 @@ import { formatUttaksalder } from '@/utils/alder'
 import { getFormatMessageValues } from '@/utils/translations'
 
 import { AVANSERT_FORM_NAMES } from '../../utils'
+
 import styles from './Beregningsvalg.module.scss'
 
 interface Props {

@@ -14,7 +14,6 @@ import {
 } from '@/utils/alder'
 import { formatInntektToNumber } from '@/utils/inntekt'
 
-import globalClassNames from './Simulering.module.scss'
 import { SERIES_DEFAULT } from './constants'
 import {
   generateXAxis,
@@ -25,6 +24,8 @@ import {
   processPensjonsberegningArray,
 } from './utils'
 import { getChartOptions, onPointUnclick } from './utils-highcharts'
+
+import globalClassNames from './Simulering.module.scss'
 
 export const useSimuleringChartLocalState = (initialValues: {
   styles: Partial<typeof globalClassNames>

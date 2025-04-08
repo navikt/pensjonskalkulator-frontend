@@ -22,6 +22,7 @@ import { formatUttaksalder } from '@/utils/alder'
 import { getFormatMessageValues } from '@/utils/translations'
 
 import { SanityReadmore } from '../common/SanityReadmore'
+
 import styles from './TidligstMuligUttaksalder.module.scss'
 
 interface Props {

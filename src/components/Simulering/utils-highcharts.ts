@@ -14,7 +14,6 @@ import { cleanAndAddEventListener } from '@/utils/events'
 import { formatInntekt } from '@/utils/inntekt'
 import { logger } from '@/utils/logging'
 
-import globalClassNames from './Simulering.module.scss'
 import {
   SERIES_DEFAULT,
   TOOLTIP_YPOS,
@@ -27,6 +26,8 @@ import {
   handleChartScroll,
   resetColumnColors,
 } from './utils'
+
+import globalClassNames from './Simulering.module.scss'
 
 export type ExtendedAxis = Axis & {
   height: number

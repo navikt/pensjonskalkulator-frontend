@@ -9,6 +9,7 @@ import { logger, wrapLogger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
 
 import { STEGVISNING_FORM_NAMES } from '../utils'
+
 import styles from './SamtykkeOffentligAFP.module.scss'
 
 interface Props {

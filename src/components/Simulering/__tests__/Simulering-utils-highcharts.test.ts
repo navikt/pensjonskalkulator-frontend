@@ -14,8 +14,9 @@ import {
   onPointUnclick,
   tooltipFormatter,
 } from '../utils-highcharts'
-import globalClassNames from './Simulering.module.scss'
 import { getChartMock } from './chart-mock'
+
+import globalClassNames from './Simulering.module.scss'
 
 describe('Simulering-utils-highcharts', () => {
   describe('labelFormatterMobile', () => {

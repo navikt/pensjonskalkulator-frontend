@@ -27,6 +27,7 @@ import {
 } from '@/utils/sivilstand'
 
 import { STEGVISNING_FORM_NAMES } from '../utils'
+
 import styles from './Sivilstand.module.scss'
 
 interface Props {

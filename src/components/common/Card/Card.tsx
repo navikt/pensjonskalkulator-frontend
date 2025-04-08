@@ -1,8 +1,9 @@
 import clsx from 'clsx'
 import React from 'react'
 
-import styles from './Card.module.scss'
 import { CardContent, CardContentProps } from './CardContent'
+
+import styles from './Card.module.scss'
 
 export interface CardComponent extends React.FC<CardProps> {
   Content: React.FC<CardContentProps>

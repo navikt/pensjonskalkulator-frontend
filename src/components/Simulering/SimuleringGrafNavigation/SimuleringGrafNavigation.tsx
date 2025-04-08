@@ -11,6 +11,7 @@ import { Button } from '@navikt/ds-react'
 import { wrapLogger } from '@/utils/logging'
 
 import { onVisFaerreAarClick, onVisFlereAarClick } from '../utils'
+
 import styles from './SimuleringGrafNavigation.module.scss'
 
 interface Props {

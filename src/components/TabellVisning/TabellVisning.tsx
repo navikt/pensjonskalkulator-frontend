@@ -10,8 +10,9 @@ import { formatInntekt } from '@/utils/inntekt'
 import { logger } from '@/utils/logging'
 
 import { ReadMore } from '../common/ReadMore'
-import styles from './TabellVisning.module.scss'
 import { useTableData } from './hooks'
+
+import styles from './TabellVisning.module.scss'
 
 interface Props {
   series: SeriesColumnOptions[]

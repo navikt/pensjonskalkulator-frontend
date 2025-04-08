@@ -1,8 +1,9 @@
 import clsx from 'clsx'
 import { useEffect, useState } from 'react'
 
-import styles from './Signals.module.scss'
 import useSignals from './hooks'
+
+import styles from './Signals.module.scss'
 
 type ActiveEndpointRes = {
   active: boolean

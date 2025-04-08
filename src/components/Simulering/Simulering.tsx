@@ -30,7 +30,6 @@ import {
   selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
 
-import styles from './Simulering.module.scss'
 import { SimuleringEndringBanner } from './SimuleringEndringBanner/SimuleringEndringBanner'
 import { SimuleringGrafNavigation } from './SimuleringGrafNavigation/SimuleringGrafNavigation'
 import { SimuleringPensjonsavtalerAlert } from './SimuleringPensjonsavtalerAlert/SimuleringPensjonsavtalerAlert'
@@ -39,6 +38,8 @@ import {
   useHighchartsRegressionPlugin,
   useSimuleringChartLocalState,
 } from './hooks'
+
+import styles from './Simulering.module.scss'
 
 export function Simulering(props: {
   isLoading: boolean

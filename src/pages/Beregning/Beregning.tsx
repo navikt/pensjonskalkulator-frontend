@@ -19,10 +19,11 @@ import { userInputActions } from '@/state/userInput/userInputSlice'
 import { BeregningVisning } from '@/types/common-types'
 import { logger } from '@/utils/logging'
 
-import styles from './Beregning.module.scss'
 import { BeregningAvansert } from './BeregningAvansert'
 import { BeregningEnkel } from './BeregningEnkel'
 import { AvansertBeregningModus, BeregningContext } from './context'
+
+import styles from './Beregning.module.scss'
 
 interface Props {
   visning: BeregningVisning

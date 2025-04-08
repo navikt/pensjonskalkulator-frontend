@@ -14,6 +14,7 @@ import offentligTpData from '../../../mocks/data/offentlig-tp.json' with { type:
 import pensjonsavtalerData from '../../../mocks/data/pensjonsavtaler/67.json' with { type: 'json' }
 import { getTranslation_nb } from '../../../translations/nb'
 import { useSimuleringChartLocalState } from '../hooks'
+
 import globalClassNames from './Simulering.module.scss'
 
 describe('Simulering-hooks', () => {

@@ -7,6 +7,7 @@ import { getFormatMessageValues } from '@/utils/translations'
 import { useIsMobile } from '@/utils/useIsMobile'
 
 import { PrivatePensjonsavtalerDesktop, PrivatePensjonsavtalerMobile } from './'
+
 import styles from './PrivatePensjonsavtaler.module.scss'
 
 interface PrivatePensjonsavtalerProps {

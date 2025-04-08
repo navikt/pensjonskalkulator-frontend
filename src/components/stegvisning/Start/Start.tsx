@@ -16,6 +16,7 @@ import { logOpenLink, wrapLogger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
 
 import FridaPortrett from '../../../assets/frida.svg'
+
 import styles from './Start.module.scss'
 
 interface Props {

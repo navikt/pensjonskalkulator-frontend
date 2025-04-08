@@ -33,8 +33,9 @@ import { userInputActions } from '@/state/userInput/userInputSlice'
 import { isFoedtFoer1963 } from '@/utils/alder'
 
 import { AlertDelB } from './AlertDelB'
-import styles from './VeilederInput.module.scss'
 import { VeilederInputRequestError } from './VeilederInputRequestError'
+
+import styles from './VeilederInput.module.scss'
 
 const router = createBrowserRouter(routes, {
   basename: `${BASE_PATH}/veileder`,

@@ -23,9 +23,10 @@ import { getTranslatedLand, getTranslatedLandFromLandkode } from '@/utils/land'
 import { getFormatMessageValues } from '@/utils/translations'
 
 import landListeData from '../../assets/land-liste.json' with { type: 'json' }
-import styles from './UtenlandsoppholdModal.module.scss'
 import { useUtenlandsoppholdLocalState } from './hooks'
 import { UTENLANDSOPPHOLD_FORM_NAMES, onUtenlandsoppholdSubmit } from './utils'
+
+import styles from './UtenlandsoppholdModal.module.scss'
 
 interface Props {
   modalRef: React.RefObject<HTMLDialogElement | null>

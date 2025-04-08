@@ -20,11 +20,12 @@ import { formatInntekt } from '@/utils/inntekt'
 import { formatSivilstand } from '@/utils/sivilstand'
 import { getFormatMessageValues } from '@/utils/translations'
 
-import styles from './Grunnlag.module.scss'
 import { GrunnlagAFP } from './GrunnlagAFP'
 import { GrunnlagInntekt } from './GrunnlagInntekt'
 import { GrunnlagSection } from './GrunnlagSection'
 import { GrunnlagUtenlandsopphold } from './GrunnlagUtenlandsopphold'
+
+import styles from './Grunnlag.module.scss'
 
 interface Props {
   visning: BeregningVisning

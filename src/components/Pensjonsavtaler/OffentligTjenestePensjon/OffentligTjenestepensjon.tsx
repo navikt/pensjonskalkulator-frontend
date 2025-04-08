@@ -23,12 +23,13 @@ import { formatInntekt } from '@/utils/inntekt'
 import { getFormatMessageValues } from '@/utils/translations'
 import { useIsMobile } from '@/utils/useIsMobile'
 
-import styles from './OffentligTjenestepensjon.module.scss'
 import {
   formatLeverandoerList,
   getInfoOmAfpOgBetingetTjenestepensjon,
   getLeverandoerHeading,
 } from './utils'
+
+import styles from './OffentligTjenestepensjon.module.scss'
 
 export const OffentligTjenestepensjon = (props: {
   isLoading: boolean

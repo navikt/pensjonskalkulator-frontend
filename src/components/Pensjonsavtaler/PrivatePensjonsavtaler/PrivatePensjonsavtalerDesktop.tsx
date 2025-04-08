@@ -12,6 +12,7 @@ import { formatInntekt } from '@/utils/inntekt'
 import { capitalize } from '@/utils/string'
 
 import { groupPensjonsavtalerByType } from '../utils'
+
 import styles from './PrivatePensjonsavtalerDesktop.module.scss'
 
 interface IAvtaleGruppeProps {

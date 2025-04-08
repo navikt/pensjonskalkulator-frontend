@@ -40,9 +40,10 @@ import {
 } from '../Felles'
 import { useFormLocalState, useFormValidationErrors } from '../hooks'
 import { AVANSERT_FORM_NAMES, onAvansertBeregningSubmit } from '../utils'
-import styles from './AvansertSkjemaForBrukereMedGradertUfoeretrygd.module.scss'
 import { Beregningsvalg } from './Beregningsvalg'
 import { IntroAFP } from './IntroAFP'
+
+import styles from './AvansertSkjemaForBrukereMedGradertUfoeretrygd.module.scss'
 
 export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
   vilkaarsproeving?: Vilkaarsproeving

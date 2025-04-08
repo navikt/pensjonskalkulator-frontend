@@ -32,8 +32,9 @@ import { getFormatMessageValues } from '@/utils/translations'
 
 import ShowMore from '../common/ShowMore/ShowMore'
 import { OffentligTjenestepensjon } from './OffentligTjenestePensjon/OffentligTjenestepensjon'
-import styles from './Pensjonsavtaler.module.scss'
 import { PrivatePensjonsavtaler } from './PrivatePensjonsavtaler'
+
+import styles from './Pensjonsavtaler.module.scss'
 
 export const Pensjonsavtaler = (props: {
   headingLevel: Exclude<HeadingProps['level'], undefined>

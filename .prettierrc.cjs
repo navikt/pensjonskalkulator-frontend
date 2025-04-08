@@ -7,7 +7,7 @@ module.exports = {
   trailingComma: 'es5',
   useTabs: false,
   plugins: ['@trivago/prettier-plugin-sort-imports'],
-  importOrder: ['^@navikt', '^@/', '^[./]'],
+  importOrder: ['^@navikt', '^@/', '^[./](?!.*\\.scss$)', '.scss$'],
   importOrderSeparation: true,
   importOrderSortSpecifiers: true,
   importOrderSideEffects: false,

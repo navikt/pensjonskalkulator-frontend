@@ -17,6 +17,7 @@ import { logger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
 
 import { GrunnlagSection } from '../GrunnlagSection'
+
 import styles from './GrunnlagInntekt.module.scss'
 
 interface Props {

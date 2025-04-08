@@ -10,6 +10,7 @@ import { logger, wrapLogger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
 
 import { STEGVISNING_FORM_NAMES } from '../utils'
+
 import styles from './SamtykkePensjonsavtaler.module.scss'
 
 interface Props {

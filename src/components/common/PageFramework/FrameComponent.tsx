@@ -7,6 +7,7 @@ import { Heading } from '@navikt/ds-react'
 import { BASE_PATH } from '@/router/constants'
 
 import KalkulatorLogo from '../../../assets/kalkulator.svg'
+
 import styles from './FrameComponent.module.scss'
 
 export const FrameComponent: React.FC<{
