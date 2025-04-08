@@ -1,4 +1,3 @@
-import { QueryStatus } from '@reduxjs/toolkit/query'
 import { RouterProvider, createMemoryRouter } from 'react-router'
 import { describe, it, vi } from 'vitest'
 
