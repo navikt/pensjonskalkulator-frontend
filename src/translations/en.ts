@@ -618,6 +618,7 @@ export default {
     'if you want to include this in the calculation.',
   'pensjonsavtaler.ingress.ingen': 'We found no pension agreements.',
   'pensjonsavtaler.kr_pr_aar': 'kr per year',
+  'pensjonsavtaler.kr_pr_aar_mobil': 'MANGLER_TEKST',
   'alder.livsvarig': 'Lifelong from',
   'pensjonsavtaler.md': 'mo.',
   'pensjonsavtaler.tabell.title.left': 'Agreements',

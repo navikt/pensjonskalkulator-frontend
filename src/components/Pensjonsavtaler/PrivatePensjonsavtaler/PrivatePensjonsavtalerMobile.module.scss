@@ -1,4 +1,23 @@
 .table {
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  border-spacing: 0;
+}
+
+.table-row {
+  display: flex;
+  width: 100%;
+  gap: 5rem; /* TODO: hva skal faset avstand være? */
+}
+
+.table-th {
+  flex: 1;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.table-td {
+  flex: 0 0 auto;
+  max-width: 15rem;
+  text-align: right;
 }

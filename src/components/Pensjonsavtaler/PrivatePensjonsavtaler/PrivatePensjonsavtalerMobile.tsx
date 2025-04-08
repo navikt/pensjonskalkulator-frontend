@@ -47,8 +47,11 @@ const AvtaleGruppe: React.FC<AvtaleGruppeProps> = ({
           <table className={styles.table}>
             <tbody>
               {pensjonsavtale.utbetalingsperioder.map((utbetalingsperiode) => (
-                <tr key={`${JSON.stringify(utbetalingsperiode)}-mobile`}>
-                  <th style={{ fontWeight: 'normal' }} scope="row" align="left">
+                <tr
+                  className={styles['table-row']}
+                  key={`${JSON.stringify(utbetalingsperiode)}-mobile`}
+                >
+                  <th className={styles['table-th']} scope="row" align="left">
                     {utbetalingsperiode.sluttAlder
                       ? formaterSluttAlderString(
                           intl,
@@ -61,9 +64,9 @@ const AvtaleGruppe: React.FC<AvtaleGruppeProps> = ({
                         )}
                     :
                   </th>
-                  <td align="right">
+                  <td className={styles['table-td']}>
                     {formatInntekt(utbetalingsperiode.aarligUtbetaling)}{' '}
-                    <FormattedMessage id="pensjonsavtaler.kr_pr_aar" />
+                    <FormattedMessage id="pensjonsavtaler.kr_pr_aar_mobil" />
                   </td>
                 </tr>
               ))}
