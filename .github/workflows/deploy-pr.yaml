@@ -1,0 +1,106 @@
+name: Build and Deploy PR
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    branches:
+      - feature/PEK-1168-testmiljø
+
+jobs:
+  build-and-deploy-pr:
+    name: Build and deploy PR
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: 'write'
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get branch name and sanitize
+        id: branch
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Get branch name from pull request
+            let branchName = context.payload.pull_request.head.ref;
+
+            // If branch contains '/', only use part after first '/'
+            if (branchName.includes('/')) {
+              branchName = branchName.split('/').slice(1).join('/');
+            }
+
+            // Convert to lowercase and remove invalid characters
+            let sanitizedName = branchName.toLowerCase().replace(/[^a-z0-9-]/g, '-');
+
+            // Truncate to max 30 characters
+            sanitizedName = sanitizedName.substring(0, 30);
+
+            core.setOutput('branch_name', sanitizedName);
+
+      - name: Use Node.js v22.11.0
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.11.0'
+          registry-url: 'https://npm.pkg.github.com'
+
+      - name: Cache node modules
+        id: cache-node
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies
+        if: steps.cache-node.outputs.cache-hit != 'true'
+        run: npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+
+      - name: Fetch openapi backend types
+        run: npx openapi-typescript https://staging.ekstern.dev.nav.no/pensjon/kalkulator/v3/api-docs/current -o ./src/types/schema.d.ts
+
+      - name: Format backend scheme
+        run: npm run format:types
+
+      - name: Build application
+        run: npm run build
+
+      - name: Build backend for frontend
+        run: npm run build:server
+
+      - name: Create Docker image
+        id: image-creation
+        uses: nais/docker-build-push@v0
+        with:
+          dockerfile: .docker/Dockerfile
+          team: pensjonskalkulator
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+
+      - name: Deploy borger to dev
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-gcp
+          IMAGE: ${{ steps.image-creation.outputs.image }}
+          RESOURCE: .nais/deploy-pr.yml
+          VAR: name=${{ steps.branch.outputs.branch_name }}
+          PRINT_PAYLOAD: true
+
+      - name: Comment on PR with links
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const branch = '${{ steps.branch.outputs.branch_name }}';
+            const borgerUrl = `https://${branch}.kalkulator.dev.nav.no/pensjon/kalkulator`;
+            const veilederUrl = `https://${branch}.veileder-kalkulator.dev.nav.no/pensjon/kalkulator`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 🚀 PR-miljøer er deployet!\n\n- Borger: [${borgerUrl}](${borgerUrl})\n- Veileder: [${veilederUrl}](${veilederUrl})\n\nMiljøene blir automatisk slettet når PR-en lukkes eller etter 1 dag.`
+            });
