@@ -1,4 +1,3 @@
-import { is } from 'date-fns/locale'
 import React from 'react'
 import { useIntl } from 'react-intl'
 import { Await, useLoaderData, useNavigate } from 'react-router'
@@ -18,14 +17,10 @@ export function StepStart() {
 
   const { data: skruAvKalkulatorFeatureToggle, isSuccess } =
     useGetSkruAvKalkluatorFeatureToggleQuery()
-
   const skruAvKalkulatorFeatureTogglePromise = React.useMemo(() => {
-    return new Promise((resolve) => {
-      if (isSuccess) {
-        resolve(skruAvKalkulatorFeatureToggle.enabled)
-      }
-      resolve(false)
-    })
+    return Promise.resolve(
+      isSuccess ? skruAvKalkulatorFeatureToggle.enabled : false
+    )
   }, [skruAvKalkulatorFeatureToggle, isSuccess])
 
   const { getPersonQuery, getLoependeVedtakQuery, shouldRedirectTo } =

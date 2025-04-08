@@ -8,7 +8,7 @@ export function StepKalkulatorVirkerIkke() {
   const intl = useIntl()
 
   const a = () => {
-    window.location.href = externalUrls.dinPensjon
+    window.location.href = externalUrls.dinPensjonInnlogget
   }
 
   React.useEffect(() => {

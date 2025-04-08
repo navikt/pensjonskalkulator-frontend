@@ -58,7 +58,7 @@ export function CardContent({
             values={{
               br: <br />,
               kontaktoss: (
-                <Link href={externalUrls.planleggePensjon}>
+                <Link href={externalUrls.planleggePensjon} target="_blank">
                   {intl.formatMessage({
                     id: 'error.virker_ikke.link',
                   })}
