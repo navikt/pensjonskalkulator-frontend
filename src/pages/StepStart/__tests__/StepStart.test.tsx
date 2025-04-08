@@ -51,7 +51,7 @@ describe('StepStart', () => {
     })
   })
 
-  it('navigerer til kalkulator-virker-ikke når skruAvKalkulatorFeatureToggle er aktivert', async () => {
+  it('navigerer til kalkulator-virker-ikke når skruAvKalkulatorFeatureToggle endres fra false til true', async () => {
     const mockedState = {
       api: {
         queries: {
@@ -67,16 +67,14 @@ describe('StepStart', () => {
     }
     store.getState = vi.fn().mockImplementation(() => mockedState)
 
+    const mockRefetch = vi.fn()
+
+    let toggleData = { data: false, isLoading: false, isError: false, isSuccess: true, refetch: mockRefetch }
+
     vi.spyOn(
       apiSliceUtils,
       'useGetSkruAvKalkluatorFeatureToggleQuery'
-    ).mockReturnValue({
-      data: true,
-      isLoading: false,
-      isError: false,
-      isSuccess: true,
-      refetch: vi.fn(),
-    })
+    ).mockImplementation(() => toggleData)
 
     const router = createMemoryRouter(routes, {
       basename: BASE_PATH,
@@ -91,6 +89,9 @@ describe('StepStart', () => {
       },
       hasRouter: false,
     })
+
+    // Simulate the toggle changing from false to true
+    toggleData = { data: true, isLoading: false, isError: false, isSuccess: true, refetch: mockRefetch }
 
     await waitFor(() => {
       expect(navigateMock).toHaveBeenCalledWith(paths.kalkulatorVirkerIkke)
