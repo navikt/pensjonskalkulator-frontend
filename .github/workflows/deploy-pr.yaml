@@ -5,6 +5,7 @@ on:
     types: [opened, synchronize]
     branches:
       - feature/PEK-1168-pull-request
+  workflow_dispatch:
 
 jobs:
   build-and-deploy-pr:
