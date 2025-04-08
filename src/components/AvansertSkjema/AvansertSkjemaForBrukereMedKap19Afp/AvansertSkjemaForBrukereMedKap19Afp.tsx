@@ -35,6 +35,7 @@ import {
   selectAarligInntektFoerUttakBeloepFraBrukerInput,
   selectNedreAldersgrense,
   selectNormertPensjonsalder,
+  selectAfpInntektMaanedFoerUttak,
 } from '@/state/userInput/selectors'
 import {
   DEFAULT_MAX_OPPTJENINGSALDER,
@@ -72,6 +73,9 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
   const aarligInntektFoerUttakBeloep = useAppSelector(
     selectAarligInntektFoerUttakBeloep
   )
+  const afpInntektMaanedFoerUttak = useAppSelector(
+    selectAfpInntektMaanedFoerUttak
+  )
   const formatertNormertPensjonsalder = formatUttaksalder(
     intl,
     normertPensjonsalder
@@ -93,6 +97,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
     localHarInntektVsaHeltUttakRadio,
     localGradertUttak,
     localHarInntektVsaGradertUttakRadio,
+    localHarAfpInntektMaanedFoerUttakRadio,
     minAlderInntektSluttAlder,
     muligeUttaksgrad,
     {
@@ -101,6 +106,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
       setLocalGradertUttak,
       setLocalHarInntektVsaHeltUttakRadio,
       setLocalHarInntektVsaGradertUttakRadio,
+      setLocalHarAfpInntektMaanedFoerUttakRadio,
     },
   ] = useFormLocalState({
     isEndring,
@@ -112,6 +118,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
     aarligInntektVsaHelPensjon,
     gradertUttaksperiode,
     normertPensjonsalder,
+    afpInntektMaanedFoerUttak,
     beregningsvalg: null,
   })
 
@@ -122,6 +129,8 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
     {
       setValidationErrors,
       setValidationErrorUttaksalderHeltUttak,
+      setValidationErrorInntektVsaHeltUttak,
+      setValidationErrorInntektVsaHeltUttakSluttAlder,
       setValidationErrorInntektVsaGradertUttak,
       resetValidationErrors,
     },
@@ -162,7 +171,6 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
         return {
           ...previous,
           grad: 100,
-          uttaksalder: localHeltUttak?.uttaksalder,
           aarligInntektVsaPensjonBeloep: undefined,
         }
       })
@@ -186,20 +194,42 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
   }
 
   const handleAfpInntektMaanedFoerUttakRadioChange = (s: BooleanRadio) => {
-    setLocalAfpInntektMaanedFoerUttakRadio(s === 'ja')
+    setLocalHarAfpInntektMaanedFoerUttakRadio?.(s === 'ja')
     setValidationErrors({
       [AVANSERT_FORM_NAMES.afpInntektMaanedFoerUttakRadio]: '',
-      [AVANSERT_FORM_NAMES.afpInntektMaanedFoerUttakRadio]: '',
-      [AVANSERT_FORM_NAMES.inntektVsaHeltUttakSluttAlder]: '',
     })
-    if (s === 'nei') {
-      setLocalAfpInntektMaanedFoerUttak((previous) => {
-        return {
+  }
+
+  const handleInntektVsaHeltUttakChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    updateAndFormatInntektFromInputField(
+      inntektVsaHeltUttakInputRef.current,
+      e.target.value,
+      (s: string) => {
+        setLocalHeltUttak((previous) => ({
           ...previous,
-          afpInntektMaanedFoerUttak: undefined,
-        }
-      })
-    }
+          aarligInntektVsaPensjon: {
+            ...previous?.aarligInntektVsaPensjon,
+            beloep: s || undefined,
+          },
+        }))
+      },
+      setValidationErrorInntektVsaHeltUttak
+    )
+  }
+
+  const handleInntektVsaHeltUttakSluttAlderChange = (
+    alder: Partial<Alder> | undefined
+  ) => {
+    setValidationErrorInntektVsaHeltUttakSluttAlder('')
+    setLocalHeltUttak((previous) => ({
+      ...previous,
+      aarligInntektVsaPensjon: {
+        ...previous?.aarligInntektVsaPensjon,
+        sluttAlder: alder,
+      },
+    }))
   }
 
   const resetForm = (): void => {
@@ -322,9 +352,9 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
               name={AVANSERT_FORM_NAMES.afpInntektMaanedFoerUttakRadio}
               data-testid={AVANSERT_FORM_NAMES.afpInntektMaanedFoerUttakRadio}
               value={
-                localHarInntektVsaHeltUttakRadio === null
+                localHarAfpInntektMaanedFoerUttakRadio === null
                   ? null
-                  : localHarInntektVsaHeltUttakRadio
+                  : localHarAfpInntektMaanedFoerUttakRadio
                     ? 'ja'
                     : 'nei'
               }

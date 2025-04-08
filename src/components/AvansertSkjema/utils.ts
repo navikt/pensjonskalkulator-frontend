@@ -551,6 +551,9 @@ export const onAvansertBeregningSubmit = (
   const inntektVsaGradertUttakFormData = data.get(
     AVANSERT_FORM_NAMES.inntektVsaGradertUttak
   )
+  /* const afpInntektMaanedFoerUttakRadioFormData = data.get(
+    AVANSERT_FORM_NAMES.afpInntektMaanedFoerUttakRadio
+  ) */
   if (
     !validateAvansertBeregningSkjema(
       {

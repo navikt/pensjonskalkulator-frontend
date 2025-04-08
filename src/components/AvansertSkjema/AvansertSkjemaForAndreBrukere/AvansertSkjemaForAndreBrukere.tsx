@@ -111,6 +111,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
     uttaksalder,
     aarligInntektVsaHelPensjon,
     gradertUttaksperiode,
+    afpInntektMaanedFoerUttak: undefined,
     normertPensjonsalder,
     beregningsvalg: null,
   })

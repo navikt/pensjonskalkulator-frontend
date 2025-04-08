@@ -23,6 +23,7 @@ export interface UserInputState {
   sivilstand: Sivilstand | null
   epsHarPensjon: boolean | null
   epsHarInntektOver2G: boolean | null
+  afpInntektMaanedFoerUttak: boolean | null
   currentSimulation: Simulation
 }
 
@@ -38,6 +39,7 @@ export const userInputInitialState: UserInputState = {
   sivilstand: null,
   epsHarInntektOver2G: null,
   epsHarPensjon: null,
+  afpInntektMaanedFoerUttak: null,
   currentSimulation: {
     beregningsvalg: null,
     formatertUttaksalderReadOnly: null,
@@ -92,6 +94,12 @@ export const userInputSlice = createSlice({
     },
     setSkalBeregneAfp: (state, action: PayloadAction<boolean | null>) => {
       state.skalBeregneAfp = action.payload
+    },
+    selectAfpInntektMaanedFoerUttak: (
+      state,
+      action: PayloadAction<boolean | null>
+    ) => {
+      state.afpInntektMaanedFoerUttak = action.payload
     },
     setSivilstand: (
       state,

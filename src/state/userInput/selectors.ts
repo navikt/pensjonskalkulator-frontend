@@ -33,6 +33,11 @@ export const selectAfp = (state: RootState): AfpRadio | null =>
 
 export const selectSkalBeregneAfp = (state: RootState): boolean | null =>
   state.userInput.skalBeregneAfp
+
+export const selectAfpInntektMaanedFoerUttak = (
+  state: RootState
+): boolean | null => state.userInput.afpInntektMaanedFoerUttak
+
 const selectPersonResponse = apiSlice.endpoints.getPerson.select()
 const selectInntektResponse = apiSlice.endpoints.getInntekt.select()
 const selectLoependeVedtakResponse =

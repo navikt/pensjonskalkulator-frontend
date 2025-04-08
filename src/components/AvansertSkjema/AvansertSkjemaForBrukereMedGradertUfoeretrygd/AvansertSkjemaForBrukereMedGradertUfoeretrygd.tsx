@@ -125,6 +125,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
     uttaksalder,
     aarligInntektVsaHelPensjon,
     gradertUttaksperiode,
+    afpInntektMaanedFoerUttak: undefined,
     normertPensjonsalder,
     beregningsvalg,
   })
