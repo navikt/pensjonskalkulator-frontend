@@ -4,7 +4,7 @@ on:
   pull_request:
     types: [opened, synchronize]
     branches:
-      - feature/PEK-1168-testmiljø
+      - feature/PEK-1168-pull-request
 
 jobs:
   build-and-deploy-pr:
