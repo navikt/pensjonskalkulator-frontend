@@ -48,8 +48,8 @@ export const routes: RouteObject[] = [
         element: <Navigate to={paths.login} replace />,
       },
       {
-        loader: landingPageAccessGuard,
         path: paths.login,
+        loader: landingPageAccessGuard,
         element: <LandingPage />,
       },
     ],
