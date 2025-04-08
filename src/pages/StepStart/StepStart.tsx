@@ -1,3 +1,4 @@
+import { is } from 'date-fns/locale'
 import React from 'react'
 import { useIntl } from 'react-intl'
 import { Await, useLoaderData, useNavigate } from 'react-router'
@@ -15,16 +16,17 @@ export function StepStart() {
   const intl = useIntl()
   const navigate = useNavigate()
 
-  const { data: skruAvKalkulatorFeatureToggle } =
+  const { data: skruAvKalkulatorFeatureToggle, isSuccess } =
     useGetSkruAvKalkluatorFeatureToggleQuery()
 
   const skruAvKalkulatorFeatureTogglePromise = React.useMemo(() => {
     return new Promise((resolve) => {
-      if (skruAvKalkulatorFeatureToggle?.enabled) {
+      if (isSuccess) {
         resolve(skruAvKalkulatorFeatureToggle.enabled)
       }
+      resolve(false)
     })
-  }, [skruAvKalkulatorFeatureToggle])
+  }, [skruAvKalkulatorFeatureToggle, isSuccess])
 
   const { getPersonQuery, getLoependeVedtakQuery, shouldRedirectTo } =
     useLoaderData() as StepStartAccessGuardLoader
