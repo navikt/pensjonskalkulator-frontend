@@ -8,6 +8,7 @@ import { IngenTilgang } from '@/pages/IngenTilgang'
 import { LandingPage } from '@/pages/LandingPage'
 import { StepAFP } from '@/pages/StepAFP'
 import { StepFeil } from '@/pages/StepFeil'
+import { StepKalkulatorVirkerIkke } from '@/pages/StepKalkulatorVirkerIkke'
 import { StepSamtykkeOffentligAFP } from '@/pages/StepSamtykkeOffentligAFP'
 import { StepSamtykkePensjonsavtaler } from '@/pages/StepSamtykkePensjonsavtaler'
 import { StepSivilstand } from '@/pages/StepSivilstand'
@@ -28,7 +29,6 @@ import {
   stepSivilstandAccessGuard,
 } from './loaders'
 import { ErrorPage404 } from './RouteErrorBoundary/ErrorPage404'
-import { StepKalkulatorVirkerIkke } from '@/pages/StepKalkulatorVirkerIkke'
 
 export const routes: RouteObject[] = [
   {
