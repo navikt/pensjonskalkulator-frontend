@@ -9,6 +9,7 @@ import { BodyLong, Button, Heading, Link } from '@navikt/ds-react'
 
 import { InfoOmFremtidigVedtak } from '@/components/InfoOmFremtidigVedtak'
 import { Card } from '@/components/common/Card'
+import { TelefonLink } from '@/components/common/TelefonLink'
 import { externalUrls } from '@/router/constants'
 import { DATE_ENDUSER_FORMAT } from '@/utils/dates'
 import { isLoependeVedtakEndring } from '@/utils/loependeVedtak'
@@ -88,15 +89,7 @@ export function Start({
                           fremtidigAlderspensjon.fom,
                           DATE_ENDUSER_FORMAT
                         ),
-                        link: (
-                          <Link
-                            href={`tel:${intl.formatMessage({
-                              id: 'stegvisning.start.endring.ingress_1b.med_fremtidig.link',
-                            })}`}
-                          >
-                            <FormattedMessage id="stegvisning.start.endring.ingress_1b.med_fremtidig.link" />
-                          </Link>
-                        ),
+                        link: <TelefonLink />,
                       }}
                     />
                   ) : (

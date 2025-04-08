@@ -70,7 +70,6 @@ const translations = {
   'stegvisning.start.endring.ingress_1a': 'MANGLER_TEKST',
   'stegvisning.start.endring.ingress_1b.uten_fremtidig': 'MANGLER_TEKST',
   'stegvisning.start.endring.ingress_1b.med_fremtidig': 'MANGLER_TEKST',
-  'stegvisning.start.endring.ingress_1b.med_fremtidig.link': '55 55 33 34',
   'stegvisning.start.ingress': 'MANGLER_TEKST',
   'stegvisning.start.list_item1': 'MANGLER_TEKST',
   'stegvisning.start.list_item2': 'MANGLER_TEKST',
@@ -278,8 +277,6 @@ const translations = {
     ' Jo lenger du ventar, dess meir får du i året.',
   'tidligstmuliguttak.1964.ingress_2': 'MANGLER_TEKST',
   'tidligstmuliguttak.info_omstillingsstoenad_og_gjenlevende': 'MANGLER_TEKST',
-  'tidligstmuliguttak.info_omstillingsstoenad_og_gjenlevende.link':
-    '55 55 33 34',
   'tidligstmuliguttak.error': 'MANGLER_TEKST',
   'beregning.read_more.pensjonsalder.label': 'MANGLER_TEKST',
   'beregning.read_more.pensjonsalder.body': 'MANGLER_TEKST',
@@ -480,6 +477,7 @@ const translations = {
   'grunnlag.afp.ingress.nei.endring': 'MANGLER_TEKST',
   'grunnlag.afp.ingress.nei.ufoeretrygd': 'MANGLER_TEKST',
   'grunnlag.afp.ingress.full_ufoeretrygd': 'MANGLER_TEKST',
+  'grunnlag.afp.ingress.null.gammel': '-',
   'grunnlag.afp.ingress.ja_offentlig.gammel':
     'Vi kan ikkje vise din AFP fordi regelverket for ny AFP i offentleg sektor ikkje er endeleg avklart. For meir informasjon, sjekk tenestepensjonsordninga di.',
   'grunnlag.afp.ingress.ja_offentlig.ufoeretrygd.gammel': 'MANGLER_TEKST',
@@ -585,5 +583,6 @@ const translations = {
   'forbehold.title': 'Atterhald',
   'showmore.vis_mindre': 'Vis mindre',
   'showmore.vis_mer': 'Vis meir',
+  'link.telefon_pensjon': '55 55 33 34',
 }
 export const getTranslation_nn = () => translations
