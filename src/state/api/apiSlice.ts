@@ -19,6 +19,7 @@ import {
   isPensjonsavtale,
   isPerson,
   isUnleashToggle,
+  isUttaksalderError,
 } from './typeguards'
 
 export const apiSlice = createApi({
