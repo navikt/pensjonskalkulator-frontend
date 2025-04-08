@@ -9,9 +9,9 @@ import HighchartsReact from 'highcharts-react-official'
 
 import { TabellVisning } from '@/components/TabellVisning'
 import {
-  usePensjonsavtalerQuery,
-  useOffentligTpQuery,
   useGetUtvidetSimuleringsresultatFeatureToggleQuery,
+  useOffentligTpQuery,
+  usePensjonsavtalerQuery,
 } from '@/state/api/apiSlice'
 import {
   generateOffentligTpRequestBody,
@@ -19,26 +19,26 @@ import {
 } from '@/state/api/utils'
 import { useAppSelector } from '@/state/hooks'
 import {
-  selectCurrentSimulation,
-  selectSamtykke,
-  selectUfoeregrad,
-  selectSivilstand,
   selectAfp,
-  selectIsEndring,
-  selectFoedselsdato,
-  selectEpsHarPensjon,
+  selectCurrentSimulation,
   selectEpsHarInntektOver2G,
+  selectEpsHarPensjon,
+  selectFoedselsdato,
+  selectIsEndring,
+  selectSamtykke,
+  selectSivilstand,
+  selectUfoeregrad,
   selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
 
-import {
-  useSimuleringChartLocalState,
-  useHighchartsRegressionPlugin,
-} from './hooks'
 import { SimuleringEndringBanner } from './SimuleringEndringBanner/SimuleringEndringBanner'
 import { SimuleringGrafNavigation } from './SimuleringGrafNavigation/SimuleringGrafNavigation'
 import { SimuleringPensjonsavtalerAlert } from './SimuleringPensjonsavtalerAlert/SimuleringPensjonsavtalerAlert'
 import { Simuleringsdetaljer } from './Simuleringsdetaljer/Simuleringsdetaljer'
+import {
+  useHighchartsRegressionPlugin,
+  useSimuleringChartLocalState,
+} from './hooks'
 
 import styles from './Simulering.module.scss'
 

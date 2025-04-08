@@ -1,14 +1,19 @@
-import React from 'react'
+import { compareAsc, parse } from 'date-fns'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 import { PencilIcon, PlusCircleIcon } from '@navikt/aksel-icons'
-import { BodyShort, Button, Heading, Modal } from '@navikt/ds-react'
-import clsx from 'clsx'
-import { parse, compareAsc } from 'date-fns'
+import {
+  BodyShort,
+  Button,
+  ErrorMessage,
+  Heading,
+  Modal,
+} from '@navikt/ds-react'
 
 import { UtenlandsoppholdModal } from '@/components/UtenlandsoppholdModal'
 import { getSelectedLanguage } from '@/context/LanguageProvider/utils'
-import { useAppSelector, useAppDispatch } from '@/state/hooks'
+import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
   selectCurrentSimulation,
   selectUtenlandsperioder,
@@ -32,15 +37,15 @@ export function UtenlandsoppholdListe({
   validationError,
 }: Props) {
   const intl = useIntl()
-  const avbrytModalRef = React.useRef<HTMLDialogElement>(null)
-  const utenlandsoppholdModalRef = React.useRef<HTMLDialogElement>(null)
+  const avbrytModalRef = useRef<HTMLDialogElement>(null)
+  const utenlandsoppholdModalRef = useRef<HTMLDialogElement>(null)
   const utenlandsperioder = useAppSelector(selectUtenlandsperioder)
   const { formatertUttaksalderReadOnly } = useAppSelector(
     selectCurrentSimulation
   )
   const dispatch = useAppDispatch()
   const [valgtUtenlandsperiodeId, setValgtUtenlandsperiodeId] =
-    React.useState<string>('')
+    useState<string>('')
 
   const locale = getSelectedLanguage()
 
@@ -64,7 +69,7 @@ export function UtenlandsoppholdListe({
     avbrytModalRef.current?.showModal()
   }
 
-  const sortedUtenlandsperioder = React.useMemo(() => {
+  const sortedUtenlandsperioder = useMemo(() => {
     return [...utenlandsperioder].sort((a, b) => {
       // If a has no sluttdato and b has, a comes first
       if (!a.sluttdato) return -1
@@ -78,7 +83,7 @@ export function UtenlandsoppholdListe({
     })
   }, [utenlandsperioder])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (erVisningIGrunnlag) {
       utenlandsperioder.forEach((utenlandsperiode) => {
         logger('grunnlag for beregningen', {
@@ -134,14 +139,17 @@ export function UtenlandsoppholdListe({
           </Button>
         </Modal.Footer>
       </Modal>
+
       <Heading size="small" level="3">
         <FormattedMessage id="stegvisning.utenlandsopphold.oppholdene.title" />
       </Heading>
+
       {!erVisningIGrunnlag && (
         <BodyShort size="medium" className={styles.bodyshort}>
           <FormattedMessage id="stegvisning.utenlandsopphold.oppholdene.description" />
         </BodyShort>
       )}
+
       <UtenlandsoppholdModal
         modalRef={utenlandsoppholdModalRef}
         utenlandsperiode={
@@ -196,6 +204,7 @@ export function UtenlandsoppholdListe({
                     </dd>
                   )}
                 </div>
+
                 {!erVisningIGrunnlag && (
                   <dd className={styles.utenlandsperioderButtons}>
                     <Button
@@ -212,6 +221,7 @@ export function UtenlandsoppholdListe({
                         id: 'stegvisning.utenlandsopphold.oppholdene.button.endre',
                       })}
                     </Button>
+
                     <Button
                       variant="tertiary"
                       size="small"
@@ -231,6 +241,7 @@ export function UtenlandsoppholdListe({
             )
           })}
       </dl>
+
       {!erVisningIGrunnlag && (
         <Button
           data-testid="legg-til-utenlandsopphold"
@@ -247,13 +258,16 @@ export function UtenlandsoppholdListe({
           })}
         </Button>
       )}
+
       {validationError && (
-        <BodyShort
-          size="medium"
-          className={clsx('navds-error-message navds-label', styles.error)}
+        <ErrorMessage
+          showIcon
+          className={styles.error}
+          role="alert"
+          aria-live="polite"
         >
           {validationError}
-        </BodyShort>
+        </ErrorMessage>
       )}
     </section>
   )

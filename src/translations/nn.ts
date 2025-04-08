@@ -1,4 +1,4 @@
-const translations = {
+export default {
   'application.title': 'Pensjonskalkulator - Pensjon',
   'application.title.stegvisning.start': 'Start - Pensjonskalkulator',
   'application.title.stegvisning.sivilstand': 'Sivilstand - Pensjonskalkulator',
@@ -26,7 +26,7 @@ const translations = {
   'error.global.ingress': 'Vi jobbar med å rette feilen. Prøv igjen seinare.',
   'error.global.button': 'Avbryt',
   'error.du_kan_ikke_bruke_enkel_kalkulator':
-    'Du kan dessverre ikkje bruke enkel kalkulator',
+    'Du kan dessverre ikkje bruke denne kalkulatoren',
   'error.404.title': 'Oops! Sida du ser etter er ikkje å finne.',
   'error.404.list_item1':
     'Viss du skreiv inn adressa direkte i nettlesaren kan du sjekke om ho er stava riktig.',
@@ -589,5 +589,5 @@ const translations = {
   'forbehold.title': 'Atterhald',
   'showmore.vis_mindre': 'Vis mindre',
   'showmore.vis_mer': 'Vis meir',
+  'link.telefon_pensjon': '55 55 33 34',
 }
-export const getTranslation_nn = () => translations

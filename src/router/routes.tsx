@@ -1,4 +1,4 @@
-import { RouteObject, Navigate, Outlet } from 'react-router'
+import { Navigate, Outlet, RouteObject } from 'react-router'
 
 import { PageFramework } from '@/components/common/PageFramework'
 import { Beregning } from '@/pages/Beregning'
@@ -16,18 +16,18 @@ import { StepUfoeretrygdAFP } from '@/pages/StepUfoeretrygdAFP'
 import { StepUtenlandsopphold } from '@/pages/StepUtenlandsopphold'
 import { RouteErrorBoundary } from '@/router/RouteErrorBoundary'
 
+import { ErrorPage404 } from './RouteErrorBoundary/ErrorPage404'
 import { paths } from './constants'
 import {
-  directAccessGuard,
   authenticationGuard,
+  directAccessGuard,
   landingPageAccessGuard,
-  stepStartAccessGuard,
   stepAFPAccessGuard,
-  stepUfoeretrygdAFPAccessGuard,
   stepSamtykkeOffentligAFPAccessGuard,
   stepSivilstandAccessGuard,
+  stepStartAccessGuard,
+  stepUfoeretrygdAFPAccessGuard,
 } from './loaders'
-import { ErrorPage404 } from './RouteErrorBoundary/ErrorPage404'
 
 export const routes: RouteObject[] = [
   {
@@ -48,8 +48,8 @@ export const routes: RouteObject[] = [
         element: <Navigate to={paths.login} replace />,
       },
       {
-        loader: landingPageAccessGuard,
         path: paths.login,
+        loader: landingPageAccessGuard,
         element: <LandingPage />,
       },
     ],
