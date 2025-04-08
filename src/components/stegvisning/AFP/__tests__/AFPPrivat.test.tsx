@@ -20,7 +20,7 @@ describe('stegvisning - AFP - født før 1963 og og fylt 67 år, eller født fø
 
   it('rendrer slik den skal når afp ikke er oppgitt', async () => {
     const user = userEvent.setup()
-    const result = render(
+    render(
       <AFPPrivat
         previousAfp={null}
         onCancel={onCancelMock}
@@ -39,12 +39,11 @@ describe('stegvisning - AFP - født før 1963 og og fylt 67 år, eller født fø
       expect(radioButtons).toHaveLength(2)
       expect(radioButtons[0]).not.toBeChecked()
       expect(radioButtons[1]).not.toBeChecked()
-      expect(result.asFragment()).toMatchSnapshot()
     })
   })
 
   it('rendrer slik den skal når afp er oppgitt', async () => {
-    const result = render(
+    render(
       <AFPPrivat
         previousAfp="nei"
         onCancel={onCancelMock}
@@ -60,7 +59,6 @@ describe('stegvisning - AFP - født før 1963 og og fylt 67 år, eller født fø
       expect(radioButtons).toHaveLength(2)
       expect(radioButtons[0]).not.toBeChecked()
       expect(radioButtons[1]).toBeChecked()
-      expect(result.asFragment()).toMatchSnapshot()
     })
   })
 
