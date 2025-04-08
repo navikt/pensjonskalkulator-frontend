@@ -12,6 +12,8 @@ const translations = {
   'application.title.stegvisning.samtykke': 'Samtykke – Pensjonskalkulator',
   'application.title.stegvisning.uventet_feil':
     'Uventet feil – Pensjonskalkulator',
+  'application.title.stegvisning.kalkulator_virker_ikke':
+    'Kalkulatoren virker ikke – Pensjonskalkulator',
   'application.title.beregning': 'Beregning – Pensjonskalkulator',
   'application.title.forbehold': 'Forbehold – Pensjonskalkulator',
   'application.title.henvisning.apotekerne':
@@ -39,6 +41,11 @@ const translations = {
     'Hvis du klikket på en lenke er den feil eller utdatert.',
   'error.404.button.link_1': 'Gå til pensjonskalkulator',
   'error.404.button.link_2': 'Les om pensjon',
+  'error.virker_ikke.title': 'Beklager, kalkulatoren virker ikke akkurat nå',
+  'error.virker_ikke.ingress':
+    'En feil har skjedd hos oss som gjør at du dessverre ikke kan bruke kalkulatoren. Vi jobber med å rette feilen. Prøv igjen senere.{br}{br}Hvis problemet vedvarer, kan du {kontaktoss} ',
+  'error.virker_ikke.link': 'kontakte oss',
+  'error.virker_ikke.button': 'Gå til din pensjon',
   'landingsside.for.deg.foedt.foer.1963': 'For deg født før 1963',
   'landingsside.du.maa.bruke.detaljert':
     'Du må bruke vår detaljerte kalkulator. Den gir deg et estimat på',
@@ -530,6 +537,14 @@ const translations = {
     'Et alternativ er at du ved {alternativtGradertStartAar} år og {alternativtGradertStartMaaned} måneder kan ta ut <nowrap>{alternativtGrad} %</nowrap> alderspensjon. Prøv gjerne andre kombinasjoner.',
   'beregning.vilkaarsproeving.alternativer.heltOgGradertUttak':
     'Et alternativ er at du ved {alternativtGradertStartAar} år og {alternativtGradertStartMaaned} måneder kan ta ut <nowrap>{alternativtGrad} %</nowrap> alderspensjon hvis du tar ut <nowrap>100 %</nowrap> alderspensjon ved {alternativtHeltStartAar} år og {alternativtHeltStartMaaned} måneder eller senere. Prøv gjerne andre kombinasjoner.',
+  'beregning.vilkaarsproeving.medAFP.intro':
+    'Opptjeningen din er ikke høy nok til ønsket uttak. Du må sette ned uttaksgraden.{br}{br}',
+  'beregning.vilkaarsproeving.alternativer.medAFP.gradertUttak':
+    'Et alternativ er at du ved {nedreAldersgrense} kan ta ut <nowrap>{alternativtGrad} %</nowrap> alderspensjon. Prøv gjerne andre kombinasjoner.',
+  'beregning.vilkaarsproeving.alternativer.medAFP.heltOgGradertUttak':
+    'Et alternativ er at du ved {nedreAldersgrense} kan ta ut <nowrap>{alternativtGrad} %</nowrap> alderspensjon hvis du tar ut <nowrap>100 %</nowrap> alderspensjon ved {alternativtHeltStartAar} år og {alternativtHeltStartMaaned} måneder eller senere. Prøv gjerne andre kombinasjoner.',
+  'beregning.vilkaarsproeving.alternativer.medAFP.ikkeNokOpptjening':
+    'Opptjeningen din er ikke høy nok til uttak av alderspensjon ved <nedreAldersgrense>.{br}{br}Kalkulatoren kan ikke beregne uttak etter <nedreAldersgrense>. Hvis du tar ut alderspensjon og AFP senere enn dette, vil du i perioden fra du er 62 år frem til uttak ikke få uføretrygd. Kontakt Nav for veiledning hvis du vurderer å si fra deg uføretrygden.{br}{br}Har du rett til livsvarig AFP i offentlig sektor kan du ta ut AFP før alderspensjon. Kontakt tjenestepensjonsordningen din for veiledning.',
   'grunnlag.title': 'Øvrig grunnlag for beregningen',
   'maanedsbeloep.title': 'Månedlig pensjon',
   'beregning.avansert.avbryt_modal.title':
@@ -835,5 +850,5 @@ const translations = {
   'showmore.vis_mindre': 'Vis mindre',
   'showmore.vis_mer': 'Vis mer',
 }
-export const getTranslation_nb = () => translations
+export default translations
 export type Translations = typeof translations

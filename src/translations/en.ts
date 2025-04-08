@@ -1,4 +1,4 @@
-const translations = {
+export default {
   'application.title': 'Pension Calculator – Pension',
   'application.title.stegvisning.start': 'Start – Pension Calculator',
   'application.title.stegvisning.sivilstand':
@@ -13,6 +13,7 @@ const translations = {
   'application.title.stegvisning.samtykke': 'Consent – Pension Calculator',
   'application.title.stegvisning.uventet_feil':
     'Unexpected Error – Pension Calculator',
+  'application.title.stegvisning.kalkulator_virker_ikke': 'MANGLER_TEKST',
   'application.title.beregning': 'Calculation – Pension Calculator',
   'application.title.forbehold': 'Reservation – Pension Calculator',
   'application.title.henvisning.apotekerne':
@@ -41,6 +42,10 @@ const translations = {
     'If you clicked on a link, it is incorrect or outdated.',
   'error.404.button.link_1': 'Go to the pension calculator',
   'error.404.button.link_2': 'Read about pensions',
+  'error.virker_ikke.title': 'MANGLER_TEKST',
+  'error.virker_ikke.ingress': 'MANGLER_TEKST',
+  'error.virker_ikke.link': 'MANGLER_TEKST',
+  'error.virker_ikke.button': 'MANGLER_TEKST',
   'landingsside.for.deg.foedt.foer.1963': 'For those born before 1963',
   'landingsside.du.maa.bruke.detaljert':
     'You must use our detailed calculator. It provides an estimate of',
@@ -481,6 +486,13 @@ const translations = {
     'One alternative is that you can withdraw <nowrap>{alternativtGrad} %</nowrap> retirement pension at {alternativtGradertStartAar} years and {alternativtGradertStartMaaned} months. Feel free to try other combinations.',
   'beregning.vilkaarsproeving.alternativer.heltOgGradertUttak':
     'One alternative is that you can withdraw <nowrap>{alternativtGrad} %</nowrap> retirement pension at {alternativtGradertStartAar} years and {alternativtGradertStartMaaned} months if you withdraw <nowrap>100 %</nowrap> retirement pension at {alternativtHeltStartAar} years and {alternativtHeltStartMaaned} months or later. Feel free to try other combinations.',
+  'beregning.vilkaarsproeving.medAFP.intro': 'MANGLER_TEKST',
+  'beregning.vilkaarsproeving.alternativer.medAFP.gradertUttak':
+    'MANGLER_TEKST',
+  'beregning.vilkaarsproeving.alternativer.medAFP.heltOgGradertUttak':
+    'MANGLER_TEKST',
+  'beregning.vilkaarsproeving.alternativer.medAFP.ikkeNokOpptjening':
+    'MANGLER_TEKST',
   'grunnlag.title': 'Other Basis for Calculation',
   'maanedsbeloep.title': 'MANGLER_TEKST',
   'beregning.avansert.avbryt_modal.title':
@@ -772,4 +784,3 @@ const translations = {
   'showmore.vis_mindre': 'Show less',
   'showmore.vis_mer': 'Show more',
 }
-export const getTranslation_en = () => translations

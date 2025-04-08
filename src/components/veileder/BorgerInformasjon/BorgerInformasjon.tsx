@@ -1,12 +1,12 @@
 import {
+  BodyLong,
+  BodyShort,
   Box,
+  Button,
+  CopyButton,
   HStack,
   Loader,
-  CopyButton,
   Spacer,
-  Button,
-  BodyShort,
-  BodyLong,
 } from '@navikt/ds-react'
 
 import { BASE_PATH } from '@/router/constants'
@@ -47,7 +47,7 @@ export const BorgerInformasjon = ({ fnr }: Props) => {
           <CopyButton size="small" copyText={fnr} />
         </HStack>
         <Spacer />
-        <div>
+        <HStack gap="2">
           <Button
             onClick={onNullstillClick}
             data-testid="borger-nullstill"
@@ -56,7 +56,7 @@ export const BorgerInformasjon = ({ fnr }: Props) => {
           >
             Nullstill bruker
           </Button>
-        </div>
+        </HStack>
       </HStack>
     </Box>
   )

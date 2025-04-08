@@ -1,14 +1,12 @@
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
+import clsx from 'clsx'
 import { useContext, useEffect, useMemo } from 'react'
-import { useIntl, FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { useNavigate } from 'react-router'
 
 import { ArrowLeftIcon } from '@navikt/aksel-icons'
 import { BodyShort, Heading, Link } from '@navikt/ds-react'
-import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
-import clsx from 'clsx'
 
-import { Alert as AlertDashBorder } from '@/components/common/Alert'
-import { SanityGuidePanel } from '@/components/common/SanityGuidePanel'
 import { Grunnlag } from '@/components/Grunnlag'
 import { GrunnlagForbehold } from '@/components/GrunnlagForbehold'
 import { InfoOmLoependeVedtak } from '@/components/InfoOmLoependeVedtak'
@@ -17,27 +15,29 @@ import { RedigerAvansertBeregning } from '@/components/RedigerAvansertBeregning'
 import { ResultatkortAvansertBeregning } from '@/components/ResultatkortAvansertBeregning'
 import { SavnerDuNoe } from '@/components/SavnerDuNoe'
 import { Simulering } from '@/components/Simulering'
+import { Alert as AlertDashBorder } from '@/components/common/Alert'
+import { SanityGuidePanel } from '@/components/common/SanityGuidePanel'
 import { BeregningContext } from '@/pages/Beregning/context'
 import { paths } from '@/router/constants'
 import {
-  useGetPersonQuery,
   apiSlice,
   useAlderspensjonQuery,
+  useGetPersonQuery,
 } from '@/state/api/apiSlice'
 import { generateAlderspensjonRequestBody } from '@/state/api/utils'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
+  selectAarligInntektFoerUttakBeloep,
   selectAfp,
   selectCurrentSimulation,
-  selectSamtykkeOffentligAFP,
-  selectAarligInntektFoerUttakBeloep,
+  selectEpsHarInntektOver2G,
+  selectEpsHarPensjon,
   selectIsEndring,
   selectLoependeVedtak,
-  selectEpsHarPensjon,
-  selectEpsHarInntektOver2G,
+  selectNormertPensjonsalder,
+  selectSamtykkeOffentligAFP,
   selectSivilstand,
   selectUtenlandsperioder,
-  selectNormertPensjonsalder,
 } from '@/state/userInput/selectors'
 import { formatUttaksalder } from '@/utils/alder'
 import { logger } from '@/utils/logging'

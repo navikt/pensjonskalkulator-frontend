@@ -1,15 +1,15 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
 
-import { Heading, HStack } from '@navikt/ds-react'
+import { HStack, Heading } from '@navikt/ds-react'
+
+import { useAppSelector } from '@/state/hooks'
+import { selectCurrentSimulation } from '@/state/userInput/selectors'
 
 import {
   hentSumOffentligTjenestepensjonVedUttak,
   hentSumPensjonsavtalerVedUttak,
 } from '../Pensjonsavtaler/utils'
-import { useAppSelector } from '@/state/hooks'
-import { selectCurrentSimulation } from '@/state/userInput/selectors'
-
 import { MaanedsbeloepBoks } from './MaanedsbeleopBoks'
 
 interface Props {

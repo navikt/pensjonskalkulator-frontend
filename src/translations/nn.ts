@@ -1,4 +1,4 @@
-const translations = {
+export default {
   'application.title': 'Pensjonskalkulator - Pensjon',
   'application.title.stegvisning.start': 'Start - Pensjonskalkulator',
   'application.title.stegvisning.sivilstand': 'Sivilstand - Pensjonskalkulator',
@@ -10,6 +10,7 @@ const translations = {
   'application.title.stegvisning.samtykke': 'Samtykke - Penjonskalkulator',
   'application.title.stegvisning.uventet_feil':
     'Uventa feil - Pensjonskalkulator',
+  'application.title.stegvisning.kalkulator_virker_ikke': 'MANGLER_TEKST',
   'application.title.beregning': 'Utrekning - Pensjonskalkulator',
   'application.title.forbehold': 'Atterhald - Pensjonskalkulator',
   'application.title.henvisning.apotekerne': 'MANGLER_TEKST',
@@ -34,6 +35,10 @@ const translations = {
     'Viss du klikka på ei lenkje er ho feil eller utdatert.',
   'error.404.button.link_1': 'Gå til pensjonskalkulator',
   'error.404.button.link_2': 'Les om pensjon',
+  'error.virker_ikke.title': 'MANGLER_TEKST',
+  'error.virker_ikke.ingress': 'MANGLER_TEKST',
+  'error.virker_ikke.link': 'MANGLER_TEKST',
+  'error.virker_ikke.button': 'MANGLER_TEKST',
   'landingsside.for.deg.foedt.foer.1963': 'For deg født før 1963',
   'landingsside.du.maa.bruke.detaljert':
     'Du må bruke vår detaljerte kalkulator. Der får du rekna ut alderspensjonen frå folketrygda (Nav), avtalefesta pensjon (AFP) og pensjonsavtalar (arbeidsgjevarar og sparing)',
@@ -416,6 +421,13 @@ const translations = {
   'beregning.vilkaarsproeving.alternativer.heltUttak': 'MANGLER_TEKST',
   'beregning.vilkaarsproeving.alternativer.gradertUttak': 'MANGLER_TEKST',
   'beregning.vilkaarsproeving.alternativer.heltOgGradertUttak': 'MANGLER_TEKST',
+  'beregning.vilkaarsproeving.medAFP.intro': 'MANGLER_TEKST',
+  'beregning.vilkaarsproeving.alternativer.medAFP.gradertUttak':
+    'MANGLER_TEKST',
+  'beregning.vilkaarsproeving.alternativer.medAFP.heltOgGradertUttak':
+    'MANGLER_TEKST',
+  'beregning.vilkaarsproeving.alternativer.medAFP.ikkeNokOpptjening':
+    'MANGLER_TEKST',
   'grunnlag.title': 'Grunnlaget for utrekninga',
   'grunnlag.uttaksgrad.title': 'Uttaksgrad',
   'grunnlag.uttaksgrad.avansert_link': 'MANGLER_TEKST',
@@ -582,4 +594,3 @@ const translations = {
   'showmore.vis_mindre': 'Vis mindre',
   'showmore.vis_mer': 'Vis meir',
 }
-export const getTranslation_nn = () => translations

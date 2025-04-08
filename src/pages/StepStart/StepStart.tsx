@@ -1,17 +1,22 @@
 import React from 'react'
 import { useIntl } from 'react-intl'
-import { Await, useLoaderData } from 'react-router'
+import { Await, useLoaderData, useNavigate } from 'react-router'
 
 import { Loader } from '@/components/common/Loader'
 import { Start } from '@/components/stegvisning/Start'
 import { useStegvisningNavigation } from '@/components/stegvisning/stegvisning-hooks'
 import { paths } from '@/router/constants'
 import { StepStartAccessGuardLoader } from '@/router/loaders'
+import { useGetSkruAvKalkluatorFeatureToggleQuery } from '@/state/api/apiSlice'
 import { useAppSelector } from '@/state/hooks'
 import { selectIsVeileder } from '@/state/userInput/selectors'
 
 export function StepStart() {
   const intl = useIntl()
+  const navigate = useNavigate()
+
+  const { data: skruAvKalkulatorFeatureToggle } =
+    useGetSkruAvKalkluatorFeatureToggleQuery()
 
   const { getPersonQuery, getLoependeVedtakQuery, shouldRedirectTo } =
     useLoaderData() as StepStartAccessGuardLoader
@@ -24,6 +29,8 @@ export function StepStart() {
     document.title = intl.formatMessage({
       id: 'application.title.stegvisning.start',
     })
+
+    if (skruAvKalkulatorFeatureToggle) navigate(paths.kalkulatorVirkerIkke)
   }, [])
 
   const isVeileder = useAppSelector(selectIsVeileder)
