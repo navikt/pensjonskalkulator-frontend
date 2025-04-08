@@ -18,6 +18,14 @@ export function StepStart() {
   const { data: skruAvKalkulatorFeatureToggle } =
     useGetSkruAvKalkluatorFeatureToggleQuery()
 
+  const skruAvKalkulatorFeatureTogglePromise = React.useMemo(() => {
+    return new Promise((resolve) => {
+      if (skruAvKalkulatorFeatureToggle?.enabled) {
+        resolve(true)
+      }
+    })
+  }, [skruAvKalkulatorFeatureToggle])
+
   const { getPersonQuery, getLoependeVedtakQuery, shouldRedirectTo } =
     useLoaderData() as StepStartAccessGuardLoader
 
@@ -30,12 +38,6 @@ export function StepStart() {
       id: 'application.title.stegvisning.start',
     })
   }, [])
-
-  React.useEffect(() => {
-    if (skruAvKalkulatorFeatureToggle?.enabled) {
-      navigate(paths.kalkulatorVirkerIkke)
-    }
-  }, [skruAvKalkulatorFeatureToggle])
 
   const isVeileder = useAppSelector(selectIsVeileder)
 
@@ -57,13 +59,25 @@ export function StepStart() {
           getPersonQuery,
           getLoependeVedtakQuery,
           shouldRedirectTo,
+          skruAvKalkulatorFeatureTogglePromise,
         ])}
       >
         {({
           0: getPersonQueryResponse,
           1: getLoependeVedtakQueryResponse,
           2: shouldRedirectToResponse,
-        }: [GetPersonQuery, GetLoependeVedtakQuery, string]) => {
+          3: skruAvKalkulatorFeatureToggleResponse,
+        }: [
+          GetPersonQuery,
+          GetLoependeVedtakQuery,
+          string,
+          boolean
+        ]) => {
+          if (skruAvKalkulatorFeatureToggleResponse) {
+            navigate(paths.kalkulatorVirkerIkke)
+            return null
+          }
+
           return (
             <Start
               shouldRedirectTo={shouldRedirectToResponse}
