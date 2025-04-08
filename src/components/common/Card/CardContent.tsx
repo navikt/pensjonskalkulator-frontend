@@ -1,10 +1,14 @@
 import { FormattedMessage, useIntl } from 'react-intl'
 
-import { BodyLong, Button, Heading } from '@navikt/ds-react'
+import { BodyLong, Button, Heading, Link } from '@navikt/ds-react'
 
 import { Loader } from '@/components/common/Loader'
 
 import styles from './CardContent.module.scss'
+import { getFormatMessageValues } from '@/utils/translations'
+import { PrinterSmallIcon } from '@navikt/aksel-icons'
+import { externalUrls } from '@/router/constants'
+import { ExternalLink } from '../ExternalLink'
 
 export interface CardContentProps {
   text?: {
@@ -50,7 +54,20 @@ export function CardContent({
 
       {text?.ingress && (
         <BodyLong size="large" className={styles.ingress}>
-          <FormattedMessage id={text?.ingress} values={{ br: <br /> }} />
+          <FormattedMessage
+            id={text?.ingress}
+            values={{
+              br: <br />,
+              kontaktoss: (
+                <Link href={externalUrls.planleggePensjon}>
+                  {intl.formatMessage({
+                    id: 'error.virker_ikke.link',
+                  })}
+                  <ExternalLink />
+                </Link>
+              ),
+            }}
+          />
         </BodyLong>
       )}
 

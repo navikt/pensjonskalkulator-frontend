@@ -267,6 +267,15 @@ export const apiSlice = createApi({
         return response
       },
     }),
+    getSkruAvKalkluatorFeatureToggle: builder.query<UnleashToggle, void>({
+      query: () => '/feature/pensjonskalkulator.skru-av-kalkulator',
+      transformResponse: (response: UnleashToggle) => {
+        if (!isUnleashToggle(response)) {
+          throw new Error(`Mottok ugyldig unleash response:`, response)
+        }
+        return response
+      },
+    }),
     getAnsattId: builder.query<Ansatt, void>({
       query: () => '/v1/ansatt-id',
     }),
@@ -290,5 +299,6 @@ export const {
   useGetSanityFeatureToggleQuery,
   useGetOtpKlpFeatureToggleQuery,
   useGetGradertUfoereAfpFeatureToggleQuery,
+  useGetSkruAvKalkluatorFeatureToggleQuery,
   useGetUtvidetSimuleringsresultatFeatureToggleQuery,
 } = apiSlice

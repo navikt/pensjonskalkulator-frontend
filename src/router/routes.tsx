@@ -28,6 +28,7 @@ import {
   stepSivilstandAccessGuard,
 } from './loaders'
 import { ErrorPage404 } from './RouteErrorBoundary/ErrorPage404'
+import { StepKalkulatorVirkerIkke } from '@/pages/StepKalkulatorVirkerIkke'
 
 export const routes: RouteObject[] = [
   {
@@ -110,6 +111,11 @@ export const routes: RouteObject[] = [
         loader: directAccessGuard,
         path: paths.uventetFeil,
         element: <StepFeil />,
+      },
+      {
+        loader: directAccessGuard,
+        path: paths.kalkulatorVirkerIkke,
+        element: <StepKalkulatorVirkerIkke />,
       },
       {
         loader: directAccessGuard,

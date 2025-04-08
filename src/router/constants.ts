@@ -47,6 +47,7 @@ export const paths = {
   beregningEnkel: '/beregning',
   beregningAvansert: '/beregning-detaljert',
   forbehold: '/forbehold',
+  kalkulatorVirkerIkke: '/kalkulatoren-virker-ikke',
 } as const
 
 export const henvisningUrlParams = {
