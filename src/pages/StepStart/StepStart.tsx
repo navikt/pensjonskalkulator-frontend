@@ -29,9 +29,13 @@ export function StepStart() {
     document.title = intl.formatMessage({
       id: 'application.title.stegvisning.start',
     })
-
-    if (skruAvKalkulatorFeatureToggle) navigate(paths.kalkulatorVirkerIkke)
   }, [])
+
+  React.useEffect(() => {
+    if (skruAvKalkulatorFeatureToggle?.enabled) {
+      navigate(paths.kalkulatorVirkerIkke)
+    }
+  }, [skruAvKalkulatorFeatureToggle])
 
   const isVeileder = useAppSelector(selectIsVeileder)
 
