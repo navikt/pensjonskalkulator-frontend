@@ -1,11 +1,11 @@
+import clsx from 'clsx'
+import Highcharts, { SeriesColumnOptions, XAxisOptions } from 'highcharts'
+import HighchartsReact from 'highcharts-react-official'
 import { useEffect, useRef, useState } from 'react'
 import { FormattedMessage } from 'react-intl'
 
 import { HandFingerIcon } from '@navikt/aksel-icons'
 import { BodyLong, BodyShort, Heading, HeadingProps } from '@navikt/ds-react'
-import clsx from 'clsx'
-import Highcharts, { SeriesColumnOptions, XAxisOptions } from 'highcharts'
-import HighchartsReact from 'highcharts-react-official'
 
 import { TabellVisning } from '@/components/TabellVisning'
 import {

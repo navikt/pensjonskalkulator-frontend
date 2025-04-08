@@ -1,11 +1,11 @@
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
+import clsx from 'clsx'
 import { useContext, useEffect, useMemo } from 'react'
-import { useIntl, FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { useNavigate } from 'react-router'
 
 import { ArrowLeftIcon } from '@navikt/aksel-icons'
 import { BodyShort, Heading, Link } from '@navikt/ds-react'
-import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
-import clsx from 'clsx'
 
 import { Grunnlag } from '@/components/Grunnlag'
 import { GrunnlagForbehold } from '@/components/GrunnlagForbehold'
@@ -34,10 +34,10 @@ import {
   selectEpsHarPensjon,
   selectIsEndring,
   selectLoependeVedtak,
+  selectNormertPensjonsalder,
   selectSamtykkeOffentligAFP,
   selectSivilstand,
   selectUtenlandsperioder,
-  selectNormertPensjonsalder,
 } from '@/state/userInput/selectors'
 import { formatUttaksalder } from '@/utils/alder'
 import { logger } from '@/utils/logging'
