@@ -82,7 +82,8 @@ const translations = {
   'stegvisning.start.endring.ingress_1b.uten_fremtidig':
     'Her kan du sjekke hva du kan få hvis du vil endre alderspensjonen din.{br}{br}',
   'stegvisning.start.endring.ingress_1b.med_fremtidig':
-    'Du har endret til <strong>{grad} % alderspensjon fra {fom}</strong>. Du kan ikke gjøre en ny beregning her før denne datoen.{br}{br}Har du spørsmål, kan du kontakte oss på telefon 55 55 33 34.',
+    'Du har endret til <strong>{grad} % alderspensjon fra {fom}</strong>. Du kan ikke gjøre en ny beregning her før denne datoen.{br}{br}Har du spørsmål, kan du kontakte oss på telefon <nowrap>{link}</nowrap>.',
+  'stegvisning.start.endring.ingress_1b.med_fremtidig.link': '55 55 33 34',
   'stegvisning.start.ingress':
     'Velkommen til pensjonskalkulatoren som kan vise deg:',
   'stegvisning.start.list_item1': 'alderspensjon (Nav)',

@@ -70,6 +70,7 @@ const translations = {
   'stegvisning.start.endring.ingress_1a': 'MANGLER_TEKST',
   'stegvisning.start.endring.ingress_1b.uten_fremtidig': 'MANGLER_TEKST',
   'stegvisning.start.endring.ingress_1b.med_fremtidig': 'MANGLER_TEKST',
+  'stegvisning.start.endring.ingress_1b.med_fremtidig.link': '55 55 33 34',
   'stegvisning.start.ingress': 'MANGLER_TEKST',
   'stegvisning.start.list_item1': 'MANGLER_TEKST',
   'stegvisning.start.list_item2': 'MANGLER_TEKST',
