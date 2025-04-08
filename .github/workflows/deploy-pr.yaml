@@ -2,8 +2,7 @@ name: Build and Deploy PR
 
 on:
   pull_request:
-    types: [opened, synchronize]
-  workflow_dispatch:
+    types: [opened, synchronize, labeled]
 
 jobs:
   build-and-deploy-pr:
@@ -21,19 +20,30 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            // Get branch name from pull request
-            let branchName = context.payload.pull_request.head.ref;
+            // Get branch name from pull request or workflow_dispatch event
+            let branchName;
+            if (context.payload.pull_request) {
+              branchName = context.payload.pull_request.head.ref;
+            } else {
+              // For workflow_dispatch, use the current branch
+              branchName = context.ref.replace('refs/heads/', '');
+            }
 
             // If branch contains '/', only use part after first '/'
             if (branchName.includes('/')) {
               branchName = branchName.split('/').slice(1).join('/');
             }
 
-            // Convert to lowercase and remove invalid characters
-            let sanitizedName = branchName.toLowerCase().replace(/[^a-z0-9-]/g, '-');
+            // Make URL safe using encodeURIComponent
+            let sanitizedName = encodeURIComponent(branchName.toLowerCase());
 
-            // Truncate to max 30 characters
+            // Truncate to max 30 characters to avoid too long URLs
             sanitizedName = sanitizedName.substring(0, 30);
+
+            // Ensure we have at least some characters
+            if (sanitizedName.length === 0) {
+              sanitizedName = 'pr-preview';
+            }
 
             core.setOutput('branch_name', sanitizedName);
 
@@ -70,6 +80,28 @@ jobs:
       - name: Build backend for frontend
         run: npm run build:server
 
+      - name: Check for required label
+        id: check-labels
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+
+            const hasEnvLabel = pr.labels.some(label => label.name === 'env');
+
+            if (!hasEnvLabel) {
+              console.log('Skipping deployment - PR does not have the "env" label');
+              core.setOutput('should_deploy', 'false');
+              return process.exit(0);  // Exit with success status
+            }
+
+            console.log('PR has "env" label, continuing with deployment');
+            core.setOutput('should_deploy', 'true');
+
       - name: Create Docker image
         id: image-creation
         uses: nais/docker-build-push@v0
@@ -77,14 +109,14 @@ jobs:
           dockerfile: .docker/Dockerfile
           team: pensjonskalkulator
 
-      # - name: Deploy borger to dev
-      #   uses: nais/deploy/actions/deploy@v2
-      #   env:
-      #     CLUSTER: dev-gcp
-      #     IMAGE: ${{ steps.image-creation.outputs.image }}
-      #     RESOURCE: .nais/deploy-pr.yml
-      #     VAR: name=${{ steps.branch.outputs.branch_name }}
-      #     PRINT_PAYLOAD: true
+      - name: Deploy borger to dev
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-gcp
+          IMAGE: ${{ steps.image-creation.outputs.image }}
+          RESOURCE: .nais/deploy-pr.yml
+          VAR: name=${{ steps.branch.outputs.branch_name }}
+          PRINT_PAYLOAD: true
 
       - name: Comment on PR with links
         uses: actions/github-script@v7
@@ -95,9 +127,26 @@ jobs:
             const borgerUrl = `https://${branch}.kalkulator.dev.nav.no/pensjon/kalkulator`;
             const veilederUrl = `https://${branch}.veileder-kalkulator.dev.nav.no/pensjon/kalkulator`;
 
-            github.rest.issues.createComment({
+            // Check for existing comments
+            const { data: comments } = await github.rest.issues.listComments({
               issue_number: context.issue.number,
               owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: `## 🚀 PR-miljøer er deployet!\n\n- Borger: [${borgerUrl}](${borgerUrl})\n- Veileder: [${veilederUrl}](${veilederUrl})\n\nMiljøene blir automatisk slettet når PR-en lukkes eller etter 1 dag.`
+              repo: context.repo.repo
             });
+
+            const commentBody = `## 🚀 PR-miljøer er deployet!\n\n- Borger: [${borgerUrl}](${borgerUrl})\n- Veileder: [${veilederUrl}](${veilederUrl})\n\nMiljøene blir automatisk slettet når PR-en lukkes eller etter 1 dag.`;
+            const existingComment = comments.find(comment =>
+              comment.body.includes('PR-miljøer er deployet!'));
+
+            if (!existingComment) {
+              // Only create comment if it doesn't exist
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: commentBody
+              });
+              console.log('Created new PR environment comment');
+            } else {
+              console.log('PR environment comment already exists, no changes made');
+            }
