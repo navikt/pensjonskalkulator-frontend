@@ -85,21 +85,23 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
+            const requiredLabel = 'deploy';
+
             const { data: pr } = await github.rest.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: context.issue.number
             });
 
-            const hasEnvLabel = pr.labels.some(label => label.name === 'env');
+            const hasEnvLabel = pr.labels.some(label => label.name === requiredLabel);
 
             if (!hasEnvLabel) {
-              console.log('Skipping deployment - PR does not have the "env" label');
+              console.log(`Skipping deployment - PR does not have the "${requiredLabel}" label`);
               core.setOutput('should_deploy', 'false');
               return process.exit(0);  // Exit with success status
             }
 
-            console.log('PR has "env" label, continuing with deployment');
+            console.log(`PR has "${requiredLabel}" label, continuing with deployment`);
             core.setOutput('should_deploy', 'true');
 
       - name: Create Docker image
