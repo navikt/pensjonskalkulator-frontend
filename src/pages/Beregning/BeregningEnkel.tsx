@@ -1,13 +1,11 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
+import clsx from 'clsx'
+import { useEffect, useMemo, useState } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useNavigate } from 'react-router'
 
 import { Alert, Heading } from '@navikt/ds-react'
-import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
-import clsx from 'clsx'
 
-import { Alert as AlertDashBorder } from '@/components/common/Alert'
-import { Loader } from '@/components/common/Loader'
 import { Grunnlag } from '@/components/Grunnlag'
 import { GrunnlagForbehold } from '@/components/GrunnlagForbehold'
 import { Pensjonsavtaler } from '@/components/Pensjonsavtaler'
@@ -16,43 +14,45 @@ import { Signals } from '@/components/Signals'
 import { Simulering } from '@/components/Simulering'
 import { TidligstMuligUttaksalder } from '@/components/TidligstMuligUttaksalder'
 import { VelgUttaksalder } from '@/components/VelgUttaksalder'
+import { Alert as AlertDashBorder } from '@/components/common/Alert'
+import { Loader } from '@/components/common/Loader'
 import { paths } from '@/router/constants'
 import {
   apiSlice,
+  useAlderspensjonQuery,
   useGetPersonQuery,
   useTidligstMuligHeltUttakQuery,
-  useAlderspensjonQuery,
 } from '@/state/api/apiSlice'
 import {
-  generateTidligstMuligHeltUttakRequestBody,
   generateAlderspensjonEnkelRequestBody,
+  generateTidligstMuligHeltUttakRequestBody,
 } from '@/state/api/utils'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
-  selectAfp,
-  selectSivilstand,
-  selectCurrentSimulation,
-  selectSamtykkeOffentligAFP,
   selectAarligInntektFoerUttakBeloep,
   selectAarligInntektFoerUttakBeloepFraBrukerInput,
-  selectUfoeregrad,
+  selectAfp,
+  selectCurrentSimulation,
+  selectEpsHarInntektOver2G,
+  selectEpsHarPensjon,
   selectIsEndring,
   selectLoependeVedtak,
   selectNedreAldersgrense,
   selectNormertPensjonsalder,
-  selectEpsHarPensjon,
-  selectEpsHarInntektOver2G,
+  selectSamtykkeOffentligAFP,
+  selectSivilstand,
+  selectUfoeregrad,
   selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
 import {
-  isFoedtFoer1964,
   getBrukerensAlderISluttenAvMaaneden,
+  isFoedtFoer1964,
 } from '@/utils/alder'
 import { logger } from '@/utils/logging'
 
 import styles from './BeregningEnkel.module.scss'
 
-export const BeregningEnkel: React.FC = () => {
+export const BeregningEnkel = () => {
   const intl = useIntl()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -93,7 +93,7 @@ export const BeregningEnkel: React.FC = () => {
   const { uttaksalder } = useAppSelector(selectCurrentSimulation)
   const [alderspensjonEnkelRequestBody, setAlderspensjonEnkelRequestBody] =
     useState<AlderspensjonRequestBody | undefined>(undefined)
-  const [showInntektAlert, setShowInntektAlert] = React.useState<boolean>(false)
+  const [showInntektAlert, setShowInntektAlert] = useState<boolean>(false)
 
   useEffect(() => {
     // Show alert når: inntekt fra bruker er ikke null (det betyr at brukeren har endret den) og at startAlder er null (betyr at de ble nettopp nullstilt fra GrunnlagInntekt)
@@ -301,7 +301,7 @@ export const BeregningEnkel: React.FC = () => {
           ) : (
             <>
               <Simulering
-                type="enkel"
+                visning="enkel"
                 isLoading={isFetching}
                 headingLevel="2"
                 aarligInntektFoerUttakBeloep={

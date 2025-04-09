@@ -1,18 +1,17 @@
+import clsx from 'clsx'
+import Highcharts, { SeriesColumnOptions, XAxisOptions } from 'highcharts'
+import HighchartsReact from 'highcharts-react-official'
 import { useEffect, useRef, useState } from 'react'
 import { FormattedMessage } from 'react-intl'
 
 import { HandFingerIcon } from '@navikt/aksel-icons'
 import { BodyLong, BodyShort, Heading, HeadingProps } from '@navikt/ds-react'
-import clsx from 'clsx'
-import Highcharts, { SeriesColumnOptions, XAxisOptions } from 'highcharts'
-import HighchartsReact from 'highcharts-react-official'
 
-import { MaanedsbloepAvansertBeregning } from '../MaanedsbloepAvansertBeregning'
 import { TabellVisning } from '@/components/TabellVisning'
 import {
-  usePensjonsavtalerQuery,
-  useOffentligTpQuery,
   useGetUtvidetSimuleringsresultatFeatureToggleQuery,
+  useOffentligTpQuery,
+  usePensjonsavtalerQuery,
 } from '@/state/api/apiSlice'
 import {
   generateOffentligTpRequestBody,
@@ -20,26 +19,27 @@ import {
 } from '@/state/api/utils'
 import { useAppSelector } from '@/state/hooks'
 import {
-  selectCurrentSimulation,
-  selectSamtykke,
-  selectUfoeregrad,
-  selectSivilstand,
   selectAfp,
-  selectIsEndring,
-  selectFoedselsdato,
-  selectEpsHarPensjon,
+  selectCurrentSimulation,
   selectEpsHarInntektOver2G,
+  selectEpsHarPensjon,
+  selectFoedselsdato,
+  selectIsEndring,
+  selectSamtykke,
+  selectSivilstand,
+  selectUfoeregrad,
   selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
 
-import {
-  useSimuleringChartLocalState,
-  useHighchartsRegressionPlugin,
-} from './hooks'
+import { MaanedsbloepAvansertBeregning } from '../MaanedsbloepAvansertBeregning'
 import { SimuleringEndringBanner } from './SimuleringEndringBanner/SimuleringEndringBanner'
 import { SimuleringGrafNavigation } from './SimuleringGrafNavigation/SimuleringGrafNavigation'
 import { SimuleringPensjonsavtalerAlert } from './SimuleringPensjonsavtalerAlert/SimuleringPensjonsavtalerAlert'
 import { Simuleringsdetaljer } from './Simuleringsdetaljer/Simuleringsdetaljer'
+import {
+  useHighchartsRegressionPlugin,
+  useSimuleringChartLocalState,
+} from './hooks'
 
 import styles from './Simulering.module.scss'
 
@@ -56,7 +56,7 @@ interface Props {
     trygdetid?: number
     opptjeningsgrunnlag?: SimulertOpptjeningGrunnlag[]
   }
-  type?: 'enkel' | 'avansert'
+  visning?: BeregningVisning
 }
 
 export const Simulering = ({
@@ -69,7 +69,7 @@ export const Simulering = ({
   alderspensjonMaanedligVedEndring,
   showButtonsAndTable,
   detaljer,
-  type,
+  visning,
 }: Props) => {
   const harSamtykket = useAppSelector(selectSamtykke)
   const ufoeregrad = useAppSelector(selectUfoeregrad)
@@ -182,18 +182,20 @@ export const Simulering = ({
     },
   })
 
+  const isEnkel = visning === 'enkel'
+
   return (
     <section className={styles.section}>
-      <div className={clsx({ [styles.intro]: type === 'enkel' })}>
+      <div className={clsx({ [styles.intro]: isEnkel })}>
         <Heading
-          className={clsx({ [styles.introTitle]: type === 'enkel' })}
+          className={clsx({ [styles.introTitle]: isEnkel })}
           level={headingLevel}
           size={headingLevel === '2' ? 'medium' : 'small'}
         >
           <FormattedMessage id="beregning.highcharts.title" />
         </Heading>
 
-        {type === 'enkel' && (
+        {isEnkel && (
           <BodyLong>
             <FormattedMessage id="beregning.highcharts.ingress" />
           </BodyLong>
@@ -273,7 +275,7 @@ export const Simulering = ({
       )}
 
       {!(isOffentligTpLoading || isLoading || isPensjonsavtalerLoading) &&
-        type === 'avansert' && (
+        visning === 'avansert' && (
           <MaanedsbloepAvansertBeregning
             alderspensjonMaanedligVedEndring={alderspensjonMaanedligVedEndring}
             afpPrivatListe={afpPrivatListe}
