@@ -272,10 +272,6 @@ export default {
     'retirement pension cannot be combined with a survivor´s pension or adjustment benefits. If you wish to withdraw retirement pension before 67, you must forfeit the survivor´s pension or adjustment benefit when you withdraw your retirement pension. If you have questions, you can contact us at <nowrap>{link}</nowrap>.',
   'tidligstmuliguttak.error':
     'In Advanced, you can choose a more accurate pension age.',
-  'beregning.read_more.pensjonsalder.label':
-    'About the earliest withdrawal date',
-  'beregning.read_more.pensjonsalder.body':
-    'Your earning record in the National Insurance Scheme determines when you can start withdrawing your retirement pension. The retirement age limits will gradually increase from the 1964 birth cohort by one to two months per year, but the pension calculator does not account for this.{br}{br}If you have provided information about AFP (contractual pension) and/or periods spent abroad, this is included in the assessment of when you can withdraw your retirement pension.{br}{br}If you cannot withdraw a full (100%) retirement pension from your desired age, you can adjust the withdrawal percentage to see if you can start earlier. If you withdraw a graded pension, the timing for when you can withdraw 100% may be delayed.',
   'beregning.alt_tekst':
     'Annual income and pension after withdrawal in kroner.',
   'omufoeretrygd.hel.ingress':

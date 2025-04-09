@@ -34,10 +34,10 @@ describe('stegvisning - AFP - født mellom 1954-1962 uten vedtak om alderspensjo
 
     expect(
       screen.queryByTestId('om_livsvarig_AFP_i_privat_sektor')
-    ).toBeInTheDocument()
+    ).toBeVisible()
     expect(
       screen.getByText('stegvisning.afpOvergangskull.readmore_offentlig_title')
-    ).toBeInTheDocument()
+    ).toBeVisible()
 
     expect(result.asFragment()).toMatchSnapshot()
 

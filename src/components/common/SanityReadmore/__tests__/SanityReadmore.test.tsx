@@ -1,7 +1,6 @@
 import { describe, it } from 'vitest'
 
 import { SanityReadmore } from '@/components/common/SanityReadmore'
-import { mockErrorResponse } from '@/mocks/server'
 import { render, screen } from '@/test-utils'
 
 describe('SanityReadmore', () => {
@@ -16,22 +15,6 @@ describe('SanityReadmore', () => {
 
       expect(screen.getByText('Hva som er opphold utenfor Norge')).toBeVisible()
 
-      expect(screen.getByText('Lorem')).toBeInTheDocument()
-    })
-  })
-
-  describe('Gitt at Sanity er deaktivert', () => {
-    it('viser Sanity innhold selv om feature toggle er deaktivert', async () => {
-      mockErrorResponse('/feature/pensjonskalkulator.hent-tekster-fra-sanity')
-
-      render(<SanityReadmore id="hva_er_opphold_utenfor_norge" />)
-
-      const readMoreElement = await screen.findByTestId(
-        'hva_er_opphold_utenfor_norge'
-      )
-      expect(readMoreElement).toBeVisible()
-
-      expect(screen.getByText('Hva som er opphold utenfor Norge')).toBeVisible()
       expect(screen.getByText('Lorem')).toBeInTheDocument()
     })
   })

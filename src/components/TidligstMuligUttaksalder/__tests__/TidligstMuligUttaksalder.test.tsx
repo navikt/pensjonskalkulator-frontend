@@ -217,9 +217,6 @@ describe('TidligstMuligUttaksalder', () => {
         expect(screen.getByTestId('om_pensjonsalder_UT_hel')).toBeVisible()
       })
       expect(
-        screen.queryByText('beregning.read_more.pensjonsalder.label')
-      ).not.toBeInTheDocument()
-      expect(
         screen.queryByText(
           'tidligstmuliguttak.info_omstillingsstoenad_og_gjenlevende'
         )

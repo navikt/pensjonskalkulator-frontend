@@ -237,8 +237,6 @@ export default {
   'tidligstmuliguttak.1964.ingress_2': 'MANGLER_TEKST',
   'tidligstmuliguttak.info_omstillingsstoenad_og_gjenlevende': 'MANGLER_TEKST',
   'tidligstmuliguttak.error': 'MANGLER_TEKST',
-  'beregning.read_more.pensjonsalder.label': 'MANGLER_TEKST',
-  'beregning.read_more.pensjonsalder.body': 'MANGLER_TEKST',
   'beregning.alt_tekst': 'MANGLER_TEKST',
   'omufoeretrygd.hel.ingress': 'MANGLER_TEKST',
   'omufoeretrygd.gradert.ingress': 'MANGLER_TEKST',
