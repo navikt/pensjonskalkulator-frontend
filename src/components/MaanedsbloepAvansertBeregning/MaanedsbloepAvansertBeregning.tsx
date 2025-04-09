@@ -90,7 +90,7 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
   }
 
   return (
-    <>
+    <Box marginBlock="10 0">
       <Heading size="small" level="3">
         <FormattedMessage id="maanedsbeloep.title" />
       </Heading>
@@ -192,6 +192,6 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
           />
         </div>
       )}
-    </>
+    </Box>
   )
 }

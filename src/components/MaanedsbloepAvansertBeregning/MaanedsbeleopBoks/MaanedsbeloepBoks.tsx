@@ -111,12 +111,14 @@ export const MaanedsbeloepBoks: React.FC<Props> = ({
         )}
         {!harKunAlderspensjon && (
           <div>
-            <BodyLong size="medium" className={styles.maanedsbeloepSum}>
+            <BodyLong
+              size="medium"
+              className={styles.maanedsbeloepSum}
+              as="span"
+            >
               <FormattedMessage
                 id="beregning.avansert.maanedsbeloep.sum"
-                values={{
-                  maaned: hentUttaksmaanedOgAar(alder).maaned,
-                }}
+                values={hentUttaksmaanedOgAar(alder)}
               />
               :
             </BodyLong>

@@ -1,12 +1,12 @@
 import React from 'react'
-import { FormattedMessage, useIntl } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 
 import { BodyLong, VStack } from '@navikt/ds-react'
 
 import { getSelectedLanguage } from '@/context/LanguageProvider/utils'
 import { useAppSelector } from '@/state/hooks'
 import { selectFoedselsdato } from '@/state/userInput/selectors'
-import { formatUttaksalder, transformUttaksalderToDate } from '@/utils/alder'
+import { transformUttaksalderToDate } from '@/utils/alder'
 import { formatInntekt } from '@/utils/inntekt'
 
 import styles from './MaanedsbeloepMobil.module.scss'
@@ -26,19 +26,10 @@ export const MaanedsbeloepMobil: React.FC<Props> = ({
   alderspensjon,
   grad,
 }) => {
-  const intl = useIntl()
-
   const foedselsdato = useAppSelector(selectFoedselsdato)
 
   const summerYtelser = () => {
     return (pensjonsavtale || 0) + (afp || 0) + (alderspensjon || 0)
-  }
-
-  const formatertAlderTittel = () => {
-    return formatUttaksalder(intl, {
-      aar: alder.aar,
-      maaneder: alder.maaneder,
-    })
   }
 
   const hentUttaksmaanedOgAar = (uttak: Alder) => {
@@ -58,16 +49,6 @@ export const MaanedsbeloepMobil: React.FC<Props> = ({
 
   return (
     <VStack className={styles.maanedsbeloep} gap="1">
-      <BodyLong size="small" weight="semibold">
-        <FormattedMessage
-          id="beregning.avansert.maanedsbeloep.tittel_1"
-          values={{
-            aar: alder.aar,
-            maaned: alder.maaneder,
-          }}
-        />
-        {formatertAlderTittel()}
-      </BodyLong>
       {afp && (
         <div>
           <BodyLong size="small">
@@ -101,9 +82,7 @@ export const MaanedsbeloepMobil: React.FC<Props> = ({
         <BodyLong size="small">
           <FormattedMessage
             id="beregning.avansert.maanedsbeloep.sum"
-            values={{
-              maaned: hentUttaksmaanedOgAar(alder).maaned,
-            }}
+            values={hentUttaksmaanedOgAar(alder)}
           />
           :
         </BodyLong>
