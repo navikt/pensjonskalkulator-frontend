@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router'
 
 import { Alert, BodyLong, Link } from '@navikt/ds-react'
 
-import { ReadMore } from '@/components/common/ReadMore'
+import { SanityReadmore } from '@/components/common/SanityReadmore'
+import { TelefonLink } from '@/components/common/TelefonLink'
 import { paths } from '@/router/constants'
 import {
   useGetGradertUfoereAfpFeatureToggleQuery,
@@ -21,8 +22,6 @@ import { userInputActions } from '@/state/userInput/userInputSlice'
 import { formatUttaksalder } from '@/utils/alder'
 import { getFormatMessageValues } from '@/utils/translations'
 
-import { SanityReadmore } from '../common/SanityReadmore'
-
 import styles from './TidligstMuligUttaksalder.module.scss'
 
 interface Props {
@@ -31,11 +30,11 @@ interface Props {
   show1963Text: boolean
 }
 
-export const TidligstMuligUttaksalder: React.FC<Props> = ({
+export const TidligstMuligUttaksalder = ({
   tidligstMuligUttak,
   ufoeregrad,
   show1963Text,
-}) => {
+}: Props) => {
   const intl = useIntl()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
@@ -144,6 +143,7 @@ export const TidligstMuligUttaksalder: React.FC<Props> = ({
               values={{
                 ...getFormatMessageValues(),
                 normertPensjonsalder: formatertNormertPensjonsalder,
+                link: <TelefonLink />,
               }}
             />
           </Alert>
@@ -157,43 +157,9 @@ export const TidligstMuligUttaksalder: React.FC<Props> = ({
                 : 'om_pensjonsalder_UT_gradert_enkel'
             }
             className={styles.readmore}
-          >
-            <ReadMore
-              name="Om ufoeretrygd og alderspensjon"
-              className={styles.readmore}
-              header={<FormattedMessage id="omufoeretrygd.readmore.title" />}
-            >
-              <FormattedMessage
-                id={
-                  ufoeregrad === 100
-                    ? 'omufoeretrygd.readmore.hel.ingress'
-                    : 'omufoeretrygd.readmore.gradert.ingress'
-                }
-                values={{
-                  ...getFormatMessageValues(),
-                  nedreAldersgrense: formatertNedreAldersgrense,
-                  normertPensjonsalder: formatertNormertPensjonsalder,
-                }}
-              />
-            </ReadMore>
-          </SanityReadmore>
+          />
         ) : (
-          <SanityReadmore id="om_TMU" className={styles.readmore}>
-            <ReadMore
-              name="Om pensjonsalder enkelt"
-              className={styles.readmore}
-              header={
-                <FormattedMessage id="beregning.read_more.pensjonsalder.label" />
-              }
-            >
-              <FormattedMessage
-                id="beregning.read_more.pensjonsalder.body"
-                values={{
-                  ...getFormatMessageValues(),
-                }}
-              />
-            </ReadMore>
-          </SanityReadmore>
+          <SanityReadmore id="om_TMU" className={styles.readmore} />
         )}
       </div>
     </div>

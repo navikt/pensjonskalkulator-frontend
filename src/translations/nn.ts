@@ -26,7 +26,7 @@ export default {
   'error.global.ingress': 'Vi jobbar med å rette feilen. Prøv igjen seinare.',
   'error.global.button': 'Avbryt',
   'error.du_kan_ikke_bruke_enkel_kalkulator':
-    'Du kan dessverre ikkje bruke enkel kalkulator',
+    'Du kan dessverre ikkje bruke denne kalkulatoren',
   'error.404.title': 'Oops! Sida du ser etter er ikkje å finne.',
   'error.404.list_item1':
     'Viss du skreiv inn adressa direkte i nettlesaren kan du sjekke om ho er stava riktig.',
@@ -81,27 +81,6 @@ export default {
     'Personopplysningar som vert brukt i enkel kalkulator',
   'stegvisning.utenlandsopphold.title': 'MANGLER_TEKST',
   'stegvisning.utenlandsopphold.ingress': 'MANGLER_TEKST',
-  'stegvisning.utenlandsopphold.readmore_1.title': 'MANGLER_TEKST',
-  'stegvisning.utenlandsopphold.readmore_1.opphold.subtitle': 'MANGLER_TEKST',
-  'stegvisning.utenlandsopphold.readmore_1.opphold.list_item1': 'MANGLER_TEKST',
-  'stegvisning.utenlandsopphold.readmore_1.opphold.list_item2': 'MANGLER_TEKST',
-  'stegvisning.utenlandsopphold.readmore_1.ikke_opphold.subtitle':
-    'MANGLER_TEKST',
-  'stegvisning.utenlandsopphold.readmore_1.ikke_opphold.list_item1':
-    'MANGLER_TEKST',
-  'stegvisning.utenlandsopphold.readmore_1.ikke_opphold.list_item2':
-    'MANGLER_TEKST',
-  'stegvisning.utenlandsopphold.readmore_1.ikke_opphold.list_item3':
-    'MANGLER_TEKST',
-  'stegvisning.utenlandsopphold.readmore_1.ikke_opphold.list_item4':
-    'MANGLER_TEKST',
-  'stegvisning.utenlandsopphold.readmore_1.ikke_opphold.list_item5':
-    'MANGLER_TEKST',
-  'stegvisning.utenlandsopphold.readmore_1.ikke_opphold.list_item6':
-    'MANGLER_TEKST',
-  'stegvisning.utenlandsopphold.readmore_1.ingress': 'MANGLER_TEKST',
-  'stegvisning.utenlandsopphold.readmore_2.title': 'MANGLER_TEKST',
-  'stegvisning.utenlandsopphold.readmore_2.ingress': 'MANGLER_TEKST',
   'stegvisning.utenlandsopphold.radio_label': 'MANGLER_TEKST',
   'stegvisning.utenlandsopphold.radio_label.description': 'MANGLER_TEKST',
   'stegvisning.utenlandsopphold.radio_ja': 'Ja',
@@ -187,27 +166,7 @@ export default {
   'stegvisning.afp.title': 'Avtalefesta pensjon',
   'stegvisning.afp.ingress':
     'For å få avtalefesta pensjon (AFP) må arbeidsgjevaren din ha ein slik avtale og du må kvalifisere til å få den.',
-  'stegvisning.afp.readmore_privat_title':
-    'Om avtalefesta pensjon i privat sektor',
-  'stegvisning.afp.readmore_privat_list_title': 'AFP i privat sektor:',
-  'stegvisning.afp.readmore_privat_list_item1': 'er ein livsvarig pensjon',
-  'stegvisning.afp.readmore_privat_list_item2':
-    'kan takast ut saman med arbeid',
-  'stegvisning.afp.readmore_privat_list_item3':
-    'må takast ut saman med alderspensjon frå folketrygda (Nav)',
-  'stegvisning.afp.readmore_privat_list_item4': 'MANGLER_TEKST',
-  'stegvisning.afp.readmore_privat_link':
-    'Les om vilkåra til <afpLink>AFP i privat sektor på afp.no</afpLink>',
-  'stegvisning.afp.readmore_offentlig_title':
-    'Om avtalefesta pensjon i offentleg sektor',
   'stegvisning.afp.readmore_offentlig_list_title': 'AFP i offentleg sektor:',
-  'stegvisning.afp.readmore_offentlig_list_item1': 'er ein livsvarig pensjon',
-  'stegvisning.afp.readmore_offentlig_list_item2':
-    'kan takast ut saman med arbeid',
-  'stegvisning.afp.readmore_offentlig_list_item3':
-    'kan takast ut saman med alderspensjon frå folketrygden (Nav) og tenestepensjon',
-  'stegvisning.afp.readmore_offentlig_ingress':
-    'Sjekk kva som gjeld deg hos di tenestepensjonsordning.',
   'stegvisning.afp.radio_label': 'Har du rett til AFP?',
   'stegvisning.afp.radio_ja_offentlig': 'Ja, i offentleg sektor',
   'stegvisning.afp.radio_ja_privat': 'Ja, i privat sektor',
@@ -278,15 +237,10 @@ export default {
   'tidligstmuliguttak.1964.ingress_2': 'MANGLER_TEKST',
   'tidligstmuliguttak.info_omstillingsstoenad_og_gjenlevende': 'MANGLER_TEKST',
   'tidligstmuliguttak.error': 'MANGLER_TEKST',
-  'beregning.read_more.pensjonsalder.label': 'MANGLER_TEKST',
-  'beregning.read_more.pensjonsalder.body': 'MANGLER_TEKST',
   'beregning.alt_tekst': 'MANGLER_TEKST',
   'omufoeretrygd.hel.ingress': 'MANGLER_TEKST',
   'omufoeretrygd.gradert.ingress': 'MANGLER_TEKST',
   'omufoeretrygd.gradert.ingress.afp': 'MANGLER_TEKST',
-  'omufoeretrygd.readmore.title': 'MANGLER_TEKST',
-  'omufoeretrygd.readmore.hel.ingress': 'MANGLER_TEKST',
-  'omufoeretrygd.readmore.gradert.ingress': 'MANGLER_TEKST',
   'omufoeretrygd.avansert_link': 'MANGLER_TEKST',
   'velguttaksalder.title': 'Kor tid vil du ta ut alderspensjon?',
   'velguttaksalder.endring.title': 'MANGLER_TEKST',
@@ -477,6 +431,7 @@ export default {
   'grunnlag.afp.ingress.nei.endring': 'MANGLER_TEKST',
   'grunnlag.afp.ingress.nei.ufoeretrygd': 'MANGLER_TEKST',
   'grunnlag.afp.ingress.full_ufoeretrygd': 'MANGLER_TEKST',
+  'grunnlag.afp.ingress.null.gammel': '-',
   'grunnlag.afp.ingress.ja_offentlig.gammel':
     'Vi kan ikkje vise din AFP fordi regelverket for ny AFP i offentleg sektor ikkje er endeleg avklart. For meir informasjon, sjekk tenestepensjonsordninga di.',
   'grunnlag.afp.ingress.ja_offentlig.ufoeretrygd.gammel': 'MANGLER_TEKST',
@@ -582,4 +537,5 @@ export default {
   'forbehold.title': 'Atterhald',
   'showmore.vis_mindre': 'Vis mindre',
   'showmore.vis_mer': 'Vis meir',
+  'link.telefon_pensjon': '55 55 33 34',
 }
