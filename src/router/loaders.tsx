@@ -64,7 +64,7 @@ export const stepStartAccessGuard = async (): Promise<
   Response | StepStartAccessGuardLoader
 > => {
   const featureToggle = await store
-    .dispatch(apiSlice.endpoints.getSkruAvKalkluatorFeatureToggle.initiate())
+    .dispatch(apiSlice.endpoints.getVedlikeholdsmodusFeatureToggle.initiate())
     .unwrap()
     .then((result) => result.enabled)
     .catch(() => false)
