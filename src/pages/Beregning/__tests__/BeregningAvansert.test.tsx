@@ -7,6 +7,7 @@ import {
   fulfilledGetInntekt,
   fulfilledGetLoependeVedtak0Ufoeregrad,
   fulfilledGetLoependeVedtak75Ufoeregrad,
+  fulfilledGetLoependeVedtak100Ufoeregrad,
   fulfilledGetLoependeVedtakLoependeAFPprivat,
   fulfilledGetLoependeVedtakLoependeAlderspensjon,
   fulfilledGetPerson,
@@ -903,6 +904,156 @@ describe('BeregningAvansert', () => {
           name: 'beregning.highcharts.serie.afp.name',
         })
       ).toBeInTheDocument()
+    })
+  })
+
+  // Nye Tester
+  describe('Gitt at bruker har med eller uten AFP, vis riktig beskrivelse', () => {
+    it('viser riktig intro tekst for alle', async () => {
+      render(
+        <BeregningContext.Provider
+          value={{
+            ...contextMockedValues,
+          }}
+        >
+          <BeregningAvansert />
+        </BeregningContext.Provider>,
+        {
+          preloadedState: {
+            api: {
+              // @ts-ignore
+              queries: {
+                ...fulfilledGetPerson,
+                ...fulfilledGetInntekt,
+                ...fulfilledGetLoependeVedtak0Ufoeregrad,
+              },
+            },
+            userInput: {
+              ...userInputInitialState,
+            },
+          },
+        }
+      )
+      expect(screen.getByText('beregning.intro.title')).toBeVisible()
+      expect(screen.getByText('beregning.intro.description_1')).toBeVisible()
+    })
+
+    it('viser riktig beskrivelse for de som har valgt med AFP', async () => {
+      render(
+        <BeregningContext.Provider
+          value={{
+            ...contextMockedValues,
+          }}
+        >
+          <BeregningAvansert />
+        </BeregningContext.Provider>,
+        {
+          preloadedState: {
+            api: {
+              // @ts-ignore
+              queries: {
+                ...fulfilledGetPerson,
+                ...fulfilledGetInntekt,
+                ...fulfilledGetLoependeVedtakLoependeAFPprivat,
+              },
+            },
+            userInput: {
+              ...userInputInitialState,
+              currentSimulation: {
+                ...userInputInitialState.currentSimulation,
+                beregningsvalg: 'med_afp',
+              },
+            },
+          },
+        }
+      )
+
+      expect(
+        screen.getByText(
+          'Hvis du velger AFP, får du ikke uføretrygd etter at du blir 62 år. Uføretrygd vises ikke i beregningen.',
+          {
+            exact: false,
+          }
+        )
+      ).toBeVisible()
+    })
+
+    it('viser riktig beskrivelse for de som har valgt uten AFP og 100% uføretrygd', async () => {
+      render(
+        <BeregningContext.Provider
+          value={{
+            ...contextMockedValues,
+          }}
+        >
+          <BeregningAvansert />
+        </BeregningContext.Provider>,
+        {
+          preloadedState: {
+            api: {
+              // @ts-ignore
+              queries: {
+                ...fulfilledGetPerson,
+                ...fulfilledGetInntekt,
+                ...fulfilledGetLoependeVedtak100Ufoeregrad,
+              },
+            },
+            userInput: {
+              ...userInputInitialState,
+              currentSimulation: {
+                ...userInputInitialState.currentSimulation,
+                beregningsvalg: 'uten_afp',
+              },
+            },
+          },
+        }
+      )
+      expect(
+        screen.getByText(
+          'Du har 100 % uføretrygd. Uføretrygd vises ikke i beregningen.',
+          {
+            exact: false,
+          }
+        )
+      ).toBeVisible()
+    })
+
+    it('viser riktig beskrivelse for de som har valgt uten AFP og gradert uføretrygd', async () => {
+      render(
+        <BeregningContext.Provider
+          value={{
+            ...contextMockedValues,
+          }}
+        >
+          <BeregningAvansert />
+        </BeregningContext.Provider>,
+        {
+          preloadedState: {
+            api: {
+              // @ts-ignore
+              queries: {
+                ...fulfilledGetPerson,
+                ...fulfilledGetInntekt,
+                ...fulfilledGetLoependeVedtak75Ufoeregrad,
+              },
+            },
+            userInput: {
+              ...userInputInitialState,
+              currentSimulation: {
+                ...userInputInitialState.currentSimulation,
+                beregningsvalg: 'uten_afp',
+              },
+            },
+          },
+        }
+      )
+      expect(
+        screen.getByText(
+          'Du har 75 % uføretrygd. Den kommer i tillegg til inntekt og pensjon frem til du blir 67 alder.aar. Uføretrygd vises ikke i beregningen.',
+          {
+            exact: false,
+          }
+        )
+      ).toBeVisible()
     })
   })
 })
