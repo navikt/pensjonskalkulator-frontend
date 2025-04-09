@@ -134,7 +134,7 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
         >
           <VStack gap="2">
             <ReadMore
-              open
+              defaultOpen={true}
               header={
                 intl.formatMessage({
                   id: 'beregning.avansert.maanedsbeloep.tittel_1',

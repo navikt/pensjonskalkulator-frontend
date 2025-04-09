@@ -30,6 +30,8 @@ export const MaanedsbeloepBoks: React.FC<Props> = ({
 
   const foedselsdato = useAppSelector(selectFoedselsdato)
 
+  const harKunAlderspensjon = alderspensjon && !afp && !pensjonsavtale
+
   const summerYtelser = () => {
     return (pensjonsavtale || 0) + (afp || 0) + (alderspensjon || 0)
   }
@@ -75,7 +77,8 @@ export const MaanedsbeloepBoks: React.FC<Props> = ({
               maaned: alder.maaneder,
             }}
           />
-          {formatertAlderTittel()}
+          {formatertAlderTittel()}{' '}
+          {harKunAlderspensjon && `(${hentUttaksmaanedOgAar(alder).maaned})`}
         </BodyLong>
         {afp && (
           <div>
@@ -106,18 +109,20 @@ export const MaanedsbeloepBoks: React.FC<Props> = ({
             {formatInntekt(alderspensjon)} kr
           </div>
         )}
-        <div>
-          <BodyLong size="medium">
-            <FormattedMessage
-              id="beregning.avansert.maanedsbeloep.sum"
-              values={{
-                maaned: hentUttaksmaanedOgAar(alder).maaned,
-              }}
-            />
-            :
-          </BodyLong>
-          {formatInntekt(summerYtelser())} kr
-        </div>
+        {!harKunAlderspensjon && (
+          <div>
+            <BodyLong size="medium" className={styles.maanedsbeloepSum}>
+              <FormattedMessage
+                id="beregning.avansert.maanedsbeloep.sum"
+                values={{
+                  maaned: hentUttaksmaanedOgAar(alder).maaned,
+                }}
+              />
+              :
+            </BodyLong>
+            {formatInntekt(summerYtelser())} kr
+          </div>
+        )}
       </VStack>
     </Box>
   )
