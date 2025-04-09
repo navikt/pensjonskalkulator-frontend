@@ -6,7 +6,7 @@ exports[`VilkaarsproevingAlert > Når det foreslåtte alternativet er den defaul
     class="navds-alert navds-alert--warning navds-alert--medium"
   >
     <svg
-      aria-labelledby="title-r0"
+      aria-labelledby="title-«r0»"
       class="navds-alert__icon"
       fill="none"
       focusable="false"
@@ -17,7 +17,7 @@ exports[`VilkaarsproevingAlert > Når det foreslåtte alternativet er den defaul
       xmlns="http://www.w3.org/2000/svg"
     >
       <title
-        id="title-r0"
+        id="title-«r0»"
       >
         Advarsel
       </title>
@@ -46,7 +46,7 @@ exports[`VilkaarsproevingAlert > Når det foreslåtte alternativet er lik uttaks
     class="navds-alert navds-alert--warning navds-alert--medium"
   >
     <svg
-      aria-labelledby="title-r2"
+      aria-labelledby="title-«r2»"
       class="navds-alert__icon"
       fill="none"
       focusable="false"
@@ -57,7 +57,7 @@ exports[`VilkaarsproevingAlert > Når det foreslåtte alternativet er lik uttaks
       xmlns="http://www.w3.org/2000/svg"
     >
       <title
-        id="title-r2"
+        id="title-«r2»"
       >
         Advarsel
       </title>
@@ -92,7 +92,7 @@ exports[`VilkaarsproevingAlert > Når det foreslåtte alternativet er ulik uttak
     class="navds-alert navds-alert--warning navds-alert--medium"
   >
     <svg
-      aria-labelledby="title-r3"
+      aria-labelledby="title-«r3»"
       class="navds-alert__icon"
       fill="none"
       focusable="false"
@@ -103,7 +103,7 @@ exports[`VilkaarsproevingAlert > Når det foreslåtte alternativet er ulik uttak
       xmlns="http://www.w3.org/2000/svg"
     >
       <title
-        id="title-r3"
+        id="title-«r3»"
       >
         Advarsel
       </title>
@@ -144,7 +144,7 @@ exports[`VilkaarsproevingAlert > Når det foreslåtte alternativet er uttaksalde
     class="navds-alert navds-alert--warning navds-alert--medium"
   >
     <svg
-      aria-labelledby="title-r1"
+      aria-labelledby="title-«r1»"
       class="navds-alert__icon"
       fill="none"
       focusable="false"
@@ -155,7 +155,7 @@ exports[`VilkaarsproevingAlert > Når det foreslåtte alternativet er uttaksalde
       xmlns="http://www.w3.org/2000/svg"
     >
       <title
-        id="title-r1"
+        id="title-«r1»"
       >
         Advarsel
       </title>
