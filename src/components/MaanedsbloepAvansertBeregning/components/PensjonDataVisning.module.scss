@@ -1,0 +1,20 @@
+@use '../../../scss/variables';
+
+.container {
+  width: 100%;
+}
+
+.row {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.sum {
+  font-weight: var(--a-font-weight-bold);
+
+  * {
+    font-weight: var(--a-font-weight-bold);
+  }
+}
