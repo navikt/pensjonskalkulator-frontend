@@ -1,16 +1,20 @@
 import React from 'react'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 
-import { Heading, HStack } from '@navikt/ds-react'
+import { Box, HStack, Heading, ReadMore, VStack } from '@navikt/ds-react'
+
+import { useAppSelector } from '@/state/hooks'
+import { selectCurrentSimulation } from '@/state/userInput/selectors'
+import { formatUttaksalder } from '@/utils/alder'
 
 import {
   hentSumOffentligTjenestepensjonVedUttak,
   hentSumPensjonsavtalerVedUttak,
 } from '../Pensjonsavtaler/utils'
-import { useAppSelector } from '@/state/hooks'
-import { selectCurrentSimulation } from '@/state/userInput/selectors'
-
 import { MaanedsbeloepBoks } from './MaanedsbeleopBoks'
+import { MaanedsbeloepMobil } from './MaanedsbeloepMobil'
+
+import styles from './MaanedsbloepAvansertBeregning.module.scss'
 
 interface Props {
   afpPrivatListe?: AfpPrivatPensjonsberegning[]
@@ -27,6 +31,8 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
   pensjonsavtaler,
   offentligTp,
 }) => {
+  const intl = useIntl()
+
   const alderpensjonHel =
     alderspensjonMaanedligVedEndring?.heltUttakMaanedligBeloep
 
@@ -79,12 +85,16 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
       ?.maanedligBeloep
   }
 
+  if (!uttaksalder) {
+    return null
+  }
+
   return (
     <>
       <Heading size="small" level="3">
         <FormattedMessage id="maanedsbeloep.title" />
       </Heading>
-      <HStack gap="8" width="100%">
+      <HStack gap="8" width="100%" className={styles.maanedsbeloepDesktopOnly}>
         {gradertUttaksperiode && (
           <MaanedsbeloepBoks
             alder={gradertUttaksperiode.uttaksalder}
@@ -113,6 +123,75 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = ({
           />
         )}
       </HStack>
+      {gradertUttaksperiode ? (
+        <Box
+          marginBlock="1 0"
+          borderRadius="medium"
+          paddingInline="6"
+          paddingBlock="4"
+          background="bg-subtle"
+          className={styles.maanedsbeloepMobileOnly}
+        >
+          <VStack gap="2">
+            <ReadMore
+              open
+              header={
+                intl.formatMessage({
+                  id: 'beregning.avansert.maanedsbeloep.tittel_1',
+                }) + formatUttaksalder(intl, gradertUttaksperiode.uttaksalder)
+              }
+            >
+              <MaanedsbeloepMobil
+                alder={gradertUttaksperiode.uttaksalder}
+                grad={gradertUttaksperiode.grad}
+                afp={
+                  afpVedUttak('offentlig', 'gradert') ||
+                  afpVedUttak('privat', 'gradert')
+                }
+                pensjonsavtale={
+                  sumPensjonsavtaler('gradert') + sumTjenestepensjon('gradert')
+                }
+                alderspensjon={alderspensjonGradert}
+              />
+            </ReadMore>
+
+            <ReadMore
+              header={
+                intl.formatMessage({
+                  id: 'beregning.avansert.maanedsbeloep.tittel_1',
+                }) + formatUttaksalder(intl, uttaksalder)
+              }
+            >
+              <MaanedsbeloepMobil
+                alder={uttaksalder}
+                grad={100}
+                afp={
+                  afpVedUttak('offentlig', 'helt') ||
+                  afpVedUttak('privat', 'helt')
+                }
+                pensjonsavtale={
+                  sumPensjonsavtaler('helt') + sumTjenestepensjon('helt')
+                }
+                alderspensjon={alderpensjonHel}
+              />
+            </ReadMore>
+          </VStack>
+        </Box>
+      ) : (
+        <div className={styles.maanedsbeloepMobileOnly}>
+          <MaanedsbeloepBoks
+            alder={uttaksalder}
+            grad={100}
+            afp={
+              afpVedUttak('offentlig', 'helt') || afpVedUttak('privat', 'helt')
+            }
+            pensjonsavtale={
+              sumPensjonsavtaler('helt') + sumTjenestepensjon('helt')
+            }
+            alderspensjon={alderpensjonHel}
+          />
+        </div>
+      )}
     </>
   )
 }
