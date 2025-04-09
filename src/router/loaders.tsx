@@ -77,8 +77,10 @@ export const stepStartAccessGuard = async (): Promise<
   const featureToggle = await store
     .dispatch(apiSlice.endpoints.getSkruAvKalkluatorFeatureToggle.initiate())
     .unwrap()
+    .then((result) => result.enabled)
+    .catch(() => false)
 
-  if (featureToggle.enabled) {
+  if (featureToggle) {
     return redirect(paths.kalkulatorVirkerIkke)
   }
 
