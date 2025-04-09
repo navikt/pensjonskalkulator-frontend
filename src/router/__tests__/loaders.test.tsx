@@ -448,7 +448,7 @@ describe('Loaders', () => {
         })
 
         const returnedFromLoader = stepAFPAccessGuard()
-        expect(returnedFromLoader).resolves.toMatchObject({
+        await expect(returnedFromLoader).resolves.toMatchObject({
           loependeVedtak: {
             ufoeretrygd: {
               grad: 0,
@@ -500,8 +500,7 @@ describe('Loaders', () => {
         })
 
         const returnedFromLoader = stepAFPAccessGuard()
-
-        expect(returnedFromLoader).resolves.toMatchObject({
+        await expect(returnedFromLoader).resolves.toMatchObject({
           person: {
             foedselsdato: '1963-04-30',
           },
@@ -716,8 +715,8 @@ describe('Loaders', () => {
       })
 
       const returnedFromLoader = stepAFPAccessGuard()
-      expect(returnedFromLoader).resolves.not.toThrow()
-      expect(returnedFromLoader).resolves.toMatchObject({
+      await expect(returnedFromLoader).resolves.not.toThrow()
+      await expect(returnedFromLoader).resolves.toMatchObject({
         person: {
           foedselsdato: '1963-04-30',
         },
@@ -752,7 +751,7 @@ describe('Loaders', () => {
 
       const returnedFromLoader = stepAFPAccessGuard()
       // Når denne kaster så blir den fanget opp av ErrorBoundary som viser uventet feil
-      expect(returnedFromLoader).rejects.toThrow()
+      await expect(returnedFromLoader).rejects.toThrow()
     })
 
     it('Gitt at getOmstillingsstoenadOgGjenlevende har tidligere feilet kalles den på nytt. Når den er vellykket i tillegg til de to andre kallene, er brukeren ikke redirigert', async () => {
@@ -788,7 +787,7 @@ describe('Loaders', () => {
       })
 
       const returnedFromLoader = stepAFPAccessGuard()
-      expect(returnedFromLoader).resolves.not.toThrow()
+      await expect(returnedFromLoader).resolves.not.toThrow()
     })
 
     it('Gitt at getOmstillingsstoenadOgGjenlevende har tidligere feilet og at den feiler igjen ved nytt kall, loader kaster feil', async () => {
@@ -820,7 +819,7 @@ describe('Loaders', () => {
       })
 
       const returnedFromLoader = stepAFPAccessGuard()
-      expect(returnedFromLoader).rejects.toThrow()
+      await expect(returnedFromLoader).rejects.toThrow()
     })
 
     it('Gitt at getEkskludertStatus har tidligere feilet kalles den på nytt. Når den er vellykket og viser at brukeren er apoteker, er brukeren redirigert', async () => {
@@ -898,7 +897,7 @@ describe('Loaders', () => {
       })
 
       const returnedFromLoader = stepAFPAccessGuard()
-      expect(returnedFromLoader).resolves.not.toThrow()
+      await expect(returnedFromLoader).resolves.not.toThrow()
     })
 
     it('Gitt at getEkskludertStatus har tidligere feilet og at den feiler igjen ved nytt kall, loader kaster feil', async () => {
@@ -928,7 +927,7 @@ describe('Loaders', () => {
       })
 
       const returnedFromLoader = stepAFPAccessGuard()
-      expect(returnedFromLoader).rejects.toThrow()
+      await expect(returnedFromLoader).rejects.toThrow()
     })
   })
 

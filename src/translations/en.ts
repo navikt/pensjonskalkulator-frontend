@@ -34,7 +34,7 @@ export default {
     'We are working to fix the error. Please try again later.',
   'error.global.button': 'Cancel',
   'error.du_kan_ikke_bruke_enkel_kalkulator':
-    'Unfortunately, you cannot use the basic calculator',
+    'Unfortunately, you cannot use this calculator',
   'error.404.title': 'Oops! The page you are looking for does not exist.',
   'error.404.list_item1':
     'If you entered the address directly in your browser, check to see if it is spelled correctly.',
@@ -68,7 +68,7 @@ export default {
     'Personal data used in the pension calculator',
   'henvisning.detaljert_kalkulator': 'Detailed Pension Calculator',
   'henvisning.apotekerne.body':
-    'Since you have the pharmacy scheme, you must use the detailed pension calculator.',
+    'Since you are a member of the Pharmacy Scheme (POA), you must use the detailed pension calculator.',
   'stegvisning.radio_ja': 'Yes',
   'stegvisning.radio_nei': 'No',
   'stegvisning.neste': 'Next',
@@ -321,7 +321,7 @@ export default {
   'tidligstmuliguttak.1964.ingress_2':
     ' It may be later due to the increased retirement age.',
   'tidligstmuliguttak.info_omstillingsstoenad_og_gjenlevende':
-    'retirement pension cannot be combined with a survivor´s pension or adjustment benefits. If you wish to withdraw retirement pension before 67, you must forfeit the survivor´s pension or adjustment benefit when you withdraw your retirement pension. If you have questions, you can contact us at 55 55 33 34.',
+    'retirement pension cannot be combined with a survivor´s pension or adjustment benefits. If you wish to withdraw retirement pension before 67, you must forfeit the survivor´s pension or adjustment benefit when you withdraw your retirement pension. If you have questions, you can contact us at <nowrap>{link}</nowrap>.',
   'tidligstmuliguttak.error':
     'In Advanced, you can choose a more accurate pension age.',
   'beregning.read_more.pensjonsalder.label':
@@ -337,9 +337,9 @@ export default {
   'omufoeretrygd.gradert.ingress.afp': 'MANGLER_TEKST',
   'omufoeretrygd.readmore.title': 'About Pension Age and Disability Benefits',
   'omufoeretrygd.readmore.hel.ingress':
-    '<nowrap>100 %</nowrap> disability benefits cannot be combined with retirement pension. Therefore, it is not possible to calculate retirement pension before 67 in the calculator. At 67, <nowrap>100 %</nowrap> disability benefits automatically convert to <nowrap>100 %</nowrap> retirement pension. If you have questions, you can contact us at 55 55 33 34.',
+    '<nowrap>100 %</nowrap> disability benefits cannot be combined with retirement pension. Therefore, it is not possible to calculate retirement pension before 67 in the calculator. At 67, <nowrap>100 %</nowrap> disability benefits automatically convert to <nowrap>100 %</nowrap> retirement pension. If you have questions, you can contact us at <nowrap>{link}</nowrap>.',
   'omufoeretrygd.readmore.gradert.ingress':
-    'It is possible to combine graded disability benefits and graded retirement pension from 62 as long as you have enough accrual to withdraw retirement pension. The degree of disability and retirement pension cannot exceed <nowrap>100 %</nowrap>. If you have questions, you can contact us at 55 55 33 34.',
+    'It is possible to combine graded disability benefits and graded retirement pension from 62 as long as you have enough accrual to withdraw retirement pension. The degree of disability and retirement pension cannot exceed <nowrap>100 %</nowrap>. If you have questions, you can contact us at <nowrap>{link}</nowrap>.',
   'omufoeretrygd.avansert_link': 'Advanced',
   'velguttaksalder.title': 'When do you want to withdraw retirement pension?',
   'velguttaksalder.endring.title':
@@ -467,7 +467,7 @@ export default {
   'beregning.avansert.button.nullstill': 'Reset Choices',
   'beregning.avansert.button.avbryt': 'Cancel Change',
   'beregning.vilkaarsproeving.intro':
-    'Your accrual is not high enough for the desired withdrawal.',
+    'Your accrual is not high enough for the desired withdrawal. ',
   'beregning.vilkaarsproeving.intro.ikke_nok_opptjening':
     '{br}{br}You can earliest withdraw retirement pension at 67 years.',
   'beregning.vilkaarsproeving.intro.optional':
@@ -579,6 +579,7 @@ export default {
   'grunnlag.afp.ingress.nei.ufoeretrygd':
     'If you start a job with an employer that has an AFP agreement, you must be aware that AFP and disability benefits cannot be combined. You must choose between AFP and disability benefits before you turn 62.',
   'grunnlag.afp.ingress.full_ufoeretrygd': 'MANGLER_TEKST',
+  'grunnlag.afp.ingress.null.gammel': '-',
   'grunnlag.afp.ingress.ja_offentlig.gammel':
     'You have indicated AFP in the public sector. Nav has not assessed whether you meet the conditions for AFP, but assumes that you do. For more information on the conditions, check with your occupational pension scheme.',
   'grunnlag.afp.ingress.ja_offentlig.ufoeretrygd.gammel':
@@ -776,4 +777,5 @@ export default {
     'See contact information in <navPersonvernerklaeringKontaktOssLink>the privacy policy</navPersonvernerklaeringKontaktOssLink> for Nav.',
   'showmore.vis_mindre': 'Show less',
   'showmore.vis_mer': 'Show more',
+  'link.telefon_pensjon': '55 55 33 34',
 }
