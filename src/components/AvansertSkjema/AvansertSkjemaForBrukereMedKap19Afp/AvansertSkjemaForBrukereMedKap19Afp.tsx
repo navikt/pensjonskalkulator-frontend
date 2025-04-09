@@ -91,7 +91,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
     ? normertPensjonsalder
     : getBrukerensAlderISluttenAvMaaneden(foedselsdato, nedreAldersgrense)
 
-  const [
+  const {
     localInntektFremTilUttak,
     localHeltUttak,
     localHarInntektVsaHeltUttakRadio,
@@ -100,7 +100,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
     localHarAfpInntektMaanedFoerUttakRadio,
     minAlderInntektSluttAlder,
     muligeUttaksgrad,
-    {
+    handlers: {
       setLocalInntektFremTilUttak,
       setLocalHeltUttak,
       setLocalGradertUttak,
@@ -108,7 +108,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
       setLocalHarInntektVsaGradertUttakRadio,
       setLocalHarAfpInntektMaanedFoerUttakRadio,
     },
-  ] = useFormLocalState({
+  } = useFormLocalState({
     isEndring,
     ufoeregrad: loependeVedtak.ufoeretrygd.grad,
     aarligInntektFoerUttakBeloepFraBrukerSkattBeloep:

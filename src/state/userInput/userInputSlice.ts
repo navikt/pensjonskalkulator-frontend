@@ -97,7 +97,7 @@ export const userInputSlice = createSlice({
     },
     selectAfpInntektMaanedFoerUttak: (
       state,
-      action: PayloadAction<boolean | null>
+      action: PayloadAction<boolean>
     ) => {
       state.afpInntektMaanedFoerUttak = action.payload
     },

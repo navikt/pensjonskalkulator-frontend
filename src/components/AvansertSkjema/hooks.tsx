@@ -17,7 +17,7 @@ export const useFormLocalState = (initialValues: {
   aarligInntektVsaHelPensjon: AarligInntektVsaPensjon | undefined
   gradertUttaksperiode: GradertUttak | null
   normertPensjonsalder: Alder
-  afpInntektMaanedFoerUttak?: boolean | null
+  afpInntektMaanedFoerUttak: boolean | null
   beregningsvalg: Beregningsvalg | null
 }) => {
   const {
@@ -29,7 +29,7 @@ export const useFormLocalState = (initialValues: {
     aarligInntektVsaHelPensjon,
     gradertUttaksperiode,
     normertPensjonsalder,
-    afpInntektMaanedFoerUttak = undefined,
+    afpInntektMaanedFoerUttak = null,
     beregningsvalg,
   } = initialValues
 
@@ -47,9 +47,7 @@ export const useFormLocalState = (initialValues: {
   const [
     localHarAfpInntektMaanedFoerUttakRadio,
     setHarAfpInntektMaanedFoerUttakRadio,
-  ] = useState<boolean | null>(
-    afpInntektMaanedFoerUttak ? afpInntektMaanedFoerUttak : null
-  )
+  ] = useState<boolean | null>(afpInntektMaanedFoerUttak)
 
   const [
     localHarInntektVsaGradertUttakRadio,
@@ -219,20 +217,20 @@ export const useFormLocalState = (initialValues: {
     [afpInntektMaanedFoerUttak]
   )
 
-  return [
+  return {
     localInntektFremTilUttak,
     localHeltUttak,
     localHarInntektVsaHeltUttakRadio,
     localGradertUttak,
     localHarInntektVsaGradertUttakRadio,
-    afpInntektMaanedFoerUttak !== undefined && {
+    ...(afpInntektMaanedFoerUttak !== undefined && {
       localHarAfpInntektMaanedFoerUttakRadio,
-    },
+    }),
     minAlderInntektSluttAlder,
     muligeUttaksgrad,
     handlers,
     localBeregningsTypeRadio,
-  ] as const
+  } as const
 }
 
 export const useFormValidationErrors = (initialValues: { grad?: number }) => {
