@@ -259,7 +259,7 @@ export const apiSlice = createApi({
       },
     }),
     getVedlikeholdsmodusFeatureToggle: builder.query<UnleashToggle, void>({
-      query: () => '/feature/pensjonskalkulator.skru-av-kalkulator',
+      query: () => '/feature/pensjonskalkulator.vedlikeholdsmodus',
       transformResponse: (response: UnleashToggle) => {
         if (!isUnleashToggle(response)) {
           throw new Error(`Mottok ugyldig unleash response:`, response)
