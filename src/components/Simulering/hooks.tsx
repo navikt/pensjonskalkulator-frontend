@@ -1,6 +1,3 @@
-import React from 'react'
-import { useIntl } from 'react-intl'
-
 import Highcharts, {
   Chart,
   Point,
@@ -8,20 +5,22 @@ import Highcharts, {
   SeriesOptionsType,
 } from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
+import React from 'react'
+import { useIntl } from 'react-intl'
 
 import {
-  transformFoedselsdatoToAlder,
   getAlderMinus1Maaned,
+  transformFoedselsdatoToAlder,
 } from '@/utils/alder'
 import { formatInntektToNumber } from '@/utils/inntekt'
 
 import { SERIES_DEFAULT } from './constants'
 import {
-  getChartDefaults,
   generateXAxis,
   processInntektArray,
   processPensjonsberegningArray,
   processPensjonsberegningArrayForKap19,
+  getChartDefaults,
   processAfpPensjonsberegningArray,
   processPensjonsavtalerArray,
   processPre2025OffentligAfpPensjonsberegningArray,

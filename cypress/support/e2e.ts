@@ -147,6 +147,14 @@ beforeEach(() => {
   cy.intercept(
     {
       method: 'GET',
+      url: '/pensjon/kalkulator/api/feature/utvidet-simuleringsresultat',
+    },
+    { enabled: false }
+  ).as('getFeatureToggleUtvidetSimuleringsresult')
+
+  cy.intercept(
+    {
+      method: 'GET',
       url: '/pensjon/kalkulator/api/v2/ekskludert',
     },
     { fixture: 'ekskludert-status.json' }
@@ -247,6 +255,11 @@ beforeEach(() => {
     },
     { fixture: 'sanity-forbehold-avsnitt-data.json' }
   ).as('fetchSanityForbeholdAvsnittData')
+
+  cy.intercept(
+    { url: 'https://api.uxsignals.com/v2/study/id/*/active' },
+    { active: false }
+  ).as('getUxSignalsActive')
 })
 
 Cypress.Commands.add('login', () => {

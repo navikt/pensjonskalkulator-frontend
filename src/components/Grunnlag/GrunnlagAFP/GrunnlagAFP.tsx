@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router'
 
 import { BodyLong, Link } from '@navikt/ds-react'
 
-import { GrunnlagSection } from '../GrunnlagSection'
 import { AccordionItem } from '@/components/common/AccordionItem'
 import { BeregningContext } from '@/pages/Beregning/context'
 import { paths } from '@/router/constants'
@@ -12,12 +11,12 @@ import { useGetGradertUfoereAfpFeatureToggleQuery } from '@/state/api/apiSlice'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
   selectAfp,
-  selectIsEndring,
-  selectUfoeregrad,
+  selectCurrentSimulation,
   selectFoedselsdato,
+  selectIsEndring,
   selectLoependeVedtak,
   selectSamtykkeOffentligAFP,
-  selectCurrentSimulation,
+  selectUfoeregrad,
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
 import { formatAfp } from '@/utils/afp'
@@ -27,10 +26,12 @@ import {
 } from '@/utils/alder'
 import { getFormatMessageValues } from '@/utils/translations'
 
+import { GrunnlagSection } from '../GrunnlagSection'
+
 export const GrunnlagAFP: React.FC = () => {
   const intl = useIntl()
 
-  const afp = useAppSelector(selectAfp)
+  const afp = useAppSelector(selectAfp) ?? 'vet_ikke' // Vi har fallback for å unngå "missing translation" error ved flush() i GoToStart
   const foedselsdato = useAppSelector(selectFoedselsdato)
   const samtykkeOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
   const isEndring = useAppSelector(selectIsEndring)

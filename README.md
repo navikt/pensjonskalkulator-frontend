@@ -50,6 +50,21 @@ npm run cy:test
 npm run cy:open
 ```
 
+### i18n-ally
+
+Vi bruker react-intl for tekster (men noe ligger også i Sanity). Hvis du bruker vscode kan du installere en extension som heter [i18n-ally](https://marketplace.visualstudio.com/items?itemName=lokalise.i18n-ally), som gjør at tekstene vises inline i editoren. Anbefalte settings:
+
+```json
+"i18n-ally.localesPaths": ["src/translations"],
+"i18n-ally.enabledParsers": ["ts"],
+"i18n-ally.parsers.typescript.compilerOptions": {
+  "moduleResolution": "node"
+},
+"i18n-ally.displayLanguage": "nb",
+"i18n-ally.annotationInPlace": false,
+"i18n-ally.keystyle": "flat"
+```
+
 ## environment variables
 
 VITE_DECORATOR_URL: url'en hvor dekoratøren hostes statisk. brukes i index.html
@@ -58,6 +73,17 @@ VITE_DECORATOR_URL: url'en hvor dekoratøren hostes statisk. brukes i index.html
 
 - localhost:5173 brukes av vite ved npm run start
 - localhost:4173 brukes av vite ved npm run preview (static serve)
+
+## Kjøre lokalt mot Q2
+
+1. Hent ut ACCESS_TOKEN fra <https://tokenx-token-generator.intern.dev.nav.no/api/obo?aud=dev-gcp:pensjonskalkulator:pensjonskalkulator-backend>
+1. Sett ACCESS_TOKEN som miljøvariabel
+1. Sett PENSJONSKALKULATOR_BACKEND miljøvariabel til: <https://pensjonskalkulator-backend.intern.dev.nav.no>
+1. `set -a` for å kunne source .env-filen i terminal
+1. `source .env.development-q2`
+1. Kjør `npm run start:q2`
+
+Dekoratøren vil ikke matche opp med innlogget bruker, siden ACCESS_TOKEN hentes fra environment. For å bytte bruker må man logge ut med https://logout.ekstern.nav.no/oauth2/logout
 
 ## Systemdokumentasjon og beslutninger
 

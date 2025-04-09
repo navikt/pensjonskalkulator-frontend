@@ -1,42 +1,27 @@
-import React from 'react'
-import { useIntl, FormattedMessage } from 'react-intl'
-
-import {
-  Alert,
-  BodyLong,
-  Radio,
-  RadioGroup,
-  Select,
-  TextField,
-} from '@navikt/ds-react'
 import clsx from 'clsx'
+import React from 'react'
+import { FormattedMessage, useIntl } from 'react-intl'
 
-import {
-  AvansertSkjemaIntroEndring,
-  AvansertSkjemaInntekt,
-  FormButtonRow,
-  ReadMoreOmPensjonsalder,
-} from '../Felles'
-import { useFormLocalState, useFormValidationErrors } from '../hooks'
-import { AVANSERT_FORM_NAMES, onAvansertBeregningSubmit } from '../utils'
+import { Alert, Radio, RadioGroup, Select, TextField } from '@navikt/ds-react'
+
+import { VilkaarsproevingAlert } from '@/components/VilkaarsproevingAlert'
 import { AgePicker } from '@/components/common/AgePicker'
 import { Divider } from '@/components/common/Divider'
-import { ReadMore } from '@/components/common/ReadMore'
-import { VilkaarsproevingAlert } from '@/components/VilkaarsproevingAlert'
+import { SanityReadmore } from '@/components/common/SanityReadmore'
 import { BeregningContext } from '@/pages/Beregning/context'
 import { useGetGradertUfoereAfpFeatureToggleQuery } from '@/state/api/apiSlice'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
-  selectFoedselsdato,
-  selectLoependeVedtak,
-  selectCurrentSimulation,
-  selectIsEndring,
   selectAarligInntektFoerUttakBeloep,
-  selectAarligInntektFoerUttakBeloepFraSkatt,
   selectAarligInntektFoerUttakBeloepFraBrukerInput,
+  selectAarligInntektFoerUttakBeloepFraSkatt,
+  selectAfp,
+  selectCurrentSimulation,
+  selectFoedselsdato,
+  selectIsEndring,
+  selectLoependeVedtak,
   selectNedreAldersgrense,
   selectNormertPensjonsalder,
-  selectAfp,
   selectSamtykkeOffentligAFP,
 } from '@/state/userInput/selectors'
 import {
@@ -47,6 +32,14 @@ import {
 import { updateAndFormatInntektFromInputField } from '@/utils/inntekt'
 import { getFormatMessageValues } from '@/utils/translations'
 
+import {
+  AvansertSkjemaInntekt,
+  AvansertSkjemaIntroEndring,
+  FormButtonRow,
+  ReadMoreOmPensjonsalder,
+} from '../Felles'
+import { useFormLocalState, useFormValidationErrors } from '../hooks'
+import { AVANSERT_FORM_NAMES, onAvansertBeregningSubmit } from '../utils'
 import { Beregningsvalg } from './Beregningsvalg'
 import { IntroAFP } from './IntroAFP'
 
@@ -457,8 +450,9 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                   uttaksalder &&
                   localBeregningsTypeRadio === beregningsvalg && (
                     <VilkaarsproevingAlert
-                      vilkaarsproeving={vilkaarsproeving}
+                      alternativ={vilkaarsproeving?.alternativ}
                       uttaksalder={uttaksalder}
+                      withAFP={localBeregningsTypeRadio === 'med_afp'}
                     />
                   )}
               </div>
@@ -596,40 +590,15 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                 <div className={styles.spacer__small} />
 
                 {localBeregningsTypeRadio === 'med_afp' ? (
-                  <ReadMore
-                    name="Om uttaksgrad"
-                    header={intl.formatMessage({
-                      id: 'beregning.avansert.rediger.read_more.uttaksgrad.label',
-                    })}
-                  >
-                    <BodyLong data-testid="om-uttaksgrad">
-                      <FormattedMessage
-                        id="beregning.avansert.rediger.read_more.uttaksgrad.body"
-                        values={getFormatMessageValues()}
-                      />
-                    </BodyLong>
-                  </ReadMore>
+                  <SanityReadmore id="om_uttaksgrad" />
                 ) : (
-                  <ReadMore
-                    name="Om uttaksgrad"
-                    header={intl.formatMessage({
-                      id: 'beregning.avansert.rediger.read_more.uttaksgrad.gradert_ufoeretrygd.label',
-                    })}
-                  >
-                    <BodyLong data-testid="om-uttaksgrad-og-ufoeretrygd">
-                      <FormattedMessage
-                        id={
-                          isEndring
-                            ? 'omufoeretrygd.readmore.endring.ingress'
-                            : 'beregning.avansert.rediger.read_more.uttaksgrad.gradert_ufoeretrygd.body'
-                        }
-                        values={{
-                          ...getFormatMessageValues(),
-                          normertPensjonsalder: formatertNormertPensjonsalder,
-                        }}
-                      />
-                    </BodyLong>
-                  </ReadMore>
+                  <SanityReadmore
+                    id={
+                      isEndring
+                        ? 'om_uttaksgrad_UT_gradert_endring'
+                        : 'om_uttaksgrad_UT_gradert'
+                    }
+                  />
                 )}
               </div>
 
@@ -716,19 +685,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
 
                       {localGradertUttak.uttaksalder.aar <
                       normertPensjonsalder.aar ? (
-                        <ReadMore
-                          name="Om inntekt og uføretrygd"
-                          header={intl.formatMessage({
-                            id: 'inntekt.info_om_inntekt.ufoeretrygd.read_more.label',
-                          })}
-                        >
-                          <BodyLong>
-                            <FormattedMessage
-                              id="inntekt.info_om_inntekt.ufoeretrygd.read_more.body"
-                              values={getFormatMessageValues()}
-                            />
-                          </BodyLong>
-                        </ReadMore>
+                        <SanityReadmore id="om_alderspensjon_inntektsgrense_UT" />
                       ) : null}
                     </div>
 

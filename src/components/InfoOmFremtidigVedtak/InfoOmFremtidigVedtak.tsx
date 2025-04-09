@@ -1,8 +1,8 @@
+import clsx from 'clsx'
+import { format } from 'date-fns'
 import { FormattedMessage } from 'react-intl'
 
 import { Alert } from '@navikt/ds-react'
-import clsx from 'clsx'
-import { format } from 'date-fns'
 
 import { DATE_ENDUSER_FORMAT } from '@/utils/dates'
 
@@ -13,7 +13,10 @@ interface Props {
   isCentered?: boolean
 }
 
-export function InfoOmFremtidigVedtak({ loependeVedtak, isCentered }: Props) {
+export const InfoOmFremtidigVedtak = ({
+  loependeVedtak,
+  isCentered,
+}: Props) => {
   // Vis hvis fremtidig vedtak uten gjeldende vedtak
   if (!loependeVedtak.fremtidigAlderspensjon || loependeVedtak.alderspensjon)
     return null
