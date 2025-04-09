@@ -36,8 +36,8 @@ import {
   selectLoependeVedtak,
   selectSamtykkeOffentligAFP,
   selectSivilstand,
-  selectUtenlandsperioder,
   selectSkalBeregneAfpKap19,
+  selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
 import { logger } from '@/utils/logging'
 

@@ -17,12 +17,12 @@ import { formatInntektToNumber } from '@/utils/inntekt'
 import { SERIES_DEFAULT } from './constants'
 import {
   generateXAxis,
-  processInntektArray,
-  processPensjonsberegningArray,
-  processPensjonsberegningArrayForKap19,
   getChartDefaults,
   processAfpPensjonsberegningArray,
+  processInntektArray,
   processPensjonsavtalerArray,
+  processPensjonsberegningArray,
+  processPensjonsberegningArrayForKap19,
   processPre2025OffentligAfpPensjonsberegningArray,
 } from './utils'
 import { getChartOptions, onPointUnclick } from './utils-highcharts'
