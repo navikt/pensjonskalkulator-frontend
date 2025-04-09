@@ -126,12 +126,38 @@ export const processInntektArray = (args: {
 export const processPensjonsberegningArray = (
   pensjonsberegninger: AfpPrivatPensjonsberegning[] = [],
   isEndring: boolean,
+  xAxisLength: number
+): number[] => {
+  const arrayLength = Math.max(
+    xAxisLength,
+    isEndring ? pensjonsberegninger.length + 1 : pensjonsberegninger.length + 2
+  )
+  const dataArray = isEndring ? [] : new Array(1).fill(0)
+
+  const livsvarigPensjonsbeloep =
+    pensjonsberegninger[pensjonsberegninger.length - 1]?.beloep ?? 0
+
+  for (let index = isEndring ? 0 : 1; index < arrayLength; index++) {
+    const pensjonsBeregningAtIndex =
+      pensjonsberegninger[isEndring ? index : index - 1]
+    dataArray.push(
+      pensjonsBeregningAtIndex
+        ? pensjonsBeregningAtIndex.beloep
+        : livsvarigPensjonsbeloep
+    )
+  }
+  return dataArray
+}
+
+export const processPensjonsberegningArrayForKap19 = (
+  pensjonsberegninger: AfpPrivatPensjonsberegning[] = [],
+  isEndring: boolean,
   xAxisLength: number,
   startAlder: number
 ): number[] => {
   const arrayLength = Math.max(
     xAxisLength,
-    isEndring ? pensjonsberegninger.length : pensjonsberegninger.length + 1
+    isEndring ? pensjonsberegninger.length + 1 : pensjonsberegninger.length + 2 // muligens pensjonsberegninger.length : pensjonsberegninger.length + 1
   )
 
   const filledArrayLength = pensjonsberegninger[0]
@@ -145,7 +171,11 @@ export const processPensjonsberegningArray = (
   const livsvarigPensjonsbeloep =
     pensjonsberegninger[pensjonsberegninger.length - 1]?.beloep ?? 0
 
-  for (let index = isEndring ? 0 : 1; index < arrayLength; index++) {
+  for (
+    let index = isEndring ? 0 : 1;
+    index < arrayLength - filledArrayLength;
+    index++
+  ) {
     const pensjonsBeregningAtIndex =
       pensjonsberegninger[isEndring ? index : index - 1]
     dataArray.push(

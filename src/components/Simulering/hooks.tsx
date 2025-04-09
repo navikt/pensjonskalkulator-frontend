@@ -21,6 +21,7 @@ import {
   generateXAxis,
   processInntektArray,
   processPensjonsberegningArray,
+  processPensjonsberegningArrayForKap19,
   processAfpPensjonsberegningArray,
   processPensjonsavtalerArray,
   processPre2025OffentligAfpPensjonsberegningArray,
@@ -321,12 +322,18 @@ export const useSimuleringChartLocalState = (initialValues: {
             name: intl.formatMessage({
               id: SERIES_DEFAULT.SERIE_ALDERSPENSJON.name,
             }),
-            data: processPensjonsberegningArray(
-              alderspensjonListe,
-              isEndring,
-              xAxis.length,
-              startAar
-            ),
+            data: pre2025OffentligAfpListe
+              ? processPensjonsberegningArrayForKap19(
+                  alderspensjonListe,
+                  isEndring,
+                  xAxis.length,
+                  startAar
+                )
+              : processPensjonsberegningArray(
+                  alderspensjonListe,
+                  isEndring,
+                  xAxis.length
+                ),
           } as SeriesOptionsType,
         ],
       })
