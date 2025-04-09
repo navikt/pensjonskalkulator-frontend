@@ -263,7 +263,7 @@ export const apiSlice = createApi({
         return response
       },
     }),
-    getSkruAvKalkluatorFeatureToggle: builder.query<UnleashToggle, void>({
+    getVedlikeholdsmodusFeatureToggle: builder.query<UnleashToggle, void>({
       query: () => '/feature/pensjonskalkulator.skru-av-kalkulator',
       transformResponse: (response: UnleashToggle) => {
         if (!isUnleashToggle(response)) {
@@ -294,6 +294,6 @@ export const {
   useGetSanityFeatureToggleQuery,
   useGetOtpKlpFeatureToggleQuery,
   useGetGradertUfoereAfpFeatureToggleQuery,
-  useGetSkruAvKalkluatorFeatureToggleQuery,
+  useGetVedlikeholdsmodusFeatureToggleQuery,
   useGetUtvidetSimuleringsresultatFeatureToggleQuery,
 } = apiSlice
