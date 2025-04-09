@@ -377,8 +377,8 @@ describe('Simulering-utils', () => {
 
   describe('processPensjonsberegningArray', () => {
     it('returnerer et array med en 0 verdi uten å feile hvis input er et tomt array', () => {
-      expect(processPensjonsberegningArray([], false, 0, 0)).toEqual([0, 0])
-      expect(processPensjonsberegningArray([], false, 1, 1)).toEqual([0, 0])
+      expect(processPensjonsberegningArray([], false, 0)).toEqual([0, 0])
+      expect(processPensjonsberegningArray([], false, 1)).toEqual([0, 0])
     })
 
     it('returnerer riktig mappet array med 0 verdi først, beløp, og livsvarig beløp duplisert sist, avhengig av x-axis lengden', () => {
@@ -400,8 +400,7 @@ describe('Simulering-utils', () => {
             },
           ],
           false,
-          2,
-          75
+          2
         )
       ).toEqual([0, 20000, 80000, 80000, 80000])
       expect(
@@ -422,8 +421,7 @@ describe('Simulering-utils', () => {
             },
           ],
           false,
-          5,
-          75
+          5
         )
       ).toEqual([0, 20000, 80000, 80000, 80000])
       expect(
@@ -444,8 +442,7 @@ describe('Simulering-utils', () => {
             },
           ],
           false,
-          10,
-          75
+          10
         )
       ).toEqual([
         0, 20000, 80000, 80000, 80000, 80000, 80000, 80000, 80000, 80000,
@@ -471,8 +468,7 @@ describe('Simulering-utils', () => {
             },
           ],
           true,
-          2,
-          75
+          2
         )
       ).toEqual([20000, 80000, 80000, 80000])
       expect(
@@ -493,8 +489,7 @@ describe('Simulering-utils', () => {
             },
           ],
           true,
-          5,
-          75
+          5
         )
       ).toEqual([20000, 80000, 80000, 80000, 80000])
       expect(
@@ -515,8 +510,7 @@ describe('Simulering-utils', () => {
             },
           ],
           true,
-          10,
-          75
+          10
         )
       ).toEqual([
         20000, 80000, 80000, 80000, 80000, 80000, 80000, 80000, 80000, 80000,
