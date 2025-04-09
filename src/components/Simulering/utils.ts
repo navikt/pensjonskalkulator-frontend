@@ -148,6 +148,7 @@ export const processPensjonsberegningArray = (
   return dataArray
 }
 
+//TODO: refaktorer processPensjonsberegningArray slik at den også tar hensyn til AFP etterfulgt av AP
 export const processPensjonsberegningArrayForKap19 = (
   pensjonsberegninger: AfpPrivatPensjonsberegning[] = [],
   isEndring: boolean,
