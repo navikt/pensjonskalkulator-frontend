@@ -249,6 +249,28 @@ describe('Loaders', () => {
         )
       })
     })
+
+    it('Når vedlikeholdsmodus er aktivert blir man redirigert', async () => {
+      mockResponse('/feature/pensjonskalkulator.vedlikeholdsmodus', {
+        json: {
+          enabled: true,
+        },
+      })
+
+      const mockedState = {
+        userInput: { ...userInputInitialState },
+      }
+      store.getState = vi.fn().mockImplementation(() => {
+        return mockedState
+      })
+      const returnedFromLoader = (await stepStartAccessGuard()) as Response
+
+      expect(returnedFromLoader).not.toBeNull()
+      expect(returnedFromLoader.headers.get('location')).toBe(
+        '/kalkulatoren-virker-ikke'
+      )
+      expect(returnedFromLoader.status).toBe(302)
+    })
   })
 
   describe('stepSivilstandAccessGuard', async () => {
