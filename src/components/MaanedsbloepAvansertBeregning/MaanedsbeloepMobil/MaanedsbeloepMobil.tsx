@@ -58,7 +58,7 @@ export const MaanedsbeloepMobil: React.FC<Props> = ({
 
   return (
     <VStack className={styles.maanedsbeloep} gap="1">
-      <BodyLong size="medium" weight="semibold">
+      <BodyLong size="small" weight="semibold">
         <FormattedMessage
           id="beregning.avansert.maanedsbeloep.tittel_1"
           values={{
@@ -70,7 +70,7 @@ export const MaanedsbeloepMobil: React.FC<Props> = ({
       </BodyLong>
       {afp && (
         <div>
-          <BodyLong size="medium">
+          <BodyLong size="small">
             <FormattedMessage id="beregning.avansert.maanedsbeloep.afp" />:
           </BodyLong>
           {formatInntekt(afp ?? 0)} kr
@@ -78,7 +78,7 @@ export const MaanedsbeloepMobil: React.FC<Props> = ({
       )}
       {pensjonsavtale && (
         <div>
-          <BodyLong size="medium">
+          <BodyLong size="small">
             <FormattedMessage id="beregning.avansert.maanedsbeloep.pensjonsavtaler" />
             :
           </BodyLong>
@@ -87,7 +87,7 @@ export const MaanedsbeloepMobil: React.FC<Props> = ({
       )}
       {alderspensjon && (
         <div>
-          <BodyLong size="medium">
+          <BodyLong size="small">
             <FormattedMessage
               id="beregning.avansert.maanedsbeloep.alderspensjon"
               values={{ prosent: grad }}
@@ -98,7 +98,7 @@ export const MaanedsbeloepMobil: React.FC<Props> = ({
         </div>
       )}
       <div>
-        <BodyLong size="medium">
+        <BodyLong size="small">
           <FormattedMessage
             id="beregning.avansert.maanedsbeloep.sum"
             values={{
