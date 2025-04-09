@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router'
 
 import { Alert, BodyLong, Link } from '@navikt/ds-react'
 
+import { SanityReadmore } from '@/components/common/SanityReadmore'
+import { TelefonLink } from '@/components/common/TelefonLink'
 import { paths } from '@/router/constants'
 import {
   useGetGradertUfoereAfpFeatureToggleQuery,
@@ -20,8 +22,6 @@ import { userInputActions } from '@/state/userInput/userInputSlice'
 import { formatUttaksalder } from '@/utils/alder'
 import { getFormatMessageValues } from '@/utils/translations'
 
-import { SanityReadmore } from '../common/SanityReadmore'
-
 import styles from './TidligstMuligUttaksalder.module.scss'
 
 interface Props {
@@ -30,11 +30,11 @@ interface Props {
   show1963Text: boolean
 }
 
-export const TidligstMuligUttaksalder: React.FC<Props> = ({
+export const TidligstMuligUttaksalder = ({
   tidligstMuligUttak,
   ufoeregrad,
   show1963Text,
-}) => {
+}: Props) => {
   const intl = useIntl()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
@@ -143,6 +143,7 @@ export const TidligstMuligUttaksalder: React.FC<Props> = ({
               values={{
                 ...getFormatMessageValues(),
                 normertPensjonsalder: formatertNormertPensjonsalder,
+                link: <TelefonLink />,
               }}
             />
           </Alert>

@@ -26,7 +26,7 @@ export default {
   'error.global.ingress': 'Vi jobbar med å rette feilen. Prøv igjen seinare.',
   'error.global.button': 'Avbryt',
   'error.du_kan_ikke_bruke_enkel_kalkulator':
-    'Du kan dessverre ikkje bruke enkel kalkulator',
+    'Du kan dessverre ikkje bruke denne kalkulatoren',
   'error.404.title': 'Oops! Sida du ser etter er ikkje å finne.',
   'error.404.list_item1':
     'Viss du skreiv inn adressa direkte i nettlesaren kan du sjekke om ho er stava riktig.',
@@ -433,6 +433,7 @@ export default {
   'grunnlag.afp.ingress.nei.endring': 'MANGLER_TEKST',
   'grunnlag.afp.ingress.nei.ufoeretrygd': 'MANGLER_TEKST',
   'grunnlag.afp.ingress.full_ufoeretrygd': 'MANGLER_TEKST',
+  'grunnlag.afp.ingress.null.gammel': '-',
   'grunnlag.afp.ingress.ja_offentlig.gammel':
     'Vi kan ikkje vise din AFP fordi regelverket for ny AFP i offentleg sektor ikkje er endeleg avklart. For meir informasjon, sjekk tenestepensjonsordninga di.',
   'grunnlag.afp.ingress.ja_offentlig.ufoeretrygd.gammel': 'MANGLER_TEKST',
@@ -538,4 +539,5 @@ export default {
   'forbehold.title': 'Atterhald',
   'showmore.vis_mindre': 'Vis mindre',
   'showmore.vis_mer': 'Vis meir',
+  'link.telefon_pensjon': '55 55 33 34',
 }

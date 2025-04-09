@@ -75,12 +75,15 @@ export function Utenlandsopphold({
           )
         }}
       />
+
       <Heading level="2" size="medium" spacing>
         <FormattedMessage id="stegvisning.utenlandsopphold.title" />
       </Heading>
+
       <BodyLong size="large">
         <FormattedMessage id="stegvisning.utenlandsopphold.ingress" />
       </BodyLong>
+
       <SanityReadmore
         id="hva_er_opphold_utenfor_norge"
         className={styles.readmore1}
@@ -113,6 +116,7 @@ export function Utenlandsopphold({
         <Radio form="har-utenlandsopphold" value="ja">
           <FormattedMessage id="stegvisning.utenlandsopphold.radio_ja" />
         </Radio>
+
         <Radio form="har-utenlandsopphold" value="nei">
           <FormattedMessage id="stegvisning.utenlandsopphold.radio_nei" />
         </Radio>
@@ -121,9 +125,11 @@ export function Utenlandsopphold({
       {showUtenlandsperioder && (
         <>
           <UtenlandsoppholdListe validationError={validationErrors.bottom} />
+
           <BodyLong size="medium" className={styles.ingressBottom}>
             <FormattedMessage id="stegvisning.utenlandsopphold.ingress.bottom" />
           </BodyLong>
+
           <Divider smallMargin />
         </>
       )}
@@ -135,6 +141,7 @@ export function Utenlandsopphold({
       >
         <FormattedMessage id="stegvisning.neste" />
       </Button>
+
       <Button
         type="button"
         className={styles.button}
@@ -145,6 +152,7 @@ export function Utenlandsopphold({
       >
         <FormattedMessage id="stegvisning.tilbake" />
       </Button>
+
       {onCancel && (
         <Button
           type="button"
