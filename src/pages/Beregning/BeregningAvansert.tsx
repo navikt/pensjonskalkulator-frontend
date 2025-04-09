@@ -283,7 +283,7 @@ export const BeregningAvansert = () => {
             </div>
 
             <Simulering
-              type="avansert"
+              visning="avansert"
               isLoading={isFetching}
               headingLevel="3"
               aarligInntektFoerUttakBeloep={aarligInntektFoerUttakBeloep ?? '0'}
