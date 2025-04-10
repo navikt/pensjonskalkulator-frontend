@@ -1,5 +1,7 @@
+import { FormattedMessage } from 'react-intl'
 import { Navigate, Outlet, RouteObject } from 'react-router'
 
+import { Loader } from '@/components/common/Loader'
 import { PageFramework } from '@/components/common/PageFramework'
 import { Beregning } from '@/pages/Beregning'
 import { Forbehold } from '@/pages/Forbehold'
@@ -30,9 +32,17 @@ import {
   stepUfoeretrygdAFPAccessGuard,
 } from './loaders'
 
+const fallback = (
+  <Loader
+    size="3xlarge"
+    title={<FormattedMessage id="pageframework.loading" />}
+  />
+)
+
 export const routes: RouteObject[] = [
   {
     loader: authenticationGuard,
+    hydrateFallbackElement: fallback,
     element: (
       <PageFramework
         shouldShowLogo
@@ -57,6 +67,7 @@ export const routes: RouteObject[] = [
   },
   {
     loader: authenticationGuard,
+    hydrateFallbackElement: fallback,
     element: (
       <PageFramework>
         <Outlet />
