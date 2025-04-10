@@ -35,7 +35,7 @@ export const DesktopPensjonVisning: React.FC<Props> = ({
           paddingInline="6"
           paddingBlock="4"
           background="bg-subtle"
-          maxWidth="31rem"
+          maxWidth={{ sm: '27rem', md: '31rem' }}
           flexGrow="1"
         >
           <VStack gap="1">
