@@ -47,7 +47,7 @@ export const DesktopPensjonVisning: React.FC<Props> = ({
               {data.alderspensjon &&
                 !data.afp &&
                 !data.pensjonsavtale &&
-                `(${hentUttaksmaanedOgAar(data.alder).maaned})`}
+                `(${hentUttaksmaanedOgAar(data.alder).maaned} ${hentUttaksmaanedOgAar(data.alder).aar})`}
             </BodyLong>
 
             <PensjonDataVisning

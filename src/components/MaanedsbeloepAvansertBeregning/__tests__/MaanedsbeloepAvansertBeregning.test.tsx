@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { userInputInitialState } from '@/state/userInput/userInputSlice'
 import { render, screen } from '@/test-utils'
 
-import { MaanedsbloepAvansertBeregning } from '../MaanedsbeloepAvansertBeregning'
+import { MaanedsbeloepAvansertBeregning } from '../MaanedsbeloepAvansertBeregning'
 
 // Create a mock implementation that we can configure per test
 const mockUsePensjonBeregninger = vi.fn()
@@ -11,6 +11,19 @@ const mockUsePensjonBeregninger = vi.fn()
 // Mock the hook to control its return values
 vi.mock('../hooks/usePensjonBeregninger', () => ({
   usePensjonBeregninger: () => mockUsePensjonBeregninger(),
+}))
+
+// Mock useGetPersonQuery
+vi.mock('@/state/api/apiSlice', () => ({
+  useGetPersonQuery: () => ({
+    data: {
+      navn: 'Test Testesen',
+      foedselsdato: '1963-01-15',
+      sivilstand: 'GIFT',
+    },
+    isLoading: false,
+    isError: false,
+  }),
 }))
 
 describe('MaanedsbloepAvansertBeregning', () => {
@@ -81,7 +94,7 @@ describe('MaanedsbloepAvansertBeregning', () => {
 
   it('renders correctly', () => {
     render(
-      <MaanedsbloepAvansertBeregning
+      <MaanedsbeloepAvansertBeregning
         alderspensjonMaanedligVedEndring={{
           heltUttakMaanedligBeloep: 20000,
           gradertUttakMaanedligBeloep: 15000,
@@ -116,7 +129,7 @@ describe('MaanedsbloepAvansertBeregning', () => {
     })
 
     const { container } = render(
-      <MaanedsbloepAvansertBeregning
+      <MaanedsbeloepAvansertBeregning
         alderspensjonMaanedligVedEndring={{
           heltUttakMaanedligBeloep: 20000,
           gradertUttakMaanedligBeloep: 15000,
