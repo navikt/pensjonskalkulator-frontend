@@ -27,6 +27,7 @@ import {
 import {
   DEFAULT_MAX_OPPTJENINGSALDER,
   formatUttaksalder,
+  getAlderPlus1Maaned,
   getBrukerensAlderISluttenAvMaaneden,
 } from '@/utils/alder'
 import { updateAndFormatInntektFromInputField } from '@/utils/inntekt'
