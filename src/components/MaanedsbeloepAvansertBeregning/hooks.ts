@@ -60,7 +60,6 @@ export const usePensjonBeregninger = ({
     alder?: Alder
   ): number | undefined => {
     const liste = ordning === 'offentlig' ? afpOffentligListe : afpPrivatListe
-
     if (!liste?.length || !alder) return undefined
 
     return liste.findLast((utbetaling) => alder.aar >= utbetaling.alder)

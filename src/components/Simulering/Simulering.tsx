@@ -286,7 +286,7 @@ export const Simulering = ({
             afpPrivatListe={afpPrivatListe}
             afpOffentligListe={afpOffentligListe}
             pensjonsavtaler={pensjonsavtalerData?.avtaler}
-            simuilertTjenesepensjon={offentligTpData?.simulertTjenestepensjon}
+            simulertTjenestepensjon={offentligTpData?.simulertTjenestepensjon}
           />
         )}
     </section>
