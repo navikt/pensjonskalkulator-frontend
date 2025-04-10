@@ -1,7 +1,6 @@
 import clsx from 'clsx'
 import { format } from 'date-fns'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Link as RouterLink } from 'react-router'
 
 import { ExternalLinkIcon } from '@navikt/aksel-icons'
 import { BodyLong, Button, Heading, Link } from '@navikt/ds-react'
@@ -168,7 +167,6 @@ export function Start({ navn, loependeVedtak, onCancel, onNext }: Props) {
             height="1.25rem"
           />
         </Link>
-        <RouterLink to="/login">Test</RouterLink>
       </Card>
     </>
   )
