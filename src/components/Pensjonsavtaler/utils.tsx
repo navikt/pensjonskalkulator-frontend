@@ -58,12 +58,12 @@ export const hentSumPensjonsavtalerVedUttak = (
 }
 
 export const hentSumOffentligTjenestepensjonVedUttak = (
-  tjenestepensjonsavtaler: OffentligTp,
+  simulertTjenestepensjon: SimulertTjenestepensjon,
   alder: Alder
 ) => {
   return finnAllePensjonsavtalerVedUttak(
-    tjenestepensjonsavtaler.simulertTjenestepensjon?.simuleringsresultat
-      .utbetalingsperioder || [].flat(),
+    simulertTjenestepensjon?.simuleringsresultat.utbetalingsperioder ||
+      [].flat(),
     alder
   )
     .flat()

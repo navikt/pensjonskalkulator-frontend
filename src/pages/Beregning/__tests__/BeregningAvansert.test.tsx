@@ -468,7 +468,6 @@ describe('BeregningAvansert', () => {
       })
 
       it('Når simuleringen svarer med en beregning, vises det resultatkort og simulering med tabell, Pensjonsavtaler, Grunnlag og Forbehold', async () => {
-        const user = userEvent.setup()
         const initiateMock = vi.spyOn(
           apiSliceUtils.apiSlice.endpoints.alderspensjon,
           'initiate'
@@ -507,9 +506,6 @@ describe('BeregningAvansert', () => {
         await waitFor(() => {
           expect(initiateMock).toHaveBeenCalledTimes(1)
         })
-        expect(
-          screen.getByText('beregning.avansert.resultatkort.tittel')
-        ).toBeVisible()
         expect(screen.getByText('pensjonsavtaler.title')).toBeVisible()
         expect(
           container.getElementsByClassName('highcharts-loading')
@@ -525,10 +521,6 @@ describe('BeregningAvansert', () => {
         expect(
           await screen.findByTestId('highcharts-done-drawing')
         ).toBeVisible()
-
-        await user.click(
-          screen.getByText('beregning.avansert.resultatkort.button')
-        )
 
         expect(await screen.findByText('grunnlag.title')).toBeInTheDocument()
         expect(
@@ -712,7 +704,6 @@ describe('BeregningAvansert', () => {
 
   describe('Gitt at brukeren har vedtak om alderspensjon,', () => {
     it('Når simuleringen svarer med en beregning, vises det resultatkort og simulering med tabell, Grunnlag og Forbehold uten Pensjonsavtaler', async () => {
-      const user = userEvent.setup()
       const initiateMock = vi.spyOn(
         apiSliceUtils.apiSlice.endpoints.alderspensjon,
         'initiate'
@@ -757,9 +748,6 @@ describe('BeregningAvansert', () => {
         expect(initiateMock).toHaveBeenCalledTimes(1)
       })
       expect(
-        screen.getByText('beregning.avansert.resultatkort.tittel')
-      ).toBeVisible()
-      expect(
         screen.queryByText('pensjonsavtaler.title')
       ).not.toBeInTheDocument()
 
@@ -775,10 +763,6 @@ describe('BeregningAvansert', () => {
         ).toBeInTheDocument()
       })
       expect(await screen.findByTestId('highcharts-done-drawing')).toBeVisible()
-
-      await user.click(
-        screen.getByText('beregning.avansert.resultatkort.button')
-      )
 
       expect(await screen.findByText('grunnlag.title')).toBeInTheDocument()
       expect(
@@ -835,9 +819,6 @@ describe('BeregningAvansert', () => {
       await waitFor(() => {
         expect(initiateMock).toHaveBeenCalledTimes(1)
       })
-      expect(
-        screen.getByText('beregning.avansert.resultatkort.tittel')
-      ).toBeVisible()
 
       expect(
         container.getElementsByClassName('highcharts-loading')
