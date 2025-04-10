@@ -1,7 +1,7 @@
 import React from 'react'
 import { useIntl } from 'react-intl'
 
-import { Box, ReadMore, VStack } from '@navikt/ds-react'
+import { BodyLong, Box, ReadMore, VStack } from '@navikt/ds-react'
 
 import { formatUttaksalder } from '@/utils/alder'
 
@@ -29,6 +29,7 @@ export const MobilePensjonVisning: React.FC<Props> = ({
 
   // If there's no gradert view, show desktop like view on mobile
   if (!harGradering) {
+    const data = pensjonsdata[0]
     return (
       <div className={styles.maanedsbeloepMobileOnly}>
         <Box
@@ -39,6 +40,20 @@ export const MobilePensjonVisning: React.FC<Props> = ({
           background="bg-subtle"
         >
           <VStack gap="1">
+            <BodyLong
+              size="medium"
+              weight="semibold"
+              className={styles.maanedsbeloepMobileOnly}
+            >
+              {intl.formatMessage({
+                id: 'beregning.avansert.maanedsbeloep.tittel_1',
+              })}
+              {formatUttaksalder(intl, data.alder)}{' '}
+              {data.alderspensjon &&
+                !data.afp &&
+                !data.pensjonsavtale &&
+                `(${hentUttaksmaanedOgAar(data.alder).maaned} ${hentUttaksmaanedOgAar(data.alder).aar})`}
+            </BodyLong>
             <PensjonDataVisning
               pensjonsdata={pensjonsdata[0]}
               summerYtelser={summerYtelser}
