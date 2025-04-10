@@ -28,7 +28,7 @@ export const PensjonDataVisning: React.FC<Props> = ({
   const size = isMobile ? 'small' : 'medium'
 
   return (
-    <div className={styles.container}>
+    <>
       {afp && (
         <div className={styles.row}>
           <BodyLong size={size}>
@@ -73,6 +73,6 @@ export const PensjonDataVisning: React.FC<Props> = ({
           <span>{formatInntekt(summerYtelser(pensjonsdata))} kr</span>
         </div>
       )}
-    </div>
+    </>
   )
 }
