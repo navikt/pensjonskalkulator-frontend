@@ -9,9 +9,9 @@ import { transformUttaksalderToDate } from '@/utils/alder'
 import {
   hentSumOffentligTjenestepensjonVedUttak,
   hentSumPensjonsavtalerVedUttak,
-} from '../../Pensjonsavtaler/utils'
+} from '../Pensjonsavtaler/utils'
 
-export interface PensionData {
+export interface Pensjonsdata {
   alder: Alder
   grad: number
   afp?: number
@@ -24,7 +24,7 @@ interface PensjonBeregningerProps {
   afpOffentligListe?: AfpPrivatPensjonsberegning[]
   alderspensjonMaanedligVedEndring?: AlderspensjonMaanedligVedEndring
   pensjonsavtaler?: Pensjonsavtale[]
-  offentligTp?: OffentligTp
+  simulertTjenestepensjon?: SimulertTjenestepensjon
 }
 
 export const usePensjonBeregninger = ({
@@ -32,7 +32,7 @@ export const usePensjonBeregninger = ({
   afpPrivatListe,
   afpOffentligListe,
   pensjonsavtaler,
-  offentligTp,
+  simulertTjenestepensjon,
 }: PensjonBeregningerProps) => {
   const { uttaksalder, gradertUttaksperiode } = useAppSelector(
     selectCurrentSimulation
@@ -47,8 +47,11 @@ export const usePensjonBeregninger = ({
 
   // Calculate sum of service pension
   const sumTjenestepensjon = (alder?: Alder): number => {
-    if (!offentligTp || !alder) return 0
-    return hentSumOffentligTjenestepensjonVedUttak(offentligTp, alder)
+    if (!simulertTjenestepensjon || !alder) return 0
+    return hentSumOffentligTjenestepensjonVedUttak(
+      simulertTjenestepensjon,
+      alder
+    )
   }
 
   // Find AFP amount at withdrawal
@@ -65,7 +68,7 @@ export const usePensjonBeregninger = ({
   }
 
   // Calculate sum of all benefits
-  const summerYtelser = (data: PensionData): number => {
+  const summerYtelser = (data: Pensjonsdata): number => {
     return (
       (data.pensjonsavtale || 0) + (data.afp || 0) + (data.alderspensjon || 0)
     )
@@ -88,8 +91,8 @@ export const usePensjonBeregninger = ({
   }
 
   // Prepare pension data for each withdrawal stage
-  const getPensionData = (): PensionData[] => {
-    const data: PensionData[] = []
+  const getPensionData = (): Pensjonsdata[] => {
+    const data: Pensjonsdata[] = []
 
     if (gradertUttaksperiode) {
       const gradertAlder = gradertUttaksperiode.uttaksalder
@@ -124,7 +127,7 @@ export const usePensjonBeregninger = ({
   }
 
   return {
-    pensionData: getPensionData(),
+    pensjonsdata: getPensionData(),
     summerYtelser,
     hentUttaksmaanedOgAar,
     harGradering: !!gradertUttaksperiode,

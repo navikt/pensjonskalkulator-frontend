@@ -5,27 +5,27 @@ import { Box, ReadMore, VStack } from '@navikt/ds-react'
 
 import { formatUttaksalder } from '@/utils/alder'
 
-import { PensionData } from '../hooks/usePensjonBeregninger'
+import { Pensjonsdata } from '../hooks'
 import { PensjonDataVisning } from './PensjonDataVisning'
 
 import styles from '../MaanedsbloepAvansertBeregning.module.scss'
 
 interface Props {
-  pensionData: PensionData[]
-  summerYtelser: (data: PensionData) => number
+  pensjonsdata: Pensjonsdata[]
+  summerYtelser: (data: Pensjonsdata) => number
   hentUttaksmaanedOgAar: (alder: Alder) => { maaned: string; aar: string }
   harGradering: boolean
 }
 
 export const MobilePensjonVisning: React.FC<Props> = ({
-  pensionData,
+  pensjonsdata,
   summerYtelser,
   hentUttaksmaanedOgAar,
   harGradering,
 }) => {
   const intl = useIntl()
 
-  if (!pensionData.length) return null
+  if (!pensjonsdata.length) return null
 
   // If there's no gradert view, show desktop like view on mobile
   if (!harGradering) {
@@ -40,7 +40,7 @@ export const MobilePensjonVisning: React.FC<Props> = ({
         >
           <VStack gap="1">
             <PensjonDataVisning
-              pensionData={pensionData[0]}
+              pensjonsdata={pensjonsdata[0]}
               summerYtelser={summerYtelser}
               hentUttaksMaanedOgAar={hentUttaksmaanedOgAar}
               isMobile={true}
@@ -62,7 +62,7 @@ export const MobilePensjonVisning: React.FC<Props> = ({
         background="bg-subtle"
       >
         <VStack gap="2">
-          {pensionData.map((data, index) => (
+          {pensjonsdata.map((data, index) => (
             <ReadMore
               key={`mobile-${index}`}
               defaultOpen={index === 0}
@@ -73,7 +73,7 @@ export const MobilePensjonVisning: React.FC<Props> = ({
               }
             >
               <PensjonDataVisning
-                pensionData={data}
+                pensjonsdata={data}
                 summerYtelser={summerYtelser}
                 hentUttaksMaanedOgAar={hentUttaksmaanedOgAar}
                 isMobile={true}
