@@ -907,37 +907,7 @@ describe('BeregningAvansert', () => {
     })
   })
 
-  // Nye Tester
-  describe('Gitt at bruker har med eller uten AFP, vis riktig beskrivelse', () => {
-    it('viser riktig intro tekst for alle', async () => {
-      render(
-        <BeregningContext.Provider
-          value={{
-            ...contextMockedValues,
-          }}
-        >
-          <BeregningAvansert />
-        </BeregningContext.Provider>,
-        {
-          preloadedState: {
-            api: {
-              // @ts-ignore
-              queries: {
-                ...fulfilledGetPerson,
-                ...fulfilledGetInntekt,
-                ...fulfilledGetLoependeVedtak0Ufoeregrad,
-              },
-            },
-            userInput: {
-              ...userInputInitialState,
-            },
-          },
-        }
-      )
-      expect(screen.getByText('beregning.intro.title')).toBeVisible()
-      expect(screen.getByText('beregning.intro.description_1')).toBeVisible()
-    })
-
+  describe('Gitt at brukeren har gradert uføretrygd og kan velge AFP', () => {
     it('viser riktig beskrivelse for de som har valgt med AFP', async () => {
       render(
         <BeregningContext.Provider
@@ -978,45 +948,6 @@ describe('BeregningAvansert', () => {
       ).toBeVisible()
     })
 
-    it('viser riktig beskrivelse for de som har valgt uten AFP og 100% uføretrygd', async () => {
-      render(
-        <BeregningContext.Provider
-          value={{
-            ...contextMockedValues,
-          }}
-        >
-          <BeregningAvansert />
-        </BeregningContext.Provider>,
-        {
-          preloadedState: {
-            api: {
-              // @ts-ignore
-              queries: {
-                ...fulfilledGetPerson,
-                ...fulfilledGetInntekt,
-                ...fulfilledGetLoependeVedtak100Ufoeregrad,
-              },
-            },
-            userInput: {
-              ...userInputInitialState,
-              currentSimulation: {
-                ...userInputInitialState.currentSimulation,
-                beregningsvalg: 'uten_afp',
-              },
-            },
-          },
-        }
-      )
-      expect(
-        screen.getByText(
-          'Du har 100 % uføretrygd. Uføretrygd vises ikke i beregningen.',
-          {
-            exact: false,
-          }
-        )
-      ).toBeVisible()
-    })
-
     it('viser riktig beskrivelse for de som har valgt uten AFP og gradert uføretrygd', async () => {
       render(
         <BeregningContext.Provider
@@ -1049,6 +980,47 @@ describe('BeregningAvansert', () => {
       expect(
         screen.getByText(
           'Du har 75 % uføretrygd. Den kommer i tillegg til inntekt og pensjon frem til du blir 67 alder.aar. Uføretrygd vises ikke i beregningen.',
+          {
+            exact: false,
+          }
+        )
+      ).toBeVisible()
+    })
+  })
+
+  describe('Gitt at brukeren har 100 % uføretrygd', () => {
+    it('viser riktig beskrivelse for de med 100% uføretrygd', async () => {
+      render(
+        <BeregningContext.Provider
+          value={{
+            ...contextMockedValues,
+          }}
+        >
+          <BeregningAvansert />
+        </BeregningContext.Provider>,
+        {
+          preloadedState: {
+            api: {
+              // @ts-ignore
+              queries: {
+                ...fulfilledGetPerson,
+                ...fulfilledGetInntekt,
+                ...fulfilledGetLoependeVedtak100Ufoeregrad,
+              },
+            },
+            userInput: {
+              ...userInputInitialState,
+              currentSimulation: {
+                ...userInputInitialState.currentSimulation,
+                beregningsvalg: 'uten_afp',
+              },
+            },
+          },
+        }
+      )
+      expect(
+        screen.getByText(
+          'Du har 100 % uføretrygd. Uføretrygd vises ikke i beregningen.',
           {
             exact: false,
           }

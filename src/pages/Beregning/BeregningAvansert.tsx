@@ -245,16 +245,14 @@ export const BeregningAvansert = () => {
               <BodyShort>
                 <FormattedMessage id="beregning.intro.description_1" />
 
-                {beregningsvalg === 'med_afp' && (
+                {beregningsvalg === 'med_afp' ? (
                   <FormattedMessage
                     id="beregning.intro.description_2.med_afp"
                     values={{
                       ...getFormatMessageValues(),
                     }}
                   />
-                )}
-
-                {beregningsvalg === 'uten_afp' && (
+                ) : (
                   <>
                     {harHelUT && (
                       <FormattedMessage
