@@ -5,29 +5,29 @@ import { BodyLong, Box, HStack, VStack } from '@navikt/ds-react'
 
 import { formatUttaksalder } from '@/utils/alder'
 
-import { PensionData } from '../hooks/usePensjonBeregninger'
+import { Pensjonsdata } from '../hooks'
 import { PensjonDataVisning } from './PensjonDataVisning'
 
 import styles from '../MaanedsbloepAvansertBeregning.module.scss'
 
 interface Props {
-  pensionData: PensionData[]
-  summerYtelser: (data: PensionData) => number
+  pensjonsdata: Pensjonsdata[]
+  summerYtelser: (data: Pensjonsdata) => number
   hentUttaksmaanedOgAar: (alder: Alder) => { maaned: string; aar: string }
 }
 
 export const DesktopPensjonVisning: React.FC<Props> = ({
-  pensionData,
+  pensjonsdata,
   summerYtelser,
   hentUttaksmaanedOgAar,
 }) => {
   const intl = useIntl()
 
-  if (!pensionData.length) return null
+  if (!pensjonsdata.length) return null
 
   return (
     <HStack gap="8" width="100%" className={styles.maanedsbeloepDesktopOnly}>
-      {pensionData.map((data, index) => (
+      {pensjonsdata.map((data, index) => (
         <Box
           key={`desktop-${index}`}
           marginBlock="1 0"
@@ -51,7 +51,7 @@ export const DesktopPensjonVisning: React.FC<Props> = ({
             </BodyLong>
 
             <PensjonDataVisning
-              pensionData={data}
+              pensjonsdata={data}
               summerYtelser={summerYtelser}
               hentUttaksMaanedOgAar={hentUttaksmaanedOgAar}
             />

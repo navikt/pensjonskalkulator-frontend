@@ -5,24 +5,24 @@ import { BodyLong } from '@navikt/ds-react'
 
 import { formatInntekt } from '@/utils/inntekt'
 
-import { PensionData } from '../hooks/usePensjonBeregninger'
+import { Pensjonsdata } from '../hooks'
 
 import styles from './PensjonDataVisning.module.scss'
 
 interface Props {
-  pensionData: PensionData
-  summerYtelser: (data: PensionData) => number
+  pensjonsdata: Pensjonsdata
+  summerYtelser: (data: Pensjonsdata) => number
   hentUttaksMaanedOgAar: (alder: Alder) => { maaned: string; aar: string }
   isMobile?: boolean
 }
 
 export const PensjonDataVisning: React.FC<Props> = ({
-  pensionData,
+  pensjonsdata,
   summerYtelser,
   hentUttaksMaanedOgAar,
   isMobile = false,
 }) => {
-  const { alder, grad, afp, pensjonsavtale, alderspensjon } = pensionData
+  const { alder, grad, afp, pensjonsavtale, alderspensjon } = pensjonsdata
   const harKunAlderspensjon = alderspensjon && !afp && !pensjonsavtale
 
   const size = isMobile ? 'small' : 'medium'
@@ -70,7 +70,7 @@ export const PensjonDataVisning: React.FC<Props> = ({
             />
             :
           </BodyLong>
-          <span>{formatInntekt(summerYtelser(pensionData))} kr</span>
+          <span>{formatInntekt(summerYtelser(pensjonsdata))} kr</span>
         </div>
       )}
     </div>

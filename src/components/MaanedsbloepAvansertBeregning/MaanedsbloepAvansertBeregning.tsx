@@ -4,20 +4,20 @@ import { FormattedMessage } from 'react-intl'
 import { Box, Heading } from '@navikt/ds-react'
 
 import { DesktopPensjonVisning, MobilePensjonVisning } from './components'
-import { usePensjonBeregninger } from './hooks/usePensjonBeregninger'
+import { usePensjonBeregninger } from './hooks'
 
 interface Props {
   afpPrivatListe?: AfpPrivatPensjonsberegning[]
   afpOffentligListe?: AfpPrivatPensjonsberegning[]
   alderspensjonMaanedligVedEndring?: AlderspensjonMaanedligVedEndring
   pensjonsavtaler?: Pensjonsavtale[]
-  offentligTp?: OffentligTp
+  simuilertTjenesepensjon?: SimulertTjenestepensjon
 }
 
 export const MaanedsbloepAvansertBeregning: React.FC<Props> = (props) => {
   // Use our custom hook to extract all calculation logic
   const {
-    pensionData,
+    pensjonsdata,
     summerYtelser,
     hentUttaksmaanedOgAar,
     harGradering,
@@ -34,16 +34,14 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = (props) => {
         <FormattedMessage id="maanedsbeloep.title" />
       </Heading>
 
-      {/* Desktop view component */}
       <DesktopPensjonVisning
-        pensionData={pensionData}
+        pensjonsdata={pensjonsdata}
         summerYtelser={summerYtelser}
         hentUttaksmaanedOgAar={hentUttaksmaanedOgAar}
       />
 
-      {/* Mobile view component */}
       <MobilePensjonVisning
-        pensionData={pensionData}
+        pensjonsdata={pensjonsdata}
         summerYtelser={summerYtelser}
         hentUttaksmaanedOgAar={hentUttaksmaanedOgAar}
         harGradering={harGradering}
