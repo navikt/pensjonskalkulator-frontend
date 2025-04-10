@@ -32,6 +32,7 @@ import {
   selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
 
+import { MaanedsbeloepAvansertBeregning } from '../MaanedsbeloepAvansertBeregning'
 import { SimuleringEndringBanner } from './SimuleringEndringBanner/SimuleringEndringBanner'
 import { SimuleringGrafNavigation } from './SimuleringGrafNavigation/SimuleringGrafNavigation'
 import { SimuleringPensjonsavtalerAlert } from './SimuleringPensjonsavtalerAlert/SimuleringPensjonsavtalerAlert'
@@ -279,8 +280,8 @@ export const Simulering = ({
       )}
 
       {!(isOffentligTpLoading || isLoading || isPensjonsavtalerLoading) &&
-        type === 'avansert' && (
-          <MaanedsbloepAvansertBeregning
+        visning === 'avansert' && (
+          <MaanedsbeloepAvansertBeregning
             alderspensjonMaanedligVedEndring={alderspensjonMaanedligVedEndring}
             afpPrivatListe={afpPrivatListe}
             afpOffentligListe={afpOffentligListe}

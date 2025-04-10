@@ -7,14 +7,14 @@ import { DesktopPensjonVisning, MobilePensjonVisning } from './components'
 import { usePensjonBeregninger } from './hooks'
 
 interface Props {
-  afpPrivatListe?: AfpPrivatPensjonsberegning[]
-  afpOffentligListe?: AfpPrivatPensjonsberegning[]
+  afpPrivatListe?: AfpPensjonsberegning[]
+  afpOffentligListe?: AfpPensjonsberegning[]
   alderspensjonMaanedligVedEndring?: AlderspensjonMaanedligVedEndring
   pensjonsavtaler?: Pensjonsavtale[]
   simuilertTjenesepensjon?: SimulertTjenestepensjon
 }
 
-export const MaanedsbloepAvansertBeregning: React.FC<Props> = (props) => {
+export const MaanedsbeloepAvansertBeregning: React.FC<Props> = (props) => {
   // Use our custom hook to extract all calculation logic
   const {
     pensjonsdata,
@@ -29,7 +29,7 @@ export const MaanedsbloepAvansertBeregning: React.FC<Props> = (props) => {
   }
 
   return (
-    <Box marginBlock="10 0">
+    <Box marginBlock="10 0" data-testid="maanedsbloep-avansert-beregning">
       <Heading size="small" level="3">
         <FormattedMessage id="maanedsbeloep.title" />
       </Heading>

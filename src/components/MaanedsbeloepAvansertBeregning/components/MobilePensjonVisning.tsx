@@ -8,7 +8,7 @@ import { formatUttaksalder } from '@/utils/alder'
 import { Pensjonsdata } from '../hooks'
 import { PensjonDataVisning } from './PensjonDataVisning'
 
-import styles from '../MaanedsbloepAvansertBeregning.module.scss'
+import styles from '../MaanedsbeloepAvansertBeregning.module.scss'
 
 interface Props {
   pensjonsdata: Pensjonsdata[]
