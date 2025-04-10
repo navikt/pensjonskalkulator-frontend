@@ -8,7 +8,7 @@ import { formatUttaksalder } from '@/utils/alder'
 import { Pensjonsdata } from '../hooks'
 import { PensjonDataVisning } from './PensjonDataVisning'
 
-import styles from '../MaanedsbloepAvansertBeregning.module.scss'
+import styles from '../MaanedsbeloepAvansertBeregning.module.scss'
 
 interface Props {
   pensjonsdata: Pensjonsdata[]
@@ -35,7 +35,7 @@ export const DesktopPensjonVisning: React.FC<Props> = ({
           paddingInline="6"
           paddingBlock="4"
           background="bg-subtle"
-          maxWidth="31rem"
+          maxWidth={{ sm: '27rem', md: '31rem' }}
           flexGrow="1"
         >
           <VStack gap="1">
@@ -47,7 +47,7 @@ export const DesktopPensjonVisning: React.FC<Props> = ({
               {data.alderspensjon &&
                 !data.afp &&
                 !data.pensjonsavtale &&
-                `(${hentUttaksmaanedOgAar(data.alder).maaned})`}
+                `(${hentUttaksmaanedOgAar(data.alder).maaned} ${hentUttaksmaanedOgAar(data.alder).aar})`}
             </BodyLong>
 
             <PensjonDataVisning

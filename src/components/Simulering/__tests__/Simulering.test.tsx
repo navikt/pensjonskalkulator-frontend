@@ -1122,4 +1122,37 @@ describe('Simulering', () => {
       expect(highChartsWrapper.getAttribute('aria-hidden')).toBe('true')
     })
   })
+
+  describe('Gitt at simuleringen er i enkel visning', () => {
+    it('viser tittel og riktig ingress', async () => {
+      render(
+        <Simulering
+          visning="enkel"
+          isLoading={false}
+          headingLevel="3"
+          alderspensjonListe={alderspensjonData.alderspensjon}
+          afpPrivatListe={afpPrivatData.afpPrivat}
+          showButtonsAndTable={true}
+          aarligInntektFoerUttakBeloep="500 000"
+        />,
+        {
+          preloadedState: {
+            api: {
+              /* @ts-ignore */
+              queries: {
+                ...fulfilledGetPerson,
+              },
+            },
+            userInput: {
+              ...userInputInitialState,
+              samtykke: true,
+              currentSimulation: { ...currentSimulation },
+            },
+          },
+        }
+      )
+      expect(screen.getByText('beregning.highcharts.title')).toBeVisible()
+      expect(screen.getByText('beregning.highcharts.ingress')).toBeVisible()
+    })
+  })
 })

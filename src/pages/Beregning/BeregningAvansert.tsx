@@ -177,12 +177,13 @@ export const BeregningAvansert = () => {
     }
   }
 
-  if (avansertSkjemaModus === 'redigering')
+  if (avansertSkjemaModus === 'redigering') {
     return (
       <RedigerAvansertBeregning
         vilkaarsproeving={alderspensjon?.vilkaarsproeving}
       />
     )
+  }
 
   const harHelUT = loependeVedtak?.ufoeretrygd.grad === 100
   const harGradertUT =
@@ -264,6 +265,7 @@ export const BeregningAvansert = () => {
                         }}
                       />
                     )}
+
                     {harGradertUT && (
                       <FormattedMessage
                         id="beregning.intro.description_2.uten_afp.gradert"
@@ -323,6 +325,7 @@ export const BeregningAvansert = () => {
               <SanityGuidePanel
                 id="vurderer_du_a_velge_afp"
                 className={styles.guidePanel}
+                hasSection
               />
             )}
 
