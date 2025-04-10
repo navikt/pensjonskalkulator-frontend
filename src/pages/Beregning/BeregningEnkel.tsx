@@ -305,6 +305,7 @@ export const BeregningEnkel: React.FC = () => {
                   aarligInntektFoerUttakBeloep ?? '0'
                 }
                 alderspensjonListe={alderspensjon?.alderspensjon}
+                pre2025OffentligAfp={alderspensjon?.pre2025OffentligAfp}
                 afpPrivatListe={
                   !ufoeregrad &&
                   (afp === 'ja_privat' || loependeVedtak.afpPrivat)
