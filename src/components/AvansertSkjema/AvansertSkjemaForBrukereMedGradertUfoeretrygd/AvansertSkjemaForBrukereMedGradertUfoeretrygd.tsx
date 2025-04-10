@@ -747,7 +747,11 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                       value={localHeltUttak?.uttaksalder}
                       onChange={handleHeltUttaksalderChange}
                       error={heltUttakAgePickerError}
-                      minAlder={normertPensjonsalder}
+                      minAlder={
+                        localBeregningsTypeRadio === 'med_afp'
+                          ? getAlderPlus1Maaned(nedreAldersgrense)
+                          : normertPensjonsalder
+                      }
                     />
                   </>
                 )}
