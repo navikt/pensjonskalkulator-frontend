@@ -1,4 +1,4 @@
-import { delay, http, HttpResponse } from 'msw'
+import { HttpResponse, delay, http } from 'msw'
 
 import { API_PATH, HOST_BASEURL } from '@/paths'
 
@@ -10,11 +10,12 @@ import offentligTpResponse from './data/offentlig-tp.json' with { type: 'json' }
 import omstillingsstoenadOgGjenlevendeResponse from './data/omstillingsstoenad-og-gjenlevende.json' with { type: 'json' }
 import personResponse from './data/person.json' with { type: 'json' }
 import sanityForbeholdAvsnittDataResponse from './data/sanity-forbehold-avsnitt-data.json' with { type: 'json' }
+import sanityGuidePanelDataResponse from './data/sanity-guidepanel-data.json' with { type: 'json' }
 import sanityReadMoreDataResponse from './data/sanity-readmore-data.json' with { type: 'json' }
 import tidligstMuligHeltUttakResponse from './data/tidligstMuligHeltUttak.json' with { type: 'json' }
 import disableSpraakvelgerToggleResponse from './data/unleash-disable-spraakvelger.json' with { type: 'json' }
-import enableRedirect1963ToggleResponse from './data/unleash-enable-redirect-1963.json' with { type: 'json' }
 import enableSanityToggleResponse from './data/unleash-enable-sanity.json' with { type: 'json' }
+import enableGradertUfoereAfpFeatureToggleResponse from './data/unleash-gradert-ufoere-afp.json' with { type: 'json' }
 import enableOtpFraKlpToggleResponse from './data/unleash-otp-fra-klp.json' with { type: 'json' }
 import enableUtvidetSimuleringsresultatPluginToggleResponse from './data/unleash-utvidet-simuleringsresultat.json' with { type: 'json' }
 
@@ -27,15 +28,21 @@ const testHandlers =
           'https://g2by7q6m.apicdn.sanity.io/v2023-05-03/data/query/development',
           async ({ request }) => {
             // 'https://g2by7q6m.apicdn.sanity.io/v2023-05-03/data/query/development?query=*%5B_type+%3D%3D+%22readmore%22+%26%26'
+            // 'https://g2by7q6m.apicdn.sanity.io/v2023-05-03/data/query/development?query=*%5B_type+%3D%3D+%22guidepanel%22+%26%26'
             // 'https://g2by7q6m.apicdn.sanity.io/v2023-05-03/data/query/development?query=*%5B_type+%3D%3D+%22forbeholdAvsnitt%22+%26%26',
             const url = new URL(request.url)
             const type = url.searchParams.get('_type')
             if (type === 'readmore') {
               return HttpResponse.json(sanityReadMoreDataResponse)
+            } else if (type === 'guidepanel') {
+              return HttpResponse.json(sanityGuidePanelDataResponse)
             } else if (type === 'forbeholdAvsnitt') {
               return HttpResponse.json(sanityForbeholdAvsnittDataResponse)
             }
           }
+        ),
+        http.get('https://api.uxsignals.com/v2/study/id/*/active', async () =>
+          HttpResponse.json({ active: false })
         ),
       ]
     : []
@@ -168,14 +175,6 @@ export const getHandlers = (baseUrl: string = API_PATH) => [
   ),
 
   http.get(
-    `${baseUrl}/feature/pensjonskalkulator.enable-redirect-1963`,
-    async () => {
-      await delay(TEST_DELAY)
-      return HttpResponse.json(enableRedirect1963ToggleResponse)
-    }
-  ),
-
-  http.get(
     `${baseUrl}/feature/pensjonskalkulator.hent-tekster-fra-sanity`,
     async () => {
       await delay(TEST_DELAY)
@@ -195,6 +194,14 @@ export const getHandlers = (baseUrl: string = API_PATH) => [
     async () => {
       await delay(TEST_DELAY)
       return HttpResponse.json(enableOtpFraKlpToggleResponse)
+    }
+  ),
+
+  http.get(
+    `${baseUrl}/feature/pensjonskalkulator.gradert-ufoere-afp`,
+    async () => {
+      await delay(TEST_DELAY)
+      return HttpResponse.json(enableGradertUfoereAfpFeatureToggleResponse)
     }
   ),
 

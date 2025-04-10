@@ -139,6 +139,30 @@ beforeEach(() => {
   cy.intercept(
     {
       method: 'GET',
+      url: '/pensjon/kalkulator/api/feature/pensjonskalkulator.gradert-ufoere-afp',
+    },
+    { fixture: 'toggle-gradert-ufoere-afp.json' }
+  ).as('getGradertUfoereAfpFeatureToggle')
+
+  cy.intercept(
+    {
+      method: 'GET',
+      url: '/pensjon/kalkulator/api/feature/pensjonskalkulator.vedlikeholdsmodus',
+    },
+    { enabled: false }
+  ).as('getVedlikeholdsmodusFeatureToggle')
+
+  cy.intercept(
+    {
+      method: 'GET',
+      url: '/pensjon/kalkulator/api/feature/utvidet-simuleringsresultat',
+    },
+    { enabled: false }
+  ).as('getFeatureToggleUtvidetSimuleringsresult')
+
+  cy.intercept(
+    {
+      method: 'GET',
       url: '/pensjon/kalkulator/api/v2/ekskludert',
     },
     { fixture: 'ekskludert-status.json' }
@@ -227,10 +251,23 @@ beforeEach(() => {
   cy.intercept(
     {
       method: 'GET',
+      url: `https://g2by7q6m.apicdn.sanity.io/v2023-05-03/data/query/development?query=*%5B_type+%3D%3D+%22guidepanel%22+%26%26+language+%3D%3D+%22nb%22%5D*`,
+    },
+    { fixture: 'sanity-guidepanel-nb-data.json' }
+  ).as('fetchSanityGuidePanelDataNb')
+
+  cy.intercept(
+    {
+      method: 'GET',
       url: `https://g2by7q6m.apicdn.sanity.io/v2023-05-03/data/query/development?query=*%5B_type+%3D%3D+%22forbeholdAvsnitt%22+%26%26*`,
     },
     { fixture: 'sanity-forbehold-avsnitt-data.json' }
   ).as('fetchSanityForbeholdAvsnittData')
+
+  cy.intercept(
+    { url: 'https://api.uxsignals.com/v2/study/id/*/active' },
+    { active: false }
+  ).as('getUxSignalsActive')
 })
 
 Cypress.Commands.add('login', () => {

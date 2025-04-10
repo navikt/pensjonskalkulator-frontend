@@ -4,6 +4,7 @@ declare const classNames: {
   readonly container__hasTopMargin: "container__hasTopMargin";
   readonly background: "background";
   readonly background__lightblue: "background__lightblue";
-  readonly button: "button";
+  readonly link: "link";
+  readonly guidePanel: "guidePanel";
 };
 export = classNames;

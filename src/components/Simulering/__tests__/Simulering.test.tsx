@@ -1,9 +1,5 @@
 import { describe, it, vi } from 'vitest'
 
-import afpOffentligData from '../../../mocks/data/afp-offentlig.json' with { type: 'json' }
-import afpPrivatData from '../../../mocks/data/afp-privat/67.json' with { type: 'json' }
-import alderspensjonData from '../../../mocks/data/alderspensjon/67.json' with { type: 'json' }
-import { Simulering } from '../Simulering'
 import {
   fulfilledGetInntekt,
   fulfilledGetLoependeVedtak0Ufoeregrad,
@@ -13,13 +9,19 @@ import {
 import { mockErrorResponse, mockResponse } from '@/mocks/server'
 import * as apiSliceUtils from '@/state/api/apiSlice'
 import {
-  userInputInitialState,
   Simulation,
+  userInputInitialState,
 } from '@/state/userInput/userInputSlice'
 import { act, render, screen, waitFor } from '@/test-utils'
 
+import afpOffentligData from '../../../mocks/data/afp-offentlig.json' with { type: 'json' }
+import afpPrivatData from '../../../mocks/data/afp-privat/67.json' with { type: 'json' }
+import alderspensjonData from '../../../mocks/data/alderspensjon/67.json' with { type: 'json' }
+import { Simulering } from '../Simulering'
+
 describe('Simulering', () => {
   const currentSimulation: Simulation = {
+    beregningsvalg: null,
     formatertUttaksalderReadOnly: '67 år string.og 0 alder.maaned',
     uttaksalder: { aar: 67, maaneder: 0 },
     aarligInntektFoerUttakBeloep: '0',

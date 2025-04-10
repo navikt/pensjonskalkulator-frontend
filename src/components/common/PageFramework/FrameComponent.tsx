@@ -1,11 +1,12 @@
+import clsx from 'clsx'
 import React from 'react'
 import { useIntl } from 'react-intl'
 
 import { Heading } from '@navikt/ds-react'
-import clsx from 'clsx'
+
+import { BASE_PATH } from '@/router/constants'
 
 import KalkulatorLogo from '../../../assets/kalkulator.svg'
-import { BASE_PATH } from '@/router/constants'
 
 import styles from './FrameComponent.module.scss'
 
@@ -40,7 +41,7 @@ export const FrameComponent: React.FC<{
             style={{
               marginBottom: 'var(--a-spacing-6)',
             }}
-          ></representasjon-banner>
+          />
 
           <div
             className={clsx(styles.headerGroupTitle, {

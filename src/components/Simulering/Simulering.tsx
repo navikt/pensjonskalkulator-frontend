@@ -1,15 +1,16 @@
+import Highcharts, { SeriesColumnOptions, XAxisOptions } from 'highcharts'
+import HighchartsReact from 'highcharts-react-official'
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
 
-import { Heading, HeadingProps } from '@navikt/ds-react'
-import Highcharts, { SeriesColumnOptions, XAxisOptions } from 'highcharts'
-import HighchartsReact from 'highcharts-react-official'
+import { HandFingerIcon } from '@navikt/aksel-icons'
+import { BodyShort, Heading, HeadingProps } from '@navikt/ds-react'
 
 import { TabellVisning } from '@/components/TabellVisning'
 import {
-  usePensjonsavtalerQuery,
-  useOffentligTpQuery,
   useGetUtvidetSimuleringsresultatFeatureToggleQuery,
+  useOffentligTpQuery,
+  usePensjonsavtalerQuery,
 } from '@/state/api/apiSlice'
 import {
   generateOffentligTpRequestBody,
@@ -17,26 +18,26 @@ import {
 } from '@/state/api/utils'
 import { useAppSelector } from '@/state/hooks'
 import {
-  selectCurrentSimulation,
-  selectSamtykke,
-  selectUfoeregrad,
-  selectSivilstand,
   selectAfp,
-  selectIsEndring,
-  selectFoedselsdato,
-  selectEpsHarPensjon,
+  selectCurrentSimulation,
   selectEpsHarInntektOver2G,
+  selectEpsHarPensjon,
+  selectFoedselsdato,
+  selectIsEndring,
+  selectSamtykke,
+  selectSivilstand,
+  selectUfoeregrad,
   selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
 
-import {
-  useSimuleringChartLocalState,
-  useHighchartsRegressionPlugin,
-} from './hooks'
 import { SimuleringEndringBanner } from './SimuleringEndringBanner/SimuleringEndringBanner'
 import { SimuleringGrafNavigation } from './SimuleringGrafNavigation/SimuleringGrafNavigation'
 import { SimuleringPensjonsavtalerAlert } from './SimuleringPensjonsavtalerAlert/SimuleringPensjonsavtalerAlert'
 import { Simuleringsdetaljer } from './Simuleringsdetaljer/Simuleringsdetaljer'
+import {
+  useHighchartsRegressionPlugin,
+  useSimuleringChartLocalState,
+} from './hooks'
 
 import styles from './Simulering.module.scss'
 
@@ -195,12 +196,27 @@ export function Simulering(props: {
         <div id="alt-chart-title" hidden>
           <FormattedMessage id="beregning.alt_tekst" />
         </div>
-        <div data-testid="highcharts-aria-wrapper" aria-hidden={true}>
+        <div
+          className={styles.highchartsWrapper}
+          data-testid="highcharts-aria-wrapper"
+          aria-hidden={true}
+        >
           <HighchartsReact
             ref={chartRef}
             highcharts={Highcharts}
             options={chartOptions}
           />
+
+          {showButtonsAndTable && (
+            <BodyShort
+              size="small"
+              textColor="subtle"
+              className={styles.infoClick}
+            >
+              <HandFingerIcon />
+              <FormattedMessage id="beregning.highcharts.informasjon_klikk" />
+            </BodyShort>
+          )}
         </div>
       </div>
       {showButtonsAndTable && (

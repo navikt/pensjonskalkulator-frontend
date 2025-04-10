@@ -1,9 +1,10 @@
 import { describe, it, vi } from 'vitest'
 
-import { SavnerDuNoe } from '..'
 import { paths } from '@/router/constants'
 import { userInputInitialState } from '@/state/userInput/userInputSlice'
 import { render, screen, userEvent } from '@/test-utils'
+
+import { SavnerDuNoe } from '..'
 
 const navigateMock = vi.fn()
 vi.mock(import('react-router'), async (importOriginal) => {
@@ -54,6 +55,7 @@ describe('SavnerDuNoe', () => {
             userInput: {
               ...userInputInitialState,
               currentSimulation: {
+                beregningsvalg: null,
                 formatertUttaksalderReadOnly: '67 år string.og 1 alder.maaned',
                 uttaksalder: { aar: 67, maaneder: 1 },
                 aarligInntektFoerUttakBeloep: '0',
@@ -68,6 +70,7 @@ describe('SavnerDuNoe', () => {
       expect(navigateMock).toHaveBeenCalledWith(paths.beregningAvansert)
       expect(store.getState().userInput.currentSimulation).toStrictEqual({
         aarligInntektFoerUttakBeloep: null,
+        beregningsvalg: null,
         formatertUttaksalderReadOnly: null,
         gradertUttaksperiode: null,
         uttaksalder: null,

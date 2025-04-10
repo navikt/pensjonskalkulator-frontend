@@ -212,7 +212,7 @@ jobs:
         env:
           CLUSTER: dev-gcp
           IMAGE: ${{ needs.build.outputs.image }}
-          RESOURCE: .nais/deploy-staging.yml
+          RESOURCE: .nais/deploy-staging.yml,.nais/unleash-api-token-dev.yaml
 
       - name: Deploy veiledning to staging
         uses: nais/deploy/actions/deploy@v2
@@ -223,7 +223,7 @@ jobs:
 
   deploy-sandbox:
     name: Deploy to sandbox
-    needs: [build, run-unit-tests, run-integration-tests]
+    needs: [build]
     permissions:
       id-token: 'write'
     runs-on: ubuntu-latest
@@ -243,7 +243,7 @@ jobs:
         env:
           CLUSTER: dev-gcp
           IMAGE: ${{ needs.build.outputs.image }}
-          RESOURCE: .nais/deploy-sandbox.yml
+          RESOURCE: .nais/deploy-sandbox.yml,.nais/unleash-api-token-dev.yaml
 
       - name: Deploy veiledning to sandbox
         uses: nais/deploy/actions/deploy@v2
@@ -254,7 +254,7 @@ jobs:
 
   deploy-catbox:
     name: Deploy to catbox
-    needs: [build, run-unit-tests, run-integration-tests]
+    needs: [build]
     permissions:
       id-token: 'write'
     runs-on: ubuntu-latest
@@ -272,7 +272,7 @@ jobs:
         env:
           CLUSTER: dev-gcp
           IMAGE: ${{ needs.build.outputs.image }}
-          RESOURCE: .nais/deploy-catbox.yml
+          RESOURCE: .nais/deploy-catbox.yml,.nais/unleash-api-token-dev.yaml
 
       - name: Deploy veiledning to catbox
         uses: nais/deploy/actions/deploy@v2
@@ -283,7 +283,7 @@ jobs:
 
   deploy-magicbox:
     name: Deploy to magicbox
-    needs: [build, run-unit-tests, run-integration-tests]
+    needs: [build]
     permissions:
       id-token: 'write'
     runs-on: ubuntu-latest
@@ -301,7 +301,7 @@ jobs:
         env:
           CLUSTER: dev-gcp
           IMAGE: ${{ needs.build.outputs.image }}
-          RESOURCE: .nais/deploy-magicbox.yml
+          RESOURCE: .nais/deploy-magicbox.yml,.nais/unleash-api-token-dev.yaml
 
       - name: Deploy veiledning to magicbox
         uses: nais/deploy/actions/deploy@v2
@@ -312,7 +312,7 @@ jobs:
 
   deploy-dreambox:
     name: Deploy to dreambox
-    needs: [build, run-unit-tests, run-integration-tests]
+    needs: [build]
     permissions:
       id-token: 'write'
     runs-on: ubuntu-latest
@@ -330,7 +330,7 @@ jobs:
         env:
           CLUSTER: dev-gcp
           IMAGE: ${{ needs.build.outputs.image }}
-          RESOURCE: .nais/deploy-dreambox.yml
+          RESOURCE: .nais/deploy-dreambox.yml,.nais/unleash-api-token-dev.yaml
 
       - name: Deploy veiledning to dreambox
         uses: nais/deploy/actions/deploy@v2
@@ -341,7 +341,7 @@ jobs:
 
   deploy-coffeebox:
     name: Deploy to coffeebox
-    needs: [build, run-unit-tests, run-integration-tests]
+    needs: [build]
     permissions:
       id-token: 'write'
     runs-on: ubuntu-latest
@@ -359,7 +359,7 @@ jobs:
         env:
           CLUSTER: dev-gcp
           IMAGE: ${{ needs.build.outputs.image }}
-          RESOURCE: .nais/deploy-coffeebox.yml
+          RESOURCE: .nais/deploy-coffeebox.yml,.nais/unleash-api-token-dev.yaml
 
       - name: Deploy veiledning to coffeebox
         uses: nais/deploy/actions/deploy@v2
@@ -370,7 +370,7 @@ jobs:
 
   deploy-codebox:
     name: Deploy to codebox
-    needs: [build, run-unit-tests, run-integration-tests]
+    needs: [build]
     permissions:
       id-token: 'write'
     runs-on: ubuntu-latest
@@ -388,7 +388,7 @@ jobs:
         env:
           CLUSTER: dev-gcp
           IMAGE: ${{ needs.build.outputs.image }}
-          RESOURCE: .nais/deploy-codebox.yml
+          RESOURCE: .nais/deploy-codebox.yml,.nais/unleash-api-token-dev.yaml
 
       - name: Deploy veiledning to codebox
         uses: nais/deploy/actions/deploy@v2
@@ -416,7 +416,7 @@ jobs:
         env:
           CLUSTER: prod-gcp
           IMAGE: ${{ needs.build.outputs.image }}
-          RESOURCE: .nais/deploy-prod.yml
+          RESOURCE: .nais/deploy-prod.yml,.nais/unleash-api-token-prod.yaml
 
       - name: Deploy veiledning to prod-gcp
         uses: nais/deploy/actions/deploy@v2

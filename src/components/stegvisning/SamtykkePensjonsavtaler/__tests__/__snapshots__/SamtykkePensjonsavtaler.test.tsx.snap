@@ -14,20 +14,20 @@ exports[`stegvisning - SamtykkePensjonsavtaler > rendrer slik den skal når samt
       <p
         class="navds-body-long navds-body-long--large"
       >
-        Vil du se tjenestepensjon og andre pensjonsavtaler, må du samtykke til at Nav henter disse. Samtykket er frivillig.
+        Vil du se tjenestepensjon og andre pensjonsavtaler i kalkulatoren, må du samtykke til at Nav henter disse opplysningene fra andre pensjonsordninger. Samtykket er frivillig.
         <br />
         <br />
          Hvis du svarer nei, får du beregnet alderspensjon (Nav) og eventuell AFP (avtalefestet pensjon).
       </p>
       <div
-        class="navds-read-more navds-read-more--medium _readmoreOffentlig_cef636"
+        class="navds-read-more navds-read-more--medium _wrapper_11f63f _readmoreOffentlig_cef636"
         data-volume="low"
       >
         <button
           aria-expanded="false"
           class="navds-read-more__button navds-body-short"
           data-state="closed"
-          data-testid="readmore"
+          data-testid="dette_henter_vi_OFTP"
           type="button"
         >
           <svg
@@ -49,7 +49,7 @@ exports[`stegvisning - SamtykkePensjonsavtaler > rendrer slik den skal når samt
             />
           </svg>
           <span>
-            stegvisning.samtykke_pensjonsavtaler.offentlig.readmore_title
+            Dette henter vi fra offentlige tjenestepensjonsordninger
           </span>
         </button>
         <div
@@ -57,24 +57,20 @@ exports[`stegvisning - SamtykkePensjonsavtaler > rendrer slik den skal når samt
           class="navds-read-more__content navds-read-more__content--closed navds-body-long navds-body-long--medium"
           data-state="closed"
         >
-          Hvis du samtykker, sjekker vi om du er eller har vært medlem i en offentlig tjenestepensjonsordning. Hvis du har vært medlem hos flere, utveksler vi opplysninger for å finne ut hvor du sist var medlem.
-          <br />
-          <br />
-          Vi henter beregning av tjenestepensjonen din fra den siste tjenestepensjonsordningen du var medlem i. Det inkluderer eventuell medlemstid fra andre offentlige tjenestepensjonsordninger.
-          <br />
-          <br />
-          Vi kan bare hente inn pensjonsavtaler fra enkelte tjenestepensjonsordninger, bl.a. Statens pensjonskasse (SPK).
+          <p>
+            Lorem
+          </p>
         </div>
       </div>
       <div
-        class="navds-read-more navds-read-more--medium _readmorePrivat_cef636"
+        class="navds-read-more navds-read-more--medium _wrapper_11f63f _readmorePrivat_cef636"
         data-volume="low"
       >
         <button
           aria-expanded="false"
           class="navds-read-more__button navds-body-short"
           data-state="closed"
-          data-testid="readmore"
+          data-testid="dette_henter_vi_NP"
           type="button"
         >
           <svg
@@ -96,7 +92,7 @@ exports[`stegvisning - SamtykkePensjonsavtaler > rendrer slik den skal når samt
             />
           </svg>
           <span>
-            stegvisning.samtykke_pensjonsavtaler.privat.readmore_title
+            Dette henter vi fra Norsk Pensjon om pensjonsavtaler fra privat sektor
           </span>
         </button>
         <div
@@ -104,20 +100,9 @@ exports[`stegvisning - SamtykkePensjonsavtaler > rendrer slik den skal når samt
           class="navds-read-more__content navds-read-more__content--closed navds-body-long navds-body-long--medium"
           data-state="closed"
         >
-          stegvisning.samtykke_pensjonsavtaler.privat.readmore_ingress
-          <ul
-            class="_list_cef636"
-          >
-            <li>
-              stegvisning.samtykke_pensjonsavtaler.privat.readmore_list_item1
-            </li>
-            <li>
-              stegvisning.samtykke_pensjonsavtaler.privat.readmore_list_item2
-            </li>
-            <li>
-              stegvisning.samtykke_pensjonsavtaler.privat.readmore_list_item3
-            </li>
-          </ul>
+          <p>
+            Lorem
+          </p>
         </div>
       </div>
       <fieldset
@@ -132,7 +117,7 @@ exports[`stegvisning - SamtykkePensjonsavtaler > rendrer slik den skal når samt
         </legend>
         <div
           class="navds-fieldset__description navds-body-short navds-body-short--medium"
-          id="fieldset-description-r3"
+          id="fieldset-description-«r3»"
         >
           stegvisning.samtykke_pensjonsavtaler.radio_description
         </div>
@@ -143,16 +128,16 @@ exports[`stegvisning - SamtykkePensjonsavtaler > rendrer slik den skal når samt
             class="navds-radio navds-radio--medium"
           >
             <input
-              aria-labelledby="r5"
+              aria-labelledby="«r5»"
               class="navds-radio__input"
-              id="radio-r4"
+              id="radio-«r4»"
               name="samtykke"
               type="radio"
               value="ja"
             />
             <label
               class="navds-radio__label"
-              for="radio-r4"
+              for="radio-«r4»"
             >
               <span
                 class="navds-radio__content"
@@ -160,7 +145,7 @@ exports[`stegvisning - SamtykkePensjonsavtaler > rendrer slik den skal når samt
                 <span
                   aria-hidden="true"
                   class="navds-body-short navds-body-short--medium"
-                  id="r5"
+                  id="«r5»"
                 >
                   stegvisning.samtykke_pensjonsavtaler.radio_ja
                 </span>
@@ -171,16 +156,16 @@ exports[`stegvisning - SamtykkePensjonsavtaler > rendrer slik den skal når samt
             class="navds-radio navds-radio--medium"
           >
             <input
-              aria-labelledby="r8"
+              aria-labelledby="«r8»"
               class="navds-radio__input"
-              id="radio-r7"
+              id="radio-«r7»"
               name="samtykke"
               type="radio"
               value="nei"
             />
             <label
               class="navds-radio__label"
-              for="radio-r7"
+              for="radio-«r7»"
             >
               <span
                 class="navds-radio__content"
@@ -188,7 +173,7 @@ exports[`stegvisning - SamtykkePensjonsavtaler > rendrer slik den skal når samt
                 <span
                   aria-hidden="true"
                   class="navds-body-short navds-body-short--medium"
-                  id="r8"
+                  id="«r8»"
                 >
                   stegvisning.samtykke_pensjonsavtaler.radio_nei
                 </span>
@@ -200,7 +185,7 @@ exports[`stegvisning - SamtykkePensjonsavtaler > rendrer slik den skal når samt
           aria-live="polite"
           aria-relevant="additions removals"
           class="navds-fieldset__error"
-          id="fieldset-error-r3"
+          id="fieldset-error-«r3»"
         />
       </fieldset>
       <button

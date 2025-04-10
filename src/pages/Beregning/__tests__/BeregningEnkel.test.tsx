@@ -1,24 +1,24 @@
-import { createMemoryRouter, RouterProvider } from 'react-router'
-
+import { RouterProvider, createMemoryRouter } from 'react-router'
 import { describe, expect, it, vi } from 'vitest'
 
-import alderspensjonResponse from '../../../mocks/data/alderspensjon/68.json' with { type: 'json' }
-import { BeregningEnkel } from '../BeregningEnkel'
 import {
   fulfilledGetInntekt,
-  fulfilledGetPerson,
-  fulfilledGetLoependeVedtak75Ufoeregrad,
   fulfilledGetLoependeVedtak0Ufoeregrad,
+  fulfilledGetLoependeVedtak75Ufoeregrad,
   fulfilledGetLoependeVedtak100Ufoeregrad,
-  fulfilledGetLoependeVedtakLoependeAlderspensjon,
   fulfilledGetLoependeVedtakLoependeAFPprivat,
+  fulfilledGetLoependeVedtakLoependeAlderspensjon,
+  fulfilledGetPerson,
 } from '@/mocks/mockedRTKQueryApiCalls'
-import { mockResponse, mockErrorResponse } from '@/mocks/server'
-import { paths } from '@/router/constants'
+import { mockErrorResponse, mockResponse } from '@/mocks/server'
 import { RouteErrorBoundary } from '@/router/RouteErrorBoundary'
+import { paths } from '@/router/constants'
 import * as apiSliceUtils from '@/state/api/apiSlice'
 import { userInputInitialState } from '@/state/userInput/userInputSlice'
 import { render, screen, userEvent, waitFor } from '@/test-utils'
+
+import alderspensjonResponse from '../../../mocks/data/alderspensjon/68.json' with { type: 'json' }
+import { BeregningEnkel } from '../BeregningEnkel'
 
 const navigateMock = vi.fn()
 vi.mock(import('react-router'), async (importOriginal) => {
@@ -352,6 +352,7 @@ describe('BeregningEnkel', () => {
             samtykkeOffentligAFP: true,
             afp: 'ja_offentlig',
             currentSimulation: {
+              beregningsvalg: null,
               formatertUttaksalderReadOnly: '68 år string.og 0 alder.maaned',
               uttaksalder: { aar: 68, maaneder: 0 },
               aarligInntektFoerUttakBeloep: '100 000',
@@ -444,6 +445,7 @@ describe('BeregningEnkel', () => {
             samtykkeOffentligAFP: false,
             afp: 'ja_offentlig',
             currentSimulation: {
+              beregningsvalg: null,
               formatertUttaksalderReadOnly: '68 år string.og 0 alder.maaned',
               uttaksalder: { aar: 68, maaneder: 0 },
               aarligInntektFoerUttakBeloep: '100 000',
@@ -536,6 +538,7 @@ describe('BeregningEnkel', () => {
             samtykke: false,
             afp: 'ja_privat',
             currentSimulation: {
+              beregningsvalg: null,
               formatertUttaksalderReadOnly: '68 år string.og 0 alder.maaned',
               uttaksalder: { aar: 68, maaneder: 0 },
               aarligInntektFoerUttakBeloep: '100 000',
@@ -628,6 +631,7 @@ describe('BeregningEnkel', () => {
             samtykke: false,
             afp: 'ja_privat',
             currentSimulation: {
+              beregningsvalg: null,
               formatertUttaksalderReadOnly: '68 år string.og 0 alder.maaned',
               uttaksalder: { aar: 68, maaneder: 0 },
               aarligInntektFoerUttakBeloep: '100 000',
@@ -813,6 +817,7 @@ describe('BeregningEnkel', () => {
             ...userInputInitialState,
             samtykke: true,
             currentSimulation: {
+              beregningsvalg: null,
               formatertUttaksalderReadOnly: '63 alder.aar',
               uttaksalder: { aar: 63, maaneder: 0 },
               aarligInntektFoerUttakBeloep: '100 000',
@@ -975,6 +980,7 @@ describe('BeregningEnkel', () => {
             ...userInputInitialState,
             samtykke: false,
             currentSimulation: {
+              beregningsvalg: null,
               formatertUttaksalderReadOnly: '68 år string.og 0 alder.maaned',
               uttaksalder: { aar: 68, maaneder: 0 },
               aarligInntektFoerUttakBeloep: '100 000',

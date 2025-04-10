@@ -17,7 +17,7 @@ exports[`stegvisning - Ufoere > rendrer slik den skal 1`] = `
         data-testid="ufoere-info"
       >
         <svg
-          aria-labelledby="title-r0"
+          aria-labelledby="title-«r0»"
           class="navds-alert__icon"
           fill="none"
           focusable="false"
@@ -28,7 +28,7 @@ exports[`stegvisning - Ufoere > rendrer slik den skal 1`] = `
           xmlns="http://www.w3.org/2000/svg"
         >
           <title
-            id="title-r0"
+            id="title-«r0»"
           >
             Informasjon
           </title>
@@ -49,14 +49,14 @@ exports[`stegvisning - Ufoere > rendrer slik den skal 1`] = `
         </div>
       </div>
       <div
-        class="navds-read-more navds-read-more--medium _readmore1_10fc87 navds-read-more--open"
+        class="navds-read-more navds-read-more--medium _wrapper_11f63f _readmore1_10fc87"
         data-volume="low"
       >
         <button
-          aria-expanded="true"
+          aria-expanded="false"
           class="navds-read-more__button navds-body-short"
-          data-state="open"
-          data-testid="readmore"
+          data-state="closed"
+          data-testid="om_UT_AFP"
           type="button"
         >
           <svg
@@ -78,18 +78,17 @@ exports[`stegvisning - Ufoere > rendrer slik den skal 1`] = `
             />
           </svg>
           <span>
-            stegvisning.ufoere.readmore_1.title
+            Om uføretrygd og avtalefestet pensjon
           </span>
         </button>
         <div
-          aria-hidden="false"
-          class="navds-read-more__content navds-body-long navds-body-long--medium"
-          data-state="open"
+          aria-hidden="true"
+          class="navds-read-more__content navds-read-more__content--closed navds-body-long navds-body-long--medium"
+          data-state="closed"
         >
-          For å ha rett til AFP, kan du ikke ha fått utbetalt uføretrygd fra Nav etter den måneden du fyller 62 år. Det gjelder uansett om du har mottatt hel eller gradert uføretrygd, hvor lenge du har hatt uføretrygd og hvor mye du har fått utbetalt i uføretrygd.
-          <br />
-          <br />
-          Hvis du er under 62 år, må du altså si fra deg uføretrygden innen utgangen av måneden du fyller 62 år for å få utbetalt AFP. Husk at alle de andre vilkårene for å ha rett til AFP også må være oppfylt.
+          <p>
+            Lorem
+          </p>
         </div>
       </div>
       <p
@@ -104,7 +103,7 @@ exports[`stegvisning - Ufoere > rendrer slik den skal 1`] = `
         >
           Kontakt Nav
           <svg
-            aria-labelledby="title-r2"
+            aria-labelledby="title-«r2»"
             fill="none"
             focusable="false"
             height="1.25rem"
@@ -114,7 +113,7 @@ exports[`stegvisning - Ufoere > rendrer slik den skal 1`] = `
             xmlns="http://www.w3.org/2000/svg"
           >
             <title
-              id="title-r2"
+              id="title-«r2»"
             >
               application.global.external_link
             </title>

@@ -1,16 +1,17 @@
 import {
+  ListenerEffectAPI,
+  TypedAddListener,
+  TypedStartListening,
   combineReducers,
   configureStore,
   createListenerMiddleware,
-  ListenerEffectAPI,
-  TypedStartListening,
-  TypedAddListener,
 } from '@reduxjs/toolkit'
 
 import { apiSlice } from './api/apiSlice'
 import { createUttaksalderListener } from './listeners/uttaksalderListener'
-import { userInputInitialState } from './userInput/userInputSlice'
-import userInputReducer from './userInput/userInputSlice'
+import userInputReducer, {
+  userInputInitialState,
+} from './userInput/userInputSlice'
 
 const listenerMiddleware = createListenerMiddleware()
 
