@@ -482,6 +482,12 @@ const translations = {
     'Du kan tjene så mye du vil samtidig som du tar ut pensjon.',
   'beregning.avansert.rediger.radio.inntekt_vsa_gradert_uttak.ufoeretrygd.description':
     'Alderspensjonen påvirker ikke inntektsgrensen for uføretrygden din.',
+  'beregning.avansert.rediger.radio.afp_inntekt_maaned_foer_uttak.description.validation_error':
+    'Du må svare på om du forventer å ha inntekt på minst {1G/12} kr før skatt den siste måneden før du tar ut AFP.',
+  'beregning.avansert.rediger.radio.inntekt_vsa_afp.description.validation_error':
+    'Du må svare på om du forventer å ha inntekt samtidig som du tar ut AFP.',
+  'beregning.avansert.rediger.inntekt_vsa_afp.description.validation_error':
+    'Du må fylle ut forventet årsinntekt samtidig som du tar ut AFP.',
   'beregning.avansert.rediger.radio.inntekt_vsa_gradert_uttak.description.validation_error':
     'Du må svare på om du forventer å ha inntekt samtidig som du tar ut <nowrap>{grad} %</nowrap> pensjon.',
   'beregning.avansert.rediger.inntekt_vsa_gradert_uttak.beloep.validation_error':
@@ -493,6 +499,8 @@ const translations = {
   'beregning.avansert.rediger.inntekt.button': 'Endre inntekt',
   'beregning.avansert.rediger.agepicker.validation_error':
     ' for når du vil ta ut alderspensjon.',
+  'beregning.avansert.rediger.agepicker.afp.validation_error':
+    ' for når du vil ta ut AFP.',
   'beregning.avansert.rediger.agepicker.grad.validation_error':
     ' for når du vil ta ut <nowrap>{grad} %</nowrap> alderspensjon.',
   'beregning.avansert.rediger.agepicker.validation_error.maxAlder':

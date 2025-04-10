@@ -137,11 +137,11 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
     beregningsvalg,
   })
 
-  const [
+  const {
     validationErrors,
     gradertUttakAgePickerError,
     heltUttakAgePickerError,
-    {
+    handlers: {
       setValidationErrors,
       setValidationErrorUttaksalderHeltUttak,
       setValidationErrorUttaksalderGradertUttak,
@@ -150,7 +150,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
       setValidationErrorInntektVsaGradertUttak,
       resetValidationErrors,
     },
-  ] = useFormValidationErrors({
+  } = useFormValidationErrors({
     grad: localGradertUttak?.grad,
   })
 

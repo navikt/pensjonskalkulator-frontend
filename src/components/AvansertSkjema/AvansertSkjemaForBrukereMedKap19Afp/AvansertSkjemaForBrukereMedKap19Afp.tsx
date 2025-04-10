@@ -1,27 +1,18 @@
 import React from 'react'
 import { useIntl, FormattedMessage } from 'react-intl'
 
-import {
-  Alert,
-  BodyLong,
-  Radio,
-  RadioGroup,
-  Select,
-  TextField,
-} from '@navikt/ds-react'
+import { Alert, Radio, RadioGroup, TextField } from '@navikt/ds-react'
 import clsx from 'clsx'
 
 import {
   AvansertSkjemaIntroEndring,
   AvansertSkjemaInntekt,
   FormButtonRow,
-  ReadMoreOmPensjonsalder,
 } from '../Felles'
 import { useFormLocalState, useFormValidationErrors } from '../hooks'
 import { AVANSERT_FORM_NAMES, onAvansertBeregningSubmit } from '../utils'
 import { AgePicker } from '@/components/common/AgePicker'
 import { Divider } from '@/components/common/Divider'
-import { ReadMore } from '@/components/common/ReadMore'
 import { VilkaarsproevingAlert } from '@/components/VilkaarsproevingAlert'
 import { BeregningContext } from '@/pages/Beregning/context'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
@@ -38,7 +29,6 @@ import {
   selectAfpInntektMaanedFoerUttak,
 } from '@/state/userInput/selectors'
 import {
-  DEFAULT_MAX_OPPTJENINGSALDER,
   formatUttaksalder,
   getBrukerensAlderISluttenAvMaaneden,
 } from '@/utils/alder'
@@ -58,7 +48,6 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
   const foedselsdato = useAppSelector(selectFoedselsdato)
   const normertPensjonsalder = useAppSelector(selectNormertPensjonsalder)
   const isEndring = useAppSelector(selectIsEndring)
-  const inntektVsaHeltUttakInputRef = React.useRef<HTMLInputElement>(null)
   const inntektVsaGradertUttakInputRef = React.useRef<HTMLInputElement>(null)
   const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const nedreAldersgrense = useAppSelector(selectNedreAldersgrense)
@@ -76,10 +65,6 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
   const afpInntektMaanedFoerUttak = useAppSelector(
     selectAfpInntektMaanedFoerUttak
   )
-  const formatertNormertPensjonsalder = formatUttaksalder(
-    intl,
-    normertPensjonsalder
-  )
   const { harAvansertSkjemaUnsavedChanges } = React.useContext(BeregningContext)
 
   const gaaTilResultat = () => {
@@ -94,12 +79,9 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
   const {
     localInntektFremTilUttak,
     localHeltUttak,
-    localHarInntektVsaHeltUttakRadio,
     localGradertUttak,
     localHarInntektVsaGradertUttakRadio,
     localHarAfpInntektMaanedFoerUttakRadio,
-    minAlderInntektSluttAlder,
-    muligeUttaksgrad,
     handlers: {
       setLocalInntektFremTilUttak,
       setLocalHeltUttak,
@@ -122,20 +104,18 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
     beregningsvalg: null,
   })
 
-  const [
+  const {
     validationErrors,
-    gradertUttakAgePickerError,
     heltUttakAgePickerError,
-    {
+    handlers: {
       setValidationErrors,
       setValidationErrorUttaksalderHeltUttak,
-      setValidationErrorInntektVsaHeltUttak,
-      setValidationErrorInntektVsaHeltUttakSluttAlder,
-      setValidationErrorInntektVsaGradertUttak,
+      setValidationErrorInntektVsaAfp,
       resetValidationErrors,
     },
-  ] = useFormValidationErrors({
+  } = useFormValidationErrors({
     grad: localGradertUttak?.grad,
+    afp: true,
   })
 
   const handleHeltUttaksalderChange = (alder: Partial<Alder> | undefined) => {
@@ -163,8 +143,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
   const handleInntektVsaGradertUttakRadioChange = (s: BooleanRadio) => {
     setLocalHarInntektVsaGradertUttakRadio(s === 'ja')
     setValidationErrors({
-      [AVANSERT_FORM_NAMES.inntektVsaGradertUttakRadio]: '',
-      [AVANSERT_FORM_NAMES.inntektVsaGradertUttak]: '',
+      [AVANSERT_FORM_NAMES.inntektVsaAfpRadio]: '',
     })
     if (s === 'nei') {
       setLocalGradertUttak((previous) => {
@@ -189,7 +168,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
           aarligInntektVsaPensjonBeloep: s || undefined,
         }))
       },
-      setValidationErrorInntektVsaGradertUttak
+      setValidationErrorInntektVsaAfp
     )
   }
 
@@ -198,38 +177,6 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
     setValidationErrors({
       [AVANSERT_FORM_NAMES.afpInntektMaanedFoerUttakRadio]: '',
     })
-  }
-
-  const handleInntektVsaHeltUttakChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ): void => {
-    updateAndFormatInntektFromInputField(
-      inntektVsaHeltUttakInputRef.current,
-      e.target.value,
-      (s: string) => {
-        setLocalHeltUttak((previous) => ({
-          ...previous,
-          aarligInntektVsaPensjon: {
-            ...previous?.aarligInntektVsaPensjon,
-            beloep: s || undefined,
-          },
-        }))
-      },
-      setValidationErrorInntektVsaHeltUttak
-    )
-  }
-
-  const handleInntektVsaHeltUttakSluttAlderChange = (
-    alder: Partial<Alder> | undefined
-  ) => {
-    setValidationErrorInntektVsaHeltUttakSluttAlder('')
-    setLocalHeltUttak((previous) => ({
-      ...previous,
-      aarligInntektVsaPensjon: {
-        ...previous?.aarligInntektVsaPensjon,
-        sluttAlder: alder,
-      },
-    }))
   }
 
   const resetForm = (): void => {
@@ -241,6 +188,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
     setLocalHeltUttak(undefined)
     setLocalHarInntektVsaGradertUttakRadio(null)
     setLocalHarInntektVsaHeltUttakRadio(null)
+    setLocalHarAfpInntektMaanedFoerUttakRadio?.(null)
   }
 
   return (
@@ -363,14 +311,11 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
                 validationErrors[
                   AVANSERT_FORM_NAMES.afpInntektMaanedFoerUttakRadio
                 ]
-                  ? intl.formatMessage(
-                      {
-                        id: validationErrors[
-                          AVANSERT_FORM_NAMES.afpInntektMaanedFoerUttakRadio
-                        ],
-                      },
-                      { ...getFormatMessageValues() }
-                    )
+                  ? intl.formatMessage({
+                      id: validationErrors[
+                        AVANSERT_FORM_NAMES.afpInntektMaanedFoerUttakRadio
+                      ],
+                    })
                   : ''
               }
               role="radiogroup"
@@ -412,8 +357,8 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
               description={
                 <FormattedMessage id="beregning.avansert.rediger.radio.inntekt_vsa_afp.description" />
               }
-              name={AVANSERT_FORM_NAMES.inntektVsaGradertUttakRadio}
-              data-testid={AVANSERT_FORM_NAMES.inntektVsaGradertUttakRadio}
+              name={AVANSERT_FORM_NAMES.inntektVsaAfpRadio}
+              data-testid={AVANSERT_FORM_NAMES.inntektVsaAfpRadio}
               value={
                 localHarInntektVsaGradertUttakRadio === null
                   ? null
@@ -423,12 +368,10 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
               }
               onChange={handleInntektVsaGradertUttakRadioChange}
               error={
-                validationErrors[
-                  AVANSERT_FORM_NAMES.inntektVsaGradertUttakRadio
-                ]
+                validationErrors[AVANSERT_FORM_NAMES.inntektVsaAfpRadio]
                   ? intl.formatMessage({
                       id: validationErrors[
-                        AVANSERT_FORM_NAMES.inntektVsaGradertUttakRadio
+                        AVANSERT_FORM_NAMES.inntektVsaAfpRadio
                       ],
                     })
                   : ''
@@ -438,12 +381,10 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
             >
               <Radio
                 form={AVANSERT_FORM_NAMES.form}
-                data-testid={`${AVANSERT_FORM_NAMES.inntektVsaGradertUttakRadio}-ja`}
+                data-testid={`${AVANSERT_FORM_NAMES.inntektVsaAfpRadio}-ja`}
                 value="ja"
                 aria-invalid={
-                  !!validationErrors[
-                    AVANSERT_FORM_NAMES.inntektVsaGradertUttakRadio
-                  ]
+                  !!validationErrors[AVANSERT_FORM_NAMES.inntektVsaAfpRadio]
                 }
               >
                 <FormattedMessage id="stegvisning.radio_ja" />
@@ -451,7 +392,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
 
               <Radio
                 form={AVANSERT_FORM_NAMES.form}
-                data-testid={`${AVANSERT_FORM_NAMES.inntektVsaGradertUttakRadio}-nei`}
+                data-testid={`${AVANSERT_FORM_NAMES.inntektVsaAfpRadio}-nei`}
                 value="nei"
               >
                 <FormattedMessage id="stegvisning.radio_nei" />
@@ -461,10 +402,10 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
           {/* HER: Hva er din forventede årsinntekt samtidig som du tar ut AFP? */}
           {localHarInntektVsaGradertUttakRadio && (
             <TextField
-              ref={inntektVsaHeltUttakInputRef}
+              ref={inntektVsaGradertUttakInputRef}
               form={AVANSERT_FORM_NAMES.form}
-              name={AVANSERT_FORM_NAMES.inntektVsaGradertUttak}
-              data-testid={AVANSERT_FORM_NAMES.inntektVsaGradertUttak}
+              name={AVANSERT_FORM_NAMES.inntektVsaAfp}
+              data-testid={AVANSERT_FORM_NAMES.inntektVsaAfp}
               type="text"
               inputMode="numeric"
               className={styles.textfield}
@@ -478,12 +419,10 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
                 id: 'inntekt.endre_inntekt_vsa_pensjon_modal.textfield.description',
               })}
               error={
-                validationErrors[AVANSERT_FORM_NAMES.inntektVsaHeltUttak]
+                validationErrors[AVANSERT_FORM_NAMES.inntektVsaAfp]
                   ? intl.formatMessage(
                       {
-                        id: validationErrors[
-                          AVANSERT_FORM_NAMES.inntektVsaHeltUttak
-                        ],
+                        id: validationErrors[AVANSERT_FORM_NAMES.inntektVsaAfp],
                       },
                       { ...getFormatMessageValues() }
                     )

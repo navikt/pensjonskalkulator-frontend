@@ -233,7 +233,10 @@ export const useFormLocalState = (initialValues: {
   } as const
 }
 
-export const useFormValidationErrors = (initialValues: { grad?: number }) => {
+export const useFormValidationErrors = (initialValues: {
+  grad?: number
+  afp?: boolean
+}) => {
   const intl = useIntl()
 
   const [validationErrors, setValidationErrors] = useState<
@@ -242,6 +245,7 @@ export const useFormValidationErrors = (initialValues: { grad?: number }) => {
     [AVANSERT_FORM_NAMES.uttaksalderHeltUttak]: '',
     [AVANSERT_FORM_NAMES.uttaksalderGradertUttak]: '',
     [AVANSERT_FORM_NAMES.inntektVsaGradertUttak]: '',
+    [AVANSERT_FORM_NAMES.inntektVsaAfpRadio]: '',
   })
 
   React.useEffect(() => {
@@ -298,9 +302,11 @@ export const useFormValidationErrors = (initialValues: { grad?: number }) => {
             'agepicker.validation_error.maaneder') && (
           <FormattedMessage
             id={
-              initialValues.grad !== undefined
-                ? 'beregning.avansert.rediger.agepicker.grad.validation_error'
-                : 'beregning.avansert.rediger.agepicker.validation_error'
+              initialValues.afp
+                ? 'beregning.avansert.rediger.agepicker.afp.validation_error'
+                : initialValues.grad !== undefined
+                  ? 'beregning.avansert.rediger.agepicker.grad.validation_error'
+                  : 'beregning.avansert.rediger.agepicker.validation_error'
             }
             values={{ ...getFormatMessageValues(), grad: 100 }}
           />
@@ -354,12 +360,22 @@ export const useFormValidationErrors = (initialValues: { grad?: number }) => {
           }
         })
       },
+      setValidationErrorInntektVsaAfp: (s: string) => {
+        setValidationErrors((prevState) => {
+          return {
+            ...prevState,
+            [AVANSERT_FORM_NAMES.inntektVsaAfp]: s,
+          }
+        })
+      },
+
       resetValidationErrors: () => {
         setValidationErrors(() => {
           return {
             [AVANSERT_FORM_NAMES.uttaksalderHeltUttak]: '',
             [AVANSERT_FORM_NAMES.uttaksalderGradertUttak]: '',
             [AVANSERT_FORM_NAMES.inntektVsaGradertUttak]: '',
+            [AVANSERT_FORM_NAMES.inntektVsaAfp]: '',
           }
         })
       },
@@ -367,10 +383,10 @@ export const useFormValidationErrors = (initialValues: { grad?: number }) => {
     []
   )
 
-  return [
+  return {
     validationErrors,
     gradertUttakAgePickerError,
     heltUttakAgePickerError,
     handlers,
-  ] as const
+  } as const
 }

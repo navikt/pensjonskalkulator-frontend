@@ -33,6 +33,8 @@ export const AVANSERT_FORM_NAMES = {
   inntektVsaHeltUttakSluttAlder: 'inntekt-vsa-helt-uttak-slutt-alder',
   inntektVsaGradertUttak: 'inntekt-vsa-gradert-uttak',
   afpInntektMaanedFoerUttakRadio: 'afp-inntekt-maaned-foer-uttak-radio',
+  inntektVsaAfpRadio: 'inntekt-vsa-afp-radio',
+  inntektVsaAfp: 'inntekt-vsa-afp',
   beregningsTypeRadio: 'beregnings-type-radio',
 }
 
@@ -180,6 +182,9 @@ export const validateAvansertBeregningSkjema = (
     inntektVsaHeltUttakSluttAlderAarFormData: FormDataEntryValue | null
     inntektVsaHeltUttakSluttAlderMaanederFormData: FormDataEntryValue | null
     inntektVsaGradertUttakFormData: FormDataEntryValue | null
+    afpInntektMaanedFoerUttakRadioFormData: FormDataEntryValue | null
+    inntektVsaAfpRadioFormData: FormDataEntryValue | null
+    inntektVsaAfpFormData: FormDataEntryValue | null
   },
   foedselsdato: string,
   normertPensjonsalder: Alder,
@@ -200,6 +205,9 @@ export const validateAvansertBeregningSkjema = (
     inntektVsaHeltUttakSluttAlderAarFormData,
     inntektVsaHeltUttakSluttAlderMaanederFormData,
     inntektVsaGradertUttakFormData,
+    afpInntektMaanedFoerUttakRadioFormData,
+    inntektVsaAfpRadioFormData,
+    inntektVsaAfpFormData,
   } = inputData
 
   let isValid = true
@@ -432,6 +440,42 @@ export const validateAvansertBeregningSkjema = (
     })
   }
 
+  // Sjekker at radio for afpInntektMaanedFoerUttak er fylt ut
+  if (!afpInntektMaanedFoerUttakRadioFormData) {
+    isValid = false
+    updateValidationErrorMessage((prevState) => {
+      return {
+        ...prevState,
+        [AVANSERT_FORM_NAMES.afpInntektMaanedFoerUttakRadio]:
+          'beregning.avansert.rediger.radio.afp_inntekt_maaned_foer_uttak.description.validation_error',
+      }
+    })
+  }
+
+  // Sjekker at radio for InntektVsaAfpRadio er fylt ut
+  if (!inntektVsaAfpRadioFormData) {
+    isValid = false
+    updateValidationErrorMessage((prevState) => {
+      return {
+        ...prevState,
+        [AVANSERT_FORM_NAMES.inntektVsaAfpRadio]:
+          'beregning.avansert.rediger.radio.inntekt_vsa_afp.description.validation_error',
+      }
+    })
+  }
+
+  // Sjekker at radio for InntektVsaAfp er fylt ut
+  if (inntektVsaAfpRadioFormData && !inntektVsaAfpFormData) {
+    isValid = false
+    updateValidationErrorMessage((prevState) => {
+      return {
+        ...prevState,
+        [AVANSERT_FORM_NAMES.inntektVsaAfp]:
+          'beregning.avansert.rediger.inntekt_vsa_afp.description.validation_error',
+      }
+    })
+  }
+
   // Sjekker at inntekt vsa gradert uttak er fylt ut (gitt at uttaksgrad er ulik 100 % og radioknappen er på "ja")
   if (
     uttaksgradFormData !== '100 %' &&
@@ -551,9 +595,13 @@ export const onAvansertBeregningSubmit = (
   const inntektVsaGradertUttakFormData = data.get(
     AVANSERT_FORM_NAMES.inntektVsaGradertUttak
   )
-  /* const afpInntektMaanedFoerUttakRadioFormData = data.get(
+  const afpInntektMaanedFoerUttakRadioFormData = data.get(
     AVANSERT_FORM_NAMES.afpInntektMaanedFoerUttakRadio
-  ) */
+  )
+  const inntektVsaAfpRadioFormData = data.get(
+    AVANSERT_FORM_NAMES.inntektVsaAfpRadio
+  )
+  const inntektVsaAfpFormData = data.get(AVANSERT_FORM_NAMES.inntektVsaAfp)
   if (
     !validateAvansertBeregningSkjema(
       {
@@ -568,6 +616,9 @@ export const onAvansertBeregningSubmit = (
         inntektVsaHeltUttakSluttAlderAarFormData,
         inntektVsaHeltUttakSluttAlderMaanederFormData,
         inntektVsaGradertUttakFormData,
+        afpInntektMaanedFoerUttakRadioFormData,
+        inntektVsaAfpRadioFormData,
+        inntektVsaAfpFormData,
       },
       foedselsdato,
       normertPensjonsalder,
