@@ -326,6 +326,7 @@ export const BeregningAvansert = () => {
               <SanityGuidePanel
                 id="vurderer_du_a_velge_afp"
                 className={styles.guidePanel}
+                hasSection
               />
             )}
 
