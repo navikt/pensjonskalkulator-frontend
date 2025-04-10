@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+import { fulfilledGetPerson } from '@/mocks/mockedRTKQueryApiCalls'
 import { userInputInitialState } from '@/state/userInput/userInputSlice'
 import { render, screen } from '@/test-utils'
 
@@ -8,25 +9,7 @@ import { MaanedsbeloepAvansertBeregning } from '../MaanedsbeloepAvansertBeregnin
 // Create a mock implementation that we can configure per test
 const mockUsePensjonBeregninger = vi.fn()
 
-// Mock the hook to control its return values
-vi.mock('../hooks/usePensjonBeregninger', () => ({
-  usePensjonBeregninger: () => mockUsePensjonBeregninger(),
-}))
-
-// Mock useGetPersonQuery
-vi.mock('@/state/api/apiSlice', () => ({
-  useGetPersonQuery: () => ({
-    data: {
-      navn: 'Test Testesen',
-      foedselsdato: '1963-01-15',
-      sivilstand: 'GIFT',
-    },
-    isLoading: false,
-    isError: false,
-  }),
-}))
-
-describe('MaanedsbloepAvansertBeregning', () => {
+describe('MaanedsbeloepAvansertBeregning', () => {
   // Default mock values
   const defaultMockValues = {
     pensjonsdata: [
@@ -56,7 +39,7 @@ describe('MaanedsbloepAvansertBeregning', () => {
     startAar: 67,
     utbetalingsperioder: [
       {
-        startAlder: { aar: 67, maaneder: 0 },
+        startAlder: { aar: 67, maaneder: 0 } as Alder,
         aarligUtbetaling: 12345,
         grad: 100,
       },
@@ -71,15 +54,15 @@ describe('MaanedsbloepAvansertBeregning', () => {
       utbetalingsperioder: [
         {
           ...pensjonsavtale.utbetalingsperioder[0],
-          startAlder: { aar: 67, maaneder: 6 },
-          sluttAlder: { aar: 71, maaneder: 0 },
+          startAlder: { aar: 67, maaneder: 6 } as Alder,
+          sluttAlder: { aar: 71, maaneder: 0 } as Alder,
           aarligUtbetaling: 12345,
         },
       ],
     },
   ]
 
-  const afpOffentligListe: AfpPrivatPensjonsberegning[] = [
+  const afpOffentligListe = [
     {
       alder: 62,
       beloep: 12000,
@@ -105,6 +88,12 @@ describe('MaanedsbloepAvansertBeregning', () => {
       />,
       {
         preloadedState: {
+          api: {
+            // @ts-ignore
+            queries: {
+              ...fulfilledGetPerson,
+            },
+          },
           userInput: {
             ...userInputInitialState,
             currentSimulation: {
