@@ -11,7 +11,7 @@ interface Props {
   afpOffentligListe?: AfpPensjonsberegning[]
   alderspensjonMaanedligVedEndring?: AlderspensjonMaanedligVedEndring
   pensjonsavtaler?: Pensjonsavtale[]
-  simuilertTjenesepensjon?: SimulertTjenestepensjon
+  simulertTjenestepensjon?: SimulertTjenestepensjon
 }
 
 export const MaanedsbeloepAvansertBeregning: React.FC<Props> = (props) => {
