@@ -21,6 +21,7 @@ import { DATE_BACKEND_FORMAT } from '@/utils/dates'
 
 import {
   StepSivilstandAccessGuardLoader,
+  StepStartAccessGuardLoader,
   authenticationGuard,
   directAccessGuard,
   landingPageAccessGuard,
@@ -129,7 +130,8 @@ describe('Loaders', () => {
       store.getState = vi.fn().mockImplementation(() => {
         return mockedState
       })
-      const returnedFromLoader = await stepStartAccessGuard()
+      const returnedFromLoader =
+        (await stepStartAccessGuard()) as StepStartAccessGuardLoader
       const getPersonQueryResponse = await returnedFromLoader.getPersonQuery
       const getLoependeVedtakQueryResponse =
         await returnedFromLoader.getLoependeVedtakQuery
@@ -170,7 +172,8 @@ describe('Loaders', () => {
       store.getState = vi.fn().mockImplementation(() => {
         return mockedState
       })
-      const returnedFromLoader = await stepStartAccessGuard()
+      const returnedFromLoader =
+        (await stepStartAccessGuard()) as StepStartAccessGuardLoader
 
       const shouldRedirectToResponse = await returnedFromLoader.shouldRedirectTo
 
@@ -190,7 +193,8 @@ describe('Loaders', () => {
       store.getState = vi.fn().mockImplementation(() => {
         return mockedState
       })
-      const returnedFromLoader = await stepStartAccessGuard()
+      const returnedFromLoader =
+        (await stepStartAccessGuard()) as StepStartAccessGuardLoader
 
       const shouldRedirectToResponse = await returnedFromLoader.shouldRedirectTo
 
@@ -210,7 +214,8 @@ describe('Loaders', () => {
       store.getState = vi.fn().mockImplementation(() => {
         return mockedState
       })
-      const returnedFromLoader = await stepStartAccessGuard()
+      const returnedFromLoader =
+        (await stepStartAccessGuard()) as StepStartAccessGuardLoader
 
       const shouldRedirectToResponse = await returnedFromLoader.shouldRedirectTo
 
@@ -233,7 +238,8 @@ describe('Loaders', () => {
       store.getState = vi.fn().mockImplementation(() => {
         return mockedState
       })
-      const returnedFromLoader = await stepStartAccessGuard()
+      const returnedFromLoader =
+        (await stepStartAccessGuard()) as StepStartAccessGuardLoader
       await returnedFromLoader.getPersonQuery
       const shouldRedirectToResponse = await returnedFromLoader.shouldRedirectTo
 
@@ -242,6 +248,28 @@ describe('Loaders', () => {
           `${paths.henvisning}/${henvisningUrlParams.apotekerne}`
         )
       })
+    })
+
+    it('Når vedlikeholdsmodus er aktivert blir man redirigert', async () => {
+      mockResponse('/feature/pensjonskalkulator.vedlikeholdsmodus', {
+        json: {
+          enabled: true,
+        },
+      })
+
+      const mockedState = {
+        userInput: { ...userInputInitialState },
+      }
+      store.getState = vi.fn().mockImplementation(() => {
+        return mockedState
+      })
+      const returnedFromLoader = (await stepStartAccessGuard()) as Response
+
+      expect(returnedFromLoader).not.toBeNull()
+      expect(returnedFromLoader.headers.get('location')).toBe(
+        '/kalkulatoren-virker-ikke'
+      )
+      expect(returnedFromLoader.status).toBe(302)
     })
   })
 
@@ -442,7 +470,7 @@ describe('Loaders', () => {
         })
 
         const returnedFromLoader = stepAFPAccessGuard()
-        expect(returnedFromLoader).resolves.toMatchObject({
+        await expect(returnedFromLoader).resolves.toMatchObject({
           loependeVedtak: {
             ufoeretrygd: {
               grad: 0,
@@ -494,8 +522,7 @@ describe('Loaders', () => {
         })
 
         const returnedFromLoader = stepAFPAccessGuard()
-
-        expect(returnedFromLoader).resolves.toMatchObject({
+        await expect(returnedFromLoader).resolves.toMatchObject({
           person: {
             foedselsdato: '1963-04-30',
           },
@@ -710,8 +737,8 @@ describe('Loaders', () => {
       })
 
       const returnedFromLoader = stepAFPAccessGuard()
-      expect(returnedFromLoader).resolves.not.toThrow()
-      expect(returnedFromLoader).resolves.toMatchObject({
+      await expect(returnedFromLoader).resolves.not.toThrow()
+      await expect(returnedFromLoader).resolves.toMatchObject({
         person: {
           foedselsdato: '1963-04-30',
         },
@@ -746,7 +773,7 @@ describe('Loaders', () => {
 
       const returnedFromLoader = stepAFPAccessGuard()
       // Når denne kaster så blir den fanget opp av ErrorBoundary som viser uventet feil
-      expect(returnedFromLoader).rejects.toThrow()
+      await expect(returnedFromLoader).rejects.toThrow()
     })
 
     it('Gitt at getOmstillingsstoenadOgGjenlevende har tidligere feilet kalles den på nytt. Når den er vellykket i tillegg til de to andre kallene, er brukeren ikke redirigert', async () => {
@@ -782,7 +809,7 @@ describe('Loaders', () => {
       })
 
       const returnedFromLoader = stepAFPAccessGuard()
-      expect(returnedFromLoader).resolves.not.toThrow()
+      await expect(returnedFromLoader).resolves.not.toThrow()
     })
 
     it('Gitt at getOmstillingsstoenadOgGjenlevende har tidligere feilet og at den feiler igjen ved nytt kall, loader kaster feil', async () => {
@@ -814,7 +841,7 @@ describe('Loaders', () => {
       })
 
       const returnedFromLoader = stepAFPAccessGuard()
-      expect(returnedFromLoader).rejects.toThrow()
+      await expect(returnedFromLoader).rejects.toThrow()
     })
 
     it('Gitt at getEkskludertStatus har tidligere feilet kalles den på nytt. Når den er vellykket og viser at brukeren er apoteker, er brukeren redirigert', async () => {
@@ -892,7 +919,7 @@ describe('Loaders', () => {
       })
 
       const returnedFromLoader = stepAFPAccessGuard()
-      expect(returnedFromLoader).resolves.not.toThrow()
+      await expect(returnedFromLoader).resolves.not.toThrow()
     })
 
     it('Gitt at getEkskludertStatus har tidligere feilet og at den feiler igjen ved nytt kall, loader kaster feil', async () => {
@@ -922,7 +949,7 @@ describe('Loaders', () => {
       })
 
       const returnedFromLoader = stepAFPAccessGuard()
-      expect(returnedFromLoader).rejects.toThrow()
+      await expect(returnedFromLoader).rejects.toThrow()
     })
   })
 
