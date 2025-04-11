@@ -28,10 +28,7 @@ import {
   selectNormertPensjonsalder,
   selectAfpInntektMaanedFoerUttak,
 } from '@/state/userInput/selectors'
-import {
-  formatUttaksalder,
-  getBrukerensAlderISluttenAvMaaneden,
-} from '@/utils/alder'
+import { getBrukerensAlderISluttenAvMaaneden } from '@/utils/alder'
 import { updateAndFormatInntektFromInputField } from '@/utils/inntekt'
 import { getFormatMessageValues } from '@/utils/translations'
 
@@ -144,6 +141,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
     setLocalHarInntektVsaGradertUttakRadio(s === 'ja')
     setValidationErrors({
       [AVANSERT_FORM_NAMES.inntektVsaAfpRadio]: '',
+      [AVANSERT_FORM_NAMES.inntektVsaAfp]: '',
     })
     if (s === 'nei') {
       setLocalGradertUttak((previous) => {
@@ -214,7 +212,8 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
               hasVilkaarIkkeOppfylt:
                 vilkaarsproeving?.vilkaarErOppfylt === false,
               harAvansertSkjemaUnsavedChanges,
-            }
+            },
+            true
           )
         }}
       />

@@ -5,8 +5,8 @@ import { AvansertSkjemaForBrukereMedGradertUfoeretrygd } from '../AvansertSkjema
 import { AvansertSkjemaForBrukereMedKap19Afp } from '../AvansertSkjema/AvansertSkjemaForBrukereMedKap19Afp'
 import { useAppSelector } from '@/state/hooks'
 import {
-  selectFoedselsdato,
   selectLoependeVedtak,
+  selectSkalBeregneAfp,
 } from '@/state/userInput/selectors'
 
 // TODO PEK-1026 - se om vilkaarsproeving kan hentes direkte fra skjema-komponentene og FormButton for å unngå prop-drilling
@@ -18,11 +18,11 @@ export const RedigerAvansertBeregning: React.FC<{
   }, [])
 
   const loependeVedtak = useAppSelector(selectLoependeVedtak)
-  const foedselsdato = useAppSelector(selectFoedselsdato)
+  const skalBeregneKap19Afp = useAppSelector(selectSkalBeregneAfp)
 
   // TODO Ny komponent <AvansertSkjemaForBrukereMedKap19AFP />
 
-  return foedselsdato && new Date(foedselsdato).getFullYear() < 1963 ? (
+  return skalBeregneKap19Afp ? (
     <AvansertSkjemaForBrukereMedKap19Afp vilkaarsproeving={vilkaarsproeving} />
   ) : loependeVedtak.ufoeretrygd.grad &&
     loependeVedtak.ufoeretrygd.grad !== 100 ? (

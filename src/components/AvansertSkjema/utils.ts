@@ -191,7 +191,8 @@ export const validateAvansertBeregningSkjema = (
   loependeVedtak: LoependeVedtak,
   updateValidationErrorMessage: React.Dispatch<
     React.SetStateAction<Record<string, string>>
-  >
+  >,
+  validerKap19Afp: boolean = false
 ) => {
   const {
     gradertUttakAarFormData,
@@ -237,6 +238,48 @@ export const validateAvansertBeregningSkjema = (
     )
   ) {
     isValid = false
+  }
+
+  if (validerKap19Afp) {
+    // Sjekker at radio for afpInntektMaanedFoerUttak er fylt ut
+    if (!afpInntektMaanedFoerUttakRadioFormData) {
+      isValid = false
+      updateValidationErrorMessage((prevState) => {
+        return {
+          ...prevState,
+          [AVANSERT_FORM_NAMES.afpInntektMaanedFoerUttakRadio]:
+            'beregning.avansert.rediger.radio.afp_inntekt_maaned_foer_uttak.description.validation_error',
+        }
+      })
+    }
+
+    // Sjekker at radio for InntektVsaAfpRadio er fylt ut
+    if (!inntektVsaAfpRadioFormData) {
+      isValid = false
+      updateValidationErrorMessage((prevState) => {
+        return {
+          ...prevState,
+          [AVANSERT_FORM_NAMES.inntektVsaAfpRadio]:
+            'beregning.avansert.rediger.radio.inntekt_vsa_afp.description.validation_error',
+        }
+      })
+    }
+
+    // Sjekker at radio for InntektVsaAfp er fylt ut
+    console.log(inntektVsaAfpRadioFormData)
+    if (inntektVsaAfpRadioFormData === 'ja' && !inntektVsaAfpFormData) {
+      console.log('Kom inn')
+      isValid = false
+      updateValidationErrorMessage((prevState) => {
+        return {
+          ...prevState,
+          [AVANSERT_FORM_NAMES.inntektVsaAfp]:
+            'beregning.avansert.rediger.inntekt_vsa_afp.description.validation_error',
+        }
+      })
+    }
+
+    return isValid
   }
 
   // Sjekker at uttaksgrad er fylt ut med en prosent
@@ -440,42 +483,6 @@ export const validateAvansertBeregningSkjema = (
     })
   }
 
-  // Sjekker at radio for afpInntektMaanedFoerUttak er fylt ut
-  if (!afpInntektMaanedFoerUttakRadioFormData) {
-    isValid = false
-    updateValidationErrorMessage((prevState) => {
-      return {
-        ...prevState,
-        [AVANSERT_FORM_NAMES.afpInntektMaanedFoerUttakRadio]:
-          'beregning.avansert.rediger.radio.afp_inntekt_maaned_foer_uttak.description.validation_error',
-      }
-    })
-  }
-
-  // Sjekker at radio for InntektVsaAfpRadio er fylt ut
-  if (!inntektVsaAfpRadioFormData) {
-    isValid = false
-    updateValidationErrorMessage((prevState) => {
-      return {
-        ...prevState,
-        [AVANSERT_FORM_NAMES.inntektVsaAfpRadio]:
-          'beregning.avansert.rediger.radio.inntekt_vsa_afp.description.validation_error',
-      }
-    })
-  }
-
-  // Sjekker at radio for InntektVsaAfp er fylt ut
-  if (inntektVsaAfpRadioFormData && !inntektVsaAfpFormData) {
-    isValid = false
-    updateValidationErrorMessage((prevState) => {
-      return {
-        ...prevState,
-        [AVANSERT_FORM_NAMES.inntektVsaAfp]:
-          'beregning.avansert.rediger.inntekt_vsa_afp.description.validation_error',
-      }
-    })
-  }
-
   // Sjekker at inntekt vsa gradert uttak er fylt ut (gitt at uttaksgrad er ulik 100 % og radioknappen er på "ja")
   if (
     uttaksgradFormData !== '100 %' &&
@@ -552,7 +559,8 @@ export const onAvansertBeregningSubmit = (
     localBeregningsTypeRadio: Beregningsvalg | null
     hasVilkaarIkkeOppfylt: boolean | undefined
     harAvansertSkjemaUnsavedChanges: boolean
-  }
+  },
+  validerKap19Afp: boolean = false
 ): void => {
   const {
     foedselsdato,
@@ -623,7 +631,8 @@ export const onAvansertBeregningSubmit = (
       foedselsdato,
       normertPensjonsalder,
       loependeVedtak,
-      setValidationErrors
+      setValidationErrors,
+      validerKap19Afp
     )
   ) {
     return
@@ -638,7 +647,7 @@ export const onAvansertBeregningSubmit = (
   logger('valg av uttaksalder for 100 % alderspensjon', {
     tekst: `${heltUttakAarFormData} år og ${heltUttakMaanederFormData} md.`,
   })
-
+  debugger
   if (uttaksgradFormData === '100 %') {
     dispatch(userInputActions.setCurrentSimulationGradertUttaksperiode(null))
     logger('radiogroup valgt', {
@@ -727,4 +736,5 @@ export const onAvansertBeregningSubmit = (
     })
     gaaTilResultat()
   }
+  debugger
 }
