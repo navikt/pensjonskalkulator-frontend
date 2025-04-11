@@ -272,11 +272,25 @@ app.use(
 
 app.use(
   '/pensjon/kalkulator/api/landliste',
-  createProxyMiddleware({
-    target: `${PENSJONSKALKULATOR_BACKEND}/api/v1/land-liste`,
-    changeOrigin: true,
-    logger: logger,
-  })
+  async (req: Request, res: Response, next: NextFunction) => {
+    let oboToken: string
+    try {
+      oboToken = await getOboToken(req)
+    } catch {
+      // Send 401 dersom man ikke kan hente obo token
+      res.sendStatus(401)
+      return
+    }
+
+    createProxyMiddleware({
+      target: `${PENSJONSKALKULATOR_BACKEND}/api/v1/fetch-landliste`,
+      changeOrigin: true,
+      headers: {
+        Authorization: `Bearer ${oboToken}`,
+      },
+      logger: logger,
+    })(req, res, next)
+  }
 )
 
 const redirect1963Middleware = async (
