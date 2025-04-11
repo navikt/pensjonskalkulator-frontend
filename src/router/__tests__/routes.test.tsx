@@ -6,7 +6,6 @@ import {
   fulfilledGetGrunnbelop,
   fulfilledGetInntekt,
   fulfilledGetLoependeVedtak0Ufoeregrad,
-  fulfilledGetLoependeVedtak75Ufoeregrad,
   fulfilledGetOmstillingsstoenadOgGjenlevendeUtenSak,
   fulfilledGetPerson,
 } from '@/mocks/mockedRTKQueryApiCalls'
