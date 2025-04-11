@@ -23,6 +23,7 @@ describe('store', () => {
       sivilstand: null,
       epsHarPensjon: null,
       epsHarInntektOver2G: null,
+      afpInntektMaanedFoerUttak: null,
       currentSimulation: {
         beregningsvalg: null,
         formatertUttaksalderReadOnly: null,
