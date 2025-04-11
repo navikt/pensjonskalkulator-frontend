@@ -95,9 +95,9 @@ export const userInputSlice = createSlice({
     setSkalBeregneAfpKap19: (state, action: PayloadAction<boolean | null>) => {
       state.skalBeregneAfpKap19 = action.payload
     },
-    selectAfpInntektMaanedFoerUttak: (
+    setAfpInntektMaanedFoerUttak: (
       state,
-      action: PayloadAction<boolean>
+      action: PayloadAction<boolean | null>
     ) => {
       state.afpInntektMaanedFoerUttak = action.payload
     },
@@ -182,6 +182,7 @@ export const userInputSlice = createSlice({
       state.epsHarPensjon = null
       state.epsHarInntektOver2G = null
       state.skalBeregneAfpKap19 = null
+      state.afpInntektMaanedFoerUttak = null
       state.currentSimulation = { ...userInputInitialState.currentSimulation }
     },
     flushCurrentSimulation: (state) => {
