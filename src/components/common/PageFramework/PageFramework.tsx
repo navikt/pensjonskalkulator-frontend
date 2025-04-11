@@ -40,9 +40,14 @@ export const PageFramework: React.FC<{
   hasToggleBg?: boolean
   shouldShowLogo?: boolean
   shouldRedirectNonAuthenticated?: boolean
+  showLoader?: boolean
   children?: React.JSX.Element
-}> = (props) => {
-  const { shouldRedirectNonAuthenticated = true, children, ...rest } = props
+}> = ({
+  shouldRedirectNonAuthenticated = true,
+  showLoader = true,
+  children,
+  ...rest
+}) => {
   const intl = useIntl()
   const { pathname } = useLocation()
   const { state } = useNavigation()
@@ -52,7 +57,7 @@ export const PageFramework: React.FC<{
     window.scrollTo(0, 0)
   }, [pathname])
 
-  if (state === 'loading')
+  if (state === 'loading' && showLoader)
     return (
       <FrameComponent {...rest}>
         <Loader

@@ -137,8 +137,9 @@ export const routes: RouteObject[] = [
   },
   {
     loader: authenticationGuard,
+    // showLoader={false} trengs for at det skal virke å vise modal i avansert skjema når man trykker på tilbakeknappen i nettleseren
     element: (
-      <PageFramework isFullWidth hasWhiteBg>
+      <PageFramework isFullWidth hasWhiteBg showLoader={false}>
         <Outlet />
       </PageFramework>
     ),
