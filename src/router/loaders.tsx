@@ -274,22 +274,13 @@ export const stepSamtykkeOffentligAFPAccessGuard = async () => {
   const loependeVedtak = await store
     .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
     .unwrap()
-
-  const stepArrays = isLoependeVedtakEndring(loependeVedtak)
-    ? stegvisningOrderEndring
-    : stegvisningOrder
-
-  const getGradertUfoereAfpFeatureToggleQuery = store.dispatch(
-    apiSlice.endpoints.getGradertUfoereAfpFeatureToggle.initiate()
-  )
-
-  // Wait for the feature toggle query to resolve
-  const toggleShowGradertUfoereAfp = await getGradertUfoereAfpFeatureToggleQuery
+  const gradertUfoereAfpToggleEnabled = await store
+    .dispatch(apiSlice.endpoints.getGradertUfoereAfpFeatureToggle.initiate())
     .unwrap()
     .then((result) => result.enabled)
     .catch(() => false)
 
-  const showStep = toggleShowGradertUfoereAfp
+  const showStep = gradertUfoereAfpToggleEnabled
     ? afp === 'ja_offentlig'
     : loependeVedtak.ufoeretrygd.grad === 0 && afp === 'ja_offentlig'
 
@@ -297,6 +288,10 @@ export const stepSamtykkeOffentligAFPAccessGuard = async () => {
   if (showStep) {
     return null
   }
+
+  const stepArrays = isLoependeVedtakEndring(loependeVedtak)
+    ? stegvisningOrderEndring
+    : stegvisningOrder
 
   return redirect(
     stepArrays[stepArrays.indexOf(paths.samtykkeOffentligAFP) + 1]
