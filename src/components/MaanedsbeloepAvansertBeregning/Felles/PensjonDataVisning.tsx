@@ -62,7 +62,10 @@ export const PensjonDataVisning: React.FC<Props> = ({
       )}
 
       {!harKunAlderspensjon && (
-        <div className={`${styles.row} ${styles.sum}`}>
+        <div
+          className={`${styles.row} ${styles.sum}`}
+          data-testid="maanedsbeloep-avansert-sum"
+        >
           <BodyLong size={size} as="span">
             <FormattedMessage
               id="beregning.avansert.maanedsbeloep.sum"
