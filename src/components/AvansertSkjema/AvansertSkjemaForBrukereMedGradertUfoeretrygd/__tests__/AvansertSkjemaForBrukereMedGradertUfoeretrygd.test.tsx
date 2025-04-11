@@ -2592,7 +2592,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
       ).not.toBeInTheDocument()
     })
 
-    it.only('Aldersvelger for fullt uttak får riktig minAlder når man har valgt beregning med AFP og gradert uttak', () => {
+    it('Aldersvelger for fullt uttak får riktig minAlder når man har valgt beregning med AFP og gradert uttak', () => {
       // Minimum alder skal være gradert uttaksalder + 1 mnd, i praksis nedreAldersgrense + 1 mnd.
       render(
         <BeregningContext.Provider value={{ ...contextMockedValues }}>
