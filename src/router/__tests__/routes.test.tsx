@@ -475,13 +475,11 @@ describe('routes', () => {
         ).toBeInTheDocument()
       })
       it('Gitt at brukeren mottar uføretrygd og har valgt afp, når hen kommer fra stegvisningen, vises steget', async () => {
+        mockResponse('/v4/vedtak/loepende-vedtak', {
+          json: { ufoeretrygd: { grad: 75 } } satisfies LoependeVedtak,
+        })
         store.getState = vi.fn().mockImplementation(() => ({
-          api: {
-            queries: {
-              ...fulfilledGetPerson,
-              ...fulfilledGetLoependeVedtak75Ufoeregrad,
-            },
-          },
+          api: { queries: { mock: 'mock' } },
           userInput: { ...userInputInitialState, afp: 'ja_offentlig' },
         }))
         const router = createMemoryRouter(routes, {
