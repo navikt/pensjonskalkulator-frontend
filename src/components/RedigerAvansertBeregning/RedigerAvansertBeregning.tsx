@@ -1,13 +1,14 @@
 import React from 'react'
 
-import { AvansertSkjemaForAndreBrukere } from '../AvansertSkjema/AvansertSkjemaForAndreBrukere'
-import { AvansertSkjemaForBrukereMedGradertUfoeretrygd } from '../AvansertSkjema/AvansertSkjemaForBrukereMedGradertUfoeretrygd'
-import { AvansertSkjemaForBrukereMedKap19Afp } from '../AvansertSkjema/AvansertSkjemaForBrukereMedKap19Afp'
 import { useAppSelector } from '@/state/hooks'
 import {
   selectLoependeVedtak,
-  selectSkalBeregneAfp,
+  selectSkalBeregneAfpKap19,
 } from '@/state/userInput/selectors'
+
+import { AvansertSkjemaForAndreBrukere } from '../AvansertSkjema/AvansertSkjemaForAndreBrukere'
+import { AvansertSkjemaForBrukereMedGradertUfoeretrygd } from '../AvansertSkjema/AvansertSkjemaForBrukereMedGradertUfoeretrygd'
+import { AvansertSkjemaForBrukereMedKap19Afp } from '../AvansertSkjema/AvansertSkjemaForBrukereMedKap19Afp'
 
 // TODO PEK-1026 - se om vilkaarsproeving kan hentes direkte fra skjema-komponentene og FormButton for å unngå prop-drilling
 export const RedigerAvansertBeregning: React.FC<{
@@ -18,7 +19,7 @@ export const RedigerAvansertBeregning: React.FC<{
   }, [])
 
   const loependeVedtak = useAppSelector(selectLoependeVedtak)
-  const skalBeregneKap19Afp = useAppSelector(selectSkalBeregneAfp)
+  const skalBeregneKap19Afp = useAppSelector(selectSkalBeregneAfpKap19)
 
   // TODO Ny komponent <AvansertSkjemaForBrukereMedKap19AFP />
 

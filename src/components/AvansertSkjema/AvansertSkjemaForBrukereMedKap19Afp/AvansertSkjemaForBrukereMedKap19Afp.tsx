@@ -1,36 +1,37 @@
+import clsx from 'clsx'
 import React from 'react'
-import { useIntl, FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 import { Alert, Radio, RadioGroup, TextField } from '@navikt/ds-react'
-import clsx from 'clsx'
 
-import {
-  AvansertSkjemaIntroEndring,
-  AvansertSkjemaInntekt,
-  FormButtonRow,
-} from '../Felles'
-import { useFormLocalState, useFormValidationErrors } from '../hooks'
-import { AVANSERT_FORM_NAMES, onAvansertBeregningSubmit } from '../utils'
+import { VilkaarsproevingAlert } from '@/components/VilkaarsproevingAlert'
 import { AgePicker } from '@/components/common/AgePicker'
 import { Divider } from '@/components/common/Divider'
-import { VilkaarsproevingAlert } from '@/components/VilkaarsproevingAlert'
 import { BeregningContext } from '@/pages/Beregning/context'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
-  selectFoedselsdato,
-  selectLoependeVedtak,
-  selectCurrentSimulation,
-  selectIsEndring,
   selectAarligInntektFoerUttakBeloep,
-  selectAarligInntektFoerUttakBeloepFraSkatt,
   selectAarligInntektFoerUttakBeloepFraBrukerInput,
+  selectAarligInntektFoerUttakBeloepFraSkatt,
+  selectAfpInntektMaanedFoerUttak,
+  selectCurrentSimulation,
+  selectFoedselsdato,
+  selectIsEndring,
+  selectLoependeVedtak,
   selectNedreAldersgrense,
   selectNormertPensjonsalder,
-  selectAfpInntektMaanedFoerUttak,
 } from '@/state/userInput/selectors'
 import { getBrukerensAlderISluttenAvMaaneden } from '@/utils/alder'
 import { updateAndFormatInntektFromInputField } from '@/utils/inntekt'
 import { getFormatMessageValues } from '@/utils/translations'
+
+import {
+  AvansertSkjemaInntekt,
+  AvansertSkjemaIntroEndring,
+  FormButtonRow,
+} from '../Felles'
+import { useFormLocalState, useFormValidationErrors } from '../hooks'
+import { AVANSERT_FORM_NAMES, onAvansertBeregningSubmit } from '../utils'
 
 import styles from './AvansertSkjemaForBrukereMedKap19Afp.module.scss'
 
@@ -207,7 +208,6 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
               foedselsdato: foedselsdato as string,
               normertPensjonsalder,
               loependeVedtak,
-              localBeregningsTypeRadio: null,
               localInntektFremTilUttak,
               hasVilkaarIkkeOppfylt:
                 vilkaarsproeving?.vilkaarErOppfylt === false,
@@ -255,7 +255,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
               !vilkaarsproeving?.vilkaarErOppfylt &&
               uttaksalder && (
                 <VilkaarsproevingAlert
-                  vilkaarsproeving={vilkaarsproeving}
+                  alternativ={vilkaarsproeving?.alternativ}
                   uttaksalder={uttaksalder}
                 />
               )}

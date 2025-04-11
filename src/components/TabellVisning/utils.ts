@@ -1,6 +1,5 @@
-import { IntlShape } from 'react-intl'
-
 import { SeriesColumnOptions } from 'highcharts'
+import { IntlShape } from 'react-intl'
 
 export type TableDataRowDetaljer = { name: string; subSum: number }
 
@@ -32,15 +31,18 @@ export function formatSeriesToTableData(
     for (const obj of series) {
       const { name, data } = obj
       if (data && name) {
-        const temporarySum = data[i] as number
+        const temporarySum = !isNaN(data[i] as number) ? (data[i] as number) : 0
         sum += temporarySum
 
         detaljer.push({ name, subSum: temporarySum })
       }
     }
 
+    console.log(`Year: ${aarArray[i]}, Sum: ${sum}, Details:`, detaljer)
+
     tableData.push({ alder, sum, detaljer })
   }
+  console.log('Final Table Data:', tableData)
 
   return tableData
 }

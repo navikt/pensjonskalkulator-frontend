@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
 import { formatInntekt } from '@/utils/inntekt'
 
@@ -19,7 +19,7 @@ export interface UserInputState {
   samtykke: boolean | null
   samtykkeOffentligAFP: boolean | null
   afp: AfpRadio | null
-  skalBeregneAfp: boolean | null
+  skalBeregneAfpKap19: boolean | null
   sivilstand: Sivilstand | null
   epsHarPensjon: boolean | null
   epsHarInntektOver2G: boolean | null
@@ -35,7 +35,7 @@ export const userInputInitialState: UserInputState = {
   samtykke: null,
   samtykkeOffentligAFP: null,
   afp: null,
-  skalBeregneAfp: null,
+  skalBeregneAfpKap19: null,
   sivilstand: null,
   epsHarInntektOver2G: null,
   epsHarPensjon: null,
@@ -92,8 +92,8 @@ export const userInputSlice = createSlice({
     setAfp: (state, action: PayloadAction<AfpRadio>) => {
       state.afp = action.payload
     },
-    setSkalBeregneAfp: (state, action: PayloadAction<boolean | null>) => {
-      state.skalBeregneAfp = action.payload
+    setSkalBeregneAfpKap19: (state, action: PayloadAction<boolean | null>) => {
+      state.skalBeregneAfpKap19 = action.payload
     },
     selectAfpInntektMaanedFoerUttak: (
       state,
@@ -181,7 +181,7 @@ export const userInputSlice = createSlice({
       state.sivilstand = null
       state.epsHarPensjon = null
       state.epsHarInntektOver2G = null
-      state.skalBeregneAfp = null
+      state.skalBeregneAfpKap19 = null
       state.currentSimulation = { ...userInputInitialState.currentSimulation }
     },
     flushCurrentSimulation: (state) => {

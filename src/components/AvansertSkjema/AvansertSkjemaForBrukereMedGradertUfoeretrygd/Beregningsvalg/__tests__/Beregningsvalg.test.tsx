@@ -1,19 +1,22 @@
 import { describe, expect, it, vi } from 'vitest'
 
-import { Beregningsvalg } from '../Beregningsvalg'
 import { fulfilledGetPersonMedOekteAldersgrenser } from '@/mocks/mockedRTKQueryApiCalls'
 import { userInputInitialState } from '@/state/userInput/userInputSlice'
 import { render, screen } from '@/test-utils'
 
+import { Beregningsvalg } from '../Beregningsvalg'
+
 describe('Beregningsvalg', () => {
-  const mockSetLocalBeregningsTypeRadio = vi.fn()
+  const mockOnChange = vi.fn()
 
   const defaultProps = {
     localBeregningsTypeRadio: 'uten_afp' as const,
-    setLocalBeregningsTypeRadio: mockSetLocalBeregningsTypeRadio,
+    onChange: mockOnChange,
   }
 
-  const renderWithDefaultState = (props = {}) => {
+  const renderWithDefaultState = (
+    props?: Partial<React.ComponentProps<typeof Beregningsvalg>>
+  ) => {
     return render(<Beregningsvalg {...defaultProps} {...props} />, {
       preloadedState: {
         api: {
@@ -77,6 +80,19 @@ describe('Beregningsvalg', () => {
       const medAfpRadio = screen.getByTestId('med_afp')
       expect(medAfpRadio).toHaveAttribute('value', 'med_afp')
       expect(medAfpRadio).toBeChecked()
+    })
+
+    it('Håndterer nullstilling korrekt', () => {
+      const { rerender } = renderWithDefaultState({
+        localBeregningsTypeRadio: 'med_afp',
+      })
+      expect(screen.getByTestId('med_afp')).toBeChecked()
+
+      rerender(
+        <Beregningsvalg {...defaultProps} localBeregningsTypeRadio={null} />
+      )
+      expect(screen.getByTestId('med_afp')).not.toBeChecked()
+      expect(screen.getByTestId('uten_afp')).not.toBeChecked()
     })
   })
 

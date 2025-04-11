@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import React from 'react'
 import { useIntl } from 'react-intl'
 
@@ -45,7 +46,7 @@ export const FormButtonRow: React.FC<{
       <div>
         <Button
           form={formId}
-          className={`${styles.button} ${styles.buttonSubmit}`}
+          className={clsx(styles.button, styles.buttonSubmit)}
         >
           {intl.formatMessage({ id: getButtonMessageId() })}
         </Button>

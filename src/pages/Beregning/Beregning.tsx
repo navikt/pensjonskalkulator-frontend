@@ -1,12 +1,13 @@
+import clsx from 'clsx'
 import React from 'react'
 import { useIntl } from 'react-intl'
 import { useNavigate } from 'react-router'
 
 import { Button, Modal, ToggleGroup } from '@navikt/ds-react'
 
-import { ShowMoreRef } from '@/components/common/ShowMore/ShowMore'
 import { InfoOmFremtidigVedtak } from '@/components/InfoOmFremtidigVedtak'
 import { LightBlueFooter } from '@/components/LightBlueFooter'
+import { ShowMoreRef } from '@/components/common/ShowMore/ShowMore'
 import { paths } from '@/router/constants'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
@@ -20,7 +21,7 @@ import { logger } from '@/utils/logging'
 
 import { BeregningAvansert } from './BeregningAvansert'
 import { BeregningEnkel } from './BeregningEnkel'
-import { BeregningContext, AvansertBeregningModus } from './context'
+import { AvansertBeregningModus, BeregningContext } from './context'
 
 import styles from './Beregning.module.scss'
 
@@ -223,7 +224,7 @@ export const Beregning: React.FC<Props> = ({ visning }) => {
 
         {visning === 'avansert' && <BeregningAvansert />}
 
-        <div className={`${styles.background} ${styles.background__lightblue}`}>
+        <div className={clsx(styles.background, styles.background__lightblue)}>
           <div className={styles.container}>
             <LightBlueFooter />
           </div>

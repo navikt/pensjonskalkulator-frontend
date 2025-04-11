@@ -1,25 +1,20 @@
+import clsx from 'clsx'
 import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
-import {
-  Await,
-  useLoaderData,
-  useNavigate,
-  useOutletContext,
-} from 'react-router'
+import { useNavigate, useOutletContext } from 'react-router'
 
 import { ExternalLinkIcon } from '@navikt/aksel-icons'
 import {
   BodyLong,
   Button,
-  Heading,
   HStack,
+  Heading,
   Link,
   VStack,
 } from '@navikt/ds-react'
 
-import { Loader } from '@/components/common/Loader'
 import { externalUrls, paths } from '@/router/constants'
-import { LoginContext, LandingPageAccessGuardLoader } from '@/router/loaders'
+import { LoginContext } from '@/router/loaders'
 import { logOpenLink, wrapLogger } from '@/utils/logging'
 
 import styles from './LandingPage.module.scss'
@@ -28,7 +23,6 @@ export const LandingPage = () => {
   const intl = useIntl()
   const { isLoggedIn } = useOutletContext<LoginContext>()
 
-  const { shouldRedirectTo } = useLoaderData() as LandingPageAccessGuardLoader
   const navigate = useNavigate()
 
   React.useEffect(() => {
@@ -95,7 +89,7 @@ export const LandingPage = () => {
               <li>
                 <BodyLong>
                   <span
-                    className={`${styles.ellipse} ${styles.ellipse__blue}`}
+                    className={clsx(styles.ellipse, styles.ellipse__blue)}
                   />
                   <FormattedMessage id="stegvisning.start.list_item1" />
                 </BodyLong>
@@ -103,7 +97,7 @@ export const LandingPage = () => {
               <li>
                 <BodyLong>
                   <span
-                    className={`${styles.ellipse} ${styles.ellipse__purple}`}
+                    className={clsx(styles.ellipse, styles.ellipse__purple)}
                   />
                   <FormattedMessage id="stegvisning.start.list_item2" />{' '}
                 </BodyLong>
@@ -111,7 +105,7 @@ export const LandingPage = () => {
               <li>
                 <BodyLong>
                   <span
-                    className={`${styles.ellipse} ${styles.ellipse__green}`}
+                    className={clsx(styles.ellipse, styles.ellipse__green)}
                   />
                   <FormattedMessage id="stegvisning.start.list_item3" />{' '}
                 </BodyLong>
@@ -172,27 +166,11 @@ export const LandingPage = () => {
   }
 
   return isLoggedIn ? (
-    <React.Suspense
-      fallback={
-        <Loader
-          data-testid="loader"
-          size="3xlarge"
-          title={intl.formatMessage({ id: 'pageframework.loading' })}
-        />
-      }
-    >
-      <Await resolve={shouldRedirectTo}>
-        {(resp: string) => {
-          return (
-            <div className={styles.landingPage}>
-              <VStack gap="10">
-                <TopSection navigateTo={resp} />
-              </VStack>
-            </div>
-          )
-        }}
-      </Await>
-    </React.Suspense>
+    <div className={styles.landingPage}>
+      <VStack gap="10">
+        <TopSection />
+      </VStack>
+    </div>
   ) : (
     <div className={styles.landingPage}>
       <VStack gap="10">
@@ -214,7 +192,7 @@ export const LandingPage = () => {
                 <li>
                   <BodyLong>
                     <span
-                      className={`${styles.ellipse} ${styles.ellipse__blue}`}
+                      className={clsx(styles.ellipse, styles.ellipse__blue)}
                     />
                     <FormattedMessage id="stegvisning.start.list_item1" />
                   </BodyLong>
@@ -222,7 +200,7 @@ export const LandingPage = () => {
                 <li>
                   <BodyLong>
                     <span
-                      className={`${styles.ellipse} ${styles.ellipse__purple}`}
+                      className={clsx(styles.ellipse, styles.ellipse__purple)}
                     />
                     <FormattedMessage id="stegvisning.start.list_item2" />{' '}
                   </BodyLong>
@@ -230,7 +208,7 @@ export const LandingPage = () => {
                 <li>
                   <BodyLong>
                     <span
-                      className={`${styles.ellipse} ${styles.ellipse__green}`}
+                      className={clsx(styles.ellipse, styles.ellipse__green)}
                     />
                     <FormattedMessage id="stegvisning.start.list_item3" />{' '}
                   </BodyLong>
@@ -251,6 +229,7 @@ export const LandingPage = () => {
             </div>
           </VStack>
         </section>
+
         <section>
           <VStack gap="2">
             <Heading size="medium" level="2">

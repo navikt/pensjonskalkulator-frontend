@@ -1,5 +1,4 @@
-import { createMemoryRouter, RouterProvider } from 'react-router'
-
+import { RouterProvider, createMemoryRouter } from 'react-router'
 import { describe, it, vi } from 'vitest'
 
 import {
@@ -16,7 +15,7 @@ import { apiSlice } from '@/state/api/apiSlice'
 import { store } from '@/state/store'
 import { userInputInitialState } from '@/state/userInput/userInputSlice'
 import * as userInputReducerUtils from '@/state/userInput/userInputSlice'
-import { screen, render, userEvent, waitFor } from '@/test-utils'
+import { render, screen, userEvent, waitFor } from '@/test-utils'
 
 const initialGetState = store.getState
 
@@ -205,7 +204,7 @@ describe('StepAFP', () => {
     })
   })
 
-  it('Når brukeren som er i overgangskullet uten vedtak om alderspensjon velger afp og klikker på Neste, registrerer afp og skalBeregneAfp, og navigerer videre til neste steg', async () => {
+  it('Når brukeren som er i overgangskullet uten vedtak om alderspensjon velger afp og klikker på Neste, registrerer afp og skalBeregneAfpKap19, og navigerer videre til neste steg', async () => {
     mockResponse('/v4/person', {
       status: 200,
       json: {
@@ -229,9 +228,9 @@ describe('StepAFP', () => {
       userInputReducerUtils.userInputActions,
       'setAfp'
     )
-    const setSkalBeregneAfpMock = vi.spyOn(
+    const setSkalBeregneAfpKap19Mock = vi.spyOn(
       userInputReducerUtils.userInputActions,
-      'setSkalBeregneAfp'
+      'setSkalBeregneAfpKap19'
     )
     const user = userEvent.setup()
 
@@ -253,12 +252,12 @@ describe('StepAFP', () => {
 
     const radioButtonsAfp = await screen.findAllByRole('radio')
     await user.click(radioButtonsAfp[0])
-    const radioButtonsSkalBeregneAfp = await screen.findAllByRole('radio')
-    await user.click(radioButtonsSkalBeregneAfp[4])
+    const radioButtonsSkalBeregneAfpKap19 = await screen.findAllByRole('radio')
+    await user.click(radioButtonsSkalBeregneAfpKap19[4])
     await user.click(screen.getByText('stegvisning.neste'))
 
     expect(setAfpMock).toHaveBeenCalledWith('ja_offentlig')
-    expect(setSkalBeregneAfpMock).toHaveBeenCalledWith(true)
+    expect(setSkalBeregneAfpKap19Mock).toHaveBeenCalledWith(true)
     expect(navigateMock).toHaveBeenCalledWith(paths.ufoeretrygdAFP)
   })
 

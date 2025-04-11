@@ -1,6 +1,6 @@
 import userInputReducer, {
-  userInputInitialState,
   userInputActions,
+  userInputInitialState,
 } from '../userInputSlice'
 
 describe('userInputSlice', () => {
@@ -69,12 +69,12 @@ describe('userInputSlice', () => {
     })
 
     it('shallBeregneAfp', () => {
-      const skalBeregneAfpState = userInputReducer(
+      const skalBeregneAfpKap19State = userInputReducer(
         userInputInitialState,
-        userInputActions.setSkalBeregneAfp(true)
+        userInputActions.setSkalBeregneAfpKap19(true)
       )
 
-      expect(skalBeregneAfpState.skalBeregneAfp).toBe(true)
+      expect(skalBeregneAfpKap19State.skalBeregneAfpKap19).toBe(true)
     })
 
     it('setUtenlandsperiode', () => {
@@ -385,7 +385,7 @@ describe('userInputSlice', () => {
           harUtenlandsopphold: true,
           samtykke: true,
           samtykkeOffentligAFP: true,
-          skalBeregneAfp: true,
+          skalBeregneAfpKap19: true,
           afp: 'ja_offentlig',
           currentSimulation: {
             beregningsvalg: null,

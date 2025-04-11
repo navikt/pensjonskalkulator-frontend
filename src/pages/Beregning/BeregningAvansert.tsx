@@ -1,14 +1,12 @@
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
+import clsx from 'clsx'
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { useNavigate } from 'react-router'
 
 import { ArrowLeftIcon } from '@navikt/aksel-icons'
 import { Heading, Link } from '@navikt/ds-react'
-import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
-import clsx from 'clsx'
 
-import { Alert as AlertDashBorder } from '@/components/common/Alert'
-import { SanityGuidePanel } from '@/components/common/SanityGuidePanel'
 import { Grunnlag } from '@/components/Grunnlag'
 import { GrunnlagForbehold } from '@/components/GrunnlagForbehold'
 import { InfoOmLoependeVedtak } from '@/components/InfoOmLoependeVedtak'
@@ -17,25 +15,28 @@ import { RedigerAvansertBeregning } from '@/components/RedigerAvansertBeregning'
 import { ResultatkortAvansertBeregning } from '@/components/ResultatkortAvansertBeregning'
 import { SavnerDuNoe } from '@/components/SavnerDuNoe'
 import { Simulering } from '@/components/Simulering'
+import { Alert as AlertDashBorder } from '@/components/common/Alert'
+import { SanityGuidePanel } from '@/components/common/SanityGuidePanel'
 import { BeregningContext } from '@/pages/Beregning/context'
 import { paths } from '@/router/constants'
 import {
-  useGetPersonQuery,
   apiSlice,
   useAlderspensjonQuery,
+  useGetPersonQuery,
 } from '@/state/api/apiSlice'
 import { generateAlderspensjonRequestBody } from '@/state/api/utils'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
+  selectAarligInntektFoerUttakBeloep,
   selectAfp,
   selectCurrentSimulation,
-  selectSamtykkeOffentligAFP,
-  selectAarligInntektFoerUttakBeloep,
+  selectEpsHarInntektOver2G,
+  selectEpsHarPensjon,
   selectIsEndring,
   selectLoependeVedtak,
-  selectEpsHarPensjon,
-  selectEpsHarInntektOver2G,
+  selectSamtykkeOffentligAFP,
   selectSivilstand,
+  selectSkalBeregneAfpKap19,
   selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
 import { logger } from '@/utils/logging'
@@ -51,6 +52,7 @@ export const BeregningAvansert: React.FC = () => {
 
   const harSamtykketOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
   const afp = useAppSelector(selectAfp)
+  const skalBeregneAfpKap19 = useAppSelector(selectSkalBeregneAfpKap19)
   const isEndring = useAppSelector(selectIsEndring)
   const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const aarligInntektFoerUttakBeloep = useAppSelector(
@@ -80,6 +82,7 @@ export const BeregningAvansert: React.FC = () => {
         return generateAlderspensjonRequestBody({
           loependeVedtak,
           afp: afp === 'ja_offentlig' && !harSamtykketOffentligAFP ? null : afp,
+          skalBeregneAfpKap19: skalBeregneAfpKap19,
           sivilstand: sivilstand,
           epsHarPensjon: epsHarPensjon,
           epsHarInntektOver2G: epsHarInntektOver2G,
@@ -92,6 +95,7 @@ export const BeregningAvansert: React.FC = () => {
           },
           utenlandsperioder,
           beregningsvalg,
+          afpInntektMaanedFoerUttak: 300000, //TODO: denne skal settes i avansertskjema for pre2025OffentligAfp
         })
       }
     }, [
@@ -148,7 +152,7 @@ export const BeregningAvansert: React.FC = () => {
 
   // Skal redigerer tilbake når alderspensjon er refetchet ferdig, og
   React.useEffect(() => {
-    if (alderspensjon && !alderspensjon?.vilkaarsproeving.vilkaarErOppfylt) {
+    if (alderspensjon && !alderspensjon.vilkaarsproeving.vilkaarErOppfylt) {
       setAvansertSkjemaModus('redigering')
     }
     if (alderspensjon?.vilkaarsproeving.vilkaarErOppfylt) {
@@ -231,6 +235,7 @@ export const BeregningAvansert: React.FC = () => {
               headingLevel="2"
               aarligInntektFoerUttakBeloep={aarligInntektFoerUttakBeloep ?? '0'}
               alderspensjonListe={alderspensjon?.alderspensjon}
+              pre2025OffentligAfp={alderspensjon?.pre2025OffentligAfp}
               afpPrivatListe={
                 (afp === 'ja_privat' || loependeVedtak.afpPrivat) &&
                 alderspensjon?.afpPrivat

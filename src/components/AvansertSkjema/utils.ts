@@ -3,10 +3,10 @@ import { add, endOfDay, format, isBefore, parse, startOfMonth } from 'date-fns'
 import { AppDispatch } from '@/state/store'
 import { userInputActions } from '@/state/userInput/userInputSlice'
 import {
-  validateAlderFromForm,
   getAlderMinus1Maaned,
   isAlderLikEllerOverAnnenAlder,
   transformUttaksalderToDate,
+  validateAlderFromForm,
 } from '@/utils/alder'
 import { DATE_BACKEND_FORMAT, DATE_ENDUSER_FORMAT } from '@/utils/dates'
 import { validateInntekt } from '@/utils/inntekt'
@@ -171,6 +171,7 @@ const validateEndringGradertUttak = (
 
 export const validateAvansertBeregningSkjema = (
   inputData: {
+    beregningsvalgFormData: Beregningsvalg | null
     gradertUttakAarFormData: FormDataEntryValue | null
     gradertUttakMaanederFormData: FormDataEntryValue | null
     heltUttakAarFormData: FormDataEntryValue | null
@@ -195,6 +196,7 @@ export const validateAvansertBeregningSkjema = (
   validerKap19Afp: boolean = false
 ) => {
   const {
+    beregningsvalgFormData,
     gradertUttakAarFormData,
     gradertUttakMaanederFormData,
     heltUttakAarFormData,
@@ -321,7 +323,7 @@ export const validateAvansertBeregningSkjema = (
   }
 
   // Gitt at brukeren har uføretrygd, og at heltUttaksalder, gradertUttaksalder og uttaksgradFormData er valid
-  // Sjekker at uttaksgraden er iht uføregraden
+  // Sjekker at uttaksgraden er iht uføregraden (med mindre brukeren har valgt å simulere med AFP)
   if (isValid && loependeVedtak.ufoeretrygd.grad) {
     if (loependeVedtak.ufoeretrygd.grad === 100) {
       // Dette kan i teorien ikke oppstå fordi aldersvelgeren for gradert og helt uttak er begrenset fra normert pensjonsalder allerede
@@ -343,7 +345,7 @@ export const validateAvansertBeregningSkjema = (
             normertPensjonsalder
           ))
       isValid = isHeltUttaksalderValid && isGradertUttaksalderValid
-    } else {
+    } else if (beregningsvalgFormData !== 'med_afp') {
       // Hvis uttaksalder for gradert ikke eksisterer, ta utgangspunkt i helt uttaksalder
       // Hvis uttaksalder for gradert eksisterer, ta utgangspunkt i denne
       const valgtAlder =
@@ -556,7 +558,6 @@ export const onAvansertBeregningSubmit = (
     normertPensjonsalder: Alder
     loependeVedtak: LoependeVedtak
     localInntektFremTilUttak: string | null
-    localBeregningsTypeRadio: Beregningsvalg | null
     hasVilkaarIkkeOppfylt: boolean | undefined
     harAvansertSkjemaUnsavedChanges: boolean
   },
@@ -567,11 +568,13 @@ export const onAvansertBeregningSubmit = (
     normertPensjonsalder,
     loependeVedtak,
     localInntektFremTilUttak,
-    localBeregningsTypeRadio,
     hasVilkaarIkkeOppfylt,
     harAvansertSkjemaUnsavedChanges,
   } = previousData
 
+  const beregningsvalgFormData = data.get(
+    AVANSERT_FORM_NAMES.beregningsTypeRadio
+  ) as Beregningsvalg | null
   const gradertUttakAarFormData = data.get(
     `${AVANSERT_FORM_NAMES.uttaksalderGradertUttak}-aar`
   )
@@ -586,10 +589,10 @@ export const onAvansertBeregningSubmit = (
   )
   const uttaksgradFormData = data.get('uttaksgrad')
   const inntektVsaHeltUttakRadioFormData = data.get(
-    `${AVANSERT_FORM_NAMES.inntektVsaHeltUttakRadio}`
+    AVANSERT_FORM_NAMES.inntektVsaHeltUttakRadio
   )
   const inntektVsaGradertUttakRadioFormData = data.get(
-    `${AVANSERT_FORM_NAMES.inntektVsaGradertUttakRadio}`
+    AVANSERT_FORM_NAMES.inntektVsaGradertUttakRadio
   )
   const inntektVsaHeltUttakFormData = data.get(
     AVANSERT_FORM_NAMES.inntektVsaHeltUttak
@@ -613,6 +616,7 @@ export const onAvansertBeregningSubmit = (
   if (
     !validateAvansertBeregningSkjema(
       {
+        beregningsvalgFormData,
         gradertUttakAarFormData,
         gradertUttakMaanederFormData,
         heltUttakAarFormData,
@@ -647,7 +651,7 @@ export const onAvansertBeregningSubmit = (
   logger('valg av uttaksalder for 100 % alderspensjon', {
     tekst: `${heltUttakAarFormData} år og ${heltUttakMaanederFormData} md.`,
   })
-  debugger
+
   if (uttaksgradFormData === '100 %') {
     dispatch(userInputActions.setCurrentSimulationGradertUttaksperiode(null))
     logger('radiogroup valgt', {
@@ -719,9 +723,7 @@ export const onAvansertBeregningSubmit = (
   )
 
   dispatch(
-    userInputActions.setCurrentSimulationBeregningsvalg(
-      localBeregningsTypeRadio
-    )
+    userInputActions.setCurrentSimulationBeregningsvalg(beregningsvalgFormData) // Bare relevant for brukere med gradert uføretrygd
   )
 
   // Dersom vilkårene ikke var oppfylt, sjekk at noe ble endret for å sende til resultat
@@ -736,5 +738,4 @@ export const onAvansertBeregningSubmit = (
     })
     gaaTilResultat()
   }
-  debugger
 }

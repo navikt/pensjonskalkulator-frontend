@@ -1,17 +1,18 @@
 import { describe, it, vi } from 'vitest'
 
-import { StepSamtykkePensjonsavtaler } from '..'
 import {
-  fulfilledGetPerson,
-  fulfilledsimulerOffentligTp,
   fulfilledGetLoependeVedtak0Ufoeregrad,
   fulfilledGetLoependeVedtak75Ufoeregrad,
+  fulfilledGetPerson,
   fulfilledPensjonsavtaler,
+  fulfilledsimulerOffentligTp,
 } from '@/mocks/mockedRTKQueryApiCalls'
 import { paths } from '@/router/constants'
 import * as apiSliceUtils from '@/state/api/apiSlice'
 import { userInputInitialState } from '@/state/userInput/userInputSlice'
-import { screen, render, userEvent, waitFor } from '@/test-utils'
+import { render, screen, userEvent, waitFor } from '@/test-utils'
+
+import { StepSamtykkePensjonsavtaler } from '..'
 
 const navigateMock = vi.fn()
 vi.mock(import('react-router'), async (importOriginal) => {
@@ -79,7 +80,7 @@ describe('StepSamtykkePensjonsavtaler', () => {
           },
         },
       })
-      expect(Object.keys(store.getState().api.queries).length).toEqual(5)
+      expect(Object.keys(store.getState().api.queries).length).toEqual(4)
 
       const radioButtons = screen.getAllByRole('radio')
 
@@ -87,7 +88,7 @@ describe('StepSamtykkePensjonsavtaler', () => {
       await user.click(screen.getByText('stegvisning.neste'))
 
       expect(store.getState().userInput.samtykke).toBe(false)
-      expect(invalidateMock).toHaveBeenCalledTimes(6)
+      expect(invalidateMock).toHaveBeenCalledTimes(3)
 
       expect(navigateMock).toHaveBeenCalledWith(paths.beregningEnkel)
     })

@@ -1,23 +1,24 @@
 import { FormattedMessage, useIntl } from 'react-intl'
 
-import { RadioGroup, Radio, BodyLong, Heading } from '@navikt/ds-react'
+import { BodyLong, Heading, Radio, RadioGroup } from '@navikt/ds-react'
 
-import { AVANSERT_FORM_NAMES } from '../../utils'
 import { useAppSelector } from '@/state/hooks'
 import { selectNedreAldersgrense } from '@/state/userInput/selectors'
 import { formatUttaksalder } from '@/utils/alder'
 import { getFormatMessageValues } from '@/utils/translations'
 
+import { AVANSERT_FORM_NAMES } from '../../utils'
+
 import styles from './Beregningsvalg.module.scss'
 
 interface Props {
   localBeregningsTypeRadio: Beregningsvalg | null
-  setLocalBeregningsTypeRadio: (value: Beregningsvalg) => void
+  onChange: (newBeregningsvalg: Beregningsvalg) => void
 }
 
 export const Beregningsvalg = ({
   localBeregningsTypeRadio,
-  setLocalBeregningsTypeRadio,
+  onChange,
 }: Props) => {
   const intl = useIntl()
   const nedreAldersgrense = useAppSelector(selectNedreAldersgrense)
@@ -32,8 +33,8 @@ export const Beregningsvalg = ({
         aria-required="true"
         name={AVANSERT_FORM_NAMES.beregningsTypeRadio}
         data-testid={AVANSERT_FORM_NAMES.beregningsTypeRadio}
-        defaultValue={localBeregningsTypeRadio}
-        onChange={setLocalBeregningsTypeRadio}
+        value={localBeregningsTypeRadio}
+        onChange={onChange}
       >
         <Radio
           form={AVANSERT_FORM_NAMES.form}

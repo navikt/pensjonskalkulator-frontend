@@ -1,6 +1,5 @@
-import { IntlShape } from 'react-intl'
-
 import { Chart, Point, Series } from 'highcharts'
+import { IntlShape } from 'react-intl'
 
 import { getAlderMinus1Maaned } from '@/utils/alder'
 
@@ -145,6 +144,81 @@ export const processPensjonsberegningArray = (
         ? pensjonsBeregningAtIndex.beloep
         : livsvarigPensjonsbeloep
     )
+  }
+  return dataArray
+}
+
+//TODO: refaktorer processPensjonsberegningArray slik at den også tar hensyn til AFP etterfulgt av AP
+export const processPensjonsberegningArrayForKap19 = (
+  pensjonsberegninger: AfpPrivatPensjonsberegning[] = [],
+  isEndring: boolean,
+  xAxisLength: number,
+  startAlder: number
+): number[] => {
+  const arrayLength = Math.max(
+    xAxisLength,
+    isEndring ? pensjonsberegninger.length + 1 : pensjonsberegninger.length + 2 // muligens pensjonsberegninger.length : pensjonsberegninger.length + 1
+  )
+
+  const filledArrayLength = pensjonsberegninger[0]
+    ? Math.max(0, pensjonsberegninger[0].alder - startAlder)
+    : 0
+
+  const dataArray = new Array(
+    isEndring ? filledArrayLength : filledArrayLength + 1
+  ).fill(0)
+
+  const livsvarigPensjonsbeloep =
+    pensjonsberegninger[pensjonsberegninger.length - 1]?.beloep ?? 0
+
+  for (
+    let index = isEndring ? 0 : 1;
+    index < arrayLength - filledArrayLength;
+    index++
+  ) {
+    const pensjonsBeregningAtIndex =
+      pensjonsberegninger[isEndring ? index : index - 1]
+    dataArray.push(
+      pensjonsBeregningAtIndex
+        ? pensjonsBeregningAtIndex.beloep
+        : livsvarigPensjonsbeloep
+    )
+  }
+
+  return dataArray
+}
+
+//TODO: refaktorer processAfpPensjonsberegningArray. I refaktoreringen burde processPre2025OffentligAfpPensjonsberegningArray bli inkludert
+export const processPre2025OffentligAfpPensjonsberegningArray = (
+  xAxisLength: number,
+  pensjonsberegninger: AfpPrivatPensjonsberegning[] = [],
+  isEndring: boolean
+): number[] => {
+  if (pensjonsberegninger.length === 0) {
+    return []
+  }
+  const arrayLength = Math.max(
+    xAxisLength,
+    isEndring ? pensjonsberegninger.length : pensjonsberegninger.length + 1
+  )
+
+  const dataArray = isEndring ? [] : new Array(1).fill(0)
+  const startIndex = isEndring ? 0 : 1
+
+  const livsvarigPensjonsbeloep =
+    pensjonsberegninger[pensjonsberegninger.length - 1]?.beloep ?? 0
+
+  for (let index = isEndring ? 0 : 1; index < arrayLength; index++) {
+    if (startIndex > index) {
+      dataArray.push(0)
+    } else {
+      const pensjonsBeregningAtIndex = pensjonsberegninger[index - startIndex]
+      dataArray.push(
+        pensjonsBeregningAtIndex
+          ? pensjonsBeregningAtIndex.beloep
+          : livsvarigPensjonsbeloep
+      )
+    }
   }
   return dataArray
 }

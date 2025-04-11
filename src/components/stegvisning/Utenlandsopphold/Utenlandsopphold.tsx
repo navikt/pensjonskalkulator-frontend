@@ -3,16 +3,14 @@ import { FormattedMessage, useIntl } from 'react-intl'
 
 import { BodyLong, Button, Heading, Radio, RadioGroup } from '@navikt/ds-react'
 
+import { UtenlandsoppholdListe } from '@/components/UtenlandsoppholdListe/UtenlandsoppholdListe'
 import { Card } from '@/components/common/Card'
 import { Divider } from '@/components/common/Divider'
-import { ReadMore } from '@/components/common/ReadMore'
 import { SanityReadmore } from '@/components/common/SanityReadmore'
-import { UtenlandsoppholdListe } from '@/components/UtenlandsoppholdListe/UtenlandsoppholdListe'
 import { paths } from '@/router/constants'
 import { useAppSelector } from '@/state/hooks'
 import { selectUtenlandsperioder } from '@/state/userInput/selectors'
 import { wrapLogger } from '@/utils/logging'
-import { getFormatMessageValues } from '@/utils/translations'
 
 import { onSubmit } from './utils'
 
@@ -77,90 +75,23 @@ export function Utenlandsopphold({
           )
         }}
       />
+
       <Heading level="2" size="medium" spacing>
         <FormattedMessage id="stegvisning.utenlandsopphold.title" />
       </Heading>
+
       <BodyLong size="large">
         <FormattedMessage id="stegvisning.utenlandsopphold.ingress" />
       </BodyLong>
+
       <SanityReadmore
         id="hva_er_opphold_utenfor_norge"
         className={styles.readmore1}
-      >
-        <ReadMore
-          name="Hva som er opphold utenfor Norge"
-          className={styles.readmore1}
-          header={
-            <FormattedMessage id="stegvisning.utenlandsopphold.readmore_1.title" />
-          }
-        >
-          <FormattedMessage
-            id="stegvisning.utenlandsopphold.readmore_1.opphold.subtitle"
-            values={{
-              ...getFormatMessageValues(),
-            }}
-          />
-          <ul>
-            <li>
-              <FormattedMessage id="stegvisning.utenlandsopphold.readmore_1.opphold.list_item1" />
-            </li>
-            <li>
-              <FormattedMessage id="stegvisning.utenlandsopphold.readmore_1.opphold.list_item2" />
-            </li>
-          </ul>
-          <FormattedMessage
-            id="stegvisning.utenlandsopphold.readmore_1.ikke_opphold.subtitle"
-            values={{
-              ...getFormatMessageValues(),
-            }}
-          />
-          <ul>
-            <li>
-              <FormattedMessage id="stegvisning.utenlandsopphold.readmore_1.ikke_opphold.list_item1" />
-            </li>
-            <li>
-              <FormattedMessage id="stegvisning.utenlandsopphold.readmore_1.ikke_opphold.list_item2" />
-            </li>
-            <li>
-              <FormattedMessage id="stegvisning.utenlandsopphold.readmore_1.ikke_opphold.list_item3" />
-            </li>
-            <li>
-              <FormattedMessage id="stegvisning.utenlandsopphold.readmore_1.ikke_opphold.list_item4" />
-            </li>
-            <li>
-              <FormattedMessage id="stegvisning.utenlandsopphold.readmore_1.ikke_opphold.list_item5" />
-            </li>
-            <li>
-              <FormattedMessage id="stegvisning.utenlandsopphold.readmore_1.ikke_opphold.list_item6" />
-            </li>
-          </ul>
-          <FormattedMessage
-            id="stegvisning.utenlandsopphold.readmore_1.ingress"
-            values={{
-              ...getFormatMessageValues(),
-            }}
-          />
-        </ReadMore>
-      </SanityReadmore>
+      />
       <SanityReadmore
         id="betydning_av_opphold_utenfor_norge"
         className={styles.readmore2}
-      >
-        <ReadMore
-          name="Betydning av opphold utenfor Norge for pensjon"
-          className={styles.readmore2}
-          header={
-            <FormattedMessage id="stegvisning.utenlandsopphold.readmore_2.title" />
-          }
-        >
-          <FormattedMessage
-            id="stegvisning.utenlandsopphold.readmore_2.ingress"
-            values={{
-              ...getFormatMessageValues(),
-            }}
-          />
-        </ReadMore>
-      </SanityReadmore>
+      />
       <RadioGroup
         name="har-utenlandsopphold-radio"
         className={styles.radiogroup}
@@ -185,6 +116,7 @@ export function Utenlandsopphold({
         <Radio form="har-utenlandsopphold" value="ja">
           <FormattedMessage id="stegvisning.utenlandsopphold.radio_ja" />
         </Radio>
+
         <Radio form="har-utenlandsopphold" value="nei">
           <FormattedMessage id="stegvisning.utenlandsopphold.radio_nei" />
         </Radio>
@@ -193,9 +125,11 @@ export function Utenlandsopphold({
       {showUtenlandsperioder && (
         <>
           <UtenlandsoppholdListe validationError={validationErrors.bottom} />
+
           <BodyLong size="medium" className={styles.ingressBottom}>
             <FormattedMessage id="stegvisning.utenlandsopphold.ingress.bottom" />
           </BodyLong>
+
           <Divider smallMargin />
         </>
       )}
@@ -207,6 +141,7 @@ export function Utenlandsopphold({
       >
         <FormattedMessage id="stegvisning.neste" />
       </Button>
+
       <Button
         type="button"
         className={styles.button}
@@ -217,6 +152,7 @@ export function Utenlandsopphold({
       >
         <FormattedMessage id="stegvisning.tilbake" />
       </Button>
+
       {onCancel && (
         <Button
           type="button"

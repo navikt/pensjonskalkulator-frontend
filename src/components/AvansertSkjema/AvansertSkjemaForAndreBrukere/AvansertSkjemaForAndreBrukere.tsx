@@ -1,38 +1,23 @@
-import React from 'react'
-import { useIntl, FormattedMessage } from 'react-intl'
-
-import {
-  Alert,
-  BodyLong,
-  Radio,
-  RadioGroup,
-  Select,
-  TextField,
-} from '@navikt/ds-react'
 import clsx from 'clsx'
+import React from 'react'
+import { FormattedMessage, useIntl } from 'react-intl'
 
-import {
-  AvansertSkjemaIntroEndring,
-  AvansertSkjemaInntekt,
-  FormButtonRow,
-  ReadMoreOmPensjonsalder,
-} from '../Felles'
-import { useFormLocalState, useFormValidationErrors } from '../hooks'
-import { AVANSERT_FORM_NAMES, onAvansertBeregningSubmit } from '../utils'
+import { Alert, Radio, RadioGroup, Select, TextField } from '@navikt/ds-react'
+
+import { VilkaarsproevingAlert } from '@/components/VilkaarsproevingAlert'
 import { AgePicker } from '@/components/common/AgePicker'
 import { Divider } from '@/components/common/Divider'
-import { ReadMore } from '@/components/common/ReadMore'
-import { VilkaarsproevingAlert } from '@/components/VilkaarsproevingAlert'
+import { SanityReadmore } from '@/components/common/SanityReadmore'
 import { BeregningContext } from '@/pages/Beregning/context'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
-  selectFoedselsdato,
-  selectLoependeVedtak,
-  selectCurrentSimulation,
-  selectIsEndring,
   selectAarligInntektFoerUttakBeloep,
-  selectAarligInntektFoerUttakBeloepFraSkatt,
   selectAarligInntektFoerUttakBeloepFraBrukerInput,
+  selectAarligInntektFoerUttakBeloepFraSkatt,
+  selectCurrentSimulation,
+  selectFoedselsdato,
+  selectIsEndring,
+  selectLoependeVedtak,
   selectNedreAldersgrense,
   selectNormertPensjonsalder,
 } from '@/state/userInput/selectors'
@@ -43,6 +28,15 @@ import {
 } from '@/utils/alder'
 import { updateAndFormatInntektFromInputField } from '@/utils/inntekt'
 import { getFormatMessageValues } from '@/utils/translations'
+
+import {
+  AvansertSkjemaInntekt,
+  AvansertSkjemaIntroEndring,
+  FormButtonRow,
+  ReadMoreOmPensjonsalder,
+} from '../Felles'
+import { useFormLocalState, useFormValidationErrors } from '../hooks'
+import { AVANSERT_FORM_NAMES, onAvansertBeregningSubmit } from '../utils'
 
 import styles from './AvansertSkjemaForAndreBrukere.module.scss'
 
@@ -332,7 +326,6 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
               foedselsdato: foedselsdato as string,
               normertPensjonsalder,
               loependeVedtak,
-              localBeregningsTypeRadio: null,
               localInntektFremTilUttak,
               hasVilkaarIkkeOppfylt:
                 vilkaarsproeving?.vilkaarErOppfylt === false,
@@ -379,7 +372,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
               !vilkaarsproeving?.vilkaarErOppfylt &&
               uttaksalder && (
                 <VilkaarsproevingAlert
-                  vilkaarsproeving={vilkaarsproeving}
+                  alternativ={vilkaarsproeving?.alternativ}
                   uttaksalder={uttaksalder}
                 />
               )}
@@ -480,23 +473,13 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
 
             <div className={styles.spacer__small} />
 
-            <ReadMore
-              name="Om uttaksgrad"
-              header={intl.formatMessage({
-                id: 'beregning.avansert.rediger.read_more.uttaksgrad.label',
-              })}
-            >
-              <BodyLong data-testid="om-uttaksgrad">
-                <FormattedMessage
-                  id={
-                    isEndring && loependeVedtak.ufoeretrygd.grad === 0
-                      ? 'beregning.avansert.rediger.read_more.uttaksgrad.endring.body'
-                      : 'beregning.avansert.rediger.read_more.uttaksgrad.body'
-                  }
-                  values={getFormatMessageValues()}
-                />
-              </BodyLong>
-            </ReadMore>
+            <SanityReadmore
+              id={
+                isEndring && loependeVedtak.ufoeretrygd.grad === 0
+                  ? 'om_uttaksgrad_endring'
+                  : 'om_uttaksgrad'
+              }
+            />
           </div>
 
           {localGradertUttak?.uttaksalder?.aar &&
@@ -583,19 +566,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
                   {loependeVedtak.ufoeretrygd.grad &&
                   localGradertUttak.uttaksalder.aar <
                     normertPensjonsalder.aar ? (
-                    <ReadMore
-                      name="Om inntekt og uføretrygd"
-                      header={intl.formatMessage({
-                        id: 'inntekt.info_om_inntekt.ufoeretrygd.read_more.label',
-                      })}
-                    >
-                      <BodyLong>
-                        <FormattedMessage
-                          id="inntekt.info_om_inntekt.ufoeretrygd.read_more.body"
-                          values={getFormatMessageValues()}
-                        />
-                      </BodyLong>
-                    </ReadMore>
+                    <SanityReadmore id="om_alderspensjon_inntektsgrense_UT" />
                   ) : null}
                 </div>
 

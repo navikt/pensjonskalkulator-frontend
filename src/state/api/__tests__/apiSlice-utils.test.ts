@@ -1,20 +1,21 @@
 import {
-  getSimuleringstypeFromRadioEllerVedtak,
-  transformUtenlandsperioderArray,
-  generateTidligstMuligHeltUttakRequestBody,
-  generateAlderspensjonEnkelRequestBody,
-  generateAlderspensjonRequestBody,
-  generatePensjonsavtalerRequestBody,
-  generateOffentligTpRequestBody,
-} from '../utils'
-import {
   fulfilledGetLoependeVedtak0Ufoeregrad,
   fulfilledGetLoependeVedtak75Ufoeregrad,
+  fulfilledGetLoependeVedtakLoependeAFPoffentlig,
+  fulfilledGetLoependeVedtakLoependeAFPprivat,
   fulfilledGetLoependeVedtakLoependeAlderspensjon,
   fulfilledGetLoependeVedtakLoependeAlderspensjonOg40Ufoeretrygd,
-  fulfilledGetLoependeVedtakLoependeAFPprivat,
-  fulfilledGetLoependeVedtakLoependeAFPoffentlig,
 } from '@/mocks/mockedRTKQueryApiCalls'
+
+import {
+  generateAlderspensjonEnkelRequestBody,
+  generateAlderspensjonRequestBody,
+  generateOffentligTpRequestBody,
+  generatePensjonsavtalerRequestBody,
+  generateTidligstMuligHeltUttakRequestBody,
+  getSimuleringstypeFromRadioEllerVedtak,
+  transformUtenlandsperioderArray,
+} from '../utils'
 
 describe('apiSlice - utils', () => {
   const utenlandsperiode: Utenlandsperiode = {
@@ -140,6 +141,7 @@ describe('apiSlice - utils', () => {
         getSimuleringstypeFromRadioEllerVedtak(
           loependeVedtak_75_ufoeregrad,
           'ja_offentlig',
+          null,
           'uten_afp'
         )
       ).toEqual('ALDERSPENSJON')
@@ -147,6 +149,7 @@ describe('apiSlice - utils', () => {
         getSimuleringstypeFromRadioEllerVedtak(
           loependeVedtak_75_ufoeregrad,
           'ja_privat',
+          null,
           'med_afp'
         )
       ).toEqual('ALDERSPENSJON_MED_AFP_PRIVAT')
@@ -154,12 +157,14 @@ describe('apiSlice - utils', () => {
         getSimuleringstypeFromRadioEllerVedtak(
           loependeVedtak_75_ufoeregrad,
           'ja_offentlig',
+          null,
           'med_afp'
         )
       ).toEqual('ALDERSPENSJON_MED_AFP_OFFENTLIG_LIVSVARIG')
       expect(
         getSimuleringstypeFromRadioEllerVedtak(
           loependeVedtak_75_ufoeregrad,
+          null,
           null,
           'med_afp'
         )

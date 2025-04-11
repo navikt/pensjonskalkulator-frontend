@@ -35,7 +35,7 @@ exports[`store > returnerer store med riktig slices og default state 1`] = `
     "samtykke": null,
     "samtykkeOffentligAFP": null,
     "sivilstand": null,
-    "skalBeregneAfp": null,
+    "skalBeregneAfpKap19": null,
     "utenlandsperioder": [],
     "veilederBorgerEncryptedFnr": undefined,
     "veilederBorgerFnr": undefined,

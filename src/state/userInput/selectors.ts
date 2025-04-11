@@ -31,12 +31,12 @@ export const selectIsVeileder = (state: RootState) =>
 export const selectAfp = (state: RootState): AfpRadio | null =>
   state.userInput.afp
 
-export const selectSkalBeregneAfp = (state: RootState): boolean | null =>
-  state.userInput.skalBeregneAfp
-
 export const selectAfpInntektMaanedFoerUttak = (
   state: RootState
 ): boolean | null => state.userInput.afpInntektMaanedFoerUttak
+
+export const selectSkalBeregneAfpKap19 = (state: RootState): boolean | null =>
+  state.userInput.skalBeregneAfpKap19
 
 const selectPersonResponse = apiSlice.endpoints.getPerson.select()
 const selectInntektResponse = apiSlice.endpoints.getInntekt.select()
