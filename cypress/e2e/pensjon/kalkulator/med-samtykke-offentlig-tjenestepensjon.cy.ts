@@ -554,7 +554,7 @@ describe('Med samtykke - Offentlig tjenestepensjon', () => {
           it('forventer jeg informasjon i «Pensjonsavtaler - Offentlig tjenestepensjon» om hva jeg får i alderspensjon fra Kommunal Landspensjonskasse.', () => {
             cy.contains('Offentlig tjenestepensjon').should('exist')
             cy.contains(
-              'Alderspensjon fra Kommunal Landspensjonskasse (SPK)'
+              'Alderspensjon fra Kommunal Landspensjonskasse (KLP)'
             ).should('exist')
             cy.contains('Fra 67 år til 71 år').should('exist')
             cy.contains('Livsvarig fra 72 år').should('exist')
@@ -589,7 +589,7 @@ describe('Med samtykke - Offentlig tjenestepensjon', () => {
           },
           {
             simuleringsresultatStatus: 'TP_ORDNING_STOETTES_IKKE',
-            muligeTpLeverandoerListe: ['Ikke Støttet Ordning'],
+            muligeTpLeverandoerListe: ['Oslo Pensjonsforsikring'],
           }
         ).as('fetchOffentligTp')
         cy.fillOutStegvisning({ afp: 'vet_ikke', samtykke: true })
@@ -614,7 +614,7 @@ describe('Med samtykke - Offentlig tjenestepensjon', () => {
         it('forventer jeg informasjon i «Pensjonsavtaler - Offentlig tjenestepensjon» om at jeg er eller har vært ansatt i offentlig sektor, men at avtalene ikke er hentet.', () => {
           cy.contains('Offentlig tjenestepensjon').should('exist')
           cy.contains(
-            'Du er eller har vært ansatt i offentlig sektor, men vi kan dessverre ikke hente inn offentlige pensjonsavtaler. Sjekk tjenestepensjonsavtalene dine hos aktuell tjenestepensjonsordning (Kommunal Landspensjonskasse).'
+            'Du er eller har vært ansatt i offentlig sektor, men vi kan dessverre ikke hente inn offentlige pensjonsavtaler. Sjekk tjenestepensjonsavtalene dine hos aktuell tjenestepensjonsordning (Oslo Pensjonsforsikring).'
           ).should('exist')
         })
       })
