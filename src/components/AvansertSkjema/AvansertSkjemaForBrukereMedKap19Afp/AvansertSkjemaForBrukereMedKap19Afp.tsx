@@ -410,7 +410,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
               className={styles.textfield}
               label={
                 <FormattedMessage
-                  id="inntekt.endre_inntekt_vsa_pensjon_modal.textfield.label"
+                  id="inntekt.endre_inntekt_vsa_afp_modal.textfield.label"
                   values={getFormatMessageValues()}
                 />
               }

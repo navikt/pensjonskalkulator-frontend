@@ -53,11 +53,15 @@ export const useFormLocalState = (initialValues: {
     localHarInntektVsaGradertUttakRadio,
     setHarInntektVsaGradertUttakRadio,
   ] = useState<boolean | null>(
-    !uttaksalder || !gradertUttaksperiode?.uttaksalder
-      ? null
-      : gradertUttaksperiode?.aarligInntektVsaPensjonBeloep
+    afpInntektMaanedFoerUttak
+      ? gradertUttaksperiode?.aarligInntektVsaPensjonBeloep
         ? true
         : false
+      : !uttaksalder || !gradertUttaksperiode?.uttaksalder
+        ? null
+        : gradertUttaksperiode?.aarligInntektVsaPensjonBeloep
+          ? true
+          : false
   )
 
   const [localInntektFremTilUttak, setInntektFremTilUttak] = useState<
