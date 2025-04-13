@@ -30,6 +30,7 @@ import {
   getBrukerensAlderISluttenAvMaaneden,
 } from '@/utils/alder'
 import { updateAndFormatInntektFromInputField } from '@/utils/inntekt'
+import { logger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
 
 import {
@@ -348,6 +349,10 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
       }))
     }
     setLocalBeregningsTypeRadio(newBeregningsvalg)
+    logger('radiogroup valgt', {
+      tekst: 'Beregningsvalg',
+      valg: newBeregningsvalg,
+    })
   }
 
   const resetForm = (): void => {
