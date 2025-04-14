@@ -1009,10 +1009,6 @@ describe('BeregningAvansert', () => {
           },
           userInput: {
             ...userInputInitialState,
-            currentSimulation: {
-              ...userInputInitialState.currentSimulation,
-              beregningsvalg: 'uten_afp',
-            },
           },
         },
       }
