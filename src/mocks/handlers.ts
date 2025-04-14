@@ -191,14 +191,6 @@ export const getHandlers = (baseUrl: string = API_PATH) => [
   }),
 
   http.get(
-    `${baseUrl}/feature/pensjonskalkulator.vis-otp-fra-klp`,
-    async () => {
-      await delay(TEST_DELAY)
-      return HttpResponse.json(enableOtpFraKlpToggleResponse)
-    }
-  ),
-
-  http.get(
     `${baseUrl}/feature/pensjonskalkulator.gradert-ufoere-afp`,
     async () => {
       await delay(TEST_DELAY)
