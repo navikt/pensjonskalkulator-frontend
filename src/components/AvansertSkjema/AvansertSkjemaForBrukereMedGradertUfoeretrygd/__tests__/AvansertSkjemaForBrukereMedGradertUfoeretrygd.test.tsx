@@ -2608,7 +2608,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
         }
       )
 
-      // Viser riktig beskrivelse om inntekt
+      // Viser riktig beskrivelse på spørsmålet om inntekt vsa. gradert uttak
       expect(
         await screen.findByText(
           'beregning.avansert.rediger.radio.inntekt_vsa_gradert_uttak.ufoeretrygd.description'
