@@ -1,6 +1,5 @@
 import '@testing-library/jest-dom'
 
-import { useSerialIds } from 'highcharts'
 import { vi } from 'vitest'
 
 import { mockResponse, server } from '@/mocks/server'
@@ -52,9 +51,6 @@ vi.mock(
 
 beforeAll(async () => {
   server.listen({ onUnhandledRequest: 'error' })
-  if (process.env.NODE_ENV === 'test') {
-    useSerialIds(true)
-  }
 })
 beforeEach(() => {
   mockResponse('/oauth2/session', {
