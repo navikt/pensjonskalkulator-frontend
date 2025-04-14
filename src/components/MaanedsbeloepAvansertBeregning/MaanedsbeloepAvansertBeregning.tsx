@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl'
 
 import { Box, Heading } from '@navikt/ds-react'
 
-import { DesktopPensjonVisning, MobilePensjonVisning } from './components'
+import { DesktopPensjonVisning, MobilePensjonVisning } from './Felles'
 import { usePensjonBeregninger } from './hooks'
 
 interface Props {

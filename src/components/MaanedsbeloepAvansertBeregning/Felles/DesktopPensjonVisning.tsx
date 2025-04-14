@@ -39,7 +39,11 @@ export const DesktopPensjonVisning: React.FC<Props> = ({
           flexGrow="1"
         >
           <VStack gap="1">
-            <BodyLong size="medium" weight="semibold">
+            <BodyLong
+              size="medium"
+              weight="semibold"
+              data-testid="maanedsbeloep-desktop-title"
+            >
               {intl.formatMessage({
                 id: 'beregning.avansert.maanedsbeloep.tittel_1',
               })}
