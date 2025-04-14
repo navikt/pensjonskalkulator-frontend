@@ -35,6 +35,10 @@ Object.defineProperty(window.document, 'cookie', {
 
 window.HTMLElement.prototype.scrollIntoView = vi.fn()
 
+if (!('supports' in window.CSS)) {
+  window.CSS.supports = () => false
+}
+
 vi.mock(
   '@navikt/nav-dekoratoren-moduler',
   async (): Promise<typeof import('@navikt/nav-dekoratoren-moduler')> => {
