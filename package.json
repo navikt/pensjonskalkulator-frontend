@@ -85,7 +85,7 @@
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-react": "^7.37.5",
     "globals": "^16.0.0",
-    "highcharts": "^12.1.2",
+    "highcharts": "^12.2.0",
     "highcharts-react-official": "^3.2.1",
     "husky": "^9.1.7",
     "jsdom": "^26.0.0",
