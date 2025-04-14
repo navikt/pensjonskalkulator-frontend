@@ -88,7 +88,7 @@
     "highcharts": "^12.1.2",
     "highcharts-react-official": "^3.2.1",
     "husky": "^9.1.7",
-    "jsdom": "^26.0.0",
+    "jsdom": "^26.1.0",
     "lint-staged": "^15.5.0",
     "msw": "^2.7.3",
     "nodemon": "^3.1.9",
