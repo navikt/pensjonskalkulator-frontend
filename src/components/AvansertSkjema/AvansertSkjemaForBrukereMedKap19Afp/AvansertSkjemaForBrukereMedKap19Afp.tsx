@@ -145,13 +145,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
       [AVANSERT_FORM_NAMES.inntektVsaAfp]: '',
     })
     if (s === 'nei') {
-      setLocalGradertUttak((previous) => {
-        return {
-          ...previous,
-          grad: 100,
-          aarligInntektVsaPensjonBeloep: undefined,
-        }
-      })
+      setLocalGradertUttak(undefined)
     }
   }
 

@@ -657,6 +657,7 @@ export const onAvansertBeregningSubmit = (
       valg: inntektVsaHeltUttakRadioFormData ? 'ja' : 'nei',
     })
   } else if (afpInntektMaanedFoerUttakRadioFormData) {
+    //afp etterfulgt av AP
     const afpInntektMaanedFoerUttak =
       afpInntektMaanedFoerUttakRadioFormData === 'ja'
         ? true
@@ -666,17 +667,18 @@ export const onAvansertBeregningSubmit = (
     dispatch(
       userInputActions.setAfpInntektMaanedFoerUttak(afpInntektMaanedFoerUttak)
     )
-    if (inntektVsaGradertUttakFormData) {
-      dispatch(
-        userInputActions.setCurrentSimulationGradertUttaksperiode({
-          uttaksalder: {
-            aar: parseInt(heltUttakAarFormData as string, 10),
-            maaneder: parseInt(heltUttakMaanederFormData as string, 10),
-          },
-          grad: 100,
-          aarligInntektVsaPensjonBeloep:
-            inntektVsaGradertUttakFormData as string,
-        })
+    if (inntektVsaAfpRadioFormData === 'ja') {
+      console.log(
+        dispatch(
+          userInputActions.setCurrentSimulationGradertUttaksperiode({
+            uttaksalder: {
+              aar: parseInt(heltUttakAarFormData as string, 10),
+              maaneder: parseInt(heltUttakMaanederFormData as string, 10),
+            },
+            grad: 100,
+            aarligInntektVsaPensjonBeloep: inntektVsaAfpFormData as string,
+          })
+        )
       )
     } else {
       dispatch(userInputActions.setCurrentSimulationGradertUttaksperiode(null))

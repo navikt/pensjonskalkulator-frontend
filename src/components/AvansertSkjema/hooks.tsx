@@ -53,15 +53,11 @@ export const useFormLocalState = (initialValues: {
     localHarInntektVsaGradertUttakRadio,
     setHarInntektVsaGradertUttakRadio,
   ] = useState<boolean | null>(
-    afpInntektMaanedFoerUttak
-      ? gradertUttaksperiode?.aarligInntektVsaPensjonBeloep
+    !uttaksalder || !gradertUttaksperiode?.uttaksalder
+      ? null
+      : gradertUttaksperiode?.aarligInntektVsaPensjonBeloep
         ? true
         : false
-      : !uttaksalder || !gradertUttaksperiode?.uttaksalder
-        ? null
-        : gradertUttaksperiode?.aarligInntektVsaPensjonBeloep
-          ? true
-          : false
   )
 
   const [localInntektFremTilUttak, setInntektFremTilUttak] = useState<
@@ -73,6 +69,7 @@ export const useFormLocalState = (initialValues: {
     uttaksalder: uttaksalder ?? undefined,
     aarligInntektVsaPensjon: aarligInntektVsaHelPensjon,
   })
+
   const [localGradertUttak, setGradertUttak] = useState<
     RecursivePartial<GradertUttak> | undefined
   >({
