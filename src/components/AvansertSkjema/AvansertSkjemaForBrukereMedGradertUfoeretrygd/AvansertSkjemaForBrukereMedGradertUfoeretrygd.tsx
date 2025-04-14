@@ -27,6 +27,7 @@ import {
 import {
   DEFAULT_MAX_OPPTJENINGSALDER,
   formatUttaksalder,
+  getAlderPlus1Maaned,
   getBrukerensAlderISluttenAvMaaneden,
 } from '@/utils/alder'
 import { updateAndFormatInntektFromInputField } from '@/utils/inntekt'
@@ -746,7 +747,11 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                       value={localHeltUttak?.uttaksalder}
                       onChange={handleHeltUttaksalderChange}
                       error={heltUttakAgePickerError}
-                      minAlder={normertPensjonsalder}
+                      minAlder={
+                        localBeregningsTypeRadio === 'med_afp'
+                          ? getAlderPlus1Maaned(nedreAldersgrense)
+                          : normertPensjonsalder
+                      }
                     />
                   </>
                 )}

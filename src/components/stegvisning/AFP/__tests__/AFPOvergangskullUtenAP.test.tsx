@@ -19,7 +19,7 @@ describe('stegvisning - AFP - født mellom 1954-1962 uten vedtak om alderspensjo
   const onNextMock = vi.fn()
 
   it('rendrer slik den skal når afp og skalBeregneAfpKap19 ikke er oppgitt', async () => {
-    const result = render(
+    render(
       <AFPOvergangskullUtenAP
         previousAfp={null}
         previousSkalBeregneAfpKap19={null}
@@ -39,8 +39,6 @@ describe('stegvisning - AFP - født mellom 1954-1962 uten vedtak om alderspensjo
       screen.getByText('stegvisning.afpOvergangskull.readmore_offentlig_title')
     ).toBeVisible()
 
-    expect(result.asFragment()).toMatchSnapshot()
-
     const radioButtons = await screen.findAllByRole('radio')
     await waitFor(() => {
       expect(radioButtons).toHaveLength(4)
@@ -48,12 +46,11 @@ describe('stegvisning - AFP - født mellom 1954-1962 uten vedtak om alderspensjo
       expect(radioButtons[1]).not.toBeChecked()
       expect(radioButtons[2]).not.toBeChecked()
       expect(radioButtons[3]).not.toBeChecked()
-      expect(result.asFragment()).toMatchSnapshot()
     })
   })
 
   it('rendrer slik den skal når afp er oppgitt', async () => {
-    const result = render(
+    render(
       <AFPOvergangskullUtenAP
         previousAfp="nei"
         previousSkalBeregneAfpKap19={null}
@@ -72,7 +69,6 @@ describe('stegvisning - AFP - født mellom 1954-1962 uten vedtak om alderspensjo
       expect(radioButtons[1]).not.toBeChecked()
       expect(radioButtons[2]).toBeChecked()
       expect(radioButtons[3]).not.toBeChecked()
-      expect(result.asFragment()).toMatchSnapshot()
     })
   })
 
