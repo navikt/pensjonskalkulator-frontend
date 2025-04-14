@@ -273,6 +273,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
               onChange={handleHeltUttaksalderChange}
               error={heltUttakAgePickerError}
               minAlder={agePickerMinAlder}
+              maxAlder={{ aar: 67, maaneder: 0 }}
             />
           </div>
           {/* HER: Forventer du å ha inntekt på minst 21 924 kr før skatt den siste måneden før du tar ut AFP? */}

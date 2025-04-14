@@ -915,6 +915,7 @@ describe('AvansertSkjema-hooks', () => {
       })
       // validationErrors
       expect(result.current.validationErrors).toStrictEqual({
+        'inntekt-vsa-afp-radio': '',
         'inntekt-vsa-gradert-uttak': '',
         'uttaksalder-gradert-uttak': '',
         'uttaksalder-helt-uttak': '',
@@ -933,6 +934,7 @@ describe('AvansertSkjema-hooks', () => {
       })
       // validationErrors
       expect(result.current.validationErrors).toStrictEqual({
+        'inntekt-vsa-afp-radio': '',
         'inntekt-vsa-gradert-uttak': '',
         'uttaksalder-gradert-uttak': '',
         'uttaksalder-helt-uttak': '',
@@ -962,6 +964,7 @@ describe('AvansertSkjema-hooks', () => {
       })
       // validationErrors
       expect(result.current.validationErrors).toStrictEqual({
+        'inntekt-vsa-afp-radio': '',
         'inntekt-vsa-gradert-uttak': '',
         'uttaksalder-gradert-uttak': '',
         'uttaksalder-helt-uttak': 'id1',
@@ -971,6 +974,7 @@ describe('AvansertSkjema-hooks', () => {
       })
       // validationErrors
       expect(result.current.validationErrors).toStrictEqual({
+        'inntekt-vsa-afp-radio': '',
         'inntekt-vsa-gradert-uttak': '',
         'uttaksalder-gradert-uttak': 'id2',
         'uttaksalder-helt-uttak': 'id1',
@@ -980,6 +984,7 @@ describe('AvansertSkjema-hooks', () => {
       })
       // validationErrors
       expect(result.current.validationErrors).toStrictEqual({
+        'inntekt-vsa-afp-radio': '',
         'inntekt-vsa-gradert-uttak': 'id3',
         'uttaksalder-gradert-uttak': 'id2',
         'uttaksalder-helt-uttak': 'id1',
@@ -991,6 +996,7 @@ describe('AvansertSkjema-hooks', () => {
       })
       // validationErrors
       expect(result.current.validationErrors).toStrictEqual({
+        'inntekt-vsa-afp-radio': '',
         'inntekt-vsa-gradert-uttak': 'id3',
         'uttaksalder-gradert-uttak': 'id2',
         'uttaksalder-helt-uttak': 'id4',
@@ -1027,6 +1033,7 @@ describe('AvansertSkjema-hooks', () => {
       })
       // validationErrors
       expect(result.current.validationErrors).toStrictEqual({
+        'inntekt-vsa-afp': '',
         'inntekt-vsa-gradert-uttak': '',
         'uttaksalder-gradert-uttak': '',
         'uttaksalder-helt-uttak': '',
