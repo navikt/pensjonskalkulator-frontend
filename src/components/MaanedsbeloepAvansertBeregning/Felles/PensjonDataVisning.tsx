@@ -28,54 +28,70 @@ export const PensjonDataVisning: React.FC<Props> = ({
   const size = isMobile ? 'small' : 'medium'
 
   return (
-    <>
-      {afp && (
-        <div className={styles.row}>
-          <BodyLong size={size}>
-            <FormattedMessage id="beregning.avansert.maanedsbeloep.afp" />:
-          </BodyLong>
-          <span>{formatInntekt(afp)} kr</span>
-        </div>
-      )}
+    <table className={styles.container}>
+      <caption className={styles.srOnly}>
+        <FormattedMessage
+          id="beregning.avansert.maanedsbeloep.tabletitle"
+          defaultMessage="Pensjon månedsbeløp"
+        />
+      </caption>
+      <tbody>
+        {afp && (
+          <tr className={styles.row}>
+            <th scope="row">
+              <BodyLong size={size}>
+                <FormattedMessage id="beregning.avansert.maanedsbeloep.afp" />:
+              </BodyLong>
+            </th>
+            <td>{formatInntekt(afp)} kr</td>
+          </tr>
+        )}
 
-      {pensjonsavtale > 0 && (
-        <div className={styles.row}>
-          <BodyLong size={size}>
-            <FormattedMessage id="beregning.avansert.maanedsbeloep.pensjonsavtaler" />
-            :
-          </BodyLong>
-          <span>{formatInntekt(pensjonsavtale)} kr</span>
-        </div>
-      )}
+        {pensjonsavtale > 0 && (
+          <tr className={styles.row}>
+            <th scope="row">
+              <BodyLong size={size}>
+                <FormattedMessage id="beregning.avansert.maanedsbeloep.pensjonsavtaler" />
+                :
+              </BodyLong>
+            </th>
+            <td>{formatInntekt(pensjonsavtale)} kr</td>
+          </tr>
+        )}
 
-      {alderspensjon && (
-        <div className={styles.row}>
-          <BodyLong size={size}>
-            <FormattedMessage
-              id="beregning.avansert.maanedsbeloep.alderspensjon"
-              values={{ prosent: grad }}
-            />
-            :
-          </BodyLong>
-          <span>{formatInntekt(alderspensjon)} kr</span>
-        </div>
-      )}
+        {alderspensjon && (
+          <tr className={styles.row}>
+            <th scope="row">
+              <BodyLong size={size}>
+                <FormattedMessage
+                  id="beregning.avansert.maanedsbeloep.alderspensjon"
+                  values={{ prosent: grad }}
+                />
+                :
+              </BodyLong>
+            </th>
+            <td>{formatInntekt(alderspensjon)} kr</td>
+          </tr>
+        )}
 
-      {!harKunAlderspensjon && (
-        <div
-          className={`${styles.row} ${styles.sum}`}
-          data-testid="maanedsbeloep-avansert-sum"
-        >
-          <BodyLong size={size} as="span">
-            <FormattedMessage
-              id="beregning.avansert.maanedsbeloep.sum"
-              values={hentUttaksMaanedOgAar(alder)}
-            />
-            :
-          </BodyLong>
-          <span>{formatInntekt(summerYtelser(pensjonsdata))} kr</span>
-        </div>
-      )}
-    </>
+        {!harKunAlderspensjon && (
+          <tr
+            className={`${styles.row} ${styles.sum}`}
+            data-testid="maanedsbeloep-avansert-sum"
+          >
+            <th scope="row">
+              <BodyLong size={size} as="span">
+                <FormattedMessage
+                  id="beregning.avansert.maanedsbeloep.sum"
+                  values={hentUttaksMaanedOgAar(alder)}
+                />
+                :
+              </BodyLong>
+            </th>
+            <td>{formatInntekt(summerYtelser(pensjonsdata))} kr</td>
+          </tr>
+        )}
+      </tbody>
+    </table>
   )
 }
