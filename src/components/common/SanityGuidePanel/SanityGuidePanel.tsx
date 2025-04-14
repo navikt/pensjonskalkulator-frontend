@@ -26,6 +26,10 @@ export const SanityGuidePanel = ({
   const { guidePanelData } = useContext(SanityContext)
   const sanityContent = guidePanelData[id]
 
+  if (!sanityContent) {
+    return null
+  }
+
   const guidePanel = (
     <GuidePanel poster className={className} data-testid={sanityContent.name}>
       {sanityContent.overskrift && (
@@ -42,10 +46,6 @@ export const SanityGuidePanel = ({
       {children}
     </GuidePanel>
   )
-
-  if (!sanityContent) {
-    return null
-  }
 
   if (hasSection) {
     return <section className={styles.section}>{guidePanel}</section>

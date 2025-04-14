@@ -924,7 +924,7 @@ describe('BeregningAvansert', () => {
               queries: {
                 ...fulfilledGetPerson,
                 ...fulfilledGetInntekt,
-                ...fulfilledGetLoependeVedtakLoependeAFPprivat,
+                ...fulfilledGetLoependeVedtak75Ufoeregrad,
               },
             },
             userInput: {
@@ -939,12 +939,7 @@ describe('BeregningAvansert', () => {
       )
 
       expect(
-        screen.getByText(
-          'Hvis du velger AFP, får du ikke uføretrygd etter at du blir 62 år. Uføretrygd vises ikke i beregningen.',
-          {
-            exact: false,
-          }
-        )
+        screen.getByText('beregning.intro.description_2.gradert_UT.med_afp')
       ).toBeVisible()
     })
 
@@ -977,6 +972,7 @@ describe('BeregningAvansert', () => {
           },
         }
       )
+      // beregning.intro.description_2.gradert_UT.uten_afp
       expect(
         screen.getByText(
           'Du har 75 % uføretrygd. Den kommer i tillegg til inntekt og pensjon frem til du blir 67 alder.aar. Uføretrygd vises ikke i beregningen.',
@@ -1014,12 +1010,7 @@ describe('BeregningAvansert', () => {
       }
     )
     expect(
-      screen.getByText(
-        'Du har 100 % uføretrygd. Uføretrygd vises ikke i beregningen.',
-        {
-          exact: false,
-        }
-      )
+      screen.getByText('beregning.intro.description_2.hel_UT')
     ).toBeVisible()
   })
 })
