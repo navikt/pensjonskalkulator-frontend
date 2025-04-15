@@ -1,8 +1,6 @@
 import clsx from 'clsx'
 import { format } from 'date-fns'
-import { useEffect } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { useNavigate } from 'react-router'
 
 import { ExternalLinkIcon } from '@navikt/aksel-icons'
 import { BodyLong, Button, Heading, Link } from '@navikt/ds-react'
@@ -21,33 +19,14 @@ import FridaPortrett from '../../../assets/frida.svg'
 import styles from './Start.module.scss'
 
 interface Props {
-  shouldRedirectTo?: string
   navn: string
   loependeVedtak: LoependeVedtak
   onCancel?: () => void
   onNext?: () => void
 }
 
-export function Start({
-  shouldRedirectTo,
-  navn,
-  loependeVedtak,
-  onCancel,
-  onNext,
-}: Props) {
+export function Start({ navn, loependeVedtak, onCancel, onNext }: Props) {
   const intl = useIntl()
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    if (shouldRedirectTo) {
-      navigate(shouldRedirectTo)
-    }
-  }, [shouldRedirectTo])
-
-  if (shouldRedirectTo) {
-    return null
-  }
-
   const isEndring = isLoependeVedtakEndring(loependeVedtak)
   const fremtidigAlderspensjon = loependeVedtak.fremtidigAlderspensjon
   const isEndringAndFremtidigVedtak = isEndring && !!fremtidigAlderspensjon
