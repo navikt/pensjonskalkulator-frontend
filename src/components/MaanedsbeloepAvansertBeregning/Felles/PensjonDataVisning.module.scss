@@ -12,6 +12,14 @@
   td {
     padding: 0;
     text-align: left;
+    font-size: var(--a-font-size-large);
+  }
+
+  @media screen and (max-width: variables.$a-breakpoint-sm) {
+    th > p,
+    td {
+      font-size: var(--a-font-size-medium);
+    }
   }
 
   td {

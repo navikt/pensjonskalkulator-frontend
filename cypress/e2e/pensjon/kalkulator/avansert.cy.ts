@@ -608,21 +608,6 @@ describe('Avansert', () => {
         cy.contains('Opphold utenfor Norge:').click({ force: true })
         cy.contains('AFP:').click({ force: true })
       })
-
-      it('forventer jeg ett resultatkort hvor jeg ser mine valg og kan endre mine valg.', () => {
-        cy.contains('Beregning').should('exist')
-        cy.contains('Valgene dine').click({ force: true })
-        cy.contains('62 år og 3 md. (01.08.2025)').should('exist')
-        cy.contains('Alderspensjon: 40 %').should('exist')
-        cy.contains('Pensjonsgivende årsinntekt: 300 000 kr før skatt').should(
-          'exist'
-        )
-        cy.contains('67 år (01.05.2030)').should('exist')
-        cy.contains('Alderspensjon: 100 %').should('exist')
-        cy.contains(
-          'Pensjonsgivende årsinntekt til 75 år: 100 000 kr før skatt'
-        ).should('exist')
-      })
     })
 
     describe('Når jeg ønsker å endre mine valg,', () => {

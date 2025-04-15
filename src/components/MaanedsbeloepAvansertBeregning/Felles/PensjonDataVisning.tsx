@@ -13,19 +13,15 @@ interface Props {
   pensjonsdata: Pensjonsdata
   summerYtelser: (data: Pensjonsdata) => number
   hentUttaksMaanedOgAar: (alder: Alder) => { maaned: string; aar: string }
-  isMobile?: boolean
 }
 
 export const PensjonDataVisning: React.FC<Props> = ({
   pensjonsdata,
   summerYtelser,
   hentUttaksMaanedOgAar,
-  isMobile = false,
 }) => {
   const { alder, grad, afp, pensjonsavtale, alderspensjon } = pensjonsdata
   const harKunAlderspensjon = alderspensjon && !afp && !pensjonsavtale
-
-  const size = isMobile ? 'small' : 'medium'
 
   return (
     <table className={styles.container}>
@@ -39,7 +35,7 @@ export const PensjonDataVisning: React.FC<Props> = ({
         {afp && (
           <tr className={styles.row}>
             <th scope="row">
-              <BodyLong size={size}>
+              <BodyLong>
                 <FormattedMessage id="beregning.avansert.maanedsbeloep.afp" />:
               </BodyLong>
             </th>
@@ -50,7 +46,7 @@ export const PensjonDataVisning: React.FC<Props> = ({
         {pensjonsavtale > 0 && (
           <tr className={styles.row}>
             <th scope="row">
-              <BodyLong size={size}>
+              <BodyLong>
                 <FormattedMessage id="beregning.avansert.maanedsbeloep.pensjonsavtaler" />
                 :
               </BodyLong>
@@ -62,7 +58,7 @@ export const PensjonDataVisning: React.FC<Props> = ({
         {alderspensjon && (
           <tr className={styles.row}>
             <th scope="row">
-              <BodyLong size={size}>
+              <BodyLong>
                 <FormattedMessage
                   id="beregning.avansert.maanedsbeloep.alderspensjon"
                   values={{ prosent: grad }}
@@ -80,7 +76,7 @@ export const PensjonDataVisning: React.FC<Props> = ({
             data-testid="maanedsbeloep-avansert-sum"
           >
             <th scope="row">
-              <BodyLong size={size} as="span">
+              <BodyLong>
                 <FormattedMessage
                   id="beregning.avansert.maanedsbeloep.sum"
                   values={hentUttaksMaanedOgAar(alder)}
