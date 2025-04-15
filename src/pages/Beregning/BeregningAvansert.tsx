@@ -239,12 +239,24 @@ export const BeregningAvansert = () => {
 
             <div className={styles.intro}>
               <Heading level="2" size="medium" className={styles.introTitle}>
-                <FormattedMessage id="beregning.intro.title" />
+                <FormattedMessage
+                  id={
+                    isEndring
+                      ? 'beregning.intro.title.endring'
+                      : 'beregning.intro.title'
+                  }
+                />
               </Heading>
 
               <VStack gap="2">
                 <BodyLong>
-                  <FormattedMessage id="beregning.intro.description_1" />
+                  <FormattedMessage
+                    id={
+                      isEndring
+                        ? 'beregning.intro.description_1.endring'
+                        : 'beregning.intro.description_1'
+                    }
+                  />
                 </BodyLong>
 
                 {harGradertUT &&

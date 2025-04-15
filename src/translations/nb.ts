@@ -321,7 +321,10 @@ const translations = {
   'velguttaksalder.title': 'Når vil du ta ut alderspensjon?',
   'velguttaksalder.endring.title': 'Når vil du endre alderspensjonen din?',
   'beregning.intro.title': 'Estimert pensjon',
+  'beregning.intro.title.endring': 'Beregning',
   'beregning.intro.description_1': 'Alle beløp vises i dagens verdi før skatt.',
+  'beregning.intro.description_1.endring':
+    'Estimerte beløp i dagens verdi før skatt',
   'beregning.intro.description_2.gradert_UT.med_afp':
     'Hvis du velger AFP, får du ikke uføretrygd etter at du blir 62 år. Uføretrygd vises ikke i beregningen.',
   'beregning.intro.description_2.gradert_UT.uten_afp':

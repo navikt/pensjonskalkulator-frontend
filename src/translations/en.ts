@@ -287,7 +287,9 @@ export default {
   'velguttaksalder.endring.title':
     'When do you want to change your retirement pension?',
   'beregning.intro.title': 'MANGLER_TEKST',
+  'beregning.intro.title.endring': 'MANGLER_TEKST',
   'beregning.intro.description_1': 'MANGLER_TEKST',
+  'beregning.intro.description_1.endring': 'MANGLER_TEKST',
   'beregning.intro.description_2.gradert_UT.med_afp': 'MANGLER_TEKST',
   'beregning.intro.description_2.gradert_UT.uten_afp': 'MANGLER_TEKST',
   'beregning.intro.description_2.hel_UT': 'MANGLER_TEKST',
