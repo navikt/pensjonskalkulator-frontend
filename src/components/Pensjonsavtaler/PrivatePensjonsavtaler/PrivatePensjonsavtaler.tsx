@@ -39,7 +39,15 @@ export const PrivatePensjonsavtaler: React.FC<PrivatePensjonsavtalerProps> = ({
               <Heading level={headingLevel} size="small" spacing>
                 <FormattedMessage id="pensjonsavtaler.private.title.ingen" />
               </Heading>
-              <Alert inline variant="info">
+              <Alert
+                inline
+                variant="info"
+                className={
+                  isMobile
+                    ? styles['paragraph--mobile']
+                    : styles['paragraph--desktop']
+                }
+              >
                 <FormattedMessage id="pensjonsavtaler.ingress.ingen" />
               </Alert>
             </>
@@ -54,7 +62,15 @@ export const PrivatePensjonsavtaler: React.FC<PrivatePensjonsavtalerProps> = ({
             <Heading level={headingLevel} size="small" spacing>
               <FormattedMessage id="pensjonsavtaler.private.title.ingen" />
             </Heading>
-            <Alert inline variant="warning">
+            <Alert
+              inline
+              variant="warning"
+              className={
+                isMobile
+                  ? styles['paragraph--mobile']
+                  : styles['paragraph--desktop']
+              }
+            >
               <FormattedMessage id="pensjonsavtaler.private.ingress.error.pensjonsavtaler" />
             </Alert>
           </>
