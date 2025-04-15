@@ -185,21 +185,23 @@ export const Simulering = ({
 
   return (
     <section className={styles.section}>
-      <div className={clsx({ [styles.intro]: isEnkel })}>
-        <Heading
-          className={clsx({ [styles.introTitle]: isEnkel })}
-          level={headingLevel}
-          size={headingLevel === '2' ? 'medium' : 'small'}
-        >
-          <FormattedMessage id="beregning.highcharts.title" />
-        </Heading>
+      {!isEndring && (
+        <div className={clsx({ [styles.intro]: isEnkel })}>
+          <Heading
+            className={clsx({ [styles.introTitle]: isEnkel })}
+            level={headingLevel}
+            size={headingLevel === '2' ? 'medium' : 'small'}
+          >
+            <FormattedMessage id="beregning.highcharts.title" />
+          </Heading>
 
-        {isEnkel && (
-          <BodyLong>
-            <FormattedMessage id="beregning.highcharts.ingress" />
-          </BodyLong>
-        )}
-      </div>
+          {isEnkel && (
+            <BodyLong>
+              <FormattedMessage id="beregning.highcharts.ingress" />
+            </BodyLong>
+          )}
+        </div>
+      )}
 
       {showButtonsAndTable && (
         <SimuleringEndringBanner

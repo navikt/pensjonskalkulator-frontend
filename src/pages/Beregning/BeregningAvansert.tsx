@@ -237,7 +237,11 @@ export const BeregningAvansert = () => {
               />
             </Link>
 
-            <div className={styles.intro}>
+            <div
+              className={clsx(styles.intro, {
+                [styles.intro__endring]: isEndring,
+              })}
+            >
               <Heading level="2" size="medium" className={styles.introTitle}>
                 <FormattedMessage
                   id={
