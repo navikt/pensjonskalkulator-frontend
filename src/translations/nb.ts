@@ -383,7 +383,8 @@ const translations = {
   'beregning.avansert.endring_banner.title':
     'Alderspensjon før skatt når du er ',
   'beregning.avansert.endring_banner.kr_md': 'kr/md.',
-  'beregning.avansert.maanedsbeloep.tittel_1': 'Ved ',
+  'beregning.avansert.maanedsbeloep.table_title': 'Månedlig pensjon',
+  'beregning.avansert.maanedsbeloep.box_title': 'Ved ',
   'beregning.avansert.maanedsbeloep.afp': 'AFP (avtalefestet pensjon)',
   'beregning.avansert.maanedsbeloep.pensjonsavtaler':
     'Pensjonsavtaler (arbeidsgivere m.m.)',

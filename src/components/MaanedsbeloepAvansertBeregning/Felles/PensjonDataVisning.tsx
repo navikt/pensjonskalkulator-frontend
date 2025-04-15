@@ -26,10 +26,7 @@ export const PensjonDataVisning: React.FC<Props> = ({
   return (
     <table className={styles.container}>
       <caption className={styles.srOnly}>
-        <FormattedMessage
-          id="beregning.avansert.maanedsbeloep.tabletitle"
-          defaultMessage="Pensjon månedsbeløp"
-        />
+        <FormattedMessage id="beregning.avansert.maanedsbeloep.table_title" />
       </caption>
       <tbody>
         {afp && (
