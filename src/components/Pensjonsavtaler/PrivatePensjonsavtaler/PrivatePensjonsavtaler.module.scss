@@ -13,6 +13,11 @@
     margin-bottom: var(--a-spacing-4);
   }
 
+  &--mobile_oftp {
+    margin: 0;
+    margin-bottom: var(--a-spacing-8);
+  }
+
   &--desktop {
     margin: var(--a-spacing-5) 0;
     margin-bottom: var(--a-spacing-8);

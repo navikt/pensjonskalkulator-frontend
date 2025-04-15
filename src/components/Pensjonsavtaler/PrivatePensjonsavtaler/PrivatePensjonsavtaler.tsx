@@ -109,7 +109,9 @@ export const PrivatePensjonsavtaler: React.FC<PrivatePensjonsavtalerProps> = ({
 
       <BodyLong
         className={
-          isMobile ? styles['paragraph--mobile'] : styles['paragraph--desktop']
+          isMobile
+            ? styles['paragraph--mobile_oftp']
+            : styles['paragraph--desktop']
         }
         size="small"
       >
