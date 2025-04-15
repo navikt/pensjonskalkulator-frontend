@@ -62,11 +62,9 @@ export const Grunnlag: React.FC<Props> = ({
 
   return (
     <section className={styles.section}>
-      <div className={styles.description}>
-        <Heading level={headingLevel} size="medium">
-          <FormattedMessage id="grunnlag.title" />
-        </Heading>
-      </div>
+      <Heading level={headingLevel} size="medium">
+        <FormattedMessage id="grunnlag.title" />
+      </Heading>
 
       <Accordion>
         {visning === 'enkel' && (

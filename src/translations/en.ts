@@ -13,6 +13,7 @@ export default {
   'application.title.stegvisning.samtykke': 'Consent – Pension Calculator',
   'application.title.stegvisning.uventet_feil':
     'Unexpected Error – Pension Calculator',
+  'application.title.stegvisning.kalkulator_virker_ikke': 'MANGLER_TEKST',
   'application.title.beregning': 'Calculation – Pension Calculator',
   'application.title.forbehold': 'Reservation – Pension Calculator',
   'application.title.henvisning.apotekerne':
@@ -41,6 +42,10 @@ export default {
     'If you clicked on a link, it is incorrect or outdated.',
   'error.404.button.link_1': 'Go to the pension calculator',
   'error.404.button.link_2': 'Read about pensions',
+  'error.virker_ikke.title': 'MANGLER_TEKST',
+  'error.virker_ikke.ingress': 'MANGLER_TEKST',
+  'error.virker_ikke.link': 'MANGLER_TEKST',
+  'error.virker_ikke.button': 'MANGLER_TEKST',
   'landingsside.for.deg.foedt.foer.1963': 'For those born before 1963',
   'landingsside.du.maa.bruke.detaljert':
     'You must use our detailed calculator. It provides an estimate of',
@@ -272,12 +277,6 @@ export default {
     'retirement pension cannot be combined with a survivor´s pension or adjustment benefits. If you wish to withdraw retirement pension before 67, you must forfeit the survivor´s pension or adjustment benefit when you withdraw your retirement pension. If you have questions, you can contact us at <nowrap>{link}</nowrap>.',
   'tidligstmuliguttak.error':
     'In Advanced, you can choose a more accurate pension age.',
-  'beregning.read_more.pensjonsalder.label':
-    'About the earliest withdrawal date',
-  'beregning.read_more.pensjonsalder.body':
-    'Your earning record in the National Insurance Scheme determines when you can start withdrawing your retirement pension. The retirement age limits will gradually increase from the 1964 birth cohort by one to two months per year, but the pension calculator does not account for this.{br}{br}If you have provided information about AFP (contractual pension) and/or periods spent abroad, this is included in the assessment of when you can withdraw your retirement pension.{br}{br}If you cannot withdraw a full (100%) retirement pension from your desired age, you can adjust the withdrawal percentage to see if you can start earlier. If you withdraw a graded pension, the timing for when you can withdraw 100% may be delayed.',
-  'beregning.read_more.pensjonsalder.endring.body':
-    'Your accrual in the National Insurance Scheme determines how much retirement pension you can withdraw. By 67, your pension must at least correspond to the guarantee pension. Withdrawing before 67 means that you distribute your pension over multiple years, and thus receive less each year.{br}{br}If you have AFP, AFP is included in the assessment of how much retirement pension you can withdraw.',
   'omufoeretrygd.hel.ingress':
     'You have <nowrap>100 %</nowrap> disability benefits. Here you can calculate <nowrap>100 %</nowrap> retirement pension from 67 years.{br}{br}Upcoming legal changes will gradually increase the retirement age for those born in 1964 or later.',
   'omufoeretrygd.gradert.ingress':
@@ -289,9 +288,9 @@ export default {
     'When do you want to change your retirement pension?',
   'beregning.intro.title': 'MANGLER_TEKST',
   'beregning.intro.description_1': 'MANGLER_TEKST',
-  'beregning.intro.description_2.med_afp': 'MANGLER_TEKST',
-  'beregning.intro.description_2.uten_afp.hel': 'MANGLER_TEKST',
-  'beregning.intro.description_2.uten_afp.gradert': 'MANGLER_TEKST',
+  'beregning.intro.description_2.gradert_UT.med_afp': 'MANGLER_TEKST',
+  'beregning.intro.description_2.gradert_UT.uten_afp': 'MANGLER_TEKST',
+  'beregning.intro.description_2.hel_UT': 'MANGLER_TEKST',
   'beregning.avansert.rediger.beregningsvalg.description': 'MANGLER_TEKST',
   'beregning.avansert.rediger.beregningsvalg.om_valget_link': 'MANGLER_TEKST',
   'beregning.avansert.rediger.radio.beregningsvalg.label': 'MANGLER_TEKST',

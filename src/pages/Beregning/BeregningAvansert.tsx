@@ -5,7 +5,7 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { useNavigate } from 'react-router'
 
 import { ArrowLeftIcon } from '@navikt/aksel-icons'
-import { BodyShort, Heading, Link } from '@navikt/ds-react'
+import { BodyLong, Heading, Link, VStack } from '@navikt/ds-react'
 
 import { Grunnlag } from '@/components/Grunnlag'
 import { GrunnlagForbehold } from '@/components/GrunnlagForbehold'
@@ -242,30 +242,20 @@ export const BeregningAvansert = () => {
                 <FormattedMessage id="beregning.intro.title" />
               </Heading>
 
-              <BodyShort>
-                <FormattedMessage id="beregning.intro.description_1" />
+              <VStack gap="2">
+                <BodyLong>
+                  <FormattedMessage id="beregning.intro.description_1" />
+                </BodyLong>
 
-                {beregningsvalg === 'med_afp' ? (
-                  <FormattedMessage
-                    id="beregning.intro.description_2.med_afp"
-                    values={{
-                      ...getFormatMessageValues(),
-                    }}
-                  />
-                ) : (
-                  <>
-                    {harHelUT && (
+                {harGradertUT &&
+                  (beregningsvalg === 'med_afp' ? (
+                    <BodyLong>
+                      <FormattedMessage id="beregning.intro.description_2.gradert_UT.med_afp" />
+                    </BodyLong>
+                  ) : (
+                    <BodyLong>
                       <FormattedMessage
-                        id="beregning.intro.description_2.uten_afp.hel"
-                        values={{
-                          ...getFormatMessageValues(),
-                        }}
-                      />
-                    )}
-
-                    {harGradertUT && (
-                      <FormattedMessage
-                        id="beregning.intro.description_2.uten_afp.gradert"
+                        id="beregning.intro.description_2.gradert_UT.uten_afp"
                         values={{
                           ...getFormatMessageValues(),
                           grad: loependeVedtak.ufoeretrygd.grad,
@@ -275,10 +265,15 @@ export const BeregningAvansert = () => {
                           ),
                         }}
                       />
-                    )}
-                  </>
+                    </BodyLong>
+                  ))}
+
+                {harHelUT && (
+                  <BodyLong>
+                    <FormattedMessage id="beregning.intro.description_2.hel_UT" />
+                  </BodyLong>
                 )}
-              </BodyShort>
+              </VStack>
             </div>
 
             <Simulering

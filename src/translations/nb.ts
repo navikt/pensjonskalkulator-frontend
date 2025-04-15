@@ -12,6 +12,8 @@ const translations = {
   'application.title.stegvisning.samtykke': 'Samtykke – Pensjonskalkulator',
   'application.title.stegvisning.uventet_feil':
     'Uventet feil – Pensjonskalkulator',
+  'application.title.stegvisning.kalkulator_virker_ikke':
+    'Kalkulatoren virker ikke – Pensjonskalkulator',
   'application.title.beregning': 'Beregning – Pensjonskalkulator',
   'application.title.forbehold': 'Forbehold – Pensjonskalkulator',
   'application.title.henvisning.apotekerne':
@@ -39,6 +41,11 @@ const translations = {
     'Hvis du klikket på en lenke er den feil eller utdatert.',
   'error.404.button.link_1': 'Gå til pensjonskalkulator',
   'error.404.button.link_2': 'Les om pensjon',
+  'error.virker_ikke.title': 'Beklager, kalkulatoren virker ikke akkurat nå',
+  'error.virker_ikke.ingress':
+    'En feil har skjedd hos oss som gjør at du dessverre ikke kan bruke kalkulatoren. Vi jobber med å rette feilen. Prøv igjen senere.{br}{br}Hvis problemet vedvarer, kan du {kontaktoss} ',
+  'error.virker_ikke.link': 'kontakte oss',
+  'error.virker_ikke.button': 'Gå til Din pensjon',
   'landingsside.for.deg.foedt.foer.1963': 'For deg født før 1963',
   'landingsside.du.maa.bruke.detaljert':
     'Du må bruke vår detaljerte kalkulator. Den gir deg et estimat på',
@@ -304,12 +311,6 @@ const translations = {
     'Alderspensjon kan ikke kombineres med gjenlevendepensjon eller omstillingsstønad. Ønsker du å ta ut alderspensjon før <nowrap>{normertPensjonsalder}</nowrap>, må du si fra deg gjenlevendepensjon eller omstillingsstønad når du tar ut alderspensjon. Har du spørsmål, kan du kontakte oss på telefon <nowrap>{link}</nowrap>.',
   'tidligstmuliguttak.error':
     'I Avansert kan du velge en mer nøyaktig pensjonsalder.',
-  'beregning.read_more.pensjonsalder.label':
-    'Om tidspunktet for tidligst uttak',
-  'beregning.read_more.pensjonsalder.body':
-    'Din opptjening i folketrygden bestemmer når du kan ta ut alderspensjon. Aldersgrensene vil øke gradvis fra 1964-kullet med én til to måneder per årskull, men dette tar ikke pensjonskalkulatoren høyde for.{br}{br}Hvis du har oppgitt AFP og/eller utenlandsopphold, er dette med i vurderingen av når du kan ta ut alderspensjon.{br}{br}Hvis du ikke kan ta ut hel <nowrap>(100 %)</nowrap> alderspensjon fra ønsket alder, kan du endre uttaksgraden for å se om du kan starte tidligere. Tar du ut gradert pensjon, kan tidspunktet du kan ta ut <nowrap>100 %</nowrap> forskyves.',
-  'beregning.read_more.pensjonsalder.endring.body':
-    'Opptjeningen din i folketrygden bestemmer hvor mye alderspensjon du kan ta ut. Ved {normertPensjonsalder} må pensjonen minst tilsvare garantipensjon. Uttak før {normertPensjonsalder} betyr at du fordeler pensjonen din over flere år, og dermed får du mindre hvert år.{br}{br}Hvis du har AFP, er AFP med i vurderingen av hvor mye alderspensjon du kan ta ut.',
   'omufoeretrygd.hel.ingress':
     'Du har <nowrap>100 %</nowrap> uføretrygd. Her kan du beregne <nowrap>100 %</nowrap> alderspensjon fra <nowrap>{normertPensjonsalder}</nowrap>.{br}{br}Kommende lovendringer vil gradvis øke pensjonsalderen.',
   'omufoeretrygd.gradert.ingress':
@@ -322,12 +323,12 @@ const translations = {
   'beregning.intro.title': 'Estimert pensjon',
   'beregning.intro.description_1':
     'Beløpene er oppgitt i dagens verdi før skatt.',
-  'beregning.intro.description_2.med_afp':
-    '{br}{br}Hvis du velger AFP, får du ikke uføretrygd etter at du blir 62 år. Uføretrygd vises ikke i beregningen.',
-  'beregning.intro.description_2.uten_afp.hel':
-    '{br}{br}Du har 100 % uføretrygd. Uføretrygd vises ikke i beregningen.',
-  'beregning.intro.description_2.uten_afp.gradert':
-    '{br}{br}Du har {grad} % uføretrygd. Den kommer i tillegg til inntekt og pensjon frem til du blir {normertPensjonsalder}. Uføretrygd vises ikke i beregningen.',
+  'beregning.intro.description_2.gradert_UT.med_afp':
+    'Hvis du velger AFP, får du ikke uføretrygd etter at du blir 62 år. Uføretrygd vises ikke i beregningen.',
+  'beregning.intro.description_2.gradert_UT.uten_afp':
+    'Du har {grad} % uføretrygd. Den kommer i tillegg til inntekt og pensjon frem til du blir {normertPensjonsalder}. Uføretrygd vises ikke i beregningen.',
+  'beregning.intro.description_2.hel_UT':
+    'Du har 100 % uføretrygd. Uføretrygd vises ikke i beregningen.',
   'beregning.toggle.enkel': 'Enkel',
   'beregning.toggle.avansert': 'Avansert',
   'beregning.loading': 'Vent litt mens vi beregner pensjonen din.',

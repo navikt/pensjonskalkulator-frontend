@@ -1,8 +1,6 @@
 declare const classNames: {
   readonly section: "section";
   readonly intro: "intro";
-  readonly introTitle: "introTitle";
-  readonly loader: "loader";
   readonly infoClick: "infoClick";
   readonly highchartsWrapper: "highchartsWrapper";
   readonly tooltip: "tooltip";
@@ -13,6 +11,8 @@ declare const classNames: {
   readonly "highcharts-yaxis-labels": "highcharts-yaxis-labels";
   readonly tooltipTableHeaderCell: "tooltipTableHeaderCell";
   readonly tooltipTableCell: "tooltipTableCell";
+  readonly introTitle: "introTitle";
+  readonly loader: "loader";
   readonly tooltipTableHeaderCell__left: "tooltipTableHeaderCell__left";
   readonly tooltipTableHeaderCell__right: "tooltipTableHeaderCell__right";
   readonly tooltipTableCell__right: "tooltipTableCell__right";
