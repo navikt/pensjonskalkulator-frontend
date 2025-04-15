@@ -45,7 +45,7 @@ export const DesktopPensjonVisning: React.FC<Props> = ({
               data-testid="maanedsbeloep-desktop-title"
             >
               {intl.formatMessage({
-                id: 'beregning.avansert.maanedsbeloep.tittel_1',
+                id: 'beregning.avansert.maanedsbeloep.box_title',
               })}
               {formatUttaksalder(intl, data.alder)}{' '}
               {data.alderspensjon &&

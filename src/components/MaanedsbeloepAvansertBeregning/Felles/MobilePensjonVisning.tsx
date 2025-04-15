@@ -46,7 +46,7 @@ export const MobilePensjonVisning: React.FC<Props> = ({
               className={styles.maanedsbeloepMobileOnly}
             >
               {intl.formatMessage({
-                id: 'beregning.avansert.maanedsbeloep.tittel_1',
+                id: 'beregning.avansert.maanedsbeloep.box_title',
               })}
               {formatUttaksalder(intl, data.alder)}{' '}
               {data.alderspensjon &&
@@ -82,7 +82,7 @@ export const MobilePensjonVisning: React.FC<Props> = ({
               defaultOpen={index === 0}
               header={
                 intl.formatMessage({
-                  id: 'beregning.avansert.maanedsbeloep.tittel_1',
+                  id: 'beregning.avansert.maanedsbeloep.box_title',
                 }) + formatUttaksalder(intl, data.alder)
               }
             >
