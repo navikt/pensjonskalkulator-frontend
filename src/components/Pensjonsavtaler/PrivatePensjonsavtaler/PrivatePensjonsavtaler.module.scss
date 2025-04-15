@@ -2,11 +2,6 @@
   margin-bottom: var(--a-spacing-4);
 }
 
-.alert__margin_mobile {
-  margin: 0;
-  margin-bottom: var(--a-spacing-4);
-}
-
 /* .paragraph {
   margin: var(--a-spacing-4) 0;
   margin-bottom: var(--a-spacing-8);
@@ -15,11 +10,11 @@
 .paragraph {
   &--mobile {
     margin: 0;
-    margin-bottom: var(--a-spacing-8);
+    margin-bottom: var(--a-spacing-4);
   }
 
   &--desktop {
-    margin: var(--a-spacing-5) 0;
+    margin: var(--a-spacing-4) 0;
     margin-bottom: var(--a-spacing-8);
   }
 }

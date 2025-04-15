@@ -44,7 +44,7 @@ export const PrivatePensjonsavtaler: React.FC<PrivatePensjonsavtalerProps> = ({
                 variant="info"
                 className={
                   isMobile
-                    ? styles.alert__margin_mobile
+                    ? styles['paragraph--mobile']
                     : styles['paragraph--desktop']
                 }
               >
@@ -67,7 +67,7 @@ export const PrivatePensjonsavtaler: React.FC<PrivatePensjonsavtalerProps> = ({
               variant="warning"
               className={
                 isMobile
-                  ? styles.alert__margin_mobile
+                  ? styles['paragraph--mobile']
                   : styles['paragraph--desktop']
               }
             >
