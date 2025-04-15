@@ -58,7 +58,6 @@ export const MobilePensjonVisning: React.FC<Props> = ({
               pensjonsdata={pensjonsdata[0]}
               summerYtelser={summerYtelser}
               hentUttaksMaanedOgAar={hentUttaksmaanedOgAar}
-              isMobile={true}
             />
           </VStack>
         </Box>
@@ -91,7 +90,6 @@ export const MobilePensjonVisning: React.FC<Props> = ({
                 pensjonsdata={data}
                 summerYtelser={summerYtelser}
                 hentUttaksMaanedOgAar={hentUttaksmaanedOgAar}
-                isMobile={true}
               />
             </ReadMore>
           ))}
