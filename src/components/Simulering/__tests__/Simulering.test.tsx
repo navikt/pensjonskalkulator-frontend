@@ -91,7 +91,7 @@ describe('Simulering', () => {
   })
 
   describe('Gitt at brukeren har vedtak om alderspensjon', () => {
-    it('viser banner om info for endret alderspensjon, og sjekker at tittel ikke vises.', () => {
+    it('viser banner om info for endret alderspensjon, og viser ikke tittel.', () => {
       render(
         <Simulering
           isLoading={false}
