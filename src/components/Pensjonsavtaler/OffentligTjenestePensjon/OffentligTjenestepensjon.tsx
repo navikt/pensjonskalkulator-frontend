@@ -11,6 +11,7 @@ import {
   VStack,
 } from '@navikt/ds-react'
 
+import { Divider } from '@/components/common/Divider'
 import { Loader } from '@/components/common/Loader'
 import { useAppSelector } from '@/state/hooks'
 import { selectAfp } from '@/state/userInput/selectors'
@@ -140,6 +141,7 @@ export const OffentligTjenestepensjon = (props: {
               >
                 {getLeverandoerHeading(intl, tpNummer, tpLeverandoer)}
               </Heading>
+              <Divider noMargin />
               <table
                 className={styles.mobileTable}
                 data-testid="offentlig-tjenestepensjon-mobile"
@@ -167,13 +169,14 @@ export const OffentligTjenestepensjon = (props: {
                         </th>
                         <td align="right">
                           {formatInntekt(utbetalingsperiode.aarligUtbetaling)}{' '}
-                          <FormattedMessage id="pensjonsavtaler.kr_pr_aar" />
+                          <FormattedMessage id="pensjonsavtaler.kr_pr_aar_mobil" />
                         </td>
                       </tr>
                     )
                   )}
                 </tbody>
               </table>
+              <Divider noMargin />
             </>
           ) : (
             <Table data-testid="offentlig-tjenestepensjon-desktop">
