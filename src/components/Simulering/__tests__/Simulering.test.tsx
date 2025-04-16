@@ -91,7 +91,7 @@ describe('Simulering', () => {
   })
 
   describe('Gitt at brukeren har vedtak om alderspensjon', () => {
-    it('viser banner om info for endret alderspensjon', () => {
+    it('viser banner om info for endret alderspensjon, og sjekker at tittel ikke vises.', () => {
       render(
         <Simulering
           isLoading={false}
@@ -120,6 +120,9 @@ describe('Simulering', () => {
           },
         }
       )
+      expect(
+        screen.queryByText('beregning.highcharts.title')
+      ).not.toBeInTheDocument()
       expect(
         screen.getByText('beregning.avansert.endring_banner.title', {
           exact: false,

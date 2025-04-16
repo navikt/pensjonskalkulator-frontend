@@ -14,6 +14,7 @@
 
 .intro {
   margin-bottom: var(--a-spacing-10);
+  max-width: variables.$container-max-width;
 
   &__endring {
     margin-bottom: var(--a-spacing-3);

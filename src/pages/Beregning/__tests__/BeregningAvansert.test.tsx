@@ -508,6 +508,10 @@ describe('BeregningAvansert', () => {
         await waitFor(() => {
           expect(initiateMock).toHaveBeenCalledTimes(1)
         })
+
+        expect(screen.getByText('beregning.intro.title')).toBeVisible()
+        expect(screen.getByText('beregning.intro.description_1')).toBeVisible()
+
         expect(
           screen.getByText('beregning.avansert.resultatkort.tittel')
         ).toBeVisible()
@@ -711,7 +715,7 @@ describe('BeregningAvansert', () => {
     })
   })
 
-  describe('Gitt at brukeren har vedtak om alderspensjon,', () => {
+  describe('Gitt at brukeren har vedtak om alderspensjon', () => {
     it('Når simuleringen svarer med en beregning, vises det resultatkort og simulering med tabell, Grunnlag og Forbehold uten Pensjonsavtaler', async () => {
       const user = userEvent.setup()
       const initiateMock = vi.spyOn(
@@ -757,6 +761,12 @@ describe('BeregningAvansert', () => {
       await waitFor(() => {
         expect(initiateMock).toHaveBeenCalledTimes(1)
       })
+
+      expect(screen.getByText('beregning.intro.title.endring')).toBeVisible()
+      expect(
+        screen.getByText('beregning.intro.description_1.endring')
+      ).toBeVisible()
+
       expect(
         screen.getByText('beregning.avansert.resultatkort.tittel')
       ).toBeVisible()
