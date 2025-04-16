@@ -81,7 +81,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
     ? normertPensjonsalder
     : getBrukerensAlderISluttenAvMaaneden(foedselsdato, nedreAldersgrense)
 
-  const [
+  const {
     localInntektFremTilUttak,
     localHeltUttak,
     localHarInntektVsaHeltUttakRadio,
@@ -89,14 +89,14 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
     localHarInntektVsaGradertUttakRadio,
     minAlderInntektSluttAlder,
     muligeUttaksgrad,
-    {
+    handlers: {
       setLocalInntektFremTilUttak,
       setLocalHeltUttak,
       setLocalGradertUttak,
       setLocalHarInntektVsaHeltUttakRadio,
       setLocalHarInntektVsaGradertUttakRadio,
     },
-  ] = useFormLocalState({
+  } = useFormLocalState({
     isEndring,
     ufoeregrad: loependeVedtak.ufoeretrygd.grad,
     aarligInntektFoerUttakBeloepFraBrukerSkattBeloep:
@@ -105,15 +105,16 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
     uttaksalder,
     aarligInntektVsaHelPensjon,
     gradertUttaksperiode,
+    afpInntektMaanedFoerUttak: null,
     normertPensjonsalder,
     beregningsvalg: null,
   })
 
-  const [
+  const {
     validationErrors,
     gradertUttakAgePickerError,
     heltUttakAgePickerError,
-    {
+    handlers: {
       setValidationErrors,
       setValidationErrorUttaksalderHeltUttak,
       setValidationErrorInntektVsaHeltUttak,
@@ -121,7 +122,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
       setValidationErrorInntektVsaGradertUttak,
       resetValidationErrors,
     },
-  ] = useFormValidationErrors({
+  } = useFormValidationErrors({
     grad: localGradertUttak?.grad,
   })
 

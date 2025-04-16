@@ -319,8 +319,10 @@ const translations = {
   'omufoeretrygd.gradert.ingress.afp':
     'Du har <nowrap>{grad} %</nowrap> uføretrygd. Her kan du beregne <nowrap>100 %</nowrap> alderspensjon og pensjonsavtaler fra <nowrap>{normertPensjonsalder}</nowrap>.{br}{br}I {link} kan du beregne kombinasjoner av alderspensjon og uføretrygd før <nowrap>{normertPensjonsalder}</nowrap> eller alderspensjon og AFP fra {nedreAldersgrense}.{br}{br}Kommende lovendringer vil gradvis øke pensjonsalderen.',
   'omufoeretrygd.avansert_link': 'Avansert',
-  'velguttaksalder.title': 'Når vil du ta ut alderspensjon?',
+  'velguttaksalder.title': 'Når vil du ta ut AFP?',
   'velguttaksalder.endring.title': 'Når vil du endre alderspensjonen din?',
+  'velguttaksalderafp.title': 'Når vil du ta ut alderspensjon?',
+  'velguttaksalderafp.endring.title': 'Når vil du endre AFPen din?',
   'beregning.toggle.enkel': 'Enkel',
   'beregning.toggle.avansert': 'Avansert',
   'beregning.loading': 'Vent litt mens vi beregner pensjonen din.',
@@ -393,12 +395,29 @@ const translations = {
   'beregning.avansert.rediger.uttaksgrad.description': 'Velg uttaksgrad',
   'beregning.avansert.rediger.uttaksgrad.endring.description':
     'Velg ny uttaksgrad',
+  'beregning.avansert.rediger.read_more.uttaksgrad.label': 'Om uttaksgrad',
+  'beregning.avansert.rediger.read_more.uttaksgrad.gradert_ufoeretrygd.label':
+    'Om uttaksgrad og uføretrygd',
+  'beregning.avansert.rediger.read_more.uttaksgrad.body':
+    'Uttaksgrad angir hvor stor del av månedlig alderspensjon du ønsker å ta ut. Du kan velge gradert uttak (20, 40, 50, 60 eller <nowrap>80 %</nowrap>), eller hel alderspensjon (<nowrap>100 %</nowrap>).',
+  'beregning.avansert.rediger.read_more.uttaksgrad.endring.body':
+    'Uttaksgrad angir hvor stor del av månedlig alderspensjon du ønsker å ta ut. Hvis du vil endre gradering til 20, 40, 50, 60 eller 80 % må det ha gått minimum 12 måneder siden du startet uttak av alderspensjon eller endret uttaksgrad. Du kan endre til 0 % og 100 % så ofte du vil.',
+  'beregning.avansert.rediger.read_more.uttaksgrad.gradert_ufoeretrygd.body':
+    'Uttaksgrad angir hvor stor del av månedlig alderspensjon du ønsker å ta ut. Grad av uføretrygd og alderspensjon kan til sammen ikke overstige 100 %. Fra {normertPensjonsalder} kan du fritt velge gradert uttak (20, 40, 50, 60 eller 80 %), eller hel alderspensjon (100 %).',
+  'beregning.avansert.rediger.radio.afp_inntekt_maaned_foer_uttak':
+    'Forventer du å ha inntekt på minst {afpInntektMaanedFoerUttak} kr før skatt den siste måneden før du tar ut AFP?',
+  'beregning.avansert.rediger.radio.afp_inntekt_maaned_foer_uttak.description':
+    'Dette er ett av vilkårene for å få AFP.',
   'beregning.avansert.rediger.radio.inntekt_vsa_helt_uttak':
     'Forventer du å ha inntekt samtidig som du tar ut <nowrap>100 %</nowrap> pensjon?',
   'beregning.avansert.rediger.radio.inntekt_vsa_helt_uttak.description':
     'Du kan tjene så mye du vil samtidig som du tar ut pensjon.',
   'beregning.avansert.rediger.radio.inntekt_vsa_helt_uttak.description.validation_error':
     'Du må svare på om du forventer å ha inntekt samtidig som du tar ut <nowrap>100 %</nowrap> pensjon.',
+  'beregning.avansert.rediger.radio.inntekt_vsa_afp':
+    'Forventer du å ha inntekt samtidig som du tar ut AFP?',
+  'beregning.avansert.rediger.radio.inntekt_vsa_afp.description':
+    'AFP-graden du får, beregnes etter hvilken inntekt du har i tillegg.',
   'beregning.avansert.rediger.uttaksgrad.validation_error':
     'Du må velge hvor mye alderspensjon du vil ta ut.',
   'beregning.avansert.rediger.uttaksgrad.ufoeretrygd.validation_error':
@@ -411,6 +430,12 @@ const translations = {
     'Du kan tjene så mye du vil samtidig som du tar ut pensjon.',
   'beregning.avansert.rediger.radio.inntekt_vsa_gradert_uttak.ufoeretrygd.description':
     'Alderspensjonen påvirker ikke inntektsgrensen for uføretrygden din.',
+  'beregning.avansert.rediger.radio.afp_inntekt_maaned_foer_uttak.description.validation_error':
+    'Du må svare på om du forventer å ha inntekt på minst {1G/12} kr før skatt den siste måneden før du tar ut AFP.',
+  'beregning.avansert.rediger.radio.inntekt_vsa_afp.description.validation_error':
+    'Du må svare på om du forventer å ha inntekt samtidig som du tar ut AFP.',
+  'beregning.avansert.rediger.inntekt_vsa_afp.description.validation_error':
+    'Du må fylle ut forventet årsinntekt samtidig som du tar ut AFP.',
   'beregning.avansert.rediger.radio.inntekt_vsa_gradert_uttak.description.validation_error':
     'Du må svare på om du forventer å ha inntekt samtidig som du tar ut <nowrap>{grad} %</nowrap> pensjon.',
   'beregning.avansert.rediger.inntekt_vsa_gradert_uttak.beloep.validation_error':
@@ -422,6 +447,8 @@ const translations = {
   'beregning.avansert.rediger.inntekt.button': 'Endre inntekt',
   'beregning.avansert.rediger.agepicker.validation_error':
     ' for når du vil ta ut alderspensjon.',
+  'beregning.avansert.rediger.agepicker.afp.validation_error':
+    ' for når du vil ta ut AFP.',
   'beregning.avansert.rediger.agepicker.grad.validation_error':
     ' for når du vil ta ut <nowrap>{grad} %</nowrap> alderspensjon.',
   'beregning.avansert.rediger.agepicker.validation_error.maxAlder':
@@ -673,6 +700,8 @@ const translations = {
   'inntekt.endre_inntekt_vsa_pensjon_modal.title': 'Pensjonsgivende inntekt',
   'inntekt.endre_inntekt_vsa_pensjon_modal.textfield.label':
     'Hva er din forventede årsinntekt samtidig som du tar ut <nowrap>100 %</nowrap> alderspensjon?',
+  'inntekt.endre_inntekt_vsa_afp_modal.textfield.label':
+    'Hva er din forventede årsinntekt samtidig som du tar ut AFP?',
   'inntekt.endre_inntekt_vsa_pensjon_modal.textfield.description':
     'Dagens kroneverdi før skatt',
   'inntekt.endre_inntekt_vsa_pensjon_modal.agepicker.label':
