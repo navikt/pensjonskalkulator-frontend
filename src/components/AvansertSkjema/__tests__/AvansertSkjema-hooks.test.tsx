@@ -965,7 +965,7 @@ describe('AvansertSkjema-hooks', () => {
       const heltAgePickerError = render(result.current[2] as React.ReactElement)
       expect(heltAgePickerError.asFragment()).toMatchInlineSnapshot(`
         <DocumentFragment>
-          id4 
+          id4
         </DocumentFragment>
       `)
 
