@@ -490,8 +490,6 @@ describe('BeregningAvansert', () => {
                 ...preloadedState.userInput,
                 currentSimulation: {
                   beregningsvalg: null,
-                  formatertUttaksalderReadOnly:
-                    '67 år string.og 6 alder.maaned',
                   uttaksalder: { aar: 67, maaneder: 6 },
                   aarligInntektFoerUttakBeloep: null,
                   gradertUttaksperiode: {
@@ -581,8 +579,6 @@ describe('BeregningAvansert', () => {
                 ...preloadedState.userInput,
                 currentSimulation: {
                   beregningsvalg: null,
-                  formatertUttaksalderReadOnly:
-                    '67 år string.og 6 alder.maaned',
                   uttaksalder: { aar: 67, maaneder: 6 },
                   aarligInntektFoerUttakBeloep: null,
                   gradertUttaksperiode: null,
@@ -634,8 +630,6 @@ describe('BeregningAvansert', () => {
                 ...preloadedState.userInput,
                 currentSimulation: {
                   beregningsvalg: null,
-                  formatertUttaksalderReadOnly:
-                    '67 år string.og 6 alder.maaned',
                   uttaksalder: { aar: 67, maaneder: 6 },
                   aarligInntektFoerUttakBeloep: null,
                   gradertUttaksperiode: null,
@@ -694,7 +688,6 @@ describe('BeregningAvansert', () => {
               ...preloadedState.userInput,
               currentSimulation: {
                 beregningsvalg: null,
-                formatertUttaksalderReadOnly: '67 år string.og 6 alder.maaned',
                 uttaksalder: { aar: 67, maaneder: 6 },
                 aarligInntektFoerUttakBeloep: null,
                 gradertUttaksperiode: null,
@@ -740,7 +733,6 @@ describe('BeregningAvansert', () => {
               ...userInputInitialState,
               currentSimulation: {
                 ...userInputInitialState.currentSimulation,
-                formatertUttaksalderReadOnly: '67 år string.og 6 alder.maaned',
                 uttaksalder: { aar: 67, maaneder: 6 },
                 aarligInntektFoerUttakBeloep: null,
                 gradertUttaksperiode: {
@@ -819,7 +811,6 @@ describe('BeregningAvansert', () => {
               ...userInputInitialState,
               currentSimulation: {
                 ...userInputInitialState.currentSimulation,
-                formatertUttaksalderReadOnly: '67 år string.og 6 alder.maaned',
                 uttaksalder: { aar: 67, maaneder: 6 },
                 aarligInntektFoerUttakBeloep: null,
                 gradertUttaksperiode: {
