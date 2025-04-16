@@ -951,7 +951,7 @@ describe('AvansertSkjema-hooks', () => {
       )
       expect(gradertAgePickerError.asFragment()).toMatchInlineSnapshot(`
         <DocumentFragment>
-          id2  for når du vil ta ut 
+          id2 for når du vil ta ut 
           <span
             class="nowrap"
           >
