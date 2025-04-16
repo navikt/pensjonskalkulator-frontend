@@ -75,3 +75,12 @@ export const stegvisningOrderEndring = [
   paths.samtykkeOffentligAFP,
   paths.beregningAvansert,
 ] as const
+
+export const stegvisningOrderKap19 = [
+  paths.login,
+  paths.start,
+  paths.sivilstand,
+  paths.utenlandsopphold,
+  paths.afp,
+  paths.beregningAvansert,
+] as const
