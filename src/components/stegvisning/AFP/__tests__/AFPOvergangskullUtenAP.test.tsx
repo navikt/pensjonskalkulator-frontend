@@ -114,7 +114,7 @@ describe('stegvisning - AFP - født mellom 1954-1962 uten vedtak om alderspensjo
     expect(screen.queryByText('stegvisning.afp.alert_vet_ikke')).toBeVisible()
   })
 
-  it.only('validerer, viser feilmelding, fjerner feilmelding og kaller onNext når brukeren klikker på Neste', async () => {
+  it('validerer, viser feilmelding, fjerner feilmelding og kaller onNext når brukeren klikker på Neste', async () => {
     const user = userEvent.setup()
     render(
       <AFPOvergangskullUtenAP
