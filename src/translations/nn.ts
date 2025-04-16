@@ -288,7 +288,7 @@ export default {
   'beregning.title': 'MANGLER_TEKST',
   'beregning.alert.inntekt': 'MANGLER_TEKST',
   'beregning.highcharts.informasjon_klikk': 'MANGLER_TEKST',
-  'beregning.highcharts.title': 'Utrekning',
+  'beregning.highcharts.title': 'MANGLER_TEKST',
   'beregning.highcharts.ingress': 'MANGLER_TEKST',
   'beregning.highcharts.alt_tekst': 'MANGLER_TEKST',
   'beregning.highcharts.xaxis': 'Årleg inntekt og pensjon etter uttak',
