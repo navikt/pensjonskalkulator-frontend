@@ -23,7 +23,10 @@ import {
   selectNormertPensjonsalder,
 } from '@/state/userInput/selectors'
 import { getBrukerensAlderISluttenAvMaaneden } from '@/utils/alder'
-import { updateAndFormatInntektFromInputField } from '@/utils/inntekt'
+import {
+  formatInntekt,
+  updateAndFormatInntektFromInputField,
+} from '@/utils/inntekt'
 import { getFormatMessageValues } from '@/utils/translations'
 
 import {
@@ -287,7 +290,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
                   values={{
                     ...getFormatMessageValues(),
                     afpInntektMaanedFoerUttak: grunnbeloep
-                      ? Math.round(grunnbeloep / 12)
+                      ? formatInntekt(Math.round(grunnbeloep / 12))
                       : '1G/12',
                   }}
                 />
