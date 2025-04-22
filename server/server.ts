@@ -271,9 +271,9 @@ app.use(
 )
 
 app.use(
-  '/pensjon/kalkulator/api/landliste',
+  '/pensjon/kalkulator/v1',
   createProxyMiddleware({
-    target: `${PENSJONSKALKULATOR_BACKEND}/api/v1/land-liste`,
+    target: `${PENSJONSKALKULATOR_BACKEND}/api/v1`,
     changeOrigin: true,
     logger: logger,
   })
