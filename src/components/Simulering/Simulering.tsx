@@ -7,7 +7,6 @@ import { FormattedMessage } from 'react-intl'
 import { HandFingerIcon } from '@navikt/aksel-icons'
 import { BodyLong, BodyShort, Heading, HeadingProps } from '@navikt/ds-react'
 
-import { MaanedsbloepAvansertBeregning } from '../MaanedsbloepAvansertBeregning'
 import { TabellVisning } from '@/components/TabellVisning'
 import {
   useGetUtvidetSimuleringsresultatFeatureToggleQuery,
