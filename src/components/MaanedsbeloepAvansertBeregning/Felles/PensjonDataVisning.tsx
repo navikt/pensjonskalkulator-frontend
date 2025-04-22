@@ -1,5 +1,5 @@
 import React from 'react'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 import { BodyLong } from '@navikt/ds-react'
 
@@ -8,6 +8,7 @@ import { formatInntekt } from '@/utils/inntekt'
 import { Pensjonsdata } from '../hooks'
 
 import styles from './PensjonDataVisning.module.scss'
+import { formatUttaksalder } from '@/utils/alder'
 
 interface Props {
   pensjonsdata: Pensjonsdata
@@ -20,13 +21,15 @@ export const PensjonDataVisning: React.FC<Props> = ({
   summerYtelser,
   hentUttaksMaanedOgAar,
 }) => {
+  const intl = useIntl()
   const { alder, grad, afp, pensjonsavtale, alderspensjon } = pensjonsdata
   const harKunAlderspensjon = alderspensjon && !afp && !pensjonsavtale
+  const captionTitle = (intl.formatMessage({id: 'beregning.avansert.maanedsbeloep.table_title'}) + ' ' + intl.formatMessage({id: 'beregning.avansert.maanedsbeloep.box_title'}) + formatUttaksalder(intl, alder)).toLowerCase()
 
   return (
     <table className={styles.container}>
       <caption className={styles.srOnly}>
-        <FormattedMessage id="beregning.avansert.maanedsbeloep.table_title" />
+        {captionTitle}
       </caption>
       <tbody>
         {afp && (
