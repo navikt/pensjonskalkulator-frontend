@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest'
 
 import { render, screen } from '@/test-utils'
 
-import { DesktopPensjonVisning } from '../DesktopPensjonVisning'
+import { PensjonVisningDesktop } from '../PensjonVisningDesktop'
 
 describe('DesktopPensjonVisning', () => {
   const mockPensjonsdata = [
@@ -34,7 +34,7 @@ describe('DesktopPensjonVisning', () => {
 
   it('rendrer korrekt med flere pensjonsdata oppføringer', () => {
     render(
-      <DesktopPensjonVisning
+      <PensjonVisningDesktop
         pensjonsdata={mockPensjonsdata}
         summerYtelser={mockSummerYtelser}
         hentUttaksmaanedOgAar={mockHentUttaksmaanedOgAar}
@@ -60,7 +60,7 @@ describe('DesktopPensjonVisning', () => {
 
   it('returnerer null når ingen pensjonsdata oppføringer er tilgjengelige', () => {
     const { container } = render(
-      <DesktopPensjonVisning
+      <PensjonVisningDesktop
         pensjonsdata={[]}
         summerYtelser={mockSummerYtelser}
         hentUttaksmaanedOgAar={mockHentUttaksmaanedOgAar}
@@ -81,7 +81,7 @@ describe('DesktopPensjonVisning', () => {
     ]
 
     render(
-      <DesktopPensjonVisning
+      <PensjonVisningDesktop
         pensjonsdata={singlePensjonData}
         summerYtelser={mockSummerYtelser}
         hentUttaksmaanedOgAar={mockHentUttaksmaanedOgAar}
@@ -104,7 +104,7 @@ describe('DesktopPensjonVisning', () => {
     ]
 
     render(
-      <DesktopPensjonVisning
+      <PensjonVisningDesktop
         pensjonsdata={mixedPensjonData}
         summerYtelser={mockSummerYtelser}
         hentUttaksmaanedOgAar={mockHentUttaksmaanedOgAar}

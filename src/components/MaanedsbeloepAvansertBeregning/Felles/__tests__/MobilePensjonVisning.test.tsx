@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest'
 
 import { render, screen } from '@/test-utils'
 
-import { MobilePensjonVisning } from '../MobilePensjonVisning'
+import { PensjonVisningMobil } from '../PensjonVisningMobil'
 
 describe('MobilePensjonVisning', () => {
   const mockPensjonsdata = [
@@ -35,7 +35,7 @@ describe('MobilePensjonVisning', () => {
 
   it('renderer korrekt uten gradering (enkel visning)', () => {
     render(
-      <MobilePensjonVisning
+      <PensjonVisningMobil
         pensjonsdata={mockPensjonsdata}
         summerYtelser={mockSummerYtelser}
         hentUttaksmaanedOgAar={mockHentUttaksmaanedOgAar}
@@ -61,7 +61,7 @@ describe('MobilePensjonVisning', () => {
 
   it('returnerer null når ingen pensjonsdata er tilgjengelig', () => {
     const { container } = render(
-      <MobilePensjonVisning
+      <PensjonVisningMobil
         pensjonsdata={[]}
         summerYtelser={mockSummerYtelser}
         hentUttaksmaanedOgAar={mockHentUttaksmaanedOgAar}
@@ -83,7 +83,7 @@ describe('MobilePensjonVisning', () => {
     ]
 
     render(
-      <MobilePensjonVisning
+      <PensjonVisningMobil
         pensjonsdata={singlePensjonData}
         summerYtelser={mockSummerYtelser}
         hentUttaksmaanedOgAar={mockHentUttaksmaanedOgAar}

@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl'
 
 import { Box, Heading } from '@navikt/ds-react'
 
-import { DesktopPensjonVisning, MobilePensjonVisning } from './Felles'
+import { PensjonVisningDesktop, PensjonVisningMobil } from './Felles'
 import { usePensjonBeregninger } from './hooks'
 
 interface Props {
@@ -34,13 +34,13 @@ export const MaanedsbeloepAvansertBeregning: React.FC<Props> = (props) => {
         <FormattedMessage id="maanedsbeloep.title" />
       </Heading>
 
-      <DesktopPensjonVisning
+      <PensjonVisningDesktop
         pensjonsdata={pensjonsdata}
         summerYtelser={summerYtelser}
         hentUttaksmaanedOgAar={hentUttaksmaanedOgAar}
       />
 
-      <MobilePensjonVisning
+      <PensjonVisningMobil
         pensjonsdata={pensjonsdata}
         summerYtelser={summerYtelser}
         hentUttaksmaanedOgAar={hentUttaksmaanedOgAar}
