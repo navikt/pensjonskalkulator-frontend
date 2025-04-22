@@ -88,7 +88,6 @@ describe('PensjonDataVisning', () => {
         pensjonsdata={mockPensjonsdata}
         summerYtelser={mockSummerYtelser}
         hentUttaksMaanedOgAar={mockHentUttaksMaanedOgAar}
-        isMobile={true}
       />
     )
 
