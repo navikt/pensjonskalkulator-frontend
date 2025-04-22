@@ -59,7 +59,7 @@ export const getChartMock = (
     } as unknown as Point,
   ]
 
-  const chart = {
+  return {
     tooltip: {
       isHidden: false,
       update: tooltipUpdateMock,
@@ -90,5 +90,4 @@ export const getChartMock = (
       },
     ],
   }
-  return chart
 }

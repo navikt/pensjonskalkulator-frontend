@@ -31,7 +31,6 @@ export const validateInntekt = (
   }
 ) => {
   let isValid = true
-
   if (input === null || input === undefined || input === '') {
     if (isRequired) {
       isValid = false
@@ -41,8 +40,6 @@ export const validateInntekt = (
             'inntekt.endre_inntekt_modal.textfield.validation_error.required'
         )
       }
-    } else {
-      isValid = true
     }
     return isValid
   }

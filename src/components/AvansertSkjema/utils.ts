@@ -14,10 +14,6 @@ import { isLoependeVedtakEndring } from '@/utils/loependeVedtak'
 import { logger } from '@/utils/logging'
 import { ALLE_UTTAKSGRAD_AS_NUMBER } from '@/utils/uttaksgrad'
 
-// TODO PEK-1026 - utvide AVANSERT_FORM_NAMES for de 3 skjemaene:
-// AVANSERT_SKJEMA_FOR_BRUKERE_MED_GRADERT_UFOERETRYGD
-// AVANSERT_SKJEMA_FOR_ANDRE_BRUKERE
-// AVANSERT_SKJEMA_FOR_BRUKERE_MED_KAP19_AFP
 export type AvansertFormNames =
   (typeof AVANSERT_FORM_NAMES)[keyof typeof AVANSERT_FORM_NAMES]
 
@@ -235,7 +231,7 @@ export const validateAvansertBeregningSkjema = (
   // Sjekker at uttaksgrad er fylt ut med en prosent
   if (
     !uttaksgradFormData ||
-    /^(?!(0 %|100 %|[1-9][0-9]? %)$).*$/.test(uttaksgradFormData as string)
+    /^(?!(0 %|100 %|[1-9]\d? %)$).*$/.test(uttaksgradFormData as string)
   ) {
     isValid = false
     logger('skjema validering feilet', {
@@ -436,59 +432,55 @@ export const validateAvansertBeregningSkjema = (
   // Sjekker at inntekt vsa gradert uttak er fylt ut (gitt at uttaksgrad er ulik 100 % og radioknappen er på "ja")
   if (
     uttaksgradFormData !== '100 %' &&
-    inntektVsaGradertUttakRadioFormData === 'ja'
-  ) {
-    if (
-      !validateInntekt(
-        inntektVsaGradertUttakFormData as string,
-        (tekst: string) => {
-          if (tekst) {
-            logger('skjema validering feilet', {
-              skjemanavn: AVANSERT_FORM_NAMES.form,
-              data: 'Avansert -  Inntekt vsa. gradert uttak',
-              tekst,
-            })
-          }
-          updateValidationErrorMessage((prevState) => {
-            return {
-              ...prevState,
-              [AVANSERT_FORM_NAMES.inntektVsaGradertUttak]: tekst,
-            }
+    inntektVsaGradertUttakRadioFormData === 'ja' &&
+    !validateInntekt(
+      inntektVsaGradertUttakFormData as string,
+      (tekst: string) => {
+        if (tekst) {
+          logger('skjema validering feilet', {
+            skjemanavn: AVANSERT_FORM_NAMES.form,
+            data: 'Avansert -  Inntekt vsa. gradert uttak',
+            tekst,
           })
-        },
-        true,
-        {
-          required:
-            'beregning.avansert.rediger.inntekt_vsa_gradert_uttak.beloep.validation_error',
         }
-      )
-    ) {
-      isValid = false
-    }
+        updateValidationErrorMessage((prevState) => {
+          return {
+            ...prevState,
+            [AVANSERT_FORM_NAMES.inntektVsaGradertUttak]: tekst,
+          }
+        })
+      },
+      true,
+      {
+        required:
+          'beregning.avansert.rediger.inntekt_vsa_gradert_uttak.beloep.validation_error',
+      }
+    )
+  ) {
+    isValid = false
   }
 
   // Hvis alle feltene er gyldige,
   // Ved endring, sjekker at uttaksalder for gradert pensjon ikke er tidligere enn 12 md. siden sist endring
-  if (isValid) {
-    if (
-      isLoependeVedtakEndring(loependeVedtak) &&
-      uttaksgradFormData !== '0 %' &&
-      uttaksgradFormData !== '100 %' &&
-      loependeVedtak.alderspensjon &&
-      !validateEndringGradertUttak(
-        loependeVedtak.alderspensjon.grad,
-        loependeVedtak.alderspensjon.fom,
-        uttaksgradFormData as string,
-        {
-          aar: parseInt(gradertUttakAarFormData as string, 10),
-          maaneder: parseInt(gradertUttakMaanederFormData as string, 10),
-        },
-        foedselsdato,
-        updateValidationErrorMessage
-      )
-    ) {
-      isValid = false
-    }
+  if (
+    isValid &&
+    isLoependeVedtakEndring(loependeVedtak) &&
+    uttaksgradFormData !== '0 %' &&
+    uttaksgradFormData !== '100 %' &&
+    loependeVedtak.alderspensjon &&
+    !validateEndringGradertUttak(
+      loependeVedtak.alderspensjon.grad,
+      loependeVedtak.alderspensjon.fom,
+      uttaksgradFormData as string,
+      {
+        aar: parseInt(gradertUttakAarFormData as string, 10),
+        maaneder: parseInt(gradertUttakMaanederFormData as string, 10),
+      },
+      foedselsdato,
+      updateValidationErrorMessage
+    )
+  ) {
+    isValid = false
   }
 
   return isValid

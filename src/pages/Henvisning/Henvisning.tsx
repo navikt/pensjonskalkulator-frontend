@@ -24,15 +24,13 @@ export const Henvisning = () => {
   const [ingress, setIngress] = useState<string>('')
 
   useEffect(() => {
-    switch (id) {
-      case henvisningUrlParams.apotekerne:
-        document.title = intl.formatMessage({
-          id: 'application.title.henvisning.apotekerne',
-        })
-        setIngress('henvisning.apotekerne.body')
-        break
-      default:
-        setIngress('')
+    if (id === henvisningUrlParams.apotekerne) {
+      document.title = intl.formatMessage({
+        id: 'application.title.henvisning.apotekerne',
+      })
+      setIngress('henvisning.apotekerne.body')
+    } else {
+      setIngress('')
     }
   }, [id])
 

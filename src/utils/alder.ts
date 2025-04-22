@@ -45,15 +45,15 @@ export const formatUttaksalder = (
     return `${aar} ${alderAar}`
   }
 
+  const maanedText = maaneder > 1 ? alderMaaneder : alderMaaned
+
   return options.compact
     ? `${aar} ${alderAar} ${alderOg} ${maaneder} ${alderMd}`
-    : `${aar} ${alderAar} ${alderOg} ${maaneder} ${
-        maaneder > 1 ? alderMaaneder : alderMaaned
-      }`
+    : `${aar} ${alderAar} ${alderOg} ${maaneder} ${maanedText}`
 }
 
 export const unformatUttaksalder = (alderChip: string): Alder => {
-  const uttaksalder = alderChip.match(/[-+]?[0-9]*\.?[0-9]+/g)
+  const uttaksalder = alderChip.match(/[-+]?\d*\.?\d+/g)
   const aar = uttaksalder?.[0] ? parseInt(uttaksalder?.[0], 10) : 0
   const maaneder = uttaksalder?.[1] ? parseInt(uttaksalder?.[1], 10) : 0
   return { aar, maaneder }
@@ -226,8 +226,17 @@ export const transformMaanedToDate = (
     1
   )
 
+  let selectedLocale
+  if (locale === 'en') {
+    selectedLocale = enGB
+  } else if (locale === 'nn') {
+    selectedLocale = nn
+  } else {
+    selectedLocale = nb
+  }
+
   return format(startOfMonth(calculatedDate), 'LLL', {
-    locale: locale === 'en' ? enGB : locale === 'nn' ? nn : nb,
+    locale: selectedLocale,
   })
 }
 
@@ -258,7 +267,7 @@ export const validateAlderFromForm = (
   // Sørger for at maaneder ikke er null eller undefined og består at tall mellom 0 og 11
   if (
     alder.maaneder === undefined ||
-    !/^([0-9]|10|11)$/.test(alder.maaneder as string)
+    !/^(\d|10|11)$/.test(alder.maaneder as string)
   ) {
     isValid = false
     updateValidationErrorMessage('agepicker.validation_error.maaneder')
