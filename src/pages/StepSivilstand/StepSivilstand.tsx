@@ -25,7 +25,7 @@ export function StepSivilstand() {
   const epsHarInntektOver2G = useAppSelector(selectEpsHarInntektOver2G)
   const epsHarPensjon = useAppSelector(selectEpsHarPensjon)
 
-  const { getPersonQuery, getGrunnbelopQuery } =
+  const { getPersonQuery, getGrunnbeloepQuery } =
     useLoaderData<StepSivilstandAccessGuardLoader>()
 
   const [{ onStegvisningNext, onStegvisningPrevious, onStegvisningCancel }] =
@@ -61,12 +61,12 @@ export function StepSivilstand() {
         </div>
       }
     >
-      <Await resolve={Promise.all([getPersonQuery, getGrunnbelopQuery])}>
-        {([personData, grunnbelopData]) => {
+      <Await resolve={Promise.all([getPersonQuery, getGrunnbeloepQuery])}>
+        {([personData, grunnbeloepData]) => {
           return (
             <Sivilstand
               sivilstandFolkeregister={personData.sivilstand}
-              grunnbelop={grunnbelopData}
+              grunnbeloep={grunnbeloepData}
               sivilstand={sivilstand!}
               epsHarInntektOver2G={epsHarInntektOver2G}
               epsHarPensjon={epsHarPensjon}

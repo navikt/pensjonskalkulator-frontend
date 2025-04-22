@@ -16,6 +16,7 @@ import {
   selectAfpInntektMaanedFoerUttak,
   selectCurrentSimulation,
   selectFoedselsdato,
+  selectGrunnbeloep,
   selectIsEndring,
   selectLoependeVedtak,
   selectNedreAldersgrense,
@@ -45,6 +46,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
 
   const foedselsdato = useAppSelector(selectFoedselsdato)
   const normertPensjonsalder = useAppSelector(selectNormertPensjonsalder)
+  const grunnbeloep = useAppSelector(selectGrunnbeloep)
   const isEndring = useAppSelector(selectIsEndring)
   const inntektVsaGradertUttakInputRef = React.useRef<HTMLInputElement>(null)
   const loependeVedtak = useAppSelector(selectLoependeVedtak)
@@ -284,7 +286,9 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
                   id="beregning.avansert.rediger.radio.afp_inntekt_maaned_foer_uttak"
                   values={{
                     ...getFormatMessageValues(),
-                    afpInntektMaanedFoerUttak: '1G/12',
+                    afpInntektMaanedFoerUttak: grunnbeloep
+                      ? Math.round(grunnbeloep / 12)
+                      : '1G/12',
                   }}
                 />
               }

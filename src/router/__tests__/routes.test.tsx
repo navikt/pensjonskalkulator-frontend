@@ -3,7 +3,7 @@ import { describe, vi } from 'vitest'
 
 import {
   fulfilledGetEkskludertStatus,
-  fulfilledGetGrunnbelop,
+  fulfilledGetGrunnbeloep,
   fulfilledGetInntekt,
   fulfilledGetLoependeVedtak0Ufoeregrad,
   fulfilledGetLoependeVedtak75Ufoeregrad,
@@ -299,7 +299,7 @@ describe('routes', () => {
               // @ts-ignore
               queries: {
                 ...fulfilledGetPerson,
-                ...fulfilledGetGrunnbelop,
+                ...fulfilledGetGrunnbeloep,
               },
             },
             userInput: { ...userInputInitialState },

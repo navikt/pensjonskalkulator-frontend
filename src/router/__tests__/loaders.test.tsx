@@ -382,7 +382,7 @@ describe('Loaders', () => {
 
       const returnedFromLoader = await stepSivilstandAccessGuard()
       const g = await (returnedFromLoader as StepSivilstandAccessGuardLoader)
-        .getGrunnbelopQuery
+        .getGrunnbeloepQuery
       expect(g).toBe(1234)
     })
 
@@ -404,7 +404,7 @@ describe('Loaders', () => {
 
       const returnedFromLoader = await stepSivilstandAccessGuard()
       const g = await (returnedFromLoader as StepSivilstandAccessGuardLoader)
-        .getGrunnbelopQuery
+        .getGrunnbeloepQuery
       expect(g).toBeUndefined()
     })
   })

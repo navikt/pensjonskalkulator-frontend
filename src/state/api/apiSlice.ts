@@ -59,7 +59,7 @@ export const apiSlice = createApi({
         }
       },
     }),
-    getGrunnbelop: builder.query<number, void>({
+    getGrunnbeloep: builder.query<number, void>({
       query: () => 'https://g.nav.no/api/v1/grunnbel%C3%B8p',
       transformResponse: (response: { grunnbeløp: number }) => {
         if (!response.grunnbeløp) {
@@ -277,7 +277,7 @@ export const {
   useGetAnsattIdQuery,
   useGetInntektQuery,
   useGetPersonQuery,
-  useGetGrunnbelopQuery,
+  useGetGrunnbeloepQuery,
   useGetEkskludertStatusQuery,
   useGetOmstillingsstoenadOgGjenlevendeQuery,
   useGetLoependeVedtakQuery,

@@ -84,6 +84,8 @@ export const stepStartAccessGuard = async (): Promise<
     apiSlice.endpoints.getLoependeVedtak.initiate()
   )
 
+  // Henter grunnbeløp til senere
+  store.dispatch(apiSlice.endpoints.getGrunnbeloep.initiate())
   // Henter inntekt til senere
   store.dispatch(apiSlice.endpoints.getInntekt.initiate())
   // Henter omstillingsstønad-og-gjenlevende til senere
@@ -169,7 +171,7 @@ export const stepStartAccessGuard = async (): Promise<
 
 export type StepSivilstandAccessGuardLoader = {
   getPersonQuery: Promise<Person>
-  getGrunnbelopQuery: Promise<number | undefined>
+  getGrunnbeloepQuery: Promise<number | undefined>
 }
 
 export const stepSivilstandAccessGuard = async (): Promise<
@@ -182,15 +184,15 @@ export const stepSivilstandAccessGuard = async (): Promise<
     .dispatch(apiSlice.endpoints.getPerson.initiate())
     .unwrap()
 
-  const getGrunnbelopQuery = store
-    .dispatch(apiSlice.endpoints.getGrunnbelop.initiate())
+  const getGrunnbeloepQuery = store
+    .dispatch(apiSlice.endpoints.getGrunnbeloep.initiate())
     .unwrap()
-    .then((grunnbelopRes) => grunnbelopRes)
+    .then((grunnbeloepRes) => grunnbeloepRes)
     .catch(() => undefined)
 
   return {
     getPersonQuery,
-    getGrunnbelopQuery,
+    getGrunnbeloepQuery,
   }
 }
 
