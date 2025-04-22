@@ -32,9 +32,46 @@ describe('AFP vs uføretrygd', () => {
     })
 
     describe('Når jeg svarer "Ja" på AFP offentlig', () => {
-      it('forventer jeg informasjon om at AFP og uføretrygd ikke kan kombineres.', () => {})
-      it('forventer jeg å må samtykke til å beregne AFP.', () => {})
-      it('forventer jeg å kunne gå videre til beregningssiden', () => {})
+      it('forventer jeg informasjon om at AFP og uføretrygd ikke kan kombineres.', () => {
+        cy.contains('button', 'Kom i gang').click()
+        cy.contains('button', 'Neste').click() // -> Sivilstand
+        cy.get('[type="radio"]').last().check()
+        cy.contains('button', 'Neste').click() // -> Opphold utenfor Norge
+        cy.get('[type="radio"]').first().check()
+        cy.contains('button', 'Neste').click() // -> AFP
+        cy.contains('AFP og uføretrygd kan ikke kombineres.').should('exist')
+      })
+
+      it('forventer jeg å må samtykke til å beregne AFP.', () => {
+        cy.contains('button', 'Kom i gang').click()
+        cy.contains('button', 'Neste').click() // -> Sivilstand
+        cy.get('[type="radio"]').last().check()
+        cy.contains('button', 'Neste').click() // -> Opphold utenfor Norge
+        cy.get('[type="radio"]').first().check()
+        cy.contains('button', 'Neste').click() // -> AFP
+        cy.contains('button', 'Neste').click() // -> AFP Info
+        cy.contains(
+          'Samtykke til at Nav beregner AFP (avtalefestet pensjon)'
+        ).should('exist')
+      })
+
+      it('forventer jeg å kunne gå videre til beregningssiden', () => {
+        cy.contains('button', 'Kom i gang').click()
+        cy.contains('button', 'Neste').click() // -> Sivilstand
+        cy.get('[type="radio"]').last().check()
+        cy.contains('button', 'Neste').click() // -> Opphold utenfor Norge
+        cy.get('[type="radio"]').first().check()
+        cy.contains('button', 'Neste').click() // -> AFP
+        cy.contains('button', 'Neste').click() // -> AFP Info
+        cy.get('[type="radio"]').first().check()
+        cy.contains('button', 'Neste').click() // -> Samtykke
+        cy.get('[type="radio"]').first().check()
+        cy.contains('button', 'Neste').click() // -> Pensjonsavtaler
+        cy.get('[data-testid="toggle-avansert"]').within(() => {
+          cy.contains('Avansert').click()
+        })
+        cy.contains('Hva vil du beregne?').should('exist') // Med/uten AFP
+      })
 
       describe('Når jeg er kommet til beregningssiden', () => {
         describe('Som bruker som har samtykket til å beregne AFP offentlig', () => {
@@ -64,7 +101,15 @@ describe('AFP vs uføretrygd', () => {
     })
 
     describe('Når jeg svarer "Ja" på AFP privat', () => {
-      it('forventer jeg informasjon om at AFP og uføretrygd ikke kan kombineres.', () => {})
+      it('forventer jeg informasjon om at AFP og uføretrygd ikke kan kombineres.', () => {
+        cy.contains('button', 'Kom i gang').click()
+        cy.contains('button', 'Neste').click() // -> Sivilstand
+        cy.get('[type="radio"]').last().check()
+        cy.contains('button', 'Neste').click() // -> Opphold utenfor Norge
+        cy.get('[type="radio"]').eq(1).check()
+        cy.contains('button', 'Neste').click() // -> AFP
+        cy.contains('AFP og uføretrygd kan ikke kombineres.').should('exist')
+      })
       it('forventer jeg å kunne gå videre til beregningssiden.', () => {})
 
       describe('Når jeg er kommet til beregningssiden', () => {
