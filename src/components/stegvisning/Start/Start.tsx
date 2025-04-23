@@ -14,7 +14,7 @@ import { isLoependeVedtakEndring } from '@/utils/loependeVedtak'
 import { logOpenLink, wrapLogger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
 
-import FridaPortrett from '../../../assets/frida.svg'
+import { FridaPortrett } from './FridaPortrett'
 
 import styles from './Start.module.scss'
 
@@ -37,7 +37,9 @@ export function Start({ navn, loependeVedtak, onCancel, onNext }: Props) {
 
       <Card hasLargePadding hasMargin>
         <div className={styles.wrapper}>
-          <img className={styles.image} src={FridaPortrett} aria-hidden />
+          <div className={styles.image} aria-hidden>
+            <FridaPortrett />
+          </div>
           <div className={styles.wrapperText}>
             <Heading level="2" size="medium" spacing>
               {`${intl.formatMessage({
