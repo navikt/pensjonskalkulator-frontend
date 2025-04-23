@@ -3,7 +3,14 @@ import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useNavigate } from 'react-router'
 
-import { Alert, Link, Radio, RadioGroup, TextField } from '@navikt/ds-react'
+import {
+  Alert,
+  Heading,
+  Link,
+  Radio,
+  RadioGroup,
+  TextField,
+} from '@navikt/ds-react'
 
 import { VilkaarsproevingAlert } from '@/components/VilkaarsproevingAlert'
 import { AgePicker } from '@/components/common/AgePicker'
@@ -223,6 +230,16 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
       <div
         className={clsx(styles.container, styles.container__hasMobilePadding)}
       >
+        <div className={styles.container_header}>
+          <Heading level="2" size="medium">
+            <FormattedMessage
+              id="beregning.avansert.rediger.afp_etterfulgt_av_ap.title"
+              values={{
+                ...getFormatMessageValues(),
+              }}
+            />
+          </Heading>
+        </div>
         <div className={styles.form}>
           {isEndring && <AvansertSkjemaIntroEndring />}
 
@@ -264,7 +281,6 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
           </div>
 
           <div>
-            {/* HER: Når vil du ta ut AFP */}
             <AgePicker
               form={AVANSERT_FORM_NAMES.form}
               name={AVANSERT_FORM_NAMES.uttaksalderHeltUttak}
@@ -273,10 +289,10 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
               onChange={handleHeltUttaksalderChange}
               error={heltUttakAgePickerError}
               minAlder={agePickerMinAlder}
-              maxAlder={{ aar: 67, maaneder: 0 }}
+              maxAlder={{ aar: 66, maaneder: 11 }}
             />
           </div>
-          {/* HER: Forventer du å ha inntekt på minst 21 924 kr før skatt den siste måneden før du tar ut AFP? */}
+
           <div>
             <RadioGroup
               legend={
@@ -307,11 +323,18 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
                 validationErrors[
                   AVANSERT_FORM_NAMES.afpInntektMaanedFoerUttakRadio
                 ]
-                  ? intl.formatMessage({
-                      id: validationErrors[
-                        AVANSERT_FORM_NAMES.afpInntektMaanedFoerUttakRadio
-                      ],
-                    })
+                  ? intl.formatMessage(
+                      {
+                        id: validationErrors[
+                          AVANSERT_FORM_NAMES.afpInntektMaanedFoerUttakRadio
+                        ],
+                      },
+                      {
+                        grunnbeloep: grunnbeloep
+                          ? formatInntekt(Math.ceil(grunnbeloep / 12))
+                          : '1G/12',
+                      }
+                    )
                   : ''
               }
               role="radiogroup"
@@ -361,7 +384,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
               )}
             </RadioGroup>
           </div>
-          {/* HER: Forventer du å ha inntekt samtidig som du tar ut AFP? */}
+
           <div>
             <RadioGroup
               legend={
@@ -417,7 +440,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
               </Radio>
             </RadioGroup>
           </div>
-          {/* HER: Hva er din forventede årsinntekt samtidig som du tar ut AFP? */}
+
           {localHarInntektVsaGradertUttakRadio && (
             <TextField
               ref={inntektVsaGradertUttakInputRef}

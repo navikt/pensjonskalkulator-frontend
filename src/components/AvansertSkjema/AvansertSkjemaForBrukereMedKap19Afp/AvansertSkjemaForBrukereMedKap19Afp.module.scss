@@ -5,12 +5,15 @@
   background-color: var(--a-white);
   display: flex;
   flex-direction: column;
-  padding-top: var(--a-spacing-6) !important;
-  padding-bottom: var(--a-spacing-6) !important;
+  padding-bottom: var(--a-spacing-4) !important;
 
   &__hasMobilePadding {
     composes: frame__hasMobilePadding from '../../../scss/modules/frame.module.scss';
   }
+}
+
+.container_header {
+  margin-bottom: var(--a-spacing-4);
 }
 
 .form {

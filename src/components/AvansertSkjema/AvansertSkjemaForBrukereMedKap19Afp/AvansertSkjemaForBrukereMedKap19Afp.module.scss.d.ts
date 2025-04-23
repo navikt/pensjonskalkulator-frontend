@@ -1,6 +1,7 @@
 declare const classNames: {
   readonly container: "container";
   readonly container__hasMobilePadding: "container__hasMobilePadding";
+  readonly container_header: "container_header";
   readonly form: "form";
   readonly nowrap: "nowrap";
   readonly textfield: "textfield";

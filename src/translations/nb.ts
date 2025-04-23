@@ -430,7 +430,7 @@ const translations = {
   'beregning.avansert.rediger.radio.inntekt_vsa_gradert_uttak.ufoeretrygd.description':
     'Alderspensjonen påvirker ikke inntektsgrensen for uføretrygden din.',
   'beregning.avansert.rediger.radio.afp_inntekt_maaned_foer_uttak.description.validation_error':
-    'Du må svare på om du forventer å ha inntekt på minst {1G/12} kr før skatt den siste måneden før du tar ut AFP.',
+    'Du må svare på om du forventer å ha inntekt på minst {grunnbeloep} kr før skatt den siste måneden før du tar ut AFP.',
   'beregning.avansert.rediger.radio.inntekt_vsa_afp.description.validation_error':
     'Du må svare på om du forventer å ha inntekt samtidig som du tar ut AFP.',
   'beregning.avansert.rediger.inntekt_vsa_afp.description.validation_error':
@@ -464,6 +464,8 @@ const translations = {
     'Alderspensjon og uføretrygd, uten AFP.',
   'beregning.avansert.rediger.radio.beregningsvalg.med_afp.label':
     'Alderspensjon og AFP, uten uføretrygd fra <nowrap>{nedreAldersgrense}</nowrap>',
+  'beregning.avansert.rediger.afp_etterfulgt_av_ap.title':
+    'Beregn AFP (avtalefestet pensjon)',
   'beregning.avansert.rediger.beregningsvalg.med_afp.title':
     'Alderspensjon og AFP fra <nowrap>{nedreAldersgrense}</nowrap>',
   'beregning.avansert.rediger.beregningsvalg.med_afp.description':
