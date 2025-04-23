@@ -310,6 +310,14 @@ export default {
   'beregning.avansert.link.endre_avanserte_valg': 'MANGLER_TEKST',
   'beregning.avansert.endring_banner.title': 'MANGLER_TEKST',
   'beregning.avansert.endring_banner.kr_md': 'MANGLER_TEKST',
+  'beregning.avansert.maanedsbeloep.table_title': 'MANGLER_TEKST',
+  'beregning.avansert.maanedsbeloep.box_title': 'MANGLER_TEKST',
+  'beregning.avansert.maanedsbeloep.afp': 'MANGLER_TEKST',
+  'beregning.avansert.maanedsbeloep.pensjonsavtaler':
+  'MANGLER_TEKST',
+  'beregning.avansert.maanedsbeloep.alderspensjon':
+  'MANGLER_TEKST',
+  'beregning.avansert.maanedsbeloep.sum': 'MANGLER_TEKST',
   'beregning.avansert.resultatkort.tittel': 'MANGLER_TEKST',
   'beregning.avansert.resultatkort.description': 'MANGLER_TEKST',
   'beregning.avansert.resultatkort.button': 'MANGLER_TEKST',
@@ -384,6 +392,7 @@ export default {
   'beregning.vilkaarsproeving.alternativer.medAFP.ikkeNokOpptjening':
     'MANGLER_TEKST',
   'grunnlag.title': 'Grunnlaget for utrekninga',
+  'maanedsbeloep.title': 'MANGLER_TEKST',
   'grunnlag.uttaksgrad.title': 'Uttaksgrad',
   'grunnlag.uttaksgrad.avansert_link': 'MANGLER_TEKST',
   'grunnlag.uttaksgrad.ingress':
