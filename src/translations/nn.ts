@@ -313,10 +313,8 @@ export default {
   'beregning.avansert.maanedsbeloep.table_title': 'MANGLER_TEKST',
   'beregning.avansert.maanedsbeloep.box_title': 'MANGLER_TEKST',
   'beregning.avansert.maanedsbeloep.afp': 'MANGLER_TEKST',
-  'beregning.avansert.maanedsbeloep.pensjonsavtaler':
-  'MANGLER_TEKST',
-  'beregning.avansert.maanedsbeloep.alderspensjon':
-  'MANGLER_TEKST',
+  'beregning.avansert.maanedsbeloep.pensjonsavtaler': 'MANGLER_TEKST',
+  'beregning.avansert.maanedsbeloep.alderspensjon': 'MANGLER_TEKST',
   'beregning.avansert.maanedsbeloep.sum': 'MANGLER_TEKST',
   'beregning.avansert.resultatkort.tittel': 'MANGLER_TEKST',
   'beregning.avansert.resultatkort.description': 'MANGLER_TEKST',

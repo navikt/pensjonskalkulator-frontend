@@ -505,6 +505,8 @@ describe('BeregningAvansert', () => {
         await waitFor(() => {
           expect(initiateMock).toHaveBeenCalledTimes(1)
         })
+        expect(screen.getByText('beregning.intro.title')).toBeVisible()
+        expect(screen.getByText('beregning.intro.description_1')).toBeVisible()
         expect(screen.getByText('pensjonsavtaler.title')).toBeVisible()
         expect(
           container.getElementsByClassName('highcharts-loading')
@@ -740,6 +742,10 @@ describe('BeregningAvansert', () => {
       await waitFor(() => {
         expect(initiateMock).toHaveBeenCalledTimes(1)
       })
+      expect(screen.getByText('beregning.intro.title.endring')).toBeVisible()
+      expect(
+        screen.getByText('beregning.intro.description_1.endring')
+      ).toBeVisible()
       expect(
         screen.queryByText('pensjonsavtaler.title')
       ).not.toBeInTheDocument()

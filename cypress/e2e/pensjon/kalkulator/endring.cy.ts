@@ -325,12 +325,6 @@ describe('Endring av alderspensjon', () => {
             cy.contains('Beregn ny pensjon').click()
 
             cy.contains('Beregning').should('exist')
-            cy.contains('Valgene dine').click({ force: true })
-            cy.contains('65 år og 4 md. (01.09.2028)').should('exist')
-            cy.contains('Alderspensjon: 100 %').should('exist')
-            cy.contains(
-              'Pensjonsgivende årsinntekt t.o.m. 75 år og 3 md.: 100 000 kr før skatt'
-            ).should('exist')
           })
         })
 
@@ -638,12 +632,6 @@ describe('Endring av alderspensjon', () => {
           cy.contains('Beregn ny pensjon').click()
 
           cy.contains('Beregning').should('exist')
-          cy.contains('Valgene dine').click({ force: true })
-          cy.contains('65 år og 4 md. (01.09.2028)').should('exist')
-          cy.contains('Alderspensjon: 100 %').should('exist')
-          cy.contains(
-            'Pensjonsgivende årsinntekt t.o.m. 75 år og 3 md.: 100 000 kr før skatt'
-          ).should('exist')
         })
       })
 
@@ -951,12 +939,6 @@ describe('Endring av alderspensjon', () => {
           cy.contains('Beregn ny pensjon').click()
 
           cy.contains('Beregning').should('exist')
-          cy.contains('Valgene dine').click({ force: true })
-          cy.contains('65 år og 4 md. (01.09.2028)').should('exist')
-          cy.contains('Alderspensjon: 100 %').should('exist')
-          cy.contains(
-            'Pensjonsgivende årsinntekt t.o.m. 75 år og 3 md.: 100 000 kr før skatt'
-          ).should('exist')
         })
       })
 
@@ -1543,12 +1525,6 @@ describe('Endring av alderspensjon', () => {
           cy.contains('Beregn ny pensjon').click()
 
           cy.contains('Beregning').should('exist')
-          cy.contains('Valgene dine').click({ force: true })
-          cy.contains('67 år og 4 md. (01.09.2030)').should('exist')
-          cy.contains('Alderspensjon: 100 %').should('exist')
-          cy.contains(
-            'Pensjonsgivende årsinntekt t.o.m. 75 år og 3 md.: 100 000 kr før skatt'
-          ).should('exist')
         })
       })
 

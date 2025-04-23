@@ -355,13 +355,11 @@ export default {
   'beregning.avansert.endring_banner.title':
     'retirement pension before tax when you are ',
   'beregning.avansert.endring_banner.kr_md': 'kr/mo.',
-    'beregning.avansert.maanedsbeloep.table_title': 'MANGLER_TEKST',
+  'beregning.avansert.maanedsbeloep.table_title': 'MANGLER_TEKST',
   'beregning.avansert.maanedsbeloep.box_title': 'MANGLER_TEKST',
   'beregning.avansert.maanedsbeloep.afp': 'MANGLER_TEKST',
-  'beregning.avansert.maanedsbeloep.pensjonsavtaler':
-    'MANGLER_TEKST',
-  'beregning.avansert.maanedsbeloep.alderspensjon':
-    'MANGLER_TEKST',
+  'beregning.avansert.maanedsbeloep.pensjonsavtaler': 'MANGLER_TEKST',
+  'beregning.avansert.maanedsbeloep.alderspensjon': 'MANGLER_TEKST',
   'beregning.avansert.maanedsbeloep.sum': 'MANGLER_TEKST',
   'beregning.avansert.resultatkort.tittel': 'Your Choices',
   'beregning.avansert.resultatkort.description':

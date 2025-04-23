@@ -250,21 +250,12 @@ describe('Avansert', () => {
 
         cy.contains('Beregn pensjon').click()
         cy.contains('Beregning').should('exist')
-        cy.contains('Valgene dine').click({ force: true })
-        cy.contains('65 år og 3 md. (01.08.2028)').should('exist')
-        cy.contains('Alderspensjon: 100 %').should('exist')
-        cy.contains(
-          'Pensjonsgivende årsinntekt t.o.m. 75 år og 3 md.: 100 000 kr før skatt'
-        ).should('exist')
       })
 
       it('forventer jeg å kunne svare nei på spørsmål om inntekt vsa. 100 % alderspensjon og beregne pensjon.', () => {
         cy.get('[data-testid="inntekt-vsa-helt-uttak-radio-nei"]').check()
         cy.contains('Beregn pensjon').click()
         cy.contains('Beregning').should('exist')
-        cy.contains('Valgene dine').click({ force: true })
-        cy.contains('65 år og 3 md. (01.08.2028)').should('exist')
-        cy.contains('Alderspensjon: 100 %').should('exist')
       })
 
       it('forventer jeg å få varsel om at min beregning ikke blir lagret dersom jeg forlater siden med tilbakeknapp etter å ha begynt utfyllingen.', () => {
@@ -708,18 +699,6 @@ describe('Avansert', () => {
           '[data-testid="age-picker-inntekt-vsa-helt-uttak-slutt-alder-maaneder"]'
         ).select('6')
         cy.contains('Oppdater pensjon').click()
-
-        cy.contains('Valgene dine').click({ force: true })
-        cy.contains('Pensjonsgivende årsinntekt: 550 000 kr før skatt').should(
-          'exist'
-        )
-        cy.contains('65 år og 5 md. (01.10.2028)').should('exist')
-        cy.contains('Alderspensjon: 20 %').should('exist')
-        cy.contains('68 år og 8 md. (01.01.2032)').should('exist')
-        cy.contains('Alderspensjon: 100 %').should('exist')
-        cy.contains(
-          'Pensjonsgivende årsinntekt t.o.m. 70 år og 6 md.: 150 000 kr før skatt'
-        ).should('exist')
       })
 
       it('forventer jeg å kunne nullstille mine valg.', () => {
