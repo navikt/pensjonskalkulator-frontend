@@ -27,9 +27,14 @@ import {
 } from '../loaders'
 
 function expectRedirectResponse(
-  returnedFromLoader: Response | object,
+  returnedFromLoader: Response | object | undefined,
   expectedLocation: string
 ) {
+  expect(returnedFromLoader).toBeDefined()
+  if (!returnedFromLoader) {
+    throw new Error('Response is falsy')
+  }
+
   expect(returnedFromLoader).toHaveProperty('status')
   if (!('status' in returnedFromLoader)) {
     throw new Error('Response does not have a status property')
@@ -52,8 +57,7 @@ describe('Loaders', () => {
       store.getState = vi.fn().mockImplementation(() => mockedState)
 
       const returnedFromLoader = landingPageAccessGuard()
-      expect(returnedFromLoader?.status).toBe(302)
-      expect(returnedFromLoader?.headers.get('location')).toBe('/start')
+      expectRedirectResponse(returnedFromLoader, paths.start)
     })
   })
 
@@ -65,18 +69,17 @@ describe('Loaders', () => {
       }
       store.getState = vi.fn().mockImplementation(() => mockedState)
       const returnedFromLoader = directAccessGuard()
-      expect(returnedFromLoader?.status).toBe(302)
-      expect(returnedFromLoader?.headers.get('location')).toBe('/start')
+      expectRedirectResponse(returnedFromLoader, paths.start)
     })
 
-    it('returnerer null når minst ett api kall er registrert', async () => {
+    it('returnerer ingenting når minst ett api kall er registrert', async () => {
       const mockedState = {
         api: { queries: { ...fulfilledGetPerson } },
         userInput: { ...userInputInitialState, samtykke: null },
       }
       store.getState = vi.fn().mockImplementation(() => mockedState)
       const returnedFromLoader = directAccessGuard()
-      expect(returnedFromLoader).toBeNull()
+      expect(returnedFromLoader).toBeUndefined()
     })
   })
 
@@ -664,9 +667,7 @@ describe('Loaders', () => {
       }
       store.getState = vi.fn().mockImplementation(() => mockedState)
 
-      const returnedFromLoader = await stepUfoeretrygdAFPAccessGuard()
-      expect(returnedFromLoader?.status).toBe(302)
-      expect(returnedFromLoader?.headers.get('location')).toBe('/start')
+      expectRedirectResponse(await stepUfoeretrygdAFPAccessGuard(), paths.start)
     })
 
     it('Når brukeren ikke har uføretrygd, er hen redirigert', async () => {
@@ -676,10 +677,9 @@ describe('Loaders', () => {
       }
       store.getState = vi.fn().mockImplementation(() => mockedState)
 
-      const returnedFromLoader = await stepUfoeretrygdAFPAccessGuard()
-      expect(returnedFromLoader?.status).toBe(302)
-      expect(returnedFromLoader?.headers.get('location')).toBe(
-        '/samtykke-offentlig-afp'
+      expectRedirectResponse(
+        await stepUfoeretrygdAFPAccessGuard(),
+        paths.samtykkeOffentligAFP
       )
     })
 
@@ -698,7 +698,7 @@ describe('Loaders', () => {
         store.getState = vi.fn().mockImplementation(() => mockedState)
 
         const returnedFromLoader = await stepUfoeretrygdAFPAccessGuard()
-        expect(returnedFromLoader).toBeNull()
+        expect(returnedFromLoader).toBeUndefined()
       })
 
       it('Når hen har svart nei til spørsmål om afp, er hen redirigert', async () => {
@@ -716,9 +716,9 @@ describe('Loaders', () => {
           return mockedState
         })
 
-        const returnedFromLoader = await stepUfoeretrygdAFPAccessGuard()
-        expect(returnedFromLoader?.headers.get('location')).toBe(
-          '/samtykke-offentlig-afp'
+        expectRedirectResponse(
+          await stepUfoeretrygdAFPAccessGuard(),
+          paths.samtykkeOffentligAFP
         )
       })
 
@@ -735,9 +735,9 @@ describe('Loaders', () => {
         }
         store.getState = vi.fn().mockImplementation(() => mockedState)
 
-        const returnedFromLoader = await stepUfoeretrygdAFPAccessGuard()
-        expect(returnedFromLoader?.headers.get('location')).toBe(
-          '/samtykke-offentlig-afp'
+        expectRedirectResponse(
+          await stepUfoeretrygdAFPAccessGuard(),
+          paths.samtykkeOffentligAFP
         )
       })
     })
@@ -751,9 +751,10 @@ describe('Loaders', () => {
       }
       store.getState = vi.fn().mockImplementation(() => mockedState)
 
-      const returnedFromLoader = await stepSamtykkeOffentligAFPAccessGuard()
-      expect(returnedFromLoader?.status).toBe(302)
-      expect(returnedFromLoader?.headers.get('location')).toBe('/start')
+      expectRedirectResponse(
+        await stepSamtykkeOffentligAFPAccessGuard(),
+        paths.start
+      )
     })
 
     it('Når brukeren ikke har uføretrygd og har valgt AFP offentlig, er hen ikke redirigert', async () => {
@@ -767,7 +768,7 @@ describe('Loaders', () => {
       store.getState = vi.fn().mockImplementation(() => mockedState)
 
       const returnedFromLoader = await stepSamtykkeOffentligAFPAccessGuard()
-      expect(returnedFromLoader).toBeNull()
+      expect(returnedFromLoader).toBeUndefined()
     })
 
     it('Når brukeren har uføretrygd og har valgt ja_offentlig til spørsmål om afp, er hen redirigert', async () => {
@@ -786,9 +787,10 @@ describe('Loaders', () => {
       }
       store.getState = vi.fn().mockImplementation(() => mockedState)
 
-      const returnedFromLoader = await stepSamtykkeOffentligAFPAccessGuard()
-      expect(returnedFromLoader?.status).toBe(302)
-      expect(returnedFromLoader?.headers.get('location')).toBe('/samtykke')
+      expectRedirectResponse(
+        await stepSamtykkeOffentligAFPAccessGuard(),
+        paths.samtykke
+      )
     })
 
     it('Når brukeren ikke har uføretrygd og har valgt afp nei, er hen redirigert', async () => {
@@ -801,9 +803,10 @@ describe('Loaders', () => {
       }
       store.getState = vi.fn().mockImplementation(() => mockedState)
 
-      const returnedFromLoader = await stepSamtykkeOffentligAFPAccessGuard()
-      expect(returnedFromLoader?.status).toBe(302)
-      expect(returnedFromLoader?.headers.get('location')).toBe('/samtykke')
+      expectRedirectResponse(
+        await stepSamtykkeOffentligAFPAccessGuard(),
+        paths.samtykke
+      )
     })
   })
 })

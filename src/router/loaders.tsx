@@ -45,7 +45,6 @@ export const directAccessGuard = () => {
   ) {
     return redirect(paths.start)
   }
-  return null
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -257,7 +256,7 @@ export const stepUfoeretrygdAFPAccessGuard = async () => {
 
   // Brukere med uføretrygd som har svart ja eller vet_ikke til AFP kan se steget
   if (loependeVedtak.ufoeretrygd.grad && afp && afp !== 'nei') {
-    return null
+    return
   }
   return redirect(stepArrays[stepArrays.indexOf(paths.ufoeretrygdAFP) + 1])
 }
@@ -286,7 +285,7 @@ export const stepSamtykkeOffentligAFPAccessGuard = async () => {
 
   // Bruker uten uføretrygd som svarer ja_offentlig til AFP kan se steget
   if (showStep) {
-    return null
+    return
   }
 
   const stepArrays = isLoependeVedtakEndring(loependeVedtak)
