@@ -116,6 +116,57 @@ app.get('/internal/health/readiness', (_req: Request, res: Response) => {
   res.sendStatus(200)
 })
 
+// Status probes from backend, trenger ikke autentisering
+app.get(
+  '/pensjon/kalkulator/api/status',
+  async (req: Request, res: Response) => {
+    try {
+      const res_status = await fetch(
+        `${PENSJONSKALKULATOR_BACKEND}/api/status`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'x_correlation-id': req.headers['x_correlation-id'] as string,
+          },
+        }
+      )
+
+      const status_data = await res_status.json()
+      res.send(status_data)
+    } catch (error) {
+      console.error('Error fetching status:', error)
+      res.status(500).send({ error: 'Internal Server Error' })
+    }
+  }
+)
+
+// Unntak for feature toggle, trenger ikke autentisering
+app.get(
+  '/pensjon/kalkulator/api/feature/:toggle',
+  async (req: Request, res: Response) => {
+    try {
+      const toggle = req.params.toggle
+      const response = await fetch(
+        `${PENSJONSKALKULATOR_BACKEND}/api/feature/${toggle}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'x_correlation-id': req.headers['x_correlation-id'] as string,
+          },
+        }
+      )
+
+      const data = await response.json()
+      res.send(data)
+    } catch (error) {
+      console.error('Error fetching feature toggle:', error)
+      res.status(500).send({ error: 'Internal Server Error' })
+    }
+  }
+)
+
 app.use((req, res, next) => {
   const start = Date.now()
   res.on('finish', () => {
