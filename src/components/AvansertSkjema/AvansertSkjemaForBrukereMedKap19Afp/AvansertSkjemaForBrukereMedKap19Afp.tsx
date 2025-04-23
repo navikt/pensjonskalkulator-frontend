@@ -252,24 +252,6 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
           <Divider noMargin />
 
           <div className={styles.alertWrapper} aria-live="polite">
-            {validationErrors[
-              AVANSERT_FORM_NAMES.endringAlertFremtidigDato
-            ] && (
-              <Alert variant="warning">
-                <FormattedMessage
-                  id="beregning.endring.alert.uttaksdato"
-                  values={{
-                    ...getFormatMessageValues(),
-                    dato: validationErrors[
-                      AVANSERT_FORM_NAMES.endringAlertFremtidigDato
-                    ],
-                  }}
-                />
-              </Alert>
-            )}
-          </div>
-
-          <div className={styles.alertWrapper} aria-live="polite">
             {vilkaarsproeving &&
               !vilkaarsproeving?.vilkaarErOppfylt &&
               uttaksalder && (

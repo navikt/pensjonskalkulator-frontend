@@ -96,8 +96,11 @@ export const useStegvisningNavigation = (currentPath: Path) => {
       }
     }
 
-    // Hvis brukeren er forbi samtykkeOffentligAFP steget (gjelder både endring og vanlig flyt)
-    if (currentPathIndex > stepArrays.indexOf(paths.samtykkeOffentligAFP)) {
+    // Hvis brukeren er forbi samtykkeOffentligAFP steget (gjelder både endring og vanlig flyt). SamtykkeOffentligAFP steget er ikke med i stegvisningOrderKap19
+    if (
+      !isKap19 &&
+      currentPathIndex > stepArrays.indexOf(paths.samtykkeOffentligAFP)
+    ) {
       // Bruker med uføretrygd eller brukere som har svart noe annet enn "ja_offentlig" på afp steget har ikke fått info steg om samtykkeOffentligAFP og skal navigere tilbake forbi den
       if (ufoeregrad || afp !== 'ja_offentlig') {
         antallStepTilbake = antallStepTilbake + 1
