@@ -39,17 +39,17 @@ export function StepAFP() {
     })
   }, [])
 
-  const onNext = (
+  const onNext = async (
     afp: AfpRadio,
     skalBeregneAfpKap19?: boolean | null
-  ): void => {
+  ) => {
     dispatch(userInputActions.setAfp(afp))
-    if (skalBeregneAfpKap19 && skalBeregneAfpKap19 !== null) {
+    if (skalBeregneAfpKap19) {
       dispatch(userInputActions.setSkalBeregneAfpKap19(skalBeregneAfpKap19))
     }
 
     if (onStegvisningNext) {
-      onStegvisningNext()
+      onStegvisningNext(skalBeregneAfpKap19 ? { skalBeregneAfpKap19 } : {})
     }
   }
 

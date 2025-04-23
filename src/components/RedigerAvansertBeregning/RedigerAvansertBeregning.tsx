@@ -20,6 +20,7 @@ export const RedigerAvansertBeregning: React.FC<{
 
   const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const skalBeregneKap19Afp = useAppSelector(selectSkalBeregneAfpKap19)
+  console.log(skalBeregneKap19Afp)
 
   // TODO Ny komponent <AvansertSkjemaForBrukereMedKap19AFP />
 

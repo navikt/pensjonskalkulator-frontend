@@ -1,13 +1,15 @@
 import clsx from 'clsx'
 import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
+import { useNavigate } from 'react-router'
 
-import { Alert, Radio, RadioGroup, TextField } from '@navikt/ds-react'
+import { Alert, Link, Radio, RadioGroup, TextField } from '@navikt/ds-react'
 
 import { VilkaarsproevingAlert } from '@/components/VilkaarsproevingAlert'
 import { AgePicker } from '@/components/common/AgePicker'
 import { Divider } from '@/components/common/Divider'
 import { BeregningContext } from '@/pages/Beregning/context'
+import { paths } from '@/router/constants'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
   selectAarligInntektFoerUttakBeloep,
@@ -44,6 +46,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
 }> = ({ vilkaarsproeving }) => {
   const intl = useIntl()
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
   const { setAvansertSkjemaModus } = React.useContext(BeregningContext)
 
@@ -265,15 +268,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
             <AgePicker
               form={AVANSERT_FORM_NAMES.form}
               name={AVANSERT_FORM_NAMES.uttaksalderHeltUttak}
-              label={
-                <FormattedMessage
-                  id={
-                    isEndring
-                      ? 'velguttaksalder.endring.title'
-                      : 'velguttaksalder.title'
-                  }
-                />
-              }
+              label={<FormattedMessage id="velguttaksalderafp.title" />}
               value={localHeltUttak?.uttaksalder}
               onChange={handleHeltUttaksalderChange}
               error={heltUttakAgePickerError}
@@ -290,7 +285,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
                   values={{
                     ...getFormatMessageValues(),
                     afpInntektMaanedFoerUttak: grunnbeloep
-                      ? formatInntekt(Math.round(grunnbeloep / 12))
+                      ? formatInntekt(Math.ceil(grunnbeloep / 12))
                       : '1G/12',
                   }}
                 />
@@ -334,7 +329,6 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
               >
                 <FormattedMessage id="stegvisning.radio_ja" />
               </Radio>
-
               <Radio
                 form={AVANSERT_FORM_NAMES.form}
                 data-testid={`${AVANSERT_FORM_NAMES.afpInntektMaanedFoerUttakRadio}-nei`}
@@ -342,6 +336,29 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
               >
                 <FormattedMessage id="stegvisning.radio_nei" />
               </Radio>
+              {localHarAfpInntektMaanedFoerUttakRadio === false && (
+                <Alert variant="info">
+                  <FormattedMessage
+                    id="beregning.avansert.alert.afp_inntekt_maaned_foer_uttak"
+                    values={{
+                      ...getFormatMessageValues(),
+                      alderspensjonUtenAFP: (
+                        <Link
+                          href="#"
+                          onClick={(e) => {
+                            e.preventDefault()
+                            navigate(paths.afp)
+                          }}
+                        >
+                          {intl.formatMessage({
+                            id: 'beregning.avansert.alert.afp_inntekt_maaned_foer_uttak.link.text',
+                          })}
+                        </Link>
+                      ),
+                    }}
+                  />
+                </Alert>
+              )}
             </RadioGroup>
           </div>
           {/* HER: Forventer du å ha inntekt samtidig som du tar ut AFP? */}

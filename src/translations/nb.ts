@@ -319,10 +319,9 @@ const translations = {
   'omufoeretrygd.gradert.ingress.afp':
     'Du har <nowrap>{grad} %</nowrap> uføretrygd. Her kan du beregne <nowrap>100 %</nowrap> alderspensjon og pensjonsavtaler fra <nowrap>{normertPensjonsalder}</nowrap>.{br}{br}I {link} kan du beregne kombinasjoner av alderspensjon og uføretrygd før <nowrap>{normertPensjonsalder}</nowrap> eller alderspensjon og AFP fra {nedreAldersgrense}.{br}{br}Kommende lovendringer vil gradvis øke pensjonsalderen.',
   'omufoeretrygd.avansert_link': 'Avansert',
-  'velguttaksalder.title': 'Når vil du ta ut AFP?',
+  'velguttaksalder.title': 'Når vil du ta ut alderspensjon?',
   'velguttaksalder.endring.title': 'Når vil du endre alderspensjonen din?',
-  'velguttaksalderafp.title': 'Når vil du ta ut alderspensjon?',
-  'velguttaksalderafp.endring.title': 'Når vil du endre AFPen din?',
+  'velguttaksalderafp.title': 'Når vil du ta ut AFP?',
   'beregning.toggle.enkel': 'Enkel',
   'beregning.toggle.avansert': 'Avansert',
   'beregning.loading': 'Vent litt mens vi beregner pensjonen din.',
@@ -503,6 +502,10 @@ const translations = {
   'beregning.avansert.avbryt_modal.endring.button.avslutt':
     'Gå ut av beregning',
   'beregning.avansert.avbryt_modal.button.avbryt': 'Avbryt',
+  'beregning.avansert.alert.afp_inntekt_maaned_foer_uttak':
+    'Hvis du ikke forventer å ha inntekt på minst 21 924 kr siste måneden før du tar ut AFP, kan du ikke beregne AFP. Du kan i stedet beregne {alderspensjonUtenAFP}.',
+  'beregning.avansert.alert.afp_inntekt_maaned_foer_uttak.link.text':
+    'alderspensjon uten AFP',
   'beregning.endring.alert.uttaksdato':
     'Du kan tidligst endre uttaksgrad til 20, 40, 50, 60 eller 80 % fra {dato}.',
   'beregning.endring.rediger.title': 'Beregn endring av alderspensjon',

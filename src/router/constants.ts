@@ -82,5 +82,6 @@ export const stegvisningOrderKap19 = [
   paths.sivilstand,
   paths.utenlandsopphold,
   paths.afp,
+  paths.beregningEnkel,
   paths.beregningAvansert,
 ] as const
