@@ -17,21 +17,7 @@ function RedirectElement() {
     )
   }, [])
 
-  React.useEffect(() => {
-    // Håndter tilbakeknapp i browser, bfcache - https://web.dev/articles/bfcache
-    const handlePageShow = (event: PageTransitionEvent) => {
-      if (event.persisted) {
-        window.location.reload()
-      }
-    }
-    window.addEventListener('pageshow', handlePageShow)
-
-    return () => {
-      window.removeEventListener('pageshow', handlePageShow)
-    }
-  }, [])
-
-  return <span data-testid="redirect-element" />
+  return <div />
 }
 
 export const PageFramework: React.FC<{
