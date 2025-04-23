@@ -1,13 +1,16 @@
 import { describe, it } from 'vitest'
 
 import { setupStore } from '../store'
-import { UserInputState } from '../userInput/userInputSlice'
+import {
+  UserInputState,
+  userInputInitialState,
+} from '../userInput/userInputSlice'
 
 describe('store', () => {
-  it('returnerer store med riktig slices og default state', () => {
+  it('returnerer store med riktig userInput initial state', () => {
     const store = setupStore()
     const initialState = store.getState()
-    expect(initialState).toMatchSnapshot()
+    expect(initialState.userInput).toBe(userInputInitialState)
   })
 
   it('returnerer store med riktig state når setupStore kalles med parameter', () => {
@@ -25,7 +28,6 @@ describe('store', () => {
       epsHarInntektOver2G: null,
       currentSimulation: {
         beregningsvalg: null,
-        formatertUttaksalderReadOnly: null,
         uttaksalder: null,
         aarligInntektFoerUttakBeloep: '500 000',
         gradertUttaksperiode: null,

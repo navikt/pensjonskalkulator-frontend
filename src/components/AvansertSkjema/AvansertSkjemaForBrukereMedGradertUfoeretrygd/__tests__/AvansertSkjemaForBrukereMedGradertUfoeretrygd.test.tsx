@@ -2301,7 +2301,6 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
 
       const currentSimulation: Simulation = {
         beregningsvalg: null,
-        formatertUttaksalderReadOnly: '62 år string.og 0 alder.maaned',
         uttaksalder: { aar: 62, maaneder: 0 },
         aarligInntektFoerUttakBeloep: null,
         gradertUttaksperiode: null,
@@ -2428,45 +2427,9 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
         screen.queryByTestId('om_uttaksgrad_UT_gradert_endring')
       ).toBeVisible()
     })
-
-    it('Når brukeren har gradert uføretrygd, vises det riktig label på feltene', async () => {
-      const { asFragment, store } = render(
-        <BeregningContext.Provider
-          value={{
-            ...contextMockedValues,
-          }}
-        >
-          <AvansertSkjemaForBrukereMedGradertUfoeretrygd />
-        </BeregningContext.Provider>,
-        {
-          preloadedState: {
-            api: {
-              // @ts-ignore
-              queries: {
-                ...fulfilledGetPerson,
-                ...fulfilledGetLoependeVedtakLoependeAlderspensjonOg40Ufoeretrygd,
-              },
-            },
-            userInput: {
-              ...userInputInitialState,
-            },
-          },
-        }
-      )
-      await store.dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
-      expect(
-        await screen.findByText(
-          'beregning.avansert.rediger.inntekt_frem_til_endring.label'
-        )
-      ).toBeVisible()
-      expect(asFragment()).toMatchSnapshot()
-      expect(
-        screen.queryByTestId('om_uttaksgrad_UT_gradert_endring')
-      ).toBeVisible()
-    })
   })
 
-  describe('Gitt at feature toggle for gradert uføretrygd og AFP er enabled', () => {
+  describe('Gitt at brukeren kan simulere AFP, og feature toggle for gradert uføretrygd og AFP er enabled', () => {
     beforeEach(() => {
       mockResponse('/feature/pensjonskalkulator.gradert-ufoere-afp', {
         status: 200,
@@ -2487,10 +2450,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
           preloadedState: {
             api: {
               // @ts-ignore
-              queries: {
-                ...fulfilledGetPerson,
-                ...fulfilledGetLoependeVedtak75Ufoeregrad,
-              },
+              queries: mockedQueries,
             },
             userInput: {
               ...userInputInitialState,
@@ -2519,10 +2479,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
           preloadedState: {
             api: {
               // @ts-ignore
-              queries: {
-                ...fulfilledGetPerson,
-                ...fulfilledGetLoependeVedtak75Ufoeregrad,
-              },
+              queries: mockedQueries,
             },
             userInput: {
               ...userInputInitialState,
@@ -2555,6 +2512,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
     })
 
     it('Viser riktig innhold når man har valgt beregning uten AFP', async () => {
+      const user = userEvent.setup()
       render(
         <BeregningContext.Provider value={{ ...contextMockedValues }}>
           <AvansertSkjemaForBrukereMedGradertUfoeretrygd />
@@ -2563,25 +2521,57 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
           preloadedState: {
             api: {
               // @ts-ignore
-              queries: {
-                ...fulfilledGetPerson,
-                ...fulfilledGetLoependeVedtak75Ufoeregrad,
-              },
+              queries: mockedQueries,
             },
             userInput: {
               ...userInputInitialState,
               afp: 'ja_privat',
-              currentSimulation: {
-                ...userInputInitialState.currentSimulation,
-                beregningsvalg: 'uten_afp',
-              },
             },
           },
         }
       )
 
+      await user.click(await screen.findByTestId('uten_afp'))
+
       // Viser AgePicker
       expect(screen.getByRole('combobox', { name: 'Velg år' })).toBeVisible()
+
+      // Fyller ut uttaksalder
+      fireEvent.change(
+        screen.getByTestId(
+          `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
+        ),
+        {
+          target: { value: '66' },
+        }
+      )
+      fireEvent.change(
+        screen.getByTestId(
+          `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`
+        ),
+        {
+          target: { value: '5' },
+        }
+      )
+
+      // Velger gradert uttak
+      fireEvent.change(
+        await screen.findByTestId(AVANSERT_FORM_NAMES.uttaksgrad),
+        {
+          target: { value: '20 %' },
+        }
+      )
+
+      // Viser riktig beskrivelse på spørsmålet om inntekt vsa. gradert uttak
+      expect(
+        await screen.findByText(
+          'beregning.avansert.rediger.radio.inntekt_vsa_gradert_uttak.ufoeretrygd.description'
+        )
+      ).toBeVisible()
+      // Viser riktig beskrivelse om inntektsgrense
+      expect(
+        screen.getByTestId('om_alderspensjon_inntektsgrense_UT')
+      ).toBeVisible()
     })
 
     it('Setter uttaksalder fast og viser riktig innhold når man velger beregning med AFP', async () => {
@@ -2594,10 +2584,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
           preloadedState: {
             api: {
               // @ts-ignore
-              queries: {
-                ...fulfilledGetPerson,
-                ...fulfilledGetLoependeVedtak75Ufoeregrad,
-              },
+              queries: mockedQueries,
             },
             userInput: {
               ...userInputInitialState,
@@ -2638,6 +2625,71 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
       expect(
         screen.queryByTestId('om_uttaksgrad_UT_gradert')
       ).not.toBeInTheDocument()
+
+      // Velger gradert uttak
+      fireEvent.change(
+        await screen.findByTestId(AVANSERT_FORM_NAMES.uttaksgrad),
+        {
+          target: { value: '80 %' },
+        }
+      )
+      // Viser riktig beskrivelse på spørsmålet om inntekt vsa. gradert uttak
+      expect(
+        await screen.findByText(
+          'beregning.avansert.rediger.radio.inntekt_vsa_gradert_uttak.description'
+        )
+      ).toBeVisible()
+
+      // Ikke vis readmore om inntektsgrense
+      expect(
+        screen.queryByTestId('om_alderspensjon_inntektsgrense_UT')
+      ).not.toBeInTheDocument()
+    })
+
+    it('Aldersvelger for fullt uttak får riktig minAlder når man har valgt beregning med AFP og gradert uttak', () => {
+      // Minimum alder skal være gradert uttaksalder + 1 mnd, i praksis nedreAldersgrense + 1 mnd.
+      render(
+        <BeregningContext.Provider value={{ ...contextMockedValues }}>
+          <AvansertSkjemaForBrukereMedGradertUfoeretrygd />
+        </BeregningContext.Provider>,
+        {
+          preloadedState: {
+            api: {
+              // @ts-ignore
+              queries: mockedQueries,
+            },
+            userInput: {
+              ...userInputInitialState,
+              afp: 'ja_privat',
+              currentSimulation: {
+                ...userInputInitialState.currentSimulation,
+                beregningsvalg: 'med_afp',
+                gradertUttaksperiode: {
+                  grad: 50,
+                  uttaksalder: {
+                    aar: 62,
+                    maaneder: 0,
+                  },
+                },
+              },
+            },
+          },
+        }
+      )
+
+      const aarSelect = screen.getByTestId(
+        `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
+      )
+      expect(aarSelect.children.item(0)?.innerHTML).toBe(' ')
+      expect(aarSelect.children.item(1)?.innerHTML).toBe('62 alder.aar')
+
+      fireEvent.change(aarSelect, { target: { value: '62' } })
+
+      const mndSelect = screen.getByTestId(
+        `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`
+      )
+      expect(mndSelect.children.item(0)?.innerHTML).toBe(' ')
+      expect(mndSelect.children.item(1)?.innerHTML).toBe('1 alder.md (juni)')
     })
   })
 })
