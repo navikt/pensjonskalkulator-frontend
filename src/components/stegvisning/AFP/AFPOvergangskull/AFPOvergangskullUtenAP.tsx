@@ -160,8 +160,6 @@ export function AFPOvergangskullUtenAP({
             defaultValue={convertBooleanToBooleanRadio(previousSkalBeregneAfp)}
             onChange={() => setValidationError({ afp: '', skalBeregneAfp: '' })}
             error={validationError.skalBeregneAfp}
-            role="radiogroup"
-            aria-required="true"
           >
             <Radio value="ja">
               <FormattedMessage id="stegvisning.afp.overgangskullUtenAP.radio_ja" />
