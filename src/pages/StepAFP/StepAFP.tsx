@@ -41,7 +41,7 @@ export function StepAFP() {
 
   const onNext = async (afp: AfpRadio, afpUtregningValg?: AfpUtregningValg) => {
     dispatch(userInputActions.setAfp(afp))
-    if (afpUtregningValg) {
+    if (afpUtregningValg || afpUtregningValg === null) {
       dispatch(userInputActions.setAfpUtregningValg(afpUtregningValg))
     }
 

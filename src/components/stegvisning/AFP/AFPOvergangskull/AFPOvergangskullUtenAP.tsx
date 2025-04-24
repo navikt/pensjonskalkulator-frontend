@@ -90,7 +90,14 @@ export function AFPOvergangskullUtenAP({
         tekst: `Neste fra ${paths.afp}`,
       })
 
-      onNext(afpInput, simuleringstypeInput)
+      if (
+        !jaAFPOffentlig &&
+        simuleringstypeInput === 'AFP_ETTERFULGT_AV_ALDERSPENSJON'
+      ) {
+        onNext(afpInput, null)
+      } else {
+        onNext(afpInput, simuleringstypeInput)
+      }
     }
   }
 
