@@ -507,7 +507,7 @@ const translations = {
   'beregning.avansert.alert.vilkaarsproevning.afp_inntekt_maaned_foer_uttak':
     'Med opplysninger vi har om deg, oppfyller du ikke vilkårene for AFP. {vilkaarForUttakAvAfp}. Du kan også beregne {alderspensjonUtenAFP}.',
   'beregning.avansert.alert.afp_inntekt_maaned_foer_uttak':
-    'Hvis du ikke forventer å ha inntekt på minst 21 924 kr siste måneden før du tar ut AFP, kan du ikke beregne AFP. Du kan i stedet beregne {alderspensjonUtenAFP}.',
+    'Hvis du ikke forventer å ha inntekt på minst {grunnbeloep} kr siste måneden før du tar ut AFP, kan du ikke beregne AFP. Du kan i stedet beregne {alderspensjonUtenAFP}.',
   'beregning.avansert.alert.afp_inntekt_maaned_foer_uttak.link.text':
     'alderspensjon uten AFP',
   'beregning.endring.alert.uttaksdato':

@@ -347,6 +347,9 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
                     id="beregning.avansert.alert.afp_inntekt_maaned_foer_uttak"
                     values={{
                       ...getFormatMessageValues(),
+                      grunnbeloep: grunnbeloep
+                        ? formatInntekt(Math.ceil(grunnbeloep / 12))
+                        : '1G/12',
                       alderspensjonUtenAFP: (
                         <Link
                           href="#"
