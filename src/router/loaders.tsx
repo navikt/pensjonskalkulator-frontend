@@ -70,12 +70,13 @@ export const stepStartAccessGuard = async () => {
     apiSlice.endpoints.getLoependeVedtak.initiate()
   )
 
-  // Henter data til senere
+  // Henter data til senere i bakgrunnen (Unngår å vise spinner unødvendig og sparer tid for brukeren)
   store.dispatch(apiSlice.endpoints.getInntekt.initiate())
   store.dispatch(
     apiSlice.endpoints.getOmstillingsstoenadOgGjenlevende.initiate()
   )
   store.dispatch(apiSlice.endpoints.getGrunnbelop.initiate())
+  store.dispatch(apiSlice.endpoints.getGradertUfoereAfpFeatureToggle.initiate())
 
   const [
     vedlikeholdsmodusFeatureToggle,
