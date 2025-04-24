@@ -95,7 +95,7 @@ export const BeregningAvansert: React.FC = () => {
           },
           utenlandsperioder,
           beregningsvalg,
-          afpInntektMaanedFoerUttak: 300000, //TODO: denne skal settes i avansertskjema for pre2025OffentligAfp
+          afpInntektMaanedFoerUttak: 0, //TODO: denne skal settes i avansertskjema for pre2025OffentligAfp
         })
       }
     }, [
