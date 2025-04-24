@@ -19,7 +19,7 @@ export interface UserInputState {
   samtykke: boolean | null
   samtykkeOffentligAFP: boolean | null
   afp: AfpRadio | null
-  skalBeregneAfpKap19: boolean | null
+  afpUtregningValg: AfpUtregningValg
   sivilstand: Sivilstand | null
   epsHarPensjon: boolean | null
   epsHarInntektOver2G: boolean | null
@@ -35,7 +35,8 @@ export const userInputInitialState: UserInputState = {
   samtykke: null,
   samtykkeOffentligAFP: null,
   afp: null,
-  skalBeregneAfpKap19: null,
+  //skalBeregneAfpKap19: null,
+  afpUtregningValg: null,
   sivilstand: null,
   epsHarInntektOver2G: null,
   epsHarPensjon: null,
@@ -92,9 +93,12 @@ export const userInputSlice = createSlice({
     setAfp: (state, action: PayloadAction<AfpRadio>) => {
       state.afp = action.payload
     },
-    setSkalBeregneAfpKap19: (state, action: PayloadAction<boolean | null>) => {
-      state.skalBeregneAfpKap19 = action.payload
+    setAfpUtregningValg: (state, action: PayloadAction<AfpUtregningValg>) => {
+      state.afpUtregningValg = action.payload
     },
+    /* setSkalBeregneAfpKap19: (state, action: PayloadAction<boolean | null>) => {
+      state.skalBeregneAfpKap19 = action.payload
+    }, */
     setAfpInntektMaanedFoerUttak: (
       state,
       action: PayloadAction<boolean | null>
@@ -181,7 +185,8 @@ export const userInputSlice = createSlice({
       state.sivilstand = null
       state.epsHarPensjon = null
       state.epsHarInntektOver2G = null
-      state.skalBeregneAfpKap19 = null
+      //state.skalBeregneAfpKap19 = null
+      state.afpUtregningValg = null
       state.afpInntektMaanedFoerUttak = null
       state.currentSimulation = { ...userInputInitialState.currentSimulation }
     },

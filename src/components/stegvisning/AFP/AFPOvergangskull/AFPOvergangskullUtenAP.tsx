@@ -8,10 +8,6 @@ import { ReadMore } from '@/components/common/ReadMore'
 import { SanityReadmore } from '@/components/common/SanityReadmore'
 import { paths } from '@/router/constants'
 import { logger, wrapLogger } from '@/utils/logging'
-import {
-  convertBooleanRadioToBoolean,
-  convertBooleanToBooleanRadio,
-} from '@/utils/radio'
 
 import { STEGVISNING_FORM_NAMES } from '../../utils'
 import AFPRadioGroup from '../AFPRadiogroup'
@@ -20,15 +16,15 @@ import styles from '../AFP.module.scss'
 
 interface Props {
   previousAfp: AfpRadio | null
-  previousSkalBeregneAfpKap19: boolean | null
+  previousAfpUtregningValg: AfpUtregningValg
   onCancel?: () => void
   onPrevious: () => void
-  onNext: (afpInput: AfpRadio, skalBeregneAfpKap19?: boolean | null) => void
+  onNext: (afpInput: AfpRadio, afpUtregningValg?: AfpUtregningValg) => void
 }
 
 export function AFPOvergangskullUtenAP({
   previousAfp,
-  previousSkalBeregneAfpKap19,
+  previousAfpUtregningValg,
   onCancel,
   onPrevious,
   onNext,
@@ -56,7 +52,7 @@ export function AFPOvergangskullUtenAP({
     const afpInput = formData.get('afp') as AfpRadio | null
     const simuleringstypeInput = formData.get(
       'skalBeregneAfpKap19'
-    ) as BooleanRadio | null
+    ) as AfpUtregningValg
 
     if (!afpInput) {
       const errorMessage = intl.formatMessage({
@@ -94,12 +90,7 @@ export function AFPOvergangskullUtenAP({
         tekst: `Neste fra ${paths.afp}`,
       })
 
-      onNext(
-        afpInput,
-        simuleringstypeInput
-          ? convertBooleanRadioToBoolean(simuleringstypeInput)
-          : null
-      )
+      onNext(afpInput, simuleringstypeInput)
     }
   }
 
@@ -162,9 +153,7 @@ export function AFPOvergangskullUtenAP({
               <FormattedMessage id="stegvisning.afp.overgangskullUtenAP.radio_label" />
             }
             name="skalBeregneAfpKap19"
-            defaultValue={convertBooleanToBooleanRadio(
-              previousSkalBeregneAfpKap19
-            )}
+            defaultValue={previousAfpUtregningValg}
             onChange={() =>
               setValidationError({
                 afpError: undefined,
@@ -175,10 +164,10 @@ export function AFPOvergangskullUtenAP({
             role="radiogroup"
             aria-required="true"
           >
-            <Radio value="ja">
+            <Radio value="AFP_ETTERFULGT_AV_ALDERSPENSJON">
               <FormattedMessage id="stegvisning.afp.overgangskullUtenAP.radio_ja" />
             </Radio>
-            <Radio value="nei">
+            <Radio value="KUN_ALDERSPENSJON">
               <FormattedMessage id="stegvisning.afp.overgangskullUtenAP.radio_nei" />
             </Radio>
           </RadioGroup>

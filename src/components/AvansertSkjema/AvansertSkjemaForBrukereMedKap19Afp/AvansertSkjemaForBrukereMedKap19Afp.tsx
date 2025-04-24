@@ -159,9 +159,6 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
       [AVANSERT_FORM_NAMES.inntektVsaAfpRadio]: '',
       [AVANSERT_FORM_NAMES.inntektVsaAfp]: '',
     })
-    if (s === 'nei') {
-      setLocalGradertUttak(undefined)
-    }
   }
 
   const handleInntektVsaGradertUttakChange = (

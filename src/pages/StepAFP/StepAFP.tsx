@@ -14,8 +14,8 @@ import { StepAFPAccessGuardLoader } from '@/router/loaders'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
   selectAfp,
+  selectAfpUtregningValg,
   selectIsVeileder,
-  selectSkalBeregneAfpKap19,
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
 import { isAlderOver67, isFoedtFoer1963, isOvergangskull } from '@/utils/alder'
@@ -27,7 +27,7 @@ export function StepAFP() {
   const stepAFPAccessGuard =
     useLoaderData() as Promise<StepAFPAccessGuardLoader>
   const previousAfp = useAppSelector(selectAfp)
-  const previousSkalBeregneAfpKap19 = useAppSelector(selectSkalBeregneAfpKap19)
+  const previousAfpUtregningValg = useAppSelector(selectAfpUtregningValg)
   const isVeileder = useAppSelector(selectIsVeileder)
 
   const [{ onStegvisningNext, onStegvisningPrevious, onStegvisningCancel }] =
@@ -39,17 +39,18 @@ export function StepAFP() {
     })
   }, [])
 
-  const onNext = async (
-    afp: AfpRadio,
-    skalBeregneAfpKap19?: boolean | null
-  ) => {
+  const onNext = async (afp: AfpRadio, afpUtregningValg?: AfpUtregningValg) => {
     dispatch(userInputActions.setAfp(afp))
-    if (skalBeregneAfpKap19) {
-      dispatch(userInputActions.setSkalBeregneAfpKap19(skalBeregneAfpKap19))
+    if (afpUtregningValg) {
+      dispatch(userInputActions.setAfpUtregningValg(afpUtregningValg))
     }
 
     if (onStegvisningNext) {
-      onStegvisningNext(skalBeregneAfpKap19 ? { skalBeregneAfpKap19 } : {})
+      onStegvisningNext(
+        afpUtregningValg === 'AFP_ETTERFULGT_AV_ALDERSPENSJON'
+          ? { skalBeregneAfpKap19: true }
+          : {}
+      )
     }
   }
 
@@ -88,7 +89,7 @@ export function StepAFP() {
             return (
               <AFPOvergangskullUtenAP
                 previousAfp={previousAfp}
-                previousSkalBeregneAfpKap19={previousSkalBeregneAfpKap19}
+                previousAfpUtregningValg={previousAfpUtregningValg}
                 onCancel={isVeileder ? undefined : onStegvisningCancel}
                 onPrevious={onStegvisningPrevious}
                 onNext={onNext}

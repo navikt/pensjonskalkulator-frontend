@@ -68,15 +68,6 @@ describe('userInputSlice', () => {
       })
     })
 
-    it('shallBeregneAfp', () => {
-      const skalBeregneAfpKap19State = userInputReducer(
-        userInputInitialState,
-        userInputActions.setSkalBeregneAfpKap19(true)
-      )
-
-      expect(skalBeregneAfpKap19State.skalBeregneAfpKap19).toBe(true)
-    })
-
     it('setUtenlandsperiode', () => {
       const utenlandsperiode: Utenlandsperiode = {
         id: '12345',
@@ -385,7 +376,8 @@ describe('userInputSlice', () => {
           harUtenlandsopphold: true,
           samtykke: true,
           samtykkeOffentligAFP: true,
-          skalBeregneAfpKap19: true,
+          //skalBeregneAfpKap19: true,
+          afpUtregningValg: 'AFP_ETTERFULGT_AV_ALDERSPENSJON',
           afp: 'ja_offentlig',
           currentSimulation: {
             beregningsvalg: null,

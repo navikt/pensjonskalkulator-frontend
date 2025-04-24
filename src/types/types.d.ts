@@ -12,6 +12,10 @@ declare global {
 
   type BooleanRadio = 'ja' | 'nei'
   type AfpRadio = 'ja_offentlig' | 'ja_privat' | 'nei' | 'vet_ikke'
+  type AfpUtregningValg =
+    | 'KUN_ALDERSPENSJON'
+    | 'AFP_ETTERFULGT_AV_ALDERSPENSJON'
+    | null
   type BeregningVisning = 'enkel' | 'avansert'
   type Beregningsvalg = 'uten_afp' | 'med_afp'
   type Alder = components['schemas']['Alder']

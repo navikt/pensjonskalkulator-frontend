@@ -668,20 +668,27 @@ export const onAvansertBeregningSubmit = (
       userInputActions.setAfpInntektMaanedFoerUttak(afpInntektMaanedFoerUttak)
     )
     if (inntektVsaAfpRadioFormData === 'ja') {
-      console.log(
-        dispatch(
-          userInputActions.setCurrentSimulationGradertUttaksperiode({
-            uttaksalder: {
-              aar: parseInt(heltUttakAarFormData as string, 10),
-              maaneder: parseInt(heltUttakMaanederFormData as string, 10),
-            },
-            grad: 100,
-            aarligInntektVsaPensjonBeloep: inntektVsaAfpFormData as string,
-          })
-        )
+      dispatch(
+        userInputActions.setCurrentSimulationGradertUttaksperiode({
+          uttaksalder: {
+            aar: parseInt(heltUttakAarFormData as string, 10),
+            maaneder: parseInt(heltUttakMaanederFormData as string, 10),
+          },
+          grad: 100,
+          aarligInntektVsaPensjonBeloep: inntektVsaAfpFormData as string,
+        })
       )
     } else {
-      dispatch(userInputActions.setCurrentSimulationGradertUttaksperiode(null))
+      dispatch(
+        userInputActions.setCurrentSimulationGradertUttaksperiode({
+          uttaksalder: {
+            aar: parseInt(heltUttakAarFormData as string, 10),
+            maaneder: parseInt(heltUttakMaanederFormData as string, 10),
+          },
+          grad: 100,
+          aarligInntektVsaPensjonBeloep: undefined,
+        })
+      )
     }
   } else {
     logger('valg av uttaksgrad', {

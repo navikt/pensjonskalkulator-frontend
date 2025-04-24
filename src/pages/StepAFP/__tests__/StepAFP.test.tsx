@@ -230,7 +230,7 @@ describe('StepAFP', () => {
     )
     const setSkalBeregneAfpKap19Mock = vi.spyOn(
       userInputReducerUtils.userInputActions,
-      'setSkalBeregneAfpKap19'
+      'setAfpUtregningValg'
     )
     const user = userEvent.setup()
 
@@ -257,7 +257,9 @@ describe('StepAFP', () => {
     await user.click(screen.getByText('stegvisning.neste'))
 
     expect(setAfpMock).toHaveBeenCalledWith('ja_offentlig')
-    expect(setSkalBeregneAfpKap19Mock).toHaveBeenCalledWith(true)
+    expect(setSkalBeregneAfpKap19Mock).toHaveBeenCalledWith(
+      'AFP_ETTERFULGT_AV_ALDERSPENSJON'
+    )
     expect(navigateMock).toHaveBeenCalledWith(paths.ufoeretrygdAFP)
   })
 
