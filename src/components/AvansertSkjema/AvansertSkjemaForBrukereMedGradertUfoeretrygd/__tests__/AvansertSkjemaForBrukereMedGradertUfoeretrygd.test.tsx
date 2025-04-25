@@ -321,7 +321,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
 
   it('Når alle feltene fylles ut og resetForm kalles, nullstilles alle feltene', async () => {
     const user = userEvent.setup()
-    const { store } = render(
+    const { store } = await render(
       <BeregningContext.Provider
         value={{
           ...contextMockedValues,
@@ -589,7 +589,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
 
   it('Når alle feltene for 100 % uttak fylles ut og radioknappen for inntekt endres til nei, skjules inntekt og sluttAlder', async () => {
     const user = userEvent.setup()
-    const { store } = render(
+    const { store } = await render(
       <BeregningContext.Provider
         value={{
           ...contextMockedValues,
@@ -679,7 +679,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
 
   it('Når alle feltene for gradert uttak fylles ut og radioknappen for inntekt endres til nei, skjules inputfeltet for inntekt', async () => {
     const user = userEvent.setup()
-    const { store } = render(
+    const { store } = await render(
       <BeregningContext.Provider
         value={{
           ...contextMockedValues,
@@ -800,7 +800,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
 
   it('Når feltene for 100 % uttak fylles ut og uttaksalder endres til en alder større enn sluttAlder for inntekt, nullstilles sluttAlder', async () => {
     const user = userEvent.setup()
-    const { store } = render(
+    const { store } = await render(
       <BeregningContext.Provider
         value={{
           ...contextMockedValues,

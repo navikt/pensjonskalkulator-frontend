@@ -25,7 +25,7 @@ describe('ResultatkortAvansertBeregning', () => {
   it('vises det riktig resultatkort med faste tekster og inntekt', async () => {
     const loggerSpy = vi.spyOn(loggerUtils, 'logger')
     const user = userEvent.setup()
-    const { store } = render(
+    const { store } = await render(
       <ResultatkortAvansertBeregning onButtonClick={vi.fn()} />,
       {
         preloadedState: {
@@ -67,7 +67,7 @@ describe('ResultatkortAvansertBeregning', () => {
   })
 
   it('med vedtak om alderpensjon, vises det riktig resultatkort med faste tekster og inntekt', async () => {
-    const { store } = render(
+    const { store } = await render(
       <ResultatkortAvansertBeregning onButtonClick={vi.fn()} />,
       {
         preloadedState: {
@@ -97,7 +97,7 @@ describe('ResultatkortAvansertBeregning', () => {
 
   it('med uttaksalder, vises det et resultatkort med riktig dynamiske tekster', async () => {
     const user = userEvent.setup()
-    const { store } = render(
+    const { store } = await render(
       <ResultatkortAvansertBeregning onButtonClick={vi.fn()} />,
       {
         preloadedState: {
@@ -132,7 +132,7 @@ describe('ResultatkortAvansertBeregning', () => {
 
   it('med uttaksalder og inntekt vsa 100 % alderspensjon, vises det et resultatkort med riktig dynamiske tekster', async () => {
     const user = userEvent.setup()
-    const { store } = render(
+    const { store } = await render(
       <ResultatkortAvansertBeregning onButtonClick={vi.fn()} />,
       {
         preloadedState: {
@@ -186,7 +186,7 @@ describe('ResultatkortAvansertBeregning', () => {
 
   it('med uttaksalder og gradert uttak, vises det et resultatkort med riktig dynamiske tekster', async () => {
     const user = userEvent.setup()
-    const { store } = render(
+    const { store } = await render(
       <ResultatkortAvansertBeregning onButtonClick={vi.fn()} />,
       {
         preloadedState: {
