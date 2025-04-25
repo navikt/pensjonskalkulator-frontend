@@ -7,6 +7,8 @@ import {
   fulfilledGetLoependeVedtakLoependeAlderspensjon,
   fulfilledGetPerson,
   fulfilledGetPersonMedOekteAldersgrenser,
+  loependeVedtak0UfoeregradMock,
+  personMock,
 } from '@/mocks/mockedRTKQueryApiCalls'
 import { mockResponse } from '@/mocks/server'
 import {
@@ -43,7 +45,7 @@ describe('AvansertSkjemaForAndreBrukere', () => {
   }
 
   it('vises informasjon om inntekt, uttaksgrad og pensjonsalder', async () => {
-    render(
+    await render(
       <BeregningContext.Provider
         value={{
           ...contextMockedValues,
@@ -53,13 +55,13 @@ describe('AvansertSkjemaForAndreBrukere', () => {
       </BeregningContext.Provider>,
       {
         preloadedState: {
-          api: {
-            // @ts-ignore
-            queries: { ...mockedQueries },
-          },
           userInput: {
             ...userInputInitialState,
           },
+        },
+        preloadedApiState: {
+          getPerson: personMock,
+          getLoependeVedtak: loependeVedtak0UfoeregradMock,
         },
       }
     )
