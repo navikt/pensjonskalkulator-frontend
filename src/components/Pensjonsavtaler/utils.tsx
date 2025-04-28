@@ -20,7 +20,7 @@ export const groupPensjonsavtalerByType = (
   return record
 }
 
-export const finnAllePensjonsavtalerVedUttak = <
+const finnAllePensjonsavtalerVedUttak = <
   T extends { startAlder: Alder; sluttAlder?: Alder },
 >(
   utbetalingsperioder: T[],
