@@ -1,4 +1,3 @@
-// filepath: /Users/Martin.Storvoll/Nav/pensjonskalkulator-frontend/src/components/MaanedsbeloepAvansertBeregning/Felles/__tests__/MobilePensjonVisning.test.tsx
 import { describe, expect, it, vi } from 'vitest'
 
 import { render, screen } from '@/test-utils'
