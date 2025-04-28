@@ -8,6 +8,7 @@ import { routes } from '@/router/routes'
 import { store } from '@/state/store'
 import { render, screen, userEvent, waitFor } from '@/test-utils'
 
+// eslint-disable-next-line @typescript-eslint/unbound-method
 const initialGetState = store.getState
 
 const navigateMock = vi.fn()

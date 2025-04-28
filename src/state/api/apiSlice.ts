@@ -1,8 +1,4 @@
-import {
-  FetchBaseQueryError,
-  createApi,
-  fetchBaseQuery,
-} from '@reduxjs/toolkit/query/react'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 import { tpNummerTilNavn } from '@/components/Pensjonsavtaler/OffentligTjenestePensjon/utils'
 import { API_BASEURL } from '@/paths'
@@ -41,7 +37,7 @@ export const apiSlice = createApi({
       query: () => '/inntekt',
       transformResponse: (response) => {
         if (!isInntekt(response)) {
-          throw new Error(`Mottok ugyldig inntekt: ${response}`)
+          throw new Error(`Mottok ugyldig inntekt: ${JSON.stringify(response)}`)
         }
         return response
       },
@@ -51,7 +47,7 @@ export const apiSlice = createApi({
       providesTags: ['Person'],
       transformResponse: (response) => {
         if (!isPerson(response)) {
-          throw new Error(`Mottok ugyldig person: ${response}`)
+          throw new Error(`Mottok ugyldig person: ${JSON.stringify(response)}`)
         }
         return {
           ...response,
@@ -63,7 +59,9 @@ export const apiSlice = createApi({
       query: () => 'https://g.nav.no/api/v1/grunnbel%C3%B8p',
       transformResponse: (response: { grunnbeløp: number }) => {
         if (!response.grunnbeløp) {
-          throw new Error(`Mottok ugyldig grunnbeløp: ${response}`)
+          throw new Error(
+            `Mottok ugyldig grunnbeløp: ${JSON.stringify(response)}`
+          )
         }
         return response.grunnbeløp
       },
@@ -124,7 +122,7 @@ export const apiSlice = createApi({
         const featureToggleResult = results[1]
 
         if (otpResult.error) {
-          return { error: otpResult.error as FetchBaseQueryError }
+          return { error: otpResult.error }
         }
 
         const data = otpResult.data
@@ -159,7 +157,9 @@ export const apiSlice = createApi({
       }),
       transformResponse: (response: Alder) => {
         if (!isAlder(response)) {
-          throw new Error(`Mottok ugyldig uttaksalder: ${response}`)
+          throw new Error(
+            `Mottok ugyldig uttaksalder: ${JSON.stringify(response)}`
+          )
         }
         return response
       },
@@ -180,7 +180,9 @@ export const apiSlice = createApi({
           !Array.isArray(response.avtaler) ||
           response.avtaler.some((avtale) => !isPensjonsavtale(avtale))
         ) {
-          throw new Error(`Mottok ugyldig pensjonsavtale: ${response}`)
+          throw new Error(
+            `Mottok ugyldig pensjonsavtale: ${JSON.stringify(response)}`
+          )
         }
         const avtalerWithKeys = response.avtaler.map((avtale, index) => ({
           ...avtale,
@@ -205,7 +207,9 @@ export const apiSlice = createApi({
       providesTags: ['Alderspensjon'],
       transformResponse: (response: AlderspensjonResponseBody) => {
         if (!isAlderspensjonSimulering(response)) {
-          throw new Error(`Mottok ugyldig alderspensjon: ${response}`)
+          throw new Error(
+            `Mottok ugyldig alderspensjon: ${JSON.stringify(response)}`
+          )
         }
         return response
       },

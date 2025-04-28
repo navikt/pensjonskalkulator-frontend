@@ -85,7 +85,7 @@ export const ResultatkortAvansertBeregning: React.FC<Props> = ({
                 )}
                 {` (${transformUttaksalderToDate(
                   gradertUttaksperiode.uttaksalder,
-                  person?.foedselsdato as string
+                  person?.foedselsdato
                 )})`}
               </dt>
               <dd className={styles.listDescription}>
@@ -123,7 +123,7 @@ export const ResultatkortAvansertBeregning: React.FC<Props> = ({
               `${formatUttaksalder(intl, { ...uttaksalder }, { compact: true })}
                   (${transformUttaksalderToDate(
                     uttaksalder,
-                    person?.foedselsdato as string
+                    person?.foedselsdato
                   )})`}
           </dt>
           <dd className={styles.listDescription}>

@@ -49,6 +49,7 @@ describe('VelgUttaksalder', () => {
 
     await user.click(screen.getByText('65 alder.aar', { exact: false }))
 
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled()
 
     rerender(<VelgUttaksalder {...getProps()} />)

@@ -41,7 +41,7 @@ describe('ResultatkortAvansertBeregning', () => {
         },
       }
     )
-    store.dispatch(apiSlice.endpoints.getInntekt.initiate())
+    await store.dispatch(apiSlice.endpoints.getInntekt.initiate())
     expect(
       await screen.findByText('beregning.avansert.resultatkort.tittel')
     ).toBeVisible()
@@ -58,9 +58,7 @@ describe('ResultatkortAvansertBeregning', () => {
         exact: false,
       })
     ).toBeVisible()
-    user.click(
-      await screen.findByText('beregning.avansert.resultatkort.button')
-    )
+    await user.click(screen.getByText('beregning.avansert.resultatkort.button'))
     expect(loggerSpy).toHaveBeenCalledWith('expansion card åpnet', {
       tekst: 'Resultatkort avansert beregning',
     })
@@ -83,7 +81,7 @@ describe('ResultatkortAvansertBeregning', () => {
         },
       }
     )
-    store.dispatch(apiSlice.endpoints.getInntekt.initiate())
+    await store.dispatch(apiSlice.endpoints.getInntekt.initiate())
 
     expect(
       screen.queryByText('beregning.avansert.resultatkort.frem_til_uttak')

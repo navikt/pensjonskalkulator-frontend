@@ -30,8 +30,8 @@ describe('PageFramework', () => {
     const button = await screen.findByTestId(
       'landingside-enkel-kalkulator-button'
     )
-    user.click(button)
-    expect(await screen.findByTestId('pageframework-loader')).toBeVisible()
+    await user.click(button)
+    expect(screen.getByTestId('pageframework-loader')).toBeVisible()
   })
 
   it('rendrer slik den skal, med wrapper og Heading på riktig nivå', async () => {

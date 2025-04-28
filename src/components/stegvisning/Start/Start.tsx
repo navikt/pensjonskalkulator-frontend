@@ -3,12 +3,19 @@ import { format } from 'date-fns'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 import { ExternalLinkIcon } from '@navikt/aksel-icons'
-import { BodyLong, Button, Heading, Link } from '@navikt/ds-react'
+import {
+  BodyLong,
+  Button,
+  Heading,
+  InternalHeader,
+  Link,
+  Spacer,
+} from '@navikt/ds-react'
 
 import { InfoOmFremtidigVedtak } from '@/components/InfoOmFremtidigVedtak'
 import { Card } from '@/components/common/Card'
 import { TelefonLink } from '@/components/common/TelefonLink'
-import { externalUrls } from '@/router/constants'
+import { BASE_PATH, externalUrls } from '@/router/constants'
 import { DATE_ENDUSER_FORMAT } from '@/utils/dates'
 import { isLoependeVedtakEndring } from '@/utils/loependeVedtak'
 import { logOpenLink, wrapLogger } from '@/utils/logging'
@@ -34,6 +41,14 @@ export function Start({ navn, loependeVedtak, onCancel, onNext }: Props) {
   return (
     <>
       <InfoOmFremtidigVedtak loependeVedtak={loependeVedtak} isCentered />
+
+      <InternalHeader>
+        <InternalHeader.Title href={`${BASE_PATH}/veileder`}>
+          Pensjonskalkulator
+        </InternalHeader.Title>
+        <Spacer />
+        <InternalHeader.User name="Heisann" />
+      </InternalHeader>
 
       <Card hasLargePadding hasMargin>
         <div className={styles.wrapper}>

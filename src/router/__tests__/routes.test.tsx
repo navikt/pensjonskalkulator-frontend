@@ -22,6 +22,7 @@ import { render, screen, waitFor } from '@/test-utils'
 import { BASE_PATH, henvisningUrlParams, paths } from '../constants'
 import { routes } from '../routes'
 
+// eslint-disable-next-line @typescript-eslint/unbound-method
 const initialGetState = store.getState
 
 const fakeApiCalls = {

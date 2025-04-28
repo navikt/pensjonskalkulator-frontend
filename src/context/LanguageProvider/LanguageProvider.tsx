@@ -55,7 +55,7 @@ export function LanguageProvider({ children }: Props) {
       .fetch(
         `*[_type == "forbeholdAvsnitt" && language == "${locale}"] | order(order asc) | {overskrift,innhold}`
       )
-      .then((sanityForbeholdAvsnittResponse) => {
+      .then((sanityForbeholdAvsnittResponse: SanityForbeholdAvsnitt[]) => {
         setSanityForbeholdAvsnittData(sanityForbeholdAvsnittResponse || [])
       })
       .catch(() => {
@@ -68,7 +68,7 @@ export function LanguageProvider({ children }: Props) {
       .fetch(
         `*[_type == "guidepanel" && language == "${locale}"] | {name,overskrift,innhold}`
       )
-      .then((sanityGuidePanelResponse) => {
+      .then((sanityGuidePanelResponse: SanityGuidePanel[]) => {
         setSanityGuidePanelData(
           Object.fromEntries(
             (sanityGuidePanelResponse || []).map(
@@ -87,10 +87,10 @@ export function LanguageProvider({ children }: Props) {
       .fetch(
         `*[_type == "readmore" && language == "${locale}"] | {name,overskrift,innhold}`
       )
-      .then((sanityReadMoreResponse) => {
+      .then((sanityReadMoreResponse: SanityReadMore[]) => {
         setSanityReadMoreData(
           Object.fromEntries(
-            (sanityReadMoreResponse || []).map((readmore: SanityReadMore) => [
+            (sanityReadMoreResponse || []).map((readmore) => [
               readmore.name,
               readmore,
             ])
