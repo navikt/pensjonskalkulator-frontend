@@ -1,16 +1,6 @@
 import { Provider } from 'react-redux'
 
-import {
-  fulfilledGetLoependeVedtak0Ufoeregrad,
-  fulfilledGetLoependeVedtak75Ufoeregrad,
-  fulfilledGetLoependeVedtak100Ufoeregrad,
-  fulfilledGetLoependeVedtakLoepende50Alderspensjon,
-  fulfilledGetLoependeVedtakLoependeAlderspensjon,
-  fulfilledGetLoependeVedtakLoependeAlderspensjonOg40Ufoeretrygd,
-  fulfilledGetPerson,
-  fulfilledGetPersonEldreEnnAfpUfoereOppsigelsesalder,
-  fulfilledGetPersonYngreEnnAfpUfoereOppsigelsesalder,
-} from '@/mocks/mockedRTKQueryApiCalls'
+import { fulfilledGetLoependeVedtak0Ufoeregrad } from '@/mocks/mockedRTKQueryApiCalls'
 import { paths } from '@/router/constants'
 import { userInputInitialState } from '@/state/userInput/userInputSlice'
 import * as userInputReducerUtils from '@/state/userInput/userInputSlice'
