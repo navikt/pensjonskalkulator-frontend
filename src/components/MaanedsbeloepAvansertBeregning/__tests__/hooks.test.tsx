@@ -2,9 +2,7 @@ import { IntlProvider } from 'react-intl'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { getSelectedLanguage } from '@/context/LanguageProvider/utils'
-// Import the mocked functions for controlling their behavior
 import { useAppSelector } from '@/state/hooks'
-// Import actual selectors to reference them in our mocks
 import {
   selectCurrentSimulation,
   selectFoedselsdato,
