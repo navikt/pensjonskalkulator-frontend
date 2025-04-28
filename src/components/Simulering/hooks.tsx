@@ -458,7 +458,7 @@ export const useHighchartsRegressionPlugin = () => {
                 ? [point.dataLabel]
                 : []
             if (point.graphic) {
-              // @ts-ignore
+              // @ts-expect-error
               point.graphic.element.point = point
             }
             dataLabels.forEach(function (dataLabel) {
@@ -468,10 +468,10 @@ export const useHighchartsRegressionPlugin = () => {
           // Add the event listeners, we need to do this only once
           if (!series._hasTracking) {
             series.trackerGroups.forEach(function (key) {
-              // @ts-ignore
+              // @ts-expect-error
               if (series[key]) {
                 // We don't always have dataLabelsGroup
-                // @ts-ignore
+                // @ts-expect-error
                 series[key]
                   .addClass('highcharts-tracker')
                   .on('mouseover', onMouseOver)
@@ -480,7 +480,7 @@ export const useHighchartsRegressionPlugin = () => {
                   })
                   .on('touchstart', onMouseOver)
                 if (!chart.styledMode && series.options.cursor) {
-                  // @ts-ignore
+                  // @ts-expect-error
                   series[key].css({ cursor: series.options.cursor })
                 }
               }

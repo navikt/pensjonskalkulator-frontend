@@ -233,7 +233,6 @@ describe('userInputSlice', () => {
         ...userInputInitialState,
         currentSimulation: {
           beregningsvalg: null,
-          formatertUttaksalderReadOnly: null,
           uttaksalder: { aar: 65, maaneder: 4 },
           aarligInntektFoerUttakBeloep: null,
           gradertUttaksperiode: null,
@@ -342,33 +341,6 @@ describe('userInputSlice', () => {
       })
     })
 
-    it('syncCurrentSimulationFormatertUttaksalderReadOnly', () => {
-      const updatedState = userInputReducer(
-        userInputInitialState,
-        userInputActions.syncCurrentSimulationFormatertUttaksalderReadOnly(
-          '66 alder.aar string.og 4 alder.maaneder'
-        )
-      )
-
-      expect(updatedState).toStrictEqual({
-        ...userInputInitialState,
-        currentSimulation: {
-          ...userInputInitialState.currentSimulation,
-          formatertUttaksalderReadOnly:
-            '66 alder.aar string.og 4 alder.maaneder',
-        },
-      })
-
-      const nullstiltState = userInputReducer(
-        userInputInitialState,
-        userInputActions.syncCurrentSimulationFormatertUttaksalderReadOnly(null)
-      )
-
-      expect(nullstiltState).toStrictEqual({
-        ...userInputInitialState,
-      })
-    })
-
     it('flush', () => {
       const updatedState = userInputReducer(
         {
@@ -381,8 +353,6 @@ describe('userInputSlice', () => {
           afp: 'ja_offentlig',
           currentSimulation: {
             beregningsvalg: null,
-            formatertUttaksalderReadOnly:
-              '66 alder.aar string.og 4 alder.maaneder',
             uttaksalder: { aar: 66, maaneder: 4 },
             aarligInntektFoerUttakBeloep: '300 000',
             gradertUttaksperiode: null,
@@ -415,8 +385,6 @@ describe('userInputSlice', () => {
           afp: 'ja_offentlig',
           currentSimulation: {
             beregningsvalg: null,
-            formatertUttaksalderReadOnly:
-              '66 alder.aar string.og 4 alder.maaneder',
             uttaksalder: { aar: 66, maaneder: 4 },
             aarligInntektFoerUttakBeloep: '300 000',
             gradertUttaksperiode: null,
