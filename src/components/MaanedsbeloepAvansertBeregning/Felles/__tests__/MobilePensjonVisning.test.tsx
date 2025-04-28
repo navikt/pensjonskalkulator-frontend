@@ -51,9 +51,9 @@ describe('MobilePensjonVisning', () => {
       maaneder: 0,
     })
 
-    expect(screen.getByText('10 000 kr')).toBeInTheDocument()
-    expect(screen.getByText('5 000 kr')).toBeInTheDocument()
-    expect(screen.getByText('20 000 kr')).toBeInTheDocument()
+    expect(screen.getByText('10 000 kr')).toBeVisible()
+    expect(screen.getByText('5 000 kr')).toBeVisible()
+    expect(screen.getByText('20 000 kr')).toBeVisible()
 
     const readMoreElements = screen.queryAllByRole('button')
     expect(readMoreElements.length).toBe(0)
