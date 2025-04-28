@@ -91,6 +91,6 @@ describe('MobilePensjonVisning', () => {
       />
     )
 
-    expect(screen.getByText(/januar 2030/)).toBeInTheDocument()
+    expect(screen.getByText(/januar 2030/)).toBeVisible()
   })
 })
