@@ -519,7 +519,7 @@ export const onAvansertBeregningSubmit = (
     harAvansertSkjemaUnsavedChanges,
   } = previousData
 
-  // TODO: Vurder å kjøre toString() på disse for å unngå `as string` og tilsvarende senere
+  // TODO: Vurder å sende inn verdiene fra controlled state i stedet for direkte fra skjemaet, for bedre typer (kan unngå `as string` o.l.)
   const beregningsvalgFormData = data.get(
     AVANSERT_FORM_NAMES.beregningsTypeRadio
   ) as Beregningsvalg | null
