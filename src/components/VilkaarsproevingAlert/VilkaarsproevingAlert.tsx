@@ -63,18 +63,41 @@ export const VilkaarsproevingAlert = ({
               />
             )}
 
-            {!isHeltUttaksalderLik && gradertUttaksalder && (
-              <FormattedMessage
-                id="beregning.vilkaarsproeving.alternativer.medAFP.heltOgGradertUttak"
-                values={{
-                  ...getFormatMessageValues(),
-                  alternativtGrad: uttaksgrad,
-                  alternativtHeltStartAar: heltUttaksalder?.aar,
-                  alternativtHeltStartMaaned: heltUttaksalder?.maaneder,
-                  nedreAldersgrense: formatUttaksalder(intl, nedreAldersgrense),
-                }}
-              />
-            )}
+            {!isHeltUttaksalderLik &&
+              gradertUttaksalder &&
+              uttaksgrad !== 100 && (
+                <FormattedMessage
+                  id="beregning.vilkaarsproeving.alternativer.medAFP.heltOgGradertUttak"
+                  values={{
+                    ...getFormatMessageValues(),
+                    alternativtGrad: uttaksgrad,
+                    alternativtHeltStartAar: heltUttaksalder?.aar,
+                    alternativtHeltStartMaaned: heltUttaksalder?.maaneder,
+                    nedreAldersgrense: formatUttaksalder(
+                      intl,
+                      nedreAldersgrense
+                    ),
+                  }}
+                />
+              )}
+
+            {!isHeltUttaksalderLik &&
+              gradertUttaksalder &&
+              uttaksgrad === 100 && (
+                <FormattedMessage
+                  id="beregning.vilkaarsproeving.alternativer.medAFP.heltOgGradertUttak100"
+                  values={{
+                    ...getFormatMessageValues(),
+                    alternativtGrad: uttaksgrad,
+                    alternativtHeltStartAar: heltUttaksalder?.aar,
+                    alternativtHeltStartMaaned: heltUttaksalder?.maaneder,
+                    nedreAldersgrense: formatUttaksalder(
+                      intl,
+                      nedreAldersgrense
+                    ),
+                  }}
+                />
+              )}
           </>
         ) : (
           <FormattedMessage
