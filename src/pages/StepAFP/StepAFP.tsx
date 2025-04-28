@@ -44,11 +44,7 @@ export function StepAFP() {
     }
 
     if (onStegvisningNext) {
-      onStegvisningNext(
-        afpUtregningValg === 'AFP_ETTERFULGT_AV_ALDERSPENSJON'
-          ? { skalBeregneAfpKap19: true }
-          : {}
-      )
+      onStegvisningNext()
     }
   }
 

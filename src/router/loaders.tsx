@@ -11,7 +11,11 @@ import {
 } from '@/router/constants'
 import { apiSlice } from '@/state/api/apiSlice'
 import { store } from '@/state/store'
-import { selectAfp, selectIsVeileder } from '@/state/userInput/selectors'
+import {
+  selectAfp,
+  selectIsVeileder,
+  selectSkalBeregneAfpKap19,
+} from '@/state/userInput/selectors'
 import {
   AFP_UFOERE_OPPSIGELSESALDER,
   isFoedselsdatoOverAlder,
@@ -296,4 +300,16 @@ export const stepSamtykkeOffentligAFPAccessGuard = async () => {
   return redirect(
     stepArrays[stepArrays.indexOf(paths.samtykkeOffentligAFP) + 1]
   )
+}
+
+export const beregningEnkelAccessGuard = async () => {
+  if (directAccessGuard()) {
+    return redirect(paths.start)
+  }
+  const state = store.getState()
+  const skalBeregneAfpKap19 = selectSkalBeregneAfpKap19(state)
+
+  if (skalBeregneAfpKap19) {
+    return redirect(paths.beregningAvansert)
+  }
 }

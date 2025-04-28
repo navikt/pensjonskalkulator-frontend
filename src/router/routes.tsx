@@ -23,6 +23,7 @@ import { ErrorPage404 } from './RouteErrorBoundary/ErrorPage404'
 import { paths } from './constants'
 import {
   authenticationGuard,
+  beregningEnkelAccessGuard,
   directAccessGuard,
   landingPageAccessGuard,
   stepAFPAccessGuard,
@@ -146,7 +147,7 @@ export const routes: RouteObject[] = [
     ErrorBoundary: RouteErrorBoundary,
     children: [
       {
-        loader: directAccessGuard,
+        loader: beregningEnkelAccessGuard,
         path: paths.beregningEnkel,
         element: <Beregning visning="enkel" />,
       },

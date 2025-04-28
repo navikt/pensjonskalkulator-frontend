@@ -32,11 +32,7 @@ export const useStegvisningNavigation = (currentPath: Path) => {
 
   const { isFetching, data: loependeVedtak } = useGetLoependeVedtakQuery()
 
-  type StegvisningNextConfig = {
-    skalBeregneAfpKap19?: boolean
-  }
-
-  const onStegvisningNext = (config: StegvisningNextConfig = {}) => {
+  const onStegvisningNext = () => {
     const isKap19 = foedselsdato && isOvergangskull(foedselsdato)
     const stepArrays = isKap19
       ? stegvisningOrderKap19
@@ -46,13 +42,7 @@ export const useStegvisningNavigation = (currentPath: Path) => {
 
     const currentPathIndex = stepArrays.indexOf(currentPath)
 
-    // Skiper paths.beregningEnkel for å gå til paths.beregningAvansert dersom bruker skal simulere afp etterfulgt av ap
-
-    if (isKap19 && config.skalBeregneAfpKap19) {
-      navigate(stepArrays[currentPathIndex + 2])
-    } else {
-      navigate(stepArrays[currentPathIndex + 1])
-    }
+    navigate(stepArrays[currentPathIndex + 1])
   }
 
   const onStegvisningPrevious = () => {
