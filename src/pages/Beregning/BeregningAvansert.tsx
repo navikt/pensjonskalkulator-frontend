@@ -29,6 +29,7 @@ import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
   selectAarligInntektFoerUttakBeloep,
   selectAfp,
+  selectAfpInntektMaanedFoerUttak,
   selectCurrentSimulation,
   selectEpsHarInntektOver2G,
   selectEpsHarPensjon,
@@ -67,6 +68,9 @@ export const BeregningAvansert = () => {
   const epsHarInntektOver2G = useAppSelector(selectEpsHarInntektOver2G)
   const sivilstand = useAppSelector(selectSivilstand)
   const { data: person } = useGetPersonQuery()
+  const afpInntektMaanedFoerUttak = useAppSelector(
+    selectAfpInntektMaanedFoerUttak
+  )
 
   const normertPensjonsalder = useAppSelector(selectNormertPensjonsalder)
   const utenlandsperioder = useAppSelector(selectUtenlandsperioder)
@@ -100,7 +104,7 @@ export const BeregningAvansert = () => {
           },
           utenlandsperioder,
           beregningsvalg,
-          afpInntektMaanedFoerUttak: 0, //TODO: denne skal settes i avansertskjema for pre2025OffentligAfp
+          afpInntektMaanedFoerUttak: afpInntektMaanedFoerUttak,
         })
       }
     }, [

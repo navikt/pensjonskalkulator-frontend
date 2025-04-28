@@ -239,6 +239,15 @@ export function Simuleringsdetaljer(props: {
                   } NOK`}
                 </li>
                 <br />
+                <li>
+                  <strong>Afp grad: </strong>{' '}
+                  {`${pre2025OffentligAfp.afpGrad} %`}
+                </li>
+                <br />
+                <li>
+                  <strong>70 prosent regelen: </strong>{' '}
+                  {`${pre2025OffentligAfp.afpAvkortetTil70Prosent} %`}
+                </li>
               </ul>
             </dd>
           </>

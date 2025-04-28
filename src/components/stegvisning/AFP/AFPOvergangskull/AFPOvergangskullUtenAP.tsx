@@ -49,7 +49,7 @@ export function AFPOvergangskullUtenAP({
     const formData = new FormData(e.currentTarget)
     const afpInput = formData.get('afp') as AfpRadio | null
     const simuleringstypeInput = formData.get(
-      'skalBeregneAfpKap19'
+      'skalBeregneAfp'
     ) as AfpUtregningValg
 
     if (!afpInput) {
@@ -70,7 +70,7 @@ export function AFPOvergangskullUtenAP({
       })
       setValidationError((prev) => ({
         ...prev,
-        skalBeregneAfpKap19: errorMessage,
+        skalBeregneAfp: errorMessage,
       }))
       logger('skjema validering feilet', {
         skjemanavn: STEGVISNING_FORM_NAMES.afp,
@@ -157,7 +157,7 @@ export function AFPOvergangskullUtenAP({
             legend={
               <FormattedMessage id="stegvisning.afp.overgangskullUtenAP.radio_label" />
             }
-            name="skalBeregneAfpKap19"
+            name="skalBeregneAfp"
             defaultValue={previousAfpUtregningValg}
             onChange={() => setValidationError({ afp: '', skalBeregneAfp: '' })}
             error={validationError.skalBeregneAfp}

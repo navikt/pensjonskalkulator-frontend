@@ -583,8 +583,7 @@ export interface components {
         | 'SAMBOER'
       epsHarInntektOver2G: boolean
       epsHarPensjon: boolean
-      /** Format: int32 */
-      afpInntektMaanedFoerUttak?: number
+      afpInntektMaanedFoerUttak?: boolean
       /** @enum {string} */
       afpOrdning?:
         | 'AFPKOM'
@@ -614,6 +613,8 @@ export interface components {
       alder: number
       /** Format: int32 */
       beloep: number
+      /** Format: int32 */
+      maanedligBeloep?: number
     }
     PersonligSimuleringAlderResultV8: {
       /** Format: int32 */
@@ -696,6 +697,9 @@ export interface components {
       afpTillegg: number
       /** Format: int32 */
       saertillegg: number
+      /** Format: int32 */
+      afpGrad: number
+      afpAvkortetTil70Prosent: boolean
     }
     PersonligSimuleringResultV8: {
       alderspensjon: components['schemas']['PersonligSimuleringAlderspensjonResultV8'][]
@@ -834,6 +838,11 @@ export interface components {
       landkode: string
       arbeidetUtenlands: boolean
     }
+    UttaksalderError: {
+      /** @enum {string} */
+      errorCode: 'AFP_IKKE_I_VILKAARSPROEVING'
+      cause?: string
+    }
     UttaksalderResultV2: {
       /** Format: int32 */
       aar: number
@@ -904,6 +913,8 @@ export interface components {
       sluttAlder?: components['schemas']['Alder']
       /** Format: int32 */
       aarligUtbetaling: number
+      /** Format: int32 */
+      maanedligUtbetaling?: number
     }
     PensjonsavtaleAlderSpecV2: {
       /** Format: int32 */
@@ -1463,7 +1474,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          '*/*': unknown
+          '*/*': components['schemas']['UttaksalderError']
         }
       }
     }

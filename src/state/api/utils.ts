@@ -129,7 +129,7 @@ export const generateAlderspensjonRequestBody = (args: {
   heltUttak?: HeltUttak
   utenlandsperioder: Utenlandsperiode[]
   beregningsvalg?: Beregningsvalg | null
-  afpInntektMaanedFoerUttak?: number
+  afpInntektMaanedFoerUttak?: boolean | null
 }): AlderspensjonRequestBody | undefined => {
   const {
     loependeVedtak,
@@ -185,7 +185,7 @@ export const generateAlderspensjonRequestBody = (args: {
         : undefined,
     },
     utenlandsperiodeListe: transformUtenlandsperioderArray(utenlandsperioder),
-    afpInntektMaanedFoerUttak,
+    afpInntektMaanedFoerUttak: afpInntektMaanedFoerUttak ?? undefined,
   }
 }
 
