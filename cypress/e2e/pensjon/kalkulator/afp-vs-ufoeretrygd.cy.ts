@@ -76,7 +76,7 @@ describe('AFP vs uføretrygd', () => {
         cy.get('[data-testid="toggle-avansert"]').within(() => {
           cy.contains('Avansert').click()
         })
-        cy.contains('Hva vil du beregne?').should('be.visible') // Med/uten AFP
+        cy.get('[data-testid="beregnings-type-radio"]').should('exist')
       })
     })
 
@@ -103,7 +103,7 @@ describe('AFP vs uføretrygd', () => {
         cy.get('[data-testid="toggle-avansert"]').within(() => {
           cy.contains('Avansert').click()
         })
-        cy.contains('Hva vil du beregne?').should('be.visible') // Med/uten AFP
+        cy.get('[data-testid="beregnings-type-radio"]').should('exist')
       })
     })
 
@@ -206,11 +206,11 @@ describe('AFP vs uføretrygd', () => {
       })
 
       it('forventer jeg å kunne velge å beregne Alderspensjon og uføretrygd, uten AFP.', () => {
-        cy.get('[type="radio"]').first().check()
+        cy.get('[type="radio"][value="uten_afp"]').check()
       })
 
       it('forventer jeg å kunne velge å beregne Alderspensjon og AFP, uten uføretrygd fra 62 år.', () => {
-        cy.get('[type="radio"]').eq(1).check()
+        cy.get('[type="radio"][value="med_afp"]').check()
       })
     })
 
@@ -223,7 +223,7 @@ describe('AFP vs uføretrygd', () => {
         cy.get('[data-testid="toggle-avansert"]').within(() => {
           cy.contains('Avansert').click()
         })
-        cy.get('[type="radio"]').eq(1).check()
+        cy.get('[type="radio"][value="med_afp"]').check()
       })
 
       describe('Når jeg velger å beregne Alderspensjon og AFP, uten uføretrygd fra 62 år,', () => {
@@ -319,9 +319,17 @@ describe('AFP vs uføretrygd', () => {
         })
       })
 
+      // NAU
       describe('Når jeg har for lav opptjening til valgt uttak,', () => {
-        it('forventer jeg informasjon om at jeg ikke har høy nok opptjening, og at jeg må sette ned uttaksgraden.', () => {
-          cy.get('[data-testid="uttaksgrad"]').select('100 %')
+        it('forventer jeg informasjon om at jeg ikke har høy nok opptjening, og at jeg må endre valgene mine. Jeg forventer å få ett forslag om hvilken grad jeg kan ta ved 62 år.', () => {
+          cy.get('[data-testid="uttaksgrad"]').select('80 %')
+          cy.get('[data-testid="inntekt-vsa-gradert-uttak-radio-nei"]').check()
+          cy.get(
+            '[data-testid="age-picker-uttaksalder-helt-uttak-aar"]'
+          ).select('67')
+          cy.get(
+            '[data-testid="age-picker-uttaksalder-helt-uttak-maaneder"]'
+          ).select('0')
           cy.get('[data-testid="inntekt-vsa-helt-uttak-radio-nei"]').check()
           cy.intercept(
             {
@@ -333,7 +341,9 @@ describe('AFP vs uføretrygd', () => {
               vilkaarsproeving: {
                 vilkaarErOppfylt: false,
                 alternativ: {
-                  heltUttaksalder: { aar: 65, maaneder: 3 },
+                  heltUttaksalder: { aar: 67, maaneder: 0 },
+                  gradertUttaksalder: { aar: 62, maaneder: 0 },
+                  uttaksgrad: 80,
                 },
               },
             }
@@ -345,16 +355,17 @@ describe('AFP vs uføretrygd', () => {
             'be.visible'
           )
           cy.contains(
-            'Opptjeningen din er ikke høy nok til ønsket uttak. Du må sette ned uttaksgraden.'
+            'Opptjeningen din er ikke høy nok til ønsket uttak. Du må endre valgene dine.'
+          ).should('be.visible')
+
+          cy.contains(
+            'Et alternativ er at du ved 62 år kan ta ut 80 % alderspensjon. Prøv gjerne andre kombinasjoner.'
           ).should('be.visible')
         })
       })
 
       describe('Når jeg har for lav opptjening til valgt uttak,', () => {
-        // TODO: Sjekk om NAU er riktig for test-case.
-        // Som bruker som har valgt gradert uttak fra 62 år (nedre pensjonsalder) og 100 % tidligere enn 67 år (normert pensjonsalder)
-
-        it('forventer jeg ett alternativt forslag om å sette ned uttaksgraden og øke alder for 100% uttak.', () => {
+        it('forventer jeg informasjon om at jeg ikke har høy nok opptjening, og at jeg må endre valgene mine. Jeg forventer å få ett ett alternativt forslag om hvilken grad jeg kan ta ved 62 år, og hvilken alder jeg kan ta 100%.', () => {
           cy.get('[data-testid="uttaksgrad"]').select('80 %')
           cy.get('[data-testid="inntekt-vsa-gradert-uttak-radio-nei"]').check()
           cy.get(
@@ -375,7 +386,9 @@ describe('AFP vs uføretrygd', () => {
               vilkaarsproeving: {
                 vilkaarErOppfylt: false,
                 alternativ: {
-                  heltUttaksalder: { aar: 67, maaneder: 0 },
+                  heltUttaksalder: { aar: 66, maaneder: 2 },
+                  gradertUttaksalder: { aar: 62, maaneder: 0 },
+                  uttaksgrad: 60,
                 },
               },
             }
@@ -386,16 +399,18 @@ describe('AFP vs uføretrygd', () => {
           cy.contains('Pensjonsgivende årsinntekt frem til pensjon').should(
             'be.visible'
           )
+
           cy.contains(
-            'Opptjeningen din er ikke høy nok til ønsket uttak. Du må sette ned uttaksgraden.'
+            'Opptjeningen din er ikke høy nok til ønsket uttak. Du må endre valgene dine.'
+          ).should('be.visible')
+
+          cy.contains(
+            'Et alternativ er at du ved 62 år kan ta ut 60 % alderspensjon hvis du tar ut 100 % alderspensjon ved 66 år og 2 måneder eller senere. Prøv gjerne andre kombinasjoner.'
           ).should('be.visible')
         })
       })
 
       describe('Når jeg har for lav opptjening til å gjøre noe uttak fra 62 år,', () => {
-        // TODO: Sjekk om NAU er riktig for test-case.
-        // Som bruker som har lav opptjening opptjening til 20 % fra 62 år (nedre pensjonsalder) og 100% fra 67 år (normert pensjonsalder)
-
         it('forventer jeg informasjon om at opptjeningen ikke er høy nok til uttak av alderspensjon ved 62 år (nedre pensjonsalder), og at kalkulatoren ikke kan beregne uttak etter nedre alder.', () => {
           cy.get('[data-testid="uttaksgrad"]').select('20 %')
           cy.get('[data-testid="inntekt-vsa-gradert-uttak-radio-nei"]').check()
@@ -416,9 +431,7 @@ describe('AFP vs uføretrygd', () => {
               alderspensjon: [],
               vilkaarsproeving: {
                 vilkaarErOppfylt: false,
-                alternativ: {
-                  heltUttaksalder: { aar: 67, maaneder: 0 },
-                },
+                alternativ: undefined,
               },
             }
           ).as('fetchAlderspensjon')
@@ -429,7 +442,16 @@ describe('AFP vs uføretrygd', () => {
             'be.visible'
           )
           cy.contains(
-            'Opptjeningen din er ikke høy nok til ønsket uttak. Du må sette ned uttaksgraden.'
+            'Opptjeningen din er ikke høy nok til uttak av alderspensjon ved 62 år.'
+          ).should('be.visible')
+          cy.contains(
+            'Kalkulatoren kan ikke beregne uttak etter 62 år.'
+          ).should('be.visible')
+          cy.contains(
+            'Hvis du tar ut alderspensjon og AFP senere enn dette, vil du i perioden fra du er 62 år frem til uttak ikke få uføretrygd. Kontakt Nav for veiledning hvis du vurderer å si fra deg uføretrygden.'
+          ).should('be.visible')
+          cy.contains(
+            'Har du rett til livsvarig AFP i offentlig sektor kan du ta ut AFP før alderspensjon. Kontakt tjenestepensjonsordningen din for veiledning.'
           ).should('be.visible')
         })
       })
@@ -493,7 +515,7 @@ describe('AFP vs uføretrygd', () => {
         cy.get('[data-testid="toggle-avansert"]').within(() => {
           cy.contains('Avansert').click()
         })
-        cy.get('[type="radio"]').first().check()
+        cy.get('[type="radio"][value="uten_afp"]').check()
       })
 
       describe('Når jeg velger å beregne Alderspensjon og uføretrygd, uten AFP,', () => {
@@ -656,7 +678,7 @@ describe('AFP vs uføretrygd', () => {
           ).should('be.visible')
         })
 
-        it.only('forventer jeg at graf og tabell viser alderspensjon.', () => {
+        it('forventer jeg at graf og tabell viser alderspensjon.', () => {
           expect_afp_og_pensjonsavtaler_i_graf_og_tabell()
         })
 

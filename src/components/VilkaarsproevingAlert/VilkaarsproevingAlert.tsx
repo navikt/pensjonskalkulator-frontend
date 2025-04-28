@@ -65,14 +65,15 @@ export const VilkaarsproevingAlert = ({
 
             {!isHeltUttaksalderLik &&
               gradertUttaksalder &&
+              heltUttaksalder &&
               uttaksgrad !== 100 && (
                 <FormattedMessage
                   id="beregning.vilkaarsproeving.alternativer.medAFP.heltOgGradertUttak"
                   values={{
                     ...getFormatMessageValues(),
                     alternativtGrad: uttaksgrad,
-                    alternativtHeltStartAar: heltUttaksalder?.aar,
-                    alternativtHeltStartMaaned: heltUttaksalder?.maaneder,
+                    alternativtHeltStartAar: heltUttaksalder.aar,
+                    alternativtHeltStartMaaned: heltUttaksalder.maaneder,
                     nedreAldersgrense: formatUttaksalder(
                       intl,
                       nedreAldersgrense
@@ -89,8 +90,6 @@ export const VilkaarsproevingAlert = ({
                   values={{
                     ...getFormatMessageValues(),
                     alternativtGrad: uttaksgrad,
-                    alternativtHeltStartAar: heltUttaksalder?.aar,
-                    alternativtHeltStartMaaned: heltUttaksalder?.maaneder,
                     nedreAldersgrense: formatUttaksalder(
                       intl,
                       nedreAldersgrense
