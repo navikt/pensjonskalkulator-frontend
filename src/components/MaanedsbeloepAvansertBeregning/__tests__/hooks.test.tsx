@@ -47,7 +47,7 @@ describe('usePensjonBeregninger', () => {
   // Default mock values to be used across tests
   const mockUttaksalder: Alder = { aar: 67, maaneder: 0 }
   const mockGradertUttaksperiode = {
-    uttaksalder: { aar: 62, maaneder: 6 } as Alder,
+    uttaksalder: { aar: 62, maaneder: 6 },
     grad: 40,
   }
   const mockFoedselsdato = '1980-01-01'
