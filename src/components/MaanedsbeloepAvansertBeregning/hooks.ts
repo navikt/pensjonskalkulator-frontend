@@ -1,10 +1,13 @@
+import { format } from 'date-fns'
+import { enGB, nb, nn } from 'date-fns/locale'
+
 import { getSelectedLanguage } from '@/context/LanguageProvider/utils'
 import { useAppSelector } from '@/state/hooks'
 import {
   selectCurrentSimulation,
   selectFoedselsdato,
 } from '@/state/userInput/selectors'
-import { transformUttaksalderToDate } from '@/utils/alder'
+import { calculateUttaksalderAsDate } from '@/utils/alder'
 
 import {
   hentSumOffentligTjenestepensjonVedUttak,
@@ -70,18 +73,11 @@ export const usePensjonBeregninger = ({
   }
 
   const hentUttaksmaanedOgAar = (uttak: Alder) => {
-    const date = transformUttaksalderToDate(uttak, foedselsdato!)
-    const [day, month, year] = date.split('.')
-    const maaned = new Date(`${year}-${month}-${day}`).toLocaleDateString(
-      getSelectedLanguage(),
-      {
-        month: 'long',
-      }
-    )
-    return {
-      maaned,
-      aar: year,
-    }
+    const date = calculateUttaksalderAsDate(uttak, foedselsdato!)
+    const language = getSelectedLanguage()
+    const locale = language === 'en' ? enGB : language === 'nn' ? nn : nb
+
+    return `${format(date, 'LLLL', { locale })} ${format(date, 'yyyy')}`
   }
 
   // Lager pensjonsdata for gradering og uttaksalder

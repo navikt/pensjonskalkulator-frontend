@@ -11,7 +11,7 @@ import { PensjonDataVisning } from './PensjonDataVisning'
 interface Props {
   pensjonsdata: Pensjonsdata[]
   summerYtelser: (data: Pensjonsdata) => number
-  hentUttaksmaanedOgAar: (alder: Alder) => { maaned: string; aar: string }
+  hentUttaksmaanedOgAar: (alder: Alder) => string
 }
 
 export const PensjonVisningDesktop: React.FC<Props> = ({
@@ -50,7 +50,7 @@ export const PensjonVisningDesktop: React.FC<Props> = ({
               {data.alderspensjon &&
                 !data.afp &&
                 !data.pensjonsavtale &&
-                ` (${hentUttaksmaanedOgAar(data.alder).maaned} ${hentUttaksmaanedOgAar(data.alder).aar})`}
+                ` (${hentUttaksmaanedOgAar(data.alder)}`}
             </Heading>
 
             <PensjonDataVisning

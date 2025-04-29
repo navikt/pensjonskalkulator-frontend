@@ -22,7 +22,7 @@ describe('MobilePensjonVisning', () => {
   })
 
   const mockHentUttaksmaanedOgAar = vi.fn(() => {
-    return { maaned: 'januar', aar: '2030' }
+    return 'januar 2030'
   })
 
   it('renderer korrekt uten gradering', () => {

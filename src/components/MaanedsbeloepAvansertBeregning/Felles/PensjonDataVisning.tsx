@@ -14,7 +14,7 @@ import styles from './PensjonDataVisning.module.scss'
 interface Props {
   pensjonsdata: Pensjonsdata
   summerYtelser: (data: Pensjonsdata) => number
-  hentUttaksMaanedOgAar: (alder: Alder) => { maaned: string; aar: string }
+  hentUttaksMaanedOgAar: (alder: Alder) => string
 }
 
 export const PensjonDataVisning: React.FC<Props> = ({
@@ -83,7 +83,7 @@ export const PensjonDataVisning: React.FC<Props> = ({
               <BodyLong>
                 <FormattedMessage
                   id="beregning.avansert.maanedsbeloep.sum"
-                  values={hentUttaksMaanedOgAar(alder)}
+                  values={{ maanedOgAar: hentUttaksMaanedOgAar(alder) }}
                 />
                 :
               </BodyLong>

@@ -6,7 +6,7 @@ import {
   selectFoedselsdato,
 } from '@/state/userInput/selectors'
 import { renderHook } from '@/test-utils'
-import { transformUttaksalderToDate } from '@/utils/alder'
+import { calculateUttaksalderAsDate } from '@/utils/alder'
 
 import { usePensjonBeregninger } from '../hooks'
 
@@ -15,7 +15,7 @@ vi.mock('@/state/hooks', () => ({
 }))
 
 vi.mock('@/utils/alder', () => ({
-  transformUttaksalderToDate: vi.fn(),
+  calculateUttaksalderAsDate: vi.fn(),
 }))
 
 vi.mock('@/context/LanguageProvider/utils', () => ({
@@ -37,21 +37,19 @@ describe('usePensjonBeregninger', () => {
 
   beforeEach(() => {
     vi.resetAllMocks()
-    ;(useAppSelector as ReturnType<typeof vi.fn>).mockImplementation(
-      (selector) => {
-        if (selector === selectCurrentSimulation) {
-          return {
-            uttaksalder: mockUttaksalder,
-            gradertUttaksperiode: mockGradertUttaksperiode,
-            aarligInntektVsaHelPensjon: undefined,
-          }
+    vi.mocked(useAppSelector).mockImplementation((selector) => {
+      if (selector === selectCurrentSimulation) {
+        return {
+          uttaksalder: mockUttaksalder,
+          gradertUttaksperiode: mockGradertUttaksperiode,
+          aarligInntektVsaHelPensjon: undefined,
         }
-        if (selector === selectFoedselsdato) {
-          return mockFoedselsdato
-        }
-        return undefined
       }
-    )
+      if (selector === selectFoedselsdato) {
+        return mockFoedselsdato
+      }
+      return undefined
+    })
   })
 
   it('returnerer korrekt struktur for pensjonsdata', () => {
@@ -132,8 +130,8 @@ describe('usePensjonBeregninger', () => {
   it('formaterer måned og år korrekt', () => {
     const props = {}
 
-    ;(transformUttaksalderToDate as ReturnType<typeof vi.fn>).mockReturnValue(
-      '01.01.2047'
+    vi.mocked(calculateUttaksalderAsDate).mockReturnValue(
+      new Date('2047-01-01')
     )
     vi.spyOn(Date.prototype, 'toLocaleDateString').mockReturnValue('januar')
 
@@ -142,10 +140,7 @@ describe('usePensjonBeregninger', () => {
     const testAlder = { aar: 67, maaneder: 0 }
     const formattedDate = result.current.hentUttaksmaanedOgAar(testAlder)
 
-    expect(formattedDate).toEqual({
-      maaned: 'januar',
-      aar: '2047',
-    })
+    expect(formattedDate).toEqual('januar 2047')
   })
 
   it('håndterer udefinerte pensjonsavtaledata på en god måte', () => {
@@ -222,20 +217,18 @@ describe('usePensjonBeregninger', () => {
   })
 
   it('håndterer scenario uten gradert uttaksperiode', () => {
-    ;(useAppSelector as ReturnType<typeof vi.fn>).mockImplementation(
-      (selector) => {
-        if (selector === selectCurrentSimulation) {
-          return {
-            uttaksalder: mockUttaksalder,
-            gradertUttaksperiode: null,
-          }
+    vi.mocked(useAppSelector).mockImplementation((selector) => {
+      if (selector === selectCurrentSimulation) {
+        return {
+          uttaksalder: mockUttaksalder,
+          gradertUttaksperiode: null,
         }
-        if (selector === selectFoedselsdato) {
-          return mockFoedselsdato
-        }
-        return undefined
       }
-    )
+      if (selector === selectFoedselsdato) {
+        return mockFoedselsdato
+      }
+      return undefined
+    })
 
     const props = {
       alderspensjonMaanedligVedEndring: {

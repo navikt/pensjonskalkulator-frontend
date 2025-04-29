@@ -14,9 +14,7 @@ describe('PensjonDataVisning', () => {
   }
 
   const mockSummerYtelser = vi.fn(() => 35000)
-  const mockHentUttaksmaanedOgAar = vi.fn(() => {
-    return { maaned: 'januar', aar: '2030' }
-  })
+  const mockHentUttaksmaanedOgAar = vi.fn(() => 'januar 2030')
 
   it('viser alle verdier når alle pensjonstyper er tilstede', () => {
     render(

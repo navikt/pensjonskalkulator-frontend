@@ -29,7 +29,7 @@ describe('DesktopPensjonVisning', () => {
   })
 
   const mockHentUttaksmaanedOgAar = vi.fn(() => {
-    return { maaned: 'januar', aar: '2030' }
+    return 'januar 2030'
   })
 
   it('rendrer korrekt med flere pensjonsdata oppføringer', () => {
