@@ -1,10 +1,6 @@
-import { IntlProvider } from 'react-intl'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { getSelectedLanguage } from '@/context/LanguageProvider/utils'
-// Import the mocked functions for controlling their behavior
 import { useAppSelector } from '@/state/hooks'
-// Import actual selectors to reference them in our mocks
 import {
   selectCurrentSimulation,
   selectFoedselsdato,
@@ -12,14 +8,8 @@ import {
 import { renderHook } from '@/test-utils'
 import { transformUttaksalderToDate } from '@/utils/alder'
 
-import translations_nb from '../../../translations/nb'
-import {
-  hentSumOffentligTjenestepensjonVedUttak,
-  hentSumPensjonsavtalerVedUttak,
-} from '../../Pensjonsavtaler/utils'
 import { usePensjonBeregninger } from '../hooks'
 
-// Mock the hooks that usePensjonBeregninger depends on
 vi.mock('@/state/hooks', () => ({
   useAppSelector: vi.fn(),
 }))
@@ -37,16 +27,7 @@ vi.mock('../../Pensjonsavtaler/utils', () => ({
   hentSumOffentligTjenestepensjonVedUttak: vi.fn(),
 }))
 
-const wrapper = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <IntlProvider locale="nb" messages={translations_nb}>
-      {children}
-    </IntlProvider>
-  )
-}
-
 describe('usePensjonBeregninger', () => {
-  // Default mock values to be used across tests
   const mockUttaksalder: Alder = { aar: 67, maaneder: 0 }
   const mockGradertUttaksperiode = {
     uttaksalder: { aar: 62, maaneder: 6 } as Alder,
@@ -54,14 +35,10 @@ describe('usePensjonBeregninger', () => {
   }
   const mockFoedselsdato = '1980-01-01'
 
-  // Reset all mocks before each test
   beforeEach(() => {
     vi.resetAllMocks()
-
-    // Default mock implementations
     ;(useAppSelector as ReturnType<typeof vi.fn>).mockImplementation(
       (selector) => {
-        // Check which selector is being used and return appropriate mock data
         if (selector === selectCurrentSimulation) {
           return {
             uttaksalder: mockUttaksalder,
@@ -75,16 +52,6 @@ describe('usePensjonBeregninger', () => {
         return undefined
       }
     )
-    ;(
-      transformUttaksalderToDate as ReturnType<typeof vi.fn>
-    ).mockImplementation(() => '01.01.2047')
-    ;(getSelectedLanguage as ReturnType<typeof vi.fn>).mockReturnValue('nb')
-    ;(
-      hentSumPensjonsavtalerVedUttak as ReturnType<typeof vi.fn>
-    ).mockImplementation(() => 5000)
-    ;(
-      hentSumOffentligTjenestepensjonVedUttak as ReturnType<typeof vi.fn>
-    ).mockImplementation(() => 3000)
   })
 
   it('returnerer korrekt struktur for pensjonsdata', () => {
@@ -120,19 +87,15 @@ describe('usePensjonBeregninger', () => {
       pensjonsavtaler,
     }
 
-    const { result } = renderHook(() => usePensjonBeregninger(props), {
-      wrapper,
-    })
+    const { result } = renderHook(() => usePensjonBeregninger(props))
 
-    // Verify the structure and data returned by the hook
     expect(result.current).toHaveProperty('pensjonsdata')
     expect(result.current).toHaveProperty('summerYtelser')
     expect(result.current).toHaveProperty('hentUttaksmaanedOgAar')
     expect(result.current).toHaveProperty('harGradering')
     expect(result.current).toHaveProperty('uttaksalder')
 
-    // Verify that pensjonsdata contains the expected entries
-    expect(result.current.pensjonsdata).toHaveLength(2) // Should have both gradert and full uttak
+    expect(result.current.pensjonsdata).toHaveLength(2)
     expect(result.current.harGradering).toBe(true)
   })
 
@@ -155,7 +118,6 @@ describe('usePensjonBeregninger', () => {
       initialProps: {},
     })
 
-    // Test the summerYtelser function with sample data
     const testData = {
       alder: { aar: 67, maaneder: 0 },
       grad: 100,
@@ -170,7 +132,6 @@ describe('usePensjonBeregninger', () => {
   it('formaterer måned og år korrekt', () => {
     const props = {}
 
-    // Mock date formatting
     ;(transformUttaksalderToDate as ReturnType<typeof vi.fn>).mockReturnValue(
       '01.01.2047'
     )
@@ -193,19 +154,16 @@ describe('usePensjonBeregninger', () => {
         heltUttakMaanedligBeloep: 20000,
         gradertUttakMaanedligBeloep: 8000,
       },
-      // No pension agreements or AFP data
     }
 
     const { result } = renderHook(() => usePensjonBeregninger(props))
 
-    // Should still calculate pension data without errors
     expect(result.current.pensjonsdata).toBeDefined()
 
-    // Check that functions handle undefined data correctly
     const testData = {
       alder: { aar: 67, maaneder: 0 },
       grad: 100,
-      // No AFP
+
       pensjonsavtale: 0,
       alderspensjon: 20000,
     }
@@ -238,13 +196,32 @@ describe('usePensjonBeregninger', () => {
 
     const { result } = renderHook(() => usePensjonBeregninger(props))
 
-    // Extract pensjonsdata to verify AFP calculation
     const data = result.current.pensjonsdata
-    expect(data.find((item) => item.alder.aar === 67)?.afp).toBe(15000)
+    expect(data).toMatchObject([
+      {
+        afp: 10000,
+        alder: {
+          aar: 62,
+          maaneder: 6,
+        },
+        alderspensjon: undefined,
+        grad: 40,
+        pensjonsavtale: 0,
+      },
+      {
+        afp: 15000,
+        alder: {
+          aar: 67,
+          maaneder: 0,
+        },
+        alderspensjon: undefined,
+        grad: 100,
+        pensjonsavtale: 0,
+      },
+    ])
   })
 
   it('håndterer scenario uten gradert uttaksperiode', () => {
-    // Override the useAppSelector mock for this specific test
     ;(useAppSelector as ReturnType<typeof vi.fn>).mockImplementation(
       (selector) => {
         if (selector === selectCurrentSimulation) {
@@ -266,11 +243,8 @@ describe('usePensjonBeregninger', () => {
       },
     }
 
-    const { result } = renderHook(() => usePensjonBeregninger(props), {
-      wrapper,
-    })
+    const { result } = renderHook(() => usePensjonBeregninger(props))
 
-    // Should have only one data point for full retirement
     expect(result.current.pensjonsdata).toHaveLength(1)
     expect(result.current.harGradering).toBe(false)
   })

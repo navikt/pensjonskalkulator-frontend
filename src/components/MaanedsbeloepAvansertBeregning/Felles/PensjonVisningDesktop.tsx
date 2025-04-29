@@ -1,14 +1,12 @@
 import React from 'react'
 import { useIntl } from 'react-intl'
 
-import { BodyLong, Box, HStack, VStack } from '@navikt/ds-react'
+import { Box, HStack, Heading, VStack } from '@navikt/ds-react'
 
 import { formatUttaksalder } from '@/utils/alder'
 
 import { Pensjonsdata } from '../hooks'
 import { PensjonDataVisning } from './PensjonDataVisning'
-
-import styles from '../MaanedsbeloepAvansertBeregning.module.scss'
 
 interface Props {
   pensjonsdata: Pensjonsdata[]
@@ -26,7 +24,7 @@ export const PensjonVisningDesktop: React.FC<Props> = ({
   if (!pensjonsdata.length) return null
 
   return (
-    <HStack gap="8" width="100%" className={styles.maanedsbeloepDesktopOnly}>
+    <HStack gap="8" width="100%">
       {pensjonsdata.map((data, index) => (
         <Box
           key={`desktop-${index}`}
@@ -37,11 +35,12 @@ export const PensjonVisningDesktop: React.FC<Props> = ({
           background="bg-subtle"
           maxWidth={{ sm: '27rem', md: '31rem' }}
           flexGrow="1"
+          height="fit-content"
         >
           <VStack gap="1">
-            <BodyLong
-              size="medium"
-              weight="semibold"
+            <Heading
+              size="xsmall"
+              level="4"
               data-testid="maanedsbeloep-desktop-title"
             >
               {intl.formatMessage({
@@ -52,7 +51,7 @@ export const PensjonVisningDesktop: React.FC<Props> = ({
                 !data.afp &&
                 !data.pensjonsavtale &&
                 `(${hentUttaksmaanedOgAar(data.alder).maaned} ${hentUttaksmaanedOgAar(data.alder).aar})`}
-            </BodyLong>
+            </Heading>
 
             <PensjonDataVisning
               pensjonsdata={data}

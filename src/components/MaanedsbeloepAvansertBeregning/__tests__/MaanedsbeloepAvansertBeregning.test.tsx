@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 import { fulfilledGetPerson } from '@/mocks/mockedRTKQueryApiCalls'
 import { userInputInitialState } from '@/state/userInput/userInputSlice'
@@ -6,32 +6,7 @@ import { render, screen } from '@/test-utils'
 
 import { MaanedsbeloepAvansertBeregning } from '../MaanedsbeloepAvansertBeregning'
 
-// Create a mock implementation that we can configure per test
-const mockUsePensjonBeregninger = vi.fn()
-
 describe('MaanedsbeloepAvansertBeregning', () => {
-  // Default mock values
-  const defaultMockValues = {
-    pensjonsdata: [
-      {
-        alder: { aar: 67, maaneder: 0 },
-        grad: 100,
-        afp: 10000,
-        pensjonsavtale: 5000,
-        alderspensjon: 20000,
-      },
-    ],
-    summerYtelser: () => 35000,
-    hentUttaksmaanedOgAar: () => ({ maaned: 10, aar: 2030 }),
-    harGradering: false,
-    uttaksalder: { aar: 67, maaneder: 0 },
-  }
-
-  // Reset mock before each test
-  beforeEach(() => {
-    mockUsePensjonBeregninger.mockReturnValue(defaultMockValues)
-  })
-
   const pensjonsavtale: Pensjonsavtale = {
     key: 0,
     produktbetegnelse: 'DNB',
@@ -75,7 +50,7 @@ describe('MaanedsbeloepAvansertBeregning', () => {
     },
   ]
 
-  it('renders correctly', () => {
+  it('rendrer riktig', () => {
     render(
       <MaanedsbeloepAvansertBeregning
         alderspensjonMaanedligVedEndring={{
@@ -110,13 +85,7 @@ describe('MaanedsbeloepAvansertBeregning', () => {
     ).toBeInTheDocument()
   })
 
-  it('returns null when uttaksalder is not defined', () => {
-    // Override mock for this specific test
-    mockUsePensjonBeregninger.mockReturnValue({
-      ...defaultMockValues,
-      uttaksalder: undefined,
-    })
-
+  it('returnerer null når uttaksalder ikke er definert', () => {
     const { container } = render(
       <MaanedsbeloepAvansertBeregning
         alderspensjonMaanedligVedEndring={{
@@ -126,10 +95,26 @@ describe('MaanedsbeloepAvansertBeregning', () => {
         afpPrivatListe={[]}
         afpOffentligListe={afpOffentligListe}
         pensjonsavtaler={pensjonsavtaler}
-      />
+      />,
+      {
+        preloadedState: {
+          api: {
+            // @ts-ignore
+            queries: {
+              ...fulfilledGetPerson,
+            },
+          },
+          userInput: {
+            ...userInputInitialState,
+            currentSimulation: {
+              ...userInputInitialState.currentSimulation,
+              uttaksalder: null,
+            },
+          },
+        },
+      }
     )
 
-    // Component should render null when uttaksalder is undefined
     expect(container).toBeEmptyDOMElement()
   })
 })

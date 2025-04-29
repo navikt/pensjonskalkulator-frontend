@@ -389,7 +389,7 @@ const translations = {
   'beregning.avansert.maanedsbeloep.pensjonsavtaler':
     'Pensjonsavtaler (arbeidsgivere m.m.)',
   'beregning.avansert.maanedsbeloep.alderspensjon':
-    'Alderspensjon (Nav) {prosent} %',
+    'Alderspensjon (Nav) {prosent} %',
   'beregning.avansert.maanedsbeloep.sum': 'Sum pensjon {maaned} {aar}',
   'beregning.avansert.resultatkort.tittel': 'Valgene dine',
   'beregning.avansert.resultatkort.description':

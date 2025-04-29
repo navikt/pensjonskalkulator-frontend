@@ -468,7 +468,7 @@ describe('BeregningAvansert', () => {
         )
       })
 
-      it('Når simuleringen svarer med en beregning, vises det resultatkort og simulering med tabell, Pensjonsavtaler, Grunnlag og Forbehold', async () => {
+      it('Når simuleringen svarer med en beregning, vises det simulering med tabell, Pensjonsavtaler, Grunnlag og Forbehold', async () => {
         const initiateMock = vi.spyOn(
           apiSliceUtils.apiSlice.endpoints.alderspensjon,
           'initiate'
@@ -699,7 +699,7 @@ describe('BeregningAvansert', () => {
   })
 
   describe('Gitt at brukeren har vedtak om alderspensjon', () => {
-    it('Når simuleringen svarer med en beregning, vises det resultatkort og simulering med tabell, Grunnlag og Forbehold uten Pensjonsavtaler', async () => {
+    it('Når simuleringen svarer med en beregning, vises det og simulering med tabell, Grunnlag og Forbehold uten Pensjonsavtaler', async () => {
       const initiateMock = vi.spyOn(
         apiSliceUtils.apiSlice.endpoints.alderspensjon,
         'initiate'

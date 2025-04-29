@@ -1,4 +1,3 @@
-// filepath: /Users/Martin.Storvoll/Nav/pensjonskalkulator-frontend/src/components/MaanedsbeloepAvansertBeregning/Felles/__tests__/MobilePensjonVisning.test.tsx
 import { describe, expect, it, vi } from 'vitest'
 
 import { render, screen } from '@/test-utils'
@@ -14,13 +13,6 @@ describe('MobilePensjonVisning', () => {
       pensjonsavtale: 5000,
       alderspensjon: 20000,
     },
-    {
-      alder: { aar: 68, maaneder: 0 },
-      grad: 100,
-      afp: 12000,
-      pensjonsavtale: 6000,
-      alderspensjon: 22000,
-    },
   ]
 
   const mockSummerYtelser = vi.fn((data) => {
@@ -33,7 +25,7 @@ describe('MobilePensjonVisning', () => {
     return { maaned: 'januar', aar: '2030' }
   })
 
-  it('renderer korrekt uten gradering (enkel visning)', () => {
+  it('renderer korrekt uten gradering', () => {
     render(
       <PensjonVisningMobil
         pensjonsdata={mockPensjonsdata}
@@ -92,5 +84,42 @@ describe('MobilePensjonVisning', () => {
     )
 
     expect(screen.getByText(/januar 2030/)).toBeInTheDocument()
+  })
+
+  it('renderer med ReadMore komponenter når harGradering er true', () => {
+    const mockMultiplePensjonsdata = [
+      {
+        alder: { aar: 67, maaneder: 0 },
+        grad: 100,
+        afp: 10000,
+        pensjonsavtale: 5000,
+        alderspensjon: 20000,
+      },
+      {
+        alder: { aar: 70, maaneder: 0 },
+        grad: 50,
+        pensjonsavtale: 3000,
+        alderspensjon: 15000,
+      },
+    ]
+
+    render(
+      <PensjonVisningMobil
+        pensjonsdata={mockMultiplePensjonsdata}
+        summerYtelser={mockSummerYtelser}
+        hentUttaksmaanedOgAar={mockHentUttaksmaanedOgAar}
+        harGradering={true}
+      />
+    )
+
+    const readMoreElements = screen.getAllByRole('button')
+    expect(readMoreElements.length).toBe(2)
+
+    expect(readMoreElements[0].getAttribute('aria-expanded')).toBe('true')
+    expect(readMoreElements[1].getAttribute('aria-expanded')).toBe('false')
+
+    expect(screen.getByText('10 000 kr')).toBeInTheDocument()
+    expect(screen.getByText('5 000 kr')).toBeInTheDocument()
+    expect(screen.getByText('20 000 kr')).toBeInTheDocument()
   })
 })

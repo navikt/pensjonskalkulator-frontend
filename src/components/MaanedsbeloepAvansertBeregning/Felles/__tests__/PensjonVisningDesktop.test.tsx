@@ -91,30 +91,4 @@ describe('DesktopPensjonVisning', () => {
     const dateText = screen.getByTestId('maanedsbeloep-desktop-title')
     expect(dateText).toContainElement(screen.queryByText(/(januar 2030)/))
   })
-
-  it('viser dato i "sum" feltet når det er flere ytelser', () => {
-    const mixedPensjonData = [
-      {
-        alder: { aar: 67, maaneder: 0 },
-        grad: 100,
-        afp: 10000,
-        alderspensjon: 20000,
-        pensjonsavtale: 1000,
-      },
-    ]
-
-    render(
-      <PensjonVisningDesktop
-        pensjonsdata={mixedPensjonData}
-        summerYtelser={mockSummerYtelser}
-        hentUttaksmaanedOgAar={mockHentUttaksmaanedOgAar}
-      />
-    )
-
-    const dateText = screen.queryByTestId('maanedsbeloep-avansert-sum')
-    expect(dateText).not.toContainElement(
-      screen.queryByText(/(\bJanuary 2030\b)/)
-    )
-    expect(dateText).toContainElement(screen.getByText(/januar 2030/))
-  })
 })

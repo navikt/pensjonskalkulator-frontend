@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 
@@ -75,7 +76,7 @@ export const PensjonDataVisning: React.FC<Props> = ({
 
         {!harKunAlderspensjon && (
           <tr
-            className={`${styles.row} ${styles.sum}`}
+            className={clsx(styles.row, styles.sum)}
             data-testid="maanedsbeloep-avansert-sum"
           >
             <th scope="row">

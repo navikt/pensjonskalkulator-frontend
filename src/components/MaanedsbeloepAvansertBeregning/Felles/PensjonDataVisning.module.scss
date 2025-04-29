@@ -1,13 +1,10 @@
 @use '../../../scss/variables';
 
 .container {
-  width: 100%;
   border-collapse: collapse;
 }
 
 .row {
-  width: 100%;
-
   th,
   td {
     padding: 0;

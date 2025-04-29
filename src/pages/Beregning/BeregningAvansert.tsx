@@ -174,12 +174,13 @@ export const BeregningAvansert = () => {
     }
   }
 
-  if (avansertSkjemaModus === 'redigering')
+  if (avansertSkjemaModus === 'redigering') {
     return (
       <RedigerAvansertBeregning
         vilkaarsproeving={alderspensjon?.vilkaarsproeving}
       />
     )
+  }
 
   const harHelUT = loependeVedtak?.ufoeretrygd.grad === 100
   const harGradertUT =

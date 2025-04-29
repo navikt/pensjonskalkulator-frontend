@@ -9,7 +9,7 @@ import { transformUttaksalderToDate } from '@/utils/alder'
 import {
   hentSumOffentligTjenestepensjonVedUttak,
   hentSumPensjonsavtalerVedUttak,
-} from '../Pensjonsavtaler/utils'
+} from './utils'
 
 export interface Pensjonsdata {
   alder: Alder
@@ -20,8 +20,8 @@ export interface Pensjonsdata {
 }
 
 interface PensjonBeregningerProps {
-  afpPrivatListe?: AfpPrivatPensjonsberegning[]
-  afpOffentligListe?: AfpPrivatPensjonsberegning[]
+  afpPrivatListe?: AfpPensjonsberegning[]
+  afpOffentligListe?: AfpPensjonsberegning[]
   alderspensjonMaanedligVedEndring?: AlderspensjonMaanedligVedEndring
   pensjonsavtaler?: Pensjonsavtale[]
   simulertTjenestepensjon?: SimulertTjenestepensjon
@@ -39,13 +39,11 @@ export const usePensjonBeregninger = ({
   )
   const foedselsdato = useAppSelector(selectFoedselsdato)
 
-  // Calculate sum of pension agreements
   const sumPensjonsavtaler = (alder?: Alder): number => {
     if (!pensjonsavtaler || !alder) return 0
     return hentSumPensjonsavtalerVedUttak(pensjonsavtaler, alder)
   }
 
-  // Calculate sum of service pension
   const sumTjenestepensjon = (alder?: Alder): number => {
     if (!simulertTjenestepensjon || !alder) return 0
     return hentSumOffentligTjenestepensjonVedUttak(
@@ -54,7 +52,6 @@ export const usePensjonBeregninger = ({
     )
   }
 
-  // Find AFP amount at withdrawal
   const afpVedUttak = (
     ordning: 'offentlig' | 'privat',
     alder?: Alder
@@ -66,14 +63,12 @@ export const usePensjonBeregninger = ({
       ?.maanedligBeloep
   }
 
-  // Calculate sum of all benefits
   const summerYtelser = (data: Pensjonsdata): number => {
     return (
       (data.pensjonsavtale || 0) + (data.afp || 0) + (data.alderspensjon || 0)
     )
   }
 
-  // Gets month and year for withdrawal
   const hentUttaksmaanedOgAar = (uttak: Alder) => {
     const date = transformUttaksalderToDate(uttak, foedselsdato!)
     const [day, month, year] = date.split('.')
@@ -89,44 +84,39 @@ export const usePensjonBeregninger = ({
     }
   }
 
-  // Prepare pension data for each withdrawal stage
-  const getPensionData = (): Pensjonsdata[] => {
-    const data: Pensjonsdata[] = []
+  // Lager pensjonsdata for gradering og uttaksalder
+  const pensjonsdata: Pensjonsdata[] = []
 
-    if (gradertUttaksperiode) {
-      const gradertAlder = gradertUttaksperiode.uttaksalder
-      data.push({
-        alder: gradertAlder,
-        grad: gradertUttaksperiode.grad,
-        afp:
-          afpVedUttak('offentlig', gradertAlder) ||
-          afpVedUttak('privat', gradertAlder),
-        pensjonsavtale:
-          sumPensjonsavtaler(gradertAlder) + sumTjenestepensjon(gradertAlder),
-        alderspensjon:
-          alderspensjonMaanedligVedEndring?.gradertUttakMaanedligBeloep,
-      })
-    }
+  if (gradertUttaksperiode) {
+    const gradertAlder = gradertUttaksperiode.uttaksalder
+    pensjonsdata.push({
+      alder: gradertAlder,
+      grad: gradertUttaksperiode.grad,
+      afp:
+        afpVedUttak('offentlig', gradertAlder) ||
+        afpVedUttak('privat', gradertAlder),
+      pensjonsavtale:
+        sumPensjonsavtaler(gradertAlder) + sumTjenestepensjon(gradertAlder),
+      alderspensjon:
+        alderspensjonMaanedligVedEndring?.gradertUttakMaanedligBeloep,
+    })
+  }
 
-    if (uttaksalder) {
-      data.push({
-        alder: uttaksalder,
-        grad: 100,
-        afp:
-          afpVedUttak('offentlig', uttaksalder) ||
-          afpVedUttak('privat', uttaksalder),
-        pensjonsavtale:
-          sumPensjonsavtaler(uttaksalder) + sumTjenestepensjon(uttaksalder),
-        alderspensjon:
-          alderspensjonMaanedligVedEndring?.heltUttakMaanedligBeloep,
-      })
-    }
-
-    return data
+  if (uttaksalder) {
+    pensjonsdata.push({
+      alder: uttaksalder,
+      grad: 100,
+      afp:
+        afpVedUttak('offentlig', uttaksalder) ||
+        afpVedUttak('privat', uttaksalder),
+      pensjonsavtale:
+        sumPensjonsavtaler(uttaksalder) + sumTjenestepensjon(uttaksalder),
+      alderspensjon: alderspensjonMaanedligVedEndring?.heltUttakMaanedligBeloep,
+    })
   }
 
   return {
-    pensjonsdata: getPensionData(),
+    pensjonsdata,
     summerYtelser,
     hentUttaksmaanedOgAar,
     harGradering: !!gradertUttaksperiode,

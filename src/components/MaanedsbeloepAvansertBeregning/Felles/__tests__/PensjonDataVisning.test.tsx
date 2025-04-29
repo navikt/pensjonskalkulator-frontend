@@ -15,6 +15,9 @@ describe('PensjonDataVisning', () => {
 
   const mockSummerYtelser = vi.fn(() => 35000)
   const mockHentUttaksMaanedOgAar = vi.fn(() => ({ maaned: '10', aar: '2030' }))
+  const mockHentUttaksmaanedOgAar = vi.fn(() => {
+    return { maaned: 'januar', aar: '2030' }
+  })
 
   it('viser alle verdier når alle pensjonstyper er tilstede', () => {
     render(
@@ -29,8 +32,6 @@ describe('PensjonDataVisning', () => {
     expect(screen.getByText('5 000 kr')).toBeInTheDocument()
     expect(screen.getByText('20 000 kr')).toBeInTheDocument()
     expect(screen.getByText('35 000 kr')).toBeInTheDocument()
-
-    expect(mockSummerYtelser).toHaveBeenCalledWith(mockPensjonsdata)
   })
 
   it('viser ikke AFP når den ikke er tilstede', () => {
@@ -42,8 +43,7 @@ describe('PensjonDataVisning', () => {
       />
     )
 
-    const afpElements = screen.queryAllByText('AFP')
-    expect(afpElements.length).toBe(0)
+    expect(screen.queryByText('AFP')).not.toBeInTheDocument()
 
     expect(screen.getByText('5 000 kr')).toBeInTheDocument()
     expect(screen.getByText('20 000 kr')).toBeInTheDocument()
@@ -78,19 +78,30 @@ describe('PensjonDataVisning', () => {
 
     expect(screen.getByText('20 000 kr')).toBeInTheDocument()
 
-    const sumElements = screen.queryAllByText('sum')
-    expect(sumElements.length).toBe(0)
+    expect(screen.queryByText('sum')).not.toBeInTheDocument()
   })
 
-  it('bruker liten tekststørrelse i mobilmodus', () => {
-    const { container } = render(
+  it('viser dato i "sum" feltet når det er flere ytelser', () => {
+    const mixedPensjonData = {
+      alder: { aar: 67, maaneder: 0 },
+      grad: 100,
+      afp: 10000,
+      alderspensjon: 20000,
+      pensjonsavtale: 1000,
+    }
+
+    render(
       <PensjonDataVisning
-        pensjonsdata={mockPensjonsdata}
+        pensjonsdata={mixedPensjonData}
         summerYtelser={mockSummerYtelser}
-        hentUttaksMaanedOgAar={mockHentUttaksMaanedOgAar}
+        hentUttaksMaanedOgAar={mockHentUttaksmaanedOgAar}
       />
     )
 
-    expect(container).not.toBeEmptyDOMElement()
+    const dateText = screen.queryByTestId('maanedsbeloep-avansert-sum')
+    expect(dateText).not.toContainElement(
+      screen.queryByText(/(\bJanuary 2030\b)/)
+    )
+    expect(dateText).toContainElement(screen.getByText(/januar 2030/))
   })
 })

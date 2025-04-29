@@ -6,6 +6,8 @@ import { Box, Heading } from '@navikt/ds-react'
 import { PensjonVisningDesktop, PensjonVisningMobil } from './Felles'
 import { usePensjonBeregninger } from './hooks'
 
+import styles from './MaanedsbeloepAvansertBeregning.module.scss'
+
 interface Props {
   afpPrivatListe?: AfpPensjonsberegning[]
   afpOffentligListe?: AfpPensjonsberegning[]
@@ -15,7 +17,6 @@ interface Props {
 }
 
 export const MaanedsbeloepAvansertBeregning: React.FC<Props> = (props) => {
-  // Use our custom hook to extract all calculation logic
   const {
     pensjonsdata,
     summerYtelser,
@@ -34,18 +35,22 @@ export const MaanedsbeloepAvansertBeregning: React.FC<Props> = (props) => {
         <FormattedMessage id="maanedsbeloep.title" />
       </Heading>
 
-      <PensjonVisningDesktop
-        pensjonsdata={pensjonsdata}
-        summerYtelser={summerYtelser}
-        hentUttaksmaanedOgAar={hentUttaksmaanedOgAar}
-      />
+      <div className={styles.maanedsbeloepDesktopOnly}>
+        <PensjonVisningDesktop
+          pensjonsdata={pensjonsdata}
+          summerYtelser={summerYtelser}
+          hentUttaksmaanedOgAar={hentUttaksmaanedOgAar}
+        />
+      </div>
 
-      <PensjonVisningMobil
-        pensjonsdata={pensjonsdata}
-        summerYtelser={summerYtelser}
-        hentUttaksmaanedOgAar={hentUttaksmaanedOgAar}
-        harGradering={harGradering}
-      />
+      <div className={styles.maanedsbeloepMobileOnly}>
+        <PensjonVisningMobil
+          pensjonsdata={pensjonsdata}
+          summerYtelser={summerYtelser}
+          hentUttaksmaanedOgAar={hentUttaksmaanedOgAar}
+          harGradering={harGradering}
+        />
+      </div>
     </Box>
   )
 }
