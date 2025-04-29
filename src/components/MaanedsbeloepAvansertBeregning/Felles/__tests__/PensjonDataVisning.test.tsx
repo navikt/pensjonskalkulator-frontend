@@ -14,7 +14,6 @@ describe('PensjonDataVisning', () => {
   }
 
   const mockSummerYtelser = vi.fn(() => 35000)
-  const mockHentUttaksMaanedOgAar = vi.fn(() => ({ maaned: '10', aar: '2030' }))
   const mockHentUttaksmaanedOgAar = vi.fn(() => {
     return { maaned: 'januar', aar: '2030' }
   })
@@ -24,7 +23,7 @@ describe('PensjonDataVisning', () => {
       <PensjonDataVisning
         pensjonsdata={mockPensjonsdata}
         summerYtelser={mockSummerYtelser}
-        hentUttaksMaanedOgAar={mockHentUttaksMaanedOgAar}
+        hentUttaksMaanedOgAar={mockHentUttaksmaanedOgAar}
       />
     )
 
@@ -39,7 +38,7 @@ describe('PensjonDataVisning', () => {
       <PensjonDataVisning
         pensjonsdata={{ ...mockPensjonsdata, afp: undefined }}
         summerYtelser={mockSummerYtelser}
-        hentUttaksMaanedOgAar={mockHentUttaksMaanedOgAar}
+        hentUttaksMaanedOgAar={mockHentUttaksmaanedOgAar}
       />
     )
 
@@ -54,7 +53,7 @@ describe('PensjonDataVisning', () => {
       <PensjonDataVisning
         pensjonsdata={{ ...mockPensjonsdata, pensjonsavtale: 0 }}
         summerYtelser={mockSummerYtelser}
-        hentUttaksMaanedOgAar={mockHentUttaksMaanedOgAar}
+        hentUttaksMaanedOgAar={mockHentUttaksmaanedOgAar}
       />
     )
 
@@ -73,7 +72,7 @@ describe('PensjonDataVisning', () => {
           pensjonsavtale: 0,
         }}
         summerYtelser={mockSummerYtelser}
-        hentUttaksMaanedOgAar={mockHentUttaksMaanedOgAar}
+        hentUttaksMaanedOgAar={mockHentUttaksmaanedOgAar}
       />
     )
 
