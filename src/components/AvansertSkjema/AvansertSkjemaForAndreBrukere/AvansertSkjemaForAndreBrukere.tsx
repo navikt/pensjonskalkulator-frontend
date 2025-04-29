@@ -133,16 +133,17 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
           ? prevState?.aarligInntektVsaPensjon?.sluttAlder.aar * 12 +
             (prevState?.aarligInntektVsaPensjon?.sluttAlder.maaneder ?? 0)
           : 0
-      const shouldDeleteInntektVsaPensjon =
+      const shouldClearInntektSluttAlder =
         alder?.aar &&
         alder?.aar * 12 + (alder?.maaneder ?? 0) >= sluttAlderAntallMaaneder
       return {
-        ...prevState,
         uttaksalder: alder,
-        aarligInntektVsaPensjon:
-          shouldDeleteInntektVsaPensjon || !prevState?.aarligInntektVsaPensjon
+        aarligInntektVsaPensjon: {
+          ...prevState?.aarligInntektVsaPensjon,
+          sluttAlder: shouldClearInntektSluttAlder
             ? undefined
-            : { ...prevState?.aarligInntektVsaPensjon },
+            : { ...prevState?.aarligInntektVsaPensjon?.sluttAlder },
+        },
       }
     })
   }
@@ -458,7 +459,6 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
                     )
                   : ''
               }
-              aria-required="true"
             >
               <option disabled value="">
                 {' '}
@@ -537,8 +537,6 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
                           )
                         : ''
                     }
-                    role="radiogroup"
-                    aria-required="true"
                   >
                     <Radio
                       form={AVANSERT_FORM_NAMES.form}
@@ -608,8 +606,9 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
                         : ''
                     }
                     onChange={handleInntektVsaGradertUttakChange}
-                    value={localGradertUttak.aarligInntektVsaPensjonBeloep}
-                    aria-required="true"
+                    value={
+                      localGradertUttak.aarligInntektVsaPensjonBeloep ?? ''
+                    }
                   />
                 )}
 
@@ -667,8 +666,6 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
                       )
                     : ''
                 }
-                role="radiogroup"
-                aria-required="true"
               >
                 <Radio
                   form={AVANSERT_FORM_NAMES.form}
@@ -727,8 +724,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
                       : undefined
                   }
                   onChange={handleInntektVsaHeltUttakChange}
-                  value={localHeltUttak.aarligInntektVsaPensjon?.beloep}
-                  aria-required="true"
+                  value={localHeltUttak.aarligInntektVsaPensjon?.beloep ?? ''}
                 />
 
                 <AgePicker
