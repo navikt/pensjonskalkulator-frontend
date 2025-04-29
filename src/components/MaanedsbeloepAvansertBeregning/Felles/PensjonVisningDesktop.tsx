@@ -43,14 +43,14 @@ export const PensjonVisningDesktop: React.FC<Props> = ({
               level="4"
               data-testid="maanedsbeloep-desktop-title"
             >
-              {intl.formatMessage({
+              {`${intl.formatMessage({
                 id: 'beregning.avansert.maanedsbeloep.box_title',
               })}
-              {formatUttaksalder(intl, data.alder)}{' '}
+              ${formatUttaksalder(intl, data.alder)}`}
               {data.alderspensjon &&
                 !data.afp &&
                 !data.pensjonsavtale &&
-                `(${hentUttaksmaanedOgAar(data.alder).maaned} ${hentUttaksmaanedOgAar(data.alder).aar})`}
+                ` (${hentUttaksmaanedOgAar(data.alder).maaned} ${hentUttaksmaanedOgAar(data.alder).aar})`}
             </Heading>
 
             <PensjonDataVisning

@@ -14,9 +14,9 @@ import {
 export interface Pensjonsdata {
   alder: Alder
   grad: number
-  afp?: number
+  afp: number | undefined
   pensjonsavtale: number
-  alderspensjon?: number
+  alderspensjon: number | undefined
 }
 
 interface PensjonBeregningerProps {

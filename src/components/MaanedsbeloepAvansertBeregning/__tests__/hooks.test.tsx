@@ -30,7 +30,7 @@ vi.mock('../../Pensjonsavtaler/utils', () => ({
 describe('usePensjonBeregninger', () => {
   const mockUttaksalder: Alder = { aar: 67, maaneder: 0 }
   const mockGradertUttaksperiode = {
-    uttaksalder: { aar: 62, maaneder: 6 } as Alder,
+    uttaksalder: { aar: 62, maaneder: 6 },
     grad: 40,
   }
   const mockFoedselsdato = '1980-01-01'
@@ -163,7 +163,7 @@ describe('usePensjonBeregninger', () => {
     const testData = {
       alder: { aar: 67, maaneder: 0 },
       grad: 100,
-
+      afp: 0,
       pensjonsavtale: 0,
       alderspensjon: 20000,
     }

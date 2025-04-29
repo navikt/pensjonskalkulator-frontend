@@ -278,12 +278,10 @@ export const Simulering = ({
         />
       )}
 
-      {!(
-        isOffentligTpLoading ||
-        isLoading ||
-        isPensjonsavtalerLoading ||
-        isEndring
-      ) &&
+      {!isOffentligTpLoading &&
+        !isLoading &&
+        !isPensjonsavtalerLoading &&
+        !isEndring &&
         visning === 'avansert' && (
           <MaanedsbeloepAvansertBeregning
             alderspensjonMaanedligVedEndring={alderspensjonMaanedligVedEndring}

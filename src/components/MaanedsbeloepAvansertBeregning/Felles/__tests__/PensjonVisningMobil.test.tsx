@@ -43,9 +43,9 @@ describe('MobilePensjonVisning', () => {
       maaneder: 0,
     })
 
-    expect(screen.getByText('10 000 kr')).toBeInTheDocument()
-    expect(screen.getByText('5 000 kr')).toBeInTheDocument()
-    expect(screen.getByText('20 000 kr')).toBeInTheDocument()
+    expect(screen.getByText('10 000 kr')).toBeVisible()
+    expect(screen.getByText('5 000 kr')).toBeVisible()
+    expect(screen.getByText('20 000 kr')).toBeVisible()
 
     const readMoreElements = screen.queryAllByRole('button')
     expect(readMoreElements.length).toBe(0)
@@ -83,7 +83,7 @@ describe('MobilePensjonVisning', () => {
       />
     )
 
-    expect(screen.getByText(/januar 2030/)).toBeInTheDocument()
+    expect(screen.getByText(/januar 2030/)).toBeVisible()
   })
 
   it('renderer med ReadMore komponenter når harGradering er true', () => {

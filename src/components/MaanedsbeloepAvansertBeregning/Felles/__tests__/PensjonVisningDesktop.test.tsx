@@ -52,10 +52,10 @@ describe('DesktopPensjonVisning', () => {
       maaneder: 0,
     })
 
-    expect(screen.getByText('10 000 kr')).toBeInTheDocument()
-    expect(screen.getByText('5 000 kr')).toBeInTheDocument()
-    expect(screen.getByText('12 000 kr')).toBeInTheDocument()
-    expect(screen.getByText('6 000 kr')).toBeInTheDocument()
+    expect(screen.getByText('10 000 kr')).toBeVisible()
+    expect(screen.getByText('5 000 kr')).toBeVisible()
+    expect(screen.getByText('12 000 kr')).toBeVisible()
+    expect(screen.getByText('6 000 kr')).toBeVisible()
   })
 
   it('returnerer null når ingen pensjonsdata oppføringer er tilgjengelige', () => {

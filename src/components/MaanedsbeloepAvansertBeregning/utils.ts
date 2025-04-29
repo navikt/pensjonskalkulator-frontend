@@ -12,11 +12,10 @@ export const finnAllePensjonsavtalerVedUttak = <
         (uttaksalder.aar > startAlder.aar ||
           (uttaksalder.aar === startAlder.aar &&
             uttaksalder.maaneder >= startAlder.maaneder)) &&
-        ((sluttAlder && uttaksalder.aar < sluttAlder.aar) ||
-          (sluttAlder &&
-            uttaksalder.aar === sluttAlder.aar &&
-            uttaksalder.maaneder <= sluttAlder.maaneder) ||
-          !sluttAlder)
+        (!sluttAlder ||
+          uttaksalder.aar < sluttAlder.aar ||
+          (uttaksalder.aar === sluttAlder.aar &&
+            uttaksalder.maaneder <= sluttAlder.maaneder))
       )
     }
   )
