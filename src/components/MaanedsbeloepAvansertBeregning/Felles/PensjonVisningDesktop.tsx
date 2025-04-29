@@ -28,7 +28,7 @@ export const PensjonVisningDesktop: React.FC<Props> = ({
       {pensjonsdata.map((data, index) => (
         <Box
           key={`desktop-${index}`}
-          marginBlock="1 0"
+          marginBlock="2 0"
           borderRadius="medium"
           paddingInline="6"
           paddingBlock="4"

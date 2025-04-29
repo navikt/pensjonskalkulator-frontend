@@ -38,7 +38,7 @@ export const PensjonVisningMobil: React.FC<Props> = ({
 
   return (
     <Box
-      marginBlock="1 0"
+      marginBlock="2 0"
       borderRadius="medium"
       padding="3"
       background="bg-subtle"
@@ -51,7 +51,13 @@ export const PensjonVisningMobil: React.FC<Props> = ({
             header={
               intl.formatMessage({
                 id: 'beregning.avansert.maanedsbeloep.box_title',
-              }) + formatUttaksalder(intl, data.alder)
+              }) +
+              formatUttaksalder(intl, data.alder) +
+              ((data.alderspensjon &&
+                !data.afp &&
+                !data.pensjonsavtale &&
+                ` (${hentUttaksmaanedOgAar(data.alder).maaned} ${hentUttaksmaanedOgAar(data.alder).aar})`) ||
+                '')
             }
           >
             <PensjonDataVisning
