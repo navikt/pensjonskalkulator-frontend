@@ -1187,15 +1187,8 @@ describe('Simulering', () => {
         }
       )
 
-      expect(await screen.findByTestId('highcharts-done-drawing')).toBeVisible()
-
-      // Nødvendig for at animasjonen rekker å bli ferdig
-      await act(async () => {
-        await new Promise((r) => setTimeout(r, 500))
-      })
-
       expect(
-        screen.getByTestId('maanedsbloep-avansert-beregning')
+        await screen.findByTestId('maanedsbloep-avansert-beregning')
       ).toBeVisible()
     })
   })
