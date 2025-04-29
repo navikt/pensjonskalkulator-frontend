@@ -1,55 +1,58 @@
-import React from 'react'
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
+import clsx from 'clsx'
+import { useEffect, useMemo, useState } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useNavigate } from 'react-router'
 
 import { Alert, Heading } from '@navikt/ds-react'
-import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
-import clsx from 'clsx'
 
-import { Alert as AlertDashBorder } from '@/components/common/Alert'
-import { Loader } from '@/components/common/Loader'
 import { Grunnlag } from '@/components/Grunnlag'
 import { GrunnlagForbehold } from '@/components/GrunnlagForbehold'
 import { Pensjonsavtaler } from '@/components/Pensjonsavtaler'
 import { SavnerDuNoe } from '@/components/SavnerDuNoe'
+import { Signals } from '@/components/Signals'
 import { Simulering } from '@/components/Simulering'
 import { TidligstMuligUttaksalder } from '@/components/TidligstMuligUttaksalder'
 import { VelgUttaksalder } from '@/components/VelgUttaksalder'
+import { Alert as AlertDashBorder } from '@/components/common/Alert'
+import { Loader } from '@/components/common/Loader'
 import { paths } from '@/router/constants'
 import {
   apiSlice,
+  useAlderspensjonQuery,
   useGetPersonQuery,
   useTidligstMuligHeltUttakQuery,
-  useAlderspensjonQuery,
 } from '@/state/api/apiSlice'
-import { generateTidligstMuligHeltUttakRequestBody } from '@/state/api/utils'
-import { generateAlderspensjonEnkelRequestBody } from '@/state/api/utils'
+import {
+  generateAlderspensjonEnkelRequestBody,
+  generateTidligstMuligHeltUttakRequestBody,
+} from '@/state/api/utils'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
-  selectAfp,
-  selectSivilstand,
-  selectCurrentSimulation,
-  selectSamtykkeOffentligAFP,
   selectAarligInntektFoerUttakBeloep,
   selectAarligInntektFoerUttakBeloepFraBrukerInput,
-  selectUfoeregrad,
+  selectAfp,
+  selectCurrentSimulation,
+  selectEpsHarInntektOver2G,
+  selectEpsHarPensjon,
   selectIsEndring,
   selectLoependeVedtak,
   selectNedreAldersgrense,
   selectNormertPensjonsalder,
-  selectEpsHarPensjon,
-  selectEpsHarInntektOver2G,
+  selectSamtykkeOffentligAFP,
+  selectSivilstand,
+  selectUfoeregrad,
   selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
 import {
-  isFoedtFoer1964,
   getBrukerensAlderISluttenAvMaaneden,
+  isFoedtFoer1964,
 } from '@/utils/alder'
 import { logger } from '@/utils/logging'
 
 import styles from './BeregningEnkel.module.scss'
 
-export const BeregningEnkel: React.FC = () => {
+export const BeregningEnkel = () => {
   const intl = useIntl()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -76,7 +79,7 @@ export const BeregningEnkel: React.FC = () => {
   const [
     tidligstMuligHeltUttakRequestBody,
     setTidligstMuligHeltUttakRequestBody,
-  ] = React.useState<TidligstMuligHeltUttakRequestBody | undefined>(undefined)
+  ] = useState<TidligstMuligHeltUttakRequestBody | undefined>(undefined)
   // Hent tidligst mulig uttaksalder
   const {
     data: tidligstMuligUttak,
@@ -89,17 +92,17 @@ export const BeregningEnkel: React.FC = () => {
   const utenlandsperioder = useAppSelector(selectUtenlandsperioder)
   const { uttaksalder } = useAppSelector(selectCurrentSimulation)
   const [alderspensjonEnkelRequestBody, setAlderspensjonEnkelRequestBody] =
-    React.useState<AlderspensjonRequestBody | undefined>(undefined)
-  const [showInntektAlert, setShowInntektAlert] = React.useState<boolean>(false)
+    useState<AlderspensjonRequestBody | undefined>(undefined)
+  const [showInntektAlert, setShowInntektAlert] = useState<boolean>(false)
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Show alert når: inntekt fra bruker er ikke null (det betyr at brukeren har endret den) og at startAlder er null (betyr at de ble nettopp nullstilt fra GrunnlagInntekt)
     setShowInntektAlert(
       !!aarligInntektFoerUttakBeloepFraBrukerInput && uttaksalder === null
     )
   }, [aarligInntektFoerUttakBeloepFraBrukerInput, uttaksalder])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!ufoeregrad) {
       const requestBody = generateTidligstMuligHeltUttakRequestBody({
         loependeVedtak,
@@ -121,7 +124,7 @@ export const BeregningEnkel: React.FC = () => {
     epsHarInntektOver2G,
   ])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (uttaksalder) {
       const requestBody = generateAlderspensjonEnkelRequestBody({
         loependeVedtak,
@@ -159,8 +162,8 @@ export const BeregningEnkel: React.FC = () => {
     }
   )
 
-  React.useEffect(() => {
-    if (alderspensjon && alderspensjon.vilkaarsproeving.vilkaarErOppfylt) {
+  useEffect(() => {
+    if (alderspensjon?.vilkaarsproeving.vilkaarErOppfylt) {
       logger('resultat vist', { tekst: 'Beregning enkel' })
       logger('grunnlag for beregningen', {
         tekst: 'antall opphold',
@@ -169,7 +172,7 @@ export const BeregningEnkel: React.FC = () => {
     }
   }, [alderspensjon])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (uttaksalder !== null) {
       if (alderspensjon && !alderspensjon?.vilkaarsproeving.vilkaarErOppfylt) {
         logger('alert vist', {
@@ -185,7 +188,7 @@ export const BeregningEnkel: React.FC = () => {
     }
   }, [uttaksalder, isError, alderspensjon])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (
       error &&
       ((error as FetchBaseQueryError).status === 503 ||
@@ -199,7 +202,7 @@ export const BeregningEnkel: React.FC = () => {
     }
   }, [error])
 
-  const show1963Text = React.useMemo(() => {
+  const show1963Text = useMemo(() => {
     return isPersonSuccess && isFoedtFoer1964(person?.foedselsdato)
   }, [person])
 
@@ -242,6 +245,7 @@ export const BeregningEnkel: React.FC = () => {
           </Alert>
         </div>
       )}
+
       <div className={clsx(styles.background, styles.background__lightgray)}>
         <div className={styles.container}>
           <TidligstMuligUttaksalder
@@ -271,7 +275,7 @@ export const BeregningEnkel: React.FC = () => {
 
       {uttaksalder !== null && (
         <div
-          className={`${styles.container} ${styles.container__hasMobilePadding}`}
+          className={clsx(styles.container, styles.container__hasMobilePadding)}
         >
           {isError ||
           (alderspensjon &&
@@ -279,9 +283,10 @@ export const BeregningEnkel: React.FC = () => {
             uttaksalder &&
             uttaksalder.aar < normertPensjonsalder.aar) ? (
             <>
-              <Heading level="2" size="small">
+              <Heading level="2" size="medium">
                 <FormattedMessage id="beregning.title" />
               </Heading>
+
               <AlertDashBorder onRetry={isError ? onRetry : undefined}>
                 {isError ? (
                   <FormattedMessage id="beregning.error" />
@@ -296,8 +301,9 @@ export const BeregningEnkel: React.FC = () => {
           ) : (
             <>
               <Simulering
+                visning="enkel"
                 isLoading={isFetching}
-                headingLevel="3"
+                headingLevel="2"
                 aarligInntektFoerUttakBeloep={
                   aarligInntektFoerUttakBeloep ?? '0'
                 }
@@ -329,7 +335,9 @@ export const BeregningEnkel: React.FC = () => {
                     : undefined
                 }
               />
+
               {!isEndring && <Pensjonsavtaler headingLevel="3" />}
+
               <Grunnlag
                 visning="enkel"
                 headingLevel="3"
@@ -342,11 +350,13 @@ export const BeregningEnkel: React.FC = () => {
                         .pensjonBeholdningFoerUttakBeloep
                     : undefined
                 }
+                isEndring={isEndring}
               />
             </>
           )}
         </div>
       )}
+
       {uttaksalder !== null &&
         alderspensjon &&
         alderspensjon?.vilkaarsproeving.vilkaarErOppfylt && (
@@ -362,9 +372,12 @@ export const BeregningEnkel: React.FC = () => {
                 />
               </div>
             </div>
+
             <div className={styles.container}>
               <GrunnlagForbehold headingLevel="3" />
             </div>
+
+            <Signals id="panel-qc608mkm1s" breakpoint="lg" />
           </>
         )}
     </>

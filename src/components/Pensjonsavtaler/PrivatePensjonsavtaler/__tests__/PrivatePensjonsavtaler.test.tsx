@@ -1,9 +1,10 @@
 import { describe, it } from 'vitest'
 
-import pensjonsavtalerData from '../../../../mocks/data/pensjonsavtaler/67.json' with { type: 'json' }
-import { PrivatePensjonsavtaler } from '../PrivatePensjonsavtaler'
 import { render, screen } from '@/test-utils'
 import * as useIsMobileUtils from '@/utils/useIsMobile'
+
+import pensjonsavtalerData from '../../../../mocks/data/pensjonsavtaler/67.json' with { type: 'json' }
+import { PrivatePensjonsavtaler } from '../PrivatePensjonsavtaler'
 
 describe('PrivatePensjonsavtaler', () => {
   const avtalerWithKeys = pensjonsavtalerData.avtaler.map(
@@ -20,7 +21,7 @@ describe('PrivatePensjonsavtaler', () => {
 
       render(
         <PrivatePensjonsavtaler
-          headingLevel={'3'}
+          headingLevel="3"
           isPartialResponse={false}
           isSuccess
           privatePensjonsavtaler={avtalerWithKeys}
@@ -42,7 +43,7 @@ describe('PrivatePensjonsavtaler', () => {
       vi.spyOn(useIsMobileUtils, 'useIsMobile').mockReturnValue(true)
       render(
         <PrivatePensjonsavtaler
-          headingLevel={'3'}
+          headingLevel="3"
           isPartialResponse={false}
           isSuccess
           privatePensjonsavtaler={avtalerWithKeys}
@@ -64,7 +65,7 @@ describe('PrivatePensjonsavtaler', () => {
   it('Når pensjonsavtaler har delvis svar med avtaler, viser riktig informasjon og liste over private pensjonsavtaler.', async () => {
     render(
       <PrivatePensjonsavtaler
-        headingLevel={'3'}
+        headingLevel="3"
         isPartialResponse={true}
         isSuccess
         privatePensjonsavtaler={avtalerWithKeys}
@@ -88,7 +89,7 @@ describe('PrivatePensjonsavtaler', () => {
   it('Når pensjonsavtaler har delvis svar og ingen avtaler, viser riktig informasjon uten liste over private pensjonsavtaler.', async () => {
     render(
       <PrivatePensjonsavtaler
-        headingLevel={'3'}
+        headingLevel="3"
         isPartialResponse={true}
         isSuccess
         privatePensjonsavtaler={[]}
@@ -117,7 +118,7 @@ describe('PrivatePensjonsavtaler', () => {
   it('Når pensjonsavtaler har feilet, viser riktig feilmelding uten liste over private pensjonsavtaler.', async () => {
     render(
       <PrivatePensjonsavtaler
-        headingLevel={'3'}
+        headingLevel="3"
         isPartialResponse={false}
         isSuccess={false}
         isError
@@ -149,7 +150,7 @@ describe('PrivatePensjonsavtaler', () => {
   it('Når brukeren har 0 pensjonsavtaler, viser riktig infomelding uten liste over private pensjonsavtaler.', async () => {
     render(
       <PrivatePensjonsavtaler
-        headingLevel={'3'}
+        headingLevel="3"
         isPartialResponse={false}
         isSuccess
         privatePensjonsavtaler={[]}

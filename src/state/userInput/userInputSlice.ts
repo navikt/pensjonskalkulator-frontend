@@ -1,13 +1,13 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
 import { formatInntekt } from '@/utils/inntekt'
 
 export interface Simulation {
-  formatertUttaksalderReadOnly: string | null // (!) Obs READONLY - string i format "YY alder.aar string.og M alder.maaneder" - oppdateres automatisk basert på uttaksalder - se uttaksalderListener
   uttaksalder: Alder | null // valgt uttaksalder for 100% alderspensjon (alder perioden gjelder FRA) - aar heltall, maaneder heltall mellom 0-11
   aarligInntektFoerUttakBeloep: string | null // inntekt før uttak av pensjon - formatert string i nok - overskriver beløp fra Skatteetaten
   aarligInntektVsaHelPensjon?: AarligInntektVsaPensjon
   gradertUttaksperiode: GradertUttak | null
+  beregningsvalg: Beregningsvalg | null
 }
 
 export interface UserInputState {
@@ -18,6 +18,7 @@ export interface UserInputState {
   samtykke: boolean | null
   samtykkeOffentligAFP: boolean | null
   afp: AfpRadio | null
+  skalBeregneAfp: boolean | null
   sivilstand: Sivilstand | null
   epsHarPensjon: boolean | null
   epsHarInntektOver2G: boolean | null
@@ -32,11 +33,12 @@ export const userInputInitialState: UserInputState = {
   samtykke: null,
   samtykkeOffentligAFP: null,
   afp: null,
+  skalBeregneAfp: null,
   sivilstand: null,
   epsHarInntektOver2G: null,
   epsHarPensjon: null,
   currentSimulation: {
-    formatertUttaksalderReadOnly: null,
+    beregningsvalg: null,
     uttaksalder: null,
     aarligInntektFoerUttakBeloep: null,
     gradertUttaksperiode: null,
@@ -86,6 +88,9 @@ export const userInputSlice = createSlice({
     setAfp: (state, action: PayloadAction<AfpRadio>) => {
       state.afp = action.payload
     },
+    setSkalBeregneAfp: (state, action: PayloadAction<boolean | null>) => {
+      state.skalBeregneAfp = action.payload
+    },
     setSivilstand: (
       state,
       action: PayloadAction<{
@@ -97,6 +102,12 @@ export const userInputSlice = createSlice({
       state.sivilstand = action.payload.sivilstand
       state.epsHarInntektOver2G = action.payload.epsHarInntektOver2G
       state.epsHarPensjon = action.payload.epsHarPensjon
+    },
+    setCurrentSimulationBeregningsvalg: (
+      state,
+      action: PayloadAction<Beregningsvalg | null>
+    ) => {
+      state.currentSimulation.beregningsvalg = action.payload ?? null
     },
     setCurrentSimulationUttaksalder: (
       state,
@@ -121,13 +132,13 @@ export const userInputSlice = createSlice({
       state,
       action: PayloadAction<AarligInntektVsaPensjon | undefined>
     ) => {
-      state.currentSimulation.aarligInntektVsaHelPensjon =
-        action.payload && action.payload.beloep
-          ? {
-              ...action.payload,
-              beloep: formatInntekt(action.payload?.beloep),
-            }
-          : undefined
+      state.currentSimulation.aarligInntektVsaHelPensjon = action.payload
+        ?.beloep
+        ? {
+            ...action.payload,
+            beloep: formatInntekt(action.payload.beloep),
+          }
+        : undefined
     },
     setCurrentSimulationGradertUttaksperiode: (
       state,
@@ -142,15 +153,6 @@ export const userInputSlice = createSlice({
           }
         : null
     },
-    syncCurrentSimulationFormatertUttaksalderReadOnly: (
-      state,
-      action: PayloadAction<string | null>
-    ) => {
-      state.currentSimulation = {
-        ...state.currentSimulation,
-        formatertUttaksalderReadOnly: action.payload,
-      }
-    },
     flush: (state) => {
       state.harUtenlandsopphold = null
       state.utenlandsperioder = []
@@ -160,6 +162,7 @@ export const userInputSlice = createSlice({
       state.sivilstand = null
       state.epsHarPensjon = null
       state.epsHarInntektOver2G = null
+      state.skalBeregneAfp = null
       state.currentSimulation = { ...userInputInitialState.currentSimulation }
     },
     flushCurrentSimulation: (state) => {

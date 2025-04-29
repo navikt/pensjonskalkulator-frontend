@@ -1,13 +1,16 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
 
-import { Alert, BodyLong, Button, Heading } from '@navikt/ds-react'
+import { Alert, BodyLong, Heading } from '@navikt/ds-react'
 
 import { Card } from '@/components/common/Card'
-import { ReadMore } from '@/components/common/ReadMore'
+import { SanityReadmore } from '@/components/common/SanityReadmore/SanityReadmore'
 import { paths } from '@/router/constants'
-import { logger, wrapLogger } from '@/utils/logging'
+import { useGetGradertUfoereAfpFeatureToggleQuery } from '@/state/api/apiSlice'
+import { logger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
+
+import Navigation from '../Navigation/Navigation'
 
 import styles from './Ufoere.module.scss'
 
@@ -27,6 +30,11 @@ export function Ufoere({ onCancel, onPrevious, onNext }: Props) {
       onNext()
     }
   }
+  const { data: getGradertUfoereAfpFeatureToggle } =
+    useGetGradertUfoereAfpFeatureToggleQuery()
+
+  const isGradertUfoereAfpToggleEnabled =
+    getGradertUfoereAfpFeatureToggle?.enabled
 
   return (
     <Card hasLargePadding hasMargin>
@@ -47,51 +55,34 @@ export function Ufoere({ onCancel, onPrevious, onNext }: Props) {
           />
         </Alert>
 
-        <ReadMore
-          name="Om uføretrygd og avtalefestet pensjon"
-          className={styles.readmore1}
-          header={<FormattedMessage id="stegvisning.ufoere.readmore_1.title" />}
-        >
-          <FormattedMessage
-            id="stegvisning.ufoere.readmore_1.body"
-            values={{ ...getFormatMessageValues() }}
-          />
-        </ReadMore>
+        <SanityReadmore id="om_UT_AFP" className={styles.readmore1} />
 
-        <BodyLong
-          size="large"
-          data-testid="ufoere-ingress"
-          className={styles.paragraph}
-        >
-          <FormattedMessage
-            id="stegvisning.ufoere.ingress"
-            values={{ ...getFormatMessageValues() }}
-          />
-        </BodyLong>
-
-        <Button type="submit" className={styles.button}>
-          <FormattedMessage id="stegvisning.neste" />
-        </Button>
-        <Button
-          type="button"
-          className={styles.button}
-          variant="secondary"
-          onClick={wrapLogger('button klikk', {
-            tekst: `Tilbake fra ${paths.ufoeretrygdAFP}`,
-          })(onPrevious)}
-        >
-          <FormattedMessage id="stegvisning.tilbake" />
-        </Button>
-        {onCancel && (
-          <Button
-            type="button"
-            className={styles.button}
-            variant="tertiary"
-            onClick={wrapLogger('button klikk', { tekst: 'Avbryt' })(onCancel)}
+        {/* TODO PEK-882: Remove this when feature toggle is removed */}
+        {!isGradertUfoereAfpToggleEnabled ? (
+          <BodyLong
+            size="large"
+            data-testid="ufoere-ingress"
+            className={styles.paragraph}
           >
-            <FormattedMessage id="stegvisning.avbryt" />
-          </Button>
+            <FormattedMessage
+              id="stegvisning.ufoere.ingress-gammel"
+              values={{ ...getFormatMessageValues() }}
+            />
+          </BodyLong>
+        ) : (
+          <BodyLong
+            size="large"
+            data-testid="ufoere-ingress"
+            className={styles.paragraph}
+          >
+            <FormattedMessage
+              id="stegvisning.ufoere.ingress"
+              values={{ ...getFormatMessageValues() }}
+            />
+          </BodyLong>
         )}
+
+        <Navigation onPrevious={onPrevious} onCancel={onCancel} />
       </form>
     </Card>
   )

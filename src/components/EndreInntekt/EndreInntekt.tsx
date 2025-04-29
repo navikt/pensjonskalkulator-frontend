@@ -13,11 +13,13 @@ import {
 
 import { useAppSelector } from '@/state/hooks'
 import {
-  selectUfoeregrad,
   selectAarligInntektFoerUttakBeloepFraSkatt,
+  selectUfoeregrad,
 } from '@/state/userInput/selectors'
-import { updateAndFormatInntektFromInputField } from '@/utils/inntekt'
-import { validateInntekt } from '@/utils/inntekt'
+import {
+  updateAndFormatInntektFromInputField,
+  validateInntekt,
+} from '@/utils/inntekt'
 import { logger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
 
@@ -146,6 +148,7 @@ export const EndreInntekt: React.FC<Props> = ({
               <br />
             </BodyLong>
           )}
+
           <form id="oppdatere-inntekt" method="dialog" onSubmit={onSubmit}>
             <VStack gap="4">
               <TextField
@@ -176,6 +179,7 @@ export const EndreInntekt: React.FC<Props> = ({
             </VStack>
           </form>
         </Modal.Body>
+
         <Modal.Footer>
           <Button form="oppdatere-inntekt">
             {intl.formatMessage({
@@ -191,6 +195,7 @@ export const EndreInntekt: React.FC<Props> = ({
       </Modal>
 
       <Button
+        type="button"
         className={className ? className : ''}
         variant="tertiary"
         size="small"

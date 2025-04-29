@@ -1,6 +1,3 @@
-import React from 'react'
-import { useIntl } from 'react-intl'
-
 import Highcharts, {
   Chart,
   Point,
@@ -8,19 +5,23 @@ import Highcharts, {
   SeriesOptionsType,
 } from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
+import React from 'react'
+import { useIntl } from 'react-intl'
 
-import { transformFoedselsdatoToAlder } from '@/utils/alder'
-import { getAlderMinus1Maaned } from '@/utils/alder'
+import {
+  getAlderMinus1Maaned,
+  transformFoedselsdatoToAlder,
+} from '@/utils/alder'
 import { formatInntektToNumber } from '@/utils/inntekt'
 
 import { SERIES_DEFAULT } from './constants'
 import {
-  getChartDefaults,
   generateXAxis,
-  processInntektArray,
-  processPensjonsberegningArray,
+  getChartDefaults,
   processAfpPensjonsberegningArray,
+  processInntektArray,
   processPensjonsavtalerArray,
+  processPensjonsberegningArray,
 } from './utils'
 import { getChartOptions, onPointUnclick } from './utils-highcharts'
 
@@ -75,7 +76,7 @@ export const useSimuleringChartLocalState = (initialValues: {
     offentligTpData?.simulertTjenestepensjon?.simuleringsresultat
       .utbetalingsperioder
   const intl = useIntl()
-  const [XAxis, setXAxis] = React.useState<string[]>([])
+  const [xAxis, setXAxis] = React.useState<string[]>([])
   const [showVisFlereAarButton, setShowVisFlereAarButton] =
     React.useState<boolean>(false)
   const [showVisFaerreAarButton, setShowVisFaerreAarButton] =
@@ -178,7 +179,7 @@ export const useSimuleringChartLocalState = (initialValues: {
 
     if (startAar && startMaaned !== undefined && alderspensjonListe) {
       setChartOptions({
-        ...getChartDefaults(XAxis),
+        ...getChartDefaults(xAxis),
         series: [
           ...(aarligInntektFoerUttakBeloep != '0' ||
           gradertUttaksperiode?.aarligInntektVsaPensjonBeloep ||
@@ -217,7 +218,7 @@ export const useSimuleringChartLocalState = (initialValues: {
                           ),
                         }
                       : undefined,
-                    xAxisLength: XAxis.length,
+                    xAxisLength: xAxis.length,
                   }),
                 } as SeriesOptionsType,
               ]
@@ -232,7 +233,7 @@ export const useSimuleringChartLocalState = (initialValues: {
                   /* c8 ignore next 1 */
                   data: processAfpPensjonsberegningArray(
                     isEndring ? startAar : startAar - 1,
-                    XAxis.length,
+                    xAxis.length,
                     afpPrivatListe,
                     isEndring
                   ),
@@ -249,7 +250,7 @@ export const useSimuleringChartLocalState = (initialValues: {
                   /* c8 ignore next 1 */
                   data: processAfpPensjonsberegningArray(
                     isEndring ? startAar : startAar - 1,
-                    XAxis.length,
+                    xAxis.length,
                     afpOffentligListe,
                     isEndring
                   ),
@@ -271,7 +272,7 @@ export const useSimuleringChartLocalState = (initialValues: {
                   /* c8 ignore next 1 */
                   data: processPensjonsavtalerArray(
                     isEndring ? startAar : startAar - 1,
-                    XAxis.length,
+                    xAxis.length,
                     pensjonsavtalerData?.avtaler ?? [],
                     offentligTpData?.simulertTjenestepensjon
                       ?.simuleringsresultat.utbetalingsperioder ?? []
@@ -287,13 +288,13 @@ export const useSimuleringChartLocalState = (initialValues: {
             data: processPensjonsberegningArray(
               alderspensjonListe,
               isEndring,
-              XAxis.length
+              xAxis.length
             ),
           } as SeriesOptionsType,
         ],
       })
     }
-  }, [XAxis])
+  }, [xAxis])
 
   return [
     chartOptions,
@@ -414,7 +415,7 @@ export const useHighchartsRegressionPlugin = () => {
                 ? [point.dataLabel]
                 : []
             if (point.graphic) {
-              // @ts-ignore
+              // @ts-expect-error
               point.graphic.element.point = point
             }
             dataLabels.forEach(function (dataLabel) {
@@ -424,10 +425,10 @@ export const useHighchartsRegressionPlugin = () => {
           // Add the event listeners, we need to do this only once
           if (!series._hasTracking) {
             series.trackerGroups.forEach(function (key) {
-              // @ts-ignore
+              // @ts-expect-error
               if (series[key]) {
                 // We don't always have dataLabelsGroup
-                // @ts-ignore
+                // @ts-expect-error
                 series[key]
                   .addClass('highcharts-tracker')
                   .on('mouseover', onMouseOver)
@@ -436,7 +437,7 @@ export const useHighchartsRegressionPlugin = () => {
                   })
                   .on('touchstart', onMouseOver)
                 if (!chart.styledMode && series.options.cursor) {
-                  // @ts-ignore
+                  // @ts-expect-error
                   series[key].css({ cursor: series.options.cursor })
                 }
               }

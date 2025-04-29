@@ -1,8 +1,9 @@
 import { describe, it, vi } from 'vitest'
 
-import { Ufoere } from '..'
 import { RootState } from '@/state/store'
-import { screen, render, waitFor, userEvent } from '@/test-utils'
+import { render, screen, userEvent, waitFor } from '@/test-utils'
+
+import { Ufoere } from '..'
 
 describe('stegvisning - Ufoere', () => {
   const onCancelMock = vi.fn()
@@ -10,8 +11,7 @@ describe('stegvisning - Ufoere', () => {
   const onNextMock = vi.fn()
 
   it('rendrer slik den skal', async () => {
-    const user = userEvent.setup()
-    const result = render(
+    render(
       <Ufoere
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
@@ -26,17 +26,12 @@ describe('stegvisning - Ufoere', () => {
       'Før du fyller 62 år må du'
     )
 
-    await user.click(screen.getByText('stegvisning.ufoere.readmore_1.title'))
-    expect(
-      await screen.findByText(
-        'For å ha rett til AFP, kan du ikke ha fått utbetalt uføretrygd',
-        { exact: false }
-      )
-    ).toBeVisible()
+    await waitFor(() => {
+      expect(screen.getByTestId('om_UT_AFP')).toBeVisible()
+    })
     expect(screen.getByTestId('ufoere-ingress')).toHaveTextContent(
       'Du kan få hjelp til å vurdere alternativene dine.'
     )
-    expect(result.asFragment()).toMatchSnapshot()
   })
 
   it('kaller onNext når brukeren klikker på Neste', async () => {

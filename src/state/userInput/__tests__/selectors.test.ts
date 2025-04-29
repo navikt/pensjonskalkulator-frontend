@@ -1,42 +1,42 @@
 import {
-  selectHarUtenlandsopphold,
-  selectUtenlandsperioder,
-  selectSamtykke,
-  selectSamtykkeOffentligAFP,
-  selectAfp,
-  selectFoedselsdato,
-  selectSivilstand,
+  fulfilledGetInntekt,
+  fulfilledGetLoependeVedtak75Ufoeregrad,
+  fulfilledGetLoependeVedtakLoepende0Alderspensjon100Ufoeretrygd,
+  fulfilledGetLoependeVedtakLoependeAFPoffentlig,
+  fulfilledGetLoependeVedtakLoependeAFPprivat,
+  fulfilledGetLoependeVedtakLoependeAlderspensjon,
+  fulfilledGetPerson,
+} from '@/mocks/mockedRTKQueryApiCalls'
+import { RootState, store } from '@/state/store'
+import { Simulation } from '@/state/userInput/userInputSlice'
+
+import {
+  selectAarligInntektFoerUttakBeloep,
   selectAarligInntektFoerUttakBeloepFraBrukerInput,
   selectAarligInntektFoerUttakBeloepFraSkatt,
-  selectAarligInntektFoerUttakBeloep,
-  selectFormatertUttaksalderReadOnly,
+  selectAfp,
   selectCurrentSimulation,
-  selectIsVeileder,
-  selectVeilederBorgerFnr,
-  selectVeilederBorgerEncryptedFnr,
-  selectLoependeVedtak,
-  selectUfoeregrad,
-  selectIsEndring,
-  selectEpsHarPensjon,
   selectEpsHarInntektOver2G,
+  selectEpsHarPensjon,
+  selectFoedselsdato,
+  selectHarUtenlandsopphold,
+  selectIsEndring,
+  selectIsVeileder,
+  selectLoependeVedtak,
+  selectSamtykke,
+  selectSamtykkeOffentligAFP,
+  selectSivilstand,
+  selectUfoeregrad,
+  selectUtenlandsperioder,
+  selectVeilederBorgerEncryptedFnr,
+  selectVeilederBorgerFnr,
 } from '../selectors'
-import {
-  fulfilledGetInntekt,
-  fulfilledGetPerson,
-  fulfilledGetLoependeVedtak75Ufoeregrad,
-  fulfilledGetLoependeVedtakLoependeAlderspensjon,
-  fulfilledGetLoependeVedtakLoependeAFPprivat,
-  fulfilledGetLoependeVedtakLoependeAFPoffentlig,
-  fulfilledGetLoependeVedtakLoepende0Alderspensjon100Ufoeretrygd,
-} from '@/mocks/mockedRTKQueryApiCalls'
-import { store, RootState } from '@/state/store'
-import { Simulation } from '@/state/userInput/userInputSlice'
 
 describe('userInput selectors', () => {
   const initialState = store.getState()
 
   const currentSimulation: Simulation = {
-    formatertUttaksalderReadOnly: '62 alder.aar string.og 5 alder.maaneder',
+    beregningsvalg: null,
     uttaksalder: { aar: 62, maaneder: 5 },
     aarligInntektFoerUttakBeloep: '0',
     gradertUttaksperiode: null,
@@ -334,21 +334,6 @@ describe('userInput selectors', () => {
       },
     }
     expect(selectUtenlandsperioder(state)).toStrictEqual([utenlandsperiode])
-  })
-
-  it('selectFormatertUttaksalder', () => {
-    const state: RootState = {
-      ...initialState,
-      userInput: {
-        ...initialState.userInput,
-        currentSimulation: {
-          ...currentSimulation,
-        },
-      },
-    }
-    expect(selectFormatertUttaksalderReadOnly(state)).toBe(
-      '62 alder.aar string.og 5 alder.maaneder'
-    )
   })
 
   it('selectCurrentSimulation', () => {

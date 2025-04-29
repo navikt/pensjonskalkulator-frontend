@@ -1,14 +1,16 @@
 import { FormEvent, useState } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 
-import { BodyLong, Button, Heading, Radio, RadioGroup } from '@navikt/ds-react'
+import { BodyLong, Heading, Radio, RadioGroup } from '@navikt/ds-react'
 
-import { STEGVISNING_FORM_NAMES } from '../utils'
 import { Card } from '@/components/common/Card'
-import { ReadMore } from '@/components/common/ReadMore/ReadMore'
+import { SanityReadmore } from '@/components/common/SanityReadmore/SanityReadmore'
 import { paths } from '@/router/constants'
-import { logger, wrapLogger } from '@/utils/logging'
+import { logger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
+
+import Navigation from '../Navigation/Navigation'
+import { STEGVISNING_FORM_NAMES } from '../utils'
 
 import styles from './SamtykkePensjonsavtaler.module.scss'
 
@@ -71,44 +73,17 @@ export function SamtykkePensjonsavtaler({
         <BodyLong size="large">
           <FormattedMessage
             id="stegvisning.samtykke_pensjonsavtaler.ingress"
-            values={{ ...getFormatMessageValues() }}
+            values={getFormatMessageValues()}
           />
         </BodyLong>
-        <ReadMore
-          name="Dette henter vi fra offentlige tjenestepensjonsordninger"
+        <SanityReadmore
+          id="dette_henter_vi_OFTP"
           className={styles.readmoreOffentlig}
-          header={
-            <FormattedMessage id="stegvisning.samtykke_pensjonsavtaler.offentlig.readmore_title" />
-          }
-        >
-          <FormattedMessage
-            id="stegvisning.samtykke_pensjonsavtaler.offentlig.readmore_ingress"
-            values={{ ...getFormatMessageValues() }}
-          />
-        </ReadMore>
-        <ReadMore
-          name="Dette henter vi fra Norsk Pensjon om pensjonsavtaler fra privat sektor"
+        />
+        <SanityReadmore
+          id="dette_henter_vi_NP"
           className={styles.readmorePrivat}
-          header={
-            <FormattedMessage id="stegvisning.samtykke_pensjonsavtaler.privat.readmore_title" />
-          }
-        >
-          <FormattedMessage
-            id="stegvisning.samtykke_pensjonsavtaler.privat.readmore_ingress"
-            values={{ ...getFormatMessageValues() }}
-          />
-          <ul className={styles.list}>
-            <li>
-              <FormattedMessage id="stegvisning.samtykke_pensjonsavtaler.privat.readmore_list_item1" />
-            </li>
-            <li>
-              <FormattedMessage id="stegvisning.samtykke_pensjonsavtaler.privat.readmore_list_item2" />
-            </li>
-            <li>
-              <FormattedMessage id="stegvisning.samtykke_pensjonsavtaler.privat.readmore_list_item3" />
-            </li>
-          </ul>
-        </ReadMore>
+        />
 
         <RadioGroup
           className={styles.radiogroup}
@@ -124,8 +99,6 @@ export function SamtykkePensjonsavtaler({
           }
           onChange={handleRadioChange}
           error={validationError}
-          role="radiogroup"
-          aria-required="true"
         >
           <Radio value="ja">
             <FormattedMessage id="stegvisning.samtykke_pensjonsavtaler.radio_ja" />
@@ -135,29 +108,7 @@ export function SamtykkePensjonsavtaler({
           </Radio>
         </RadioGroup>
 
-        <Button type="submit" className={styles.button}>
-          <FormattedMessage id="stegvisning.neste" />
-        </Button>
-        <Button
-          type="button"
-          className={styles.button}
-          variant="secondary"
-          onClick={wrapLogger('button klikk', {
-            tekst: `Tilbake fra ${paths.samtykke}`,
-          })(onPrevious)}
-        >
-          <FormattedMessage id="stegvisning.tilbake" />
-        </Button>
-        {onCancel && (
-          <Button
-            type="button"
-            className={styles.button}
-            variant="tertiary"
-            onClick={wrapLogger('button klikk', { tekst: 'Avbryt' })(onCancel)}
-          >
-            <FormattedMessage id="stegvisning.avbryt" />
-          </Button>
-        )}
+        <Navigation onPrevious={onPrevious} onCancel={onCancel} />
       </form>
     </Card>
   )

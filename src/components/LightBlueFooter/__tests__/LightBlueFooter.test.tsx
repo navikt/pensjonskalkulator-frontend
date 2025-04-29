@@ -1,9 +1,10 @@
 import { describe, it, vi } from 'vitest'
 
-import { LightBlueFooter } from '..'
 import { paths } from '@/router/constants'
 import { userInputInitialState } from '@/state/userInput/userInputSlice'
 import { render, screen, userEvent } from '@/test-utils'
+
+import { LightBlueFooter } from '..'
 
 const navigateMock = vi.fn()
 vi.mock(import('react-router'), async (importOriginal) => {
@@ -16,9 +17,8 @@ vi.mock(import('react-router'), async (importOriginal) => {
 
 describe('LightBlueFooter', () => {
   it('rendrer med riktig tekst og knapper', () => {
-    const { asFragment } = render(<LightBlueFooter />)
+    render(<LightBlueFooter />)
     expect(screen.getAllByRole('button')).toHaveLength(1)
-    expect(asFragment()).toMatchSnapshot()
   })
 
   describe('Gitt at brukeren klikker på knappen, åpnes det modalen og brukeren kan avbryte eller gå tilbake til start ved bekreftelse', async () => {

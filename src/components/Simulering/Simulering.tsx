@@ -1,16 +1,17 @@
-import React from 'react'
+import clsx from 'clsx'
+import Highcharts, { SeriesColumnOptions, XAxisOptions } from 'highcharts'
+import HighchartsReact from 'highcharts-react-official'
+import { useEffect, useRef, useState } from 'react'
 import { FormattedMessage } from 'react-intl'
 
 import { HandFingerIcon } from '@navikt/aksel-icons'
-import { BodyShort, Heading, HeadingProps } from '@navikt/ds-react'
-import Highcharts, { SeriesColumnOptions, XAxisOptions } from 'highcharts'
-import HighchartsReact from 'highcharts-react-official'
+import { BodyLong, BodyShort, Heading, HeadingProps } from '@navikt/ds-react'
 
 import { TabellVisning } from '@/components/TabellVisning'
 import {
-  usePensjonsavtalerQuery,
-  useOffentligTpQuery,
   useGetUtvidetSimuleringsresultatFeatureToggleQuery,
+  useOffentligTpQuery,
+  usePensjonsavtalerQuery,
 } from '@/state/api/apiSlice'
 import {
   generateOffentligTpRequestBody,
@@ -18,30 +19,30 @@ import {
 } from '@/state/api/utils'
 import { useAppSelector } from '@/state/hooks'
 import {
-  selectCurrentSimulation,
-  selectSamtykke,
-  selectUfoeregrad,
-  selectSivilstand,
   selectAfp,
-  selectIsEndring,
-  selectFoedselsdato,
-  selectEpsHarPensjon,
+  selectCurrentSimulation,
   selectEpsHarInntektOver2G,
+  selectEpsHarPensjon,
+  selectFoedselsdato,
+  selectIsEndring,
+  selectSamtykke,
+  selectSivilstand,
+  selectUfoeregrad,
   selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
 
-import {
-  useSimuleringChartLocalState,
-  useHighchartsRegressionPlugin,
-} from './hooks'
 import { SimuleringEndringBanner } from './SimuleringEndringBanner/SimuleringEndringBanner'
 import { SimuleringGrafNavigation } from './SimuleringGrafNavigation/SimuleringGrafNavigation'
 import { SimuleringPensjonsavtalerAlert } from './SimuleringPensjonsavtalerAlert/SimuleringPensjonsavtalerAlert'
 import { Simuleringsdetaljer } from './Simuleringsdetaljer/Simuleringsdetaljer'
+import {
+  useHighchartsRegressionPlugin,
+  useSimuleringChartLocalState,
+} from './hooks'
 
 import styles from './Simulering.module.scss'
 
-export function Simulering(props: {
+interface Props {
   isLoading: boolean
   headingLevel: HeadingProps['level']
   aarligInntektFoerUttakBeloep: string
@@ -54,19 +55,21 @@ export function Simulering(props: {
     trygdetid?: number
     opptjeningsgrunnlag?: SimulertOpptjeningGrunnlag[]
   }
-}) {
-  const {
-    isLoading,
-    headingLevel,
-    aarligInntektFoerUttakBeloep,
-    alderspensjonListe,
-    afpPrivatListe,
-    afpOffentligListe,
-    alderspensjonMaanedligVedEndring,
-    showButtonsAndTable,
-    detaljer,
-  } = props
+  visning?: BeregningVisning
+}
 
+export const Simulering = ({
+  isLoading,
+  headingLevel,
+  aarligInntektFoerUttakBeloep,
+  alderspensjonListe,
+  afpPrivatListe,
+  afpOffentligListe,
+  alderspensjonMaanedligVedEndring,
+  showButtonsAndTable,
+  detaljer,
+  visning,
+}: Props) => {
   const harSamtykket = useAppSelector(selectSamtykke)
   const ufoeregrad = useAppSelector(selectUfoeregrad)
   const afp = useAppSelector(selectAfp)
@@ -81,14 +84,15 @@ export function Simulering(props: {
   const { data: utvidetSimuleringsresultatFeatureToggle } =
     useGetUtvidetSimuleringsresultatFeatureToggleQuery()
 
-  const chartRef = React.useRef<HighchartsReact.RefObject>(null)
+  const chartRef = useRef<HighchartsReact.RefObject>(null)
 
-  const [offentligTpRequestBody, setOffentligTpRequestBody] = React.useState<
+  const [offentligTpRequestBody, setOffentligTpRequestBody] = useState<
     OffentligTpRequestBody | undefined
   >(undefined)
 
-  const [pensjonsavtalerRequestBody, setPensjonsavtalerRequestBody] =
-    React.useState<PensjonsavtalerRequestBody | undefined>(undefined)
+  const [pensjonsavtalerRequestBody, setPensjonsavtalerRequestBody] = useState<
+    PensjonsavtalerRequestBody | undefined
+  >(undefined)
 
   const {
     data: offentligTpData,
@@ -110,7 +114,7 @@ export function Simulering(props: {
     }
   )
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (harSamtykket && uttaksalder) {
       setOffentligTpRequestBody(
         generateOffentligTpRequestBody({
@@ -120,7 +124,7 @@ export function Simulering(props: {
           epsHarPensjon,
           epsHarInntektOver2G,
           aarligInntektFoerUttakBeloep: aarligInntektFoerUttakBeloep ?? '0',
-          gradertUttak: gradertUttaksperiode ? gradertUttaksperiode : undefined,
+          gradertUttak: gradertUttaksperiode ?? undefined,
           heltUttak: {
             uttaksalder,
             aarligInntektVsaPensjon: aarligInntektVsaHelPensjon,
@@ -137,7 +141,7 @@ export function Simulering(props: {
           epsHarPensjon,
           epsHarInntektOver2G,
           aarligInntektFoerUttakBeloep: aarligInntektFoerUttakBeloep ?? '0',
-          gradertUttak: gradertUttaksperiode ? gradertUttaksperiode : undefined,
+          gradertUttak: gradertUttaksperiode ?? undefined,
           heltUttak: {
             uttaksalder,
             aarligInntektVsaPensjon: aarligInntektVsaHelPensjon,
@@ -177,11 +181,27 @@ export function Simulering(props: {
     },
   })
 
+  const isEnkel = visning === 'enkel'
+
   return (
     <section className={styles.section}>
-      <Heading level={headingLevel} size="medium" className={styles.title}>
-        <FormattedMessage id="beregning.highcharts.title" />
-      </Heading>
+      {!isEndring && (
+        <div className={clsx({ [styles.intro]: isEnkel })}>
+          <Heading
+            className={clsx({ [styles.introTitle]: isEnkel })}
+            level={headingLevel}
+            size={headingLevel === '2' ? 'medium' : 'small'}
+          >
+            <FormattedMessage id="beregning.highcharts.title" />
+          </Heading>
+
+          {isEnkel && (
+            <BodyLong>
+              <FormattedMessage id="beregning.highcharts.ingress" />
+            </BodyLong>
+          )}
+        </div>
+      )}
 
       {showButtonsAndTable && (
         <SimuleringEndringBanner
@@ -194,8 +214,9 @@ export function Simulering(props: {
 
       <div role="img" aria-labelledby="alt-chart-title">
         <div id="alt-chart-title" hidden>
-          <FormattedMessage id="beregning.alt_tekst" />
+          <FormattedMessage id="beregning.highcharts.alt_tekst" />
         </div>
+
         <div
           className={styles.highchartsWrapper}
           data-testid="highcharts-aria-wrapper"
@@ -207,22 +228,26 @@ export function Simulering(props: {
             options={chartOptions}
           />
 
-          <BodyShort
-            size="small"
-            textColor="subtle"
-            className={styles.infoClick}
-          >
-            <HandFingerIcon />
-            <FormattedMessage id="beregning.highcharts.informasjon_klikk" />
-          </BodyShort>
+          {showButtonsAndTable && (
+            <BodyShort
+              size="small"
+              textColor="subtle"
+              className={styles.infoClick}
+            >
+              <HandFingerIcon />
+              <FormattedMessage id="beregning.highcharts.informasjon_klikk" />
+            </BodyShort>
+          )}
         </div>
       </div>
+
       {showButtonsAndTable && (
         <SimuleringGrafNavigation
           showVisFaerreAarButton={showVisFaerreAarButton}
           showVisFlereAarButton={showVisFlereAarButton}
         />
       )}
+
       <SimuleringPensjonsavtalerAlert
         isPensjonsavtaleFlagVisible={isPensjonsavtaleFlagVisible}
         pensjonsavtaler={{
@@ -243,6 +268,7 @@ export function Simulering(props: {
           aarArray={(chartOptions?.xAxis as XAxisOptions).categories}
         />
       )}
+
       {/* c8 ignore next 6 - detaljer skal kun vises i dev for test formål */}
       {utvidetSimuleringsresultatFeatureToggle?.enabled && detaljer && (
         <Simuleringsdetaljer

@@ -1,21 +1,22 @@
 import { describe, it, vi } from 'vitest'
 
-import { ResultatkortAvansertBeregning } from '../ResultatkortAvansertBeregning'
 import {
   fulfilledGetLoependeVedtak0Ufoeregrad,
   fulfilledGetLoependeVedtakFremtidigMedAlderspensjon,
 } from '@/mocks/mockedRTKQueryApiCalls'
 import { apiSlice } from '@/state/api/apiSlice'
 import {
-  userInputInitialState,
   Simulation,
+  userInputInitialState,
 } from '@/state/userInput/userInputSlice'
 import { render, screen, userEvent } from '@/test-utils'
 import * as loggerUtils from '@/utils/logging'
 
+import { ResultatkortAvansertBeregning } from '../ResultatkortAvansertBeregning'
+
 describe('ResultatkortAvansertBeregning', () => {
   const currentSimulation: Simulation = {
-    formatertUttaksalderReadOnly: '67 år string.og 0 alder.maaned',
+    beregningsvalg: null,
     uttaksalder: { aar: 67, maaneder: 0 },
     aarligInntektFoerUttakBeloep: null,
     gradertUttaksperiode: null,

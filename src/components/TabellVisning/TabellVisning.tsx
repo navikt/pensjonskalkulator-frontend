@@ -1,23 +1,23 @@
+import clsx from 'clsx'
+import { SeriesColumnOptions } from 'highcharts'
 import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 import { Table } from '@navikt/ds-react'
-import clsx from 'clsx'
-import { SeriesColumnOptions } from 'highcharts'
 
-import { ReadMore } from '../common/ReadMore'
 import { SERIES_DEFAULT } from '@/components/Simulering/constants'
 import { formatInntekt } from '@/utils/inntekt'
 import { logger } from '@/utils/logging'
 
+import { ReadMore } from '../common/ReadMore'
 import { useTableData } from './hooks'
+
+import styles from './TabellVisning.module.scss'
 
 interface Props {
   series: SeriesColumnOptions[]
   aarArray?: string[]
 }
-
-import styles from './TabellVisning.module.scss'
 
 const logOnExpandOpenAndClose = (alder: string) => (open: boolean) => {
   if (open) {
@@ -36,7 +36,7 @@ const logOnExpandOpenAndClose = (alder: string) => (open: boolean) => {
 export function TabellVisning({ series, aarArray }: Props) {
   const intl = useIntl()
   const tableData = useTableData(series, aarArray)
-  const [isVisTabellOpen, setVisTabellOpen] = React.useState<boolean>(false)
+  const [isTabellVisible, setIsTabellVisible] = React.useState<boolean>(false)
 
   const showInntekt = React.useMemo(() => {
     return series.some(
@@ -72,12 +72,12 @@ export function TabellVisning({ series, aarArray }: Props) {
     <ReadMore
       name="Tabell av beregningen"
       header={
-        isVisTabellOpen
+        isTabellVisible
           ? intl.formatMessage({ id: 'beregning.tabell.lukk' })
           : intl.formatMessage({ id: 'beregning.tabell.vis' })
       }
       className={styles.visTabell}
-      onOpenChange={setVisTabellOpen}
+      onOpenChange={setIsTabellVisible}
     >
       <Table className={styles.table}>
         <Table.Header>

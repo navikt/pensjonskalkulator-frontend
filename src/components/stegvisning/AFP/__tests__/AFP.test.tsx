@@ -1,8 +1,8 @@
 import { describe, it, vi } from 'vitest'
 
+import { render, screen, userEvent, waitFor } from '@/test-utils'
+
 import { AFP } from '..'
-import { mockErrorResponse } from '@/mocks/server'
-import { screen, render, waitFor, userEvent } from '@/test-utils'
 
 const navigateMock = vi.fn()
 vi.mock(import('react-router'), async (importOriginal) => {
@@ -13,30 +13,15 @@ vi.mock(import('react-router'), async (importOriginal) => {
   }
 })
 
-describe('stegvisning - AFP', () => {
+describe('stegvisning - AFP - født etter 1963', () => {
   const onCancelMock = vi.fn()
   const onPreviousMock = vi.fn()
   const onNextMock = vi.fn()
 
-  it('kaller navigate når shouldRedirectTo er angitt', async () => {
-    const randomPath = '/random-path'
-
-    render(
-      <AFP
-        shouldRedirectTo={randomPath}
-        afp={null}
-        onCancel={onCancelMock}
-        onPrevious={onPreviousMock}
-        onNext={onNextMock}
-      />
-    )
-    expect(navigateMock).toHaveBeenCalledWith(randomPath)
-  })
-
   it('rendrer slik den skal når afp ikke er oppgitt', async () => {
     render(
       <AFP
-        afp={null}
+        previousAfp={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -66,45 +51,10 @@ describe('stegvisning - AFP', () => {
     })
   })
 
-  it('rendrer slik den skal når tekstene fra sanity ikke kunne hentes', async () => {
-    mockErrorResponse('/feature/pensjonskalkulator.hent-tekster-fra-sanity')
+  it('rendrer slik den skal når afp er oppgitt', async () => {
     render(
       <AFP
-        afp={null}
-        onCancel={onCancelMock}
-        onPrevious={onPreviousMock}
-        onNext={onNextMock}
-      />
-    )
-
-    expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
-      'stegvisning.afp.title'
-    )
-
-    expect(screen.getByText('stegvisning.afp.ingress')).toBeVisible()
-
-    const radioButtons = await screen.findAllByRole('radio')
-    await waitFor(async () => {
-      expect(radioButtons).toHaveLength(4)
-      expect(radioButtons[0]).not.toBeChecked()
-      expect(radioButtons[1]).not.toBeChecked()
-      expect(radioButtons[2]).not.toBeChecked()
-      expect(radioButtons[3]).not.toBeChecked()
-
-      expect(
-        await screen.getByText('stegvisning.afp.readmore_offentlig_title')
-      ).toBeVisible()
-
-      expect(
-        await screen.getByText('stegvisning.afp.readmore_privat_title')
-      ).toBeVisible()
-    })
-  })
-
-  it('rendrer slik den skal når afp er oppgitt', async () => {
-    const result = render(
-      <AFP
-        afp="nei"
+        previousAfp="nei"
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -120,7 +70,6 @@ describe('stegvisning - AFP', () => {
       expect(radioButtons[1]).not.toBeChecked()
       expect(radioButtons[2]).toBeChecked()
       expect(radioButtons[3]).not.toBeChecked()
-      expect(result.asFragment()).toMatchSnapshot()
     })
   })
 
@@ -128,7 +77,7 @@ describe('stegvisning - AFP', () => {
     const user = userEvent.setup()
     render(
       <AFP
-        afp={null}
+        previousAfp={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -171,7 +120,7 @@ describe('stegvisning - AFP', () => {
     const user = userEvent.setup()
     render(
       <AFP
-        afp={null}
+        previousAfp={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -205,7 +154,7 @@ describe('stegvisning - AFP', () => {
     const user = userEvent.setup()
     render(
       <AFP
-        afp={null}
+        previousAfp={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -223,7 +172,7 @@ describe('stegvisning - AFP', () => {
     const user = userEvent.setup()
     render(
       <AFP
-        afp="ja_privat"
+        previousAfp="ja_privat"
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -237,7 +186,7 @@ describe('stegvisning - AFP', () => {
     const user = userEvent.setup()
     render(
       <AFP
-        afp="ja_privat"
+        previousAfp="ja_privat"
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -256,7 +205,7 @@ describe('stegvisning - AFP', () => {
   it('viser ikke avbryt knapp når onCancel ikke er definert', async () => {
     render(
       <AFP
-        afp={null}
+        previousAfp={null}
         onCancel={undefined}
         onPrevious={onPreviousMock}
         onNext={onNextMock}

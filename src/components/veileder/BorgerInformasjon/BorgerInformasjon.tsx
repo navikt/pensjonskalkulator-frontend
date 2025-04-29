@@ -1,12 +1,12 @@
 import {
+  BodyLong,
+  BodyShort,
   Box,
+  Button,
+  CopyButton,
   HStack,
   Loader,
-  CopyButton,
   Spacer,
-  Button,
-  BodyShort,
-  BodyLong,
 } from '@navikt/ds-react'
 
 import { BASE_PATH } from '@/router/constants'
@@ -14,16 +14,15 @@ import { useGetPersonQuery } from '@/state/api/apiSlice'
 
 import styles from './BorgerInformasjon.module.scss'
 
-interface IBorgerInformasjonProps {
+interface Props {
   fnr: string
 }
+
 const formatFnr = (fnr: string) => {
   return `${fnr.slice(0, 6)} ${fnr.slice(6)}`
 }
 
-export const BorgerInformasjon: React.FC<IBorgerInformasjonProps> = ({
-  fnr,
-}) => {
+export const BorgerInformasjon = ({ fnr }: Props) => {
   const { data: person, isFetching: isPersonFetching } = useGetPersonQuery()
 
   const onNullstillClick = () => {
@@ -48,7 +47,7 @@ export const BorgerInformasjon: React.FC<IBorgerInformasjonProps> = ({
           <CopyButton size="small" copyText={fnr} />
         </HStack>
         <Spacer />
-        <div>
+        <HStack gap="2">
           <Button
             onClick={onNullstillClick}
             data-testid="borger-nullstill"
@@ -57,7 +56,7 @@ export const BorgerInformasjon: React.FC<IBorgerInformasjonProps> = ({
           >
             Nullstill bruker
           </Button>
-        </div>
+        </HStack>
       </HStack>
     </Box>
   )

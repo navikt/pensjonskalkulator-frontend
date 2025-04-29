@@ -1,9 +1,5 @@
 import { describe, it, vi } from 'vitest'
 
-import afpOffentligData from '../../../mocks/data/afp-offentlig.json' with { type: 'json' }
-import afpPrivatData from '../../../mocks/data/afp-privat/67.json' with { type: 'json' }
-import alderspensjonData from '../../../mocks/data/alderspensjon/67.json' with { type: 'json' }
-import { Simulering } from '../Simulering'
 import {
   fulfilledGetInntekt,
   fulfilledGetLoependeVedtak0Ufoeregrad,
@@ -13,14 +9,19 @@ import {
 import { mockErrorResponse, mockResponse } from '@/mocks/server'
 import * as apiSliceUtils from '@/state/api/apiSlice'
 import {
-  userInputInitialState,
   Simulation,
+  userInputInitialState,
 } from '@/state/userInput/userInputSlice'
 import { act, render, screen, waitFor } from '@/test-utils'
 
+import afpOffentligData from '../../../mocks/data/afp-offentlig.json' with { type: 'json' }
+import afpPrivatData from '../../../mocks/data/afp-privat/67.json' with { type: 'json' }
+import alderspensjonData from '../../../mocks/data/alderspensjon/67.json' with { type: 'json' }
+import { Simulering } from '../Simulering'
+
 describe('Simulering', () => {
   const currentSimulation: Simulation = {
-    formatertUttaksalderReadOnly: '67 år string.og 0 alder.maaned',
+    beregningsvalg: null,
     uttaksalder: { aar: 67, maaneder: 0 },
     aarligInntektFoerUttakBeloep: '0',
     gradertUttaksperiode: null,
@@ -89,7 +90,7 @@ describe('Simulering', () => {
   })
 
   describe('Gitt at brukeren har vedtak om alderspensjon', () => {
-    it('viser banner om info for endret alderspensjon', () => {
+    it('viser banner om info for endret alderspensjon, og viser ikke tittel.', () => {
       render(
         <Simulering
           isLoading={false}
@@ -118,6 +119,9 @@ describe('Simulering', () => {
           },
         }
       )
+      expect(
+        screen.queryByText('beregning.highcharts.title')
+      ).not.toBeInTheDocument()
       expect(
         screen.getByText('beregning.avansert.endring_banner.title', {
           exact: false,
@@ -1118,6 +1122,39 @@ describe('Simulering', () => {
     )
     await waitFor(() => {
       expect(highChartsWrapper.getAttribute('aria-hidden')).toBe('true')
+    })
+  })
+
+  describe('Gitt at simuleringen er i enkel visning', () => {
+    it('viser tittel og riktig ingress', async () => {
+      render(
+        <Simulering
+          visning="enkel"
+          isLoading={false}
+          headingLevel="3"
+          alderspensjonListe={alderspensjonData.alderspensjon}
+          afpPrivatListe={afpPrivatData.afpPrivat}
+          showButtonsAndTable={true}
+          aarligInntektFoerUttakBeloep="500 000"
+        />,
+        {
+          preloadedState: {
+            api: {
+              /* @ts-ignore */
+              queries: {
+                ...fulfilledGetPerson,
+              },
+            },
+            userInput: {
+              ...userInputInitialState,
+              samtykke: true,
+              currentSimulation: { ...currentSimulation },
+            },
+          },
+        }
+      )
+      expect(screen.getByText('beregning.highcharts.title')).toBeVisible()
+      expect(screen.getByText('beregning.highcharts.ingress')).toBeVisible()
     })
   })
 })

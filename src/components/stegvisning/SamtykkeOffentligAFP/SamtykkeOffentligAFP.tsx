@@ -1,13 +1,15 @@
 import { FormEvent, useState } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 
-import { BodyLong, Button, Heading, Radio, RadioGroup } from '@navikt/ds-react'
+import { BodyLong, Heading, Radio, RadioGroup } from '@navikt/ds-react'
 
-import { STEGVISNING_FORM_NAMES } from '../utils'
 import { Card } from '@/components/common/Card'
 import { paths } from '@/router/constants'
-import { logger, wrapLogger } from '@/utils/logging'
+import { logger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
+
+import Navigation from '../Navigation/Navigation'
+import { STEGVISNING_FORM_NAMES } from '../utils'
 
 import styles from './SamtykkeOffentligAFP.module.scss'
 
@@ -90,8 +92,6 @@ export function SamtykkeOffentligAFP({
           }
           onChange={handleRadioChange}
           error={validationError}
-          role="radiogroup"
-          aria-required="true"
         >
           <Radio value="ja">
             <FormattedMessage id="stegvisning.samtykke_offentlig_afp.radio_ja" />
@@ -101,29 +101,7 @@ export function SamtykkeOffentligAFP({
           </Radio>
         </RadioGroup>
 
-        <Button type="submit" className={styles.button}>
-          <FormattedMessage id="stegvisning.neste" />
-        </Button>
-        <Button
-          type="button"
-          className={styles.button}
-          variant="secondary"
-          onClick={wrapLogger('button klikk', {
-            tekst: `Tilbake fra ${paths.samtykkeOffentligAFP}`,
-          })(onPrevious)}
-        >
-          <FormattedMessage id="stegvisning.tilbake" />
-        </Button>
-        {onCancel && (
-          <Button
-            type="button"
-            className={styles.button}
-            variant="tertiary"
-            onClick={wrapLogger('button klikk', { tekst: 'Avbryt' })(onCancel)}
-          >
-            <FormattedMessage id="stegvisning.avbryt" />
-          </Button>
-        )}
+        <Navigation onPrevious={onPrevious} onCancel={onCancel} />
       </form>
     </Card>
   )

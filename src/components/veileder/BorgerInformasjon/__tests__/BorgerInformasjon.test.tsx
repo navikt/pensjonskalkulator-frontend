@@ -1,6 +1,7 @@
-import { BorgerInformasjon } from '../BorgerInformasjon'
 import { BASE_PATH } from '@/router/constants'
-import { render, screen, waitFor, userEvent } from '@/test-utils'
+import { render, screen, userEvent, waitFor } from '@/test-utils'
+
+import { BorgerInformasjon } from '../BorgerInformasjon'
 
 const previousWindow = window
 
@@ -10,14 +11,13 @@ describe('veileder - BorgerInformasjon', async () => {
   })
 
   it('viser informasjon og fnr', async () => {
-    const result = render(<BorgerInformasjon fnr="12345678901" />)
+    render(<BorgerInformasjon fnr="12345678901" />)
 
     await waitFor(() => {
       expect(screen.getByTestId('borger-fnr')).toHaveTextContent(
         'F.nr.: 123456 78901'
       )
     })
-    expect(result.asFragment()).toMatchSnapshot()
   })
 
   it('reloader siden om man trykker på nullstill', async () => {

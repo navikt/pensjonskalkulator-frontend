@@ -5,8 +5,8 @@ export const externalUrls = {
   dinPensjonBeholdning: 'https://www.nav.no/pensjon/opptjening/nb/',
   dinPensjonEndreSoeknad:
     'https://www.nav.no/pensjon/selvbetjening/alderspensjon/endringssoknad',
-  detaljertKalkulator:
-    'https://www.nav.no/pselv/simulering.jsf?simpleMode=true',
+  dinPensjonInnlogget: 'https://www.nav.no/pensjon/selvbetjening/dinpensjon',
+  detaljertKalkulator: '/pensjon/kalkulator/redirect/detaljert-kalkulator',
   alderspensjonsregler: 'https://www.nav.no/alderspensjon#beregning',
   afp: 'https://www.afp.no',
   afpPrivat: 'https://www.nav.no/afp-i-privat-sektor',
@@ -47,6 +47,7 @@ export const paths = {
   beregningEnkel: '/beregning',
   beregningAvansert: '/beregning-detaljert',
   forbehold: '/forbehold',
+  kalkulatorVirkerIkke: '/kalkulatoren-virker-ikke',
 } as const
 
 export const henvisningUrlParams = {

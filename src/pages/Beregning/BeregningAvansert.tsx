@@ -1,11 +1,11 @@
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
 import clsx from 'clsx'
-import React from 'react'
-import { FormattedMessage } from 'react-intl'
+import { useContext, useEffect, useMemo } from 'react'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { useNavigate } from 'react-router'
 
-import { PencilIcon } from '@navikt/aksel-icons'
-import { Button, Heading } from '@navikt/ds-react'
+import { ArrowLeftIcon } from '@navikt/aksel-icons'
+import { BodyLong, Heading, Link, VStack } from '@navikt/ds-react'
 
 import { Grunnlag } from '@/components/Grunnlag'
 import { GrunnlagForbehold } from '@/components/GrunnlagForbehold'
@@ -16,6 +16,7 @@ import { ResultatkortAvansertBeregning } from '@/components/ResultatkortAvansert
 import { SavnerDuNoe } from '@/components/SavnerDuNoe'
 import { Simulering } from '@/components/Simulering'
 import { Alert as AlertDashBorder } from '@/components/common/Alert'
+import { SanityGuidePanel } from '@/components/common/SanityGuidePanel'
 import { BeregningContext } from '@/pages/Beregning/context'
 import { paths } from '@/router/constants'
 import {
@@ -33,20 +34,24 @@ import {
   selectEpsHarPensjon,
   selectIsEndring,
   selectLoependeVedtak,
+  selectNormertPensjonsalder,
   selectSamtykkeOffentligAFP,
   selectSivilstand,
   selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
+import { formatUttaksalder } from '@/utils/alder'
 import { logger } from '@/utils/logging'
+import { getFormatMessageValues } from '@/utils/translations'
 
 import styles from './BeregningAvansert.module.scss'
 
-export const BeregningAvansert: React.FC = () => {
+export const BeregningAvansert = () => {
+  const intl = useIntl()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   const { avansertSkjemaModus, setAvansertSkjemaModus } =
-    React.useContext(BeregningContext)
+    useContext(BeregningContext)
 
   const harSamtykketOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
   const afp = useAppSelector(selectAfp)
@@ -61,49 +66,49 @@ export const BeregningAvansert: React.FC = () => {
   const sivilstand = useAppSelector(selectSivilstand)
   const { data: person } = useGetPersonQuery()
 
+  const normertPensjonsalder = useAppSelector(selectNormertPensjonsalder)
   const utenlandsperioder = useAppSelector(selectUtenlandsperioder)
-  const { uttaksalder, aarligInntektVsaHelPensjon, gradertUttaksperiode } =
-    useAppSelector(selectCurrentSimulation)
+  const {
+    uttaksalder,
+    aarligInntektVsaHelPensjon,
+    gradertUttaksperiode,
+    beregningsvalg,
+  } = useAppSelector(selectCurrentSimulation)
 
-  const [alderspensjonRequestBody, setAlderspensjonRequestBody] =
-    React.useState<AlderspensjonRequestBody | undefined>(undefined)
-
-  React.useEffect(() => {
+  useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
 
-  React.useEffect(() => {
-    if (uttaksalder) {
-      const requestBody = generateAlderspensjonRequestBody({
-        loependeVedtak,
-        afp: afp === 'ja_offentlig' && !harSamtykketOffentligAFP ? null : afp,
-        sivilstand: sivilstand,
-        epsHarPensjon: epsHarPensjon,
-        epsHarInntektOver2G: epsHarInntektOver2G,
-        foedselsdato: person?.foedselsdato,
-        aarligInntektFoerUttakBeloep: aarligInntektFoerUttakBeloep ?? '0',
-        gradertUttak: gradertUttaksperiode
-          ? {
-              ...gradertUttaksperiode,
-            }
-          : undefined,
-        heltUttak: uttaksalder && {
-          uttaksalder,
-          aarligInntektVsaPensjon: aarligInntektVsaHelPensjon,
-        },
-        utenlandsperioder,
-      })
-      setAlderspensjonRequestBody(requestBody)
-    }
-  }, [
-    afp,
-    person,
-    aarligInntektFoerUttakBeloep,
-    sivilstand,
-    uttaksalder,
-    epsHarPensjon,
-    epsHarInntektOver2G,
-  ])
+  const alderspensjonRequestBody: AlderspensjonRequestBody | undefined =
+    useMemo(() => {
+      if (uttaksalder) {
+        return generateAlderspensjonRequestBody({
+          loependeVedtak,
+          afp: afp === 'ja_offentlig' && !harSamtykketOffentligAFP ? null : afp,
+          sivilstand: sivilstand,
+          epsHarPensjon: epsHarPensjon,
+          epsHarInntektOver2G: epsHarInntektOver2G,
+          foedselsdato: person?.foedselsdato,
+          aarligInntektFoerUttakBeloep: aarligInntektFoerUttakBeloep ?? '0',
+          gradertUttak: gradertUttaksperiode,
+          heltUttak: uttaksalder && {
+            uttaksalder,
+            aarligInntektVsaPensjon: aarligInntektVsaHelPensjon,
+          },
+          utenlandsperioder,
+          beregningsvalg,
+        })
+      }
+    }, [
+      afp,
+      person,
+      aarligInntektFoerUttakBeloep,
+      sivilstand,
+      uttaksalder,
+      epsHarPensjon,
+      epsHarInntektOver2G,
+      beregningsvalg,
+    ])
 
   // Hent alderspensjon + AFP
   const {
@@ -113,12 +118,10 @@ export const BeregningAvansert: React.FC = () => {
     error,
   } = useAlderspensjonQuery(
     alderspensjonRequestBody as AlderspensjonRequestBody,
-    {
-      skip: !alderspensjonRequestBody,
-    }
+    { skip: !alderspensjonRequestBody }
   )
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (uttaksalder) {
       if (alderspensjon && !alderspensjon?.vilkaarsproeving.vilkaarErOppfylt) {
         logger('alert vist', {
@@ -134,7 +137,7 @@ export const BeregningAvansert: React.FC = () => {
     }
   }, [uttaksalder, isError, alderspensjon])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (
       error &&
       ((error as FetchBaseQueryError).status === 503 ||
@@ -149,11 +152,11 @@ export const BeregningAvansert: React.FC = () => {
   }, [error])
 
   // Skal redigerer tilbake når alderspensjon er refetchet ferdig, og
-  React.useEffect(() => {
-    if (alderspensjon && !alderspensjon?.vilkaarsproeving.vilkaarErOppfylt) {
+  useEffect(() => {
+    if (alderspensjon && !alderspensjon.vilkaarsproeving.vilkaarErOppfylt) {
       setAvansertSkjemaModus('redigering')
     }
-    if (alderspensjon && alderspensjon.vilkaarsproeving.vilkaarErOppfylt) {
+    if (alderspensjon?.vilkaarsproeving.vilkaarErOppfylt) {
       logger('resultat vist', { tekst: 'Beregning avansert' })
       logger('grunnlag for beregningen', {
         tekst: 'antall opphold',
@@ -171,126 +174,206 @@ export const BeregningAvansert: React.FC = () => {
     }
   }
 
+  if (avansertSkjemaModus === 'redigering') {
+    return (
+      <RedigerAvansertBeregning
+        vilkaarsproeving={alderspensjon?.vilkaarsproeving}
+      />
+    )
+  }
+
+  const harHelUT = loependeVedtak?.ufoeretrygd.grad === 100
+  const harGradertUT =
+    loependeVedtak?.ufoeretrygd.grad > 0 &&
+    loependeVedtak?.ufoeretrygd.grad < 100
+
   return (
     <>
-      {avansertSkjemaModus === 'redigering' && (
-        <RedigerAvansertBeregning
-          vilkaarsproeving={alderspensjon?.vilkaarsproeving}
-        />
-      )}
+      <InfoOmLoependeVedtak loependeVedtak={loependeVedtak} />
 
-      {avansertSkjemaModus === 'resultat' && (
-        <>
-          <InfoOmLoependeVedtak loependeVedtak={loependeVedtak} />
-          <div
-            className={`${styles.container} ${styles.container__hasMobilePadding} ${styles.container__hasTopMargin}`}
-          >
-            {isError ? (
-              <>
-                <Heading level="2" size="small">
-                  <FormattedMessage id="beregning.title" />
-                </Heading>
-                <AlertDashBorder onRetry={isError ? onRetry : undefined}>
-                  {isError && <FormattedMessage id="beregning.error" />}
-                </AlertDashBorder>
-                <ResultatkortAvansertBeregning
-                  onButtonClick={() => setAvansertSkjemaModus('redigering')}
-                />
-              </>
-            ) : (
-              <>
-                <Button
-                  type="button"
-                  data-testid="card-button-secondary"
-                  className={styles.button}
-                  variant="secondary"
-                  icon={<PencilIcon aria-hidden />}
-                  onClick={() => {
-                    logger('button klikk', {
-                      tekst: 'Beregning avansert: Endre valgene dine',
-                    })
-                    setAvansertSkjemaModus('redigering')
-                  }}
-                >
-                  <FormattedMessage id="beregning.avansert.button.endre_valgene_dine" />
-                </Button>
-                <Simulering
-                  isLoading={isFetching}
-                  headingLevel="2"
-                  aarligInntektFoerUttakBeloep={
-                    aarligInntektFoerUttakBeloep ?? '0'
-                  }
-                  alderspensjonListe={alderspensjon?.alderspensjon}
-                  afpPrivatListe={
-                    !loependeVedtak.ufoeretrygd.grad &&
-                    (afp === 'ja_privat' || loependeVedtak.afpPrivat) &&
-                    alderspensjon?.afpPrivat
-                      ? alderspensjon?.afpPrivat
-                      : undefined
-                  }
-                  afpOffentligListe={
-                    !loependeVedtak.ufoeretrygd.grad &&
-                    afp === 'ja_offentlig' &&
-                    harSamtykketOffentligAFP &&
-                    alderspensjon?.afpOffentlig
-                      ? alderspensjon?.afpOffentlig
-                      : undefined
-                  }
-                  alderspensjonMaanedligVedEndring={
-                    alderspensjon?.alderspensjonMaanedligVedEndring
-                  }
-                  showButtonsAndTable={
-                    !isError && alderspensjon?.vilkaarsproeving.vilkaarErOppfylt
-                  }
-                  detaljer={
-                    alderspensjon?.trygdetid ||
-                    alderspensjon?.opptjeningGrunnlagListe
-                      ? {
-                          trygdetid: alderspensjon?.trygdetid,
-                          opptjeningsgrunnlag:
-                            alderspensjon?.opptjeningGrunnlagListe,
-                        }
-                      : undefined
+      <div
+        className={clsx(
+          styles.container,
+          styles.container__hasMobilePadding,
+          styles.container__hasTopMargin
+        )}
+      >
+        {isError ? (
+          <>
+            <Heading level="2" size="medium">
+              <FormattedMessage id="beregning.title" />
+            </Heading>
+
+            <AlertDashBorder onRetry={isError ? onRetry : undefined}>
+              {isError && <FormattedMessage id="beregning.error" />}
+            </AlertDashBorder>
+
+            <ResultatkortAvansertBeregning
+              onButtonClick={() => setAvansertSkjemaModus('redigering')}
+            />
+          </>
+        ) : (
+          <>
+            <Link
+              href="#"
+              className={styles.link}
+              onClick={(e) => {
+                e?.preventDefault()
+                logger('button klikk', {
+                  tekst: isEndring
+                    ? 'Beregning avansert: Endre valgene dine'
+                    : 'Beregning avansert: Endre avanserte valg',
+                })
+                setAvansertSkjemaModus('redigering')
+              }}
+            >
+              <ArrowLeftIcon aria-hidden fontSize="1.5rem" />
+              <FormattedMessage
+                id={
+                  isEndring
+                    ? 'beregning.avansert.link.endre_valgene_dine'
+                    : 'beregning.avansert.link.endre_avanserte_valg'
+                }
+              />
+            </Link>
+
+            <div
+              className={clsx(styles.intro, {
+                [styles.intro__endring]: isEndring,
+              })}
+            >
+              <Heading level="2" size="medium" className={styles.introTitle}>
+                <FormattedMessage
+                  id={
+                    isEndring
+                      ? 'beregning.intro.title.endring'
+                      : 'beregning.intro.title'
                   }
                 />
-                <ResultatkortAvansertBeregning
-                  onButtonClick={() => setAvansertSkjemaModus('redigering')}
-                />
-                {!isEndring && <Pensjonsavtaler headingLevel="2" />}
-                <Grunnlag
-                  visning="avansert"
-                  headingLevel="2"
-                  harForLiteTrygdetid={alderspensjon?.harForLiteTrygdetid}
-                  trygdetid={alderspensjon?.trygdetid}
-                  pensjonsbeholdning={
-                    alderspensjon?.alderspensjon &&
-                    alderspensjon?.alderspensjon.length > 0
-                      ? alderspensjon?.alderspensjon[0]
-                          .pensjonBeholdningFoerUttakBeloep
-                      : undefined
-                  }
-                  isEndring={isEndring}
-                />
-              </>
-            )}
-          </div>
-          {!isError && (
-            <>
-              <div
-                className={clsx(
-                  styles.background,
-                  styles.background__lightblue
+              </Heading>
+
+              <VStack gap="2">
+                <BodyLong>
+                  <FormattedMessage
+                    id={
+                      isEndring
+                        ? 'beregning.intro.description_1.endring'
+                        : 'beregning.intro.description_1'
+                    }
+                  />
+                </BodyLong>
+
+                {harGradertUT &&
+                  (beregningsvalg === 'med_afp' ? (
+                    <BodyLong>
+                      <FormattedMessage id="beregning.intro.description_2.gradert_UT.med_afp" />
+                    </BodyLong>
+                  ) : (
+                    <BodyLong>
+                      <FormattedMessage
+                        id="beregning.intro.description_2.gradert_UT.uten_afp"
+                        values={{
+                          ...getFormatMessageValues(),
+                          grad: loependeVedtak.ufoeretrygd.grad,
+                          normertPensjonsalder: formatUttaksalder(
+                            intl,
+                            normertPensjonsalder
+                          ),
+                        }}
+                      />
+                    </BodyLong>
+                  ))}
+
+                {harHelUT && (
+                  <BodyLong>
+                    <FormattedMessage id="beregning.intro.description_2.hel_UT" />
+                  </BodyLong>
                 )}
-              >
-                <div className={styles.container}>
-                  <SavnerDuNoe headingLevel="3" isEndring={isEndring} />
-                </div>
-              </div>
-              <div className={styles.container}>
-                <GrunnlagForbehold headingLevel="3" />
-              </div>
-            </>
-          )}
+              </VStack>
+            </div>
+
+            <Simulering
+              visning="avansert"
+              isLoading={isFetching}
+              headingLevel="3"
+              aarligInntektFoerUttakBeloep={aarligInntektFoerUttakBeloep ?? '0'}
+              alderspensjonListe={alderspensjon?.alderspensjon}
+              afpPrivatListe={
+                (afp === 'ja_privat' || loependeVedtak.afpPrivat) &&
+                alderspensjon?.afpPrivat
+                  ? alderspensjon?.afpPrivat
+                  : undefined
+              }
+              afpOffentligListe={
+                afp === 'ja_offentlig' &&
+                harSamtykketOffentligAFP &&
+                alderspensjon?.afpOffentlig
+                  ? alderspensjon?.afpOffentlig
+                  : undefined
+              }
+              alderspensjonMaanedligVedEndring={
+                alderspensjon?.alderspensjonMaanedligVedEndring
+              }
+              showButtonsAndTable={
+                !isError && alderspensjon?.vilkaarsproeving.vilkaarErOppfylt
+              }
+              detaljer={
+                alderspensjon?.trygdetid ||
+                alderspensjon?.opptjeningGrunnlagListe
+                  ? {
+                      trygdetid: alderspensjon?.trygdetid,
+                      opptjeningsgrunnlag:
+                        alderspensjon?.opptjeningGrunnlagListe,
+                    }
+                  : undefined
+              }
+            />
+
+            <ResultatkortAvansertBeregning
+              onButtonClick={() => setAvansertSkjemaModus('redigering')}
+            />
+
+            {beregningsvalg === 'med_afp' && (
+              <SanityGuidePanel
+                id="vurderer_du_a_velge_afp"
+                className={styles.guidePanel}
+                hasSection
+              />
+            )}
+
+            {!isEndring && <Pensjonsavtaler headingLevel="2" />}
+
+            <Grunnlag
+              visning="avansert"
+              headingLevel="2"
+              harForLiteTrygdetid={alderspensjon?.harForLiteTrygdetid}
+              trygdetid={alderspensjon?.trygdetid}
+              pensjonsbeholdning={
+                alderspensjon?.alderspensjon &&
+                alderspensjon?.alderspensjon.length > 0
+                  ? alderspensjon?.alderspensjon[0]
+                      .pensjonBeholdningFoerUttakBeloep
+                  : undefined
+              }
+              isEndring={isEndring}
+            />
+          </>
+        )}
+      </div>
+
+      {!isError && (
+        <>
+          <div
+            className={clsx(styles.background, styles.background__lightblue)}
+          >
+            <div className={styles.container}>
+              <SavnerDuNoe headingLevel="3" isEndring={isEndring} />
+            </div>
+          </div>
+
+          <div className={styles.container}>
+            <GrunnlagForbehold headingLevel="3" />
+          </div>
         </>
       )}
     </>

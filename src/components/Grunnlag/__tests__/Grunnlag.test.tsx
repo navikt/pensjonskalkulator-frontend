@@ -30,6 +30,7 @@ describe('Grunnlag', () => {
         headingLevel={headingLevel}
         visning={visning}
         pensjonsbeholdning={pensjonsbeholdning}
+        isEndring={false}
       />,
       {
         preloadedState: {
@@ -51,7 +52,6 @@ describe('Grunnlag', () => {
     renderGrunnlagMedPreloadedState('3', 'enkel')
     expect(screen.getAllByRole('heading', { level: 3 })).toHaveLength(1)
     expect(await screen.findByText('grunnlag.title')).toBeInTheDocument()
-    expect(await screen.findByText('grunnlag.ingress')).toBeInTheDocument()
     expect(await screen.findByText('grunnlag.uttaksgrad.title')).toBeVisible()
     expect(await screen.findByText('grunnlag.inntekt.title')).toBeVisible()
     expect(await screen.findByText('grunnlag.sivilstand.title')).toBeVisible()
@@ -68,7 +68,6 @@ describe('Grunnlag', () => {
     renderGrunnlagMedPreloadedState('2', 'avansert')
     expect(screen.getAllByRole('heading', { level: 2 })).toHaveLength(1)
     expect(await screen.findByText('grunnlag.title')).toBeInTheDocument()
-    expect(await screen.findByText('grunnlag.ingress')).toBeInTheDocument()
     expect(
       screen.queryByText('grunnlag.uttaksgrad.title')
     ).not.toBeInTheDocument()
@@ -149,19 +148,22 @@ describe('Grunnlag', () => {
     it('viser riktig tekst og lenke når henting av sivilstand fra vedtaket er vellykket', async () => {
       const user = userEvent.setup()
 
-      render(<Grunnlag headingLevel={'2'} visning={'avansert'} />, {
-        preloadedState: {
-          api: {
-            //@ts-ignore
-            queries: {
-              ...fulfilledGetLoependeVedtakLoependeAlderspensjon,
+      render(
+        <Grunnlag headingLevel="2" visning="avansert" isEndring={false} />,
+        {
+          preloadedState: {
+            api: {
+              //@ts-ignore
+              queries: {
+                ...fulfilledGetLoependeVedtakLoependeAlderspensjon,
+              },
+            },
+            userInput: {
+              ...userInputInitialState,
             },
           },
-          userInput: {
-            ...userInputInitialState,
-          },
-        },
-      })
+        }
+      )
 
       expect(
         await screen.findByText('grunnlag.sivilstand.title')
@@ -360,10 +362,10 @@ describe('Grunnlag', () => {
       await user.click(buttons[6])
 
       expect(
-        await screen.findByText('grunnlag.afp.ingress.nei', { exact: false })
+        await screen.findByTestId('grunnlag.afp.ingress.nei', { exact: false })
       ).toBeVisible()
-      expect(await screen.findByText('grunnlag.afp.reset_link')).toBeVisible()
-      await user.click(await screen.findByText('grunnlag.afp.reset_link'))
+      expect(await screen.findByTestId('grunnlag.afp.reset_link')).toBeVisible()
+      await user.click(await screen.findByTestId('grunnlag.afp.reset_link'))
       expect(flushMock).toHaveBeenCalled()
       expect(navigateMock).toHaveBeenCalledWith(paths.start)
     })

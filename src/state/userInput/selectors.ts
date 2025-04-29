@@ -31,6 +31,8 @@ export const selectIsVeileder = (state: RootState) =>
 export const selectAfp = (state: RootState): AfpRadio | null =>
   state.userInput.afp
 
+export const selectSkalBeregneAfp = (state: RootState): boolean | null =>
+  state.userInput.skalBeregneAfp
 const selectPersonResponse = apiSlice.endpoints.getPerson.select()
 const selectInntektResponse = apiSlice.endpoints.getInntekt.select()
 const selectLoependeVedtakResponse =
@@ -101,11 +103,6 @@ export const selectAarligInntektFoerUttakBeloep = (
   }
   return aarligInntektFoerUttakBeloepFraBrukerInput
 }
-
-export const selectFormatertUttaksalderReadOnly = (
-  state: RootState
-): string | null =>
-  state.userInput.currentSimulation.formatertUttaksalderReadOnly
 
 export const selectCurrentSimulation = (state: RootState): Simulation =>
   state.userInput.currentSimulation

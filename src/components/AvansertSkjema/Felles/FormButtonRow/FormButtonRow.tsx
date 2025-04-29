@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import React from 'react'
 import { useIntl } from 'react-intl'
 
@@ -9,7 +10,7 @@ import {
   selectCurrentSimulation,
   selectIsEndring,
 } from '@/state/userInput/selectors'
-import { wrapLogger } from '@/utils/logging'
+import { logger, wrapLogger } from '@/utils/logging'
 
 import styles from './FormButtonRow.module.scss'
 
@@ -45,7 +46,7 @@ export const FormButtonRow: React.FC<{
       <div>
         <Button
           form={formId}
-          className={`${styles.button} ${styles.buttonSubmit}`}
+          className={clsx(styles.button, styles.buttonSubmit)}
         >
           {intl.formatMessage({ id: getButtonMessageId() })}
         </Button>
@@ -70,7 +71,12 @@ export const FormButtonRow: React.FC<{
             type="button"
             variant="tertiary"
             className={styles.button}
-            onClick={gaaTilResultat}
+            onClick={() => {
+              logger('button klikk', {
+                tekst: 'Beregning avansert: Avbryt endring',
+              })
+              gaaTilResultat()
+            }}
           >
             {intl.formatMessage({
               id: 'beregning.avansert.button.avbryt',

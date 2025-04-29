@@ -1,14 +1,15 @@
 import { describe, it, vi } from 'vitest'
 
-import { Pensjonsavtaler } from '../Pensjonsavtaler'
 import { fulfilledGetInntekt } from '@/mocks/mockedRTKQueryApiCalls'
 import { paths } from '@/router/constants'
 import * as apiSliceUtils from '@/state/api/apiSlice'
 import {
-  userInputInitialState,
   Simulation,
+  userInputInitialState,
 } from '@/state/userInput/userInputSlice'
 import { render, screen, userEvent } from '@/test-utils'
+
+import { Pensjonsavtaler } from '../Pensjonsavtaler'
 
 const navigateMock = vi.fn()
 vi.mock(import('react-router'), async (importOriginal) => {
@@ -25,7 +26,7 @@ describe('Pensjonsavtaler', () => {
   })
 
   const currentSimulation: Simulation = {
-    formatertUttaksalderReadOnly: '67 år string.og 1 alder.maaned',
+    beregningsvalg: null,
     uttaksalder: { aar: 70, maaneder: 0 },
     aarligInntektVsaHelPensjon: {
       beloep: '500 000',

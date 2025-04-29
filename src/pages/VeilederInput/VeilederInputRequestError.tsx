@@ -1,14 +1,13 @@
-import { Alert } from '@navikt/ds-react'
 import { SerializedError } from '@reduxjs/toolkit'
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
 
-interface IValiderInputRequestErrorProps {
+import { Alert } from '@navikt/ds-react'
+
+interface Props {
   personError: FetchBaseQueryError | SerializedError | undefined
 }
 
-export const VeilederInputRequestError: React.FC<
-  IValiderInputRequestErrorProps
-> = ({ personError }) => {
+export const VeilederInputRequestError = ({ personError }: Props) => {
   if (!personError) return null
 
   if ('status' in personError) {

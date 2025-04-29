@@ -1,7 +1,8 @@
 import { describe, it, vi } from 'vitest'
 
+import { render, screen, userEvent } from '@/test-utils'
+
 import { Start } from '..'
-import { render, screen, waitFor, userEvent } from '@/test-utils'
 
 const navigateMock = vi.fn()
 vi.mock(import('react-router'), async (importOriginal) => {
@@ -20,23 +21,8 @@ describe('stegvisning - Start', () => {
     ufoeretrygd: { grad: 0 },
   }
 
-  it('kaller navigate når shouldRedirectTo er angitt', async () => {
-    const randomPath = '/random-path'
-
-    render(
-      <Start
-        shouldRedirectTo={randomPath}
-        navn=""
-        loependeVedtak={loependeVedtak}
-        onCancel={onCancelMock}
-        onNext={onNextMock}
-      />
-    )
-    expect(navigateMock).toHaveBeenCalledWith(randomPath)
-  })
-
   it('rendrer slik den skal med navn, med riktig heading, bilde, tekst og knapper', async () => {
-    const result = render(
+    render(
       <Start
         navn="Ola"
         loependeVedtak={loependeVedtak}
@@ -45,12 +31,9 @@ describe('stegvisning - Start', () => {
       />
     )
 
-    await waitFor(() => {
-      expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
-        'stegvisning.start.title Ola!'
-      )
-      expect(result.asFragment()).toMatchSnapshot()
-    })
+    expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
+      'stegvisning.start.title Ola!'
+    )
   })
 
   it('rendrer slik den skal med vedtak om alderspensjon', async () => {
@@ -70,15 +53,23 @@ describe('stegvisning - Start', () => {
       />
     )
 
-    await waitFor(() => {
-      expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
-        'stegvisning.start.title Ola!'
+    expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
+      'stegvisning.start.title Ola!'
+    )
+    expect(screen.getByText('Du har nå', { exact: false })).toBeVisible()
+    expect(
+      screen.getByText('50 % alderspensjon', { exact: false })
+    ).toBeVisible()
+    expect(
+      screen.queryByText('uføretrygd', { exact: false })
+    ).not.toBeInTheDocument()
+    expect(screen.queryByText('AFP', { exact: false })).not.toBeInTheDocument()
+    expect(
+      screen.getByText(
+        'Her kan du sjekke hva du kan få hvis du vil endre alderspensjonen din.',
+        { exact: false }
       )
-      expect(screen.getByText('Du har nå', { exact: false })).toBeVisible()
-      expect(
-        screen.getByText('50 % alderspensjon', { exact: false })
-      ).toBeVisible()
-    })
+    ).toBeVisible()
   })
 
   it('rendrer slik den skal med vedtak om alderspensjon og uføregrad', async () => {
@@ -98,18 +89,14 @@ describe('stegvisning - Start', () => {
       />
     )
 
-    await waitFor(() => {
-      expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
-        'stegvisning.start.title Ola!'
-      )
-      expect(screen.getByText('Du har nå', { exact: false })).toBeVisible()
-      expect(
-        screen.getByText('50 % alderspensjon', { exact: false })
-      ).toBeVisible()
-      expect(
-        screen.getByText('80 % uføretrygd', { exact: false })
-      ).toBeVisible()
-    })
+    expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
+      'stegvisning.start.title Ola!'
+    )
+    expect(screen.getByText('Du har nå', { exact: false })).toBeVisible()
+    expect(
+      screen.getByText('50 % alderspensjon', { exact: false })
+    ).toBeVisible()
+    expect(screen.getByText('80 % uføretrygd', { exact: false })).toBeVisible()
   })
 
   it('rendrer slik den skal med vedtak om alderspensjon og AFP privat', async () => {
@@ -134,18 +121,16 @@ describe('stegvisning - Start', () => {
       />
     )
 
-    await waitFor(() => {
-      expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
-        'stegvisning.start.title Ola!'
-      )
-      expect(screen.getByText('Du har nå', { exact: false })).toBeVisible()
-      expect(
-        screen.getByText('50 % alderspensjon', { exact: false })
-      ).toBeVisible()
-      expect(
-        screen.getByText('AFP i privat sektor', { exact: false })
-      ).toBeVisible()
-    })
+    expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
+      'stegvisning.start.title Ola!'
+    )
+    expect(screen.getByText('Du har nå', { exact: false })).toBeVisible()
+    expect(
+      screen.getByText('50 % alderspensjon', { exact: false })
+    ).toBeVisible()
+    expect(
+      screen.getByText('AFP i privat sektor', { exact: false })
+    ).toBeVisible()
   })
 
   it('rendrer slik den skal med vedtak om alderspensjon og AFP offentlig', async () => {
@@ -170,18 +155,16 @@ describe('stegvisning - Start', () => {
       />
     )
 
-    await waitFor(() => {
-      expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
-        'stegvisning.start.title Ola!'
-      )
-      expect(screen.getByText('Du har nå', { exact: false })).toBeVisible()
-      expect(
-        screen.getByText('50 % alderspensjon', { exact: false })
-      ).toBeVisible()
-      expect(
-        screen.getByText('AFP i offentlig sektor', { exact: false })
-      ).toBeVisible()
-    })
+    expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
+      'stegvisning.start.title Ola!'
+    )
+    expect(screen.getByText('Du har nå', { exact: false })).toBeVisible()
+    expect(
+      screen.getByText('50 % alderspensjon', { exact: false })
+    ).toBeVisible()
+    expect(
+      screen.getByText('AFP i offentlig sektor', { exact: false })
+    ).toBeVisible()
   })
 
   it('rendrer slik den skal med fremtidig vedtak', async () => {
@@ -194,7 +177,7 @@ describe('stegvisning - Start', () => {
           },
           fremtidigAlderspensjon: {
             grad: 100,
-            fom: '2099-01-01',
+            fom: '2099-12-01',
           },
         }}
         onCancel={onCancelMock}
@@ -202,14 +185,15 @@ describe('stegvisning - Start', () => {
       />
     )
 
-    await waitFor(() => {
-      expect(
-        screen.getByText('stegvisning.fremtidigvedtak.alert')
-      ).toBeVisible()
-      expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
-        'stegvisning.start.title Ola!'
+    expect(
+      screen.getByText(
+        'Du har vedtak om 100 % alderspensjon fra 01.12.2099. Du kan gjøre en ny beregning her frem til uttak.'
       )
-    })
+    ).toBeVisible()
+    expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
+      'stegvisning.start.title Ola!'
+    )
+    expect(screen.getByText('stegvisning.start.button')).toBeVisible()
   })
 
   it('rendrer slik den skal med vedtak om alderspensjon og fremtidig vedtak', async () => {
@@ -235,14 +219,20 @@ describe('stegvisning - Start', () => {
       />
     )
 
-    await waitFor(() => {
-      expect(
-        screen.getByText('stegvisning.fremtidigvedtak.endring.alert')
-      ).toBeVisible()
-      expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
-        'stegvisning.start.title Ola!'
+    expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
+      'stegvisning.start.title Ola!'
+    )
+    expect(
+      screen.getByText(
+        'Du har nå . Du har endret til . Du kan ikke gjøre en ny beregning her før denne datoen.',
+        { exact: false }
       )
-    })
+    ).toBeVisible()
+    expect(screen.getByText('50 % alderspensjon')).toBeVisible()
+    expect(screen.getByText('100 % alderspensjon fra 01.01.2099')).toBeVisible()
+    expect(
+      screen.queryByText('stegvisning.start.button')
+    ).not.toBeInTheDocument()
   })
 
   it('kaller onNext når brukeren klikker på Neste', async () => {

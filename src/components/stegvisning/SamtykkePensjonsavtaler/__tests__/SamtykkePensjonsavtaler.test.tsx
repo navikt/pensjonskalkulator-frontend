@@ -1,15 +1,16 @@
 import { describe, it, vi } from 'vitest'
 
-import { SamtykkePensjonsavtaler } from '..'
 import { RootState } from '@/state/store'
-import { screen, render, waitFor, userEvent } from '@/test-utils'
+import { render, screen, userEvent, waitFor } from '@/test-utils'
+
+import { SamtykkePensjonsavtaler } from '..'
 
 describe('stegvisning - SamtykkePensjonsavtaler', () => {
   const onCancelMock = vi.fn()
   const onPreviousMock = vi.fn()
   const onNextMock = vi.fn()
   it('rendrer slik den skal når samtykket ikke er oppgitt', async () => {
-    const result = render(
+    render(
       <SamtykkePensjonsavtaler
         harSamtykket={null}
         onCancel={onCancelMock}
@@ -26,7 +27,6 @@ describe('stegvisning - SamtykkePensjonsavtaler', () => {
       expect(screen.getAllByRole('radio')).toHaveLength(2)
       expect(radioButtons[0]).not.toBeChecked()
       expect(radioButtons[1]).not.toBeChecked()
-      expect(result.asFragment()).toMatchSnapshot()
     })
   })
   describe('rendrer slik den skal når samtykket er oppgitt', async () => {

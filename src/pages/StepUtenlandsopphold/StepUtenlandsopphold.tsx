@@ -1,12 +1,14 @@
 import React from 'react'
 import { useIntl } from 'react-intl'
 
-import { useStegvisningNavigation } from '@/components/stegvisning/stegvisning-hooks'
 import { Utenlandsopphold } from '@/components/stegvisning/Utenlandsopphold'
+import { useStegvisningNavigation } from '@/components/stegvisning/stegvisning-hooks'
 import { paths } from '@/router/constants'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
-import { selectHarUtenlandsopphold } from '@/state/userInput/selectors'
-import { selectIsVeileder } from '@/state/userInput/selectors'
+import {
+  selectHarUtenlandsopphold,
+  selectIsVeileder,
+} from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
 
 export function StepUtenlandsopphold() {

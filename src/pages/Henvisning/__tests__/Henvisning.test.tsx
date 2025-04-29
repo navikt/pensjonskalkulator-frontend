@@ -1,8 +1,6 @@
-import { createMemoryRouter, RouterProvider } from 'react-router'
-
+import { RouterProvider, createMemoryRouter } from 'react-router'
 import { describe, it, vi } from 'vitest'
 
-import { Henvisning } from '../Henvisning'
 import {
   BASE_PATH,
   externalUrls,
@@ -12,6 +10,8 @@ import {
 import { routes } from '@/router/routes'
 import * as userInputReducerUtils from '@/state/userInput/userInputSlice'
 import { render, screen, userEvent } from '@/test-utils'
+
+import { Henvisning } from '../Henvisning'
 
 const navigateMock = vi.fn()
 vi.mock(import('react-router'), async (importOriginal) => {
@@ -33,12 +33,11 @@ describe('Henvisning ', async () => {
         `${BASE_PATH}${paths.henvisning}/${henvisningUrlParams.apotekerne}`,
       ],
     })
-    const { asFragment } = render(<RouterProvider router={router} />, {
+    render(<RouterProvider router={router} />, {
       hasRouter: false,
     })
     expect(await screen.findByText('henvisning.apotekerne.body')).toBeVisible()
     expect(document.title).toBe('application.title.henvisning.apotekerne')
-    expect(asFragment()).toMatchSnapshot()
   })
 
   it('trykker avbryt knapp', async () => {

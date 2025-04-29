@@ -1,6 +1,6 @@
 import userInputReducer, {
-  userInputInitialState,
   userInputActions,
+  userInputInitialState,
 } from '../userInputSlice'
 
 describe('userInputSlice', () => {
@@ -66,6 +66,15 @@ describe('userInputSlice', () => {
         ...userInputInitialState,
         afp: 'ja_offentlig',
       })
+    })
+
+    it('shallBeregneAfp', () => {
+      const skalBeregneAfpState = userInputReducer(
+        userInputInitialState,
+        userInputActions.setSkalBeregneAfp(true)
+      )
+
+      expect(skalBeregneAfpState.skalBeregneAfp).toBe(true)
     })
 
     it('setUtenlandsperiode', () => {
@@ -232,7 +241,7 @@ describe('userInputSlice', () => {
       expect(updatedState).toStrictEqual({
         ...userInputInitialState,
         currentSimulation: {
-          formatertUttaksalderReadOnly: null,
+          beregningsvalg: null,
           uttaksalder: { aar: 65, maaneder: 4 },
           aarligInntektFoerUttakBeloep: null,
           gradertUttaksperiode: null,
@@ -341,33 +350,6 @@ describe('userInputSlice', () => {
       })
     })
 
-    it('syncCurrentSimulationFormatertUttaksalderReadOnly', () => {
-      const updatedState = userInputReducer(
-        userInputInitialState,
-        userInputActions.syncCurrentSimulationFormatertUttaksalderReadOnly(
-          '66 alder.aar string.og 4 alder.maaneder'
-        )
-      )
-
-      expect(updatedState).toStrictEqual({
-        ...userInputInitialState,
-        currentSimulation: {
-          ...userInputInitialState.currentSimulation,
-          formatertUttaksalderReadOnly:
-            '66 alder.aar string.og 4 alder.maaneder',
-        },
-      })
-
-      const nullstiltState = userInputReducer(
-        userInputInitialState,
-        userInputActions.syncCurrentSimulationFormatertUttaksalderReadOnly(null)
-      )
-
-      expect(nullstiltState).toStrictEqual({
-        ...userInputInitialState,
-      })
-    })
-
     it('flush', () => {
       const updatedState = userInputReducer(
         {
@@ -375,10 +357,10 @@ describe('userInputSlice', () => {
           harUtenlandsopphold: true,
           samtykke: true,
           samtykkeOffentligAFP: true,
+          skalBeregneAfp: true,
           afp: 'ja_offentlig',
           currentSimulation: {
-            formatertUttaksalderReadOnly:
-              '66 alder.aar string.og 4 alder.maaneder',
+            beregningsvalg: null,
             uttaksalder: { aar: 66, maaneder: 4 },
             aarligInntektFoerUttakBeloep: '300 000',
             gradertUttaksperiode: null,
@@ -410,8 +392,7 @@ describe('userInputSlice', () => {
           samtykke: true,
           afp: 'ja_offentlig',
           currentSimulation: {
-            formatertUttaksalderReadOnly:
-              '66 alder.aar string.og 4 alder.maaneder',
+            beregningsvalg: null,
             uttaksalder: { aar: 66, maaneder: 4 },
             aarligInntektFoerUttakBeloep: '300 000',
             gradertUttaksperiode: null,

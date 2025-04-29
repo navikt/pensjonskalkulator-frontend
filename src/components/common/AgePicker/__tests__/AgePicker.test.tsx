@@ -1,13 +1,14 @@
 import { describe, it, vi } from 'vitest'
 
-import { AgePicker } from '..'
 import { fulfilledGetPerson } from '@/mocks/mockedRTKQueryApiCalls'
 import { userInputInitialState } from '@/state/userInput/userInputSlice'
-import { render, screen, fireEvent, waitFor } from '@/test-utils'
+import { fireEvent, render, screen, waitFor } from '@/test-utils'
+
+import { AgePicker } from '..'
 
 describe('AgePicker', () => {
   it('rendrer riktig default verdier, description og info', () => {
-    const { asFragment, container } = render(
+    const { container } = render(
       <AgePicker
         name="unique-name"
         label="My Test Age Picker"
@@ -24,7 +25,6 @@ describe('AgePicker', () => {
     ).toBeVisible()
     expect(screen.getByText('My Description')).toBeVisible()
     expect(screen.getByText('My Infobox')).toBeVisible()
-    expect(asFragment()).toMatchSnapshot()
   })
 
   describe('rendrer riktig valg i select', () => {

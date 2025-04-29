@@ -1,11 +1,13 @@
-import { Link } from 'react-router'
-
+import { Link, RouterProvider, createMemoryRouter } from 'react-router'
 import { describe, it, vi } from 'vitest'
 
-import { PageFramework } from '../PageFramework'
 import { mockErrorResponse } from '@/mocks/server'
 import { HOST_BASEURL } from '@/paths'
+import { BASE_PATH, paths } from '@/router/constants'
+import { routes } from '@/router/routes'
 import { render, screen, userEvent, waitFor } from '@/test-utils'
+
+import { PageFramework } from '../PageFramework'
 
 function TestComponent() {
   return <Link to="/">Klikk</Link>
@@ -16,18 +18,33 @@ describe('PageFramework', () => {
     window.scrollTo = () => vi.fn()
   })
 
+  it('viser loader mens loaderen fetcher data', async () => {
+    const user = userEvent.setup()
+    const router = createMemoryRouter(routes, {
+      basename: BASE_PATH,
+      initialEntries: [`${BASE_PATH}${paths.login}`],
+    })
+    render(<RouterProvider router={router} />, {
+      hasRouter: false,
+    })
+    const button = await screen.findByTestId(
+      'landingside-enkel-kalkulator-button'
+    )
+    user.click(button)
+    expect(await screen.findByTestId('pageframework-loader')).toBeVisible()
+  })
+
   it('rendrer slik den skal, med wrapper og Heading på riktig nivå', async () => {
-    const { asFragment } = render(<PageFramework />, { hasLogin: true })
+    render(<PageFramework />, { hasLogin: true })
     await waitFor(async () => {
       expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
         'pageframework.title'
       )
     })
-    expect(asFragment()).toMatchSnapshot()
   })
 
   it('rendrer slik den skal med hvit bakgrunn', async () => {
-    const { asFragment } = render(<PageFramework hasWhiteBg />, {
+    render(<PageFramework hasWhiteBg />, {
       hasLogin: true,
     })
     await waitFor(async () => {
@@ -35,32 +52,26 @@ describe('PageFramework', () => {
         'pageframework.title'
       )
     })
-    expect(asFragment()).toMatchSnapshot()
   })
 
   it('rendrer slik den skal i full bredde', async () => {
-    const { asFragment } = render(
-      <PageFramework isFullWidth shouldShowLogo={false} />,
-      {
-        hasLogin: true,
-      }
-    )
+    render(<PageFramework isFullWidth shouldShowLogo={false} />, {
+      hasLogin: true,
+    })
     await waitFor(async () => {
       expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
         'pageframework.title'
       )
     })
-    expect(asFragment()).toMatchSnapshot()
   })
 
   it('rendrer slik den skal med logo', async () => {
-    const { asFragment } = render(<PageFramework shouldShowLogo={true} />, {
+    render(<PageFramework shouldShowLogo={true} />, {
       hasLogin: true,
     })
     await waitFor(async () => {
       expect(screen.getByTestId('framework-logo')).toBeInTheDocument()
     })
-    expect(asFragment()).toMatchSnapshot()
   })
 
   it('scroller på toppen av siden når en route endrer seg', async () => {
@@ -85,12 +96,9 @@ describe('PageFramework', () => {
   })
 
   it('redirigerer til id-porten hvis shouldRedirectNonAuthenticated prop er satt og at brukeren ikke er authenticated', async () => {
-    const addEventListener = vi.fn()
     mockErrorResponse('/oauth2/session', {
       baseUrl: `${HOST_BASEURL}`,
     })
-
-    vi.stubGlobal('addEventListener', addEventListener)
 
     const windowSpy = vi.spyOn(window, 'open')
 
@@ -108,11 +116,5 @@ describe('PageFramework', () => {
         '_self'
       )
     )
-    await waitFor(async () => {
-      expect(addEventListener).toHaveBeenCalledWith(
-        'pageshow',
-        expect.any(Function)
-      )
-    })
   })
 })

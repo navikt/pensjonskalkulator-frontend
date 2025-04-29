@@ -23,6 +23,31 @@ export const fulfilledGetPerson = {
   },
 }
 
+export const fulfilledPre1963GetPerson = {
+  ['getPerson(undefined)']: {
+    status: 'fulfilled',
+    endpointName: 'getPerson',
+    requestId: 'xTaE6mOydr5ZI75UXq4Wi',
+    startedTimeStamp: 1688046411971,
+    data: {
+      navn: 'Aprikos',
+      sivilstand: 'UGIFT',
+      foedselsdato: '1960-04-30',
+      pensjoneringAldre: {
+        normertPensjoneringsalder: {
+          aar: 67,
+          maaneder: 0,
+        },
+        nedreAldersgrense: {
+          aar: 62,
+          maaneder: 0,
+        },
+      },
+    },
+    fulfilledTimeStamp: 1688046412103,
+  },
+}
+
 export const fulfilledGetPersonEldreEnnAfpUfoereOppsigelsesalder = {
   ['getPerson(undefined)']: {
     status: 'fulfilled',
@@ -477,19 +502,6 @@ export const fulfilledAlderspensjonForLiteTrygdetid = {
   },
 }
 
-export const rejectedGetPerson = {
-  ['getPerson(undefined)']: {
-    status: 'rejected',
-    endpointName: 'getPerson',
-    requestId: 'xTaE6mOydr5ZI75UXq4Wi',
-    startedTimeStamp: 1688046411971,
-    error: {
-      status: 'FETCH_ERROR',
-      error: 'TypeError: Failed to fetch',
-    },
-  },
-}
-
 export const rejectedGetInntekt = {
   ['getInntekt(undefined)']: {
     status: 'rejected',
@@ -520,19 +532,6 @@ export const rejectedGetOmstillingsstoenadOgGjenlevende = {
   ['getOmstillingsstoenadOgGjenlevende(undefined)']: {
     status: 'rejected',
     endpointName: 'getOmstillingsstoenadOgGjenlevende',
-    requestId: 'aVfT2Ly4YtGoIOvDdZfmG',
-    startedTimeStamp: 1714725265404,
-    error: {
-      status: 'FETCH_ERROR',
-      error: 'TypeError: Failed to fetch',
-    },
-  },
-}
-
-export const rejectedGetLoependeVedtak = {
-  ['getLoependeVedtak(undefined)']: {
-    status: 'rejected',
-    endpointName: 'getLoependeVedtak',
     requestId: 'aVfT2Ly4YtGoIOvDdZfmG',
     startedTimeStamp: 1714725265404,
     error: {

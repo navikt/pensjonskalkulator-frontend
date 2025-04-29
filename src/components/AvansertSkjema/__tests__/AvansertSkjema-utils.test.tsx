@@ -1,11 +1,12 @@
 import { describe, expect, it } from 'vitest'
 
-import {
-  validateAvansertBeregningSkjema,
-  onAvansertBeregningSubmit,
-} from '../utils'
 import * as alderUtils from '@/utils/alder'
 import * as inntektUtils from '@/utils/inntekt'
+
+import {
+  onAvansertBeregningSubmit,
+  validateAvansertBeregningSkjema,
+} from '../utils'
 
 describe('AvansertSkjema-utils', () => {
   describe('onAvansertBeregningSubmit', () => {
@@ -37,13 +38,12 @@ describe('AvansertSkjema-utils', () => {
           return ''
       }
     }
-    it('Når onAvansertBeregningSubmit kalles, hentes det riktig data fra formen. Dersom validering feiler lagres det ikke data og validationErrors vises', () => {
+
+    it('Dersom validering feiler lagres det ikke data og validationErrors settes', () => {
       const dispatchMock = vi.fn()
       const setValidationErrorsMock = vi.fn()
       const gaaTilResultatMock = vi.fn()
-      const getMock = vi.fn().mockImplementation((s: string) => {
-        return s
-      })
+      const getMock = vi.fn().mockImplementation((s: string) => s)
       const dataMock: FormData = { get: getMock } as unknown as FormData
       onAvansertBeregningSubmit(
         dataMock,
@@ -64,43 +64,13 @@ describe('AvansertSkjema-utils', () => {
           },
         }
       )
-      expect(getMock).toHaveBeenCalledTimes(11)
-      expect(getMock).toHaveBeenNthCalledWith(
-        1,
-        'uttaksalder-gradert-uttak-aar'
-      )
-      expect(getMock).toHaveBeenNthCalledWith(
-        2,
-        'uttaksalder-gradert-uttak-maaneder'
-      )
-      expect(getMock).toHaveBeenNthCalledWith(3, 'uttaksalder-helt-uttak-aar')
-      expect(getMock).toHaveBeenNthCalledWith(
-        4,
-        'uttaksalder-helt-uttak-maaneder'
-      )
-      expect(getMock).toHaveBeenNthCalledWith(5, 'uttaksgrad')
-      expect(getMock).toHaveBeenNthCalledWith(6, 'inntekt-vsa-helt-uttak-radio')
-      expect(getMock).toHaveBeenNthCalledWith(
-        7,
-        'inntekt-vsa-gradert-uttak-radio'
-      )
-      expect(getMock).toHaveBeenNthCalledWith(8, 'inntekt-vsa-helt-uttak')
-      expect(getMock).toHaveBeenNthCalledWith(
-        9,
-        'inntekt-vsa-helt-uttak-slutt-alder-aar'
-      )
-      expect(getMock).toHaveBeenNthCalledWith(
-        10,
-        'inntekt-vsa-helt-uttak-slutt-alder-maaneder'
-      )
-      expect(getMock).toHaveBeenNthCalledWith(11, 'inntekt-vsa-gradert-uttak')
       expect(dispatchMock).not.toHaveBeenCalled()
       expect(gaaTilResultatMock).not.toHaveBeenCalled()
       expect(setValidationErrorsMock).toHaveBeenCalledTimes(3)
     })
 
-    describe('Gitt at onAvansertBeregningSubmit kalles, og at validering er vellykket', () => {
-      it('Når alle feltene er fylt ut lagres det data og validationErrors kalles ikke', () => {
+    describe('Gitt at validering er vellykket', () => {
+      it('Når alle feltene er fylt ut lagres det data og validationErrors settes ikke', () => {
         const dispatchMock = vi.fn()
         const setValidationErrorsMock = vi.fn()
         const gaaTilResultatMock = vi.fn()
@@ -126,7 +96,7 @@ describe('AvansertSkjema-utils', () => {
           }
         )
 
-        expect(dispatchMock).toHaveBeenCalledTimes(4)
+        expect(dispatchMock).toHaveBeenCalledTimes(5)
         expect(dispatchMock).toHaveBeenNthCalledWith(1, {
           payload: {
             aar: 67,
@@ -164,7 +134,7 @@ describe('AvansertSkjema-utils', () => {
         expect(setValidationErrorsMock).not.toHaveBeenCalled()
       })
 
-      it('Når brukeren har endret inntekt og lagt til inntekt vsa 100 % alderspensjon og at alle feltene er fylt ut lagres det data og validationErrors kalles ikke', () => {
+      it('Når brukeren har endret inntekt og lagt til inntekt vsa 100 % alderspensjon og at alle feltene er fylt ut lagres det data og validationErrors settes ikke', () => {
         const dispatchMock = vi.fn()
         const setValidationErrorsMock = vi.fn()
         const gaaTilResultatMock = vi.fn()
@@ -191,7 +161,7 @@ describe('AvansertSkjema-utils', () => {
           }
         )
 
-        expect(dispatchMock).toHaveBeenCalledTimes(4)
+        expect(dispatchMock).toHaveBeenCalledTimes(5)
         expect(dispatchMock).toHaveBeenNthCalledWith(1, {
           payload: {
             aar: 67,
@@ -229,7 +199,7 @@ describe('AvansertSkjema-utils', () => {
         expect(setValidationErrorsMock).not.toHaveBeenCalled()
       })
 
-      it('Når brukeren har endret inntekt og lagt til inntekt vsa 100 % alderspensjon og at alle feltene er fylt ut utenom gradert uttak lagres det data og validationErrors kalles ikke', () => {
+      it('Når brukeren har endret inntekt og lagt til inntekt vsa 100 % alderspensjon og at alle feltene er fylt ut utenom gradert uttak lagres det data og validationErrors settes ikke', () => {
         const dispatchMock = vi.fn()
         const setValidationErrorsMock = vi.fn()
         const gaaTilResultatMock = vi.fn()
@@ -283,7 +253,7 @@ describe('AvansertSkjema-utils', () => {
           }
         )
 
-        expect(dispatchMock).toHaveBeenCalledTimes(4)
+        expect(dispatchMock).toHaveBeenCalledTimes(5)
         expect(dispatchMock).toHaveBeenNthCalledWith(1, {
           payload: {
             aar: 67,
@@ -341,7 +311,7 @@ describe('AvansertSkjema-utils', () => {
           }
         )
 
-        expect(dispatchMock).toHaveBeenCalledTimes(4)
+        expect(dispatchMock).toHaveBeenCalledTimes(5)
         expect(gaaTilResultatMock).not.toHaveBeenCalled()
         expect(setValidationErrorsMock).not.toHaveBeenCalled()
       })
@@ -373,7 +343,7 @@ describe('AvansertSkjema-utils', () => {
           }
         )
 
-        expect(dispatchMock).toHaveBeenCalledTimes(4)
+        expect(dispatchMock).toHaveBeenCalledTimes(5)
         expect(gaaTilResultatMock).toHaveBeenCalled()
         expect(setValidationErrorsMock).not.toHaveBeenCalled()
       })
@@ -382,6 +352,7 @@ describe('AvansertSkjema-utils', () => {
 
   describe('validateAvansertBeregningSkjema', () => {
     const correctInputData = {
+      beregningsvalgFormData: null,
       gradertUttakAarFormData: '62',
       gradertUttakMaanederFormData: '5',
       heltUttakAarFormData: '67',
@@ -774,12 +745,13 @@ describe('AvansertSkjema-utils', () => {
       expect(updateErrorMessageMock).toHaveBeenCalledTimes(0)
     })
 
-    it('returnerer false når heltUttaksalder eller gradertUttaksalder er før normert pensjonsalder med et ugyldig uttaksgrad for en bruker med gradert uføretrygd', () => {
+    it('returnerer false når beregningsvalg=uten_afp og heltUttaksalder eller gradertUttaksalder er før normert pensjonsalder for en bruker med gradert uføretrygd', () => {
       const updateErrorMessageMock = vi.fn()
       expect(
         validateAvansertBeregningSkjema(
           {
             ...correctInputData,
+            beregningsvalgFormData: 'uten_afp',
             uttaksgradFormData: '100 %',
             heltUttakAarFormData: '63',
             heltUttakMaanederFormData: '0',
@@ -796,6 +768,7 @@ describe('AvansertSkjema-utils', () => {
         validateAvansertBeregningSkjema(
           {
             ...correctInputData,
+            beregningsvalgFormData: 'uten_afp',
             uttaksgradFormData: '50 %',
             gradertUttakAarFormData: '63',
             gradertUttakMaanederFormData: '0',
@@ -810,6 +783,7 @@ describe('AvansertSkjema-utils', () => {
         validateAvansertBeregningSkjema(
           {
             ...correctInputData,
+            beregningsvalgFormData: 'uten_afp',
             uttaksgradFormData: '40 %',
             gradertUttakAarFormData: '63',
             gradertUttakMaanederFormData: '0',
@@ -826,6 +800,7 @@ describe('AvansertSkjema-utils', () => {
         validateAvansertBeregningSkjema(
           {
             ...correctInputData,
+            beregningsvalgFormData: 'uten_afp',
             uttaksgradFormData: '40 %',
             gradertUttakAarFormData: '67',
             gradertUttakMaanederFormData: '0',
@@ -840,6 +815,42 @@ describe('AvansertSkjema-utils', () => {
       ).toBeTruthy()
 
       expect(updateErrorMessageMock).toHaveBeenCalledTimes(2)
+    })
+
+    it('returnerer true når beregningsvalg=med_afp og heltUttaksalder eller gradertUttaksalder er før normert pensjonsalder for en bruker med gradert uføretrygd', () => {
+      const updateErrorMessageMock = vi.fn()
+      expect(
+        validateAvansertBeregningSkjema(
+          {
+            ...correctInputData,
+            beregningsvalgFormData: 'med_afp',
+            uttaksgradFormData: '100 %',
+            heltUttakAarFormData: '63',
+            heltUttakMaanederFormData: '0',
+            gradertUttakAarFormData: null,
+            gradertUttakMaanederFormData: null,
+          },
+          mockedFoedselsdato,
+          mockedNormertPensjonsalder,
+          mockedLoependeVedtak60,
+          updateErrorMessageMock
+        )
+      ).toBeTruthy()
+      expect(
+        validateAvansertBeregningSkjema(
+          {
+            ...correctInputData,
+            beregningsvalgFormData: 'med_afp',
+            uttaksgradFormData: '50 %',
+            gradertUttakAarFormData: '63',
+            gradertUttakMaanederFormData: '0',
+          },
+          mockedFoedselsdato,
+          mockedNormertPensjonsalder,
+          mockedLoependeVedtak60,
+          updateErrorMessageMock
+        )
+      ).toBeTruthy()
     })
 
     it('returnerer false når radio knapp for inntekt vsa. 100 % uttaksalder ikke er fylt ut', () => {
