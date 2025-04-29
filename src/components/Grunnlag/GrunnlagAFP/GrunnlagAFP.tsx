@@ -117,7 +117,7 @@ export const GrunnlagAFP: React.FC = () => {
       ufoeregrad !== 100 &&
       loependeVedtak.ufoeretrygd.grad === 100 &&
       foedselsdato &&
-      isFoedselsdatoOverAlder(foedselsdato, AFP_UFOERE_OPPSIGELSESALDER)
+      isFoedtFoer1963(foedselsdato)
     ) {
       return 'grunnlag.afp.ingress.nei.gradert_ufoeretrygd'
     }
