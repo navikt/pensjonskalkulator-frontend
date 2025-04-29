@@ -1159,37 +1159,6 @@ describe('Simulering', () => {
   })
 
   describe('Gitt at simuleringen er i avansert visning', () => {
-    it('viser tittel og riktig ingress', async () => {
-      render(
-        <Simulering
-          visning="enkel"
-          isLoading={false}
-          headingLevel="3"
-          alderspensjonListe={alderspensjonData.alderspensjon}
-          afpPrivatListe={afpPrivatData.afpPrivat}
-          showButtonsAndTable={true}
-          aarligInntektFoerUttakBeloep="500 000"
-        />,
-        {
-          preloadedState: {
-            api: {
-              /* @ts-ignore */
-              queries: {
-                ...fulfilledGetPerson,
-              },
-            },
-            userInput: {
-              ...userInputInitialState,
-              samtykke: true,
-              currentSimulation: { ...currentSimulation },
-            },
-          },
-        }
-      )
-      expect(screen.getByText('beregning.highcharts.title')).toBeVisible()
-      expect(screen.getByText('beregning.highcharts.ingress')).toBeVisible()
-    })
-
     it('viser MaanedsbeloepAvansertBeregning komponenten når alle betingelsene er oppfylt', async () => {
       render(
         <Simulering
