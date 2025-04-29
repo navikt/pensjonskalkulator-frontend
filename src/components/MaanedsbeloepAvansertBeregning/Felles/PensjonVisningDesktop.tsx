@@ -24,7 +24,7 @@ export const PensjonVisningDesktop: React.FC<Props> = ({
   if (!pensjonsdata.length) return null
 
   return (
-    <HStack gap="6 8" width="100%" marginBlock="2 0">
+    <HStack gap="4 8" width="100%" marginBlock="2 0">
       {pensjonsdata.map((data, index) => (
         <Box
           key={`desktop-${index}`}
