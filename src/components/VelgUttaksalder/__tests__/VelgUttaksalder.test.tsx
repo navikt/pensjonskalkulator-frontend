@@ -49,8 +49,7 @@ describe('VelgUttaksalder', () => {
 
     await user.click(screen.getByText('65 alder.aar', { exact: false }))
 
-    // eslint-disable-next-line @typescript-eslint/unbound-method
-    expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled()
+    expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled() // eslint-disable-line @typescript-eslint/unbound-method
 
     rerender(<VelgUttaksalder {...getProps()} />)
     expect(screen.getByRole('button', { pressed: true })).toHaveTextContent(

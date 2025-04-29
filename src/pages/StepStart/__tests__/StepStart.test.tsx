@@ -13,8 +13,7 @@ import { store } from '@/state/store'
 import { userInputInitialState } from '@/state/userInput/userInputSlice'
 import { render, screen, userEvent, waitFor } from '@/test-utils'
 
-// eslint-disable-next-line @typescript-eslint/unbound-method
-const initialGetState = store.getState
+const initialGetState = store.getState // eslint-disable-line @typescript-eslint/unbound-method
 
 const navigateMock = vi.fn()
 vi.mock(import('react-router'), async (importOriginal) => {
