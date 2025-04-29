@@ -637,7 +637,7 @@ describe('BeregningAvansert', () => {
         await waitFor(() => {
           expect(initiateMock).toHaveBeenCalledTimes(1)
           expect(
-            screen.getByText('beregning.avansert.resultatkort.tittel')
+            screen.getByText('beregning.avansert.link.endre_avanserte_valg')
           ).toBeVisible()
           expect(screen.getByText('beregning.error')).toBeVisible()
         })
@@ -647,9 +647,6 @@ describe('BeregningAvansert', () => {
         })
         await user.click(await screen.findByText('application.global.retry'))
         expect(initiateMock).toHaveBeenCalledTimes(3)
-        await user.click(
-          screen.getByText('beregning.avansert.resultatkort.button')
-        )
       })
 
       it('Når simulering svarer med errorcode 503, vises ErrorPageUnexpected ', async () => {
