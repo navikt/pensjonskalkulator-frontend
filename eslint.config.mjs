@@ -85,7 +85,7 @@ export default [
   {
     files: ['**/*.test.ts', '**/*.test.tsx'],
     rules: {
-      '@typescript-eslint/ban-ts-comment': 'off', // Fjern når @ts-ignore ikkje lenger er i bruk i testkode
+      '@typescript-eslint/ban-ts-comment': 'off', // Fjern når @ts-ignore ikke lenger er i bruk i testkode
       '@typescript-eslint/require-await': 'off',
       '@typescript-eslint/no-floating-promises': 'error',
     },
