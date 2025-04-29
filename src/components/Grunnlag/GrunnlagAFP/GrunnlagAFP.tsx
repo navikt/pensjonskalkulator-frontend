@@ -23,6 +23,7 @@ import { formatAfp } from '@/utils/afp'
 import {
   AFP_UFOERE_OPPSIGELSESALDER,
   isFoedselsdatoOverAlder,
+  isFoedtFoer1963,
 } from '@/utils/alder'
 import { logger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
@@ -98,8 +99,35 @@ export const GrunnlagAFP: React.FC = () => {
       return 'grunnlag.afp.ingress.nei.endring'
     }
 
+    if (
+      afp === 'nei' &&
+      foedselsdato &&
+      !isFoedtFoer1963(foedselsdato) &&
+      loependeVedtak.ufoeretrygd
+    ) {
+      return 'grunnlag.afp.ingress.nei'
+    }
+
     if (ufoeregrad === 100) {
       return 'grunnlag.afp.ingress.full_ufoeretrygd'
+    }
+
+    if (
+      afp === 'nei' &&
+      ufoeregrad !== 100 &&
+      loependeVedtak.ufoeretrygd.grad === 100 &&
+      foedselsdato &&
+      isFoedselsdatoOverAlder(foedselsdato, AFP_UFOERE_OPPSIGELSESALDER)
+    ) {
+      return 'grunnlag.afp.ingress.nei.gradert_ufoeretrygd'
+    }
+
+    if (
+      loependeVedtak.afpOffentlig &&
+      foedselsdato &&
+      isFoedtFoer1963(foedselsdato)
+    ) {
+      return 'grunnlag.afp.ingress.overgangskull.ja_offentlig'
     }
 
     if (hasOffentligAFP && samtykkeOffentligAFP === false) {
