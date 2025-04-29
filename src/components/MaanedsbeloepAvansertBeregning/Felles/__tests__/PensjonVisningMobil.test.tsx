@@ -69,6 +69,7 @@ describe('MobilePensjonVisning', () => {
       {
         alder: { aar: 67, maaneder: 0 },
         grad: 100,
+        afp: 0,
         alderspensjon: 20000,
         pensjonsavtale: 1000,
       },
@@ -98,6 +99,7 @@ describe('MobilePensjonVisning', () => {
       {
         alder: { aar: 70, maaneder: 0 },
         grad: 50,
+        afp: 6000,
         pensjonsavtale: 3000,
         alderspensjon: 15000,
       },

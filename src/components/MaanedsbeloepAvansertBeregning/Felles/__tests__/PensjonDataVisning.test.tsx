@@ -68,6 +68,7 @@ describe('PensjonDataVisning', () => {
         pensjonsdata={{
           alder: { aar: 67, maaneder: 0 },
           grad: 100,
+          afp: 0,
           alderspensjon: 20000,
           pensjonsavtale: 0,
         }}
