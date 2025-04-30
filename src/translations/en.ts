@@ -361,15 +361,6 @@ export default {
   'beregning.avansert.maanedsbeloep.pensjonsavtaler': 'MANGLER_TEKST',
   'beregning.avansert.maanedsbeloep.alderspensjon': 'MANGLER_TEKST',
   'beregning.avansert.maanedsbeloep.sum': 'MANGLER_TEKST',
-  'beregning.avansert.resultatkort.tittel': 'Your Choices',
-  'beregning.avansert.resultatkort.description':
-    'Income, withdrawal degree, and pension age',
-  'beregning.avansert.resultatkort.button': 'Change your choices',
-  'beregning.avansert.resultatkort.frem_til_uttak':
-    'Until withdrawal of pension',
-  'beregning.avansert.resultatkort.inntekt_1': 'Pension-eligible annual income',
-  'beregning.avansert.resultatkort.inntekt_2': ' kr before tax',
-  'beregning.avansert.resultatkort.alderspensjon': 'retirement pension: ',
   'beregning.avansert.rediger.inntekt_frem_til_uttak.label':
     'Pensionable income until pension',
   'beregning.avansert.rediger.inntekt_frem_til_endring.label':

@@ -391,16 +391,6 @@ const translations = {
   'beregning.avansert.maanedsbeloep.alderspensjon':
     'Alderspensjon (Nav) {prosent} %',
   'beregning.avansert.maanedsbeloep.sum': 'Sum pensjon {maanedOgAar}',
-  'beregning.avansert.resultatkort.tittel': 'Valgene dine',
-  'beregning.avansert.resultatkort.description':
-    'Inntekt, uttaksgrad og pensjonsalder',
-  'beregning.avansert.resultatkort.button': 'Endre valgene dine',
-  'beregning.avansert.resultatkort.frem_til_uttak': 'Frem til uttak av pensjon',
-  'beregning.avansert.resultatkort.frem_til_endring':
-    'Frem til endring av pensjon',
-  'beregning.avansert.resultatkort.inntekt_1': 'Pensjonsgivende årsinntekt',
-  'beregning.avansert.resultatkort.inntekt_2': ' kr før skatt',
-  'beregning.avansert.resultatkort.alderspensjon': 'Alderspensjon: ',
   'beregning.avansert.rediger.inntekt_frem_til_uttak.label':
     'Pensjonsgivende årsinntekt frem til pensjon',
   'beregning.avansert.rediger.inntekt_frem_til_endring.label':
