@@ -280,8 +280,8 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
                   values={{
                     ...getFormatMessageValues(),
                     afpInntektMaanedFoerUttak: grunnbeloep
-                      ? formatInntekt(Math.ceil(grunnbeloep / 12))
-                      : '1G/12',
+                      ? `${formatInntekt(Math.ceil(grunnbeloep / 12))} kr`
+                      : '1G (grunnbeløpet) delt på 12',
                   }}
                 />
               }
@@ -310,8 +310,8 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
                       },
                       {
                         grunnbeloep: grunnbeloep
-                          ? formatInntekt(Math.ceil(grunnbeloep / 12))
-                          : '1G/12',
+                          ? `${formatInntekt(Math.ceil(grunnbeloep / 12))} kr`
+                          : '1G (grunnbeløpet) delt på 12',
                       }
                     )
                   : ''
@@ -344,9 +344,9 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
                     id="beregning.avansert.alert.afp_inntekt_maaned_foer_uttak"
                     values={{
                       ...getFormatMessageValues(),
-                      grunnbeloep: grunnbeloep
-                        ? formatInntekt(Math.ceil(grunnbeloep / 12))
-                        : '1G/12',
+                      grunnbeloepstekst: grunnbeloep
+                        ? `på minst ${formatInntekt(Math.ceil(grunnbeloep / 12))} kr den siste måneden før du tar ut AFP`
+                        : 'den siste måneden før du tar ut AFP som tilsvarer en årsinntekt på minst 1G',
                       alderspensjonUtenAFP: (
                         <Link
                           href="#"

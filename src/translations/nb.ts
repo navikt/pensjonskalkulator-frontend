@@ -417,7 +417,7 @@ const translations = {
   'beregning.avansert.rediger.read_more.uttaksgrad.gradert_ufoeretrygd.body':
     'Uttaksgrad angir hvor stor del av månedlig alderspensjon du ønsker å ta ut. Grad av uføretrygd og alderspensjon kan til sammen ikke overstige 100 %. Fra {normertPensjonsalder} kan du fritt velge gradert uttak (20, 40, 50, 60 eller 80 %), eller hel alderspensjon (100 %).',
   'beregning.avansert.rediger.radio.afp_inntekt_maaned_foer_uttak':
-    'Forventer du å ha inntekt på minst {afpInntektMaanedFoerUttak} kr før skatt den siste måneden før du tar ut AFP?',
+    'Forventer du å ha inntekt på minst {afpInntektMaanedFoerUttak} før skatt den siste måneden før du tar ut AFP?',
   'beregning.avansert.rediger.radio.afp_inntekt_maaned_foer_uttak.description':
     'Dette er ett av vilkårene for å få AFP.',
   'beregning.avansert.rediger.radio.inntekt_vsa_helt_uttak':
@@ -443,7 +443,7 @@ const translations = {
   'beregning.avansert.rediger.radio.inntekt_vsa_gradert_uttak.ufoeretrygd.description':
     'Alderspensjonen påvirker ikke inntektsgrensen for uføretrygden din.',
   'beregning.avansert.rediger.radio.afp_inntekt_maaned_foer_uttak.description.validation_error':
-    'Du må svare på om du forventer å ha inntekt på minst {grunnbeloep} kr før skatt den siste måneden før du tar ut AFP.',
+    'Du må svare på om du forventer å ha inntekt på minst {grunnbeloep} før skatt den siste måneden før du tar ut AFP.',
   'beregning.avansert.rediger.radio.inntekt_vsa_afp.description.validation_error':
     'Du må svare på om du forventer å ha inntekt samtidig som du tar ut AFP.',
   'beregning.avansert.rediger.inntekt_vsa_afp.description.validation_error':
@@ -520,7 +520,7 @@ const translations = {
   'beregning.avansert.alert.vilkaarsproevning.afp_inntekt_maaned_foer_uttak':
     'Med opplysninger vi har om deg, oppfyller du ikke vilkårene for AFP. {vilkaarForUttakAvAfp}. Du kan også beregne {alderspensjonUtenAFP}.',
   'beregning.avansert.alert.afp_inntekt_maaned_foer_uttak':
-    'Hvis du ikke forventer å ha inntekt på minst {grunnbeloep} kr siste måneden før du tar ut AFP, kan du ikke beregne AFP. Du kan i stedet beregne {alderspensjonUtenAFP}.',
+    'Du kan bare beregne AFP hvis du har en inntekt {grunnbeloepstekst}. Beregn i stedet {alderspensjonUtenAFP}.',
   'beregning.avansert.alert.afp_inntekt_maaned_foer_uttak.link.text':
     'alderspensjon uten AFP',
   'beregning.endring.alert.uttaksdato':
