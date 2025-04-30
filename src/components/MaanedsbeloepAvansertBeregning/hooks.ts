@@ -77,7 +77,7 @@ export const usePensjonBeregninger = ({
     const language = getSelectedLanguage()
     const locale = language === 'en' ? enGB : language === 'nn' ? nn : nb
 
-    return `${format(date, 'LLLL', { locale })} ${format(date, 'yyyy')}`
+    return format(date, 'LLLL yyyy', { locale })
   }
 
   // Lager pensjonsdata for gradering og uttaksalder
