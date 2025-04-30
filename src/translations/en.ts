@@ -308,9 +308,6 @@ export default {
   'beregning.loading': 'Please wait while we calculate your pension.',
   'beregning.error':
     'Unfortunately, we could not calculate your pension right now.',
-  'beregning.fra': 'from ',
-  'beregning.til': ' to ',
-  'beregning.tom': ' to ',
   'beregning.livsvarig': 'lifelong',
   'beregning.lav_opptjening.aar':
     'You do not have enough accrual to start withdrawing at {startAar} years. Try a higher age.',

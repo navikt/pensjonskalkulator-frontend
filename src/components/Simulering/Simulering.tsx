@@ -31,7 +31,7 @@ import {
   selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
 
-import { MaanedsbeloepAvansertBeregning } from '../MaanedsbeloepAvansertBeregning'
+import { MaanedsbeloepAvansertBeregning } from './MaanedsbeloepAvansertBeregning'
 import { SimuleringEndringBanner } from './SimuleringEndringBanner/SimuleringEndringBanner'
 import { SimuleringGrafNavigation } from './SimuleringGrafNavigation/SimuleringGrafNavigation'
 import { SimuleringPensjonsavtalerAlert } from './SimuleringPensjonsavtalerAlert/SimuleringPensjonsavtalerAlert'

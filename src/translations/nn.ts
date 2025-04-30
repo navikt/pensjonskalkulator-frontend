@@ -270,9 +270,6 @@ export default {
   'beregning.loading': 'Vent litt medan vi reknar ut pensjonen din',
   'beregning.error':
     'Vi klarte dessverre ikkje å rekne ut pensjonen din akkurat nå.',
-  'beregning.fra': 'MANGLER_TEKST',
-  'beregning.til': 'MANGLER_TEKST',
-  'beregning.tom': ' MANGLER_TEKST',
   'beregning.livsvarig': 'MANGLER_TEKST',
   'beregning.lav_opptjening.aar':
     'Du har ikkje høg nok opptening til å kunne starte uttak ved 63 år. Prøv ein høgare alder.',
