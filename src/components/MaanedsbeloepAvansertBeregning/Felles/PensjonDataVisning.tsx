@@ -34,7 +34,9 @@ export const PensjonDataVisning: React.FC<Props> = ({
 
   return (
     <table className={styles.container}>
-      <caption className={styles.srOnly}>{captionTitle}</caption>
+      <BodyLong as="caption" visuallyHidden>
+        {captionTitle}
+      </BodyLong>
       <tbody>
         {afp && (
           <tr className={styles.row}>
