@@ -189,7 +189,7 @@ describe('AFP vs uføretrygd', () => {
       })
     })
 
-    describe('Når jeg ønsker en avansert beregning,', () => {
+    describe('Som bruker som har rett til Livsvarig AFP eller AFP Privat, Når jeg ønsker en avansert beregning,', () => {
       beforeEach(() => {
         cy.fillOutStegvisning({
           afp: 'ja_privat',
