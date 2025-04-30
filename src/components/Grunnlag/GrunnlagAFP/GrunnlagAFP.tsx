@@ -96,7 +96,7 @@ export const GrunnlagAFP: React.FC = () => {
     }
 
     if (isEndring && afp === 'nei') {
-      return 'grunnlag.afp.ingress.nei.endring'
+      return 'grunnlag.afp.ingress.nei'
     }
 
     if (
@@ -113,12 +113,20 @@ export const GrunnlagAFP: React.FC = () => {
     }
 
     if (
+      loependeVedtak.alderspensjon &&
+      foedselsdato &&
+      isFoedtFoer1963(foedselsdato)
+    ) {
+      return 'grunnlag.afp.ingress.nei'
+    }
+
+    if (
       //TODO: gjelder dette hvis afp === 'nei' også?
       loependeVedtak.ufoeretrygd &&
       foedselsdato &&
       isFoedtFoer1963(foedselsdato)
     ) {
-      return 'grunnlag.afp.ingress.nei.gradert_ufoeretrygd'
+      return 'grunnlag.afp.ingress.nei.overgangskull.ufoeretrygd'
     }
 
     if (
