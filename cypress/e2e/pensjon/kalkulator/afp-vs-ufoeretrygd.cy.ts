@@ -320,7 +320,7 @@ describe('AFP vs uføretrygd', () => {
       })
 
       // NAU
-      describe('Når jeg har for lav opptjening til valgt uttak,', () => {
+      describe('Når jeg har for lav opptjening til valgt uttak, med bruker som har valgt å beregne gradert alderspensjon og AFP ved 62 år, og 100% fra 67 år,', () => {
         it('forventer jeg informasjon om at jeg ikke har høy nok opptjening, og at jeg må endre valgene mine. Jeg forventer å få ett forslag om hvilken grad jeg kan ta ved 62 år.', () => {
           cy.get('[data-testid="uttaksgrad"]').select('80 %')
           cy.get('[data-testid="inntekt-vsa-gradert-uttak-radio-nei"]').check()
@@ -364,7 +364,7 @@ describe('AFP vs uføretrygd', () => {
         })
       })
 
-      describe('Når jeg har for lav opptjening til valgt uttak,', () => {
+      describe('Når jeg har for lav opptjening til valgt uttak, med bruker som har valgt gradert uttak fra 62 år (nedre pensjonsalder) og 100 % tidligere enn 67 år (normert pensjonsalder),', () => {
         it('forventer jeg informasjon om at jeg ikke har høy nok opptjening, og at jeg må endre valgene mine. Jeg forventer å få ett ett alternativt forslag om hvilken grad jeg kan ta ved 62 år, og hvilken alder jeg kan ta 100%.', () => {
           cy.get('[data-testid="uttaksgrad"]').select('80 %')
           cy.get('[data-testid="inntekt-vsa-gradert-uttak-radio-nei"]').check()
