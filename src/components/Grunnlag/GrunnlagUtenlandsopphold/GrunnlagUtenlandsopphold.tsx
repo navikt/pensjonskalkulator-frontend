@@ -1,7 +1,6 @@
 import clsx from 'clsx'
 import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { useNavigate } from 'react-router'
 
 import { ExclamationmarkTriangleFillIcon } from '@navikt/aksel-icons'
 import { BodyLong, Button, Link, Modal } from '@navikt/ds-react'
@@ -17,6 +16,7 @@ import {
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
 import { logger } from '@/utils/logging'
+import { useNavigationHistory } from '@/utils/navigationHistory'
 import { getFormatMessageValues } from '@/utils/translations'
 
 import { GrunnlagSection } from '../GrunnlagSection'
@@ -34,7 +34,7 @@ export const GrunnlagUtenlandsopphold: React.FC<Props> = ({
 }) => {
   const intl = useIntl()
   const dispatch = useAppDispatch()
-  const navigate = useNavigate()
+  const { goBackToStep } = useNavigationHistory()
   const avbrytModalRef = React.useRef<HTMLDialogElement>(null)
   const harUtenlandsopphold = useAppSelector(selectHarUtenlandsopphold)
   const { uttaksalder } = useAppSelector(selectCurrentSimulation)
@@ -93,7 +93,7 @@ export const GrunnlagUtenlandsopphold: React.FC<Props> = ({
               logger('button klikk', { tekst: 'Tilbake til utenlandsopphold' })
               dispatch(userInputActions.flushCurrentSimulation())
               avbrytModalRef.current?.close()
-              navigate(paths.utenlandsopphold)
+              goBackToStep(paths.utenlandsopphold)
             }}
           >
             {intl.formatMessage({
