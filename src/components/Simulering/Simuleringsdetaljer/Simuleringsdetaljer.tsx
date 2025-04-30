@@ -246,7 +246,7 @@ export function Simuleringsdetaljer(props: {
                 <br />
                 <li>
                   <strong>70 prosent regelen: </strong>{' '}
-                  {`${pre2025OffentligAfp.afpAvkortetTil70Prosent} %`}
+                  {`${pre2025OffentligAfp.afpAvkortetTil70Prosent}`}
                 </li>
               </ul>
             </dd>
