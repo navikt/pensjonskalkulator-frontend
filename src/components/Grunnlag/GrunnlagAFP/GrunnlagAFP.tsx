@@ -113,9 +113,8 @@ export const GrunnlagAFP: React.FC = () => {
     }
 
     if (
-      afp === 'nei' &&
-      ufoeregrad !== 100 &&
-      loependeVedtak.ufoeretrygd.grad === 100 &&
+      //TODO: gjelder dette hvis afp === 'nei' også?
+      loependeVedtak.ufoeretrygd &&
       foedselsdato &&
       isFoedtFoer1963(foedselsdato)
     ) {
