@@ -8,6 +8,7 @@ import { Alert, Link } from '@navikt/ds-react'
 import { paths } from '@/router/constants'
 import { useAppSelector } from '@/state/hooks'
 import {
+  selectCurrentSimulation,
   selectNedreAldersgrense,
   selectNormertPensjonsalder,
   selectSkalBeregneAfpKap19,
@@ -28,6 +29,7 @@ export const VilkaarsproevingAlert = ({
 }: Props) => {
   const intl = useIntl()
   const navigate = useNavigate()
+  const { gradertUttaksperiode } = useAppSelector(selectCurrentSimulation)
   const normertPensjonsalder = useAppSelector(selectNormertPensjonsalder)
   const nedreAldersgrense = useAppSelector(selectNedreAldersgrense)
   const skalBeregneAfpKap19 = useAppSelector(selectSkalBeregneAfpKap19)
@@ -46,9 +48,9 @@ export const VilkaarsproevingAlert = ({
     )
   }, [alternativ])
 
-  const gradertUttaksalder = alternativ?.gradertUttaksalder
-  const heltUttaksalder = alternativ?.heltUttaksalder
-  const uttaksgrad = alternativ?.uttaksgrad
+  const altGradertUttaksalder = alternativ?.gradertUttaksalder
+  const altHeltUttaksalder = alternativ?.heltUttaksalder
+  const altUttaksgrad = alternativ?.uttaksgrad
 
   if (withAFP) {
     return (
@@ -57,29 +59,51 @@ export const VilkaarsproevingAlert = ({
           <>
             <FormattedMessage id="beregning.vilkaarsproeving.medAFP.intro" />
 
-            {isHeltUttaksalderLik && gradertUttaksalder && (
+            {isHeltUttaksalderLik && altGradertUttaksalder && (
               <FormattedMessage
                 id="beregning.vilkaarsproeving.alternativer.medAFP.gradertUttak"
                 values={{
                   ...getFormatMessageValues(),
-                  alternativtGrad: uttaksgrad,
+                  alternativtGrad: altUttaksgrad,
                   nedreAldersgrense: formatUttaksalder(intl, nedreAldersgrense),
                 }}
               />
             )}
 
-            {!isHeltUttaksalderLik && gradertUttaksalder && (
-              <FormattedMessage
-                id="beregning.vilkaarsproeving.alternativer.medAFP.heltOgGradertUttak"
-                values={{
-                  ...getFormatMessageValues(),
-                  alternativtGrad: uttaksgrad,
-                  alternativtHeltStartAar: heltUttaksalder?.aar,
-                  alternativtHeltStartMaaned: heltUttaksalder?.maaneder,
-                  nedreAldersgrense: formatUttaksalder(intl, nedreAldersgrense),
-                }}
-              />
-            )}
+            {!isHeltUttaksalderLik &&
+              altGradertUttaksalder &&
+              altHeltUttaksalder &&
+              gradertUttaksperiode && (
+                <FormattedMessage
+                  id="beregning.vilkaarsproeving.alternativer.medAFP.heltOgGradertUttak"
+                  values={{
+                    ...getFormatMessageValues(),
+                    alternativtGrad: altUttaksgrad,
+                    alternativtHeltStartAar: altHeltUttaksalder.aar,
+                    alternativtHeltStartMaaned: altHeltUttaksalder.maaneder,
+                    nedreAldersgrense: formatUttaksalder(
+                      intl,
+                      nedreAldersgrense
+                    ),
+                  }}
+                />
+              )}
+
+            {!isHeltUttaksalderLik &&
+              altGradertUttaksalder &&
+              !gradertUttaksperiode && (
+                <FormattedMessage
+                  id="beregning.vilkaarsproeving.alternativer.medAFP.heltOgGradertUttak100"
+                  values={{
+                    ...getFormatMessageValues(),
+                    alternativtGrad: altUttaksgrad,
+                    nedreAldersgrense: formatUttaksalder(
+                      intl,
+                      nedreAldersgrense
+                    ),
+                  }}
+                />
+              )}
           </>
         ) : (
           <FormattedMessage
@@ -139,37 +163,39 @@ export const VilkaarsproevingAlert = ({
           normertPensjonsalder: formatUttaksalder(intl, normertPensjonsalder),
         }}
       />
-      {!harIkkeNokOpptjening && !gradertUttaksalder && heltUttaksalder && (
-        <FormattedMessage
-          id="beregning.vilkaarsproeving.alternativer.heltUttak"
-          values={{
-            ...getFormatMessageValues(),
-            alternativtHeltStartAar: heltUttaksalder.aar,
-            alternativtHeltStartMaaned: heltUttaksalder.maaneder,
-          }}
-        />
-      )}
-      {isHeltUttaksalderLik && gradertUttaksalder && (
+      {!harIkkeNokOpptjening &&
+        !altGradertUttaksalder &&
+        altHeltUttaksalder && (
+          <FormattedMessage
+            id="beregning.vilkaarsproeving.alternativer.heltUttak"
+            values={{
+              ...getFormatMessageValues(),
+              alternativtHeltStartAar: altHeltUttaksalder.aar,
+              alternativtHeltStartMaaned: altHeltUttaksalder.maaneder,
+            }}
+          />
+        )}
+      {isHeltUttaksalderLik && altGradertUttaksalder && (
         <FormattedMessage
           id="beregning.vilkaarsproeving.alternativer.gradertUttak"
           values={{
             ...getFormatMessageValues(),
-            alternativtGrad: uttaksgrad,
-            alternativtGradertStartAar: gradertUttaksalder.aar,
-            alternativtGradertStartMaaned: gradertUttaksalder.maaneder,
+            alternativtGrad: altUttaksgrad,
+            alternativtGradertStartAar: altGradertUttaksalder.aar,
+            alternativtGradertStartMaaned: altGradertUttaksalder.maaneder,
           }}
         />
       )}
-      {!isHeltUttaksalderLik && gradertUttaksalder && heltUttaksalder && (
+      {!isHeltUttaksalderLik && altGradertUttaksalder && altHeltUttaksalder && (
         <FormattedMessage
           id="beregning.vilkaarsproeving.alternativer.heltOgGradertUttak"
           values={{
             ...getFormatMessageValues(),
-            alternativtGrad: uttaksgrad,
-            alternativtGradertStartAar: gradertUttaksalder.aar,
-            alternativtGradertStartMaaned: gradertUttaksalder.maaneder,
-            alternativtHeltStartAar: heltUttaksalder.aar,
-            alternativtHeltStartMaaned: heltUttaksalder.maaneder,
+            alternativtGrad: altUttaksgrad,
+            alternativtGradertStartAar: altGradertUttaksalder.aar,
+            alternativtGradertStartMaaned: altGradertUttaksalder.maaneder,
+            alternativtHeltStartAar: altHeltUttaksalder.aar,
+            alternativtHeltStartMaaned: altHeltUttaksalder.maaneder,
           }}
         />
       )}
