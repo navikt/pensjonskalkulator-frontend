@@ -308,8 +308,11 @@ export const beregningEnkelAccessGuard = async () => {
   }
   const state = store.getState()
   const skalBeregneAfpKap19 = selectSkalBeregneAfpKap19(state)
+  const loependeVedtak = await store
+    .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
+    .unwrap()
 
-  if (skalBeregneAfpKap19) {
+  if (skalBeregneAfpKap19 || loependeVedtak.alderspensjon) {
     return redirect(paths.beregningAvansert)
   }
 }
