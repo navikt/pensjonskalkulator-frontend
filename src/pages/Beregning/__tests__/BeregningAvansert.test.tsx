@@ -163,7 +163,7 @@ describe('BeregningAvansert', () => {
         expect(initiateMock).toHaveBeenCalledWith(
           {
             aarligInntektFoerUttakBeloep: 521338,
-            afpInntektMaanedFoerUttak: 300000,
+            afpInntektMaanedFoerUttak: undefined,
             epsHarInntektOver2G: false,
             epsHarPensjon: false,
             foedselsdato: '1963-04-30',
@@ -258,7 +258,7 @@ describe('BeregningAvansert', () => {
         expect(initiateMock).toHaveBeenCalledWith(
           {
             aarligInntektFoerUttakBeloep: 521338,
-            afpInntektMaanedFoerUttak: 300000, //TODO: fjern hardkodingen
+            afpInntektMaanedFoerUttak: undefined,
             epsHarInntektOver2G: false,
             epsHarPensjon: false,
             foedselsdato: '1963-04-30',
@@ -351,7 +351,7 @@ describe('BeregningAvansert', () => {
         expect(initiateMock).toHaveBeenCalledWith(
           {
             aarligInntektFoerUttakBeloep: 521338,
-            afpInntektMaanedFoerUttak: 300000, //TODO: fjern hardkodingen
+            afpInntektMaanedFoerUttak: undefined,
             epsHarInntektOver2G: false,
             epsHarPensjon: false,
             foedselsdato: '1963-04-30',
@@ -444,7 +444,7 @@ describe('BeregningAvansert', () => {
         expect(initiateMock).toHaveBeenCalledWith(
           {
             aarligInntektFoerUttakBeloep: 521338,
-            afpInntektMaanedFoerUttak: 300000, //TODO: fjern hardkodingen
+            afpInntektMaanedFoerUttak: undefined,
             epsHarInntektOver2G: false,
             epsHarPensjon: false,
             foedselsdato: '1963-04-30',
@@ -860,7 +860,7 @@ describe('BeregningAvansert', () => {
       expect(initiateMock).toHaveBeenCalledWith(
         {
           aarligInntektFoerUttakBeloep: 521338,
-          afpInntektMaanedFoerUttak: 300000, //TODO: fjern hardkodingen
+          afpInntektMaanedFoerUttak: undefined,
           epsHarInntektOver2G: false,
           epsHarPensjon: false,
           foedselsdato: '1963-04-30',
