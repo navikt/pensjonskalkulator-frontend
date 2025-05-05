@@ -599,6 +599,40 @@ describe('Avansert', () => {
         cy.contains('Opphold utenfor Norge:').click({ force: true })
         cy.contains('AFP:').click({ force: true })
       })
+
+      it('forventer jeg en månedlig oversikt over pensjon ved uttaksmåneden', () => {
+        cy.contains('Beregning').should('exist')
+        cy.contains('Månedlig pensjon').should('exist')
+        cy.contains('Ved 62 år og 3 måneder').should('exist')
+        cy.contains('AFP (avtalefestet pensjon)').should('exist')
+        cy.contains('Alderspensjon (Nav) 40 %').should('exist')
+        cy.contains('Sum pensjon').should('exist')
+      })
+
+      it('ved gradert uttak forventer jeg en månedlig oversikt over pensjon både ved gradert uttak og helt uttak', () => {
+        cy.contains('Beregning').should('exist')
+        cy.contains('Månedlig pensjon').should('exist')
+        cy.contains('Ved 67 år').should('exist')
+        cy.contains('AFP (avtalefestet pensjon)').should('exist')
+        cy.contains('Alderspensjon (Nav) 100 %').should('exist')
+        cy.contains('Sum pensjon').should('exist')
+      })
+
+      it('forventer jeg en lenke for å "endre avanserte valg"', () => {
+        cy.contains('Endre avanserte valg').should('exist')
+        cy.contains('Endre avanserte valg').click({ force: true })
+        cy.contains('Pensjonsgivende årsinntekt frem til pensjon').should(
+          'exist'
+        )
+        cy.get('[data-testid="inntekt-textfield"]').should('exist')
+        cy.get('[data-testid="age-picker-uttaksalder-helt-uttak-aar"]').should(
+          'exist'
+        )
+        cy.get(
+          '[data-testid="age-picker-uttaksalder-helt-uttak-maaneder"]'
+        ).should('exist')
+        cy.get('[data-testid="uttaksgrad"]').should('exist')
+      })
     })
 
     describe('Når jeg ønsker å endre mine valg,', () => {

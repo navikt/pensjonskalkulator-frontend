@@ -410,7 +410,7 @@ describe('Endring av alderspensjon', () => {
               cy.contains('67 år (100 %): 28 513 kr/md.')
             })
 
-            it('forventer jeg en knapp for å endre mine valg.', () => {
+            it('forventer jeg en lenke for å endre mine valg.', () => {
               cy.contains('Endre valgene dine')
             })
 
@@ -718,7 +718,7 @@ describe('Endring av alderspensjon', () => {
             cy.contains('67 år (100 %): 28 513 kr/md.')
           })
 
-          it('forventer jeg en knapp for å endre mine valg.', () => {
+          it('forventer jeg en lenke for å endre mine valg.', () => {
             cy.contains('Endre valgene dine')
           })
 
@@ -1023,7 +1023,7 @@ describe('Endring av alderspensjon', () => {
             cy.contains('67 år (100 %): 28 513 kr/md.')
           })
 
-          it('forventer jeg en knapp for å endre mine valg.', () => {
+          it('forventer jeg en lenke for å endre mine valg.', () => {
             cy.contains('Endre valgene dine')
           })
 
@@ -1307,7 +1307,7 @@ describe('Endring av alderspensjon', () => {
             cy.contains('67 år (100 %): 28 513 kr/md.')
           })
 
-          it('forventer jeg en knapp for å endre mine valg.', () => {
+          it('forventer jeg en lenke for å endre mine valg.', () => {
             cy.contains('Endre valgene dine')
           })
 
@@ -1611,7 +1611,7 @@ describe('Endring av alderspensjon', () => {
             cy.contains('70 år (100 %): 28 513 kr/md.')
           })
 
-          it('forventer jeg en knapp for å endre mine valg.', () => {
+          it('forventer jeg en lenke for å endre mine valg.', () => {
             cy.contains('Endre valgene dine')
           })
 
