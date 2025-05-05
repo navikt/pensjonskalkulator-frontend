@@ -18,7 +18,7 @@ describe('Endring av alderspensjon', () => {
           },
           { fixture: 'alderspensjon_endring.json' }
         ).as('fetchAlderspensjon')
-        cy.clock(new Date(2028, 7, 1, 12, 0, 0), ['Date'])
+        cy.clock(new Date(2029, 7, 1, 12, 0, 0), ['Date'])
         cy.login()
       })
 
@@ -239,7 +239,7 @@ describe('Endring av alderspensjon', () => {
           })
 
           it('forventer jeg å kunne velge pensjonsalder for endring mellom dagens alder + 1 md og 75 år + 0 md.', () => {
-            // datoen som er mocked er 01. August 2028. Brukeren som er født 1963-04-30 er 65 år gammel og 3 md.
+            // datoen som er mocked er 01. August 2029. Brukeren som er født 1964-04-30 er 65 år gammel og 3 md.
             cy.contains('Når vil du endre alderspensjonen din?').should('exist')
             cy.contains('Velg år').should('exist')
             cy.get(
@@ -481,7 +481,7 @@ describe('Endring av alderspensjon', () => {
           },
           { fixture: 'alderspensjon_endring.json' }
         ).as('fetchAlderspensjon')
-        cy.clock(new Date(2028, 7, 1, 12, 0, 0), ['Date'])
+        cy.clock(new Date(2029, 7, 1, 12, 0, 0), ['Date'])
         cy.login()
       })
 
@@ -546,7 +546,7 @@ describe('Endring av alderspensjon', () => {
         })
 
         it('forventer jeg å kunne velge pensjonsalder for endring mellom dagens alder + 1 md og 75 år + 0 md.', () => {
-          // datoen som er mocked er 01. August 2028. Brukeren som er født 1963-04-30 er 65 år gammel og 3 md.
+          // datoen som er mocked er 01. August 2029. Brukeren som er født 1964-04-30 er 65 år gammel og 3 md.
           cy.contains('Når vil du endre alderspensjonen din?').should('exist')
           cy.contains('Velg år').should('exist')
           cy.get('[data-testid="age-picker-uttaksalder-helt-uttak-aar"]').then(
@@ -789,7 +789,7 @@ describe('Endring av alderspensjon', () => {
           },
           { fixture: 'alderspensjon_endring.json' }
         ).as('fetchAlderspensjon')
-        cy.clock(new Date(2028, 7, 1, 12, 0, 0), ['Date'])
+        cy.clock(new Date(2029, 7, 1, 12, 0, 0), ['Date'])
         cy.login()
       })
 
@@ -853,7 +853,7 @@ describe('Endring av alderspensjon', () => {
         })
 
         it('forventer jeg å kunne velge pensjonsalder for endring mellom dagens alder + 1 md og 75 år + 0 md.', () => {
-          // datoen som er mocked er 01. August 2028. Brukeren som er født 1963-04-30 er 65 år gammel og 3 md.
+          // datoen som er mocked er 01. August 2029. Brukeren som er født 1964-04-30 er 65 år gammel og 3 md.
           cy.contains('Når vil du endre alderspensjonen din?').should('exist')
           cy.contains('Velg år').should('exist')
           cy.get('[data-testid="age-picker-uttaksalder-helt-uttak-aar"]').then(
@@ -1093,7 +1093,7 @@ describe('Endring av alderspensjon', () => {
           },
           { fixture: 'alderspensjon_endring.json' }
         ).as('fetchAlderspensjon')
-        cy.clock(new Date(2028, 7, 1, 12, 0, 0), ['Date'])
+        cy.clock(new Date(2029, 7, 1, 12, 0, 0), ['Date'])
         cy.login()
       })
 
@@ -1157,7 +1157,7 @@ describe('Endring av alderspensjon', () => {
         })
 
         it('forventer jeg å kunne velge pensjonsalder for endring mellom dagens alder + 1 md og 75 år + 0 md.', () => {
-          // datoen som er mocked er 01. August 2028. Brukeren som er født 1963-04-30 er 65 år gammel og 3 md.
+          // datoen som er mocked er 01. August 2029. Brukeren som er født 1964-04-30 er 65 år gammel og 3 md.
           cy.contains('Når vil du endre alderspensjonen din?').should('exist')
           cy.contains('Velg år').should('exist')
           cy.get('[data-testid="age-picker-uttaksalder-helt-uttak-aar"]').then(
@@ -1375,7 +1375,7 @@ describe('Endring av alderspensjon', () => {
           },
           { fixture: 'alderspensjon_endring.json' }
         ).as('fetchAlderspensjon')
-        cy.clock(new Date(2028, 7, 1, 12, 0, 0), ['Date'])
+        cy.clock(new Date(2029, 7, 1, 12, 0, 0), ['Date'])
         cy.login()
       })
 
@@ -1439,7 +1439,7 @@ describe('Endring av alderspensjon', () => {
         })
 
         it('forventer jeg å kunne velge pensjonsalder for endring mellom ubetinget uttaksalder og 75 år + 0 md.', () => {
-          // datoen som er mocked er 01. August 2028. Allikevel skal brukeren ikke kunne begynne uttak før at er over ibetinget uttaksalder
+          // datoen som er mocked er 01. August 2029. Allikevel skal brukeren ikke kunne begynne uttak før at er over ibetinget uttaksalder
           cy.contains('Når vil du endre alderspensjonen din?').should('exist')
           cy.contains('Velg år').should('exist')
           cy.get('[data-testid="age-picker-uttaksalder-helt-uttak-aar"]').then(
