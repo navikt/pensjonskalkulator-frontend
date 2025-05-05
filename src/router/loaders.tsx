@@ -312,10 +312,6 @@ export const beregningEnkelAccessGuard = async () => {
     .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
     .unwrap()
 
-  if (loependeVedtak.ufoeretrygd) {
-    return redirect(paths.beregningEnkel)
-  }
-
   if (skalBeregneAfpKap19 || loependeVedtak.alderspensjon) {
     return redirect(paths.beregningAvansert)
   }
