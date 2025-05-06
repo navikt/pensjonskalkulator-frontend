@@ -40,6 +40,8 @@ export const useStegvisningNavigation = (currentPath: Path) => {
         ? stegvisningOrderEndring
         : stegvisningOrder
 
+    console.log('stepArrays', stepArrays)
+
     const currentPathIndex = stepArrays.indexOf(currentPath)
 
     navigate(stepArrays[currentPathIndex + 1])
