@@ -103,7 +103,7 @@ export const GrunnlagAFP: React.FC = () => {
       afp === 'nei' &&
       foedselsdato &&
       !isFoedtFoer1963(foedselsdato) &&
-      loependeVedtak.ufoeretrygd
+      ufoeregrad > 0
     ) {
       return 'grunnlag.afp.ingress.nei'
     }
@@ -120,12 +120,7 @@ export const GrunnlagAFP: React.FC = () => {
       return 'grunnlag.afp.ingress.nei'
     }
 
-    if (
-      //TODO: gjelder dette hvis afp === 'nei' også?
-      loependeVedtak.ufoeretrygd &&
-      foedselsdato &&
-      isFoedtFoer1963(foedselsdato)
-    ) {
+    if (ufoeregrad > 0 && foedselsdato && isFoedtFoer1963(foedselsdato)) {
       return 'grunnlag.afp.ingress.nei.overgangskull.ufoeretrygd'
     }
 
