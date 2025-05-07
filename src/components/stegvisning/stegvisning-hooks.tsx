@@ -33,14 +33,15 @@ export const useStegvisningNavigation = (currentPath: Path) => {
   const { isFetching, data: loependeVedtak } = useGetLoependeVedtakQuery()
 
   const onStegvisningNext = () => {
+    const isEndring = loependeVedtak && isLoependeVedtakEndring(loependeVedtak)
     const isKap19 = foedselsdato && isOvergangskull(foedselsdato)
-    const stepArrays = isKap19
-      ? stegvisningOrderKap19
-      : loependeVedtak && isLoependeVedtakEndring(loependeVedtak)
-        ? stegvisningOrderEndring
-        : stegvisningOrder
-
-    console.log('stepArrays', stepArrays)
+    const stepArrays: (typeof paths)[keyof typeof paths][] = [
+      ...(isKap19
+        ? stegvisningOrderKap19
+        : isEndring
+          ? stegvisningOrderEndring
+          : stegvisningOrder),
+    ]
 
     const currentPathIndex = stepArrays.indexOf(currentPath)
 
