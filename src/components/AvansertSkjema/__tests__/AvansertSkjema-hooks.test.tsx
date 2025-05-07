@@ -804,7 +804,7 @@ describe('AvansertSkjema-hooks', () => {
               ...initialProps,
               beregningsvalg: 'med_afp',
               gradertUttaksperiode: null,
-              ufoeregrad: 60,
+              ufoeregrad: 0,
             },
           })
 

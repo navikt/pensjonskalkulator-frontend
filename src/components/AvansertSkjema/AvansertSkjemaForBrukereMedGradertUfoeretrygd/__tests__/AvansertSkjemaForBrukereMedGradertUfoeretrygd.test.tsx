@@ -2662,7 +2662,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
       fireEvent.change(
         await screen.findByTestId(AVANSERT_FORM_NAMES.uttaksgrad),
         {
-          target: { value: '80 %' },
+          target: { value: '20 %' },
         }
       )
       // Viser riktig beskrivelse på spørsmålet om inntekt vsa. gradert uttak
