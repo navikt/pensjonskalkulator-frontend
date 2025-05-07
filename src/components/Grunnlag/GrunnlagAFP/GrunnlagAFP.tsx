@@ -107,11 +107,7 @@ export const GrunnlagAFP: React.FC = () => {
       return 'grunnlag.afp.ingress.full_ufoeretrygd'
     }
 
-    if (
-      loependeVedtak.ufoeretrygd &&
-      foedselsdato &&
-      isFoedtFoer1963(foedselsdato)
-    ) {
+    if (ufoeregrad > 0 && foedselsdato && isFoedtFoer1963(foedselsdato)) {
       return 'grunnlag.afp.ingress.nei.overgangskull.ufoeretrygd'
     }
 
