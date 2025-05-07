@@ -22,6 +22,8 @@ import {
 } from '@/utils/alder'
 import { isLoependeVedtakEndring } from '@/utils/loependeVedtak'
 
+import { getStepArrays } from './utils'
+
 export const useStegvisningNavigation = (currentPath: Path) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
@@ -32,17 +34,12 @@ export const useStegvisningNavigation = (currentPath: Path) => {
 
   const { isFetching, data: loependeVedtak } = useGetLoependeVedtakQuery()
 
-  const onStegvisningNext = () => {
-    const isEndring = loependeVedtak && isLoependeVedtakEndring(loependeVedtak)
-    const isKap19 = foedselsdato && isOvergangskull(foedselsdato)
-    const stepArrays: (typeof paths)[keyof typeof paths][] = [
-      ...(isKap19
-        ? stegvisningOrderKap19
-        : isEndring
-          ? stegvisningOrderEndring
-          : stegvisningOrder),
-    ]
+  const isEndring = loependeVedtak && isLoependeVedtakEndring(loependeVedtak)
+  const isKap19 = foedselsdato && isOvergangskull(foedselsdato)
 
+  const stepArrays = getStepArrays(isEndring, isKap19)
+
+  const onStegvisningNext = () => {
     const currentPathIndex = stepArrays.indexOf(currentPath)
 
     navigate(stepArrays[currentPathIndex + 1])
@@ -50,15 +47,6 @@ export const useStegvisningNavigation = (currentPath: Path) => {
 
   const onStegvisningPrevious = () => {
     let antallStepTilbake = 1
-    const isEndring = loependeVedtak && isLoependeVedtakEndring(loependeVedtak)
-    const isKap19 = foedselsdato && isOvergangskull(foedselsdato)
-    const stepArrays: (typeof paths)[keyof typeof paths][] = [
-      ...(isKap19
-        ? stegvisningOrderKap19
-        : isEndring
-          ? stegvisningOrderEndring
-          : stegvisningOrder),
-    ]
 
     const currentPathIndex = stepArrays.indexOf(currentPath)
 

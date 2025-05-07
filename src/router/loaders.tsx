@@ -2,13 +2,9 @@ import { SerializedError } from '@reduxjs/toolkit'
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
 import { redirect } from 'react-router'
 
+import { getStepArrays } from '@/components/stegvisning/utils'
 import { HOST_BASEURL } from '@/paths'
-import {
-  henvisningUrlParams,
-  paths,
-  stegvisningOrder,
-  stegvisningOrderEndring,
-} from '@/router/constants'
+import { henvisningUrlParams, paths } from '@/router/constants'
 import { apiSlice } from '@/state/api/apiSlice'
 import { store } from '@/state/store'
 import {
@@ -19,6 +15,7 @@ import {
 import {
   AFP_UFOERE_OPPSIGELSESALDER,
   isFoedselsdatoOverAlder,
+  isFoedtFoer1963,
 } from '@/utils/alder'
 import { isLoependeVedtakEndring } from '@/utils/loependeVedtak'
 import { logger } from '@/utils/logging'
@@ -218,9 +215,10 @@ export const stepAFPAccessGuard = async () => {
     .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
     .unwrap()
 
-  const stepArrays = isLoependeVedtakEndring(loependeVedtak)
-    ? stegvisningOrderEndring
-    : stegvisningOrder
+  const isEndring = isLoependeVedtakEndring(loependeVedtak)
+  const isKap19 = isFoedtFoer1963(person.foedselsdato)
+
+  const stepArrays = getStepArrays(isEndring, isKap19)
 
   // Hvis brukeren mottar AFP skal hen ikke se AFP-steget
   // Hvis brukeren har 100% uføretrygd skal hen ikke se AFP-steget
@@ -255,9 +253,10 @@ export const stepUfoeretrygdAFPAccessGuard = async () => {
     .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
     .unwrap()
 
-  const stepArrays = isLoependeVedtakEndring(loependeVedtak)
-    ? stegvisningOrderEndring
-    : stegvisningOrder
+  const isEndring = isLoependeVedtakEndring(loependeVedtak)
+
+  //Gjelder ikke for kap19
+  const stepArrays = getStepArrays(isEndring, false)
 
   // Brukere med uføretrygd som har svart ja eller vet_ikke til AFP kan se steget
   if (loependeVedtak.ufoeretrygd.grad && afp && afp !== 'nei') {
@@ -293,9 +292,10 @@ export const stepSamtykkeOffentligAFPAccessGuard = async () => {
     return
   }
 
-  const stepArrays = isLoependeVedtakEndring(loependeVedtak)
-    ? stegvisningOrderEndring
-    : stegvisningOrder
+  const isEndring = isLoependeVedtakEndring(loependeVedtak)
+
+  //Gjelder ikke for kap19
+  const stepArrays = getStepArrays(isEndring, false)
 
   return redirect(
     stepArrays[stepArrays.indexOf(paths.samtykkeOffentligAFP) + 1]
