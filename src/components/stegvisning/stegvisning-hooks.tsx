@@ -1,12 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router'
 
-import {
-  paths,
-  stegvisningOrder,
-  stegvisningOrderEndring,
-  stegvisningOrderKap19,
-} from '@/router/constants'
+import { paths } from '@/router/constants'
 import { useGetLoependeVedtakQuery } from '@/state/api/apiSlice'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {

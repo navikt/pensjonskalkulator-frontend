@@ -150,7 +150,7 @@ export const processPensjonsberegningArray = (
 
 //TODO: refaktorer processPensjonsberegningArray slik at den også tar hensyn til AFP etterfulgt av AP
 export const processPensjonsberegningArrayForKap19 = (
-  pensjonsberegninger: AfpPrivatPensjonsberegning[] = [],
+  pensjonsberegninger: AfpPensjonsberegning[] = [],
   isEndring: boolean,
   xAxisLength: number,
   startAlder: number
@@ -191,7 +191,7 @@ export const processPensjonsberegningArrayForKap19 = (
 //TODO: refaktorer processAfpPensjonsberegningArray. I refaktoreringen burde processPre2025OffentligAfpPensjonsberegningArray bli inkludert
 export const processPre2025OffentligAfpPensjonsberegningArray = (
   xAxisLength: number,
-  pensjonsberegninger: AfpPrivatPensjonsberegning[] = [],
+  pensjonsberegninger: AfpPensjonsberegning[] = [],
   isEndring: boolean
 ): number[] => {
   if (pensjonsberegninger.length === 0) {
