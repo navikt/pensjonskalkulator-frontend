@@ -95,16 +95,11 @@ export const GrunnlagAFP: React.FC = () => {
       return 'grunnlag.afp.ingress.ja_offentlig.endring'
     }
 
-    if (isEndring && afp === 'nei') {
+    /* if (isEndring && afp === 'nei') {
       return 'grunnlag.afp.ingress.nei'
-    }
+    } */
 
-    if (
-      afp === 'nei' &&
-      foedselsdato &&
-      !isFoedtFoer1963(foedselsdato) &&
-      ufoeregrad > 0
-    ) {
+    if (afp === 'nei') {
       return 'grunnlag.afp.ingress.nei'
     }
 
@@ -113,15 +108,19 @@ export const GrunnlagAFP: React.FC = () => {
     }
 
     if (
+      loependeVedtak.ufoeretrygd &&
+      foedselsdato &&
+      isFoedtFoer1963(foedselsdato)
+    ) {
+      return 'grunnlag.afp.ingress.nei.overgangskull.ufoeretrygd'
+    }
+
+    if (
       loependeVedtak.alderspensjon &&
       foedselsdato &&
       isFoedtFoer1963(foedselsdato)
     ) {
       return 'grunnlag.afp.ingress.nei'
-    }
-
-    if (ufoeregrad > 0 && foedselsdato && isFoedtFoer1963(foedselsdato)) {
-      return 'grunnlag.afp.ingress.nei.overgangskull.ufoeretrygd'
     }
 
     if (
