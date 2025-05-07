@@ -336,9 +336,6 @@ const translations = {
   'beregning.loading': 'Vent litt mens vi beregner pensjonen din.',
   'beregning.error':
     'Vi klarte dessverre ikke å beregne pensjonen din akkurat nå.',
-  'beregning.fra': 'fra ',
-  'beregning.til': ' til ',
-  'beregning.tom': ' t.o.m. ',
   'beregning.livsvarig': 'livsvarig',
   'beregning.lav_opptjening.aar':
     'Du har ikke høy nok opptjening til å kunne starte uttak ved {startAar} år. Prøv en høyere alder.',
@@ -383,16 +380,14 @@ const translations = {
   'beregning.avansert.endring_banner.title':
     'Alderspensjon før skatt når du er ',
   'beregning.avansert.endring_banner.kr_md': 'kr/md.',
-  'beregning.avansert.resultatkort.tittel': 'Valgene dine',
-  'beregning.avansert.resultatkort.description':
-    'Inntekt, uttaksgrad og pensjonsalder',
-  'beregning.avansert.resultatkort.button': 'Endre valgene dine',
-  'beregning.avansert.resultatkort.frem_til_uttak': 'Frem til uttak av pensjon',
-  'beregning.avansert.resultatkort.frem_til_endring':
-    'Frem til endring av pensjon',
-  'beregning.avansert.resultatkort.inntekt_1': 'Pensjonsgivende årsinntekt',
-  'beregning.avansert.resultatkort.inntekt_2': ' kr før skatt',
-  'beregning.avansert.resultatkort.alderspensjon': 'Alderspensjon: ',
+  'beregning.avansert.maanedsbeloep.table_title': 'Månedlig pensjon',
+  'beregning.avansert.maanedsbeloep.box_title': 'Ved ',
+  'beregning.avansert.maanedsbeloep.afp': 'AFP (avtalefestet pensjon)',
+  'beregning.avansert.maanedsbeloep.pensjonsavtaler':
+    'Pensjonsavtaler (arbeidsgivere m.m.)',
+  'beregning.avansert.maanedsbeloep.alderspensjon':
+    'Alderspensjon (Nav) {prosent} %',
+  'beregning.avansert.maanedsbeloep.sum': 'Sum pensjon {maanedOgAar}',
   'beregning.avansert.rediger.inntekt_frem_til_uttak.label':
     'Pensjonsgivende årsinntekt frem til pensjon',
   'beregning.avansert.rediger.inntekt_frem_til_endring.label':
@@ -473,14 +468,17 @@ const translations = {
   'beregning.vilkaarsproeving.alternativer.heltOgGradertUttak':
     'Et alternativ er at du ved {alternativtGradertStartAar} år og {alternativtGradertStartMaaned} måneder kan ta ut <nowrap>{alternativtGrad} %</nowrap> alderspensjon hvis du tar ut <nowrap>100 %</nowrap> alderspensjon ved {alternativtHeltStartAar} år og {alternativtHeltStartMaaned} måneder eller senere. Prøv gjerne andre kombinasjoner.',
   'beregning.vilkaarsproeving.medAFP.intro':
-    'Opptjeningen din er ikke høy nok til ønsket uttak. Du må sette ned uttaksgraden.',
+    'Opptjeningen din er ikke høy nok til ønsket uttak. Du må endre valgene dine.',
   'beregning.vilkaarsproeving.alternativer.medAFP.gradertUttak':
     '{br}{br}Et alternativ er at du ved {nedreAldersgrense} kan ta ut <nowrap>{alternativtGrad} %</nowrap> alderspensjon. Prøv gjerne andre kombinasjoner.',
   'beregning.vilkaarsproeving.alternativer.medAFP.heltOgGradertUttak':
     '{br}{br}Et alternativ er at du ved {nedreAldersgrense} kan ta ut <nowrap>{alternativtGrad} %</nowrap> alderspensjon hvis du tar ut <nowrap>100 %</nowrap> alderspensjon ved {alternativtHeltStartAar} år og {alternativtHeltStartMaaned} måneder eller senere. Prøv gjerne andre kombinasjoner.',
+  'beregning.vilkaarsproeving.alternativer.medAFP.heltOgGradertUttak100':
+    '{br}{br}Et alternativ er at du ved {nedreAldersgrense} kan ta ut <nowrap>{alternativtGrad} %</nowrap> alderspensjon. Prøv gjerne andre kombinasjoner.',
   'beregning.vilkaarsproeving.alternativer.medAFP.ikkeNokOpptjening':
     'Opptjeningen din er ikke høy nok til uttak av alderspensjon ved {nedreAldersgrense}.{br}{br}Kalkulatoren kan ikke beregne uttak etter {nedreAldersgrense}. Hvis du tar ut alderspensjon og AFP senere enn dette, vil du i perioden fra du er 62 år frem til uttak ikke få uføretrygd. Kontakt Nav for veiledning hvis du vurderer å si fra deg uføretrygden.{br}{br}Har du rett til livsvarig AFP i offentlig sektor kan du ta ut AFP før alderspensjon. Kontakt tjenestepensjonsordningen din for veiledning.',
   'grunnlag.title': 'Øvrig grunnlag for beregningen',
+  'maanedsbeloep.title': 'Månedlig pensjon',
   'beregning.avansert.avbryt_modal.title':
     'Hvis du går ut av Avansert, mister du alle valgene dine.',
   'beregning.avansert.avbryt_modal.endring.title':
