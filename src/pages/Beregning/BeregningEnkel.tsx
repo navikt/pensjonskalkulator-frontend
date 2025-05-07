@@ -351,6 +351,7 @@ export const BeregningEnkel = () => {
                         .pensjonBeholdningFoerUttakBeloep
                     : undefined
                 }
+                isEndring={isEndring}
               />
             </>
           )}

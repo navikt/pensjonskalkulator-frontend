@@ -41,8 +41,8 @@ export const useSimuleringChartLocalState = (initialValues: {
   isLoading: boolean
   alderspensjonListe?: AlderspensjonPensjonsberegning[]
   pre2025OffentligAfp?: AfpEtterfulgtAvAlderspensjon
-  afpPrivatListe?: AfpPrivatPensjonsberegning[]
-  afpOffentligListe?: AfpPrivatPensjonsberegning[]
+  afpPrivatListe?: AfpPensjonsberegning[]
+  afpOffentligListe?: AfpPensjonsberegning[]
   pensjonsavtaler: {
     isLoading: boolean
     data?: {
@@ -88,20 +88,19 @@ export const useSimuleringChartLocalState = (initialValues: {
   const [isPensjonsavtaleFlagVisible, setIsPensjonsavtaleFlagVisible] =
     React.useState<boolean>(false)
 
-  const pre2025OffentligAfpListe: AfpPrivatPensjonsberegning[] =
-    pre2025OffentligAfp
-      ? Array.from(
-          Array(67 - pre2025OffentligAfp.alderAar).keys(),
-          (_, index) => ({
-            alder: pre2025OffentligAfp.alderAar + index,
-            beloep:
-              index === 0
-                ? pre2025OffentligAfp.totaltAfpBeloep *
-                  (12 - (uttaksalder?.maaneder ?? 0))
-                : pre2025OffentligAfp.totaltAfpBeloep * 12,
-          })
-        )
-      : []
+  const pre2025OffentligAfpListe: AfpPensjonsberegning[] = pre2025OffentligAfp
+    ? Array.from(
+        Array(67 - pre2025OffentligAfp.alderAar).keys(),
+        (_, index) => ({
+          alder: pre2025OffentligAfp.alderAar + index,
+          beloep:
+            index === 0
+              ? pre2025OffentligAfp.totaltAfpBeloep *
+                (12 - (uttaksalder?.maaneder ?? 0))
+              : pre2025OffentligAfp.totaltAfpBeloep * 12,
+        })
+      )
+    : []
 
   const [chartOptions, setChartOptions] = React.useState<Highcharts.Options>(
     getChartOptions(
