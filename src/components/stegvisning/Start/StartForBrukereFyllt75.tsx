@@ -30,9 +30,7 @@ export function StartForBrukereFyllt75() {
     <Card hasLargePadding hasMargin>
       <div className={clsx(styles.wrapper, styles.wrapperFlexColumn)}>
         <Heading level="2" size="medium" spacing>
-          {`${intl.formatMessage({
-            id: 'stegvisning.start.title_brukere_fyllt_75aar',
-          })}`}
+          <FormattedMessage id="stegvisning.start.title_brukere_fyllt_75aar" />
         </Heading>
         <BodyLong data-testid="start_75">
           <FormattedMessage
