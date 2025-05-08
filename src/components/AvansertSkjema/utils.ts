@@ -250,7 +250,7 @@ export const validateAvansertBeregningSkjema = (
         return {
           ...prevState,
           [AVANSERT_FORM_NAMES.afpInntektMaanedFoerUttakRadio]:
-            'beregning.avansert.rediger.radio.afp_inntekt_maaned_foer_uttak.description.validation_error',
+            'beregning.avansert.rediger.radio.afp_inntekt_maaned_foer_uttak.validation_error',
         }
       })
     }
@@ -262,7 +262,7 @@ export const validateAvansertBeregningSkjema = (
         return {
           ...prevState,
           [AVANSERT_FORM_NAMES.inntektVsaAfpRadio]:
-            'beregning.avansert.rediger.radio.inntekt_vsa_afp.description.validation_error',
+            'beregning.avansert.rediger.radio.inntekt_vsa_afp.validation_error',
         }
       })
     }
@@ -274,7 +274,7 @@ export const validateAvansertBeregningSkjema = (
         return {
           ...prevState,
           [AVANSERT_FORM_NAMES.inntektVsaAfp]:
-            'beregning.avansert.rediger.inntekt_vsa_afp.description.validation_error',
+            'beregning.avansert.rediger.inntekt_vsa_afp.validation_error',
         }
       })
     }

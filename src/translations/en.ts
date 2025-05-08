@@ -286,6 +286,7 @@ export default {
   'velguttaksalder.title': 'When do you want to withdraw retirement pension?',
   'velguttaksalder.endring.title':
     'When do you want to change your retirement pension?',
+  'velguttaksalderafp.title': 'MANGLER_TEKST',
   'beregning.intro.title': 'MANGLER_TEKST',
   'beregning.intro.title.endring': 'MANGLER_TEKST',
   'beregning.intro.description_1': 'MANGLER_TEKST',
@@ -300,6 +301,7 @@ export default {
     'MANGLER_TEKST',
   'beregning.avansert.rediger.radio.beregningsvalg.med_afp.label':
     'MANGLER_TEKST',
+  'beregning.avansert.rediger.afp_etterfulgt_av_ap.title': 'MANGLER_TEKST',
   'beregning.avansert.rediger.beregningsvalg.med_afp.title': 'MANGLER_TEKST',
   'beregning.avansert.rediger.beregningsvalg.med_afp.description':
     'MANGLER_TEKST',
@@ -378,6 +380,9 @@ export default {
     'You can earn as much as you want while withdrawing pension.',
   'beregning.avansert.rediger.radio.inntekt_vsa_helt_uttak.description.validation_error':
     'You must answer whether you expect to have income while you withdraw <nowrap>100 %</nowrap> pension.',
+  'beregning.avansert.rediger.radio.inntekt_vsa_afp': 'MANGLER_TEKST',
+  'beregning.avansert.rediger.radio.inntekt_vsa_afp.description':
+    'MANGLER_TEKST',
   'beregning.avansert.rediger.uttaksgrad.validation_error':
     'You must choose how much retirement pension you wish to withdraw.',
   'beregning.avansert.rediger.uttaksgrad.ufoeretrygd.validation_error':
@@ -394,6 +399,12 @@ export default {
     'You must answer whether you expect to have income while you withdraw <nowrap>{grad} %</nowrap> pension.',
   'beregning.avansert.rediger.inntekt_vsa_gradert_uttak.beloep.validation_error':
     'You must fill in expected income at the same time as you withdraw <nowrap>{grad} %</nowrap> pension.',
+  'beregning.avansert.rediger.radio.afp_inntekt_maaned_foer_uttak.validation_error':
+    'MANGLER_TEKST',
+  'beregning.avansert.rediger.radio.inntekt_vsa_afp.validation_error':
+    'MANGLER_TEKST',
+  'beregning.avansert.rediger.inntekt_vsa_afp.validation_error':
+    'MANGLER_TEKST',
   'beregning.avansert.rediger.inntekt_vsa_gradert_uttak.label':
     'What is your expected annual income while you withdraw <nowrap>{grad} %</nowrap> retirement pension?',
   'beregning.avansert.rediger.inntekt_vsa_gradert_uttak.description':
@@ -403,6 +414,7 @@ export default {
     ' for when you want to withdraw retirement pension.',
   'beregning.avansert.rediger.agepicker.grad.validation_error':
     ' for when you want to withdraw <nowrap>{grad} %</nowrap> retirement pension.',
+  'beregning.avansert.rediger.agepicker.afp.validation_error': 'MANGLER_TEKST',
   'beregning.avansert.rediger.agepicker.validation_error.maxAlder':
     'Withdrawal age for <nowrap>100 %</nowrap> retirement pension must be later than age for graded pension.',
   'beregning.avansert.rediger.heltuttak.agepicker.label':
@@ -442,6 +454,11 @@ export default {
   'beregning.avansert.avbryt_modal.button.avslutt': 'Exit Advanced',
   'beregning.avansert.avbryt_modal.endring.button.avslutt': 'Exit calculation',
   'beregning.avansert.avbryt_modal.button.avbryt': 'Cancel',
+  'beregning.avansert.alert.vilkaarsproevning.afp_inntekt_maaned_foer_uttak':
+    'MANGLER_TEKST',
+  'beregning.avansert.alert.afp_inntekt_maaned_foer_uttak': 'MANGLER_TEKST',
+  'beregning.avansert.alert.afp_inntekt_maaned_foer_uttak.link.text':
+    'MANGLER_TEKST',
   'beregning.endring.alert.uttaksdato':
     'You can earliest change the withdrawal degree to 20, 40, 50, 60, or 80 % from {dato}.',
   'beregning.endring.rediger.title': 'Calculate Change in retirement pension',

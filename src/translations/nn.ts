@@ -248,6 +248,7 @@ export default {
   'omufoeretrygd.avansert_link': 'MANGLER_TEKST',
   'velguttaksalder.title': 'Kor tid vil du ta ut alderspensjon?',
   'velguttaksalder.endring.title': 'MANGLER_TEKST',
+  'velguttaksalderafp.title': 'MANGLER_TEKST',
   'beregning.intro.title': 'MANGLER_TEKST',
   'beregning.intro.title.endring': 'MANGLER_TEKST',
   'beregning.intro.description_1': 'MANGLER_TEKST',
@@ -262,6 +263,7 @@ export default {
     'MANGLER_TEKST',
   'beregning.avansert.rediger.radio.beregningsvalg.med_afp.label':
     'MANGLER_TEKST',
+  'beregning.avansert.rediger.afp_etterfulgt_av_ap.title': 'MANGLER_TEKST',
   'beregning.avansert.rediger.beregningsvalg.med_afp.title': 'MANGLER_TEKST',
   'beregning.avansert.rediger.beregningsvalg.med_afp.description':
     'MANGLER_TEKST',
@@ -339,6 +341,15 @@ export default {
     'MANGLER_TEKST',
   'beregning.avansert.rediger.radio.inntekt_vsa_gradert_uttak.description.validation_error':
     'MANGLER_TEKST',
+  'beregning.avansert.rediger.radio.inntekt_vsa_afp': 'MANGLER_TEKST',
+  'beregning.avansert.rediger.radio.inntekt_vsa_afp.description':
+    'MANGLER_TEKST',
+  'beregning.avansert.rediger.radio.afp_inntekt_maaned_foer_uttak.validation_error':
+    'MANGLER_TEKST',
+  'beregning.avansert.rediger.radio.inntekt_vsa_afp.validation_error':
+    'MANGLER_TEKST',
+  'beregning.avansert.rediger.inntekt_vsa_afp.validation_error':
+    'MANGLER_TEKST',
   'beregning.avansert.rediger.inntekt_vsa_gradert_uttak.beloep.validation_error':
     'MANGLER_TEKST',
   'beregning.avansert.rediger.inntekt_vsa_gradert_uttak.label': 'MANGLER_TEKST',
@@ -347,6 +358,7 @@ export default {
   'beregning.avansert.rediger.inntekt.button': 'MANGLER_TEKST',
   'beregning.avansert.rediger.agepicker.validation_error': 'MANGLER_TEKST',
   'beregning.avansert.rediger.agepicker.grad.validation_error': 'MANGLER_TEKST',
+  'beregning.avansert.rediger.agepicker.afp.validation_error': 'MANGLER_TEKST',
   'beregning.avansert.rediger.agepicker.validation_error.maxAlder':
     'MANGLER_TEKST',
   'beregning.avansert.rediger.heltuttak.agepicker.label': 'MANGLER_TEKST',
@@ -360,6 +372,11 @@ export default {
   'beregning.avansert.avbryt_modal.button.avslutt': 'MANGLER_TEKST',
   'beregning.avansert.avbryt_modal.endring.button.avslutt': 'MANGLER_TEKST',
   'beregning.avansert.avbryt_modal.button.avbryt': 'MANGLER_TEKST',
+  'beregning.avansert.alert.vilkaarsproevning.afp_inntekt_maaned_foer_uttak':
+    'MANGLER_TEKST',
+  'beregning.avansert.alert.afp_inntekt_maaned_foer_uttak': 'MANGLER_TEKST',
+  'beregning.avansert.alert.afp_inntekt_maaned_foer_uttak.link.text':
+    'MANGLER_TEKST',
   'beregning.endring.alert.uttaksdato': 'MANGLER_TEKST',
   'beregning.endring.rediger.title': 'MANGLER_TEKST',
   'beregning.endring.rediger.vedtak_status': 'MANGLER_TEKST',

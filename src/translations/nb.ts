@@ -402,15 +402,6 @@ const translations = {
   'beregning.avansert.rediger.uttaksgrad.description': 'Velg uttaksgrad',
   'beregning.avansert.rediger.uttaksgrad.endring.description':
     'Velg ny uttaksgrad',
-  'beregning.avansert.rediger.read_more.uttaksgrad.label': 'Om uttaksgrad',
-  'beregning.avansert.rediger.read_more.uttaksgrad.gradert_ufoeretrygd.label':
-    'Om uttaksgrad og uføretrygd',
-  'beregning.avansert.rediger.read_more.uttaksgrad.body':
-    'Uttaksgrad angir hvor stor del av månedlig alderspensjon du ønsker å ta ut. Du kan velge gradert uttak (20, 40, 50, 60 eller <nowrap>80 %</nowrap>), eller hel alderspensjon (<nowrap>100 %</nowrap>).',
-  'beregning.avansert.rediger.read_more.uttaksgrad.endring.body':
-    'Uttaksgrad angir hvor stor del av månedlig alderspensjon du ønsker å ta ut. Hvis du vil endre gradering til 20, 40, 50, 60 eller 80 % må det ha gått minimum 12 måneder siden du startet uttak av alderspensjon eller endret uttaksgrad. Du kan endre til 0 % og 100 % så ofte du vil.',
-  'beregning.avansert.rediger.read_more.uttaksgrad.gradert_ufoeretrygd.body':
-    'Uttaksgrad angir hvor stor del av månedlig alderspensjon du ønsker å ta ut. Grad av uføretrygd og alderspensjon kan til sammen ikke overstige 100 %. Fra {normertPensjonsalder} kan du fritt velge gradert uttak (20, 40, 50, 60 eller 80 %), eller hel alderspensjon (100 %).',
   'beregning.avansert.rediger.radio.afp_inntekt_maaned_foer_uttak':
     'Forventer du å ha inntekt på minst {afpInntektMaanedFoerUttak} før skatt den siste måneden før du tar ut AFP?',
   'beregning.avansert.rediger.radio.afp_inntekt_maaned_foer_uttak.description':
@@ -437,11 +428,11 @@ const translations = {
     'Du kan tjene så mye du vil samtidig som du tar ut pensjon.',
   'beregning.avansert.rediger.radio.inntekt_vsa_gradert_uttak.ufoeretrygd.description':
     'Alderspensjonen påvirker ikke inntektsgrensen for uføretrygden din.',
-  'beregning.avansert.rediger.radio.afp_inntekt_maaned_foer_uttak.description.validation_error':
+  'beregning.avansert.rediger.radio.afp_inntekt_maaned_foer_uttak.validation_error':
     'Du må svare på om du forventer å ha inntekt på minst {grunnbeloep} før skatt den siste måneden før du tar ut AFP.',
-  'beregning.avansert.rediger.radio.inntekt_vsa_afp.description.validation_error':
+  'beregning.avansert.rediger.radio.inntekt_vsa_afp.validation_error':
     'Du må svare på om du forventer å ha inntekt samtidig som du tar ut AFP.',
-  'beregning.avansert.rediger.inntekt_vsa_afp.description.validation_error':
+  'beregning.avansert.rediger.inntekt_vsa_afp.validation_error':
     'Du må fylle ut forventet årsinntekt samtidig som du tar ut AFP.',
   'beregning.avansert.rediger.radio.inntekt_vsa_gradert_uttak.description.validation_error':
     'Du må svare på om du forventer å ha inntekt samtidig som du tar ut <nowrap>{grad} %</nowrap> pensjon.',
