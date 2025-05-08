@@ -100,7 +100,7 @@ export default {
   'stegvisning.start.button': 'Get Started',
   'stegvisning.start.link': 'Personal data used in the pension calculator',
   'stegvisning.start.title_brukere_fyllt_75aar': 'MANGLER_TEKST',
-  'stegvisning.start.ingress_brukere_fyllt_75aar': 'MANGLER_TEKST', 
+  'stegvisning.start.ingress_brukere_fyllt_75aar': 'MANGLER_TEKST',
   'stegvisning.start.button_brukere_fyllt_75aar': 'MANGLER_TEKST',
   'stegvisning.start.avbryt_brukere_fyllt_75aar': 'MANGLER_TEKST',
   'stegvisning.utenlandsopphold.title': 'Time abroad',
