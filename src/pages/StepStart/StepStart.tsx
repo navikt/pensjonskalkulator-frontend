@@ -8,6 +8,8 @@ import { paths } from '@/router/constants'
 import { stepStartAccessGuard } from '@/router/loaders'
 import { useAppSelector } from '@/state/hooks'
 import { selectIsVeileder } from '@/state/userInput/selectors'
+import { isAlderOver75 } from '@/utils/alder'
+import { StartForBrukereFyllt75 } from '@/components/stegvisning/Start/StartForBrukereFyllt75'
 
 export function StepStart() {
   const intl = useIntl()
@@ -26,6 +28,13 @@ export function StepStart() {
   }, [])
 
   const isVeileder = useAppSelector(selectIsVeileder)
+
+  if(isAlderOver75(person.foedselsdato)) {
+    return (
+      <StartForBrukereFyllt75 
+      />
+    )
+  }
 
   return (
     <Start

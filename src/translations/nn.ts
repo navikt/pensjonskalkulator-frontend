@@ -84,6 +84,10 @@ export default {
   'stegvisning.start.button': 'Kom i gang',
   'stegvisning.start.link':
     'Personopplysningar som vert brukt i enkel kalkulator',
+    'stegvisning.start.title_brukere_fyllt_75aar': 'MANGLER_TEKST',
+  'stegvisning.start.ingress_brukere_fyllt_75aar': 'MANGLER_TEKST', 
+  'stegvisning.start.button_brukere_fyllt_75aar': 'MANGLER_TEKST',
+  'stegvisning.start.avbryt_brukere_fyllt_75aar': 'MANGLER_TEKST',
   'stegvisning.utenlandsopphold.title': 'MANGLER_TEKST',
   'stegvisning.utenlandsopphold.ingress': 'MANGLER_TEKST',
   'stegvisning.utenlandsopphold.radio_label': 'MANGLER_TEKST',
