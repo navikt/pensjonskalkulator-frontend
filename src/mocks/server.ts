@@ -10,7 +10,7 @@ export const server = setupServer(...handlers)
 
 type MockResponseOptions = {
   status?: number
-  json?: ReturnType<typeof JSON.parse>
+  json?: Record<string, unknown>
   text?: string
   method?: 'post' | 'get'
   baseUrl?: string
@@ -25,7 +25,7 @@ export const mockResponse = (
   const status = inputOptions.status ?? 200
 
   server.use(
-    http[method](`${baseUrl}${path}`, async () => {
+    http[method](`${baseUrl}${path}`, () => {
       if (inputOptions.text) {
         return HttpResponse.text(inputOptions.text, { status })
       } else {
@@ -45,7 +45,7 @@ export const mockErrorResponse = (
   const status = inputOptions.status ?? 500
 
   server.use(
-    http[method](`${baseUrl}${path}`, async () => {
+    http[method](`${baseUrl}${path}`, () => {
       // Må sende tom streng slik at ikke rtk-query prøver å parse JSON
       return HttpResponse.text('', { status })
     })

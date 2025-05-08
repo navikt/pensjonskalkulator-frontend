@@ -22,7 +22,7 @@ import { render, screen, waitFor } from '@/test-utils'
 import { BASE_PATH, henvisningUrlParams, paths } from '../constants'
 import { routes } from '../routes'
 
-const initialGetState = store.getState
+const initialGetState = store.getState // eslint-disable-line @typescript-eslint/unbound-method
 
 const fakeApiCalls = {
   queries: {
