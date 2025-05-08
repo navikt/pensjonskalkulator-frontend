@@ -20,6 +20,7 @@ cypress/screenshots
 analice.html
 vite.config.ts.*
 .sanity
+overrides.env
 
 # Editor directories and files
 .vscode/*
