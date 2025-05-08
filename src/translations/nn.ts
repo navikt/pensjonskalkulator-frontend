@@ -344,6 +344,10 @@ export default {
   'beregning.avansert.rediger.radio.inntekt_vsa_afp': 'MANGLER_TEKST',
   'beregning.avansert.rediger.radio.inntekt_vsa_afp.description':
     'MANGLER_TEKST',
+  'beregning.avansert.rediger.radio.afp_inntekt_maaned_foer_uttak':
+    'MANGLER_TEKST',
+  'beregning.avansert.rediger.radio.afp_inntekt_maaned_foer_uttak.description':
+    'MANGLER_TEKST',
   'beregning.avansert.rediger.radio.afp_inntekt_maaned_foer_uttak.validation_error':
     'MANGLER_TEKST',
   'beregning.avansert.rediger.radio.inntekt_vsa_afp.validation_error':
@@ -535,6 +539,7 @@ export default {
   'inntekt.endre_inntekt_vsa_pensjon_modal.button.slette': 'MANGLER_TEKST',
   'inntekt.endre_inntekt_vsa_pensjon_modal.title': 'MANGLER_TEKST',
   'inntekt.endre_inntekt_vsa_pensjon_modal.textfield.label': 'MANGLER_TEKST',
+  'inntekt.endre_inntekt_vsa_afp_modal.textfield.label': 'MANGLER_TEKST',
   'inntekt.endre_inntekt_vsa_pensjon_modal.textfield.description':
     'MANGLER_TEKST',
   'inntekt.endre_inntekt_vsa_pensjon_modal.agepicker.label': 'MANGLER_TEKST',

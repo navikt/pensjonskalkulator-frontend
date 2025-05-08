@@ -399,6 +399,10 @@ export default {
     'You must answer whether you expect to have income while you withdraw <nowrap>{grad} %</nowrap> pension.',
   'beregning.avansert.rediger.inntekt_vsa_gradert_uttak.beloep.validation_error':
     'You must fill in expected income at the same time as you withdraw <nowrap>{grad} %</nowrap> pension.',
+  'beregning.avansert.rediger.radio.afp_inntekt_maaned_foer_uttak':
+    'MANGLER_TEKST',
+  'beregning.avansert.rediger.radio.afp_inntekt_maaned_foer_uttak.description':
+    'MANGLER_TEKST',
   'beregning.avansert.rediger.radio.afp_inntekt_maaned_foer_uttak.validation_error':
     'MANGLER_TEKST',
   'beregning.avansert.rediger.radio.inntekt_vsa_afp.validation_error':
@@ -643,6 +647,7 @@ export default {
   'inntekt.endre_inntekt_vsa_pensjon_modal.title': 'Pensionable income',
   'inntekt.endre_inntekt_vsa_pensjon_modal.textfield.label':
     'What is your expected annual income while withdrawing <nowrap>100 %</nowrap> retirement pension?',
+  'inntekt.endre_inntekt_vsa_afp_modal.textfield.label': 'MANGLER_TEKST',
   'inntekt.endre_inntekt_vsa_pensjon_modal.textfield.description':
     'Current currency value before tax',
   'inntekt.endre_inntekt_vsa_pensjon_modal.agepicker.label':
