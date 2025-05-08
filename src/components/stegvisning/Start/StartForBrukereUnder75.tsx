@@ -25,7 +25,7 @@ interface Props {
   onNext?: () => void
 }
 
-export function Start({ navn, loependeVedtak, onCancel, onNext }: Props) {
+export function StartForBrukereUnder75({ navn, loependeVedtak, onCancel, onNext }: Props) {
   const intl = useIntl()
   const isEndring = isLoependeVedtakEndring(loependeVedtak)
   const fremtidigAlderspensjon = loependeVedtak.fremtidigAlderspensjon
@@ -83,7 +83,7 @@ export function Start({ navn, loependeVedtak, onCancel, onNext }: Props) {
 
                 {!fremtidigAlderspensjon && (
                   <BodyLong size="medium">
-                    <FormattedMessage id="stegvisning.start.endring.ingress_2" />
+                    <FormattedMessage id="stegvisning.start.ingress_2" />
                   </BodyLong>
                 )}
               </>

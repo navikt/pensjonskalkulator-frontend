@@ -22,7 +22,7 @@ export function StartForBrukereFyllt75() {
 
   React.useEffect(() => {
     document.title = intl.formatMessage({
-      id: 'stegvisning.start.brukere_fyllt_75aar.title',
+      id: 'stegvisning.start_brukere_fyllt_75.title',
     })
   }, [])
 
@@ -30,11 +30,11 @@ export function StartForBrukereFyllt75() {
     <Card hasLargePadding hasMargin>
       <div className={clsx(styles.wrapper, styles.wrapperFlexColumn)}>
         <Heading level="2" size="medium" spacing>
-          <FormattedMessage id="stegvisning.start.title_brukere_fyllt_75aar" />
+          <FormattedMessage id="stegvisning.start_brukere_fyllt_75.title" />
         </Heading>
         <BodyLong data-testid="start_75">
           <FormattedMessage
-            id="stegvisning.start.ingress_brukere_fyllt_75aar"
+            id="stegvisning.start_brukere_fyllt_75.ingress"
             values={{
               ...getFormatMessageValues(),
             }}
@@ -50,7 +50,7 @@ export function StartForBrukereFyllt75() {
               tekst: 'Go til Din pensjon',
             })(navigateToDinPensjon)}
           >
-            <FormattedMessage id="stegvisning.start.button_brukere_fyllt_75aar" />
+            <FormattedMessage id="stegvisning.start_brukere_fyllt_75.button" />
           </Button>
           <Button
             data-testid="startside_75-cancel-button"
@@ -59,7 +59,7 @@ export function StartForBrukereFyllt75() {
               tekst: 'Avbryt',
             })(onStegvisningCancel)}
           >
-            <FormattedMessage id="stegvisning.start.avbryt_brukere_fyllt_75aar" />
+            <FormattedMessage id="stegvisning.start_brukere_fyllt_75.avbryt" />
           </Button>
         </div>
       </div>

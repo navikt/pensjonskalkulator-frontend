@@ -2,7 +2,7 @@ import React from 'react'
 import { useIntl } from 'react-intl'
 import { useLoaderData } from 'react-router'
 
-import { Start } from '@/components/stegvisning/Start'
+import { StartForBrukereUnder75 } from '@/components/stegvisning/Start'
 import { StartForBrukereFyllt75 } from '@/components/stegvisning/Start/StartForBrukereFyllt75'
 import { useStegvisningNavigation } from '@/components/stegvisning/stegvisning-hooks'
 import { paths } from '@/router/constants'
@@ -34,7 +34,7 @@ export function StepStart() {
   }
 
   return (
-    <Start
+    <StartForBrukereUnder75
       navn={person.navn}
       onCancel={isVeileder ? undefined : onStegvisningCancel}
       onNext={onStegvisningNext}
