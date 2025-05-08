@@ -19,12 +19,23 @@ import {
 import { isLoependeVedtakEndring } from '@/utils/loependeVedtak'
 import { logger } from '@/utils/logging'
 
+interface ErrorData {
+  reason?: string
+}
+
 const getErrorStatus = (
   error: FetchBaseQueryError | SerializedError | undefined
 ) => {
   if (!error) return undefined
   if (typeof error === 'string') return error
   if ('status' in error) return error.status
+}
+
+const getErrorData = (
+  error: FetchBaseQueryError | SerializedError | undefined
+): ErrorData | undefined => {
+  if (!error) return undefined
+  if ('data' in error) return error.data as ErrorData
 }
 
 export interface LoginContext {
@@ -142,8 +153,21 @@ export const stepStartAccessGuard = async () => {
 
   if (!getPersonRes.isSuccess) {
     if (getErrorStatus(getPersonRes.error) === 403) {
-      return redirect(paths.ingenTilgang)
+      console.log(getErrorData(getPersonRes.error))
+
+      if (
+        getErrorData(getPersonRes.error)?.reason === 'INVALID_REPRESENTASJON'
+      ) {
+        return redirect(paths.ingenTilgang)
+      }
+      if (
+        getErrorData(getPersonRes.error)?.reason ===
+        'INSUFFICIENT_LEVEL_OF_ASSURANCE'
+      ) {
+        return redirect(paths.lavtSikkerhetsnivaa)
+      }
     }
+
     logger('info', {
       tekst: 'Redirect til /uventet-feil',
       data: `fra Step Start Loader pga. feil med getPerson med status: ${getErrorStatus(getPersonRes.error)}`,
