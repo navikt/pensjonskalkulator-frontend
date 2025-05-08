@@ -3,6 +3,15 @@ import { render, screen, userEvent, waitFor } from '@/test-utils'
 
 import { ErrorSecurityLevel } from '../ErrorSecurityLevel'
 
+const navigateMock = vi.fn()
+vi.mock(import('react-router'), async (importOriginal) => {
+  const actual = await importOriginal()
+  return {
+    ...actual,
+    useNavigate: () => navigateMock,
+  }
+})
+
 describe('ErrorSecurityLevel', () => {
   it('har riktig sidetittel', async () => {
     render(<ErrorSecurityLevel />)
@@ -27,12 +36,10 @@ describe('ErrorSecurityLevel', () => {
     expect(open).toHaveBeenCalledWith(externalUrls.byttBruker, '_self')
   })
 
-  it('opens the external URL when the secondary button is clicked', async () => {
+  it('navigates to login when the secondary button is clicked', async () => {
     const user = userEvent.setup()
-    const open = vi.fn()
-    vi.stubGlobal('open', open)
     render(<ErrorSecurityLevel />)
     await user.click(screen.getByTestId('card-button-secondary'))
-    expect(open).toHaveBeenCalledWith(paths.start, '_self')
+    expect(navigateMock).toHaveBeenCalledWith(paths.login)
   })
 })
