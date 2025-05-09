@@ -64,12 +64,12 @@ describe('stegvisning - Start', () => {
       screen.queryByText('uføretrygd', { exact: false })
     ).not.toBeInTheDocument()
     expect(screen.queryByText('AFP', { exact: false })).not.toBeInTheDocument()
-    // expect(
-    //   screen.getByText(
-    //     'Her kan du sjekke hva du kan få hvis du vil endre alderspensjonen din.',
-    //     { exact: false }
-    //   )
-    // ).toBeVisible()
+    expect(
+      screen.getByText(
+        'Her kan du sjekke hva du kan få hvis du vil endre alderspensjonen din.',
+        { exact: false }
+      )
+    ).toBeVisible()
   })
 
   it('rendrer slik den skal med vedtak om alderspensjon og uføregrad', async () => {
