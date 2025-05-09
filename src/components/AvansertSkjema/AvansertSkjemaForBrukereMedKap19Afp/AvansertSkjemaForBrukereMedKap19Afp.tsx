@@ -241,6 +241,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
           {isEndring && <AvansertSkjemaIntroEndring />}
 
           <AvansertSkjemaInntekt
+            data-testid="inntekt-avansert-skjemainntekt"
             localInntektFremTilUttak={localInntektFremTilUttak}
             aarligInntektFoerUttakBeloep={aarligInntektFoerUttakBeloep}
             setLocalInntektFremTilUttak={setLocalInntektFremTilUttak}
@@ -259,7 +260,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
               )}
           </div>
 
-          <div>
+          <div data-testid="agepicker-helt-uttaksalder">
             <AgePicker
               form={AVANSERT_FORM_NAMES.form}
               name={AVANSERT_FORM_NAMES.uttaksalderHeltUttak}
