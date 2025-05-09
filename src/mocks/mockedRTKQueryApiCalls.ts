@@ -123,10 +123,10 @@ export const fulfilledGetPersonMedOekteAldersgrenser = {
   },
 }
 
-export const fulfilledGetGrunnbelop = {
-  'getGrunnbelop(undefined)': {
+export const fulfilledGetGrunnbeloep = {
+  'getGrunnbeloep(undefined)': {
     status: 'fulfilled',
-    endpointName: 'getGrunnbelop',
+    endpointName: 'getGrunnbeloep',
     requestId: 'mockedRequestId',
     startedTimeStamp: Date.now(),
     data: 100000,

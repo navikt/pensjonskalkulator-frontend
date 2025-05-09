@@ -2,7 +2,7 @@ import { RouterProvider, createMemoryRouter } from 'react-router'
 import { describe, it, vi } from 'vitest'
 
 import {
-  fulfilledGetGrunnbelop,
+  fulfilledGetGrunnbeloep,
   fulfilledGetPerson,
 } from '@/mocks/mockedRTKQueryApiCalls'
 import { BASE_PATH, paths } from '@/router/constants'
@@ -30,7 +30,7 @@ describe('StepSivilstand', () => {
       api: {
         queries: {
           ...fulfilledGetPerson,
-          ...fulfilledGetGrunnbelop,
+          ...fulfilledGetGrunnbeloep,
         },
       },
       userInput: {
