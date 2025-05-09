@@ -2590,7 +2590,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
       fireEvent.change(
         await screen.findByTestId(AVANSERT_FORM_NAMES.uttaksgrad),
         {
-          target: { value: '20 %' },
+          target: { value: '80 %' },
         }
       )
 
