@@ -126,7 +126,11 @@ export const VilkaarsproevingAlert = ({
           values={{
             ...getFormatMessageValues(),
             vilkaarForUttakAvAfp: (
-              <Link href="https://www.nav.no/afp-offentlig#hvem-kan-fa">
+              <Link
+                href="https://www.nav.no/afp-offentlig#hvem-kan-fa"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Om vilkår for uttak av AFP
               </Link>
             ),
