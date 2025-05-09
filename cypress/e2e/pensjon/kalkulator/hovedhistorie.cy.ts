@@ -144,11 +144,11 @@ describe('Hovedhistorie', () => {
 
           kontakteOssLink
             .should('exist')
-            .should('have.attr', 'href') // Assert the href attribute exists
+            .should('have.attr', 'href')
             .and(
               'include',
               '/planlegger-pensjon#noe-du-ikke-finner-svaret-p-her'
-            ) // Check if it includes the expected part
+            )
         })
 
         it('kan jeg navigere til "Din pensjon" side', () => {
