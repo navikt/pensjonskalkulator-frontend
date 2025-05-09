@@ -105,7 +105,7 @@ const translations = {
   'stegvisning.start_brukere_fyllt_75.title':
     'Du kan dessverre ikke beregne alderspensjon i kalkulatoren etter at du har fylt 75 år',
   'stegvisning.start_brukere_fyllt_75.ingress':
-    'Har du spørsmål, kan du <kontaktOssLink>kontakte oss</kontaktOssLink>',
+    'Har du spørsmål, kan du <planleggePensjonLink>kontakte oss</planleggePensjonLink>',
   'stegvisning.start_brukere_fyllt_75.button': 'Gå til Din pensjon',
   'stegvisning.start_brukere_fyllt_75.avbryt': 'Avbryt',
   'stegvisning.utenlandsopphold.title': 'Opphold utenfor Norge',

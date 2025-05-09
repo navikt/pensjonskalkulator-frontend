@@ -13,7 +13,7 @@ vi.mock(import('react-router'), async (importOriginal) => {
   }
 })
 
-describe.only('stegvisning - Start', () => {
+describe('stegvisning - Start', () => {
   const onCancelMock = vi.fn()
   const onNextMock = vi.fn()
 

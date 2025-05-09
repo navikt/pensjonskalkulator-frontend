@@ -29,10 +29,15 @@ export function StartForBrukereFyllt75() {
   return (
     <Card hasLargePadding hasMargin>
       <div className={clsx(styles.wrapper, styles.wrapperFlexColumn)}>
-        <Heading level="2" size="medium" spacing>
+        <Heading
+          level="2"
+          size="medium"
+          spacing
+          data-testid="start-brukere-fyllt-75-title"
+        >
           <FormattedMessage id="stegvisning.start_brukere_fyllt_75.title" />
         </Heading>
-        <BodyLong data-testid="start_75">
+        <BodyLong data-testid="start-brukere-fyllt-75-ingress">
           <FormattedMessage
             id="stegvisning.start_brukere_fyllt_75.ingress"
             values={{
@@ -42,7 +47,7 @@ export function StartForBrukereFyllt75() {
         </BodyLong>
         <div className={styles.wrapperText}>
           <Button
-            data-testid="start_75-go-to-din-pensjon-button"
+            data-testid="start-brukere-fyllt-75-din-pensjon-button"
             type="submit"
             className={styles.button}
             variant="primary"
@@ -53,7 +58,7 @@ export function StartForBrukereFyllt75() {
             <FormattedMessage id="stegvisning.start_brukere_fyllt_75.button" />
           </Button>
           <Button
-            data-testid="startside_75-cancel-button"
+            data-testid="start-brukere-fyllt-75-avbryt-button"
             variant="tertiary"
             onClick={wrapLogger('button klikk', {
               tekst: 'Avbryt',
