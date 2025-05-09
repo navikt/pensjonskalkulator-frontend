@@ -88,7 +88,7 @@ export function StartForBrukereUnder75({
 
                 {!fremtidigAlderspensjon && (
                   <BodyLong size="medium">
-                    <FormattedMessage id="stegvisning.start.ingress_2" />
+                    <FormattedMessage id="stegvisning.start.endring.ingress_2" />
                   </BodyLong>
                 )}
               </>
