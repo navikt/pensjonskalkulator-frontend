@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl'
 
 import { Card } from '@/components/common/Card'
 import { useStegvisningNavigation } from '@/components/stegvisning/stegvisning-hooks'
-import { externalUrls, paths } from '@/router/constants'
+import { paths } from '@/router/constants'
 
 export const ErrorSecurityLevel = () => {
   const intl = useIntl()
@@ -18,7 +18,8 @@ export const ErrorSecurityLevel = () => {
   }, [])
 
   const redirectToLogin = () => {
-    window.open(externalUrls.byttBruker, '_self')
+    const redirectUrl = `${window.location.host}/pensjon/kalkulator/oauth2/logout?redirect=${window.location.host}/pensjon/kalkulator/start`
+    window.open(redirectUrl, '_self')
   }
 
   const redirectToStart = () => {
