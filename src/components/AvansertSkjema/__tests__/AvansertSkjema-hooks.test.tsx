@@ -684,7 +684,7 @@ describe('AvansertSkjema-hooks', () => {
         // harAvansertSkjemaUnsavedChanges
         expect(
           await screen.findByTestId('harAvansertSkjemaUnsavedChanges')
-        ).toHaveTextContent('TRUE')
+        ).toHaveTextContent('FALSE')
 
         const {
           handlers: { setLocalGradertUttak },

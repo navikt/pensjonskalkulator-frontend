@@ -370,8 +370,8 @@ describe('AvansertSkjemaForBrukereMedKap19Afp', () => {
       })
     })
 
-    describe.skip('Ved klikk på radioknapp', () => {
-      it('Skal alert vises når bruker ikke har afpInntektMaanedFoerUttak', async () => {
+    describe('Ved klikk på radioknapp', () => {
+      it('Skal alert vises når bruker velger "Nei" på afpInntektMaanedFoerUttak', async () => {
         const user = userEvent.setup()
         render(
           <BeregningContext.Provider value={contextMockedValues}>
@@ -400,12 +400,10 @@ describe('AvansertSkjemaForBrukereMedKap19Afp', () => {
         )
 
         expect(
-          screen.getByText('Du kan bare beregne AFP hvis du har en inntekt', {
-            exact: false,
-          })
+          screen.getByTestId('afp-etterfulgt-ap-informasjon')
         ).toBeVisible()
       })
-      it('Skal inputfield vises når bruker har inntekt vsa afp', async () => {
+      it('Skal inputfield vises når bruker velger "Ja" på inntektVsaAfp', async () => {
         const user = userEvent.setup()
         render(
           <BeregningContext.Provider value={contextMockedValues}>

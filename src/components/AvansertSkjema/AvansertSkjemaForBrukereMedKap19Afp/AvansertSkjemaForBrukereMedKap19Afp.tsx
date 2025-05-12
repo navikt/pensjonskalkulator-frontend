@@ -340,7 +340,10 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
                 <FormattedMessage id="stegvisning.radio_nei" />
               </Radio>
               {localHarAfpInntektMaanedFoerUttakRadio === false && (
-                <Alert variant="info">
+                <Alert
+                  variant="info"
+                  data-testid="afp-etterfulgt-ap-informasjon"
+                >
                   <FormattedMessage
                     id="beregning.avansert.alert.afp_inntekt_maaned_foer_uttak"
                     values={{
