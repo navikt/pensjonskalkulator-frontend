@@ -80,8 +80,9 @@ describe('Hovedhistorie', () => {
       sub(new Date(), { years: 75, months: 1, days: 5 }),
       'yyyy-MM-dd'
     )
+
     // 4
-    describe('Når jeg navigerer videre fra /login til /start og er yngre enn 75 år', () => {
+    describe('Når jeg navigerer videre fra /login til /start og er yngre enn 75 år,', () => {
       beforeEach(() => {
         cy.visit('/pensjon/kalkulator/')
         cy.wait('@getAuthSession')
@@ -93,11 +94,13 @@ describe('Hovedhistorie', () => {
           }
         ).as('getPerson')
       })
+
       it('forventer jeg å se en startside som ønsker meg velkommen.', () => {
         cy.contains('button', 'Detaljert pensjonskalkulator').should('exist')
         cy.contains('button', 'Pensjonskalkulator').click()
         cy.contains('Hei Aprikos!')
       })
+
       it('ønsker jeg informasjon om hvilke personopplysninger som brukes i kalkulatoren.', () => {
         cy.contains('button', 'Pensjonskalkulator').click()
         cy.contains('a', 'Personopplysninger som brukes i pensjonskalkulator')
@@ -107,6 +110,7 @@ describe('Hovedhistorie', () => {
             'https://www.nav.no/personopplysninger-i-pensjonskalkulator'
           )
       })
+
       it('ønsker jeg å kunne starte kalkulatoren eller avbryte beregningen.', () => {
         cy.contains('button', 'Pensjonskalkulator').click()
         cy.contains('button', 'Kom i gang').click()
@@ -114,75 +118,75 @@ describe('Hovedhistorie', () => {
         cy.contains('button', 'Avbryt').click()
         cy.location('href').should('include', '/pensjon/kalkulator/login')
       })
+    })
 
-      describe('Når jeg navigerer videre fra /login til /start og har fyllt 75 år,', () => {
-        // 5
-        beforeEach(() => {
-          cy.visit('/pensjon/kalkulator/')
-          cy.wait('@getAuthSession')
-          cy.intercept(
-            { method: 'GET', url: '/pensjon/kalkulator/api/v4/person' },
-            {
-              ...personMock,
-              foedselsdato: foedselsdato75Plus,
-            }
-          ).as('getPerson')
-          cy.contains('button', 'Detaljert pensjonskalkulator').should(
-            'be.visible'
-          )
-          cy.contains('button', 'Pensjonskalkulator').click()
+    // 5
+    describe('Når jeg navigerer videre fra /login til /start og har fyllt 75 år,', () => {
+      beforeEach(() => {
+        cy.visit('/pensjon/kalkulator/')
+        cy.wait('@getAuthSession')
+        cy.intercept(
+          { method: 'GET', url: '/pensjon/kalkulator/api/v4/person' },
+          {
+            ...personMock,
+            foedselsdato: foedselsdato75Plus,
+          }
+        ).as('getPerson')
+        cy.contains('button', 'Detaljert pensjonskalkulator').should(
+          'be.visible'
+        )
+        cy.contains('button', 'Pensjonskalkulator').click()
+      })
+
+      it('forventer jeg å se en startside som sier at jeg desverre kan ikke beregne pensjon.', () => {
+        cy.get('[data-testid="start-brukere-fyllt-75-ingress"]').should(
+          'be.visible'
+        )
+      })
+
+      it('forventer jeg å se og navigere til "kontakte oss" lenke.', () => {
+        cy.window().then((win) => {
+          cy.stub(win, 'open').as('windowOpen')
         })
 
-        it('forventer jeg å se en startside som sier at jeg desverre kan ikke beregne pensjon.', () => {
-          cy.get('[data-testid="start-brukere-fyllt-75-ingress"]').should(
-            'be.visible'
-          )
-        })
-
-        it('forventer jeg å se og navigere til "kontakte oss" lenke', () => {
-          cy.window().then((win) => {
-            cy.stub(win, 'open').as('windowOpen')
+        cy.get('[data-testid="start-brukere-fyllt-75-ingress"] a')
+          .should('exist')
+          .and('be.visible')
+          .then(($el) => {
+            const anchorElement = $el[0]
+            expect(anchorElement.getAttribute('href')).to.include(
+              '/planlegger-pensjon#noe-du-ikke-finner-svaret-p-her'
+            )
+            anchorElement.removeAttribute('target') // Ensures to open the link in same window as Cypress cannot handle multiple tabs
+            anchorElement.click()
           })
 
-          cy.get('[data-testid="start-brukere-fyllt-75-ingress"] a')
-            .should('exist')
-            .and('be.visible')
-            .then(($el) => {
-              const anchorElement = $el[0]
-              expect(anchorElement.getAttribute('href')).to.include(
-                '/planlegger-pensjon#noe-du-ikke-finner-svaret-p-her'
-              )
-              anchorElement.removeAttribute('target') // Ensures to open the link in same window as Cypress cannot handle multiple tabs
-              anchorElement.click()
-            })
+        cy.get('@windowOpen').should(
+          'be.calledWith',
+          'https://www.nav.no/planlegger-pensjon#noe-du-ikke-finner-svaret-p-her'
+        )
+      })
 
-          cy.get('@windowOpen').should(
-            'be.calledWith',
-            'https://www.nav.no/planlegger-pensjon#noe-du-ikke-finner-svaret-p-her'
-          )
-        })
+      it('kan jeg navigere til "Din pensjon" side.', () => {
+        const dinPensjonButton = cy.get(
+          '[data-testid="start-brukere-fyllt-75-din-pensjon-button"]'
+        )
 
-        it('kan jeg navigere til "Din pensjon" side', () => {
-          const dinPensjonButton = cy.get(
-            '[data-testid="start-brukere-fyllt-75-din-pensjon-button"]'
-          )
+        dinPensjonButton.should('be.visible')
+        dinPensjonButton.click()
+        cy.location('href').should(
+          'include',
+          '/pensjon/selvbetjening/dinpensjon'
+        )
+      })
 
-          dinPensjonButton.should('be.visible')
-          dinPensjonButton.click()
-          cy.location('href').should(
-            'include',
-            '/pensjon/selvbetjening/dinpensjon'
-          )
-        })
-
-        it('kan jeg avbryte og navigere til login side', () => {
-          const avbrytButton = cy.get(
-            '[data-testid="start-brukere-fyllt-75-avbryt-button"]'
-          )
-          avbrytButton.should('be.visible')
-          avbrytButton.click()
-          cy.location('href').should('include', '/pensjon/kalkulator/login')
-        })
+      it('kan jeg avbryte og navigere til login side.', () => {
+        const avbrytButton = cy.get(
+          '[data-testid="start-brukere-fyllt-75-avbryt-button"]'
+        )
+        avbrytButton.should('be.visible')
+        avbrytButton.click()
+        cy.location('href').should('include', '/pensjon/kalkulator/login')
       })
     })
 
