@@ -170,7 +170,6 @@ export const userInputSlice = createSlice({
       state.sivilstand = null
       state.epsHarPensjon = null
       state.epsHarInntektOver2G = null
-      //state.skalBeregneAfpKap19 = null
       state.afpUtregningValg = null
       state.afpInntektMaanedFoerUttak = null
       state.currentSimulation = { ...userInputInitialState.currentSimulation }
