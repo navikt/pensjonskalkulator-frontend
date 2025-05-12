@@ -38,11 +38,8 @@ export function formatSeriesToTableData(
       }
     }
 
-    console.log(`Year: ${aarArray[i]}, Sum: ${sum}, Details:`, detaljer)
-
     tableData.push({ alder, sum, detaljer })
   }
-  console.log('Final Table Data:', tableData)
 
   return tableData
 }

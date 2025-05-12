@@ -157,7 +157,7 @@ export const processPensjonsberegningArrayForKap19 = (
 ): number[] => {
   const arrayLength = Math.max(
     xAxisLength,
-    isEndring ? pensjonsberegninger.length + 1 : pensjonsberegninger.length + 2 // muligens pensjonsberegninger.length : pensjonsberegninger.length + 1
+    isEndring ? pensjonsberegninger.length + 1 : pensjonsberegninger.length + 2
   )
 
   const filledArrayLength = pensjonsberegninger[0]
