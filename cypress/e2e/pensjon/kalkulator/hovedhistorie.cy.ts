@@ -127,28 +127,39 @@ describe('Hovedhistorie', () => {
               foedselsdato: foedselsdato75Plus,
             }
           ).as('getPerson')
-          cy.contains('button', 'Detaljert pensjonskalkulator').should('exist')
+          cy.contains('button', 'Detaljert pensjonskalkulator').should(
+            'be.visible'
+          )
           cy.contains('button', 'Pensjonskalkulator').click()
         })
 
         it('forventer jeg å se en startside som sier at jeg desverre kan ikke beregne pensjon.', () => {
           cy.get('[data-testid="start-brukere-fyllt-75-ingress"]').should(
-            'exist'
+            'be.visible'
           )
         })
 
-        it('forventer jeg å se en "kontakte oss" lenke', () => {
-          const kontakteOssLink = cy.get(
-            '[data-testid="start-brukere-fyllt-75-ingress"] a'
-          )
+        it('forventer jeg å se og navigere til "kontakte oss" lenke', () => {
+          cy.window().then((win) => {
+            cy.stub(win, 'open').as('windowOpen')
+          })
 
-          kontakteOssLink
+          cy.get('[data-testid="start-brukere-fyllt-75-ingress"] a')
             .should('exist')
-            .should('have.attr', 'href')
-            .and(
-              'include',
-              '/planlegger-pensjon#noe-du-ikke-finner-svaret-p-her'
-            )
+            .and('be.visible')
+            .then(($el) => {
+              const anchorElement = $el[0]
+              expect(anchorElement.getAttribute('href')).to.include(
+                '/planlegger-pensjon#noe-du-ikke-finner-svaret-p-her'
+              )
+              anchorElement.removeAttribute('target') // Ensures to open the link in same window as Cypress cannot handle multiple tabs
+              anchorElement.click()
+            })
+
+          cy.get('@windowOpen').should(
+            'be.calledWith',
+            'https://www.nav.no/planlegger-pensjon#noe-du-ikke-finner-svaret-p-her'
+          )
         })
 
         it('kan jeg navigere til "Din pensjon" side', () => {
@@ -156,7 +167,7 @@ describe('Hovedhistorie', () => {
             '[data-testid="start-brukere-fyllt-75-din-pensjon-button"]'
           )
 
-          dinPensjonButton.should('exist')
+          dinPensjonButton.should('be.visible')
           dinPensjonButton.click()
           cy.location('href').should(
             'include',
@@ -168,7 +179,7 @@ describe('Hovedhistorie', () => {
           const avbrytButton = cy.get(
             '[data-testid="start-brukere-fyllt-75-avbryt-button"]'
           )
-          avbrytButton.should('exist')
+          avbrytButton.should('be.visible')
           avbrytButton.click()
           cy.location('href').should('include', '/pensjon/kalkulator/login')
         })
