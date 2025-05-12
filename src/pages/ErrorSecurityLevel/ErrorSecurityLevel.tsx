@@ -18,7 +18,7 @@ export const ErrorSecurityLevel = () => {
   }, [])
 
   const redirectToLogin = () => {
-    const redirectUrl = `${window.location.host}/pensjon/kalkulator/oauth2/logout?redirect=${window.location.host}/pensjon/kalkulator/start`
+    const redirectUrl = `https://${window.location.host}/pensjon/kalkulator/oauth2/logout?redirect=https://${window.location.host}/pensjon/kalkulator/start`
     window.open(redirectUrl, '_self')
   }
 
