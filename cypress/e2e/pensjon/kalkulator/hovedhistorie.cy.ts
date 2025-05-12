@@ -71,7 +71,7 @@ describe('Hovedhistorie', () => {
   })
 
   describe('Som bruker som har logget inn på kalkulatoren,', () => {
-    const fødselsdatoMindreEnn75 = format(
+    const foedselsdatoMindreEnn75 = format(
       sub(new Date(), { years: 65, months: 1, days: 5 }),
       'yyyy-MM-dd'
     )
@@ -90,7 +90,7 @@ describe('Hovedhistorie', () => {
           { method: 'GET', url: '/pensjon/kalkulator/api/v4/person' },
           {
             ...personMock,
-            foedselsdato: fødselsdatoMindreEnn75,
+            foedselsdato: foedselsdatoMindreEnn75,
           }
         ).as('getPerson')
       })
