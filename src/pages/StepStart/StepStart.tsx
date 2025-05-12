@@ -1,7 +1,11 @@
 import React from 'react'
 import { useIntl } from 'react-intl'
 import { useLoaderData } from 'react-router'
-import { StartForBrukereUnder75, StartForBrukereFyllt75 } from '@/components/stegvisning/Start'
+
+import {
+  StartForBrukereFyllt75,
+  StartForBrukereUnder75,
+} from '@/components/stegvisning/Start'
 import { useStegvisningNavigation } from '@/components/stegvisning/stegvisning-hooks'
 import { paths } from '@/router/constants'
 import { stepStartAccessGuard } from '@/router/loaders'
