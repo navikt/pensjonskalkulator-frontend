@@ -35,9 +35,6 @@ export const selectAfpInntektMaanedFoerUttak = (
   state: RootState
 ): boolean | null => state.userInput.afpInntektMaanedFoerUttak
 
-/* export const selectSkalBeregneAfpKap19 = (state: RootState): boolean | null =>
-  state.userInput.skalBeregneAfpKap19 */
-
 export const selectAfpUtregningValg = (state: RootState): AfpUtregningValg =>
   state.userInput.afpUtregningValg
 

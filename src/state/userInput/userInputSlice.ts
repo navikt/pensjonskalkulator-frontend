@@ -34,7 +34,6 @@ export const userInputInitialState: UserInputState = {
   samtykke: null,
   samtykkeOffentligAFP: null,
   afp: null,
-  //skalBeregneAfpKap19: null,
   afpUtregningValg: null,
   sivilstand: null,
   epsHarInntektOver2G: null,
@@ -94,9 +93,6 @@ export const userInputSlice = createSlice({
     setAfpUtregningValg: (state, action: PayloadAction<AfpUtregningValg>) => {
       state.afpUtregningValg = action.payload
     },
-    /* setSkalBeregneAfpKap19: (state, action: PayloadAction<boolean | null>) => {
-      state.skalBeregneAfpKap19 = action.payload
-    }, */
     setAfpInntektMaanedFoerUttak: (
       state,
       action: PayloadAction<boolean | null>
