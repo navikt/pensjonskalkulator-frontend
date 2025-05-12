@@ -117,6 +117,7 @@ export default defineConfig({
         'src/components/common/ShowMore',
         'src/types',
         'src/paths.ts',
+        'pensjonskalkulator-frontend/schemaTypes',
       ],
       perFile: true,
       thresholds: {
