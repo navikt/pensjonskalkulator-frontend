@@ -348,7 +348,6 @@ describe('userInputSlice', () => {
           harUtenlandsopphold: true,
           samtykke: true,
           samtykkeOffentligAFP: true,
-          //skalBeregneAfpKap19: true,
           afpUtregningValg: 'AFP_ETTERFULGT_AV_ALDERSPENSJON',
           afp: 'ja_offentlig',
           currentSimulation: {
