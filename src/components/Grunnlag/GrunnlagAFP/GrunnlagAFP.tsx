@@ -112,6 +112,15 @@ export const GrunnlagAFP: React.FC = () => {
     }
 
     if (
+      afp === 'ja_privat' &&
+      loependeVedtak.alderspensjon &&
+      foedselsdato &&
+      isFoedtFoer1963(foedselsdato)
+    ) {
+      return 'grunnlag.afp.ingress.ja_privat'
+    }
+
+    if (
       loependeVedtak.alderspensjon &&
       foedselsdato &&
       isFoedtFoer1963(foedselsdato)
