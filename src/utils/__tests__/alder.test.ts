@@ -786,7 +786,7 @@ describe('alder-utils', () => {
     })
 
     it('over 76 år', () => {
-      const foedselsdato = '1949-05-31'
+      const foedselsdato = '1949-04-30'
       const actual = isAlderOver75Plus1Maaned(foedselsdato)
       expect(actual).toBe(true)
     })
