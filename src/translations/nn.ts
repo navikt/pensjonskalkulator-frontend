@@ -427,6 +427,7 @@ export default {
   'grunnlag.afp.ikke_beregnet': 'MANGLER_TEKST',
   'grunnlag.afp.endring': 'MANGLER_TEKST',
   'grunnlag.afp.ingress.null': '-',
+  'grunnlag.afp.ingress.overgangskull': 'MANGLER_TEKST',
   'grunnlag.afp.ingress.ja_offentlig': 'MANGLER_TEKST',
   'grunnlag.afp.ingress.ja_offentlig.endring': 'MANGLER_TEKST',
   'grunnlag.afp.ingress.ja_offentlig.ufoeretrygd': 'MANGLER_TEKST',

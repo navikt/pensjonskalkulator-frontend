@@ -507,6 +507,7 @@ export default {
   'grunnlag.afp.ikke_beregnet': 'Not calculated',
   'grunnlag.afp.endring': 'Unchanged',
   'grunnlag.afp.ingress.null': '-',
+  'grunnlag.afp.ingress.overgangskull': 'MANGLER_TEKST',
   'grunnlag.afp.ingress.ja_offentlig':
     'You have indicated AFP in the public sector. Nav has not assessed whether you meet the conditions for AFP, but assumes that you do. For more information on the conditions, check with your occupational pension scheme.',
   'grunnlag.afp.ingress.ja_offentlig.endring':

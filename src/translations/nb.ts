@@ -553,7 +553,7 @@ const translations = {
   'grunnlag.afp.ingress.null': '-',
   'grunnlag.afp.ingress.ja_offentlig':
     'Du har oppgitt AFP i offentlig sektor. Nav har ikke vurdert om du fyller alle vilkårene for AFP, men forutsetter at du gjør det. For mer informasjon om vilkårene, sjekk tjenestepensjonsordningen din.',
-  'grunnlag.afp.ingress.overgangskull.ja_offentlig':
+  'grunnlag.afp.ingress.overgangskull':
     'Beregningen av alderspensjon tar høyde for at du mottar AFP. AFP vises ikke i beregningen.',
   'grunnlag.afp.ingress.ja_offentlig.endring':
     'Du har AFP i offentlig sektor. Din AFP er ikke påvirket av endringen din av alderspensjon. Den fortsetter som før.',
@@ -580,7 +580,7 @@ const translations = {
   'grunnlag.afp.ingress.null.gammel': '-',
   'grunnlag.afp.ingress.ja_offentlig.gammel':
     'Du har oppgitt AFP i offentlig sektor. Nav har ikke vurdert om du fyller alle vilkårene for AFP, men forutsetter at du gjør det. For mer informasjon om vilkårene, sjekk tjenestepensjonsordningen din.',
-  'grunnlag.afp.ingress.overgangskull.ja_offentlig.gammel':
+  'grunnlag.afp.ingress.overgangskull.gammel':
     'Beregningen av alderspensjon tar høyde for at du mottar AFP. AFP vises ikke i beregningen.',
   'grunnlag.afp.ingress.ja_offentlig.ufoeretrygd.gammel':
     'Når du mottar uføretrygd, kan du ikke beregne AFP i kalkulatoren. AFP og uføretrygd kan ikke kombineres, og får du utbetalt uføretrygd etter du fyller 62 år mister du retten til AFP. Du må derfor velge mellom AFP og uføretrygd før du er 62 år.{br}{br}For mer informasjon om AFP, kontakt din tjenestepensjonsordning.',

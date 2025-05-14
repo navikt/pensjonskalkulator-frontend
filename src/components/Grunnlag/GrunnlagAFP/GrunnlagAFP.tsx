@@ -133,7 +133,7 @@ export const GrunnlagAFP: React.FC = () => {
       foedselsdato &&
       isFoedtFoer1963(foedselsdato)
     ) {
-      return 'grunnlag.afp.ingress.overgangskull.ja_offentlig'
+      return 'grunnlag.afp.ingress.overgangskull'
     }
 
     if (hasOffentligAFP && samtykkeOffentligAFP === false) {
