@@ -573,7 +573,7 @@ const translations = {
     'Hvis du er usikker på om du har AFP bør du spørre arbeidsgiveren din. AFP og uføretrygd kan ikke kombineres, og får du utbetalt uføretrygd etter fylte 62 år mister du retten til AFP. Du må derfor undersøke om du har rett til AFP, og velge mellom AFP og uføretrygd før du er 62 år.',
   'grunnlag.afp.ingress.nei':
     'Du har svart at du ikke har rett til AFP. Derfor vises ikke AFP i beregningen.{br}{br} Du kan endre valgene dine for AFP ved å gå tilbake til <goToAFP>AFP (avtalefestet pensjon)</goToAFP>.',
-  'grunnlag.afp.ingress.nei.overgangskull.ufoeretrygd':
+  'grunnlag.afp.ingress.overgangskull.ufoeretrygd':
     'Når du mottar uføretrygd eller alderspensjon kan du ikke beregne AFP i kalkulatoren.{br}{br} Hvis du vil beregne AFP i offentlig sektor og er under 65 år, kan du kontakte Nav på telefon 55 55 33 34. Er du over 65 år kan du kontakte tjenestepensjonsordningen din.{br}{br} AFP i privat sektor kan ikke kombineres med uføretrygd. Får du utbetalt uføretrygd etter du fyller 62 år mister du retten til AFP.{br}{br} Vil du vite mer? Les mer om <ufoeretrygdOgAfpLink>Uføretrygd og AFP</ufoeretrygdOgAfpLink>.',
   'grunnlag.afp.ingress.full_ufoeretrygd':
     'For å ha rett til AFP, må du være ansatt i offentlig sektor eller i en bedrift med AFP-ordning i privat sektor. Det gjelder de siste årene og helt fram til du tar ut AFP. Hvis du mottar full uføretrygd, har du derfor normalt ikke rett til AFP.{br}{br}Du kan ikke kombinere AFP og uføretrygd. Får du utbetalt uføretrygd etter du fyller 62 år mister du retten til AFP.{br}{br}Vil du vite mer? Les mer om <ufoeretrygdOgAfpLink>Uføretrygd og AFP</ufoeretrygdOgAfpLink>.',

@@ -69,7 +69,10 @@ export const GrunnlagAFP: React.FC = () => {
       return `${afpString} (${intl.formatMessage({ id: 'grunnlag.afp.ikke_beregnet' })})`
     }
 
-    if (ufoeregrad === 100) {
+    if (
+      ufoeregrad === 100 ||
+      (ufoeregrad > 0 && foedselsdato && isFoedtFoer1963(foedselsdato))
+    ) {
       return formatAfp(intl, 'nei')
     }
 
@@ -108,7 +111,7 @@ export const GrunnlagAFP: React.FC = () => {
     }
 
     if (ufoeregrad > 0 && foedselsdato && isFoedtFoer1963(foedselsdato)) {
-      return 'grunnlag.afp.ingress.nei.overgangskull.ufoeretrygd'
+      return 'grunnlag.afp.ingress.overgangskull.ufoeretrygd'
     }
 
     if (
@@ -160,6 +163,7 @@ export const GrunnlagAFP: React.FC = () => {
   if (
     loependeVedtak.ufoeretrygd.grad &&
     foedselsdato &&
+    !isFoedtFoer1963(foedselsdato) &&
     isFoedselsdatoOverAlder(foedselsdato, AFP_UFOERE_OPPSIGELSESALDER)
   ) {
     return null
