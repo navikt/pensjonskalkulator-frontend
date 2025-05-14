@@ -284,7 +284,7 @@ describe('Grunnlag - AFP', () => {
         ).toBeVisible()
         expect(
           screen.getByText(
-            'Når du mottar uføretrygd, kan du ikke beregne AFP i kalkulatoren.',
+            'AFP og uføretrygd kan ikke kombineres, og får du utbetalt uføretrygd etter at du fyller 62 år mister du retten til AFP.',
             { exact: false }
           )
         ).toBeInTheDocument()
@@ -309,7 +309,7 @@ describe('Grunnlag - AFP', () => {
         ).toBeVisible()
         expect(
           screen.getByText(
-            'Når du mottar uføretrygd, kan du ikke beregne AFP i kalkulatoren.',
+            'AFP og uføretrygd kan ikke kombineres, og får du utbetalt uføretrygd etter at du fyller 62 år mister du retten til AFP.',
             { exact: false }
           )
         ).toBeInTheDocument()

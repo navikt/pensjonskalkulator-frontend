@@ -274,7 +274,8 @@ export const stepSamtykkeOffentligAFPAccessGuard = async () => {
   const loependeVedtak = await store
     .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
     .unwrap()
-  const showStep = afp === 'ja_offentlig'
+  const showStep =
+    loependeVedtak.ufoeretrygd.grad === 0 && afp === 'ja_offentlig'
 
   // Bruker uten uføretrygd som svarer ja_offentlig til AFP kan se steget
   if (showStep) {
