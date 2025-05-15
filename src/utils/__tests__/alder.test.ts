@@ -785,7 +785,7 @@ describe('alder-utils', () => {
       expect(actual).toBe(true)
     })
 
-    it('over 76 år', () => {
+    it('returnerer true når alder er over 75 år og 1 måned', () => {
       const foedselsdato = '1949-04-30'
       const actual = isAlderOver75Plus1Maaned(foedselsdato)
       expect(actual).toBe(true)
