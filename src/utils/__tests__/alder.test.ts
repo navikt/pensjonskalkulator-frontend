@@ -773,7 +773,7 @@ describe('alder-utils', () => {
       expect(format(today, 'yyyy-MM-dd')).toBe('2025-05-01')
     })
 
-    it('fyllt 75 år men ikke over 75 år plus 1 måned', () => {
+    it('returnerer false når alder er 75, men ikke over 75 år og 1 måned', () => {
       const foedselsdato = '1950-05-01' // Still in the month user filled 75
       const actual = isAlderOver75Plus1Maaned(foedselsdato)
       expect(actual).toBe(false)
