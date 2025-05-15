@@ -768,7 +768,7 @@ describe('alder-utils', () => {
       vi.useRealTimers()
     })
 
-    it('faketimers is set', () => {
+    it('forventer at faketimer setter riktig dato', () => {
       const today = new Date()
       expect(format(today, 'yyyy-MM-dd')).toBe('2025-05-01')
     })
