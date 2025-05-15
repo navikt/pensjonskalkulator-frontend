@@ -53,7 +53,7 @@ describe('Simulering', () => {
   })
 
   it('Når alderspensjon laster så vises det en spinner, og deretter heading på riktig nivå', async () => {
-    const { container } = render(
+    const { container } = await render(
       <Simulering
         isLoading={true}
         headingLevel="3"
@@ -146,7 +146,7 @@ describe('Simulering', () => {
         apiSliceUtils,
         'usePensjonsavtalerQuery'
       )
-      const { container } = render(
+      const { container } = await render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -194,7 +194,7 @@ describe('Simulering', () => {
     })
 
     it('Når brukeren velger AFP-privat, viser inntekt, alderspensjon og AFP', async () => {
-      const { container } = render(
+      const { container } = await render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -241,7 +241,7 @@ describe('Simulering', () => {
     })
 
     it('Når brukeren velger AFP-offentlig, viser inntekt, alderspensjon og AFP', async () => {
-      const { container } = render(
+      const { container } = await render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -288,7 +288,7 @@ describe('Simulering', () => {
     })
 
     it('Når brukeren velger uttaksagrad 67 år, vises årene i grafen fra 66 år til 77+', async () => {
-      const { container } = render(
+      const { container } = await render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -329,7 +329,7 @@ describe('Simulering', () => {
     })
 
     it('Når brukeren velger gradert pensjon med uttaksgrad 62 år, vises årene i grafen fra 61 år til 77+', async () => {
-      const { container } = render(
+      const { container } = await render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -407,7 +407,7 @@ describe('Simulering', () => {
         apiSliceUtils,
         'usePensjonsavtalerQuery'
       )
-      const { container } = render(
+      const { container } = await render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -483,7 +483,7 @@ describe('Simulering', () => {
         apiSliceUtils,
         'usePensjonsavtalerQuery'
       )
-      const { container } = render(
+      const { container } = await render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -550,7 +550,7 @@ describe('Simulering', () => {
         apiSliceUtils,
         'usePensjonsavtalerQuery'
       )
-      const { container } = render(
+      const { container } = await render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -616,7 +616,7 @@ describe('Simulering', () => {
         apiSliceUtils,
         'usePensjonsavtalerQuery'
       )
-      const { container } = render(
+      const { container } = await render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -694,7 +694,7 @@ describe('Simulering', () => {
         apiSliceUtils,
         'usePensjonsavtalerQuery'
       )
-      const { container } = render(
+      const { container } = await render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -785,7 +785,7 @@ describe('Simulering', () => {
         method: 'post',
       })
 
-      const { container } = render(
+      const { container } = await render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -837,7 +837,7 @@ describe('Simulering', () => {
         method: 'post',
       })
 
-      const { container } = render(
+      const { container } = await render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -913,7 +913,7 @@ describe('Simulering', () => {
         method: 'post',
       })
 
-      const { container } = render(
+      const { container } = await render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -983,7 +983,7 @@ describe('Simulering', () => {
         method: 'post',
       })
 
-      const { container } = render(
+      const { container } = await render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -1039,7 +1039,7 @@ describe('Simulering', () => {
         method: 'post',
       })
 
-      const { container } = render(
+      const { container } = await render(
         <Simulering
           isLoading={false}
           headingLevel="3"
