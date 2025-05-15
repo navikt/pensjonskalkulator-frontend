@@ -89,7 +89,18 @@ export default [
     rules: {
       '@typescript-eslint/ban-ts-comment': 'off', // Fjern når @ts-ignore ikke lenger er i bruk i testkode
       '@typescript-eslint/require-await': 'off',
-      '@typescript-eslint/no-floating-promises': 'error',
+      '@typescript-eslint/no-floating-promises': [
+        'error',
+        {
+          allowForKnownSafeCalls: [
+            {
+              from: 'file',
+              name: 'renderWithProviders',
+              path: 'src/test-utils.tsx',
+            },
+          ],
+        },
+      ],
     },
   },
 ]
