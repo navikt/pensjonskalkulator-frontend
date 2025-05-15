@@ -19,8 +19,12 @@ import {
 import { isLoependeVedtakEndring } from '@/utils/loependeVedtak'
 import { logger } from '@/utils/logging'
 
+export type Reason =
+  | 'INSUFFICIENT_LEVEL_OF_ASSURANCE'
+  | 'INVALID_REPRESENTASJON'
+
 interface ErrorData {
-  reason?: string
+  reason?: Reason
 }
 
 const getErrorStatus = (

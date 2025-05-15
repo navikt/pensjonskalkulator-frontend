@@ -7,6 +7,7 @@ import {
 } from '@/mocks/mockedRTKQueryApiCalls'
 import { mockErrorResponse, mockResponse } from '@/mocks/server'
 import { henvisningUrlParams, paths } from '@/router/constants'
+import type { Reason } from '@/router/loaders'
 import * as apiSliceUtils from '@/state/api/apiSlice'
 import { store } from '@/state/store'
 import {
@@ -123,7 +124,7 @@ describe('Loaders', () => {
       mockErrorResponse('/v4/person', {
         status: 403,
         json: {
-          reason: 'INVALID_REPRESENTASJON',
+          reason: 'INVALID_REPRESENTASJON' as Reason,
         },
       })
 
@@ -138,7 +139,7 @@ describe('Loaders', () => {
       mockErrorResponse('/v4/person', {
         status: 403,
         json: {
-          reason: 'INSUFFICIENT_LEVEL_OF_ASSURANCE',
+          reason: 'INSUFFICIENT_LEVEL_OF_ASSURANCE' as Reason,
         },
       })
 
