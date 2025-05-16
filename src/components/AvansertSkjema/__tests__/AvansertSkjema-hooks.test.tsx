@@ -945,7 +945,7 @@ describe('AvansertSkjema-hooks', () => {
       expect(result.current.heltUttakAgePickerError).toEqual('')
     })
 
-    it('Når validationErrors endrer seg, oppdaterer gradertAgePickerError og heltAgePickerError', () => {
+    it('Når validationErrors endrer seg, oppdaterer gradertAgePickerError og heltAgePickerError', async () => {
       const { result } = renderHook(useFormValidationErrors, {
         initialProps: {},
       })
@@ -1003,7 +1003,7 @@ describe('AvansertSkjema-hooks', () => {
       })
 
       // gradertAgePickerError
-      const gradertAgePickerError = render(
+      const gradertAgePickerError = await render(
         result.current.gradertUttakAgePickerError as React.ReactElement
       )
       expect(gradertAgePickerError.asFragment()).toMatchInlineSnapshot(`
@@ -1019,7 +1019,7 @@ describe('AvansertSkjema-hooks', () => {
       `)
 
       // heltAgePickerError
-      const heltAgePickerError = render(
+      const heltAgePickerError = await render(
         result.current.heltUttakAgePickerError as React.ReactElement
       )
       expect(heltAgePickerError.asFragment()).toMatchInlineSnapshot(`
