@@ -54,9 +54,9 @@ export const apiSlice = createApi({
         }
       },
     }),
-    getGrunnbelop: builder.query<number, void>({
+    getGrunnbelop: builder.query<number, void, { grunnbeløp: number }>({
       query: () => 'https://g.nav.no/api/v1/grunnbel%C3%B8p',
-      transformResponse: (response: { grunnbeløp: number }) => {
+      transformResponse: (response) => {
         if (!response.grunnbeløp) {
           throw new Error(
             `Mottok ugyldig grunnbeløp: ${JSON.stringify(response)}`
@@ -142,7 +142,8 @@ export const apiSlice = createApi({
     }),
     pensjonsavtaler: builder.query<
       { avtaler: Pensjonsavtale[]; partialResponse: boolean },
-      PensjonsavtalerRequestBody
+      PensjonsavtalerRequestBody,
+      PensjonsavtalerResponseBody
     >({
       query: (body) => ({
         url: '/v3/pensjonsavtaler',
@@ -150,7 +151,7 @@ export const apiSlice = createApi({
         body,
       }),
       providesTags: ['Pensjonsavtaler'],
-      transformResponse: (response: PensjonsavtalerResponseBody) => {
+      transformResponse: (response) => {
         if (
           !response.avtaler ||
           !Array.isArray(response.avtaler) ||
