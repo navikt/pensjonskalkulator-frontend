@@ -202,7 +202,7 @@ describe('AvansertSkjemaForBrukereMedKap19Afp', () => {
       })
       it('Når alle feltene fylles ut og resetForm kalles, nullstilles alle feltene', async () => {
         const user = userEvent.setup()
-        const { store } = render(
+        const { store } = await render(
           <BeregningContext.Provider
             value={{
               ...contextMockedValues,
