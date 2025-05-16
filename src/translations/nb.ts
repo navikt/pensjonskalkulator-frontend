@@ -26,10 +26,9 @@ const translations = {
   'application.global.retry': 'Prøv på nytt',
   'pageframework.title': 'Pensjonskalkulator',
   'pageframework.loading': 'Vent litt mens vi henter informasjon.',
-  'error.securityLevel.title':
-    'Du kan ikke logge inn på kalkulatoren med MinID',
+  'error.securityLevel.title': 'Du kan ikke logge inn i kalkulatoren med MinID',
   'error.securityLevel.ingress':
-    'For å bruke kalkulatoren må du logge inn med et høyere sikkerhetsnivå, f.eks BankID, Buypass eller Commfides.',
+    'For å bruke kalkulatoren må du logge inn med et høyere sikkerhetsnivå, f.eks. BankID, Buypass eller Commfides.',
   'error.securityLevel.primary_button': 'Logg inn på nytt',
   'error.securityLevel.secondary_button': 'Avbryt',
   'error.fullmakt.title':
