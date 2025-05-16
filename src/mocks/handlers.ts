@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { HttpResponse, delay, http } from 'msw'
 
 import { API_PATH, HOST_BASEURL } from '@/paths'
@@ -26,7 +28,7 @@ const testHandlers =
     ? [
         http.get(
           'https://g2by7q6m.apicdn.sanity.io/v2023-05-03/data/query/development',
-          async ({ request }) => {
+          ({ request }) => {
             // 'https://g2by7q6m.apicdn.sanity.io/v2023-05-03/data/query/development?query=*%5B_type+%3D%3D+%22readmore%22+%26%26'
             // 'https://g2by7q6m.apicdn.sanity.io/v2023-05-03/data/query/development?query=*%5B_type+%3D%3D+%22guidepanel%22+%26%26'
             // 'https://g2by7q6m.apicdn.sanity.io/v2023-05-03/data/query/development?query=*%5B_type+%3D%3D+%22forbeholdAvsnitt%22+%26%26',
@@ -41,7 +43,7 @@ const testHandlers =
             }
           }
         ),
-        http.get('https://api.uxsignals.com/v2/study/id/*/active', async () =>
+        http.get('https://api.uxsignals.com/v2/study/id/*/active', () =>
           HttpResponse.json({ active: false })
         ),
       ]
@@ -125,7 +127,7 @@ export const getHandlers = (baseUrl: string = API_PATH) => [
     const aar = (body as PensjonsavtalerRequestBody).uttaksperioder[0]
       ?.startAlder.aar
     const data = await import(`./data/pensjonsavtaler/${aar}.json`)
-    return HttpResponse.json(data)
+    return HttpResponse.json(data.default as object)
   }),
 
   http.post(`${baseUrl}/v8/alderspensjon/simulering`, async ({ request }) => {
@@ -133,7 +135,7 @@ export const getHandlers = (baseUrl: string = API_PATH) => [
     const body = await request.json()
     const aar = (body as AlderspensjonRequestBody).heltUttak.uttaksalder.aar
     const data = await import(`./data/alderspensjon/${aar}.json`)
-    const mergedData = JSON.parse(JSON.stringify(data.default))
+    const mergedData = JSON.parse(JSON.stringify(data.default)) as object
     let afpPrivat: AfpPensjonsberegning[] = []
     let afpOffentlig: AfpPensjonsberegning[] = []
     if (
@@ -235,6 +237,6 @@ export const getHandlers = (baseUrl: string = API_PATH) => [
 
   http.get(
     `${import.meta.env.VITE_REPRESENTASJON_BANNER}/api/representasjon/harRepresentasjonsforhold`,
-    async () => HttpResponse.json({ value: false })
+    () => HttpResponse.json({ value: false })
   ),
 ]
