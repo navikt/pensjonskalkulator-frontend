@@ -117,6 +117,7 @@ export default defineConfig({
         'src/components/common/ShowMore',
         'src/types',
         'src/paths.ts',
+        'schemaTypes/**',
       ],
       perFile: true,
       thresholds: {

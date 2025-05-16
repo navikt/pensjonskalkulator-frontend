@@ -1,11 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router'
 
-import {
-  paths,
-  stegvisningOrder,
-  stegvisningOrderEndring,
-} from '@/router/constants'
+import { paths } from '@/router/constants'
 import { useGetLoependeVedtakQuery } from '@/state/api/apiSlice'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
@@ -17,8 +13,11 @@ import { userInputActions } from '@/state/userInput/userInputSlice'
 import {
   AFP_UFOERE_OPPSIGELSESALDER,
   isFoedselsdatoOverAlder,
+  isOvergangskull,
 } from '@/utils/alder'
 import { isLoependeVedtakEndring } from '@/utils/loependeVedtak'
+
+import { getStepArrays } from './utils'
 
 export const useStegvisningNavigation = (currentPath: Path) => {
   const navigate = useNavigate()
@@ -30,18 +29,19 @@ export const useStegvisningNavigation = (currentPath: Path) => {
 
   const { isFetching, data: loependeVedtak } = useGetLoependeVedtakQuery()
 
+  const isEndring = loependeVedtak && isLoependeVedtakEndring(loependeVedtak)
+  const isKap19 = foedselsdato && isOvergangskull(foedselsdato)
+
+  const stepArrays = getStepArrays(isEndring, isKap19)
+
   const onStegvisningNext = () => {
-    const stepArrays =
-      loependeVedtak && isLoependeVedtakEndring(loependeVedtak)
-        ? stegvisningOrderEndring
-        : stegvisningOrder
-    navigate(stepArrays[stepArrays.indexOf(currentPath) + 1])
+    const currentPathIndex = stepArrays.indexOf(currentPath)
+
+    navigate(stepArrays[currentPathIndex + 1])
   }
 
   const onStegvisningPrevious = () => {
     let antallStepTilbake = 1
-    const isEndring = loependeVedtak && isLoependeVedtakEndring(loependeVedtak)
-    const stepArrays = isEndring ? stegvisningOrderEndring : stegvisningOrder
 
     const currentPathIndex = stepArrays.indexOf(currentPath)
 
@@ -72,7 +72,7 @@ export const useStegvisningNavigation = (currentPath: Path) => {
       }
     }
 
-    // Hvis brukeren er forbi samtykkeOffentligAFP steget (gjelder både endring og vanlig flyt)
+    // Hvis brukeren er forbi samtykkeOffentligAFP steget (gjelder både endring og vanlig flyt).
     if (currentPathIndex > stepArrays.indexOf(paths.samtykkeOffentligAFP)) {
       // Bruker med uføretrygd eller brukere som har svart noe annet enn "ja_offentlig" på afp steget har ikke fått info steg om samtykkeOffentligAFP og skal navigere tilbake forbi den
       if (ufoeregrad || afp !== 'ja_offentlig') {
