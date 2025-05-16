@@ -7,11 +7,11 @@ import { render, screen, userEvent } from '@/test-utils'
 import { GrunnlagUtenlandsopphold } from '..'
 
 const navigateMock = vi.fn()
-vi.mock(import('react-router'), async (importOriginal) => {
-  const actual = await importOriginal()
+vi.mock('@/utils/navigationHistory', async () => {
   return {
-    ...actual,
-    useNavigate: () => navigateMock,
+    useNavigationHistory: () => ({
+      goBackToStep: navigateMock,
+    }),
   }
 })
 
