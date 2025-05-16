@@ -3,6 +3,7 @@ import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useNavigate } from 'react-router'
 
+import { ExternalLinkIcon } from '@navikt/aksel-icons'
 import { Alert, Link } from '@navikt/ds-react'
 
 import { paths } from '@/router/constants'
@@ -130,8 +131,16 @@ export const VilkaarsproevingAlert = ({
                 href="https://www.nav.no/afp-offentlig#hvem-kan-fa"
                 target="_blank"
                 rel="noopener noreferrer"
+                inlineText
               >
-                Om vilkår for uttak av AFP
+                <FormattedMessage id="Om vilkår for uttak av AFP" />
+                <ExternalLinkIcon
+                  title={intl.formatMessage({
+                    id: 'application.global.external_link',
+                  })}
+                  width="1.25rem"
+                  height="1.25rem"
+                />
               </Link>
             ),
             alderspensjonUtenAFP: (
