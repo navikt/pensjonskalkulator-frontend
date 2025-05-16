@@ -5,12 +5,16 @@ import {
   fulfilledGetLoependeVedtak0Ufoeregrad,
   fulfilledGetPerson,
 } from '@/mocks/mockedRTKQueryApiCalls'
+import { mockResponse } from '@/mocks/server'
 import {
   AvansertBeregningModus,
   BeregningContext,
 } from '@/pages/Beregning/context'
 import { apiSlice } from '@/state/api/apiSlice'
-import { userInputInitialState } from '@/state/userInput/userInputSlice'
+import {
+  Simulation,
+  userInputInitialState,
+} from '@/state/userInput/userInputSlice'
 import { fireEvent, render, screen, userEvent } from '@/test-utils'
 
 import { AvansertSkjemaForBrukereMedKap19Afp } from '..'
@@ -370,7 +374,7 @@ describe('AvansertSkjemaForBrukereMedKap19Afp', () => {
       })
     })
 
-    describe('Ved klikk på radioknapp', () => {
+    describe('Ved klikk på radioknapper', () => {
       it('Skal alert vises når bruker velger "Nei" på afpInntektMaanedFoerUttak', async () => {
         const user = userEvent.setup()
         render(
@@ -403,6 +407,7 @@ describe('AvansertSkjemaForBrukereMedKap19Afp', () => {
           screen.getByTestId('afp-etterfulgt-ap-informasjon')
         ).toBeVisible()
       })
+
       it('Skal inputfield vises når bruker velger "Ja" på inntektVsaAfp', async () => {
         const user = userEvent.setup()
         render(
@@ -432,6 +437,62 @@ describe('AvansertSkjemaForBrukereMedKap19Afp', () => {
 
         expect(
           screen.getByTestId(AVANSERT_FORM_NAMES.inntektVsaAfpRadio)
+        ).toBeVisible()
+      })
+    })
+
+    describe('Når simuleringen svarer med vilkaarIkkeOppfylt, ', () => {
+      it('viser alert med informasjon om alternativer', async () => {
+        const vilkaarsproevingMock = {
+          vilkaarErOppfylt: false,
+          alternativ: {
+            heltUttaksalder: { aar: 67, maaneder: 0 },
+          },
+        }
+
+        mockResponse('/v8/alderspensjon/simulering', {
+          status: 200,
+          method: 'post',
+          json: {
+            alderspensjon: [],
+            vilkaarsproeving: vilkaarsproevingMock,
+            harForLiteTrygdetid: false,
+          },
+        })
+
+        const currentSimulation: Simulation = {
+          beregningsvalg: null,
+          uttaksalder: { aar: 62, maaneder: 0 },
+          aarligInntektFoerUttakBeloep: null,
+          gradertUttaksperiode: null,
+        }
+
+        render(
+          <BeregningContext.Provider
+            value={{
+              ...contextMockedValues,
+            }}
+          >
+            <AvansertSkjemaForBrukereMedKap19Afp
+              vilkaarsproeving={vilkaarsproevingMock}
+            />
+          </BeregningContext.Provider>,
+          {
+            preloadedState: {
+              api: {
+                // @ts-ignore
+                queries: { ...mockedQueries },
+              },
+              userInput: {
+                ...userInputInitialState,
+                samtykke: false,
+                currentSimulation: { ...currentSimulation },
+              },
+            },
+          }
+        )
+        expect(
+          screen.getByText('beregning.vilkaarsproeving.intro', { exact: false })
         ).toBeVisible()
       })
     })
