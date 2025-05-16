@@ -384,6 +384,7 @@ const translations = {
   'beregning.tabell.sum': 'Sum',
   'beregning.avansert.link.endre_valgene_dine': 'Endre valgene dine',
   'beregning.avansert.link.endre_avanserte_valg': 'Endre avanserte valg',
+  'beregning.avansert.link.om_vilkaar_for_afp': 'Om vilkår for uttak av AFP',
   'beregning.avansert.endring_banner.title':
     'Alderspensjon før skatt når du er ',
   'beregning.avansert.endring_banner.kr_md': 'kr/md.',

@@ -311,6 +311,7 @@ export default {
   'beregning.tabell.sum': 'Sum',
   'beregning.avansert.link.endre_valgene_dine': 'MANGLER_TEKST',
   'beregning.avansert.link.endre_avanserte_valg': 'MANGLER_TEKST',
+  'beregning.avansert.link.om_vilkaar_for_afp': 'MANGLER_TEKST',
   'beregning.avansert.endring_banner.title': 'MANGLER_TEKST',
   'beregning.avansert.endring_banner.kr_md': 'MANGLER_TEKST',
   'beregning.avansert.maanedsbeloep.table_title': 'MANGLER_TEKST',
