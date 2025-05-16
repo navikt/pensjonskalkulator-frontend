@@ -466,7 +466,7 @@ describe('BeregningAvansert', () => {
           'initiate'
         )
 
-        const { container } = render(
+        const { container } = await render(
           <BeregningContext.Provider
             value={{
               ...contextMockedValues,
@@ -694,7 +694,7 @@ describe('BeregningAvansert', () => {
         'initiate'
       )
 
-      const { container } = render(
+      const { container } = await render(
         <BeregningContext.Provider
           value={{
             ...contextMockedValues,
@@ -769,7 +769,7 @@ describe('BeregningAvansert', () => {
         'initiate'
       )
 
-      const { container } = render(
+      const { container } = await render(
         <BeregningContext.Provider
           value={{
             ...contextMockedValues,
