@@ -64,7 +64,6 @@ export function labelFormatterMobile(this: AxisLabelsFormatterContextObject) {
 }
 
 export function onPointClick(this: Point): void {
-  console.log('onPointClick')
   logger('graf tooltip åpnet', {
     data: this.category as string,
   })
