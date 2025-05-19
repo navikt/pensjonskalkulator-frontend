@@ -42,14 +42,14 @@ describe('Beregningsvalg', () => {
 
   describe('Rendering', () => {
     it('Viser begge radio valgene', async () => {
-      await renderWithDefaultState()
+      renderWithDefaultState()
 
       expect(screen.getByTestId('uten_afp')).toBeInTheDocument()
       expect(screen.getByTestId('med_afp')).toBeInTheDocument()
     })
 
     it('Viser riktig label på radio valgene', async () => {
-      await renderWithDefaultState()
+      renderWithDefaultState()
 
       expect(
         screen.getByText(
@@ -67,7 +67,7 @@ describe('Beregningsvalg', () => {
 
   describe('Radio valg', () => {
     it('Håndterer valg av "uten_afp" korrekt', async () => {
-      await renderWithDefaultState()
+      renderWithDefaultState()
 
       const utenAfpRadio = screen.getByTestId('uten_afp')
       expect(utenAfpRadio).toHaveAttribute('value', 'uten_afp')
@@ -75,7 +75,7 @@ describe('Beregningsvalg', () => {
     })
 
     it('Håndterer valg av "med_afp" korrekt', async () => {
-      await renderWithDefaultState({ localBeregningsTypeRadio: 'med_afp' })
+      renderWithDefaultState({ localBeregningsTypeRadio: 'med_afp' })
 
       const medAfpRadio = screen.getByTestId('med_afp')
       expect(medAfpRadio).toHaveAttribute('value', 'med_afp')
@@ -98,7 +98,7 @@ describe('Beregningsvalg', () => {
 
   describe('Beskrivelses seksjon', () => {
     it('Viser ikke AFP beskrivelse når "uten_afp" er valgt', async () => {
-      await renderWithDefaultState()
+      renderWithDefaultState()
 
       expect(
         screen.queryByText('Alderspensjon og AFP fra')
@@ -109,14 +109,14 @@ describe('Beregningsvalg', () => {
     })
 
     it('Viser AFP beskrivelse når "med_afp" er valgt', async () => {
-      await renderWithDefaultState({ localBeregningsTypeRadio: 'med_afp' })
+      renderWithDefaultState({ localBeregningsTypeRadio: 'med_afp' })
 
       expect(screen.getByText('Alderspensjon og AFP fra')).toBeInTheDocument()
       expect(screen.getByText(/er laveste uttaksalder/)).toBeInTheDocument()
     })
 
     it('Sjekk at nedrealder blir vist når man har valgt med_afp', async () => {
-      await renderWithDefaultState({ localBeregningsTypeRadio: 'med_afp' })
+      renderWithDefaultState({ localBeregningsTypeRadio: 'med_afp' })
 
       expect(screen.getByText('Alderspensjon og AFP fra')).toHaveTextContent(
         `${nedreAldersgrense.aar}`
