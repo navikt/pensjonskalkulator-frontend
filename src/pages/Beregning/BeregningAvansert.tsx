@@ -227,6 +227,7 @@ export const BeregningAvansert = () => {
             }
           />
         </Link>
+
         {isError ? (
           <>
             <Heading level="2" size="medium">

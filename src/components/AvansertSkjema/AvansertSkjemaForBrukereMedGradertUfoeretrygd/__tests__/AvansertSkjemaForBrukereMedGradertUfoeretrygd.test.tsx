@@ -324,7 +324,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
 
   it('Når alle feltene fylles ut og resetForm kalles, nullstilles alle feltene', async () => {
     const user = userEvent.setup()
-    const { store } = await render(
+    const { store } = render(
       <BeregningContext.Provider
         value={{
           ...contextMockedValues,
@@ -592,7 +592,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
 
   it('Når alle feltene for 100 % uttak fylles ut og radioknappen for inntekt endres til nei, skjules inntekt og sluttAlder', async () => {
     const user = userEvent.setup()
-    const { store } = await render(
+    const { store } = render(
       <BeregningContext.Provider
         value={{
           ...contextMockedValues,
@@ -682,7 +682,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
 
   it('Når alle feltene for gradert uttak fylles ut og radioknappen for inntekt endres til nei, skjules inputfeltet for inntekt', async () => {
     const user = userEvent.setup()
-    const { store } = await render(
+    const { store } = render(
       <BeregningContext.Provider
         value={{
           ...contextMockedValues,
@@ -803,7 +803,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
 
   it('Når feltene for 100 % uttak fylles ut og uttaksalder endres til en alder større enn sluttAlder for inntekt, nullstilles sluttAlder', async () => {
     const user = userEvent.setup()
-    const { store } = await render(
+    const { store } = render(
       <BeregningContext.Provider
         value={{
           ...contextMockedValues,
@@ -2461,15 +2461,8 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
     })
   })
 
-  describe('Gitt at brukeren kan simulere AFP, og feature toggle for gradert uføretrygd og AFP er enabled', () => {
-    beforeEach(() => {
-      mockResponse('/feature/pensjonskalkulator.gradert-ufoere-afp', {
-        status: 200,
-        json: { enabled: true },
-      })
-    })
-
-    it('Viser intro-tekst om AFP og beregningsvalg', async () => {
+  describe('Gitt at brukeren kan simulere AFP,', () => {
+    it('Viser intro-tekst om AFP og beregningsvalg.', async () => {
       render(
         <BeregningContext.Provider
           value={{
@@ -2500,7 +2493,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
       ).toBeVisible()
     })
 
-    it('Viser resten av skjemaet når man har valgt beregning med eller uten AFP', async () => {
+    it('Viser resten av skjemaet når man har valgt beregning med eller uten AFP.', async () => {
       const user = userEvent.setup()
 
       render(
