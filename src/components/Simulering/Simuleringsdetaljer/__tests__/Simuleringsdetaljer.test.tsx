@@ -35,7 +35,7 @@ describe('Simuleringsdetaljer', () => {
       { aar: 2020, pensjonsgivendeInntektBeloep: 500000 },
       { aar: 2021, pensjonsgivendeInntektBeloep: 550000 },
     ]
-    const { asFragment } = await render(
+    const { asFragment } = render(
       <Simuleringsdetaljer detaljer={{ opptjeningsgrunnlag }} />
     )
     expect(asFragment()).toMatchInlineSnapshot(`
@@ -166,7 +166,7 @@ describe('Simuleringsdetaljer', () => {
         skjermingstillegg: 0,
       },
     ]
-    const { asFragment } = await render(
+    const { asFragment } = render(
       <Simuleringsdetaljer
         alderspensjonListe={alderspensjonListe}
         detaljer={{}}
@@ -365,7 +365,7 @@ describe('Simuleringsdetaljer', () => {
         skjermingstillegg: undefined,
       },
     ]
-    const { asFragment } = await render(
+    const { asFragment } = render(
       <Simuleringsdetaljer
         alderspensjonListe={alderspensjonListe}
         detaljer={{}}

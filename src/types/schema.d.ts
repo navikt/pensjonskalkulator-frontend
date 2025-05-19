@@ -184,6 +184,26 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/api/v1/aldersgrense': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Hent nedre aldersgrense og normert pensjonsalder
+     * @description Henter informasjon om aldersgrensene for et årskull.
+     */
+    post: operations['aldersgrenserV1']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/api/v4/vedtak/loepende-vedtak': {
     parameters: {
       query?: never
@@ -1157,6 +1177,20 @@ export interface components {
       vilkaarErOppfylt: boolean
       alternativ?: components['schemas']['AnonymAlternativV1']
     }
+    AldersgrenseSpec: {
+      /** Format: int32 */
+      foedselsdato: number
+    }
+    AldersgrenseResultV1: {
+      normertPensjoneringsalder: components['schemas']['PersonAlder']
+      nedreAldersgrense: components['schemas']['PersonAlder']
+    }
+    PersonAlder: {
+      /** Format: int32 */
+      aar: number
+      /** Format: int32 */
+      maaneder: number
+    }
     AlderspensjonDetaljerV4: {
       /** Format: int32 */
       grad: number
@@ -1655,6 +1689,39 @@ export interface operations {
         }
         content: {
           '*/*': components['schemas']['AnonymSimuleringErrorV1']
+        }
+      }
+    }
+  }
+  aldersgrenserV1: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['AldersgrenseSpec']
+      }
+    }
+    responses: {
+      /** @description Henting av aldersgrenser utført. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          '*/*': components['schemas']['AldersgrenseResultV1']
+        }
+      }
+      /** @description Henting av aldersgrenser kunne ikke utføres av tekniske årsaker. */
+      503: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          '*/*': unknown
         }
       }
     }
