@@ -93,6 +93,7 @@ export default {
   'stegvisning.start.endring.ingress_1b.uten_fremtidig':
     'Here you can check what you can receive if you want to change your retirement pension.{br}{br}',
   'stegvisning.start.endring.ingress_1b.med_fremtidig': 'MANGLER_TEKST',
+  'stegvisning.start.endring.ingress.pre2025_offentlig_afp': 'MANGLER_TEKST',
   'stegvisning.start.ingress':
     'Welcome to the pension calculator which can show you:',
   'stegvisning.start.list_item1': 'retirement pension (Nav)',
