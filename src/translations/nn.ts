@@ -11,6 +11,7 @@ export default {
   'application.title.stegvisning.uventet_feil':
     'Uventa feil - Pensjonskalkulator',
   'application.title.stegvisning.kalkulator_virker_ikke': 'MANGLER_TEKST',
+  'application.title.securityLevel_feil': 'MANGLER_TEKST',
   'application.title.beregning': 'Utrekning - Pensjonskalkulator',
   'application.title.forbehold': 'Atterhald - Pensjonskalkulator',
   'application.title.henvisning.apotekerne': 'MANGLER_TEKST',
@@ -20,6 +21,10 @@ export default {
   'application.global.retry': 'Prøv på nytt',
   'pageframework.title': 'Pensjonskalkulator',
   'pageframework.loading': 'Vent litt medan vi hentar informasjon',
+  'error.securityLevel.title': 'MANGLER_TEKST',
+  'error.securityLevel.ingress': 'MANGLER_TEKST',
+  'error.securityLevel.primary_button': 'MANGLER_TEKST',
+  'error.securityLevel.secondary_button': 'MANGLER_TEKST',
   'error.fullmakt.title': 'MANGLER_TEKST',
   'error.fullmakt.ingress': 'MANGLER_TEKST',
   'error.fullmakt.bytt_bruker': 'MANGLER_TEKST',
@@ -84,6 +89,10 @@ export default {
   'stegvisning.start.button': 'Kom i gang',
   'stegvisning.start.link':
     'Personopplysningar som vert brukt i enkel kalkulator',
+  'stegvisning.start_brukere_fyllt_75.title': 'MANGLER_TEKST',
+  'stegvisning.start_brukere_fyllt_75.ingress': 'MANGLER_TEKST',
+  'stegvisning.start_brukere_fyllt_75.button': 'MANGLER_TEKST',
+  'stegvisning.start_brukere_fyllt_75.avbryt': 'MANGLER_TEKST',
   'stegvisning.utenlandsopphold.title': 'MANGLER_TEKST',
   'stegvisning.utenlandsopphold.ingress': 'MANGLER_TEKST',
   'stegvisning.utenlandsopphold.radio_label': 'MANGLER_TEKST',
@@ -183,7 +192,6 @@ export default {
   'stegvisning.ufoere.title': 'MANGLER_TEKST',
   'stegvisning.ufoere.info': 'MANGLER_TEKST',
   'stegvisning.ufoere.ingress': 'MANGLER_TEKST',
-  'stegvisning.ufoere.ingress-gammel': 'MANGLER_TEKST',
   'stegvisning.samtykke_offentlig_afp.title': 'MANGLER_TEKST',
   'stegvisning.samtykke_offentlig_afp.ingress': 'MANGLER_TEKST',
   'stegvisning.samtykke_offentlig_afp.radio_label': 'MANGLER_TEKST',
@@ -270,9 +278,6 @@ export default {
   'beregning.loading': 'Vent litt medan vi reknar ut pensjonen din',
   'beregning.error':
     'Vi klarte dessverre ikkje å rekne ut pensjonen din akkurat nå.',
-  'beregning.fra': 'MANGLER_TEKST',
-  'beregning.til': 'MANGLER_TEKST',
-  'beregning.tom': ' MANGLER_TEKST',
   'beregning.livsvarig': 'MANGLER_TEKST',
   'beregning.lav_opptjening.aar':
     'Du har ikkje høg nok opptening til å kunne starte uttak ved 63 år. Prøv ein høgare alder.',
@@ -310,14 +315,12 @@ export default {
   'beregning.avansert.link.endre_avanserte_valg': 'MANGLER_TEKST',
   'beregning.avansert.endring_banner.title': 'MANGLER_TEKST',
   'beregning.avansert.endring_banner.kr_md': 'MANGLER_TEKST',
-  'beregning.avansert.resultatkort.tittel': 'MANGLER_TEKST',
-  'beregning.avansert.resultatkort.description': 'MANGLER_TEKST',
-  'beregning.avansert.resultatkort.button': 'MANGLER_TEKST',
-  'beregning.avansert.resultatkort.frem_til_uttak': 'MANGLER_TEKST',
-  'beregning.avansert.resultatkort.frem_til_endring': 'MANGLER_TEKST',
-  'beregning.avansert.resultatkort.inntekt_1': 'MANGLER_TEKST',
-  'beregning.avansert.resultatkort.inntekt_2': 'MANGLER_TEKST',
-  'beregning.avansert.resultatkort.alderspensjon': 'MANGLER_TEKST',
+  'beregning.avansert.maanedsbeloep.table_title': 'MANGLER_TEKST',
+  'beregning.avansert.maanedsbeloep.box_title': 'MANGLER_TEKST',
+  'beregning.avansert.maanedsbeloep.afp': 'MANGLER_TEKST',
+  'beregning.avansert.maanedsbeloep.pensjonsavtaler': 'MANGLER_TEKST',
+  'beregning.avansert.maanedsbeloep.alderspensjon': 'MANGLER_TEKST',
+  'beregning.avansert.maanedsbeloep.sum': 'MANGLER_TEKST',
   'beregning.avansert.rediger.inntekt_frem_til_uttak.label': 'MANGLER_TEKST',
   'beregning.avansert.rediger.inntekt_frem_til_endring.label': 'MANGLER_TEKST',
   'beregning.avansert.rediger.inntekt_frem_til_uttak.description':
@@ -381,9 +384,12 @@ export default {
     'MANGLER_TEKST',
   'beregning.vilkaarsproeving.alternativer.medAFP.heltOgGradertUttak':
     'MANGLER_TEKST',
+  'beregning.vilkaarsproeving.alternativer.medAFP.heltOgGradertUttak100':
+    'MANGLER_TEKST',
   'beregning.vilkaarsproeving.alternativer.medAFP.ikkeNokOpptjening':
     'MANGLER_TEKST',
   'grunnlag.title': 'Grunnlaget for utrekninga',
+  'maanedsbeloep.title': 'MANGLER_TEKST',
   'grunnlag.uttaksgrad.title': 'Uttaksgrad',
   'grunnlag.uttaksgrad.avansert_link': 'MANGLER_TEKST',
   'grunnlag.uttaksgrad.ingress':
@@ -445,20 +451,6 @@ export default {
   'grunnlag.afp.ingress.nei.ufoeretrygd': 'MANGLER_TEKST',
   'grunnlag.afp.ingress.overgangskull.ufoeretrygd': 'MANGLER_TEKST',
   'grunnlag.afp.ingress.full_ufoeretrygd': 'MANGLER_TEKST',
-  'grunnlag.afp.ingress.null.gammel': '-',
-  'grunnlag.afp.ingress.ja_offentlig.gammel':
-    'Vi kan ikkje vise din AFP fordi regelverket for ny AFP i offentleg sektor ikkje er endeleg avklart. For meir informasjon, sjekk tenestepensjonsordninga di.',
-  'grunnlag.afp.ingress.ja_offentlig.ufoeretrygd.gammel': 'MANGLER_TEKST',
-  'grunnlag.afp.ingress.ja_offentlig_utilgjengelig.gammel': 'MANGLER_TEKST',
-  'grunnlag.afp.ingress.ja_privat.gammel':
-    'Nav har ikkje vurdert om du fyller inngangsvilkåra for å få AFP, men i utrekninga føreset vi at du gjer det. Les meir om vilkåra for AFP hos <afpLink>Fellesordningen for AFP</afpLink>.',
-  'grunnlag.afp.ingress.ja_privat.ufoeretrygd.gammel': 'MANGLER_TEKST',
-  'grunnlag.afp.ingress.vet_ikke.gammel':
-    'Er du er usikker på om du har rett til AFP bør du spørja arbeidsgjevaren din. AFP kan påverke kor tid du kan ta ut alderspensjon.',
-  'grunnlag.afp.ingress.vet_ikke.ufoeretrygd.gammel': 'MANGLER_TEKST',
-  'grunnlag.afp.ingress.nei.gammel':
-    'Har du starta i jobb hos en arbeidsgjevar som har avtale om AFP, tilrår vi at du gjer ei <goToStart>ny utrekning</goToStart>.',
-  'grunnlag.afp.ingress.nei.ufoeretrygd.gammel': 'MANGLER_TEKST',
   'grunnlag.forbehold.ingress_1':
     'Pensjonen er rekna ut med opplysningane vi har om deg og opplysningane du har lagt inn. Utrekninga er gjort med gjeldande regelverk. Dette er ei førebels utrekning av kva du kan vente å få i pensjon. ',
   'grunnlag.forbehold.link': 'Alle atterhald',

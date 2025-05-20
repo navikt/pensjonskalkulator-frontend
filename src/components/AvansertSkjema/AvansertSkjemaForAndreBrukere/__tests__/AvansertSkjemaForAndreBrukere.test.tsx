@@ -7,6 +7,8 @@ import {
   fulfilledGetLoependeVedtakLoependeAlderspensjon,
   fulfilledGetPerson,
   fulfilledGetPersonMedOekteAldersgrenser,
+  loependeVedtak0UfoeregradMock,
+  personMock,
 } from '@/mocks/mockedRTKQueryApiCalls'
 import { mockResponse } from '@/mocks/server'
 import {
@@ -22,6 +24,7 @@ import { fireEvent, render, screen, userEvent } from '@/test-utils'
 import * as alderUtils from '@/utils/alder'
 
 import { AvansertSkjemaForAndreBrukere } from '..'
+import { getPreviousMonth } from '../../test-utils'
 import { AVANSERT_FORM_NAMES } from '../../utils'
 import * as AvansertSkjemaForAndreBrukereUtils from '../../utils'
 
@@ -42,6 +45,8 @@ describe('AvansertSkjemaForAndreBrukere', () => {
     ...fulfilledGetLoependeVedtak0Ufoeregrad,
   }
 
+  const agePickerMonth = getPreviousMonth()
+
   it('vises informasjon om inntekt, uttaksgrad og pensjonsalder', async () => {
     render(
       <BeregningContext.Provider
@@ -53,13 +58,13 @@ describe('AvansertSkjemaForAndreBrukere', () => {
       </BeregningContext.Provider>,
       {
         preloadedState: {
-          api: {
-            // @ts-ignore
-            queries: { ...mockedQueries },
-          },
           userInput: {
             ...userInputInitialState,
           },
+        },
+        preloadedApiState: {
+          getPerson: personMock,
+          getLoependeVedtak: loependeVedtak0UfoeregradMock,
         },
       }
     )
@@ -1954,7 +1959,7 @@ describe('AvansertSkjemaForAndreBrukere', () => {
           `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`
         ),
         {
-          target: { value: '0' },
+          target: { value: agePickerMonth },
         }
       )
 

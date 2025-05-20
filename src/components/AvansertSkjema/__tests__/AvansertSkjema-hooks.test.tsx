@@ -894,7 +894,7 @@ describe('AvansertSkjema-hooks', () => {
       expect(result.current[2]).toEqual('')
     })
 
-    it('Når validationErrors endrer seg, oppdaterer gradertAgePickerError og heltAgePickerError', () => {
+    it('Når validationErrors endrer seg, oppdaterer gradertAgePickerError og heltAgePickerError', async () => {
       const { result } = renderHook(useFormValidationErrors, {
         initialProps: {},
       })

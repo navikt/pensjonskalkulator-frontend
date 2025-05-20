@@ -7,6 +7,7 @@ import {
 } from '@/mocks/mockedRTKQueryApiCalls'
 import { mockErrorResponse, mockResponse } from '@/mocks/server'
 import { henvisningUrlParams, paths } from '@/router/constants'
+import type { Reason } from '@/router/loaders'
 import * as apiSliceUtils from '@/state/api/apiSlice'
 import { store } from '@/state/store'
 import {
@@ -105,7 +106,7 @@ describe('Loaders', () => {
         throw new Error('person not in returnedFromLoader')
       }
 
-      expect(returnedFromLoader.person.foedselsdato).toBe('1963-04-30')
+      expect(returnedFromLoader.person.foedselsdato).toBe('1964-04-30')
       expect(returnedFromLoader.loependeVedtak.ufoeretrygd.grad).toBe(0)
     })
 
@@ -119,9 +120,12 @@ describe('Loaders', () => {
       expectRedirectResponse(await stepStartAccessGuard(), paths.uventetFeil)
     })
 
-    it('Når /person kall feiler med 403 status redirigeres bruker til ingen-tilgang', async () => {
+    it('Når /person kall feiler med 403 status og reason er INVALID_REPRESENTASJON, redirigeres bruker til ingen-tilgang', async () => {
       mockErrorResponse('/v4/person', {
         status: 403,
+        json: {
+          reason: 'INVALID_REPRESENTASJON' as Reason,
+        },
       })
 
       store.getState = vi.fn().mockImplementation(() => ({
@@ -129,6 +133,24 @@ describe('Loaders', () => {
       }))
 
       expectRedirectResponse(await stepStartAccessGuard(), paths.ingenTilgang)
+    })
+
+    it('Når /person kall feiler med 403 status og reason er INSUFFICIENT_LEVEL_OF_ASSURANCE, redirigeres bruker til uventet-feil', async () => {
+      mockErrorResponse('/v4/person', {
+        status: 403,
+        json: {
+          reason: 'INSUFFICIENT_LEVEL_OF_ASSURANCE' as Reason,
+        },
+      })
+
+      store.getState = vi.fn().mockImplementation(() => ({
+        userInput: { ...userInputInitialState },
+      }))
+
+      expectRedirectResponse(
+        await stepStartAccessGuard(),
+        paths.lavtSikkerhetsnivaa
+      )
     })
 
     it('Når /person kall feiler med annen status redirigeres bruker til uventet-feil side', async () => {
@@ -460,7 +482,7 @@ describe('Loaders', () => {
       await expect(returnedFromLoader).resolves.not.toThrow()
       await expect(returnedFromLoader).resolves.toMatchObject({
         person: {
-          foedselsdato: '1963-04-30',
+          foedselsdato: '1964-04-30',
         },
       })
     })
@@ -771,7 +793,7 @@ describe('Loaders', () => {
       expect(returnedFromLoader).toBeUndefined()
     })
 
-    it('Når brukeren har uføretrygd og har valgt ja_offentlig til spørsmål om afp, er hen redirigert', async () => {
+    it('Når brukeren har uføretrygd og har valgt ja_offentlig til spørsmål om afp, er hen ikke redirigert', async () => {
       mockResponse('/v4/vedtak/loepende-vedtak', {
         status: 200,
         json: {
@@ -787,10 +809,8 @@ describe('Loaders', () => {
       }
       store.getState = vi.fn().mockImplementation(() => mockedState)
 
-      expectRedirectResponse(
-        await stepSamtykkeOffentligAFPAccessGuard(),
-        paths.samtykke
-      )
+      const returnedFromLoader = await stepSamtykkeOffentligAFPAccessGuard()
+      expect(returnedFromLoader).toBeUndefined()
     })
 
     it('Når brukeren ikke har uføretrygd og har valgt afp nei, er hen redirigert', async () => {

@@ -15,8 +15,6 @@ import sanityReadMoreDataResponse from './data/sanity-readmore-data.json' with {
 import tidligstMuligHeltUttakResponse from './data/tidligstMuligHeltUttak.json' with { type: 'json' }
 import disableSpraakvelgerToggleResponse from './data/unleash-disable-spraakvelger.json' with { type: 'json' }
 import enableSanityToggleResponse from './data/unleash-enable-sanity.json' with { type: 'json' }
-import enableGradertUfoereAfpFeatureToggleResponse from './data/unleash-gradert-ufoere-afp.json' with { type: 'json' }
-import enableOtpFraKlpToggleResponse from './data/unleash-otp-fra-klp.json' with { type: 'json' }
 import enableUtvidetSimuleringsresultatPluginToggleResponse from './data/unleash-utvidet-simuleringsresultat.json' with { type: 'json' }
 import enableVedlikeholdsmodusToggleResponse from './data/unleash-vedlikeholdmodus.json' with { type: 'json' }
 
@@ -80,10 +78,22 @@ export const getHandlers = (baseUrl: string = API_PATH) => [
     await delay(TEST_DELAY)
     if (request.headers.get('fnr') === '40100000000') {
       return HttpResponse.json({}, { status: 401 })
+    } else if (request.headers.get('fnr') === '40300000001') {
+      return HttpResponse.json(
+        {
+          reason: 'INVALID_REPRESENTASJON',
+        },
+        { status: 403 }
+      )
+    } else if (request.headers.get('fnr') === '40300000002') {
+      return HttpResponse.json(
+        {
+          reason: 'INSUFFICIENT_LEVEL_OF_ASSURANCE',
+        },
+        { status: 403 }
+      )
     } else if (request.headers.get('fnr') === '40400000000') {
       return HttpResponse.json({}, { status: 404 })
-    } else if (request.headers.get('fnr') === '40300000000') {
-      return HttpResponse.json({}, { status: 403 })
     }
     return HttpResponse.json(personResponse)
   }),
@@ -123,8 +133,8 @@ export const getHandlers = (baseUrl: string = API_PATH) => [
     const aar = (body as AlderspensjonRequestBody).heltUttak.uttaksalder.aar
     const data = await import(`./data/alderspensjon/${aar}.json`)
     const mergedData = JSON.parse(JSON.stringify(data.default))
-    let afpPrivat: AfpPrivatPensjonsberegning[] = []
-    let afpOffentlig: AfpPrivatPensjonsberegning[] = []
+    let afpPrivat: AfpPensjonsberegning[] = []
+    let afpOffentlig: AfpPensjonsberegning[] = []
     if (
       (body as AlderspensjonRequestBody).simuleringstype ===
         'ALDERSPENSJON_MED_AFP_PRIVAT' ||
@@ -190,21 +200,6 @@ export const getHandlers = (baseUrl: string = API_PATH) => [
     )
   }),
 
-  http.get(
-    `${baseUrl}/feature/pensjonskalkulator.vis-otp-fra-klp`,
-    async () => {
-      await delay(TEST_DELAY)
-      return HttpResponse.json(enableOtpFraKlpToggleResponse)
-    }
-  ),
-
-  http.get(
-    `${baseUrl}/feature/pensjonskalkulator.gradert-ufoere-afp`,
-    async () => {
-      await delay(TEST_DELAY)
-      return HttpResponse.json(enableGradertUfoereAfpFeatureToggleResponse)
-    }
-  ),
   http.get(
     `${baseUrl}/feature/pensjonskalkulator.vedlikeholdsmodus`,
     async () => {

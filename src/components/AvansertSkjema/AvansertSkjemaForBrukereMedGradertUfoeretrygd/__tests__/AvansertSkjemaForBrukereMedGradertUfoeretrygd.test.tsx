@@ -20,6 +20,7 @@ import { fireEvent, render, screen, userEvent } from '@/test-utils'
 import * as alderUtils from '@/utils/alder'
 
 import { AvansertSkjemaForBrukereMedGradertUfoeretrygd } from '..'
+import { getPreviousMonth } from '../../test-utils'
 import { AVANSERT_FORM_NAMES } from '../../utils'
 import * as AvansertSkjemaForBrukereMedGradertUfoeretrygdUtils from '../../utils'
 
@@ -34,6 +35,8 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
     harAvansertSkjemaUnsavedChanges: false,
     setHarAvansertSkjemaUnsavedChanges: () => {},
   }
+
+  const agePickerMonth = getPreviousMonth()
 
   const mockedQueries = {
     ...fulfilledGetPerson,
@@ -2252,13 +2255,13 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
           `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`
         ),
         {
-          target: { value: '0' },
+          target: { value: agePickerMonth },
         }
       )
 
       // Velger gradert uttak
       fireEvent.change(
-        await screen.findByTestId(AVANSERT_FORM_NAMES.uttaksgrad),
+        await screen.getByTestId(AVANSERT_FORM_NAMES.uttaksgrad),
         {
           target: { value: '40 %' },
         }
@@ -2458,15 +2461,8 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
     })
   })
 
-  describe('Gitt at brukeren kan simulere AFP, og feature toggle for gradert uføretrygd og AFP er enabled', () => {
-    beforeEach(() => {
-      mockResponse('/feature/pensjonskalkulator.gradert-ufoere-afp', {
-        status: 200,
-        json: { enabled: true },
-      })
-    })
-
-    it('Viser intro-tekst om AFP og beregningsvalg', async () => {
+  describe('Gitt at brukeren kan simulere AFP,', () => {
+    it('Viser intro-tekst om AFP og beregningsvalg.', async () => {
       render(
         <BeregningContext.Provider
           value={{
@@ -2497,7 +2493,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
       ).toBeVisible()
     })
 
-    it('Viser resten av skjemaet når man har valgt beregning med eller uten AFP', async () => {
+    it('Viser resten av skjemaet når man har valgt beregning med eller uten AFP.', async () => {
       const user = userEvent.setup()
 
       render(
