@@ -62,7 +62,10 @@ export const GrunnlagAFP: React.FC = () => {
       return `${afpString} (${intl.formatMessage({ id: 'grunnlag.afp.ikke_beregnet' })})`
     }
 
-    if (ufoeregrad > 0) {
+    if (
+      ufoeregrad === 100 ||
+      (ufoeregrad > 0 && foedselsdato && isFoedtFoer1963(foedselsdato))
+    ) {
       return formatAfp(intl, 'nei')
     }
 
@@ -92,7 +95,7 @@ export const GrunnlagAFP: React.FC = () => {
       return 'grunnlag.afp.ingress.nei'
     } */
 
-    if (ufoeregrad > 0 && foedselsdato && !isFoedtFoer1963(foedselsdato)) {
+    if (ufoeregrad === 100) {
       return 'grunnlag.afp.ingress.full_ufoeretrygd'
     }
 
