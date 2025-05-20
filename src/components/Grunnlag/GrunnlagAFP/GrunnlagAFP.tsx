@@ -92,16 +92,16 @@ export const GrunnlagAFP: React.FC = () => {
       return 'grunnlag.afp.ingress.nei'
     } */
 
-    if (afp === 'nei') {
-      return 'grunnlag.afp.ingress.nei'
-    }
-
     if (ufoeregrad > 0 && foedselsdato && !isFoedtFoer1963(foedselsdato)) {
       return 'grunnlag.afp.ingress.full_ufoeretrygd'
     }
 
     if (ufoeregrad > 0 && foedselsdato && isFoedtFoer1963(foedselsdato)) {
       return 'grunnlag.afp.ingress.overgangskull.ufoeretrygd'
+    }
+
+    if (afp === 'nei') {
+      return 'grunnlag.afp.ingress.nei'
     }
 
     if (
