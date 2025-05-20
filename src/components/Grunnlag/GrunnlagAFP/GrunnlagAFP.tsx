@@ -51,7 +51,7 @@ export const GrunnlagAFP: React.FC = () => {
       return `${formatAfp(intl, 'ja_privat')} (${intl.formatMessage({ id: 'grunnlag.afp.endring' })})`
     }
 
-    if (loependeVedtak.afpOffentlig) {
+    if (loependeVedtak.afpOffentlig || loependeVedtak.pre2025OffentligAfp) {
       return `${formatAfp(intl, 'ja_offentlig')} (${intl.formatMessage({ id: 'grunnlag.afp.endring' })})`
     }
 
@@ -125,7 +125,7 @@ export const GrunnlagAFP: React.FC = () => {
     }
 
     if (
-      loependeVedtak.afpOffentlig &&
+      loependeVedtak.pre2025OffentligAfp &&
       foedselsdato &&
       isFoedtFoer1963(foedselsdato)
     ) {
