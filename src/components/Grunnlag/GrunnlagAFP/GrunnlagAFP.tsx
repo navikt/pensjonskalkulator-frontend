@@ -124,6 +124,7 @@ export const GrunnlagAFP: React.FC = () => {
       return 'grunnlag.afp.ingress.nei'
     }
 
+    //TODO: endre denne så den vises for brukere med gammel AFP som ikke får AFP steg
     if (
       loependeVedtak.pre2025OffentligAfp &&
       foedselsdato &&

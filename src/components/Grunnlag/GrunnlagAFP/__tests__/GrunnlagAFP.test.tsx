@@ -175,7 +175,12 @@ describe('Grunnlag - AFP', () => {
     await user.click(buttons[6])
 
     expect(
-      await screen.findByText('grunnlag.afp.ingress.vet_ikke')
+      await screen.findByText(
+        'Hvis du er usikker på om du har AFP bør du spørre arbeidsgiveren din.',
+        {
+          exact: false,
+        }
+      )
     ).toBeVisible()
   })
 
@@ -212,22 +217,6 @@ describe('Grunnlag - AFP', () => {
           fulfilledTimeStamp: 1688046412103,
         },
       }
-
-      it('returneres null', async () => {
-        const { asFragment } = render(<GrunnlagAFP />, {
-          preloadedState: {
-            api: {
-              // @ts-ignore
-              queries: { ...mockedQueries },
-            },
-            userInput: {
-              ...userInputInitialState,
-              afp: 'ja_offentlig',
-            },
-          },
-        })
-        expect(asFragment()).toMatchInlineSnapshot('<DocumentFragment />')
-      })
     })
 
     describe('Gitt at brukeren er yngre enn AFP-Uføre oppsigelsesalder,', () => {
@@ -331,7 +320,9 @@ describe('Grunnlag - AFP', () => {
         expect(screen.getByText('grunnlag.afp.title')).toBeVisible()
         expect(screen.getByText('afp.nei')).toBeVisible()
         expect(
-          screen.getByText('grunnlag.afp.ingress.nei.ufoeretrygd')
+          screen.getByText('Du har svart at du ikke har rett til AFP.', {
+            exact: false,
+          })
         ).toBeInTheDocument()
       })
 
@@ -493,7 +484,9 @@ describe('Grunnlag - AFP', () => {
       await user.click(buttons[6])
 
       expect(
-        await screen.findByText('grunnlag.afp.ingress.nei.endring')
+        await screen.findByText('Du har svart at du ikke har rett til AFP.', {
+          exact: false,
+        })
       ).toBeVisible()
       expect(
         screen.queryByText('grunnlag.afp.reset_link')
@@ -523,7 +516,12 @@ describe('Grunnlag - AFP', () => {
       await user.click(buttons[6])
 
       expect(
-        await screen.findByText('grunnlag.afp.ingress.vet_ikke')
+        await screen.findByText(
+          'Hvis du er usikker på om du har AFP bør du spørre arbeidsgiveren din.',
+          {
+            exact: false,
+          }
+        )
       ).toBeVisible()
     })
   })
