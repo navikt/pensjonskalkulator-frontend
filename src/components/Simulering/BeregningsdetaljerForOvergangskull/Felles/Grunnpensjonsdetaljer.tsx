@@ -1,19 +1,20 @@
 import React from 'react'
 
-import { GrunnpensjonDetaljer } from '../hooks'
+import { Heading } from '@navikt/ds-react'
+
+import { DetaljRad } from '../hooks'
 
 export interface GrunnpensjonsdetaljerProps {
-  grunnpensjonListe: GrunnpensjonDetaljer[]
+  grunnpensjonObjekt: DetaljRad[]
   uttaksalder: Alder | null
   gradertUttaksperiode: GradertUttak | null
 }
 
 export const Grunnpensjonsdetaljer: React.FC<GrunnpensjonsdetaljerProps> = ({
-  //grunnpensjonListe,
+  grunnpensjonObjekt,
   gradertUttaksperiode,
   //uttaksalder,
 }) => {
-  // Component logic and rendering here, using the new props
   return (
     <>
       {gradertUttaksperiode && (
@@ -26,11 +27,30 @@ export const Grunnpensjonsdetaljer: React.FC<GrunnpensjonsdetaljerProps> = ({
         </div>
       )}
       <div className="heltUttak">
-        {/* <Box>
-          {props.alderspensjonListe?.map((alderspensjon, index) => (
-            <div key={index} />
+        <Heading size="small" level="3">
+          Månedlig alderspensjon fra Nav
+        </Heading>
+        <dl>
+          {grunnpensjonObjekt.map((detalj, index) => (
+            <React.Fragment key={index}>
+              {index === grunnpensjonObjekt.length - 1 ? (
+                <>
+                  <dt>
+                    <b>{detalj.tekst}:</b>
+                  </dt>
+                  <dd>
+                    <b>{detalj.verdi}</b>
+                  </dd>
+                </>
+              ) : (
+                <>
+                  <dt>{detalj.tekst}:</dt>
+                  <dd>{detalj.verdi}</dd>
+                </>
+              )}
+            </React.Fragment>
           ))}
-        </Box> */}
+        </dl>
       </div>
     </>
   )

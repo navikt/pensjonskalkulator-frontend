@@ -11,8 +11,8 @@ import { BeregningsdetaljerMobil } from './BeregningsdetaljerMobil/Beregningsdet
 import { useBeregningsdetaljer } from './hooks'
 
 interface Props {
-  alderspensjonListe?: AlderspensjonPensjonsberegning[][]
-  pre2025OffentligAfp?: pre2025OffentligPensjonsberegning[]
+  alderspensjonListe?: AlderspensjonPensjonsberegning[]
+  pre2025OffentligAfp?: pre2025OffentligPensjonsberegning
 }
 
 export const BeregningsdetaljerForOvergangskull: React.FC<Props> = ({
@@ -24,10 +24,10 @@ export const BeregningsdetaljerForOvergangskull: React.FC<Props> = ({
   )
 
   const {
-    grunnpensjonListe,
-    opptjeningKap19Liste,
-    opptjeningKap20Liste,
-    opptjeningPre2025OffentligAfpListe,
+    grunnpensjonObjekt,
+    opptjeningKap19Objekt,
+    opptjeningKap20Objekt,
+    opptjeningPre2025OffentligAfpObjekt,
   } = useBeregningsdetaljer(alderspensjonListe, pre2025OffentligAfp)
 
   return (
@@ -40,11 +40,11 @@ export const BeregningsdetaljerForOvergangskull: React.FC<Props> = ({
         <BeregningsdetaljerDesktop
           uttaksalder={uttaksalder}
           gradertUttaksperiode={gradertUttaksperiode}
-          grunnpensjonListe={grunnpensjonListe}
-          opptjeningKap19Liste={opptjeningKap19Liste}
-          opptjeningKap20Liste={opptjeningKap20Liste}
-          opptjeningPre2025OffentligAfpListe={
-            opptjeningPre2025OffentligAfpListe
+          grunnpensjonObjekt={grunnpensjonObjekt}
+          opptjeningKap19Objekt={opptjeningKap19Objekt}
+          opptjeningKap20Objekt={opptjeningKap20Objekt}
+          opptjeningPre2025OffentligAfpObjekt={
+            opptjeningPre2025OffentligAfpObjekt
           }
         />
       </div>
@@ -53,11 +53,11 @@ export const BeregningsdetaljerForOvergangskull: React.FC<Props> = ({
         <BeregningsdetaljerMobil
           uttaksalder={uttaksalder}
           gradertUttaksperiode={gradertUttaksperiode}
-          grunnpensjonListe={grunnpensjonListe}
-          opptjeningKap19Liste={opptjeningKap19Liste}
-          opptjeningKap20Liste={opptjeningKap20Liste}
-          opptjeningPre2025OffentligAfpListe={
-            opptjeningPre2025OffentligAfpListe
+          grunnpensjonObjekt={grunnpensjonObjekt}
+          opptjeningKap19Objekt={opptjeningKap19Objekt}
+          opptjeningKap20Objekt={opptjeningKap20Objekt}
+          opptjeningPre2025OffentligAfpObjekt={
+            opptjeningPre2025OffentligAfpObjekt
           }
         />
       </div>

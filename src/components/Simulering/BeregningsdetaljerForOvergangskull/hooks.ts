@@ -1,124 +1,128 @@
 import { useMemo } from 'react'
 
-export interface GrunnpensjonDetaljer {
-  grunnpensjon?: number
-  tilleggspensjon?: number
-  skjermingstillegg?: number
-  pensjonstillegg?: number
-  inntektspensjonBeloep?: number
-  garantipensjonBeloep?: number
+import { formatInntekt } from '@/utils/inntekt'
+
+export interface DetaljRad {
+  tekst: string
+  verdi?: number | string
 }
 
-export interface OpptjeningKap19Detaljer {
-  andelsbroekKap19?: number
-  sluttpoengtall?: number
-  poengaarSum?: number
-  trygdetidKap19?: number
-}
-
-export interface OpptjeningKap20Detaljer {
-  andelsbroekKap20?: number
-  trygdetidKap20?: number
-  pensjonBeholdningFoerUttakBeloep?: number
-}
-
-export interface OpptjeningPre2025OffentligAfpListe {
-  afpGrad?: number
-  sluttpoengtall?: number
-  poengaarSum?: number
-  trygdetid?: number
+export interface BeregningsdetaljerRader {
+  grunnpensjonObjekt: DetaljRad[]
+  opptjeningKap19Objekt: DetaljRad[]
+  opptjeningKap20Objekt: DetaljRad[]
+  opptjeningPre2025OffentligAfpObjekt: DetaljRad[]
 }
 
 export function useBeregningsdetaljer(
-  alderspensjonListe?: AlderspensjonPensjonsberegning[][],
-  pre2025OffentligAfp?: pre2025OffentligPensjonsberegning[]
-) {
+  alderspensjonListe?: AlderspensjonPensjonsberegning[],
+  pre2025OffentligAfp?: pre2025OffentligPensjonsberegning
+): BeregningsdetaljerRader {
   return useMemo(() => {
-    if (!alderspensjonListe) {
-      return {
-        grunnpensjonListe: [],
-        opptjeningKap19Liste: [],
-        opptjeningKap20Liste: [],
-      }
-    }
+    const grunnpensjonObjekt: DetaljRad[] = (alderspensjonListe ?? [])
+      .map((ap) => [
+        {
+          tekst: 'Grunnpensjon (kap. 19)',
+          verdi: `${formatInntekt(ap.grunnpensjon)} kr`,
+        },
+        {
+          tekst: 'Tilleggspensjon (kap. 19)',
+          verdi: `${formatInntekt(ap.tilleggspensjon)} kr`,
+        },
+        {
+          tekst: 'Skjermingstillegg (kap. 19)',
+          verdi: `${formatInntekt(ap.skjermingstillegg)} kr`,
+        },
+        {
+          tekst: 'Pensjonstillegg (kap. 19)',
+          verdi: `${formatInntekt(ap.pensjonstillegg)} kr`,
+        },
+        {
+          tekst: 'Inntektspensjon (kap. 20)',
+          verdi: `${formatInntekt(ap.inntektspensjonBeloep)} kr`,
+        },
+        {
+          tekst: 'Garantipensjon (kap. 20)',
+          verdi: `${formatInntekt(ap.garantipensjonBeloep)} kr`,
+        },
+        {
+          tekst: 'Sum månedelig alderspensjon',
+          verdi: `${formatInntekt(
+            (ap.grunnpensjon ?? 0) +
+              (ap.tilleggspensjon ?? 0) +
+              (ap.skjermingstillegg ?? 0) +
+              (ap.pensjonstillegg ?? 0) +
+              (ap.inntektspensjonBeloep ?? 0) +
+              (ap.garantipensjonBeloep ?? 0)
+          )} kr`,
+        },
+      ])
+      .flat()
+      .filter((rad) => rad.verdi !== undefined && rad.verdi !== '0 kr')
 
-    const flatten = alderspensjonListe.flat()
+    const opptjeningKap19Objekt: DetaljRad[] = (alderspensjonListe ?? [])
+      .map((ap) => [
+        { tekst: 'Andelsbrøk', verdi: ap.andelsbroekKap19 },
+        { tekst: 'Sluttpoengtall', verdi: ap.sluttpoengtall },
+        {
+          tekst: 'Poengår',
+          verdi: (ap.poengaarFoer92 ?? 0) + (ap.poengaarEtter91 ?? 0),
+        },
+        { tekst: 'Trygdetid', verdi: ap.trygdetidKap19 },
+      ])
+      .flat()
+      .filter(
+        (rad) =>
+          rad.verdi !== undefined &&
+          (rad.tekst === 'Poengår' ||
+            rad.tekst === 'Trygdetid' ||
+            rad.verdi !== 0)
+      )
 
-    const grunnpensjonListe: GrunnpensjonDetaljer[] = flatten
-      .map((detalj) => ({
-        grunnpensjon: detalj.grunnpensjon,
-        tilleggspensjon: detalj.tilleggspensjon,
-        skjermingstillegg: detalj.skjermingstillegg,
-        pensjonstillegg: detalj.pensjonstillegg,
-        inntektspensjonBeloep: detalj.inntektspensjonBeloep,
-        garantipensjonBeloep: detalj.garantipensjonBeloep,
-      }))
-      .filter((detaljForRemoval) =>
-        Object.entries(detaljForRemoval).some(
-          ([, value]) => value !== undefined && value !== 0
+    const opptjeningKap20Objekt: DetaljRad[] = (alderspensjonListe ?? [])
+      .map((ap) => [
+        { tekst: 'Andelsbrøk', verdi: ap.andelsbroekKap20 },
+        { tekst: 'Trygdetid', verdi: ap.trygdetidKap20 },
+        {
+          tekst: 'Pensjonbeholdning før uttak',
+          verdi: ap.pensjonBeholdningFoerUttakBeloep,
+        },
+      ])
+      .flat()
+      .filter(
+        (rad) =>
+          rad.verdi !== undefined &&
+          (rad.tekst === 'Trygdetid' || rad.verdi !== 0)
+      )
+
+    const opptjeningPre2025OffentligAfpObjekt: DetaljRad[] = pre2025OffentligAfp
+      ? [
+          { tekst: 'AFP grad', verdi: pre2025OffentligAfp.afpGrad },
+          {
+            tekst: 'Sluttpoengtall',
+            verdi: pre2025OffentligAfp.sluttpoengtall,
+          },
+          {
+            tekst: 'Poengår',
+            verdi:
+              (pre2025OffentligAfp.poengaarTom1991 ?? 0) +
+              (pre2025OffentligAfp.poengaarFom1992 ?? 0),
+          },
+          { tekst: 'Trygdetid', verdi: pre2025OffentligAfp.trygdetid },
+        ].filter(
+          (rad) =>
+            rad.verdi !== undefined &&
+            (rad.tekst === 'Poengår' ||
+              rad.tekst === 'Trygdetid' ||
+              rad.verdi !== 0)
         )
-      )
-
-    const opptjeningKap19Liste: OpptjeningKap19Detaljer[] = flatten
-      .map((detalj) => ({
-        andelsbroekKap19: detalj.andelsbroekKap19,
-        sluttpoengtall: detalj.sluttpoengtall,
-        poengaarSum:
-          (detalj.poengaarFoer92 ?? 0) + (detalj.poengaarEtter91 ?? 0),
-        trygdetidKap19: detalj.trygdetidKap19,
-      }))
-      .filter(
-        (element) =>
-          // poengaarSum og trygdetidKap19 kan være 0, resten må fjernes
-          (element.andelsbroekKap19 !== undefined &&
-            element.andelsbroekKap19 !== 0) ||
-          (element.sluttpoengtall !== undefined &&
-            element.sluttpoengtall !== 0) ||
-          element.poengaarSum !== undefined ||
-          element.trygdetidKap19 !== undefined
-      )
-
-    const opptjeningKap20Liste: OpptjeningKap20Detaljer[] = flatten
-      .map((detalj) => ({
-        andelsbroekKap20: detalj.andelsbroekKap20,
-        trygdetidKap20: detalj.trygdetidKap20,
-        pensjonBeholdningFoerUttakBeloep:
-          detalj.pensjonBeholdningFoerUttakBeloep,
-      }))
-      .filter(
-        (element) =>
-          // trygdetidKap20 kan være 0, resten må fjernes
-          (element.andelsbroekKap20 !== undefined &&
-            element.andelsbroekKap20 !== 0) ||
-          (element.pensjonBeholdningFoerUttakBeloep !== undefined &&
-            element.pensjonBeholdningFoerUttakBeloep !== 0) ||
-          element.trygdetidKap20 !== undefined
-      )
-
-    const opptjeningPre2025OffentligAfpListe: OpptjeningPre2025OffentligAfpListe[] =
-      pre2025OffentligAfp
-        ?.map((detalj) => ({
-          afpGrad: detalj.afpGrad,
-          sluttpoengtall: detalj.sluttpoengtall,
-          poengaarSum:
-            (detalj.poengaarTom1991 ?? 0) + (detalj.poengaarFom1992 ?? 0),
-          trygdetid: detalj.trygdetid,
-        }))
-        ?.filter(
-          (element) =>
-            // poengaarSum og trygdetid kan være 0, resten må fjernes
-            (element.afpGrad !== undefined && element.afpGrad !== 0) ||
-            (element.sluttpoengtall !== undefined &&
-              element.sluttpoengtall !== 0) ||
-            element.poengaarSum !== undefined ||
-            element.trygdetid !== undefined
-        ) ?? []
+      : []
 
     return {
-      grunnpensjonListe,
-      opptjeningKap19Liste,
-      opptjeningKap20Liste,
-      opptjeningPre2025OffentligAfpListe,
+      grunnpensjonObjekt,
+      opptjeningKap19Objekt,
+      opptjeningKap20Objekt,
+      opptjeningPre2025OffentligAfpObjekt,
     }
   }, [alderspensjonListe, pre2025OffentligAfp])
 }
