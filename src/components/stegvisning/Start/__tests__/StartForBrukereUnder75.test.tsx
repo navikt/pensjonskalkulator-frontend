@@ -255,9 +255,8 @@ describe('stegvisning - Start', () => {
     expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
       'stegvisning.start.title Ola!'
     )
-    expect(screen.getByText('Du har nå ', { exact: false })).toBeVisible()
     expect(
-      screen.getByText('AFP i offentlig sektor', { exact: false })
+      screen.getByTestId('stegvisning-start-ingress-pre2025-offentlig-afp')
     ).toBeVisible()
   })
 

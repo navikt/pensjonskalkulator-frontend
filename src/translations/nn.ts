@@ -250,6 +250,8 @@ export default {
   'tidligstmuliguttak.1963.ingress_2':
     ' Jo lenger du ventar, dess meir får du i året.',
   'tidligstmuliguttak.1964.ingress_2': 'MANGLER_TEKST',
+  'tidligstmuliguttak.pre2025OffentligAfp.ingress': 'MANGLER_TEKST',
+  'tidligstmuliguttak.pre2025OffentligAfp.avansert_link': 'MANGLER_TEKST',
   'tidligstmuliguttak.info_omstillingsstoenad_og_gjenlevende': 'MANGLER_TEKST',
   'tidligstmuliguttak.error': 'MANGLER_TEKST',
   'omufoeretrygd.hel.ingress': 'MANGLER_TEKST',

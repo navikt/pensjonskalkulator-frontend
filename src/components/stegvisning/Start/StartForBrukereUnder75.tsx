@@ -54,6 +54,7 @@ export function StartForBrukereUnder75({
 
             {onNext && !isEndringAndFremtidigVedtak && (
               <Button
+                data-testid="stegvisning-start-button"
                 type="submit"
                 className={styles.button}
                 onClick={wrapLogger('button klikk', {
@@ -66,6 +67,7 @@ export function StartForBrukereUnder75({
 
             {onCancel && (
               <Button
+                data-testid="stegvisning-avbryt-button"
                 type="button"
                 className={styles.button}
                 variant="tertiary"

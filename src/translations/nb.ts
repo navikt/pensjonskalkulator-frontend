@@ -322,6 +322,9 @@ const translations = {
     ' Hvis du venter lenger med uttaket, vil den årlige pensjonen din øke.',
   'tidligstmuliguttak.1964.ingress_2':
     ' Det kan bli senere pga. økt pensjonsalder.',
+  'tidligstmuliguttak.pre2025OffentligAfp.ingress':
+    'Du har AFP i offentlig sektor. Her kan du beregne 100 % alderspensjon fra 67 år. Vil du beregne uttak før 67 år, må du gå til {link}.',
+  'tidligstmuliguttak.pre2025OffentligAfp.avansert_link': 'Avansert',
   'tidligstmuliguttak.info_omstillingsstoenad_og_gjenlevende':
     'Alderspensjon kan ikke kombineres med gjenlevendepensjon eller omstillingsstønad. Ønsker du å ta ut alderspensjon før <nowrap>{normertPensjonsalder}</nowrap>, må du si fra deg gjenlevendepensjon eller omstillingsstønad når du tar ut alderspensjon. Har du spørsmål, kan du kontakte oss på telefon <nowrap>{link}</nowrap>.',
   'tidligstmuliguttak.error':

@@ -283,6 +283,8 @@ export default {
     ' If you delay your withdrawal, your annual pension will increase.',
   'tidligstmuliguttak.1964.ingress_2':
     ' It may be later due to the increased retirement age.',
+  'tidligstmuliguttak.pre2025OffentligAfp.ingress': 'MANGLER_TEKST',
+  'tidligstmuliguttak.pre2025OffentligAfp.avansert_link': 'MANGLER_TEKST',
   'tidligstmuliguttak.info_omstillingsstoenad_og_gjenlevende':
     'retirement pension cannot be combined with a survivor´s pension or adjustment benefits. If you wish to withdraw retirement pension before 67, you must forfeit the survivor´s pension or adjustment benefit when you withdraw your retirement pension. If you have questions, you can contact us at <nowrap>{link}</nowrap>.',
   'tidligstmuliguttak.error':
