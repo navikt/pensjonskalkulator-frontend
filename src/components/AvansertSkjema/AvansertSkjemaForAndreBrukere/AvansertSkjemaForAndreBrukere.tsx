@@ -81,6 +81,9 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
     ? normertPensjonsalder
     : getBrukerensAlderISluttenAvMaaneden(foedselsdato, nedreAldersgrense)
 
+  const [showPre2025OffentligAfpAlert, setShowPre2025OffentligAfpAlert] =
+    React.useState<boolean>(false)
+
   const [
     localInntektFremTilUttak,
     localHeltUttak,
@@ -126,6 +129,14 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
   })
 
   const handleHeltUttaksalderChange = (alder: Partial<Alder> | undefined) => {
+    setShowPre2025OffentligAfpAlert(
+      Boolean(
+        alder &&
+          alder.aar !== undefined &&
+          alder.aar < 67 &&
+          loependeVedtak.pre2025OffentligAfp
+      )
+    )
     setValidationErrorUttaksalderHeltUttak('')
     setLocalHeltUttak((prevState) => {
       const sluttAlderAntallMaaneder =
@@ -425,6 +436,17 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
               isEndring={isEndring}
             />
           </div>
+
+          {showPre2025OffentligAfpAlert && (
+            <Alert
+              data-testid="pre2025OffentligAfp-alert"
+              className={styles.alert}
+              variant="info"
+              aria-live="polite"
+            >
+              <FormattedMessage id="beregning.avansert.rediger.pre2025_offentlig_afp.alert" />
+            </Alert>
+          )}
 
           <div>
             <Select
