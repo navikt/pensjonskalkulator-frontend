@@ -239,16 +239,6 @@ export const BeregningEnkel = () => {
     maaneder: 0,
   }
 
-  const tidligstMuligUttaksAlder = useMemo(() => {
-    if (isTidligstMuligUttakSuccess) {
-      return tidligstMuligUttak
-    }
-    if (loependeVedtak.pre2025OffentligAfp) {
-      return tidligstMuligUttakPre2025OffentligAfp
-    }
-    return undefined
-  }, [isTidligstMuligUttakSuccess, tidligstMuligUttak, loependeVedtak])
-
   return (
     <>
       {showInntektAlert && (
@@ -268,12 +258,18 @@ export const BeregningEnkel = () => {
       <div className={clsx(styles.background, styles.background__lightgray)}>
         <div className={styles.container}>
           <TidligstMuligUttaksalder
-            tidligstMuligUttak={tidligstMuligUttaksAlder}
+            tidligstMuligUttak={
+              isTidligstMuligUttakSuccess
+                ? tidligstMuligUttak
+                : loependeVedtak.pre2025OffentligAfp
+                  ? tidligstMuligUttakPre2025OffentligAfp
+                  : undefined
+            }
+            ufoeregrad={ufoeregrad}
+            show1963Text={show1963Text}
             loependeVedtakPre2025OffentligAfp={Boolean(
               loependeVedtak.pre2025OffentligAfp
             )}
-            ufoeregrad={ufoeregrad}
-            show1963Text={show1963Text}
           />
         </div>
       </div>
