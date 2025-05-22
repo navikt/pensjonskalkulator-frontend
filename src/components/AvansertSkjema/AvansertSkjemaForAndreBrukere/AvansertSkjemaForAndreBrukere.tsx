@@ -440,9 +440,9 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
           {showPre2025OffentligAfpAlert && (
             <Alert
               data-testid="pre2025OffentligAfp-alert"
-              className={styles.alert}
               variant="info"
               aria-live="polite"
+              style={{ marginTop: '-1rem' }}
             >
               <FormattedMessage id="beregning.avansert.rediger.pre2025_offentlig_afp.alert" />
             </Alert>
