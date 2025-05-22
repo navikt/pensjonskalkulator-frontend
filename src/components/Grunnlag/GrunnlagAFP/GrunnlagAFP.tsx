@@ -87,6 +87,15 @@ export const GrunnlagAFP: React.FC = () => {
       return 'grunnlag.afp.ingress.ja_privat.endring'
     }
 
+    //TODO: endre denne så den vises for brukere med gammel AFP som ikke får AFP steg
+    if (
+      loependeVedtak.pre2025OffentligAfp &&
+      foedselsdato &&
+      isFoedtFoer1963(foedselsdato)
+    ) {
+      return 'grunnlag.afp.ingress.overgangskull'
+    }
+
     if (loependeVedtak.afpOffentlig) {
       return 'grunnlag.afp.ingress.ja_offentlig.endring'
     }
@@ -122,15 +131,6 @@ export const GrunnlagAFP: React.FC = () => {
       isFoedtFoer1963(foedselsdato)
     ) {
       return 'grunnlag.afp.ingress.nei'
-    }
-
-    //TODO: endre denne så den vises for brukere med gammel AFP som ikke får AFP steg
-    if (
-      loependeVedtak.pre2025OffentligAfp &&
-      foedselsdato &&
-      isFoedtFoer1963(foedselsdato)
-    ) {
-      return 'grunnlag.afp.ingress.overgangskull'
     }
 
     if (hasOffentligAFP && samtykkeOffentligAFP === false) {
