@@ -88,7 +88,8 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
     React.useState<boolean>(
       Boolean(
         uttaksalder &&
-          uttaksalder?.aar < TIDLIGST_UTTAKSALDER_FOR_PRE2025_OFFENTLIG_AFP
+          uttaksalder?.aar < TIDLIGST_UTTAKSALDER_FOR_PRE2025_OFFENTLIG_AFP &&
+          loependeVedtak.pre2025OffentligAfp
       )
     )
 
