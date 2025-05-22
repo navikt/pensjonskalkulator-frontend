@@ -51,7 +51,7 @@ export const GrunnlagAFP: React.FC = () => {
       return `${formatAfp(intl, 'ja_privat')} (${intl.formatMessage({ id: 'grunnlag.afp.endring' })})`
     }
 
-    if (loependeVedtak.afpOffentlig || loependeVedtak.pre2025OffentligAfp) {
+    if (loependeVedtak.afpOffentlig) {
       return `${formatAfp(intl, 'ja_offentlig')} (${intl.formatMessage({ id: 'grunnlag.afp.endring' })})`
     }
 
