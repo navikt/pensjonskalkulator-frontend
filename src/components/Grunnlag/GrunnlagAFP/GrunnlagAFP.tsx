@@ -47,6 +47,14 @@ export const GrunnlagAFP: React.FC = () => {
   const formatertAfpHeader = React.useMemo(() => {
     const afpString = formatAfp(intl, afp ?? 'vet_ikke')
 
+    if (
+      loependeVedtak.pre2025OffentligAfp &&
+      foedselsdato &&
+      isFoedtFoer1963(foedselsdato)
+    ) {
+      return formatAfp(intl, 'ja_offentlig')
+    }
+
     if (isEndring && loependeVedtak.afpPrivat) {
       return `${formatAfp(intl, 'ja_privat')} (${intl.formatMessage({ id: 'grunnlag.afp.endring' })})`
     }
@@ -87,7 +95,6 @@ export const GrunnlagAFP: React.FC = () => {
       return 'grunnlag.afp.ingress.ja_privat.endring'
     }
 
-    //TODO: endre denne så den vises for brukere med gammel AFP som ikke får AFP steg
     if (
       loependeVedtak.pre2025OffentligAfp &&
       foedselsdato &&
@@ -99,10 +106,6 @@ export const GrunnlagAFP: React.FC = () => {
     if (loependeVedtak.afpOffentlig) {
       return 'grunnlag.afp.ingress.ja_offentlig.endring'
     }
-
-    /* if (isEndring && afp === 'nei') {
-      return 'grunnlag.afp.ingress.nei'
-    } */
 
     if (ufoeregrad === 100) {
       return 'grunnlag.afp.ingress.full_ufoeretrygd'
