@@ -512,6 +512,7 @@ export default {
   'grunnlag.afp.endring': 'Unchanged',
   'grunnlag.afp.ingress.null': '-',
   'grunnlag.afp.ingress.overgangskull': 'MANGLER_TEKST',
+  'grunnlag.afp.ingress.overgangskull.ufoeretrygd': 'MANGLER_TEKST',
   'grunnlag.afp.ingress.ja_offentlig':
     'You have indicated AFP in the public sector. Nav has not assessed whether you meet the conditions for AFP, but assumes that you do. For more information on the conditions, check with your occupational pension scheme.',
   'grunnlag.afp.ingress.ja_offentlig.endring':
@@ -529,7 +530,6 @@ export default {
     'If you are unsure whether you have AFP, you should ask your employer. AFP and disability benefits cannot be combined, and if you receive disability benefits after turning 62, you lose the right to AFP. Therefore, you should check whether you have the right to AFP and choose between AFP and disability benefits before you are 62 years old.',
   'grunnlag.afp.ingress.nei':
     'If you start a job with an employer that has an AFP agreement, we recommend that you make a <goToStart>new calculation</goToStart>.',
-  'grunnlag.afp.ingress.overgangskull.ufoeretrygd': 'MANGLER_TEKST',
   'grunnlag.afp.ingress.full_ufoeretrygd': 'MANGLER_TEKST',
   'grunnlag.forbehold.ingress_1':
     'The pension has been calculated based on the information we have about you and the information you have provided. The calculation has been made in accordance with current regulations. This is a preliminary estimate of what you can expect to receive in pension. Nav is not responsible for the amounts obtained from other sources.',

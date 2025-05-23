@@ -434,6 +434,7 @@ export default {
   'grunnlag.afp.endring': 'MANGLER_TEKST',
   'grunnlag.afp.ingress.null': '-',
   'grunnlag.afp.ingress.overgangskull': 'MANGLER_TEKST',
+  'grunnlag.afp.ingress.overgangskull.ufoeretrygd': 'MANGLER_TEKST',
   'grunnlag.afp.ingress.ja_offentlig': 'MANGLER_TEKST',
   'grunnlag.afp.ingress.ja_offentlig.endring': 'MANGLER_TEKST',
   'grunnlag.afp.ingress.ja_offentlig.ufoeretrygd': 'MANGLER_TEKST',
@@ -447,7 +448,6 @@ export default {
   'grunnlag.afp.ingress.vet_ikke.ufoeretrygd': 'MANGLER_TEKST',
   'grunnlag.afp.ingress.nei':
     'Har du starta i jobb hos en arbeidsgjevar som har avtale om AFP, tilrår vi at du gjer ei <goToStart>ny utrekning</goToStart>.',
-  'grunnlag.afp.ingress.overgangskull.ufoeretrygd': 'MANGLER_TEKST',
   'grunnlag.afp.ingress.full_ufoeretrygd': 'MANGLER_TEKST',
   'grunnlag.forbehold.ingress_1':
     'Pensjonen er rekna ut med opplysningane vi har om deg og opplysningane du har lagt inn. Utrekninga er gjort med gjeldande regelverk. Dette er ei førebels utrekning av kva du kan vente å få i pensjon. ',
