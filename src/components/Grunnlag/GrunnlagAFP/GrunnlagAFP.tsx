@@ -22,6 +22,7 @@ import { formatAfp } from '@/utils/afp'
 import {
   AFP_UFOERE_OPPSIGELSESALDER,
   isFoedselsdatoOverAlder,
+  isFoedtFoer1963,
 } from '@/utils/alder'
 import { logger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
@@ -46,6 +47,14 @@ export const GrunnlagAFP: React.FC = () => {
   const formatertAfpHeader = React.useMemo(() => {
     const afpString = formatAfp(intl, afp ?? 'vet_ikke')
 
+    if (
+      loependeVedtak.pre2025OffentligAfp &&
+      foedselsdato &&
+      isFoedtFoer1963(foedselsdato)
+    ) {
+      return formatAfp(intl, 'ja_offentlig')
+    }
+
     if (isEndring && loependeVedtak.afpPrivat) {
       return `${formatAfp(intl, 'ja_privat')} (${intl.formatMessage({ id: 'grunnlag.afp.endring' })})`
     }
@@ -61,7 +70,10 @@ export const GrunnlagAFP: React.FC = () => {
       return `${afpString} (${intl.formatMessage({ id: 'grunnlag.afp.ikke_beregnet' })})`
     }
 
-    if (ufoeregrad === 100) {
+    if (
+      ufoeregrad === 100 ||
+      (ufoeregrad > 0 && foedselsdato && isFoedtFoer1963(foedselsdato))
+    ) {
       return formatAfp(intl, 'nei')
     }
 
@@ -83,16 +95,45 @@ export const GrunnlagAFP: React.FC = () => {
       return 'grunnlag.afp.ingress.ja_privat.endring'
     }
 
+    if (
+      loependeVedtak.pre2025OffentligAfp &&
+      foedselsdato &&
+      isFoedtFoer1963(foedselsdato)
+    ) {
+      return 'grunnlag.afp.ingress.overgangskull'
+    }
+
     if (loependeVedtak.afpOffentlig) {
       return 'grunnlag.afp.ingress.ja_offentlig.endring'
     }
 
-    if (isEndring && afp === 'nei') {
-      return 'grunnlag.afp.ingress.nei.endring'
-    }
-
     if (ufoeregrad === 100) {
       return 'grunnlag.afp.ingress.full_ufoeretrygd'
+    }
+
+    if (ufoeregrad > 0 && foedselsdato && isFoedtFoer1963(foedselsdato)) {
+      return 'grunnlag.afp.ingress.overgangskull.ufoeretrygd'
+    }
+
+    if (afp === 'nei') {
+      return 'grunnlag.afp.ingress.nei'
+    }
+
+    if (
+      afp === 'ja_privat' &&
+      loependeVedtak.alderspensjon &&
+      foedselsdato &&
+      isFoedtFoer1963(foedselsdato)
+    ) {
+      return 'grunnlag.afp.ingress.ja_privat'
+    }
+
+    if (
+      loependeVedtak.alderspensjon &&
+      foedselsdato &&
+      isFoedtFoer1963(foedselsdato)
+    ) {
+      return 'grunnlag.afp.ingress.nei'
     }
 
     if (hasOffentligAFP && samtykkeOffentligAFP === false) {
@@ -115,6 +156,7 @@ export const GrunnlagAFP: React.FC = () => {
   if (
     loependeVedtak.ufoeretrygd.grad &&
     foedselsdato &&
+    !isFoedtFoer1963(foedselsdato) &&
     isFoedselsdatoOverAlder(foedselsdato, AFP_UFOERE_OPPSIGELSESALDER)
   ) {
     return null

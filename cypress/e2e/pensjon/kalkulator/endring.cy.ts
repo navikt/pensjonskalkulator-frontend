@@ -191,7 +191,7 @@ describe('Endring av alderspensjon', () => {
         it('forventer jeg å se resultatet for alderspensjon i graf og tabell uten AFP.', () => {
           cy.contains('Beregning').should('exist')
           cy.contains('Pensjonsgivende inntekt').should('exist')
-          cy.contains('AFP (avtalefestet pensjon)').should('not.exist')
+          cy.contains('AFP (avtalefestet pensjon)').should('not.be.visible')
           cy.contains('Pensjonsavtaler (arbeidsgivere m.m.)').should(
             'not.exist'
           )
@@ -417,7 +417,7 @@ describe('Endring av alderspensjon', () => {
             it('forventer jeg å se resultatet for alderspensjon i graf og tabell uten AFP.', () => {
               cy.contains('Beregning').should('exist')
               cy.contains('Pensjonsgivende inntekt').should('exist')
-              cy.contains('AFP (avtalefestet pensjon)').should('not.exist')
+              cy.contains('AFP (avtalefestet pensjon)').should('not.be.visible')
               cy.contains('Pensjonsavtaler (arbeidsgivere m.m.)').should(
                 'not.exist'
               )
@@ -751,7 +751,7 @@ describe('Endring av alderspensjon', () => {
               'Beregningen bruker trygdetiden du har i Norge fra vedtaket ditt om alderspensjon.'
             ).should('exist')
             cy.contains('AFP:').click({ force: true })
-            cy.contains('Privat (Uendret)').should('exist')
+            cy.contains('Privat (uendret)').should('exist')
           })
 
           it('forventer jeg lenke til søknad om endring av alderspensjon.', () => {
@@ -1057,7 +1057,7 @@ describe('Endring av alderspensjon', () => {
               'Beregningen bruker trygdetiden du har i Norge fra vedtaket ditt om alderspensjon.'
             ).should('exist')
             cy.contains('AFP:').click({ force: true })
-            cy.contains('Offentlig (Uendret)').should('exist')
+            cy.contains('Offentlig (uendret)').should('exist')
           })
 
           it('forventer jeg lenke til søknad om endring av alderspensjon.', () => {
