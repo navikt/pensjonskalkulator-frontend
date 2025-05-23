@@ -57,8 +57,7 @@ export default {
   'landingsside.for.deg.foedt.etter.1963': 'For those born in 1963 or later',
   'landingsside.velge_mellom_detaljert_og_enkel':
     'In the pension calculator, you can get an estimate of',
-  'landingsside.velge_mellom_detaljert_og_enkel_2':
-    'If you need to view detailed calculations, you can use the detailed pension calculator. It does not show lifelong AFP in the public sector.',
+  'landingsside.velge_mellom_detaljert_og_enkel_2': 'MANGLER_TEKST',
   'landingsside.button.detaljert_kalkulator_utlogget':
     'Log in to the detailed pension calculator',
   'landingsside.button.detaljert_kalkulator': 'Detailed Pension Calculator',
