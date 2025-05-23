@@ -1,0 +1,157 @@
+name: Build and Deploy PR
+
+on:
+  pull_request:
+    types: [opened, synchronize, labeled]
+
+jobs:
+  build-and-deploy-pr:
+    name: Build and deploy PR
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: 'write'
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get branch name and sanitize
+        id: branch
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Get branch name from pull request or workflow_dispatch event
+            let branchName;
+            if (context.payload.pull_request) {
+              branchName = context.payload.pull_request.head.ref;
+            } else {
+              // For workflow_dispatch, use the current branch
+              branchName = context.ref.replace('refs/heads/', '');
+            }
+
+            // If branch contains '/', only use part after first '/'
+            if (branchName.includes('/')) {
+              branchName = branchName.split('/').slice(1).join('/');
+            }
+
+            // Make URL safe using encodeURIComponent
+            let sanitizedName = encodeURIComponent(branchName.toLowerCase());
+
+            // Truncate to max 30 characters to avoid too long URLs
+            sanitizedName = sanitizedName.substring(0, 30);
+
+            // Ensure we have at least some characters
+            if (sanitizedName.length === 0) {
+              sanitizedName = 'pr-preview';
+            }
+
+            core.setOutput('branch_name', sanitizedName);
+
+      - name: Use Node.js v22.11.0
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.11.0'
+          registry-url: 'https://npm.pkg.github.com'
+
+      - name: Cache node modules
+        id: cache-node
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies
+        if: steps.cache-node.outputs.cache-hit != 'true'
+        run: npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+
+      - name: Fetch openapi backend types
+        run: npx openapi-typescript https://staging.ekstern.dev.nav.no/pensjon/kalkulator/v3/api-docs/current -o ./src/types/schema.d.ts
+
+      - name: Format backend scheme
+        run: npm run format:types
+
+      - name: Build application
+        run: npm run build
+
+      - name: Build backend for frontend
+        run: npm run build:server
+
+      - name: Check for required label
+        id: check-labels
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const requiredLabel = 'deploy';
+
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+
+            const hasEnvLabel = pr.labels.some(label => label.name === requiredLabel);
+
+            if (!hasEnvLabel) {
+              console.log(`Skipping deployment - PR does not have the "${requiredLabel}" label`);
+              core.setOutput('should_deploy', 'false');
+              return process.exit(0);  // Exit with success status
+            }
+
+            console.log(`PR has "${requiredLabel}" label, continuing with deployment`);
+            core.setOutput('should_deploy', 'true');
+
+      - name: Create Docker image
+        id: image-creation
+        if: steps.check-labels.outputs.should_deploy == 'true'
+        uses: nais/docker-build-push@v0
+        with:
+          dockerfile: .docker/Dockerfile
+          team: pensjonskalkulator
+
+      - name: Deploy borger to dev
+        if: steps.check-labels.outputs.should_deploy == 'true'
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-gcp
+          IMAGE: ${{ steps.image-creation.outputs.image }}
+          RESOURCE: .nais/deploy-dev.yaml
+          VAR: name=${{ steps.branch.outputs.branch_name }}
+          PRINT_PAYLOAD: true
+
+      - name: Comment on PR with links
+        if: steps.check-labels.outputs.should_deploy == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const branch = '${{ steps.branch.outputs.branch_name }}';
+            const borgerUrl = `https://${branch}-pensjonskalkulator.ekstern.dev.nav.no/pensjon/kalkulator`;
+            const veilederUrl = `https://${branch}-veileder-pensjonskalkulator.ansatt.dev.nav.no/pensjon/kalkulator`;
+
+            // Check for existing comments
+            const { data: comments } = await github.rest.issues.listComments({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
+
+            const commentBody = `## 🚀 PR-miljøer er deployet!\n\n- Borger: [${borgerUrl}](${borgerUrl})\n- Veileder: [${veilederUrl}](${veilederUrl})\n\nMiljøene blir automatisk slettet når PR-en lukkes eller etter 1 dag.`;
+            const existingComment = comments.find(comment =>
+              comment.body.includes('PR-miljøer er deployet!'));
+
+            if (!existingComment) {
+              // Only create comment if it doesn't exist
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: commentBody
+              });
+              console.log('Created new PR environment comment');
+            } else {
+              console.log('PR environment comment already exists, no changes made');
+            }
