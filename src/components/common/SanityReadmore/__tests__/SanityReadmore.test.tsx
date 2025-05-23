@@ -17,7 +17,7 @@ describe('SanityReadmore', () => {
     expect(screen.getByText('Lorem')).toBeInTheDocument()
   })
 
-  it('kaster runtime error når id ikke finnes i readMoreData', async () => {
+  it('kaster runtime error når id ikke finnes i readMoreData', () => {
     expect(() => {
       render(<SanityReadmore id="non-existent-id" />)
     }).toThrow()

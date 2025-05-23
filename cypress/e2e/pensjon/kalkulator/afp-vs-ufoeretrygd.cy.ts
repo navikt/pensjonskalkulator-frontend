@@ -29,18 +29,6 @@ describe('AFP vs uføretrygd', () => {
           ufoeretrygd: { grad: 40 },
         } satisfies LoependeVedtak
       ).as('getLoependeVedtak')
-      cy.intercept(
-        {
-          method: 'GET',
-          url: '/pensjon/kalkulator/api/feature/pensjonskalkulator.gradert-ufoere-afp',
-        },
-        {
-          statusCode: 200,
-          body: {
-            enabled: true,
-          },
-        }
-      ).as('getVedlikeholdsmodusFeatureToggle')
       cy.login()
     })
 
@@ -538,8 +526,8 @@ describe('AFP vs uføretrygd', () => {
           ).then((selectElements) => {
             const options = selectElements.find('option')
             expect(options.length).equal(13)
-            expect(options.eq(1).text()).equal('0 md. (apr.)')
-            expect(options.eq(12).text()).equal('11 md. (mars)')
+            expect(options.eq(1).text()).equal('0 md. (mai)')
+            expect(options.eq(12).text()).equal('11 md. (apr.)')
           })
           cy.get(
             '[data-testid="age-picker-uttaksalder-helt-uttak-maaneder"]'
@@ -566,8 +554,8 @@ describe('AFP vs uføretrygd', () => {
           ).then((selectElements) => {
             const options = selectElements.find('option')
             expect(options.length).equal(13)
-            expect(options.eq(1).text()).equal('0 md. (apr.)')
-            expect(options.eq(12).text()).equal('11 md. (mars)')
+            expect(options.eq(1).text()).equal('0 md. (mai)')
+            expect(options.eq(12).text()).equal('11 md. (apr.)')
           })
           cy.get(
             '[data-testid="age-picker-uttaksalder-helt-uttak-maaneder"]'

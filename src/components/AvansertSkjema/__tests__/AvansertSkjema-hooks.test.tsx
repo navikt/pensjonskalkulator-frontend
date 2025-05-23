@@ -850,8 +850,8 @@ describe('AvansertSkjema-hooks', () => {
   describe('useFormValidationErrors', () => {
     const mockedFormatMessageFunction = vi
       .fn()
-      .mockImplementation(({ id: string }) => {
-        return string
+      .mockImplementation(({ id }: { id: string }) => {
+        return id
       })
     const mockedIntlShape = {
       formatMessage: mockedFormatMessageFunction,
@@ -894,7 +894,7 @@ describe('AvansertSkjema-hooks', () => {
       expect(result.current[2]).toEqual('')
     })
 
-    it('Når validationErrors endrer seg, oppdaterer gradertAgePickerError og heltAgePickerError', () => {
+    it('Når validationErrors endrer seg, oppdaterer gradertAgePickerError og heltAgePickerError', async () => {
       const { result } = renderHook(useFormValidationErrors, {
         initialProps: {},
       })

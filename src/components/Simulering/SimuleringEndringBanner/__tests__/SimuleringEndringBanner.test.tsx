@@ -39,7 +39,7 @@ describe('SimuleringEndringBanner', () => {
       ).not.toBeInTheDocument()
     })
 
-    it('Når heltUttaksalder er satt, skal banneren vises med riktig tekst.', () => {
+    it('Når heltUttaksalder er satt, skal banneren vises med riktig tekst.', async () => {
       const { asFragment } = render(
         <SimuleringEndringBanner
           isLoading={false}
@@ -97,7 +97,7 @@ describe('SimuleringEndringBanner', () => {
       ).toHaveLength(1)
     })
 
-    it('Når heltUttaksalder er satt med alderspensjonMaanedligVedEndring, skal banneren vises med riktig tekst.', () => {
+    it('Når heltUttaksalder er satt med alderspensjonMaanedligVedEndring, skal banneren vises med riktig tekst.', async () => {
       const { asFragment } = render(
         <SimuleringEndringBanner
           isLoading={false}
@@ -158,7 +158,7 @@ describe('SimuleringEndringBanner', () => {
       ).toHaveLength(1)
     })
 
-    it('Når heltUttaksalder og gradertUttaksperiode er satt, skal banneren vises med riktig tekst.', () => {
+    it('Når heltUttaksalder og gradertUttaksperiode er satt, skal banneren vises med riktig tekst.', async () => {
       const { asFragment } = render(
         <SimuleringEndringBanner
           isLoading={false}

@@ -219,6 +219,7 @@ export const BeregningAvansert = () => {
             }
           />
         </Link>
+
         {isError ? (
           <>
             <Heading level="2" size="medium">
@@ -345,6 +346,7 @@ export const BeregningAvansert = () => {
                       .pensjonBeholdningFoerUttakBeloep
                   : undefined
               }
+              isEndring={isEndring}
             />
           </>
         )}

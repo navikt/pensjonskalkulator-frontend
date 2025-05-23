@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest'
 
 import { render, screen } from '@/test-utils'
 
+import { Pensjonsdata } from '../../hooks'
 import { PensjonVisningDesktop } from '../PensjonVisningDesktop'
 
 describe('DesktopPensjonVisning', () => {
@@ -22,7 +23,7 @@ describe('DesktopPensjonVisning', () => {
     },
   ]
 
-  const mockSummerYtelser = vi.fn((data) => {
+  const mockSummerYtelser = vi.fn((data: Pensjonsdata) => {
     return (
       (data.afp || 0) + (data.pensjonsavtale || 0) + (data.alderspensjon || 0)
     )
@@ -58,7 +59,7 @@ describe('DesktopPensjonVisning', () => {
     expect(screen.getByText('6 000 kr')).toBeVisible()
   })
 
-  it('returnerer null når ingen pensjonsdata oppføringer er tilgjengelige', () => {
+  it('returnerer null når ingen pensjonsdata oppføringer er tilgjengelige', async () => {
     const { container } = render(
       <PensjonVisningDesktop
         pensjonsdata={[]}

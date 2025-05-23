@@ -9,11 +9,9 @@ import { mockErrorResponse, mockResponse } from '@/mocks/server'
 import { BASE_PATH, paths } from '@/router/constants'
 import { routes } from '@/router/routes'
 import * as apiSliceUtils from '@/state/api/apiSlice'
-import { store } from '@/state/store'
+import { RootState, store } from '@/state/store'
 import { userInputInitialState } from '@/state/userInput/userInputSlice'
 import { render, screen, userEvent, waitFor } from '@/test-utils'
-
-const initialGetState = store.getState
 
 const navigateMock = vi.fn()
 vi.mock(import('react-router'), async (importOriginal) => {
@@ -30,7 +28,6 @@ describe('StepStart', () => {
     vi.clearAllMocks()
     vi.resetAllMocks()
     vi.resetModules()
-    store.getState = initialGetState
   })
 
   it('har riktig sidetittel', async () => {
@@ -43,6 +40,61 @@ describe('StepStart', () => {
     })
     await waitFor(async () => {
       expect(document.title).toBe('application.title.stegvisning.start')
+    })
+  })
+
+  describe('Gitt at brukeren er innlogget', () => {
+    it('henter personopplysninger og viser hilsen med navnet til brukeren når bruker er yngre enn 75 år', async () => {
+      const router = createMemoryRouter(routes, {
+        basename: BASE_PATH,
+        initialEntries: [`${BASE_PATH}${paths.start}`],
+      })
+
+      render(<RouterProvider router={router} />, {
+        preloadedState: {
+          api: {
+            // @ts-ignore
+            queries: {
+              ...fulfilledGetPerson,
+            },
+          },
+        },
+        hasRouter: false,
+      })
+      expect(await screen.findByText('stegvisning.start.ingress')).toBeVisible()
+    })
+
+    it('henter personopplysninger og viser at brukeren kan ikke beregne alderspensjon i kalkulatoren siden bruker har fyllt 75 år', async () => {
+      const router = createMemoryRouter(routes, {
+        basename: BASE_PATH,
+        initialEntries: [`${BASE_PATH}${paths.start}`],
+      })
+
+      mockResponse('/v4/person', {
+        json: {
+          navn: 'Aprikos',
+          sivilstand: 'UGIFT',
+          foedselsdato: '1948-10-02',
+          pensjoneringAldre: {
+            normertPensjoneringsalder: {
+              aar: 67,
+              maaneder: 0,
+            },
+            nedreAldersgrense: {
+              aar: 62,
+              maaneder: 0,
+            },
+          },
+        },
+      })
+
+      render(<RouterProvider router={router} />, {
+        hasRouter: false,
+      })
+
+      expect(
+        await screen.findByTestId('start-brukere-fyllt-75-title')
+      ).toBeVisible()
     })
   })
 
@@ -64,24 +116,25 @@ describe('StepStart', () => {
         },
         hasRouter: false,
       })
+
       expect(await screen.findByText('stegvisning.start.ingress')).toBeVisible()
       expect(screen.getByText('stegvisning.start.title Aprikos!')).toBeVisible()
     })
 
     it('rendrer ikke siden når henting av personopplysninger feiler og redirigerer til /uventet-feil', async () => {
       mockErrorResponse('/v4/person')
-      const mockedState = {
+      const mockedState: RootState = {
+        // @ts-ignore
         api: { queries: { mock: 'mock' } },
         userInput: { ...userInputInitialState, samtykke: null },
       }
-      store.getState = vi.fn().mockImplementation(() => mockedState)
+      vi.spyOn(store, 'getState').mockImplementation(() => mockedState)
 
       const router = createMemoryRouter(routes, {
         basename: BASE_PATH,
         initialEntries: [`${BASE_PATH}${paths.start}`],
       })
       render(<RouterProvider router={router} />, {
-        // @ts-ignore
         preloadedState: {
           ...mockedState,
         },
@@ -129,18 +182,18 @@ describe('StepStart', () => {
 
     it('rendrer ikke siden når henting av loepende vedtak feiler og redirigerer til /uventet-feil', async () => {
       mockErrorResponse('/v4/vedtak/loepende-vedtak')
-      const mockedState = {
+      const mockedState: RootState = {
+        // @ts-ignore
         api: { queries: { mock: 'mock' } },
         userInput: { ...userInputInitialState, samtykke: null },
       }
-      store.getState = vi.fn().mockImplementation(() => mockedState)
+      vi.spyOn(store, 'getState').mockImplementation(() => mockedState)
 
       const router = createMemoryRouter(routes, {
         basename: BASE_PATH,
         initialEntries: [`${BASE_PATH}${paths.start}`],
       })
       render(<RouterProvider router={router} />, {
-        // @ts-ignore
         preloadedState: {
           ...mockedState,
         },

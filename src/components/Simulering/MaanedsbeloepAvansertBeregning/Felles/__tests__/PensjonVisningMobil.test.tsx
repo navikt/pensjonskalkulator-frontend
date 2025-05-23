@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest'
 
 import { render, screen } from '@/test-utils'
 
+import { Pensjonsdata } from '../../hooks'
 import { PensjonVisningMobil } from '../PensjonVisningMobil'
 
 describe('MobilePensjonVisning', () => {
@@ -15,7 +16,7 @@ describe('MobilePensjonVisning', () => {
     },
   ]
 
-  const mockSummerYtelser = vi.fn((data) => {
+  const mockSummerYtelser = vi.fn((data: Pensjonsdata) => {
     return (
       (data.afp || 0) + (data.pensjonsavtale || 0) + (data.alderspensjon || 0)
     )
@@ -51,7 +52,7 @@ describe('MobilePensjonVisning', () => {
     expect(readMoreElements.length).toBe(0)
   })
 
-  it('returnerer null når ingen pensjonsdata er tilgjengelig', () => {
+  it('returnerer null når ingen pensjonsdata er tilgjengelig', async () => {
     const { container } = render(
       <PensjonVisningMobil
         pensjonsdata={[]}
