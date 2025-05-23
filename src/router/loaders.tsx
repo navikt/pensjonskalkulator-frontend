@@ -231,6 +231,14 @@ export const stepAFPAccessGuard = async () => {
     return redirect(paths.start)
   }
 
+  const loependeVedtak = await store
+    .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
+    .unwrap()
+
+  if (loependeVedtak.pre2025OffentligAfp) {
+    return redirect(paths.beregningEnkel)
+  }
+
   // TODO: Flytte disse til der inntekt og omstillingstønad brukes
   await store.dispatch(apiSlice.endpoints.getInntekt.initiate()).unwrap()
   await store
@@ -251,10 +259,6 @@ export const stepAFPAccessGuard = async () => {
 
   const person = await store
     .dispatch(apiSlice.endpoints.getPerson.initiate())
-    .unwrap()
-
-  const loependeVedtak = await store
-    .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
     .unwrap()
 
   const stepArrays = isLoependeVedtakEndring(loependeVedtak)
