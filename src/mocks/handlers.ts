@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { HttpResponse, delay, http } from 'msw'
 
 import { API_PATH, HOST_BASEURL } from '@/paths'
@@ -12,7 +14,6 @@ import personResponse from './data/person.json' with { type: 'json' }
 import tidligstMuligHeltUttakResponse from './data/tidligstMuligHeltUttak.json' with { type: 'json' }
 import disableSpraakvelgerToggleResponse from './data/unleash-disable-spraakvelger.json' with { type: 'json' }
 import enableSanityToggleResponse from './data/unleash-enable-sanity.json' with { type: 'json' }
-import enableGradertUfoereAfpFeatureToggleResponse from './data/unleash-gradert-ufoere-afp.json' with { type: 'json' }
 import enableUtvidetSimuleringsresultatPluginToggleResponse from './data/unleash-utvidet-simuleringsresultat.json' with { type: 'json' }
 import enableVedlikeholdsmodusToggleResponse from './data/unleash-vedlikeholdmodus.json' with { type: 'json' }
 
@@ -21,7 +22,7 @@ const TEST_DELAY = process.env.NODE_ENV === 'test' ? 0 : 30
 const testHandlers =
   process.env.NODE_ENV === 'test'
     ? [
-        http.get('https://api.uxsignals.com/v2/study/id/*/active', async () =>
+        http.get('https://api.uxsignals.com/v2/study/id/*/active', () =>
           HttpResponse.json({ active: false })
         ),
       ]
@@ -59,10 +60,22 @@ export const getHandlers = (baseUrl: string = API_PATH) => [
     await delay(TEST_DELAY)
     if (request.headers.get('fnr') === '40100000000') {
       return HttpResponse.json({}, { status: 401 })
+    } else if (request.headers.get('fnr') === '40300000001') {
+      return HttpResponse.json(
+        {
+          reason: 'INVALID_REPRESENTASJON',
+        },
+        { status: 403 }
+      )
+    } else if (request.headers.get('fnr') === '40300000002') {
+      return HttpResponse.json(
+        {
+          reason: 'INSUFFICIENT_LEVEL_OF_ASSURANCE',
+        },
+        { status: 403 }
+      )
     } else if (request.headers.get('fnr') === '40400000000') {
       return HttpResponse.json({}, { status: 404 })
-    } else if (request.headers.get('fnr') === '40300000000') {
-      return HttpResponse.json({}, { status: 403 })
     }
     return HttpResponse.json(personResponse)
   }),
@@ -93,7 +106,7 @@ export const getHandlers = (baseUrl: string = API_PATH) => [
     const aar = (body as PensjonsavtalerRequestBody).uttaksperioder[0]
       ?.startAlder.aar
     const data = await import(`./data/pensjonsavtaler/${aar}.json`)
-    return HttpResponse.json(data)
+    return HttpResponse.json(data.default as object)
   }),
 
   http.post(`${baseUrl}/v8/alderspensjon/simulering`, async ({ request }) => {
@@ -101,7 +114,7 @@ export const getHandlers = (baseUrl: string = API_PATH) => [
     const body = await request.json()
     const aar = (body as AlderspensjonRequestBody).heltUttak.uttaksalder.aar
     const data = await import(`./data/alderspensjon/${aar}.json`)
-    const mergedData = JSON.parse(JSON.stringify(data.default))
+    const mergedData = JSON.parse(JSON.stringify(data.default)) as object
     let afpPrivat: AfpPensjonsberegning[] = []
     let afpOffentlig: AfpPensjonsberegning[] = []
     if (
@@ -170,13 +183,6 @@ export const getHandlers = (baseUrl: string = API_PATH) => [
   }),
 
   http.get(
-    `${baseUrl}/feature/pensjonskalkulator.gradert-ufoere-afp`,
-    async () => {
-      await delay(TEST_DELAY)
-      return HttpResponse.json(enableGradertUfoereAfpFeatureToggleResponse)
-    }
-  ),
-  http.get(
     `${baseUrl}/feature/pensjonskalkulator.vedlikeholdsmodus`,
     async () => {
       await delay(TEST_DELAY)
@@ -203,6 +209,6 @@ export const getHandlers = (baseUrl: string = API_PATH) => [
 
   http.get(
     `${import.meta.env.VITE_REPRESENTASJON_BANNER}/api/representasjon/harRepresentasjonsforhold`,
-    async () => HttpResponse.json({ value: false })
+    () => HttpResponse.json({ value: false })
   ),
 ]
