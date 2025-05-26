@@ -195,6 +195,19 @@ export const stepStartAccessGuard = async () => {
     })
   }
 
+  if (getLoependeVedtakRes.data.pre2025OffentligAfp) {
+    logger('info', {
+      tekst: 'Vedtak om offentlig AFP pre 2025',
+    })
+  }
+
+  if (
+    getLoependeVedtakRes.data.pre2025OffentligAfp &&
+    getLoependeVedtakRes.data.alderspensjon?.grad === 0
+  ) {
+    redirect(paths.beregningAvansert)
+  }
+
   return {
     person: getPersonRes.data,
     loependeVedtak: getLoependeVedtakRes.data,

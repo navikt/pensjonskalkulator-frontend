@@ -103,9 +103,8 @@ export function StartForBrukereUnder75({
 
   function getIngressComponent() {
     if (loependeVedtak.pre2025OffentligAfp) {
-      return <StartIngressPre2025OffentligAfp />
-    }
-    if (isEndring) {
+      return <StartIngressPre2025OffentligAfp loependeVedtak={loependeVedtak} />
+    } else if (isEndring) {
       return <StartIngressEndring loependeVedtak={loependeVedtak} />
     }
     return <StartIngress />
