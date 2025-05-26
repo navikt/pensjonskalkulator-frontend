@@ -1,4 +1,5 @@
 import React from 'react'
+import { FormattedMessage } from 'react-intl'
 
 import { Heading } from '@navikt/ds-react'
 
@@ -18,7 +19,7 @@ export const Opptjeningsdetaljer: React.FC<OpptjeningsdetaljerProps> = ({
   return (
     <section>
       <Heading size="small" level="3">
-        Opptjening alderspensjon etter kapittel 19
+        <FormattedMessage id="beregning.detaljer.opptjeningsdetaljer.kap19.title" />
       </Heading>
       <dl>
         {opptjeningKap19Objekt.map((detalj) => (
@@ -29,7 +30,7 @@ export const Opptjeningsdetaljer: React.FC<OpptjeningsdetaljerProps> = ({
         ))}
       </dl>
       <Heading size="small" level="3">
-        Opptjening alderspensjon etter kapittel 20
+        <FormattedMessage id="beregning.detaljer.opptjeningsdetaljer.kap20.title" />
       </Heading>
       <dl>
         {opptjeningKap20Objekt.map((detalj) => (
@@ -40,7 +41,7 @@ export const Opptjeningsdetaljer: React.FC<OpptjeningsdetaljerProps> = ({
         ))}
       </dl>
       <Heading size="small" level="3">
-        Opptjening avtalefestet pensjon (AFP)
+        <FormattedMessage id="beregning.detaljer.opptjeningsdetaljer.pre2025OffentligAfp.title" />
       </Heading>
       <dl>
         {opptjeningPre2025OffentligAfpObjekt?.map((detalj) => (

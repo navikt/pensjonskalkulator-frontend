@@ -386,6 +386,13 @@ const translations = {
   'beregning.tabell.lukk': 'Lukk tabell av beregningen',
   'beregning.tabell.vis': 'Vis tabell av beregningen',
   'beregning.tabell.sum': 'Sum',
+  'beregning.detaljer.grunnpensjon.title': 'Månedlig alderspensjon fra Nav',
+  'beregning.detaljer.opptjeningsdetaljer.kap19.title':
+    'Opptjening alderspensjon etter kapittel 19',
+  'beregning.detaljer.opptjeningsdetaljer.kap20.title':
+    'Opptjening alderspensjon etter kapittel 20',
+  'beregning.detaljer.opptjeningsdetaljer.pre2025OffentligAfp.title':
+    'Opptjening avtalefestet pensjon (AFP)',
   'beregning.avansert.link.endre_valgene_dine': 'Endre valgene dine',
   'beregning.avansert.link.endre_avanserte_valg': 'Endre avanserte valg',
   'beregning.avansert.endring_banner.title':

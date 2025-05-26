@@ -1,4 +1,5 @@
 import React from 'react'
+import { FormattedMessage } from 'react-intl'
 
 import { Heading } from '@navikt/ds-react'
 
@@ -28,7 +29,7 @@ export const Grunnpensjonsdetaljer: React.FC<GrunnpensjonsdetaljerProps> = ({
       )}
       <div className="heltUttak">
         <Heading size="small" level="3">
-          Månedlig alderspensjon fra Nav
+          <FormattedMessage id="beregning.detaljer.grunnpensjon.title" />
         </Heading>
         <dl>
           {grunnpensjonObjekt.map((detalj, index) => (
@@ -36,10 +37,10 @@ export const Grunnpensjonsdetaljer: React.FC<GrunnpensjonsdetaljerProps> = ({
               {index === grunnpensjonObjekt.length - 1 ? (
                 <>
                   <dt>
-                    <b>{detalj.tekst}:</b>
+                    <strong>{detalj.tekst}:</strong>
                   </dt>
                   <dd>
-                    <b>{detalj.verdi}</b>
+                    <strong>{detalj.verdi}</strong>
                   </dd>
                 </>
               ) : (

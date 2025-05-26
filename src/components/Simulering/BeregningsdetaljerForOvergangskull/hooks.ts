@@ -19,7 +19,11 @@ export function useBeregningsdetaljer(
   pre2025OffentligAfp?: pre2025OffentligPensjonsberegning
 ): BeregningsdetaljerRader {
   return useMemo(() => {
-    const grunnpensjonObjekt: DetaljRad[] = (alderspensjonListe ?? [])
+    const alderspensjonVedUttak = alderspensjonListe?.[0]
+      ? [alderspensjonListe[0]]
+      : []
+
+    const grunnpensjonObjekt: DetaljRad[] = alderspensjonVedUttak
       .map((ap) => [
         {
           tekst: 'Grunnpensjon (kap. 19)',
@@ -60,7 +64,7 @@ export function useBeregningsdetaljer(
       .flat()
       .filter((rad) => rad.verdi !== undefined && rad.verdi !== '0 kr')
 
-    const opptjeningKap19Objekt: DetaljRad[] = (alderspensjonListe ?? [])
+    const opptjeningKap19Objekt: DetaljRad[] = alderspensjonVedUttak
       .map((ap) => [
         { tekst: 'Andelsbrøk', verdi: ap.andelsbroekKap19 },
         { tekst: 'Sluttpoengtall', verdi: ap.sluttpoengtall },
@@ -79,7 +83,7 @@ export function useBeregningsdetaljer(
             rad.verdi !== 0)
       )
 
-    const opptjeningKap20Objekt: DetaljRad[] = (alderspensjonListe ?? [])
+    const opptjeningKap20Objekt: DetaljRad[] = alderspensjonVedUttak
       .map((ap) => [
         { tekst: 'Andelsbrøk', verdi: ap.andelsbroekKap20 },
         { tekst: 'Trygdetid', verdi: ap.trygdetidKap20 },

@@ -1,7 +1,8 @@
 import React from 'react'
-import { FormattedMessage } from 'react-intl'
 
-import { Box, Heading } from '@navikt/ds-react'
+//import { FormattedMessage } from 'react-intl'
+
+import { Box /* Heading */ } from '@navikt/ds-react'
 
 import { useAppSelector } from '@/state/hooks'
 import { selectCurrentSimulation } from '@/state/userInput/selectors'
@@ -9,6 +10,8 @@ import { selectCurrentSimulation } from '@/state/userInput/selectors'
 import { BeregningsdetaljerDesktop } from './BeregningsdetaljerDesktop/BeregningsdetaljerDesktop'
 import { BeregningsdetaljerMobil } from './BeregningsdetaljerMobil/BeregningsdetaljerMobil'
 import { useBeregningsdetaljer } from './hooks'
+
+import styles from './BeregningsdetaljerForOvergangskull.module.scss'
 
 interface Props {
   alderspensjonListe?: AlderspensjonPensjonsberegning[]
@@ -32,11 +35,11 @@ export const BeregningsdetaljerForOvergangskull: React.FC<Props> = ({
 
   return (
     <Box marginBlock="10 0" data-testid="maanedsbloep-avansert-beregning">
-      <Heading size="small" level="3">
+      {/* <Heading size="small" level="2">
         <FormattedMessage id="beregningsdetaljer.title" />
-      </Heading>
+      </Heading> */}
 
-      <div /* className={styles.beregningsdetaljerDesktopOnly} */>
+      <div className={styles.beregningsdetaljerForOvergangskullDesktopOnly}>
         <BeregningsdetaljerDesktop
           uttaksalder={uttaksalder}
           gradertUttaksperiode={gradertUttaksperiode}
@@ -49,7 +52,7 @@ export const BeregningsdetaljerForOvergangskull: React.FC<Props> = ({
         />
       </div>
 
-      <div /* className={styles.beregningsdetaljerMobileOnly} */>
+      <div className={styles.beregningsdetaljerForOvergangskullMobileOnly}>
         <BeregningsdetaljerMobil
           uttaksalder={uttaksalder}
           gradertUttaksperiode={gradertUttaksperiode}
