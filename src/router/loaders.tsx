@@ -19,12 +19,27 @@ import {
 import { isLoependeVedtakEndring } from '@/utils/loependeVedtak'
 import { logger } from '@/utils/logging'
 
+export type Reason =
+  | 'INSUFFICIENT_LEVEL_OF_ASSURANCE'
+  | 'INVALID_REPRESENTASJON'
+
+interface ErrorData {
+  reason?: Reason
+}
+
 const getErrorStatus = (
   error: FetchBaseQueryError | SerializedError | undefined
 ) => {
   if (!error) return undefined
   if (typeof error === 'string') return error
   if ('status' in error) return error.status
+}
+
+const getErrorData = (
+  error: FetchBaseQueryError | SerializedError | undefined
+): ErrorData | undefined => {
+  if (!error) return undefined
+  if ('data' in error) return error.data as ErrorData
 }
 
 export interface LoginContext {
@@ -76,7 +91,6 @@ export const stepStartAccessGuard = async () => {
     apiSlice.endpoints.getOmstillingsstoenadOgGjenlevende.initiate()
   )
   store.dispatch(apiSlice.endpoints.getGrunnbelop.initiate())
-  store.dispatch(apiSlice.endpoints.getGradertUfoereAfpFeatureToggle.initiate())
 
   const [
     vedlikeholdsmodusFeatureToggle,
@@ -101,7 +115,43 @@ export const stepStartAccessGuard = async () => {
     return redirect(`${paths.henvisning}/${henvisningUrlParams.apotekerne}`)
   }
 
+  if (!getPersonRes.isSuccess) {
+    if (getErrorStatus(getPersonRes.error) === 403) {
+      if (
+        getErrorData(getPersonRes.error)?.reason === 'INVALID_REPRESENTASJON'
+      ) {
+        return redirect(paths.ingenTilgang)
+      }
+      if (
+        getErrorData(getPersonRes.error)?.reason ===
+        'INSUFFICIENT_LEVEL_OF_ASSURANCE'
+      ) {
+        return redirect(paths.lavtSikkerhetsnivaa)
+      }
+    }
+
+    logger('info', {
+      tekst: 'Redirect til /uventet-feil',
+      data: `fra Step Start Loader pga. feil med getPerson med status: ${getErrorStatus(getPersonRes.error)}`,
+    })
+    return redirect(paths.uventetFeil)
+  }
+
   if (!getLoependeVedtakRes.isSuccess) {
+    if (getErrorStatus(getPersonRes.error) === 403) {
+      if (
+        getErrorData(getPersonRes.error)?.reason === 'INVALID_REPRESENTASJON'
+      ) {
+        return redirect(paths.ingenTilgang)
+      }
+      if (
+        getErrorData(getPersonRes.error)?.reason ===
+        'INSUFFICIENT_LEVEL_OF_ASSURANCE'
+      ) {
+        return redirect(paths.lavtSikkerhetsnivaa)
+      }
+    }
+
     logger('info', {
       tekst: 'Redirect til /uventet-feil',
       data: `fra Step Start Loader pga. feil med getLoependeVedtak med status: ${getErrorStatus(getLoependeVedtakRes.error)}`,
@@ -118,37 +168,30 @@ export const stepStartAccessGuard = async () => {
           ? 'Hel uføretrygd'
           : `Gradert uføretrygd`,
   })
+
   if (getLoependeVedtakRes.data.alderspensjon) {
     logger('info', {
       tekst: 'Vedtak alderspensjon',
       data: getLoependeVedtakRes.data.alderspensjon.grad,
     })
   }
+
   if (getLoependeVedtakRes.data.afpPrivat) {
     logger('info', {
       tekst: 'Vedtak AFP Privat',
     })
   }
+
   if (getLoependeVedtakRes.data.afpOffentlig) {
     logger('info', {
       tekst: 'Vedtak AFP Offentlig',
     })
   }
+
   if (getLoependeVedtakRes.data.fremtidigAlderspensjon) {
     logger('info', {
       tekst: 'Fremtidig vedtak',
     })
-  }
-
-  if (!getPersonRes.isSuccess) {
-    if (getErrorStatus(getPersonRes.error) === 403) {
-      return redirect(paths.ingenTilgang)
-    }
-    logger('info', {
-      tekst: 'Redirect til /uventet-feil',
-      data: `fra Step Start Loader pga. feil med getPerson med status: ${getErrorStatus(getPersonRes.error)}`,
-    })
-    return redirect(paths.uventetFeil)
   }
 
   return {
@@ -250,13 +293,14 @@ export const stepUfoeretrygdAFPAccessGuard = async () => {
   const loependeVedtak = await store
     .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
     .unwrap()
+  const showStep = loependeVedtak.ufoeretrygd.grad && afp && afp !== 'nei'
 
   const stepArrays = isLoependeVedtakEndring(loependeVedtak)
     ? stegvisningOrderEndring
     : stegvisningOrder
 
   // Brukere med uføretrygd som har svart ja eller vet_ikke til AFP kan se steget
-  if (loependeVedtak.ufoeretrygd.grad && afp && afp !== 'nei') {
+  if (showStep) {
     return
   }
   return redirect(stepArrays[stepArrays.indexOf(paths.ufoeretrygdAFP) + 1])
@@ -274,15 +318,7 @@ export const stepSamtykkeOffentligAFPAccessGuard = async () => {
   const loependeVedtak = await store
     .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
     .unwrap()
-  const gradertUfoereAfpToggleEnabled = await store
-    .dispatch(apiSlice.endpoints.getGradertUfoereAfpFeatureToggle.initiate())
-    .unwrap()
-    .then((result) => result.enabled)
-    .catch(() => false)
-
-  const showStep = gradertUfoereAfpToggleEnabled
-    ? afp === 'ja_offentlig'
-    : loependeVedtak.ufoeretrygd.grad === 0 && afp === 'ja_offentlig'
+  const showStep = afp === 'ja_offentlig'
 
   // Bruker uten uføretrygd som svarer ja_offentlig til AFP kan se steget
   if (showStep) {

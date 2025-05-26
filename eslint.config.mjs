@@ -16,6 +16,7 @@ const ignoredFiles = [
   '**/vite.config.ts*',
   '**/.stylelintrc.cjs',
   '**/tsconfig.json',
+  'server/server.ts',
   '**/tsconfig.node.json',
   '**/*.scss.d.ts',
   '**/style.d.ts',
@@ -32,7 +33,7 @@ const defaultEslintConfig = tseslint.config(
     ...eslint.configs.recommended,
     ignores: [...ignoredFiles],
   },
-  ...tseslint.configs.recommended.map((config) => ({
+  ...tseslint.configs.recommendedTypeChecked.map((config) => ({
     ...config,
     ignores: [...ignoredFiles],
   })),
@@ -48,12 +49,13 @@ export default [
       globals: {
         ...globals.node,
       },
-    },
-  },
-  {
-    files: ['**/*.test.ts', '**/*.test.tsx'],
-    rules: {
-      '@typescript-eslint/ban-ts-comment': 'off',
+      // Needed for typed linting
+      parserOptions: {
+        projectService: {
+          allowDefaultProject: ['schemaTypes/*', 'schemaTypes/common/*'],
+        },
+        tsconfigRootDir: import.meta.dirname,
+      },
     },
   },
   {
@@ -66,8 +68,8 @@ export default [
       'no-irregular-whitespace': ['error', { skipTemplates: true }],
       '@typescript-eslint/no-unused-vars': 'warn',
       '@typescript-eslint/no-duplicate-enum-values': 'warn',
-      '@typescript-eslint/no-shadow': ['error'],
-      '@typescript-eslint/naming-convention': 'off',
+      '@typescript-eslint/no-shadow': 'error',
+      '@typescript-eslint/no-floating-promises': 'off',
       'react/jsx-curly-brace-presence': [
         'error',
         { props: 'never', children: 'never' },
@@ -81,6 +83,25 @@ export default [
       'import/export': 'error',
       'import/no-extraneous-dependencies': 'error',
       'import/no-duplicates': 'error',
+    },
+  },
+  {
+    files: ['**/*.test.ts', '**/*.test.tsx'],
+    rules: {
+      '@typescript-eslint/ban-ts-comment': 'off', // Fjern når @ts-ignore ikke lenger er i bruk i testkode
+      '@typescript-eslint/require-await': 'off',
+      '@typescript-eslint/no-floating-promises': [
+        'error',
+        {
+          allowForKnownSafeCalls: [
+            {
+              from: 'file',
+              name: 'renderWithProviders',
+              path: 'src/test-utils.tsx',
+            },
+          ],
+        },
+      ],
     },
   },
 ]

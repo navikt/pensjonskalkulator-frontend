@@ -24,11 +24,6 @@ describe('SavnerDuNoe', () => {
       )
       expect(screen.getByText('savnerdunoe.ingress')).toBeInTheDocument()
       expect(screen.getAllByRole('button')).toHaveLength(1)
-      expect(
-        screen.getByText('Denne kalkulatoren er under utvikling.', {
-          exact: false,
-        })
-      ).toBeInTheDocument()
     })
 
     it('Når showAvansert er false, rendrer med riktig tekst og knapper', () => {
@@ -38,17 +33,12 @@ describe('SavnerDuNoe', () => {
       )
       expect(screen.queryByText('savnerdunoe.ingress')).not.toBeInTheDocument()
       expect(screen.queryAllByRole('button')).toHaveLength(0)
-      expect(
-        screen.getByText('Denne kalkulatoren er under utvikling.', {
-          exact: false,
-        })
-      ).toBeInTheDocument()
     })
 
     it('nullstiller input fra brukeren og redirigerer til avansert beregning når brukeren klikker på knappen', async () => {
       const user = userEvent.setup()
 
-      const { store } = await render(
+      const { store } = render(
         <SavnerDuNoe headingLevel="2" isEndring={false} showAvansert />,
         {
           preloadedState: {

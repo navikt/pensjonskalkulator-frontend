@@ -65,7 +65,6 @@ describe('BeregningAvansert', () => {
       userInput: {
         ...userInputInitialState,
         samtykke: true,
-        samboer: false,
         afp: 'ja_privat',
         currentSimulation: {
           ...userInputInitialState.currentSimulation,
@@ -209,16 +208,9 @@ describe('BeregningAvansert', () => {
             <BeregningAvansert />
           </BeregningContext.Provider>,
           {
+            // @ts-ignore
             preloadedState: {
               ...preloadedState,
-              api: {
-                // @ts-ignore
-                queries: {
-                  ...fulfilledGetPerson,
-                  ...fulfilledGetInntekt,
-                  ...fulfilledGetLoependeVedtak75Ufoeregrad,
-                },
-              },
             },
           }
         )
@@ -268,7 +260,7 @@ describe('BeregningAvansert', () => {
                 maaneder: 6,
               },
             },
-            simuleringstype: 'ALDERSPENSJON',
+            simuleringstype: 'ALDERSPENSJON_MED_AFP_PRIVAT',
             sivilstand: 'UGIFT',
             utenlandsperiodeListe: [],
           },
@@ -474,7 +466,7 @@ describe('BeregningAvansert', () => {
           'initiate'
         )
 
-        const { container } = await render(
+        const { container } = render(
           <BeregningContext.Provider
             value={{
               ...contextMockedValues,
@@ -527,7 +519,7 @@ describe('BeregningAvansert', () => {
         expect(
           await screen.findByText('grunnlag.forbehold.title')
         ).toBeInTheDocument()
-        expect(await screen.findByText('savnerdunoe.title')).toBeInTheDocument()
+        expect(screen.queryByText('savnerdunoe.title')).not.toBeInTheDocument()
         expect(
           screen.queryByText('savnerdunoe.ingress')
         ).not.toBeInTheDocument()
@@ -702,7 +694,7 @@ describe('BeregningAvansert', () => {
         'initiate'
       )
 
-      const { container } = await render(
+      const { container } = render(
         <BeregningContext.Provider
           value={{
             ...contextMockedValues,
@@ -777,7 +769,7 @@ describe('BeregningAvansert', () => {
         'initiate'
       )
 
-      const { container } = await render(
+      const { container } = render(
         <BeregningContext.Provider
           value={{
             ...contextMockedValues,

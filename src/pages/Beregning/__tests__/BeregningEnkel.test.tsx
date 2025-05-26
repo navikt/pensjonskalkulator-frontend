@@ -290,7 +290,7 @@ describe('BeregningEnkel', () => {
   describe('Når brukeren velger uttaksalder', () => {
     it('viser en loader mens beregning av alderspensjon pågår, oppdaterer valgt knapp og tegner graph og viser tabell, Pensjonsavtaler, Grunnlag og Forbehold, gitt at beregning av alderspensjon var vellykket', async () => {
       const user = userEvent.setup()
-      const { container } = await render(<BeregningEnkel />, {
+      const { container } = render(<BeregningEnkel />, {
         preloadedState: {
           api: {
             // @ts-ignore
@@ -336,7 +336,7 @@ describe('BeregningEnkel', () => {
         'initiate'
       )
       const user = userEvent.setup()
-      const { store } = await render(<BeregningEnkel />, {
+      const { store } = render(<BeregningEnkel />, {
         preloadedState: {
           api: {
             // @ts-ignore
@@ -360,7 +360,7 @@ describe('BeregningEnkel', () => {
           },
         },
       })
-      store.dispatch(
+      await store.dispatch(
         apiSliceUtils.apiSlice.endpoints.getLoependeVedtak.initiate()
       )
       await user.click(await screen.findByText('68 alder.aar'))
@@ -428,7 +428,7 @@ describe('BeregningEnkel', () => {
         'initiate'
       )
       const user = userEvent.setup()
-      const { store } = await render(<BeregningEnkel />, {
+      const { store } = render(<BeregningEnkel />, {
         preloadedState: {
           api: {
             // @ts-ignore
@@ -452,7 +452,7 @@ describe('BeregningEnkel', () => {
           },
         },
       })
-      store.dispatch(
+      await store.dispatch(
         apiSliceUtils.apiSlice.endpoints.getLoependeVedtak.initiate()
       )
       await user.click(await screen.findByText('68 alder.aar'))
@@ -521,7 +521,7 @@ describe('BeregningEnkel', () => {
       )
 
       const user = userEvent.setup()
-      const { store } = await render(<BeregningEnkel />, {
+      const { store } = render(<BeregningEnkel />, {
         preloadedState: {
           api: {
             // @ts-ignore
@@ -544,7 +544,7 @@ describe('BeregningEnkel', () => {
           },
         },
       })
-      store.dispatch(
+      await store.dispatch(
         apiSliceUtils.apiSlice.endpoints.getLoependeVedtak.initiate()
       )
       await user.click(await screen.findByText('68 alder.aar'))
@@ -613,7 +613,7 @@ describe('BeregningEnkel', () => {
       )
 
       const user = userEvent.setup()
-      const { store } = await render(<BeregningEnkel />, {
+      const { store } = render(<BeregningEnkel />, {
         preloadedState: {
           api: {
             // @ts-ignore
@@ -636,7 +636,7 @@ describe('BeregningEnkel', () => {
           },
         },
       })
-      store.dispatch(
+      await store.dispatch(
         apiSliceUtils.apiSlice.endpoints.getLoependeVedtak.initiate()
       )
       await user.click(await screen.findByText('68 alder.aar'))
@@ -725,14 +725,8 @@ describe('BeregningEnkel', () => {
 
       await user.click(await screen.findByText('70 alder.aar'))
 
-      await waitFor(() => {
-        expect(
-          screen.queryByTestId('uttaksalder-loader')
-        ).not.toBeInTheDocument()
-      })
-      waitFor(() => {
-        expect(initiateMock).toHaveBeenCalledTimes(1)
-      })
+      expect(screen.queryByTestId('uttaksalder-loader')).not.toBeInTheDocument()
+      expect(initiateMock).toHaveBeenCalledTimes(1)
       expect(await screen.findByText('beregning.error')).toBeInTheDocument()
       await waitFor(async () => {
         expect(screen.queryByText('grunnlag.title')).not.toBeInTheDocument()
@@ -910,7 +904,7 @@ describe('BeregningEnkel', () => {
   describe('Gitt at brukeren har vedtak om alderspensjon,', () => {
     it('viser en loader mens beregning av alderspensjon pågår, oppdaterer valgt knapp og tegner graph og viser tabell, Pensjonsavtaler, Grunnlag og Forbehold, gitt at beregning av alderspensjon var vellykket', async () => {
       const user = userEvent.setup()
-      const { container } = await render(<BeregningEnkel />, {
+      const { container } = render(<BeregningEnkel />, {
         preloadedState: {
           api: {
             // @ts-ignore
@@ -961,7 +955,7 @@ describe('BeregningEnkel', () => {
       )
 
       const user = userEvent.setup()
-      const { store } = await render(<BeregningEnkel />, {
+      const { store } = render(<BeregningEnkel />, {
         preloadedState: {
           api: {
             // @ts-ignore
@@ -983,7 +977,7 @@ describe('BeregningEnkel', () => {
           },
         },
       })
-      store.dispatch(
+      await store.dispatch(
         apiSliceUtils.apiSlice.endpoints.getLoependeVedtak.initiate()
       )
       await user.click(await screen.findByText('68 alder.aar'))

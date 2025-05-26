@@ -18,10 +18,10 @@ describe('GrunnlagInntekt', () => {
   describe('Gitt at brukeren har inntekt hentet fra Skatteetaten', () => {
     const user = userEvent.setup()
     beforeEach(async () => {
-      const { store } = await render(
+      const { store } = render(
         <WrappedGrunnlagInntekt goToAvansert={vi.fn()} />
       )
-      store.dispatch(apiSlice.endpoints.getInntekt.initiate())
+      await store.dispatch(apiSlice.endpoints.getInntekt.initiate())
       expect(await screen.findByText('grunnlag.inntekt.title')).toBeVisible()
       expect(await screen.findAllByText('521 338 kr')).toHaveLength(2)
       await user.click(await screen.findByTestId('accordion-header'))
@@ -84,7 +84,7 @@ describe('GrunnlagInntekt', () => {
         status: 200,
         json: { aar: 2021, beloep: 0 },
       })
-      const { store } = await render(
+      const { store } = render(
         <WrappedGrunnlagInntekt goToAvansert={vi.fn()} />
       )
       await store.dispatch(apiSlice.endpoints.getInntekt.initiate())
