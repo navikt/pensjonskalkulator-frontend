@@ -326,6 +326,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
     setLocalHeltUttak(undefined)
     setLocalHarInntektVsaGradertUttakRadio(null)
     setLocalHarInntektVsaHeltUttakRadio(null)
+    setShowPre2025OffentligAfpAlert(false)
   }
 
   return (
