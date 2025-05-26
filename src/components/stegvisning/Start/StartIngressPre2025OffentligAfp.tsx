@@ -17,15 +17,15 @@ export const StartIngressPre2025OffentligAfp: React.FC<
       {loependeVedtak.alderspensjon?.grad === 0 ? (
         <FormattedMessage
           id="stegvisning.start.endring.ingress.pre2025_offentlig_afp"
-          values={{ ...getFormatMessageValues() }}
-        />
-      ) : (
-        <FormattedMessage
-          id="stegvisning.start.ingress.pre2025_offentlig_afp"
           values={{
             ...getFormatMessageValues(),
             grad: loependeVedtak?.alderspensjon?.grad,
           }}
+        />
+      ) : (
+        <FormattedMessage
+          id="stegvisning.start.ingress.pre2025_offentlig_afp"
+          values={{ ...getFormatMessageValues() }}
         />
       )}
     </span>

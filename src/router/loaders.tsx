@@ -201,13 +201,6 @@ export const stepStartAccessGuard = async () => {
     })
   }
 
-  if (
-    getLoependeVedtakRes.data.pre2025OffentligAfp &&
-    getLoependeVedtakRes.data.alderspensjon?.grad === 0
-  ) {
-    redirect(paths.beregningAvansert)
-  }
-
   return {
     person: getPersonRes.data,
     loependeVedtak: getLoependeVedtakRes.data,
@@ -249,10 +242,6 @@ export const stepAFPAccessGuard = async () => {
     .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
     .unwrap()
 
-  if (loependeVedtak.pre2025OffentligAfp) {
-    return redirect(paths.beregningEnkel)
-  }
-
   // TODO: Flytte disse til der inntekt og omstillingstønad brukes
   await store.dispatch(apiSlice.endpoints.getInntekt.initiate()).unwrap()
   await store
@@ -286,6 +275,7 @@ export const stepAFPAccessGuard = async () => {
     loependeVedtak.afpPrivat ||
     loependeVedtak.afpOffentlig ||
     loependeVedtak.ufoeretrygd.grad === 100 ||
+    loependeVedtak.pre2025OffentligAfp ||
     (loependeVedtak.ufoeretrygd.grad &&
       person.foedselsdato &&
       isFoedselsdatoOverAlder(person.foedselsdato, AFP_UFOERE_OPPSIGELSESALDER))
@@ -299,7 +289,7 @@ export const stepAFPAccessGuard = async () => {
   }
 }
 
-////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
 
 export const stepUfoeretrygdAFPAccessGuard = async () => {
   if (directAccessGuard()) {
@@ -357,4 +347,24 @@ export const stepSamtykkeOffentligAFPAccessGuard = async () => {
   return redirect(
     stepArrays[stepArrays.indexOf(paths.samtykkeOffentligAFP) + 1]
   )
+}
+
+////////////////////////////////////////////////////////////////////////
+
+export const stepSamtykkePensjonsavtaler = async () => {
+  if (directAccessGuard()) {
+    return redirect(paths.start)
+  }
+
+  const loependeVedtak = await store
+    .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
+    .unwrap()
+
+  const stepArrays = isLoependeVedtakEndring(loependeVedtak)
+    ? stegvisningOrderEndring
+    : stegvisningOrder
+
+  if (loependeVedtak.pre2025OffentligAfp && stepArrays === stegvisningOrder) {
+    return redirect(stepArrays[stepArrays.indexOf(paths.samtykke) + 1])
+  }
 }
