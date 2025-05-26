@@ -138,14 +138,16 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
   })
 
   const handleHeltUttaksalderChange = (alder: Partial<Alder> | undefined) => {
-    setShowPre2025OffentligAfpAlert(
-      Boolean(
-        alder &&
-          alder.aar !== undefined &&
-          alder.aar < TIDLIGST_UTTAKSALDER_FOR_PRE2025_OFFENTLIG_AFP &&
-          loependeVedtak.pre2025OffentligAfp
+    if (localGradertUttak?.grad === 100 || !localGradertUttak?.grad) {
+      setShowPre2025OffentligAfpAlert(
+        Boolean(
+          alder &&
+            alder.aar !== undefined &&
+            alder.aar < TIDLIGST_UTTAKSALDER_FOR_PRE2025_OFFENTLIG_AFP &&
+            loependeVedtak.pre2025OffentligAfp
+        )
       )
-    )
+    }
     setValidationErrorUttaksalderHeltUttak('')
     setLocalHeltUttak((prevState) => {
       const sluttAlderAntallMaaneder =
@@ -171,6 +173,14 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
   const handleGradertUttaksalderChange = (
     alder: Partial<Alder> | undefined
   ) => {
+    setShowPre2025OffentligAfpAlert(
+      Boolean(
+        alder &&
+          alder.aar !== undefined &&
+          alder.aar < TIDLIGST_UTTAKSALDER_FOR_PRE2025_OFFENTLIG_AFP &&
+          loependeVedtak.pre2025OffentligAfp
+      )
+    )
     setLocalGradertUttak((previous) => ({
       ...previous,
       uttaksalder: alder,
