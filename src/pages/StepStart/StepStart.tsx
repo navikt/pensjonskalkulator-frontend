@@ -38,9 +38,9 @@ export function StepStart() {
       loependeVedtak.pre2025OffentligAfp &&
       loependeVedtak.alderspensjon?.grad === 0
     ) {
-      return navigate(paths.beregningAvansert)
+      navigate(paths.beregningAvansert)
     } else if (onStegvisningNext) {
-      return onStegvisningNext()
+      onStegvisningNext()
     }
   }
 
