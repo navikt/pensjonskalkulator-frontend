@@ -50,7 +50,7 @@ export function useBeregningsdetaljer(
           verdi: `${formatInntekt(ap.garantipensjonBeloep)} kr`,
         },
         {
-          tekst: 'Sum månedelig alderspensjon',
+          tekst: 'Sum månedlig alderspensjon',
           verdi: `${formatInntekt(
             (ap.grunnpensjon ?? 0) +
               (ap.tilleggspensjon ?? 0) +
