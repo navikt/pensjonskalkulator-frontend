@@ -109,7 +109,7 @@ export const GrunnlagAFP: React.FC = () => {
       return 'grunnlag.afp.ingress.ja_offentlig.endring'
     }
 
-    if (ufoeregrad === 100) {
+    if (ufoeregrad === 100 && foedselsdato && !isFoedtFoer1963(foedselsdato)) {
       return 'grunnlag.afp.ingress.full_ufoeretrygd'
     }
 
