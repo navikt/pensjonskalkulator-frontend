@@ -1,9 +1,11 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
 
-import { Heading } from '@navikt/ds-react'
+import { HStack } from '@navikt/ds-react'
 
 import { DetaljRad } from '../hooks'
+
+import styles from './Grunnpensjonsdetaljer.module.scss'
 
 export interface GrunnpensjonsdetaljerProps {
   grunnpensjonObjekt: DetaljRad[]
@@ -28,27 +30,30 @@ export const Grunnpensjonsdetaljer: React.FC<GrunnpensjonsdetaljerProps> = ({
         </div>
       )}
       <div className="heltUttak">
-        <Heading size="small" level="3">
-          <FormattedMessage id="beregning.detaljer.grunnpensjon.title" />
-        </Heading>
         <dl>
+          <div className={styles.hstackRow}>
+            <strong>
+              <FormattedMessage id="beregning.detaljer.grunnpensjon.title" />
+            </strong>
+          </div>
           {grunnpensjonObjekt.map((detalj, index) => (
             <React.Fragment key={index}>
-              {index === grunnpensjonObjekt.length - 1 ? (
-                <>
-                  <dt>
+              <HStack justify="space-between" className={styles.hstackRow}>
+                <dt>
+                  {index === grunnpensjonObjekt.length - 1 ? (
                     <strong>{detalj.tekst}:</strong>
-                  </dt>
-                  <dd>
+                  ) : (
+                    `${detalj.tekst}:`
+                  )}
+                </dt>
+                <dd>
+                  {index === grunnpensjonObjekt.length - 1 ? (
                     <strong>{detalj.verdi}</strong>
-                  </dd>
-                </>
-              ) : (
-                <>
-                  <dt>{detalj.tekst}:</dt>
-                  <dd>{detalj.verdi}</dd>
-                </>
-              )}
+                  ) : (
+                    detalj.verdi
+                  )}
+                </dd>
+              </HStack>
             </React.Fragment>
           ))}
         </dl>

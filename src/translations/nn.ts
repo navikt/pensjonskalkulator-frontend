@@ -310,6 +310,11 @@ export default {
   'beregning.tabell.lukk': 'Lukk tabell av utrekninga',
   'beregning.tabell.vis': 'Vis tabell av utrekninga',
   'beregning.tabell.sum': 'Sum',
+  'beregning.detaljer.grunnpensjon.title': 'MANGLER_TEKST',
+  'beregning.detaljer.opptjeningsdetaljer.kap19.title': 'MANGLER_TEKST',
+  'beregning.detaljer.opptjeningsdetaljer.kap20.title': 'MANGLER_TEKST',
+  'beregning.detaljer.opptjeningsdetaljer.pre2025OffentligAfp.title':
+    'MANGLER_TEKST',
   'beregning.avansert.link.endre_valgene_dine': 'MANGLER_TEKST',
   'beregning.avansert.link.endre_avanserte_valg': 'MANGLER_TEKST',
   'beregning.avansert.endring_banner.title': 'MANGLER_TEKST',
