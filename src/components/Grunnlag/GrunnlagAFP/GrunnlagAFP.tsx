@@ -73,7 +73,11 @@ export const GrunnlagAFP: React.FC = () => {
 
     if (
       ufoeregrad === 100 ||
-      (ufoeregrad > 0 && foedselsdato && isFoedtFoer1963(foedselsdato))
+      (ufoeregrad > 0 && foedselsdato && isFoedtFoer1963(foedselsdato)) ||
+      (ufoeregrad > 0 &&
+        foedselsdato &&
+        !isFoedtFoer1963(foedselsdato) &&
+        isFoedselsdatoOverAlder(foedselsdato, AFP_UFOERE_OPPSIGELSESALDER))
     ) {
       return formatAfp(intl, 'nei')
     }
@@ -110,7 +114,16 @@ export const GrunnlagAFP: React.FC = () => {
     }
 
     if (ufoeregrad === 100 && foedselsdato && !isFoedtFoer1963(foedselsdato)) {
-      return 'grunnlag.afp.ingress.full_ufoeretrygd'
+      return 'grunnlag.afp.ingress.ufoeretrygd'
+    }
+
+    if (
+      ufoeregrad > 0 &&
+      foedselsdato &&
+      !isFoedtFoer1963(foedselsdato) &&
+      isFoedselsdatoOverAlder(foedselsdato, AFP_UFOERE_OPPSIGELSESALDER)
+    ) {
+      return 'grunnlag.afp.ingress.ufoeretrygd'
     }
 
     if (ufoeregrad > 0 && foedselsdato && isFoedtFoer1963(foedselsdato)) {
