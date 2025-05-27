@@ -12,7 +12,7 @@ import {
   Simulation,
   userInputInitialState,
 } from '@/state/userInput/userInputSlice'
-import { act, render, screen, waitFor } from '@/test-utils'
+import { act, render, screen } from '@/test-utils'
 
 import afpOffentligData from '../../../mocks/data/afp-offentlig.json' with { type: 'json' }
 import afpPrivatData from '../../../mocks/data/afp-privat/67.json' with { type: 'json' }
@@ -53,7 +53,7 @@ describe('Simulering', () => {
   })
 
   it('Når alderspensjon laster så vises det en spinner, og deretter heading på riktig nivå', async () => {
-    const { container } = await render(
+    const { container } = render(
       <Simulering
         isLoading={true}
         headingLevel="3"
@@ -146,7 +146,7 @@ describe('Simulering', () => {
         apiSliceUtils,
         'usePensjonsavtalerQuery'
       )
-      const { container } = await render(
+      const { container } = render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -194,7 +194,7 @@ describe('Simulering', () => {
     })
 
     it('Når brukeren velger AFP-privat, viser inntekt, alderspensjon og AFP', async () => {
-      const { container } = await render(
+      const { container } = render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -241,7 +241,7 @@ describe('Simulering', () => {
     })
 
     it('Når brukeren velger AFP-offentlig, viser inntekt, alderspensjon og AFP', async () => {
-      const { container } = await render(
+      const { container } = render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -288,7 +288,7 @@ describe('Simulering', () => {
     })
 
     it('Når brukeren velger uttaksagrad 67 år, vises årene i grafen fra 66 år til 77+', async () => {
-      const { container } = await render(
+      const { container } = render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -329,7 +329,7 @@ describe('Simulering', () => {
     })
 
     it('Når brukeren velger gradert pensjon med uttaksgrad 62 år, vises årene i grafen fra 61 år til 77+', async () => {
-      const { container } = await render(
+      const { container } = render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -407,7 +407,7 @@ describe('Simulering', () => {
         apiSliceUtils,
         'usePensjonsavtalerQuery'
       )
-      const { container } = await render(
+      const { container } = render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -483,7 +483,7 @@ describe('Simulering', () => {
         apiSliceUtils,
         'usePensjonsavtalerQuery'
       )
-      const { container } = await render(
+      const { container } = render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -550,7 +550,7 @@ describe('Simulering', () => {
         apiSliceUtils,
         'usePensjonsavtalerQuery'
       )
-      const { container } = await render(
+      const { container } = render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -616,7 +616,7 @@ describe('Simulering', () => {
         apiSliceUtils,
         'usePensjonsavtalerQuery'
       )
-      const { container } = await render(
+      const { container } = render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -694,7 +694,7 @@ describe('Simulering', () => {
         apiSliceUtils,
         'usePensjonsavtalerQuery'
       )
-      const { container } = await render(
+      const { container } = render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -785,7 +785,7 @@ describe('Simulering', () => {
         method: 'post',
       })
 
-      const { container } = await render(
+      const { container } = render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -811,11 +811,8 @@ describe('Simulering', () => {
         }
       )
 
-      await waitFor(async () => {
-        expect(
-          await screen.findByTestId('highcharts-done-drawing')
-        ).toBeVisible()
-      })
+      expect(await screen.findByTestId('highcharts-done-drawing')).toBeVisible()
+
       // Nødvendig for at animasjonen rekker å bli ferdig
       await act(async () => {
         await new Promise((r) => setTimeout(r, 500))
@@ -840,7 +837,7 @@ describe('Simulering', () => {
         method: 'post',
       })
 
-      const { container } = await render(
+      const { container } = render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -916,7 +913,7 @@ describe('Simulering', () => {
         method: 'post',
       })
 
-      const { container } = await render(
+      const { container } = render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -986,7 +983,7 @@ describe('Simulering', () => {
         method: 'post',
       })
 
-      const { container } = await render(
+      const { container } = render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -1029,9 +1026,7 @@ describe('Simulering', () => {
       expect(
         screen.getByText('beregning.highcharts.serie.tp.name')
       ).toBeVisible()
-      await waitFor(async () => {
-        expect(screen.getByTestId('pensjonsavtaler-alert')).toBeVisible()
-      })
+      expect(screen.getByTestId('pensjonsavtaler-alert')).toBeVisible()
     })
 
     it('Når brukeren med offentlig-tp ikke har noe privat pensjonsavtale, viser inntekt, alderspensjon og pensjonsavtaler.', async () => {
@@ -1044,7 +1039,7 @@ describe('Simulering', () => {
         method: 'post',
       })
 
-      const { container } = await render(
+      const { container } = render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -1120,9 +1115,7 @@ describe('Simulering', () => {
     const highChartsWrapper = await screen.findByTestId(
       'highcharts-aria-wrapper'
     )
-    await waitFor(() => {
-      expect(highChartsWrapper.getAttribute('aria-hidden')).toBe('true')
-    })
+    expect(highChartsWrapper.getAttribute('aria-hidden')).toBe('true')
   })
 
   describe('Gitt at simuleringen er i enkel visning', () => {
