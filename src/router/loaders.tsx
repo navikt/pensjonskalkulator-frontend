@@ -1,6 +1,6 @@
 import { SerializedError } from '@reduxjs/toolkit'
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
-import { redirect } from 'react-router'
+import { LoaderFunctionArgs, redirect } from 'react-router'
 
 import { HOST_BASEURL } from '@/paths'
 import {
@@ -18,6 +18,11 @@ import {
 } from '@/utils/alder'
 import { isLoependeVedtakEndring } from '@/utils/loependeVedtak'
 import { logger } from '@/utils/logging'
+import { skip } from '@/utils/navigation'
+
+export type SafeLoaderFunction<T> = (
+  args: LoaderFunctionArgs
+) => Promise<T | Response>
 
 export type Reason =
   | 'INSUFFICIENT_LEVEL_OF_ASSURANCE'
@@ -46,12 +51,20 @@ export interface LoginContext {
   isLoggedIn: boolean
 }
 
-export async function authenticationGuard() {
+export interface AuthenticationGuardData {
+  authResponse: Response
+}
+
+export const authenticationGuard: SafeLoaderFunction<
+  AuthenticationGuardData
+> = async () => {
   const authResponse = await fetch(`${HOST_BASEURL}/oauth2/session`)
   return { authResponse }
 }
 
-export const directAccessGuard = () => {
+export type DirectAccessGuardData = void
+
+export const directAccessGuard = (): Response | undefined => {
   const state = store.getState()
   // Dersom ingen kall er registrert i store betyr det at brukeren prøver å aksessere en url direkte
   if (
@@ -60,15 +73,21 @@ export const directAccessGuard = () => {
   ) {
     return redirect(paths.start)
   }
+  return undefined
 }
 
 ////////////////////////////////////////////////////////////////////////
 
-export const landingPageAccessGuard = () => {
+export type LandingPageAccessGuardData = void
+
+export const landingPageAccessGuard: SafeLoaderFunction<
+  LandingPageAccessGuardData
+> = async () => {
   const isVeileder = selectIsVeileder(store.getState())
   if (isVeileder) {
     return redirect(paths.start)
   }
+  return Promise.resolve(undefined)
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -232,7 +251,7 @@ export const stepSivilstandAccessGuard = async () => {
 
 ////////////////////////////////////////////////////////////////////////
 
-export const stepAFPAccessGuard = async () => {
+export const stepAFPAccessGuard = async ({ request }: LoaderFunctionArgs) => {
   if (directAccessGuard()) {
     return redirect(paths.start)
   }
@@ -279,7 +298,7 @@ export const stepAFPAccessGuard = async () => {
       person.foedselsdato &&
       isFoedselsdatoOverAlder(person.foedselsdato, AFP_UFOERE_OPPSIGELSESALDER))
   ) {
-    return redirect(stepArrays[stepArrays.indexOf(paths.afp) + 1])
+    return skip(stepArrays, paths.afp, request)
   } else {
     return {
       person,
@@ -290,7 +309,9 @@ export const stepAFPAccessGuard = async () => {
 
 ///////////////////////////////////////////////////////////////////////////
 
-export const stepUfoeretrygdAFPAccessGuard = async () => {
+export const stepUfoeretrygdAFPAccessGuard = async ({
+  request,
+}: LoaderFunctionArgs) => {
   if (directAccessGuard()) {
     return redirect(paths.start)
   }
@@ -310,18 +331,20 @@ export const stepUfoeretrygdAFPAccessGuard = async () => {
   if (showStep) {
     return
   }
-  return redirect(stepArrays[stepArrays.indexOf(paths.ufoeretrygdAFP) + 1])
+  return skip(stepArrays, paths.ufoeretrygdAFP, request)
 }
 
 ////////////////////////////////////////////////////////////////////////
 
-export const stepSamtykkeOffentligAFPAccessGuard = async () => {
+export const stepSamtykkeOffentligAFPAccessGuard = async ({
+  request,
+}: LoaderFunctionArgs) => {
   if (directAccessGuard()) {
     return redirect(paths.start)
   }
 
-  const state = store.getState()
-  const afp = selectAfp(state)
+  const appState = store.getState()
+  const afp = selectAfp(appState)
   const loependeVedtak = await store
     .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
     .unwrap()
@@ -329,16 +352,14 @@ export const stepSamtykkeOffentligAFPAccessGuard = async () => {
 
   // Bruker uten uføretrygd som svarer ja_offentlig til AFP kan se steget
   if (showStep) {
-    return
+    return { data: undefined }
   }
 
   const stepArrays = isLoependeVedtakEndring(loependeVedtak)
     ? stegvisningOrderEndring
     : stegvisningOrder
 
-  return redirect(
-    stepArrays[stepArrays.indexOf(paths.samtykkeOffentligAFP) + 1]
-  )
+  return skip(stepArrays, paths.samtykkeOffentligAFP, request)
 }
 
 ////////////////////////////////////////////////////////////////////////
