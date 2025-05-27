@@ -9,6 +9,7 @@ import {
   fulfilledGetLoependeVedtakLoepende50Alderspensjon,
   fulfilledGetLoependeVedtakLoependeAFPoffentlig,
   fulfilledGetLoependeVedtakLoependeAFPprivat,
+  fulfilledGetLoependeVedtakPre2025OffentligAfp,
 } from '@/mocks/mockedRTKQueryApiCalls'
 import { paths } from '@/router/constants'
 import { userInputInitialState } from '@/state/userInput/userInputSlice'
@@ -601,7 +602,46 @@ describe('Grunnlag - AFP', () => {
       ).toBeInTheDocument()
     })
 
-    //TODO: Legg til dette når grunnlag for pre2025OffentligAfp er på plass
-    it('får brukeren riktig tittel og tekst når hen har vedtak om AFP etterfulgt av AP,', () => {})
+    it('får brukeren riktig tittel og tekst når hen har vedtak om AFP etterfulgt av AP,', () => {
+      const mockedQueries = {
+        ...fulfilledGetLoependeVedtakPre2025OffentligAfp,
+        ['getPerson(undefined)']: {
+          status: 'fulfilled',
+          endpointName: 'getPerson',
+          requestId: 'xTaE6mOydr5ZI75UXq4Wi',
+          startedTimeStamp: 1688046411971,
+          data: {
+            navn: 'Aprikos',
+            sivilstand: 'UGIFT',
+            foedselsdato: '1960-01-01',
+            pensjoneringAldre: {
+              normertPensjoneringsalder: {
+                aar: 67,
+                maaneder: 0,
+              },
+              nedreAldersgrense: {
+                aar: 62,
+                maaneder: 0,
+              },
+            },
+          },
+          fulfilledTimeStamp: 1688046412103,
+        },
+      }
+      render(<WrappedGrunnlagAFP />, {
+        preloadedState: {
+          api: {
+            // @ts-ignore
+            queries: { ...mockedQueries },
+          },
+          userInput: { ...userInputInitialState },
+        },
+      })
+
+      expect(
+        screen.getByText('grunnlag.afp.ingress.overgangskull')
+      ).toBeVisible()
+      expect(screen.getByText('afp.offentlig')).toBeVisible()
+    })
   })
 })

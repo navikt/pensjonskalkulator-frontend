@@ -378,6 +378,24 @@ export const fulfilledGetLoependeVedtakLoependeAFPoffentlig = {
   },
 }
 
+export const fulfilledGetLoependeVedtakPre2025OffentligAfp = {
+  ['getLoependeVedtak(undefined)']: {
+    status: 'fulfilled',
+    endpointName: 'getLoependeVedtak',
+    requestId: 'xTaE6mOydr5ZI75UXq4Wi',
+    startedTimeStamp: 1688046411971,
+    data: {
+      ufoeretrygd: {
+        grad: 0,
+      },
+      pre2025OffentligAfp: {
+        fom: '2020-10-02',
+      },
+    } satisfies LoependeVedtak,
+    fulfilledTimeStamp: 1688046412103,
+  },
+}
+
 export const fulfilledGetLoependeVedtakLoepende0Alderspensjon100Ufoeretrygd = {
   ['getLoependeVedtak(undefined)']: {
     status: 'fulfilled',

@@ -48,6 +48,7 @@ export const GrunnlagAFP: React.FC = () => {
     const afpString = formatAfp(intl, afp ?? 'vet_ikke')
 
     if (
+      loependeVedtak &&
       loependeVedtak.pre2025OffentligAfp &&
       foedselsdato &&
       isFoedtFoer1963(foedselsdato)
@@ -59,7 +60,7 @@ export const GrunnlagAFP: React.FC = () => {
       return `${formatAfp(intl, 'ja_privat')} (${intl.formatMessage({ id: 'grunnlag.afp.endring' })})`
     }
 
-    if (loependeVedtak.afpOffentlig) {
+    if (loependeVedtak && loependeVedtak.afpOffentlig) {
       return `${formatAfp(intl, 'ja_offentlig')} (${intl.formatMessage({ id: 'grunnlag.afp.endring' })})`
     }
 
@@ -96,6 +97,7 @@ export const GrunnlagAFP: React.FC = () => {
     }
 
     if (
+      loependeVedtak &&
       loependeVedtak.pre2025OffentligAfp &&
       foedselsdato &&
       isFoedtFoer1963(foedselsdato)
@@ -103,7 +105,7 @@ export const GrunnlagAFP: React.FC = () => {
       return 'grunnlag.afp.ingress.overgangskull'
     }
 
-    if (loependeVedtak.afpOffentlig) {
+    if (loependeVedtak && loependeVedtak.afpOffentlig) {
       return 'grunnlag.afp.ingress.ja_offentlig.endring'
     }
 
@@ -121,6 +123,7 @@ export const GrunnlagAFP: React.FC = () => {
 
     if (
       afp === 'ja_privat' &&
+      loependeVedtak &&
       loependeVedtak.alderspensjon &&
       foedselsdato &&
       isFoedtFoer1963(foedselsdato)
@@ -129,6 +132,7 @@ export const GrunnlagAFP: React.FC = () => {
     }
 
     if (
+      loependeVedtak &&
       loependeVedtak.alderspensjon &&
       foedselsdato &&
       isFoedtFoer1963(foedselsdato)
@@ -154,6 +158,7 @@ export const GrunnlagAFP: React.FC = () => {
   ])
 
   if (
+    loependeVedtak &&
     loependeVedtak.ufoeretrygd.grad &&
     foedselsdato &&
     !isFoedtFoer1963(foedselsdato) &&
