@@ -95,6 +95,7 @@ export const isAlderOver =
   }
 
 export const isAlderOver67 = isAlderOver(67)
+export const isAlderOver75 = isAlderOver(75)
 
 export const isAlderOver75Plus1Maaned = (foedselsdato: string) => {
   const parsedFoedselsdato = parse(
