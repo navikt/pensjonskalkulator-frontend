@@ -241,7 +241,7 @@ export const BeregningEnkel = () => {
   }
 
   const isOver75AndNoLoependeVedtak =
-    person?.foedselsdato &&
+    !!person?.foedselsdato &&
     isAlderOver75(person.foedselsdato) &&
     !loependeVedtak.alderspensjon &&
     !loependeVedtak.afpPrivat &&
