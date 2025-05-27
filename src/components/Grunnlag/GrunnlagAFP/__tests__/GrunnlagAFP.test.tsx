@@ -317,11 +317,36 @@ describe('Grunnlag - AFP', () => {
 
   describe('Gitt at brukeren har 100% uføretrygd,', () => {
     it('Viser riktig tittel og tekst', () => {
+      const mockedQueries = {
+        ...fulfilledGetLoependeVedtak100Ufoeregrad,
+        ['getPerson(undefined)']: {
+          status: 'fulfilled',
+          endpointName: 'getPerson',
+          requestId: 'xTaE6mOydr5ZI75UXq4Wi',
+          startedTimeStamp: 1688046411971,
+          data: {
+            navn: 'Aprikos',
+            sivilstand: 'UGIFT',
+            foedselsdato: '1965-01-01',
+            pensjoneringAldre: {
+              normertPensjoneringsalder: {
+                aar: 67,
+                maaneder: 0,
+              },
+              nedreAldersgrense: {
+                aar: 62,
+                maaneder: 0,
+              },
+            },
+          },
+          fulfilledTimeStamp: 1688046412103,
+        },
+      }
       render(<WrappedGrunnlagAFP />, {
         preloadedState: {
           api: {
             // @ts-ignore
-            queries: { ...fulfilledGetLoependeVedtak100Ufoeregrad },
+            queries: { ...mockedQueries },
           },
           userInput: { ...userInputInitialState },
         },
