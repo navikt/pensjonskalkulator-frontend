@@ -40,6 +40,7 @@ describe('Endring av alderspensjon', () => {
               url: '/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak',
             },
             {
+              harLoependeVedtak: true,
               alderspensjon: {
                 grad: 80,
                 fom: '2010-10-10',
@@ -465,6 +466,7 @@ describe('Endring av alderspensjon', () => {
             url: '/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak',
           },
           {
+            harLoependeVedtak: true,
             alderspensjon: {
               grad: 80,
               fom: '2010-10-10',
@@ -503,6 +505,7 @@ describe('Endring av alderspensjon', () => {
               url: '/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak',
             },
             {
+              harLoependeVedtak: true,
               alderspensjon: {
                 grad: 80,
                 fom: '2010-10-10',
@@ -773,6 +776,7 @@ describe('Endring av alderspensjon', () => {
             url: '/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak',
           },
           {
+            harLoependeVedtak: true,
             alderspensjon: {
               grad: 80,
               fom: '2010-10-10',
@@ -809,6 +813,7 @@ describe('Endring av alderspensjon', () => {
               url: '/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak',
             },
             {
+              harLoependeVedtak: true,
               alderspensjon: {
                 grad: 80,
                 fom: '2010-10-10',
@@ -1078,6 +1083,7 @@ describe('Endring av alderspensjon', () => {
             url: '/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak',
           },
           {
+            harLoependeVedtak: true,
             alderspensjon: {
               grad: 50,
               fom: '2010-10-10',
@@ -1115,6 +1121,7 @@ describe('Endring av alderspensjon', () => {
               url: '/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak',
             },
             {
+              harLoependeVedtak: true,
               alderspensjon: {
                 grad: 50,
                 fom: '2010-10-10',
@@ -1360,6 +1367,7 @@ describe('Endring av alderspensjon', () => {
             url: '/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak',
           },
           {
+            harLoependeVedtak: true,
             alderspensjon: {
               grad: 0,
               fom: '2010-10-10',
@@ -1397,6 +1405,7 @@ describe('Endring av alderspensjon', () => {
               url: '/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak',
             },
             {
+              harLoependeVedtak: true,
               alderspensjon: {
                 grad: 0,
                 fom: '2010-10-10',

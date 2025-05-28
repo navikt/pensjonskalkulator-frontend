@@ -25,6 +25,7 @@ describe('Med ufoeretrygd', () => {
         },
         {
           ...loependeVedtakMock,
+          harLoependeVedtak: true,
           ufoeretrygd: { grad: 90 },
         } satisfies LoependeVedtak
       ).as('getLoependeVedtak')
@@ -51,6 +52,7 @@ describe('Med ufoeretrygd', () => {
         },
         {
           ...loependeVedtakMock,
+          harLoependeVedtak: true,
           ufoeretrygd: { grad: 90 },
         } satisfies LoependeVedtak
       ).as('getLoependeVedtak')
@@ -200,6 +202,7 @@ describe('Med ufoeretrygd', () => {
         },
         {
           ...loependeVedtakMock,
+          harLoependeVedtak: true,
           ufoeretrygd: { grad: 90 },
         } satisfies LoependeVedtak
       ).as('getLoependeVedtak')
@@ -227,6 +230,7 @@ describe('Med ufoeretrygd', () => {
         },
         {
           ...loependeVedtakMock,
+          harLoependeVedtak: true,
           ufoeretrygd: { grad: 100 },
         } satisfies LoependeVedtak
       ).as('getLoependeVedtak')
@@ -266,6 +270,7 @@ describe('Med ufoeretrygd', () => {
         },
         {
           ...loependeVedtakMock,
+          harLoependeVedtak: true,
           ufoeretrygd: { grad: 75 },
         } satisfies LoependeVedtak
       ).as('getLoependeVedtak')
@@ -310,6 +315,7 @@ describe('Med ufoeretrygd', () => {
         },
         {
           ...loependeVedtakMock,
+          harLoependeVedtak: true,
           ufoeretrygd: { grad: 100 },
         } satisfies LoependeVedtak
       ).as('getLoependeVedtak')
@@ -372,6 +378,7 @@ describe('Med ufoeretrygd', () => {
         },
         {
           ...loependeVedtakMock,
+          harLoependeVedtak: true,
           ufoeretrygd: { grad: 40 },
         } satisfies LoependeVedtak
       ).as('getLoependeVedtak')
