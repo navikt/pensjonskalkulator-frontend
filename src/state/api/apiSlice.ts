@@ -1,10 +1,5 @@
-import {
-  FetchBaseQueryError,
-  createApi,
-  fetchBaseQuery,
-} from '@reduxjs/toolkit/query/react'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
-import { tpNummerTilNavn } from '@/components/Pensjonsavtaler/OffentligTjenestePensjon/utils'
 import { API_BASEURL } from '@/paths'
 import { RootState } from '@/state/store'
 
@@ -41,7 +36,7 @@ export const apiSlice = createApi({
       query: () => '/inntekt',
       transformResponse: (response) => {
         if (!isInntekt(response)) {
-          throw new Error(`Mottok ugyldig inntekt: ${response}`)
+          throw new Error(`Mottok ugyldig inntekt: ${JSON.stringify(response)}`)
         }
         return response
       },
@@ -51,7 +46,7 @@ export const apiSlice = createApi({
       providesTags: ['Person'],
       transformResponse: (response) => {
         if (!isPerson(response)) {
-          throw new Error(`Mottok ugyldig person: ${response}`)
+          throw new Error(`Mottok ugyldig person: ${JSON.stringify(response)}`)
         }
         return {
           ...response,
@@ -59,11 +54,13 @@ export const apiSlice = createApi({
         }
       },
     }),
-    getGrunnbelop: builder.query<number, void>({
+    getGrunnbelop: builder.query<number, void, { grunnbeløp: number }>({
       query: () => 'https://g.nav.no/api/v1/grunnbel%C3%B8p',
-      transformResponse: (response: { grunnbeløp: number }) => {
+      transformResponse: (response) => {
         if (!response.grunnbeløp) {
-          throw new Error(`Mottok ugyldig grunnbeløp: ${response}`)
+          throw new Error(
+            `Mottok ugyldig grunnbeløp: ${JSON.stringify(response)}`
+          )
         }
         return response.grunnbeløp
       },
@@ -109,43 +106,20 @@ export const apiSlice = createApi({
     }),
 
     offentligTp: builder.query<OffentligTp, OffentligTpRequestBody | void>({
-      queryFn: async (body, queryApi, _extraOptions, fetchWithBQ) => {
-        const otpQuery = fetchWithBQ({
-          url: '/v2/simuler-oftp',
-          method: 'POST',
-          body,
-        })
-        const featureToggleQuery = queryApi.dispatch(
-          apiSlice.endpoints.getOtpKlpFeatureToggle.initiate()
-        ) as Promise<{ data?: UnleashToggle }>
-
-        const results = await Promise.all([otpQuery, featureToggleQuery])
-        const otpResult = results[0]
-        const featureToggleResult = results[1]
-
-        if (otpResult.error) {
-          return { error: otpResult.error as FetchBaseQueryError }
-        }
-
-        const data = otpResult.data
-        if (!isOffentligTp(data)) {
+      query: (body) => ({
+        url: '/v2/simuler-oftp',
+        method: 'POST',
+        body,
+      }),
+      providesTags: ['OffentligTp'],
+      transformResponse: (response: OffentligTp) => {
+        if (!isOffentligTp(response)) {
           throw new Error(
-            `Mottok ugyldig offentlig-tp: ${JSON.stringify(data)}`
+            `Mottok ugyldig offentlig-tp: ${JSON.stringify(response)}`
           )
         }
-
-        if (
-          tpNummerTilNavn[data.simulertTjenestepensjon?.tpNummer || ''] ===
-            'klp' &&
-          !featureToggleResult.data?.enabled
-        ) {
-          data.simuleringsresultatStatus = 'TP_ORDNING_STOETTES_IKKE'
-          delete data.simulertTjenestepensjon
-        }
-
-        return { data }
+        return response
       },
-      providesTags: ['OffentligTp'],
     }),
 
     tidligstMuligHeltUttak: builder.query<
@@ -159,14 +133,17 @@ export const apiSlice = createApi({
       }),
       transformResponse: (response: Alder) => {
         if (!isAlder(response)) {
-          throw new Error(`Mottok ugyldig uttaksalder: ${response}`)
+          throw new Error(
+            `Mottok ugyldig uttaksalder: ${JSON.stringify(response)}`
+          )
         }
         return response
       },
     }),
     pensjonsavtaler: builder.query<
       { avtaler: Pensjonsavtale[]; partialResponse: boolean },
-      PensjonsavtalerRequestBody
+      PensjonsavtalerRequestBody,
+      PensjonsavtalerResponseBody
     >({
       query: (body) => ({
         url: '/v3/pensjonsavtaler',
@@ -174,13 +151,15 @@ export const apiSlice = createApi({
         body,
       }),
       providesTags: ['Pensjonsavtaler'],
-      transformResponse: (response: PensjonsavtalerResponseBody) => {
+      transformResponse: (response) => {
         if (
           !response.avtaler ||
           !Array.isArray(response.avtaler) ||
           response.avtaler.some((avtale) => !isPensjonsavtale(avtale))
         ) {
-          throw new Error(`Mottok ugyldig pensjonsavtale: ${response}`)
+          throw new Error(
+            `Mottok ugyldig pensjonsavtale: ${JSON.stringify(response)}`
+          )
         }
         const avtalerWithKeys = response.avtaler.map((avtale, index) => ({
           ...avtale,
@@ -205,7 +184,9 @@ export const apiSlice = createApi({
       providesTags: ['Alderspensjon'],
       transformResponse: (response: AlderspensjonResponseBody) => {
         if (!isAlderspensjonSimulering(response)) {
-          throw new Error(`Mottok ugyldig alderspensjon: ${response}`)
+          throw new Error(
+            `Mottok ugyldig alderspensjon: ${JSON.stringify(response)}`
+          )
         }
         return response
       },
@@ -233,24 +214,6 @@ export const apiSlice = createApi({
       void
     >({
       query: () => '/feature/utvidet-simuleringsresultat',
-      transformResponse: (response: UnleashToggle) => {
-        if (!isUnleashToggle(response)) {
-          throw new Error(`Mottok ugyldig unleash response:`, response)
-        }
-        return response
-      },
-    }),
-    getOtpKlpFeatureToggle: builder.query<UnleashToggle, void>({
-      query: () => '/feature/pensjonskalkulator.vis-otp-fra-klp',
-      transformResponse: (response: UnleashToggle) => {
-        if (!isUnleashToggle(response)) {
-          throw new Error(`Mottok ugyldig unleash response:`, response)
-        }
-        return response
-      },
-    }),
-    getGradertUfoereAfpFeatureToggle: builder.query<UnleashToggle, void>({
-      query: () => '/feature/pensjonskalkulator.gradert-ufoere-afp',
       transformResponse: (response: UnleashToggle) => {
         if (!isUnleashToggle(response)) {
           throw new Error(`Mottok ugyldig unleash response:`, response)
@@ -287,8 +250,6 @@ export const {
   usePensjonsavtalerQuery,
   useGetSpraakvelgerFeatureToggleQuery,
   useGetSanityFeatureToggleQuery,
-  useGetOtpKlpFeatureToggleQuery,
-  useGetGradertUfoereAfpFeatureToggleQuery,
   useGetVedlikeholdsmodusFeatureToggleQuery,
   useGetUtvidetSimuleringsresultatFeatureToggleQuery,
 } = apiSlice

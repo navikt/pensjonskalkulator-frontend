@@ -353,7 +353,6 @@ describe('BeregningEnkel', () => {
             afp: 'ja_offentlig',
             currentSimulation: {
               beregningsvalg: null,
-              formatertUttaksalderReadOnly: '68 år string.og 0 alder.maaned',
               uttaksalder: { aar: 68, maaneder: 0 },
               aarligInntektFoerUttakBeloep: '100 000',
               gradertUttaksperiode: null,
@@ -361,7 +360,7 @@ describe('BeregningEnkel', () => {
           },
         },
       })
-      store.dispatch(
+      await store.dispatch(
         apiSliceUtils.apiSlice.endpoints.getLoependeVedtak.initiate()
       )
       await user.click(await screen.findByText('68 alder.aar'))
@@ -446,7 +445,6 @@ describe('BeregningEnkel', () => {
             afp: 'ja_offentlig',
             currentSimulation: {
               beregningsvalg: null,
-              formatertUttaksalderReadOnly: '68 år string.og 0 alder.maaned',
               uttaksalder: { aar: 68, maaneder: 0 },
               aarligInntektFoerUttakBeloep: '100 000',
               gradertUttaksperiode: null,
@@ -454,7 +452,7 @@ describe('BeregningEnkel', () => {
           },
         },
       })
-      store.dispatch(
+      await store.dispatch(
         apiSliceUtils.apiSlice.endpoints.getLoependeVedtak.initiate()
       )
       await user.click(await screen.findByText('68 alder.aar'))
@@ -539,7 +537,6 @@ describe('BeregningEnkel', () => {
             afp: 'ja_privat',
             currentSimulation: {
               beregningsvalg: null,
-              formatertUttaksalderReadOnly: '68 år string.og 0 alder.maaned',
               uttaksalder: { aar: 68, maaneder: 0 },
               aarligInntektFoerUttakBeloep: '100 000',
               gradertUttaksperiode: null,
@@ -547,7 +544,7 @@ describe('BeregningEnkel', () => {
           },
         },
       })
-      store.dispatch(
+      await store.dispatch(
         apiSliceUtils.apiSlice.endpoints.getLoependeVedtak.initiate()
       )
       await user.click(await screen.findByText('68 alder.aar'))
@@ -632,7 +629,6 @@ describe('BeregningEnkel', () => {
             afp: 'ja_privat',
             currentSimulation: {
               beregningsvalg: null,
-              formatertUttaksalderReadOnly: '68 år string.og 0 alder.maaned',
               uttaksalder: { aar: 68, maaneder: 0 },
               aarligInntektFoerUttakBeloep: '100 000',
               gradertUttaksperiode: null,
@@ -640,7 +636,7 @@ describe('BeregningEnkel', () => {
           },
         },
       })
-      store.dispatch(
+      await store.dispatch(
         apiSliceUtils.apiSlice.endpoints.getLoependeVedtak.initiate()
       )
       await user.click(await screen.findByText('68 alder.aar'))
@@ -729,14 +725,8 @@ describe('BeregningEnkel', () => {
 
       await user.click(await screen.findByText('70 alder.aar'))
 
-      await waitFor(() => {
-        expect(
-          screen.queryByTestId('uttaksalder-loader')
-        ).not.toBeInTheDocument()
-      })
-      waitFor(() => {
-        expect(initiateMock).toHaveBeenCalledTimes(1)
-      })
+      expect(screen.queryByTestId('uttaksalder-loader')).not.toBeInTheDocument()
+      expect(initiateMock).toHaveBeenCalledTimes(1)
       expect(await screen.findByText('beregning.error')).toBeInTheDocument()
       await waitFor(async () => {
         expect(screen.queryByText('grunnlag.title')).not.toBeInTheDocument()
@@ -818,7 +808,6 @@ describe('BeregningEnkel', () => {
             samtykke: true,
             currentSimulation: {
               beregningsvalg: null,
-              formatertUttaksalderReadOnly: '63 alder.aar',
               uttaksalder: { aar: 63, maaneder: 0 },
               aarligInntektFoerUttakBeloep: '100 000',
               gradertUttaksperiode: null,
@@ -981,7 +970,6 @@ describe('BeregningEnkel', () => {
             samtykke: false,
             currentSimulation: {
               beregningsvalg: null,
-              formatertUttaksalderReadOnly: '68 år string.og 0 alder.maaned',
               uttaksalder: { aar: 68, maaneder: 0 },
               aarligInntektFoerUttakBeloep: '100 000',
               gradertUttaksperiode: null,
@@ -989,7 +977,7 @@ describe('BeregningEnkel', () => {
           },
         },
       })
-      store.dispatch(
+      await store.dispatch(
         apiSliceUtils.apiSlice.endpoints.getLoependeVedtak.initiate()
       )
       await user.click(await screen.findByText('68 alder.aar'))

@@ -38,8 +38,8 @@ export const useSimuleringChartLocalState = (initialValues: {
   aarligInntektVsaHelPensjon?: AarligInntektVsaPensjon
   isLoading: boolean
   alderspensjonListe?: AlderspensjonPensjonsberegning[]
-  afpPrivatListe?: AfpPrivatPensjonsberegning[]
-  afpOffentligListe?: AfpPrivatPensjonsberegning[]
+  afpPrivatListe?: AfpPensjonsberegning[]
+  afpOffentligListe?: AfpPensjonsberegning[]
   pensjonsavtaler: {
     isLoading: boolean
     data?: {
@@ -367,7 +367,7 @@ export const useHighchartsRegressionPlugin = () => {
         column: Column
       }
     }
-    /* eslint-disable @typescript-eslint/ban-ts-comment */
+    /* eslint-disable @typescript-eslint/ban-ts-comment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
     ;(function (H: ExtendedHighchartsType) {
       const { isArray, fireEvent, seriesTypes } = H
 
@@ -415,7 +415,7 @@ export const useHighchartsRegressionPlugin = () => {
                 ? [point.dataLabel]
                 : []
             if (point.graphic) {
-              // @ts-ignore
+              // @ts-expect-error
               point.graphic.element.point = point
             }
             dataLabels.forEach(function (dataLabel) {
@@ -425,10 +425,10 @@ export const useHighchartsRegressionPlugin = () => {
           // Add the event listeners, we need to do this only once
           if (!series._hasTracking) {
             series.trackerGroups.forEach(function (key) {
-              // @ts-ignore
+              // @ts-expect-error
               if (series[key]) {
                 // We don't always have dataLabelsGroup
-                // @ts-ignore
+                // @ts-expect-error
                 series[key]
                   .addClass('highcharts-tracker')
                   .on('mouseover', onMouseOver)
@@ -437,7 +437,7 @@ export const useHighchartsRegressionPlugin = () => {
                   })
                   .on('touchstart', onMouseOver)
                 if (!chart.styledMode && series.options.cursor) {
-                  // @ts-ignore
+                  // @ts-expect-error
                   series[key].css({ cursor: series.options.cursor })
                 }
               }
@@ -448,6 +448,6 @@ export const useHighchartsRegressionPlugin = () => {
         }
       }
     })(Highcharts)
-    /* eslint-enable @typescript-eslint/ban-ts-comment */
+    /* eslint-enable @typescript-eslint/ban-ts-comment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
   }, [])
 }

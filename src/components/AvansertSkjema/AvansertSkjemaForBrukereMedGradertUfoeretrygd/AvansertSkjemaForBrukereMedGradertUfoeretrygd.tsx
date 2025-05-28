@@ -9,7 +9,6 @@ import { AgePicker } from '@/components/common/AgePicker'
 import { Divider } from '@/components/common/Divider'
 import { SanityReadmore } from '@/components/common/SanityReadmore'
 import { BeregningContext } from '@/pages/Beregning/context'
-import { useGetGradertUfoereAfpFeatureToggleQuery } from '@/state/api/apiSlice'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
   selectAarligInntektFoerUttakBeloep,
@@ -27,6 +26,7 @@ import {
 import {
   DEFAULT_MAX_OPPTJENINGSALDER,
   formatUttaksalder,
+  getAlderPlus1Maaned,
   getBrukerensAlderISluttenAvMaaneden,
 } from '@/utils/alder'
 import { updateAndFormatInntektFromInputField } from '@/utils/inntekt'
@@ -52,12 +52,6 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
   const dispatch = useAppDispatch()
 
   const { setAvansertSkjemaModus } = React.useContext(BeregningContext)
-
-  const { data: getGradertUfoereAfpFeatureToggle } =
-    useGetGradertUfoereAfpFeatureToggleQuery()
-
-  const isGradertUfoereAfpToggleEnabled =
-    getGradertUfoereAfpFeatureToggle?.enabled
 
   const valgtAFP = useAppSelector(selectAfp)
   const isSamtykkeOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
@@ -156,16 +150,17 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
           ? prevState?.aarligInntektVsaPensjon?.sluttAlder.aar * 12 +
             (prevState?.aarligInntektVsaPensjon?.sluttAlder.maaneder ?? 0)
           : 0
-      const shouldDeleteInntektVsaPensjon =
+      const shouldClearInntektSluttAlder =
         alder?.aar &&
         alder?.aar * 12 + (alder?.maaneder ?? 0) >= sluttAlderAntallMaaneder
       return {
-        ...prevState,
         uttaksalder: alder,
-        aarligInntektVsaPensjon:
-          shouldDeleteInntektVsaPensjon || !prevState?.aarligInntektVsaPensjon
+        aarligInntektVsaPensjon: {
+          ...prevState?.aarligInntektVsaPensjon,
+          sluttAlder: shouldClearInntektSluttAlder
             ? undefined
-            : { ...prevState?.aarligInntektVsaPensjon },
+            : { ...prevState?.aarligInntektVsaPensjon?.sluttAlder },
+        },
       }
     })
   }
@@ -173,7 +168,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
   const handleGradertUttaksalderChange = (
     alder: Partial<Alder> | undefined
   ) => {
-    // Dersom brukeren endrer alderen til en alder som tillater flere graderinger, skal gradert uttak nullstilles
+    // Dersom brukeren endrer alderen til en alder som tillater flere graderinger, skal alle påfølgende felter nullstilles
     const shouldResetGradertUttak =
       alder?.aar &&
       alder?.maaneder !== undefined &&
@@ -181,16 +176,17 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
     setValidationErrorUttaksalderGradertUttak('')
     if (shouldResetGradertUttak) {
       // Overfører verdien tilbake til helt uttak
-      setLocalHeltUttak((previous) => ({
-        ...previous,
+      setLocalHeltUttak({
         uttaksalder: alder,
-      }))
+        aarligInntektVsaPensjon: undefined,
+      })
+      setLocalHarInntektVsaHeltUttakRadio(null)
       setLocalHarInntektVsaGradertUttakRadio(null)
-      setLocalGradertUttak(() => ({
+      setLocalGradertUttak({
         uttaksalder: undefined,
         grad: undefined,
         aarligInntektVsaPensjonBeloep: undefined,
-      }))
+      })
     } else {
       setLocalGradertUttak((previous) => ({
         ...previous,
@@ -368,8 +364,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
     (valgtAFP === 'ja_offentlig' && isSamtykkeOffentligAFP) ||
     valgtAFP === 'ja_privat'
 
-  const showFormFields =
-    hasSelectedBeregning || !hasSelectedAFP || !isGradertUfoereAfpToggleEnabled
+  const showFormFields = hasSelectedBeregning || !hasSelectedAFP
 
   return (
     <>
@@ -403,7 +398,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
         <div className={styles.form}>
           {isEndring && <AvansertSkjemaIntroEndring />}
 
-          {isGradertUfoereAfpToggleEnabled && hasSelectedAFP && (
+          {hasSelectedAFP && (
             <>
               <IntroAFP />
 
@@ -575,7 +570,6 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                         )
                       : ''
                   }
-                  aria-required="true"
                 >
                   <option disabled value="">
                     {' '}
@@ -621,8 +615,9 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                         description={
                           <FormattedMessage
                             id={
+                              localBeregningsTypeRadio !== 'med_afp' &&
                               localGradertUttak.uttaksalder.aar <
-                              normertPensjonsalder.aar
+                                normertPensjonsalder.aar
                                 ? 'beregning.avansert.rediger.radio.inntekt_vsa_gradert_uttak.ufoeretrygd.description'
                                 : 'beregning.avansert.rediger.radio.inntekt_vsa_gradert_uttak.description'
                             }
@@ -658,8 +653,6 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                               )
                             : ''
                         }
-                        role="radiogroup"
-                        aria-required="true"
                       >
                         <Radio
                           form={AVANSERT_FORM_NAMES.form}
@@ -683,10 +676,11 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                         </Radio>
                       </RadioGroup>
 
-                      {localGradertUttak.uttaksalder.aar <
-                      normertPensjonsalder.aar ? (
-                        <SanityReadmore id="om_alderspensjon_inntektsgrense_UT" />
-                      ) : null}
+                      {localBeregningsTypeRadio !== 'med_afp' &&
+                        localGradertUttak.uttaksalder.aar <
+                          normertPensjonsalder.aar && (
+                          <SanityReadmore id="om_alderspensjon_inntektsgrense_UT" />
+                        )}
                     </div>
 
                     {localHarInntektVsaGradertUttakRadio && (
@@ -728,8 +722,9 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                             : ''
                         }
                         onChange={handleInntektVsaGradertUttakChange}
-                        value={localGradertUttak.aarligInntektVsaPensjonBeloep}
-                        aria-required="true"
+                        value={
+                          localGradertUttak.aarligInntektVsaPensjonBeloep ?? ''
+                        }
                       />
                     )}
 
@@ -747,7 +742,11 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                       value={localHeltUttak?.uttaksalder}
                       onChange={handleHeltUttaksalderChange}
                       error={heltUttakAgePickerError}
-                      minAlder={normertPensjonsalder}
+                      minAlder={
+                        localBeregningsTypeRadio === 'med_afp'
+                          ? getAlderPlus1Maaned(nedreAldersgrense)
+                          : normertPensjonsalder
+                      }
                     />
                   </>
                 )}
@@ -789,8 +788,6 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                           )
                         : ''
                     }
-                    role="radiogroup"
-                    aria-required="true"
                   >
                     <Radio
                       form={AVANSERT_FORM_NAMES.form}
@@ -851,8 +848,9 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                           : undefined
                       }
                       onChange={handleInntektVsaHeltUttakChange}
-                      value={localHeltUttak.aarligInntektVsaPensjon?.beloep}
-                      aria-required="true"
+                      value={
+                        localHeltUttak.aarligInntektVsaPensjon?.beloep ?? ''
+                      }
                     />
 
                     <AgePicker

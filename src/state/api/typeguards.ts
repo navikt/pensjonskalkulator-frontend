@@ -1,6 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { pensjonsavtalerKategoriMapObj } from '@/utils/pensjonsavtaler'
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export const isInntekt = (data?: any): data is Inntekt => {
   if (
     data === null ||
@@ -20,7 +25,7 @@ export const isInntekt = (data?: any): data is Inntekt => {
 
 export const isPensjonsberegningArray = (
   data?: any
-): data is AfpPrivatPensjonsberegning[] => {
+): data is AfpPensjonsberegning[] => {
   return (
     Array.isArray(data) &&
     data.every(

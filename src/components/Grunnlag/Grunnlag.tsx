@@ -33,6 +33,7 @@ interface Props {
   harForLiteTrygdetid?: boolean
   trygdetid?: number
   pensjonsbeholdning?: number
+  isEndring: boolean
 }
 
 export const Grunnlag: React.FC<Props> = ({
@@ -41,6 +42,7 @@ export const Grunnlag: React.FC<Props> = ({
   harForLiteTrygdetid,
   trygdetid,
   pensjonsbeholdning,
+  isEndring,
 }) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
@@ -62,15 +64,9 @@ export const Grunnlag: React.FC<Props> = ({
 
   return (
     <section className={styles.section}>
-      <div className={styles.description}>
-        <Heading level={headingLevel} size="medium">
-          <FormattedMessage id="grunnlag.title" />
-        </Heading>
-
-        <BodyLong>
-          <FormattedMessage id="grunnlag.ingress" />
-        </BodyLong>
-      </div>
+      <Heading level={headingLevel} size="medium">
+        <FormattedMessage id="grunnlag.title" />
+      </Heading>
 
       <Accordion>
         {visning === 'enkel' && (
@@ -139,7 +135,7 @@ export const Grunnlag: React.FC<Props> = ({
                   ...getFormatMessageValues(),
                 }}
               />
-              {pensjonsbeholdning && (
+              {!isEndring && pensjonsbeholdning && pensjonsbeholdning >= 0 && (
                 <FormattedMessage
                   id="grunnlag.alderspensjon.ingress.pensjonsbeholdning"
                   values={{

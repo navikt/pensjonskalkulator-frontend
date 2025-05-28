@@ -14,6 +14,7 @@ export default {
   'application.title.stegvisning.uventet_feil':
     'Unexpected Error – Pension Calculator',
   'application.title.stegvisning.kalkulator_virker_ikke': 'MANGLER_TEKST',
+  'application.title.securityLevel_feil': 'MANGLER_TEKST',
   'application.title.beregning': 'Calculation – Pension Calculator',
   'application.title.forbehold': 'Reservation – Pension Calculator',
   'application.title.henvisning.apotekerne':
@@ -24,6 +25,10 @@ export default {
   'application.global.retry': 'Try Again',
   'pageframework.title': 'Pension Calculator',
   'pageframework.loading': 'Please wait while we retrieve the information.',
+  'error.securityLevel.title': 'MANGLER_TEKST',
+  'error.securityLevel.ingress': 'MANGLER_TEKST',
+  'error.securityLevel.primary_button': 'MANGLER_TEKST',
+  'error.securityLevel.secondary_button': 'MANGLER_TEKST',
   'error.fullmakt.title':
     'You cannot use the calculator on behalf of this user',
   'error.fullmakt.ingress':
@@ -52,8 +57,7 @@ export default {
   'landingsside.for.deg.foedt.etter.1963': 'For those born in 1963 or later',
   'landingsside.velge_mellom_detaljert_og_enkel':
     'In the pension calculator, you can get an estimate of',
-  'landingsside.velge_mellom_detaljert_og_enkel_2':
-    'If you need to save your calculation or view detailed calculations, you can use the detailed pension calculator. It does not show lifelong AFP in the public sector.',
+  'landingsside.velge_mellom_detaljert_og_enkel_2': 'MANGLER_TEKST',
   'landingsside.button.detaljert_kalkulator_utlogget':
     'Log in to the detailed pension calculator',
   'landingsside.button.detaljert_kalkulator': 'Detailed Pension Calculator',
@@ -88,6 +92,7 @@ export default {
   'stegvisning.start.endring.ingress_1b.uten_fremtidig':
     'Here you can check what you can receive if you want to change your retirement pension.{br}{br}',
   'stegvisning.start.endring.ingress_1b.med_fremtidig': 'MANGLER_TEKST',
+  'stegvisning.start.ingress.pre2025_offentlig_afp': 'MANGLER_TEKST',
   'stegvisning.start.ingress':
     'Welcome to the pension calculator which can show you:',
   'stegvisning.start.list_item1': 'retirement pension (Nav)',
@@ -99,6 +104,10 @@ export default {
     'To get an estimate of your pension, you must answer all the following questions.',
   'stegvisning.start.button': 'Get Started',
   'stegvisning.start.link': 'Personal data used in the pension calculator',
+  'stegvisning.start_brukere_fyllt_75.title': 'MANGLER_TEKST',
+  'stegvisning.start_brukere_fyllt_75.ingress': 'MANGLER_TEKST',
+  'stegvisning.start_brukere_fyllt_75.button': 'MANGLER_TEKST',
+  'stegvisning.start_brukere_fyllt_75.avbryt': 'MANGLER_TEKST',
   'stegvisning.utenlandsopphold.title': 'Time abroad',
   'stegvisning.utenlandsopphold.ingress':
     'If you have lived or worked more than 5 years outside Norway between the age of 16 and the withdrawal of your pension, it may affect the amount of your retirement pension.',
@@ -204,8 +213,6 @@ export default {
     'Before turning 62, you must choose between receiving AFP or retaining disability benefits. {br}{br} AFP and disability benefits cannot be combined. If you do not inform us, you will lose your right to AFP (but retain disability benefits).',
   'stegvisning.ufoere.ingress':
     'You can get help assessing your options. Contact your occupational pension scheme if you work in the public sector. <planleggePensjonLink>Contact Nav</planleggePensjonLink> if you work in the private sector.',
-  'stegvisning.ufoere.ingress-gammel':
-    'You can get help assessing your options. Contact your occupational pension scheme if you work in the public sector. <planleggePensjonLink>Contact Nav</planleggePensjonLink> if you work in the private sector. {br}{br} The calculator does not calculate AFP (contractual early retirement) for those receiving disability benefits. {br}{br} Proceed to view old-age pension from Nav and pension agreements.',
   'stegvisning.samtykke_offentlig_afp.title':
     'Consent for Nav to Calculate AFP (contractual pension)',
   'stegvisning.samtykke_offentlig_afp.ingress':
@@ -273,12 +280,12 @@ export default {
     ' If you delay your withdrawal, your annual pension will increase.',
   'tidligstmuliguttak.1964.ingress_2':
     ' It may be later due to the increased retirement age.',
+  'tidligstmuliguttak.pre2025OffentligAfp.ingress': 'MANGLER_TEKST',
+  'tidligstmuliguttak.pre2025OffentligAfp.avansert_link': 'MANGLER_TEKST',
   'tidligstmuliguttak.info_omstillingsstoenad_og_gjenlevende':
     'retirement pension cannot be combined with a survivor´s pension or adjustment benefits. If you wish to withdraw retirement pension before 67, you must forfeit the survivor´s pension or adjustment benefit when you withdraw your retirement pension. If you have questions, you can contact us at <nowrap>{link}</nowrap>.',
   'tidligstmuliguttak.error':
     'In Advanced, you can choose a more accurate pension age.',
-  'beregning.alt_tekst':
-    'Annual income and pension after withdrawal in kroner.',
   'omufoeretrygd.hel.ingress':
     'You have <nowrap>100 %</nowrap> disability benefits. Here you can calculate <nowrap>100 %</nowrap> retirement pension from 67 years.{br}{br}Upcoming legal changes will gradually increase the retirement age for those born in 1964 or later.',
   'omufoeretrygd.gradert.ingress':
@@ -288,6 +295,13 @@ export default {
   'velguttaksalder.title': 'When do you want to withdraw retirement pension?',
   'velguttaksalder.endring.title':
     'When do you want to change your retirement pension?',
+  'beregning.intro.title': 'MANGLER_TEKST',
+  'beregning.intro.title.endring': 'MANGLER_TEKST',
+  'beregning.intro.description_1': 'MANGLER_TEKST',
+  'beregning.intro.description_1.endring': 'MANGLER_TEKST',
+  'beregning.intro.description_2.gradert_UT.med_afp': 'MANGLER_TEKST',
+  'beregning.intro.description_2.gradert_UT.uten_afp': 'MANGLER_TEKST',
+  'beregning.intro.description_2.hel_UT': 'MANGLER_TEKST',
   'beregning.avansert.rediger.beregningsvalg.description': 'MANGLER_TEKST',
   'beregning.avansert.rediger.beregningsvalg.om_valget_link': 'MANGLER_TEKST',
   'beregning.avansert.rediger.radio.beregningsvalg.label': 'MANGLER_TEKST',
@@ -298,14 +312,12 @@ export default {
   'beregning.avansert.rediger.beregningsvalg.med_afp.title': 'MANGLER_TEKST',
   'beregning.avansert.rediger.beregningsvalg.med_afp.description':
     'MANGLER_TEKST',
+  'beregning.avansert.rediger.pre2025_offentlig_afp.alert': 'MANGLER_TEKST',
   'beregning.toggle.enkel': 'Simple',
   'beregning.toggle.avansert': 'Advanced',
   'beregning.loading': 'Please wait while we calculate your pension.',
   'beregning.error':
     'Unfortunately, we could not calculate your pension right now.',
-  'beregning.fra': 'from ',
-  'beregning.til': ' to ',
-  'beregning.tom': ' to ',
   'beregning.livsvarig': 'lifelong',
   'beregning.lav_opptjening.aar':
     'You do not have enough accrual to start withdrawing at {startAar} years. Try a higher age.',
@@ -323,11 +335,14 @@ export default {
     'This calculation may not show everything. We could not check whether you have pension agreements in the public sector and we could not retrieve <scrollTo>your private pension agreements</scrollTo>.',
   'beregning.pensjonsavtaler.alert.avtaler_foer_alder':
     'You have pension agreements that start before the age you selected. See periods under <scrollTo>Pension Agreements</scrollTo>.',
-  'beregning.title': 'Calculation',
+  'beregning.title': 'MANGLER_TEKST',
   'beregning.alert.inntekt':
     'Because you have changed your income, your pension accrual changes.',
   'beregning.highcharts.informasjon_klikk': 'MANGLER_TEKST',
   'beregning.highcharts.title': 'Calculation',
+  'beregning.highcharts.ingress': 'MANGLER_TEKST',
+  'beregning.highcharts.alt_tekst':
+    'Annual income and pension after withdrawal in kroner.',
   'beregning.highcharts.xaxis': 'Annual Income and Pension after Withdrawal',
   'beregning.highcharts.yaxis': 'Currency',
   'beregning.highcharts.yaxis.mobile': 'Thousand currency',
@@ -347,15 +362,12 @@ export default {
   'beregning.avansert.endring_banner.title':
     'retirement pension before tax when you are ',
   'beregning.avansert.endring_banner.kr_md': 'kr/mo.',
-  'beregning.avansert.resultatkort.tittel': 'Your Choices',
-  'beregning.avansert.resultatkort.description':
-    'Income, withdrawal degree, and pension age',
-  'beregning.avansert.resultatkort.button': 'Change your choices',
-  'beregning.avansert.resultatkort.frem_til_uttak':
-    'Until withdrawal of pension',
-  'beregning.avansert.resultatkort.inntekt_1': 'Pension-eligible annual income',
-  'beregning.avansert.resultatkort.inntekt_2': ' kr before tax',
-  'beregning.avansert.resultatkort.alderspensjon': 'retirement pension: ',
+  'beregning.avansert.maanedsbeloep.table_title': 'MANGLER_TEKST',
+  'beregning.avansert.maanedsbeloep.box_title': 'MANGLER_TEKST',
+  'beregning.avansert.maanedsbeloep.afp': 'MANGLER_TEKST',
+  'beregning.avansert.maanedsbeloep.pensjonsavtaler': 'MANGLER_TEKST',
+  'beregning.avansert.maanedsbeloep.alderspensjon': 'MANGLER_TEKST',
+  'beregning.avansert.maanedsbeloep.sum': 'MANGLER_TEKST',
   'beregning.avansert.rediger.inntekt_frem_til_uttak.label':
     'Pensionable income until pension',
   'beregning.avansert.rediger.inntekt_frem_til_endring.label':
@@ -427,9 +439,12 @@ export default {
     'MANGLER_TEKST',
   'beregning.vilkaarsproeving.alternativer.medAFP.heltOgGradertUttak':
     'MANGLER_TEKST',
+  'beregning.vilkaarsproeving.alternativer.medAFP.heltOgGradertUttak100':
+    'MANGLER_TEKST',
   'beregning.vilkaarsproeving.alternativer.medAFP.ikkeNokOpptjening':
     'MANGLER_TEKST',
   'grunnlag.title': 'Other Basis for Calculation',
+  'maanedsbeloep.title': 'MANGLER_TEKST',
   'beregning.avansert.avbryt_modal.title':
     'If you exit Advanced, you will lose all your choices.',
   'beregning.avansert.avbryt_modal.endring.title':
@@ -446,8 +461,6 @@ export default {
     'You currently have <strong><nowrap>{grad} %</nowrap> retirement pension</strong>. ',
   'beregning.endring.rediger.vedtak_betaling_status':
     'In {maaned}, this was <strong><nowrap>{beloep} kr</nowrap></strong> before tax.',
-  'grunnlag.ingress':
-    'The amounts are shown in today’s currency value before tax.',
   'grunnlag.uttaksgrad.title': 'Withdrawal Degree',
   'grunnlag.uttaksgrad.avansert_link': 'Go to advanced calculator',
   'grunnlag.uttaksgrad.ingress':
@@ -523,25 +536,6 @@ export default {
   'grunnlag.afp.ingress.nei.ufoeretrygd':
     'If you start a job with an employer that has an AFP agreement, you must be aware that AFP and disability benefits cannot be combined. You must choose between AFP and disability benefits before you turn 62.',
   'grunnlag.afp.ingress.full_ufoeretrygd': 'MANGLER_TEKST',
-  'grunnlag.afp.ingress.null.gammel': '-',
-  'grunnlag.afp.ingress.ja_offentlig.gammel':
-    'You have indicated AFP in the public sector. Nav has not assessed whether you meet the conditions for AFP, but assumes that you do. For more information on the conditions, check with your occupational pension scheme.',
-  'grunnlag.afp.ingress.ja_offentlig.ufoeretrygd.gammel':
-    'When you receive disability benefits, you cannot calculate AFP in the calculator. AFP and disability benefits cannot be combined, and if you receive disability benefits after you turn 62, you lose the right to AFP. You must therefore choose between AFP and disability benefits before you turn 62.{br}{br}For more information about AFP, contact your occupational pension scheme.',
-  'grunnlag.afp.ingress.ja_offentlig_utilgjengelig.gammel':
-    'You have indicated AFP in the public sector, but you have not consented to Nav calculating it. Therefore, AFP is not shown in the calculation.',
-  'grunnlag.afp.ingress.ja_privat.gammel':
-    'You have indicated AFP in the private sector. Nav has not assessed whether you meet the criteria for AFP but assumes that you do. Some private sector employers may have agreements in the public sector. Check with your employer to see what applies to you. Read more about the AFP conditions and how to apply at <afpLink>Fellesordningen for AFP</afpLink>.',
-  'grunnlag.afp.ingress.ja_privat.ufoeretrygd.gammel':
-    'When you receive disability benefits, you cannot calculate AFP in the calculator. AFP and disability benefits cannot be combined, and if you receive disability benefits after turning 62, you lose the right to AFP. Therefore, you must choose between AFP and disability benefits before you are 62 years old.{br}{br}You can read more about this at <afpPrivatLink>nav.no</afpPrivatLink>. If you need help assessing your options, <planleggePensjonLink>contact Nav</planleggePensjonLink>.',
-  'grunnlag.afp.ingress.vet_ikke.gammel':
-    'If you are unsure whether you have AFP, you should ask your employer. AFP can affect when you can withdraw retirement pension.',
-  'grunnlag.afp.ingress.vet_ikke.ufoeretrygd.gammel':
-    'If you are unsure whether you have AFP, you should ask your employer. AFP and disability benefits cannot be combined, and if you receive disability benefits after turning 62, you lose the right to AFP. Therefore, you should check whether you have the right to AFP and choose between AFP and disability benefits before you are 62 years old.',
-  'grunnlag.afp.ingress.nei.gammel':
-    'If you start a job with an employer that has an AFP agreement, we recommend that you make a <goToStart>new calculation</goToStart>.',
-  'grunnlag.afp.ingress.nei.ufoeretrygd.gammel':
-    'If you start a job with an employer that has an AFP agreement, you must be aware that AFP and disability benefits cannot be combined. You must choose between AFP and disability benefits before you turn 62.',
   'grunnlag.forbehold.ingress_1':
     'The pension has been calculated based on the information we have about you and the information you have provided. The calculation has been made in accordance with current regulations. This is a preliminary estimate of what you can expect to receive in pension. Nav is not responsible for the amounts obtained from other sources.',
   'grunnlag.forbehold.link': 'All reservations',
@@ -550,8 +544,7 @@ export default {
   'savnerdunoe.ingress':
     'More choices for withdrawal degree, pension age, and income can be found in Advanced.',
   'savnerdunoe.button': 'Go to Advanced',
-  'savnerdunoe.body':
-    'This calculator is under development. If you need to save calculations and see more details, you can do it in the <detaljertKalkulatorLink>detailed pension calculator</detaljertKalkulatorLink>',
+  'savnerdunoe.body.endring': 'MANGLER_TEKST',
   'pensjonsavtaler.fra_og_med_forklaring':
     '“From” means “from and including.” “To” means “to and including.”',
   'pensjonsavtaler.private.title.ingen': 'Private pension agreements',

@@ -7,10 +7,7 @@ import { Alert, BodyLong, Link } from '@navikt/ds-react'
 import { SanityReadmore } from '@/components/common/SanityReadmore'
 import { TelefonLink } from '@/components/common/TelefonLink'
 import { paths } from '@/router/constants'
-import {
-  useGetGradertUfoereAfpFeatureToggleQuery,
-  useGetOmstillingsstoenadOgGjenlevendeQuery,
-} from '@/state/api/apiSlice'
+import { useGetOmstillingsstoenadOgGjenlevendeQuery } from '@/state/api/apiSlice'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
   selectAfp,
@@ -28,19 +25,19 @@ interface Props {
   tidligstMuligUttak?: Alder
   ufoeregrad?: number
   show1963Text: boolean
+  loependeVedtakPre2025OffentligAfp?: boolean
 }
 
 export const TidligstMuligUttaksalder = ({
   tidligstMuligUttak,
   ufoeregrad,
   show1963Text,
+  loependeVedtakPre2025OffentligAfp,
 }: Props) => {
   const intl = useIntl()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
-  const { data: getGradertUfoereAfpFeatureToggle } =
-    useGetGradertUfoereAfpFeatureToggleQuery()
   const { data: omstillingsstoenadOgGjenlevende } =
     useGetOmstillingsstoenadOgGjenlevendeQuery()
 
@@ -55,16 +52,36 @@ export const TidligstMuligUttaksalder = ({
     normertPensjonsalder
   )
 
-  const isGradertUfoereAfpToggleEnabled =
-    getGradertUfoereAfpFeatureToggle?.enabled
   const hasAFP =
-    isGradertUfoereAfpToggleEnabled &&
-    ((afp === 'ja_offentlig' && samtykkeOffentligAFP) || afp === 'ja_privat')
+    (afp === 'ja_offentlig' && samtykkeOffentligAFP) || afp === 'ja_privat'
 
   const goToAvansert: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     e.preventDefault()
     dispatch(userInputActions.flushCurrentSimulation())
     navigate(paths.beregningAvansert)
+  }
+
+  const tidligstMuligUttakIngressPre2025OffentligAFP = () => {
+    return (
+      <BodyLong size="medium" className={styles.ingress}>
+        <FormattedMessage
+          id="tidligstmuliguttak.pre2025OffentligAfp.ingress"
+          values={{
+            ...getFormatMessageValues(),
+            link: (
+              <Link href="#" onClick={goToAvansert}>
+                <FormattedMessage
+                  id="tidligstmuliguttak.pre2025OffentligAfp.avansert_link"
+                  values={{
+                    ...getFormatMessageValues(),
+                  }}
+                />
+              </Link>
+            ),
+          }}
+        />
+      </BodyLong>
+    )
   }
 
   const gradertIngress = hasAFP
@@ -108,33 +125,36 @@ export const TidligstMuligUttaksalder = ({
           </BodyLong>
         )}
 
-        {tidligstMuligUttak && (
-          <>
-            <BodyLong size="medium" className={styles.ingress}>
-              <FormattedMessage
-                id="tidligstmuliguttak.ingress_1"
-                values={{
-                  ...getFormatMessageValues(),
-                }}
-              />
-            </BodyLong>
+        {tidligstMuligUttak &&
+          (loependeVedtakPre2025OffentligAfp ? (
+            tidligstMuligUttakIngressPre2025OffentligAFP()
+          ) : (
+            <>
+              <BodyLong size="medium" className={styles.ingress}>
+                <FormattedMessage
+                  id="tidligstmuliguttak.ingress_1"
+                  values={{
+                    ...getFormatMessageValues(),
+                  }}
+                />
+              </BodyLong>
 
-            <BodyLong size="medium" className={styles.highlighted}>
-              {formatUttaksalder(intl, tidligstMuligUttak)}.
-            </BodyLong>
+              <BodyLong size="medium" className={styles.highlighted}>
+                {formatUttaksalder(intl, tidligstMuligUttak)}.
+              </BodyLong>
 
-            <BodyLong size="medium" className={styles.ingress}>
-              <FormattedMessage
-                id={`tidligstmuliguttak.${
-                  show1963Text ? '1963' : '1964'
-                }.ingress_2`}
-                values={{
-                  ...getFormatMessageValues(),
-                }}
-              />
-            </BodyLong>
-          </>
-        )}
+              <BodyLong size="medium" className={styles.ingress}>
+                <FormattedMessage
+                  id={`tidligstmuliguttak.${
+                    show1963Text ? '1963' : '1964'
+                  }.ingress_2`}
+                  values={{
+                    ...getFormatMessageValues(),
+                  }}
+                />
+              </BodyLong>
+            </>
+          ))}
 
         {omstillingsstoenadOgGjenlevende?.harLoependeSak && (
           <Alert className={styles.alert} variant="info" aria-live="polite">
@@ -159,7 +179,9 @@ export const TidligstMuligUttaksalder = ({
             className={styles.readmore}
           />
         ) : (
-          <SanityReadmore id="om_TMU" className={styles.readmore} />
+          !loependeVedtakPre2025OffentligAfp && (
+            <SanityReadmore id="om_TMU" className={styles.readmore} />
+          )
         )}
       </div>
     </div>

@@ -7,7 +7,6 @@ import { BodyLong, Link } from '@navikt/ds-react'
 import { AccordionItem } from '@/components/common/AccordionItem'
 import { BeregningContext } from '@/pages/Beregning/context'
 import { paths } from '@/router/constants'
-import { useGetGradertUfoereAfpFeatureToggleQuery } from '@/state/api/apiSlice'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
   selectAfp,
@@ -24,6 +23,7 @@ import {
   AFP_UFOERE_OPPSIGELSESALDER,
   isFoedselsdatoOverAlder,
 } from '@/utils/alder'
+import { logger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
 
 import { GrunnlagSection } from '../GrunnlagSection'
@@ -38,12 +38,6 @@ export const GrunnlagAFP: React.FC = () => {
   const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const ufoeregrad = useAppSelector(selectUfoeregrad)
   const { beregningsvalg } = useAppSelector(selectCurrentSimulation)
-
-  const { data: getGradertUfoereAfpFeatureToggle } =
-    useGetGradertUfoereAfpFeatureToggleQuery()
-
-  const isGradertUfoereAfpToggleEnabled =
-    getGradertUfoereAfpFeatureToggle?.enabled
 
   const hasAFP = afp === 'ja_offentlig' || afp === 'ja_privat'
   const hasOffentligAFP = afp === 'ja_offentlig'
@@ -107,9 +101,6 @@ export const GrunnlagAFP: React.FC = () => {
 
     const ufoeregradString = isUfoerAndDontWantAfp ? '.ufoeretrygd' : ''
 
-    if (!isGradertUfoereAfpToggleEnabled) {
-      return `grunnlag.afp.ingress.${afp}${ufoeregradString}.gammel`
-    }
     return `grunnlag.afp.ingress.${afp}${ufoeregradString}`
   }, [
     afp,
@@ -117,7 +108,6 @@ export const GrunnlagAFP: React.FC = () => {
     samtykkeOffentligAFP,
     isEndring,
     isUfoerAndDontWantAfp,
-    isGradertUfoereAfpToggleEnabled,
     loependeVedtak,
     ufoeregrad,
   ])
@@ -160,6 +150,9 @@ const GoToAFP = (chunks: React.ReactNode) => {
 
   const onClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     e.preventDefault()
+    logger('button klikk', {
+      tekst: 'Grunnlag AFP: Gå til AFP',
+    })
     dispatch(userInputActions.flushCurrentSimulation())
     navigate(paths.afp)
   }
@@ -178,6 +171,9 @@ const GoToAvansert = (chunks: React.ReactNode) => {
 
   const onClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     e.preventDefault()
+    logger('button klikk', {
+      tekst: 'Grunnlag AFP: Gå til avansert',
+    })
     if (avansertSkjemaModus === 'resultat') {
       setAvansertSkjemaModus('redigering')
     } else {
@@ -197,6 +193,9 @@ const GoToStart = (chunks: React.ReactNode) => {
 
   const onClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     e.preventDefault()
+    logger('button klikk', {
+      tekst: 'Grunnlag AFP: Gå til start',
+    })
     dispatch(userInputActions.flush())
     navigate(paths.start)
   }

@@ -53,8 +53,6 @@ describe('Beregning', () => {
           samtykke: false,
           currentSimulation: {
             ...userInputInitialState.currentSimulation,
-            formatertUttaksalderReadOnly:
-              '70 alder.aar string.og 4 alder.maaned',
             uttaksalder: { aar: 70, maaneder: 4 },
           },
         },
@@ -80,8 +78,6 @@ describe('Beregning', () => {
             samtykke: false,
             currentSimulation: {
               beregningsvalg: null,
-              formatertUttaksalderReadOnly:
-                '70 alder.aar string.og 4 alder.maaned',
               uttaksalder: { aar: 70, maaneder: 4 },
               aarligInntektFoerUttakBeloep: '300 000',
               gradertUttaksperiode: null,
@@ -109,8 +105,6 @@ describe('Beregning', () => {
             samtykke: false,
             currentSimulation: {
               beregningsvalg: null,
-              formatertUttaksalderReadOnly:
-                '70 alder.aar string.og 4 alder.maaned',
               uttaksalder: { aar: 70, maaneder: 4 },
               aarligInntektFoerUttakBeloep: '300 000',
               gradertUttaksperiode: null,
@@ -145,8 +139,6 @@ describe('Beregning', () => {
             samtykke: true,
             currentSimulation: {
               beregningsvalg: null,
-              formatertUttaksalderReadOnly:
-                '70 alder.aar string.og 4 alder.maaned',
               uttaksalder: { aar: 70, maaneder: 4 },
               aarligInntektFoerUttakBeloep: '300 000',
               gradertUttaksperiode: null,
@@ -267,8 +259,6 @@ describe('Beregning', () => {
             samtykke: false,
             currentSimulation: {
               ...userInputInitialState.currentSimulation,
-              formatertUttaksalderReadOnly:
-                '70 alder.aar string.og 4 alder.maaned',
               uttaksalder: { aar: 70, maaneder: 4 },
             },
           },
@@ -293,7 +283,7 @@ describe('Beregning', () => {
 
   describe('Gitt at brukeren navigerer tilbake', () => {
     beforeEach(() => {
-      global.window = Object.create(window)
+      global.window = Object.create(window) // eslint-disable-line @typescript-eslint/no-unsafe-assignment
       Object.defineProperty(window, 'location', {
         value: {
           href: paths.beregningAvansert,
@@ -327,7 +317,7 @@ describe('Beregning', () => {
     }
 
     it('når brukeren har gjort en Enkel simulering og trykker på tilbakeknappen, vises ikke Avbryt-Modalen', async () => {
-      global.window = Object.create(window)
+      global.window = Object.create(window) // eslint-disable-line @typescript-eslint/no-unsafe-assignment
       Object.defineProperty(window, 'location', {
         value: {
           href: paths.beregningEnkel,
@@ -350,8 +340,6 @@ describe('Beregning', () => {
               samtykke: true,
               currentSimulation: {
                 beregningsvalg: null,
-                formatertUttaksalderReadOnly:
-                  '70 alder.aar string.og 4 alder.maaned',
                 uttaksalder: { aar: 70, maaneder: 4 },
                 aarligInntektFoerUttakBeloep: '300 000',
                 gradertUttaksperiode: null,
@@ -467,8 +455,6 @@ describe('Beregning', () => {
               samtykke: false,
               currentSimulation: {
                 ...userInputInitialState.currentSimulation,
-                formatertUttaksalderReadOnly:
-                  '70 alder.aar string.og 4 alder.maaned',
                 uttaksalder: { aar: 70, maaneder: 4 },
               },
             },

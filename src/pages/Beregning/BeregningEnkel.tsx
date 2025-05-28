@@ -1,6 +1,6 @@
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
 import clsx from 'clsx'
-import React from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useNavigate } from 'react-router'
 
@@ -52,7 +52,7 @@ import { logger } from '@/utils/logging'
 
 import styles from './BeregningEnkel.module.scss'
 
-export const BeregningEnkel: React.FC = () => {
+export const BeregningEnkel = () => {
   const intl = useIntl()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -79,31 +79,35 @@ export const BeregningEnkel: React.FC = () => {
   const [
     tidligstMuligHeltUttakRequestBody,
     setTidligstMuligHeltUttakRequestBody,
-  ] = React.useState<TidligstMuligHeltUttakRequestBody | undefined>(undefined)
+  ] = useState<TidligstMuligHeltUttakRequestBody | undefined>(undefined)
   // Hent tidligst mulig uttaksalder
   const {
     data: tidligstMuligUttak,
     isLoading: isTidligstMuligUttakLoading,
     isSuccess: isTidligstMuligUttakSuccess,
   } = useTidligstMuligHeltUttakQuery(tidligstMuligHeltUttakRequestBody, {
-    skip: !tidligstMuligHeltUttakRequestBody || !!ufoeregrad,
+    skip:
+      !tidligstMuligHeltUttakRequestBody ||
+      Boolean(ufoeregrad) ||
+      Boolean(loependeVedtak.pre2025OffentligAfp),
   })
 
   const utenlandsperioder = useAppSelector(selectUtenlandsperioder)
   const { uttaksalder } = useAppSelector(selectCurrentSimulation)
   const [alderspensjonEnkelRequestBody, setAlderspensjonEnkelRequestBody] =
-    React.useState<AlderspensjonRequestBody | undefined>(undefined)
-  const [showInntektAlert, setShowInntektAlert] = React.useState<boolean>(false)
+    useState<AlderspensjonRequestBody | undefined>(undefined)
+  const [showInntektAlert, setShowInntektAlert] = useState<boolean>(false)
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Show alert når: inntekt fra bruker er ikke null (det betyr at brukeren har endret den) og at startAlder er null (betyr at de ble nettopp nullstilt fra GrunnlagInntekt)
     setShowInntektAlert(
-      !!aarligInntektFoerUttakBeloepFraBrukerInput && uttaksalder === null
+      Boolean(aarligInntektFoerUttakBeloepFraBrukerInput) &&
+        uttaksalder === null
     )
   }, [aarligInntektFoerUttakBeloepFraBrukerInput, uttaksalder])
 
-  React.useEffect(() => {
-    if (!ufoeregrad) {
+  useEffect(() => {
+    if (!ufoeregrad && !loependeVedtak.pre2025OffentligAfp) {
       const requestBody = generateTidligstMuligHeltUttakRequestBody({
         loependeVedtak,
         afp: afp === 'ja_offentlig' && !harSamtykketOffentligAFP ? null : afp,
@@ -124,7 +128,7 @@ export const BeregningEnkel: React.FC = () => {
     epsHarInntektOver2G,
   ])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (uttaksalder) {
       const requestBody = generateAlderspensjonEnkelRequestBody({
         loependeVedtak,
@@ -162,7 +166,7 @@ export const BeregningEnkel: React.FC = () => {
     }
   )
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (alderspensjon?.vilkaarsproeving.vilkaarErOppfylt) {
       logger('resultat vist', { tekst: 'Beregning enkel' })
       logger('grunnlag for beregningen', {
@@ -172,7 +176,7 @@ export const BeregningEnkel: React.FC = () => {
     }
   }, [alderspensjon])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (uttaksalder !== null) {
       if (alderspensjon && !alderspensjon?.vilkaarsproeving.vilkaarErOppfylt) {
         logger('alert vist', {
@@ -188,7 +192,7 @@ export const BeregningEnkel: React.FC = () => {
     }
   }, [uttaksalder, isError, alderspensjon])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (
       error &&
       ((error as FetchBaseQueryError).status === 503 ||
@@ -202,7 +206,7 @@ export const BeregningEnkel: React.FC = () => {
     }
   }, [error])
 
-  const show1963Text = React.useMemo(() => {
+  const show1963Text = useMemo(() => {
     return isPersonSuccess && isFoedtFoer1964(person?.foedselsdato)
   }, [person])
 
@@ -230,6 +234,11 @@ export const BeregningEnkel: React.FC = () => {
     )
   }
 
+  const tidligstMuligUttakPre2025OffentligAfp = {
+    aar: 67,
+    maaneder: 0,
+  }
+
   return (
     <>
       {showInntektAlert && (
@@ -245,32 +254,48 @@ export const BeregningEnkel: React.FC = () => {
           </Alert>
         </div>
       )}
+
       <div className={clsx(styles.background, styles.background__lightgray)}>
         <div className={styles.container}>
           <TidligstMuligUttaksalder
             tidligstMuligUttak={
-              isTidligstMuligUttakSuccess ? tidligstMuligUttak : undefined
+              isTidligstMuligUttakSuccess
+                ? tidligstMuligUttak
+                : loependeVedtak.pre2025OffentligAfp
+                  ? tidligstMuligUttakPre2025OffentligAfp
+                  : undefined
             }
             ufoeregrad={ufoeregrad}
             show1963Text={show1963Text}
+            loependeVedtakPre2025OffentligAfp={Boolean(
+              loependeVedtak.pre2025OffentligAfp
+            )}
           />
         </div>
       </div>
 
-      <div className={styles.container}>
-        <VelgUttaksalder
-          tidligstMuligUttak={
-            ufoeregrad
-              ? normertPensjonsalder
-              : isTidligstMuligUttakSuccess
-                ? tidligstMuligUttak
-                : getBrukerensAlderISluttenAvMaaneden(
-                    person?.foedselsdato,
-                    nedreAldersgrense
-                  )
-          }
-        />
-      </div>
+      {loependeVedtak.pre2025OffentligAfp ? (
+        <div className={styles.container}>
+          <VelgUttaksalder
+            tidligstMuligUttak={tidligstMuligUttakPre2025OffentligAfp}
+          />
+        </div>
+      ) : (
+        <div className={styles.container}>
+          <VelgUttaksalder
+            tidligstMuligUttak={
+              ufoeregrad
+                ? normertPensjonsalder
+                : isTidligstMuligUttakSuccess
+                  ? tidligstMuligUttak
+                  : getBrukerensAlderISluttenAvMaaneden(
+                      person?.foedselsdato,
+                      nedreAldersgrense
+                    )
+            }
+          />
+        </div>
+      )}
 
       {uttaksalder !== null && (
         <div
@@ -282,9 +307,10 @@ export const BeregningEnkel: React.FC = () => {
             uttaksalder &&
             uttaksalder.aar < normertPensjonsalder.aar) ? (
             <>
-              <Heading level="2" size="small">
+              <Heading level="2" size="medium">
                 <FormattedMessage id="beregning.title" />
               </Heading>
+
               <AlertDashBorder onRetry={isError ? onRetry : undefined}>
                 {isError ? (
                   <FormattedMessage id="beregning.error" />
@@ -299,8 +325,9 @@ export const BeregningEnkel: React.FC = () => {
           ) : (
             <>
               <Simulering
+                visning="enkel"
                 isLoading={isFetching}
-                headingLevel="3"
+                headingLevel="2"
                 aarligInntektFoerUttakBeloep={
                   aarligInntektFoerUttakBeloep ?? '0'
                 }
@@ -332,7 +359,9 @@ export const BeregningEnkel: React.FC = () => {
                     : undefined
                 }
               />
+
               {!isEndring && <Pensjonsavtaler headingLevel="3" />}
+
               <Grunnlag
                 visning="enkel"
                 headingLevel="3"
@@ -345,11 +374,13 @@ export const BeregningEnkel: React.FC = () => {
                         .pensjonBeholdningFoerUttakBeloep
                     : undefined
                 }
+                isEndring={isEndring}
               />
             </>
           )}
         </div>
       )}
+
       {uttaksalder !== null &&
         alderspensjon &&
         alderspensjon?.vilkaarsproeving.vilkaarErOppfylt && (

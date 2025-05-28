@@ -4,9 +4,7 @@ import { describe, it, vi } from 'vitest'
 import {
   fulfilledGetLoependeVedtak0Ufoeregrad,
   fulfilledGetLoependeVedtakLoependeAlderspensjon,
-  fulfilledGetPerson,
   fulfilledGetPersonYngreEnnAfpUfoereOppsigelsesalder,
-  rejectedGetInntekt,
 } from '@/mocks/mockedRTKQueryApiCalls'
 import { mockResponse } from '@/mocks/server'
 import { BASE_PATH, paths } from '@/router/constants'
@@ -16,8 +14,6 @@ import { store } from '@/state/store'
 import { userInputInitialState } from '@/state/userInput/userInputSlice'
 import * as userInputReducerUtils from '@/state/userInput/userInputSlice'
 import { render, screen, userEvent, waitFor } from '@/test-utils'
-
-const initialGetState = store.getState
 
 const navigateMock = vi.fn()
 vi.mock(import('react-router'), async (importOriginal) => {
@@ -48,17 +44,12 @@ describe('StepAFP', () => {
     vi.clearAllMocks()
     vi.resetAllMocks()
     vi.resetModules()
-    store.getState = initialGetState
   })
 
   it('har riktig sidetittel', async () => {
     store.getState = vi.fn().mockImplementation(() => ({
       api: {
-        queries: {
-          ...rejectedGetInntekt,
-          ...fulfilledGetPerson,
-          ...fulfilledGetLoependeVedtak0Ufoeregrad,
-        },
+        queries: { mock: 'mock' },
       },
       userInput: {
         ...userInputReducerUtils.userInputInitialState,
