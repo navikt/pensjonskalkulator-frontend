@@ -170,16 +170,6 @@ export const GrunnlagAFP: React.FC = () => {
     ufoeregrad,
   ])
 
-  if (
-    loependeVedtak &&
-    loependeVedtak.ufoeretrygd.grad &&
-    foedselsdato &&
-    !isFoedtFoer1963(foedselsdato) &&
-    isFoedselsdatoOverAlder(foedselsdato, AFP_UFOERE_OPPSIGELSESALDER)
-  ) {
-    return null
-  }
-
   return (
     <AccordionItem name="Grunnlag: AFP">
       <GrunnlagSection
