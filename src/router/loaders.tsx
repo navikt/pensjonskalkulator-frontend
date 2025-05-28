@@ -55,14 +55,10 @@ export interface AuthenticationGuardData {
   authResponse: Response
 }
 
-export const authenticationGuard: SafeLoaderFunction<
-  AuthenticationGuardData
-> = async () => {
+export const authenticationGuard = async () => {
   const authResponse = await fetch(`${HOST_BASEURL}/oauth2/session`)
   return { authResponse }
 }
-
-export type DirectAccessGuardData = void
 
 export const directAccessGuard = (): Response | undefined => {
   const state = store.getState()
@@ -78,11 +74,7 @@ export const directAccessGuard = (): Response | undefined => {
 
 ////////////////////////////////////////////////////////////////////////
 
-export type LandingPageAccessGuardData = void
-
-export const landingPageAccessGuard: SafeLoaderFunction<
-  LandingPageAccessGuardData
-> = async () => {
+export const landingPageAccessGuard = async () => {
   const isVeileder = selectIsVeileder(store.getState())
   if (isVeileder) {
     return redirect(paths.start)
@@ -352,7 +344,7 @@ export const stepSamtykkeOffentligAFPAccessGuard = async ({
 
   // Bruker uten uføretrygd som svarer ja_offentlig til AFP kan se steget
   if (showStep) {
-    return { data: undefined }
+    return
   }
 
   const stepArrays = isLoependeVedtakEndring(loependeVedtak)
