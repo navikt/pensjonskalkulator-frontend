@@ -1337,7 +1337,7 @@ describe('Endring av alderspensjon', () => {
             ).should('exist')
           })
 
-          it('forventer jeg tilpasset informasjon i grunnlag: at opphold utenfor Norge er hentet fra vedtak og at info om AFP er skjult.', () => {
+          it('forventer jeg tilpasset informasjon i grunnlag: at opphold utenfor Norge er hentet fra vedtak', () => {
             cy.contains('Beregning').should('exist')
             cy.contains('Øvrig grunnlag for beregningen').should('exist')
             cy.contains('Sivilstand:').click({ force: true })
@@ -1346,7 +1346,7 @@ describe('Endring av alderspensjon', () => {
             cy.contains(
               'Beregningen bruker trygdetiden du har i Norge fra vedtaket ditt om alderspensjon.'
             ).should('exist')
-            cy.contains('AFP:').should('not.exist')
+            cy.contains('AFP: Nei').should('exist')
           })
 
           it('forventer jeg lenke til søknad om endring av alderspensjon.', () => {
@@ -1643,7 +1643,7 @@ describe('Endring av alderspensjon', () => {
             ).should('exist')
           })
 
-          it('forventer jeg tilpasset informasjon i grunnlag: at opphold utenfor Norge er hentet fra vedtak og at AFP Privat er uendret ', () => {
+          it('forventer jeg tilpasset informasjon i grunnlag: at opphold utenfor Norge er hentet fra vedtak og at AFP: Nei vises', () => {
             cy.contains('Beregning').should('exist')
             cy.contains('Øvrig grunnlag for beregningen').should('exist')
             cy.contains('Sivilstand:').click({ force: true })
@@ -1652,7 +1652,7 @@ describe('Endring av alderspensjon', () => {
             cy.contains(
               'Beregningen bruker trygdetiden du har i Norge fra vedtaket ditt om alderspensjon.'
             ).should('exist')
-            cy.contains('AFP:').should('not.exist')
+            cy.contains('AFP: Nei').should('exist')
           })
 
           it('forventer jeg lenke til søknad om endring av alderspensjon.', () => {
