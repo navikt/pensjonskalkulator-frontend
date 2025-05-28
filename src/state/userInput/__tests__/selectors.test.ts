@@ -422,6 +422,7 @@ describe('userInput selectors', () => {
         },
       }
       expect(selectLoependeVedtak(state)).toStrictEqual({
+        harLoependeVedtak: true,
         ufoeretrygd: { grad: 75 },
       })
     })
