@@ -215,8 +215,8 @@ describe('Med ufoeretrygd', () => {
         cy.contains('button', '67 år').click()
       })
 
-      it('forventer jeg at informasjon om AFP ikke står i grunnlaget.', () => {
-        cy.contains('AFP').should('not.exist')
+      it('forventer jeg at informasjon om AFP står i grunnlaget.', () => {
+        cy.contains('AFP').should('exist')
       })
     })
   })
