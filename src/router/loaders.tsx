@@ -74,12 +74,11 @@ export const directAccessGuard = (): Response | undefined => {
 
 ////////////////////////////////////////////////////////////////////////
 
-export const landingPageAccessGuard = async () => {
+export const landingPageAccessGuard = () => {
   const isVeileder = selectIsVeileder(store.getState())
   if (isVeileder) {
     return redirect(paths.start)
   }
-  return Promise.resolve(undefined)
 }
 
 ////////////////////////////////////////////////////////////////////////

@@ -68,7 +68,7 @@ describe('Loaders', () => {
       }
       store.getState = vi.fn().mockImplementation(() => mockedState)
 
-      const returnedFromLoader = await landingPageAccessGuard()
+      const returnedFromLoader = landingPageAccessGuard()
       console.log('returnedFromLoader', returnedFromLoader)
       expectRedirectResponse(returnedFromLoader, paths.start)
     })
