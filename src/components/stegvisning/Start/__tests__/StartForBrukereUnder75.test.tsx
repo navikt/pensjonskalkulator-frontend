@@ -18,6 +18,7 @@ describe('stegvisning - Start', () => {
   const onNextMock = vi.fn()
 
   const loependeVedtak: LoependeVedtak = {
+    harLoependeVedtak: false,
     ufoeretrygd: { grad: 0 },
   }
 
