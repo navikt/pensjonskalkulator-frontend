@@ -42,6 +42,7 @@ describe('stegvisning - Start', () => {
       <StartForBrukereUnder75
         navn="Ola"
         loependeVedtak={{
+          harLoependeVedtak: true,
           alderspensjon: {
             grad: 50,
             fom: '2020-10-02',
@@ -78,6 +79,7 @@ describe('stegvisning - Start', () => {
       <StartForBrukereUnder75
         navn="Ola"
         loependeVedtak={{
+          harLoependeVedtak: true,
           alderspensjon: {
             grad: 50,
             fom: '2020-10-02',
@@ -105,6 +107,7 @@ describe('stegvisning - Start', () => {
       <StartForBrukereUnder75
         navn="Ola"
         loependeVedtak={{
+          harLoependeVedtak: true,
           alderspensjon: {
             grad: 50,
             fom: '2020-10-02',
@@ -139,6 +142,7 @@ describe('stegvisning - Start', () => {
       <StartForBrukereUnder75
         navn="Ola"
         loependeVedtak={{
+          harLoependeVedtak: true,
           alderspensjon: {
             grad: 50,
             fom: '2020-10-02',
@@ -173,6 +177,7 @@ describe('stegvisning - Start', () => {
       <StartForBrukereUnder75
         navn="Ola"
         loependeVedtak={{
+          harLoependeVedtak: true,
           ufoeretrygd: {
             grad: 0,
           },
@@ -202,6 +207,7 @@ describe('stegvisning - Start', () => {
       <StartForBrukereUnder75
         navn="Ola"
         loependeVedtak={{
+          harLoependeVedtak: true,
           alderspensjon: {
             grad: 50,
             fom: '2020-10-02',
@@ -241,6 +247,7 @@ describe('stegvisning - Start', () => {
       <StartForBrukereUnder75
         navn="Ola"
         loependeVedtak={{
+          harLoependeVedtak: true,
           ufoeretrygd: {
             grad: 0,
           },
