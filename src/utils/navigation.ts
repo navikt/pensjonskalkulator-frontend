@@ -39,8 +39,6 @@ export const skip = (
   // Returner redirect og behold navigasjonsretningen
   // ved å inkludere 'back' query parameter ved bakovernavigasjon
   return redirect(
-    isBackwardNavigation 
-      ? `${redirectPath}?back=true` 
-      : redirectPath
+    isBackwardNavigation ? `${redirectPath}?back=true` : redirectPath
   )
 }
