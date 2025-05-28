@@ -1223,6 +1223,7 @@ export interface components {
       fom: string
     }
     LoependeVedtakV4: {
+      harLoependeVedtak: boolean
       alderspensjon?: components['schemas']['AlderspensjonDetaljerV4']
       fremtidigAlderspensjon?: components['schemas']['FremtidigAlderspensjonDetaljerV4']
       ufoeretrygd: components['schemas']['UfoeretrygdDetaljerV4']

@@ -186,6 +186,57 @@ describe('Grunnlag - AFP', () => {
   })
 
   describe('Gitt at brukeren har gradert uføretrygd,', () => {
+    describe('Når brukeren er eldre enn AFP-Uføre oppsigelsesalder,', () => {
+      const mockedQueries = {
+        ...fulfilledGetLoependeVedtak75Ufoeregrad,
+        ['getPerson(undefined)']: {
+          status: 'fulfilled',
+          endpointName: 'getPerson',
+          requestId: 'xTaE6mOydr5ZI75UXq4Wi',
+          startedTimeStamp: 1688046411971,
+          data: {
+            navn: 'Aprikos',
+            sivilstand: 'UGIFT',
+            foedselsdato: '1963-01-01',
+            pensjoneringAldre: {
+              normertPensjoneringsalder: {
+                aar: 67,
+                maaneder: 0,
+              },
+              nedreAldersgrense: {
+                aar: 62,
+                maaneder: 0,
+              },
+            },
+          },
+          fulfilledTimeStamp: 1688046412103,
+        },
+      }
+
+      it('Skal riktig tittel og tekst vises', async () => {
+        render(<WrappedGrunnlagAFP />, {
+          preloadedState: {
+            api: {
+              // @ts-ignore
+              queries: { ...mockedQueries },
+            },
+            userInput: {
+              ...userInputInitialState,
+            },
+          },
+        })
+
+        expect(screen.getByText('grunnlag.afp.title')).toBeVisible()
+        expect(screen.getByText('afp.nei')).toBeVisible()
+        expect(
+          screen.getByText(
+            'For å ha rett til AFP, må du være ansatt i offentlig sektor eller i en bedrift med AFP-ordning i privat sektor. Det gjelder de siste årene og helt fram til du tar ut AFP. Hvis du mottar full uføretrygd, har du derfor normalt ikke rett til AFP.',
+            { exact: false }
+          )
+        ).toBeInTheDocument()
+      })
+    })
+
     describe('Når brukeren er yngre enn AFP-Uføre oppsigelsesalder,', () => {
       const minAlderYearsBeforeNow = add(endOfDay(new Date()), {
         years: -61,
