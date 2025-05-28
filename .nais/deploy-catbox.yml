@@ -51,7 +51,6 @@ spec:
         - /pensjon/kalkulator/api/feature/*
         - /pensjon/kalkulator/src/*
         - /pensjon/kalkulator/v3/api-docs/current
-        - /pensjon/kalkulator/v1/land-liste
   accessPolicy:
     outbound:
       rules:
