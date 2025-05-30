@@ -5,7 +5,7 @@ import { HStack } from '@navikt/ds-react'
 
 import { DetaljRad } from '../hooks'
 
-import styles from './Grunnpensjonsdetaljer.module.scss'
+import styles from './Pensjonsdetaljer.module.scss'
 
 export interface GrunnpensjonsdetaljerProps {
   grunnpensjonObjekt: DetaljRad[]

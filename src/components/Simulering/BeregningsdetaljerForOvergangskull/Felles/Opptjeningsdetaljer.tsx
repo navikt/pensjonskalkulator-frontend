@@ -1,9 +1,11 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
 
-import { Heading } from '@navikt/ds-react'
+import { HStack, VStack } from '@navikt/ds-react'
 
 import { DetaljRad } from '../hooks'
+
+import styles from './Pensjonsdetaljer.module.scss'
 
 export interface OpptjeningsdetaljerProps {
   opptjeningKap19Objekt: DetaljRad[]
@@ -18,39 +20,62 @@ export const Opptjeningsdetaljer: React.FC<OpptjeningsdetaljerProps> = ({
 }) => {
   return (
     <section>
-      <Heading size="small" level="3">
-        <FormattedMessage id="beregning.detaljer.opptjeningsdetaljer.kap19.title" />
-      </Heading>
-      <dl>
-        {opptjeningKap19Objekt.map((detalj) => (
-          <>
-            <dt>{detalj.tekst}:</dt>
-            <dd>{detalj.verdi}</dd>
-          </>
-        ))}
-      </dl>
-      <Heading size="small" level="3">
-        <FormattedMessage id="beregning.detaljer.opptjeningsdetaljer.kap20.title" />
-      </Heading>
-      <dl>
-        {opptjeningKap20Objekt.map((detalj) => (
-          <>
-            <dt>{detalj.tekst}:</dt>
-            <dd>{detalj.verdi}</dd>
-          </>
-        ))}
-      </dl>
-      <Heading size="small" level="3">
-        <FormattedMessage id="beregning.detaljer.opptjeningsdetaljer.pre2025OffentligAfp.title" />
-      </Heading>
-      <dl>
-        {opptjeningPre2025OffentligAfpObjekt?.map((detalj) => (
-          <>
-            <dt>{detalj.tekst}:</dt>
-            <dd>{detalj.verdi}</dd>
-          </>
-        ))}
-      </dl>
+      <VStack gap="14">
+        {opptjeningKap19Objekt && opptjeningKap19Objekt.length > 0 && (
+          <dl>
+            <div className={styles.hstackRow}>
+              <strong>
+                <FormattedMessage id="beregning.detaljer.opptjeningsdetaljer.kap19.title" />
+              </strong>
+            </div>
+            {opptjeningKap19Objekt.map((detalj, index) => (
+              <React.Fragment key={index}>
+                <HStack justify="space-between" className={styles.hstackRow}>
+                  <dt>{`${detalj.tekst}:`}</dt>
+                  <dd>{detalj.verdi}</dd>
+                </HStack>
+              </React.Fragment>
+            ))}
+          </dl>
+        )}
+
+        {opptjeningKap20Objekt && opptjeningKap20Objekt.length > 0 && (
+          <dl>
+            <div className={styles.hstackRow}>
+              <strong>
+                <FormattedMessage id="beregning.detaljer.opptjeningsdetaljer.kap20.title" />
+              </strong>
+            </div>
+            {opptjeningKap20Objekt.map((detalj, index) => (
+              <React.Fragment key={index}>
+                <HStack justify="space-between" className={styles.hstackRow}>
+                  <dt>{`${detalj.tekst}:`}</dt>
+                  <dd>{detalj.verdi}</dd>
+                </HStack>
+              </React.Fragment>
+            ))}
+          </dl>
+        )}
+      </VStack>
+
+      {opptjeningPre2025OffentligAfpObjekt &&
+        opptjeningPre2025OffentligAfpObjekt.length > 0 && (
+          <dl>
+            <div className={styles.hstackRow}>
+              <strong>
+                <FormattedMessage id="beregning.detaljer.opptjeningsdetaljer.pre2025OffentligAfp.title" />
+              </strong>
+            </div>
+            {opptjeningPre2025OffentligAfpObjekt.map((detalj, index) => (
+              <React.Fragment key={index}>
+                <HStack justify="space-between" className={styles.hstackRow}>
+                  <dt>{`${detalj.tekst}:`}</dt>
+                  <dd>{detalj.verdi}</dd>
+                </HStack>
+              </React.Fragment>
+            ))}
+          </dl>
+        )}
     </section>
   )
 }

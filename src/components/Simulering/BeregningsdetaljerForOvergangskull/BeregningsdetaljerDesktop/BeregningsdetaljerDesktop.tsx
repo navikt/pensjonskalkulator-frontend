@@ -1,7 +1,6 @@
 import React from 'react'
-import { FormattedMessage } from 'react-intl'
 
-import { Heading, VStack } from '@navikt/ds-react'
+import { HStack } from '@navikt/ds-react'
 
 import { Grunnpensjonsdetaljer } from '../Felles/Grunnpensjonsdetaljer'
 import { Opptjeningsdetaljer } from '../Felles/Opptjeningsdetaljer'
@@ -26,10 +25,7 @@ export const BeregningsdetaljerDesktop: React.FC<
   opptjeningKap20Objekt,
   opptjeningPre2025OffentligAfpObjekt,
 }) => (
-  <VStack gap="4 8" width="100%" marginBlock="2 0">
-    <Heading size="small" level="3">
-      <FormattedMessage id="maanedsbeloep.title" />
-    </Heading>
+  <HStack gap="20" width="100%">
     <Grunnpensjonsdetaljer
       grunnpensjonObjekt={grunnpensjonObjekt}
       gradertUttaksperiode={gradertUttaksperiode}
@@ -40,5 +36,5 @@ export const BeregningsdetaljerDesktop: React.FC<
       opptjeningKap20Objekt={opptjeningKap20Objekt}
       opptjeningPre2025OffentligAfpObjekt={opptjeningPre2025OffentligAfpObjekt}
     />
-  </VStack>
+  </HStack>
 )
