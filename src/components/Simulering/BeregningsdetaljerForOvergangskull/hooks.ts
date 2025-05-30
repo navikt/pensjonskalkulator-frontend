@@ -62,7 +62,12 @@ export function useBeregningsdetaljer(
         },
       ])
       .flat()
-      .filter((rad) => rad.verdi !== undefined && rad.verdi !== '0 kr')
+      .filter(
+        (rad) =>
+          rad.verdi !== undefined &&
+          rad.verdi !== '0 kr' &&
+          !(typeof rad.verdi === 'string' && rad.verdi.startsWith('-'))
+      )
 
     const opptjeningKap19Objekt: DetaljRad[] = (() => {
       if (
@@ -116,7 +121,9 @@ export function useBeregningsdetaljer(
           .filter(
             (rad) =>
               rad.verdi !== undefined &&
-              (rad.tekst === 'Trygdetid' || rad.verdi !== 0)
+              (rad.tekst === 'Trygdetid' ||
+                rad.tekst === 'Pensjonbeholdning før uttak' ||
+                rad.verdi !== 0)
           )
       )
     })()

@@ -93,6 +93,23 @@ describe('useBeregningsdetaljer', () => {
         )
       })
     })
+    describe('Når det er felter som har negativ verdi', () => {
+      it('skjules feltene i grunnpensjonObjekt', () => {
+        const mock = {
+          ...mockAlderspensjon,
+          grunnpensjon: -100,
+          tilleggspensjon: -200,
+          skjermingstillegg: -300,
+          pensjonstillegg: -400,
+          inntektspensjonBeloep: -500,
+          garantipensjonBeloep: -600,
+        }
+        const { result } = renderHook(() =>
+          useBeregningsdetaljer([mock], mockAfp)
+        )
+        expect(result.current.grunnpensjonObjekt).toEqual([])
+      })
+    })
   })
 
   describe('Gitt at brukeren har opptjening i kapittel 19', () => {
@@ -188,11 +205,28 @@ describe('useBeregningsdetaljer', () => {
         )
       })
 
+      it('vises Pensjonbeholdning før uttak selv om verdien er 0', () => {
+        const mock = {
+          ...mockAlderspensjon,
+          pensjonBeholdningFoerUttakBeloep: 0,
+        }
+        const { result } = renderHook(() =>
+          useBeregningsdetaljer([mock], mockAfp)
+        )
+        expect(result.current.opptjeningKap20Objekt).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              tekst: 'Pensjonbeholdning før uttak',
+              verdi: 0,
+            }),
+          ])
+        )
+      })
+
       it('skjules andre felter med verdi 0', () => {
         const mock = {
           ...mockAlderspensjon,
           andelsbroekKap20: 0,
-          pensjonBeholdningFoerUttakBeloep: 0,
         }
         const { result } = renderHook(() =>
           useBeregningsdetaljer([mock], mockAfp)
@@ -200,10 +234,6 @@ describe('useBeregningsdetaljer', () => {
         expect(result.current.opptjeningKap19Objekt).not.toContain(
           expect.arrayContaining([
             expect.objectContaining({ tekst: 'Andelsbrøk', verdi: 0 }),
-            expect.objectContaining({
-              tekst: 'Pensjonbeholdning før uttak',
-              verdi: 0,
-            }),
           ])
         )
       })
