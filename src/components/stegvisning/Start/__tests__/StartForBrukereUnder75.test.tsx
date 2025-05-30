@@ -18,6 +18,7 @@ describe('stegvisning - Start', () => {
   const onNextMock = vi.fn()
 
   const loependeVedtak: LoependeVedtak = {
+    harLoependeVedtak: false,
     ufoeretrygd: { grad: 0 },
   }
 
@@ -41,6 +42,7 @@ describe('stegvisning - Start', () => {
       <StartForBrukereUnder75
         navn="Ola"
         loependeVedtak={{
+          harLoependeVedtak: true,
           alderspensjon: {
             grad: 50,
             fom: '2020-10-02',
@@ -77,6 +79,7 @@ describe('stegvisning - Start', () => {
       <StartForBrukereUnder75
         navn="Ola"
         loependeVedtak={{
+          harLoependeVedtak: true,
           alderspensjon: {
             grad: 50,
             fom: '2020-10-02',
@@ -104,6 +107,7 @@ describe('stegvisning - Start', () => {
       <StartForBrukereUnder75
         navn="Ola"
         loependeVedtak={{
+          harLoependeVedtak: true,
           alderspensjon: {
             grad: 50,
             fom: '2020-10-02',
@@ -138,6 +142,7 @@ describe('stegvisning - Start', () => {
       <StartForBrukereUnder75
         navn="Ola"
         loependeVedtak={{
+          harLoependeVedtak: true,
           alderspensjon: {
             grad: 50,
             fom: '2020-10-02',
@@ -172,6 +177,7 @@ describe('stegvisning - Start', () => {
       <StartForBrukereUnder75
         navn="Ola"
         loependeVedtak={{
+          harLoependeVedtak: true,
           ufoeretrygd: {
             grad: 0,
           },
@@ -201,6 +207,7 @@ describe('stegvisning - Start', () => {
       <StartForBrukereUnder75
         navn="Ola"
         loependeVedtak={{
+          harLoependeVedtak: true,
           alderspensjon: {
             grad: 50,
             fom: '2020-10-02',
@@ -233,6 +240,32 @@ describe('stegvisning - Start', () => {
     expect(
       screen.queryByText('stegvisning.start.button')
     ).not.toBeInTheDocument()
+  })
+
+  it('rendrer slik den skal med vedtak om pre2025 offentlig Afp', async () => {
+    render(
+      <StartForBrukereUnder75
+        navn="Ola"
+        loependeVedtak={{
+          harLoependeVedtak: true,
+          ufoeretrygd: {
+            grad: 0,
+          },
+          pre2025OffentligAfp: {
+            fom: '2024-08-01',
+          },
+        }}
+        onCancel={onCancelMock}
+        onNext={onNextMock}
+      />
+    )
+
+    expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
+      'stegvisning.start.title Ola!'
+    )
+    expect(
+      screen.getByTestId('stegvisning-start-ingress-pre2025-offentlig-afp')
+    ).toBeVisible()
   })
 
   it('kaller onNext når brukeren klikker på Neste', async () => {
