@@ -434,7 +434,7 @@ export const fulfilledGetLoependeVedtakFremtidig = {
     requestId: 'xTaE6mOydr5ZI75UXq4Wi',
     startedTimeStamp: 1688046411971,
     data: {
-      harLoependeVedtak: false,
+      harLoependeVedtak: true,
       ufoeretrygd: {
         grad: 0,
       },
