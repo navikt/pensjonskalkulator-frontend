@@ -61,15 +61,31 @@ describe('useBeregningsdetaljer', () => {
         expect.arrayContaining([
           expect.objectContaining({
             tekst: 'Grunnpensjon (kap. 19)',
-            verdi: '1000 kr',
+            verdi: '83 kr',
           }),
           expect.objectContaining({
             tekst: 'Tilleggspensjon (kap. 19)',
-            verdi: '2000 kr',
+            verdi: '167 kr',
+          }),
+          expect.objectContaining({
+            tekst: 'Skjermingstillegg (kap. 19)',
+            verdi: '25 kr',
+          }),
+          expect.objectContaining({
+            tekst: 'Pensjonstillegg (kap. 19)',
+            verdi: '33 kr',
+          }),
+          expect.objectContaining({
+            tekst: 'Inntektspensjon (kap. 20)',
+            verdi: '42 kr',
+          }),
+          expect.objectContaining({
+            tekst: 'Garantipensjon (kap. 20)',
+            verdi: '50 kr',
           }),
           expect.objectContaining({
             tekst: 'Sum månedlig alderspensjon',
-            verdi: '4800 kr',
+            verdi: '400 kr',
           }),
         ])
       )
