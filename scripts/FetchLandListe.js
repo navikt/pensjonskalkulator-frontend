@@ -1,7 +1,7 @@
 import fs from 'fs'
 import prettier from 'prettier'
 
-fetch(`https://pensjonskalkulator-backend.intern.dev.nav.no/api/v1/land-liste`)
+fetch(`https://staging.ekstern.dev.nav.no/pensjon/kalkulator/v1/land-liste`)
   .then((response) => response.text())
   .then(async (body) => {
     const formattedJson = await prettier.format(
@@ -13,8 +13,5 @@ fetch(`https://pensjonskalkulator-backend.intern.dev.nav.no/api/v1/land-liste`)
     fs.writeFileSync('./src/assets/land-liste.json', formattedJson)
   })
   .catch((error) => {
-    console.error(
-      'Error while fetching or processing /api/v1/land-liste',
-      error
-    )
+    console.error('Error while fetching or processing /v1/land-liste', error)
   })
