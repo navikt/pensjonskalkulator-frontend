@@ -3,8 +3,7 @@ import { redirect } from 'react-router'
 /**
  * Skip funksjon for access guards
  *
- * Denne funksjonen bestemmer om det skal hoppes til neste eller forrige steg
- * basert på navigasjonsretning lagret i sessionStorage.
+ * Denne funksjonen bestemmer om det skal hoppes til neste eller forrige steg basert på query parameter 'back'
  *
  * @param stepArrays - Array med stier i stegsekvensen
  * @param currentPath - Gjeldende sti som skal hoppes over
