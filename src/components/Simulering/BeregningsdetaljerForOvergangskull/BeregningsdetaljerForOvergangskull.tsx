@@ -34,7 +34,7 @@ export const BeregningsdetaljerForOvergangskull: React.FC<Props> = ({
   } = useBeregningsdetaljer(alderspensjonListe, pre2025OffentligAfp)
 
   return (
-    <Box marginBlock="10 0" data-testid="maanedsbloep-avansert-beregning">
+    <Box marginBlock="10 0" data-testid="beregningsdetaljer-for-overgangskull">
       {/* <Heading size="small" level="2">
         <FormattedMessage id="beregningsdetaljer.title" />
       </Heading> */}
