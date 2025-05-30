@@ -203,6 +203,7 @@ describe('apiSlice', () => {
 
       mockResponse('/v4/vedtak/loepende-vedtak', {
         json: {
+          harLoependeVedtak: false,
           feil: 'format',
         },
       })

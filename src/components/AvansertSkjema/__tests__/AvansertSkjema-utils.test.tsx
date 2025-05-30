@@ -53,7 +53,7 @@ describe('AvansertSkjema-utils', () => {
         {
           foedselsdato: '1963-04-30',
           loependeVedtak: {
-            harLoependeVedtak: false,
+            harLoependeVedtak: true,
             ufoeretrygd: { grad: 0 },
           },
           localInntektFremTilUttak: null,
@@ -85,7 +85,7 @@ describe('AvansertSkjema-utils', () => {
           {
             foedselsdato: '1963-04-30',
             loependeVedtak: {
-              harLoependeVedtak: false,
+              harLoependeVedtak: true,
               ufoeretrygd: { grad: 0 },
             },
             localInntektFremTilUttak: null,
@@ -244,7 +244,7 @@ describe('AvansertSkjema-utils', () => {
           {
             foedselsdato: '1963-04-30',
             loependeVedtak: {
-              harLoependeVedtak: false,
+              harLoependeVedtak: true,
               ufoeretrygd: { grad: 0 },
             },
             localInntektFremTilUttak: '500 000',
@@ -303,7 +303,7 @@ describe('AvansertSkjema-utils', () => {
           {
             foedselsdato: '1963-04-30',
             loependeVedtak: {
-              harLoependeVedtak: false,
+              harLoependeVedtak: true,
               ufoeretrygd: { grad: 0 },
             },
             localInntektFremTilUttak: '500 000',
@@ -336,7 +336,7 @@ describe('AvansertSkjema-utils', () => {
           {
             foedselsdato: '1963-04-30',
             loependeVedtak: {
-              harLoependeVedtak: false,
+              harLoependeVedtak: true,
               ufoeretrygd: { grad: 0 },
             },
             localInntektFremTilUttak: '500 000',
@@ -374,7 +374,7 @@ describe('AvansertSkjema-utils', () => {
 
     const mockedFoedselsdato = '1963-04-30'
     const mockedLoependeVedtak = {
-      harLoependeVedtak: false,
+      harLoependeVedtak: true,
       ufoeretrygd: { grad: 0 },
     }
     const mockedLoependeVedtak100 = {

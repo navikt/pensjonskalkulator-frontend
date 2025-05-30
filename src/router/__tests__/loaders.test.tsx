@@ -318,8 +318,8 @@ describe('Loaders', () => {
 
         mockResponse('/v4/vedtak/loepende-vedtak', {
           json: {
-            harLoependeVedtak: true,
             ufoeretrygd: { grad: 75 },
+            harLoependeVedtak: true,
           } satisfies LoependeVedtak,
         })
         mockResponse('/v4/person', {
@@ -362,8 +362,8 @@ describe('Loaders', () => {
 
         mockResponse('/v4/vedtak/loepende-vedtak', {
           json: {
-            harLoependeVedtak: true,
             ufoeretrygd: { grad: 75 },
+            harLoependeVedtak: true,
           } satisfies LoependeVedtak,
         })
         mockResponse('/v4/person', {

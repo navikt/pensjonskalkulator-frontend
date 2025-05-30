@@ -18,7 +18,7 @@ describe('stegvisning - Start', () => {
   const onNextMock = vi.fn()
 
   const loependeVedtak: LoependeVedtak = {
-    harLoependeVedtak: false,
+    harLoependeVedtak: true,
     ufoeretrygd: { grad: 0 },
   }
 
@@ -117,7 +117,7 @@ describe('stegvisning - Start', () => {
             grad: 0,
           },
           afpPrivat: {
-            fom: '2020-10-02',
+            fom: '2024-08-01',
           },
         }}
         onCancel={onCancelMock}

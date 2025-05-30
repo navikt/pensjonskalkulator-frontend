@@ -211,7 +211,7 @@ describe('apiSlice - utils', () => {
   describe('generateTidligstMuligHeltUttakRequestBody', () => {
     const requestBody = {
       loependeVedtak: {
-        harLoependeVedtak: false,
+        harLoependeVedtak: true,
         ufoeretrygd: { grad: 0 },
       } satisfies LoependeVedtak,
       afp: null,
@@ -395,7 +395,7 @@ describe('apiSlice - utils', () => {
   describe('generateAlderspensjonEnkelRequestBody', () => {
     const requestBody = {
       loependeVedtak: {
-        harLoependeVedtak: false,
+        harLoependeVedtak: true,
         ufoeretrygd: { grad: 0 },
       } satisfies LoependeVedtak,
       afp: 'ja_privat' as const,
@@ -586,7 +586,7 @@ describe('apiSlice - utils', () => {
   describe('generateAlderspensjonRequestBody', () => {
     const args = {
       loependeVedtak: {
-        harLoependeVedtak: false,
+        harLoependeVedtak: true,
         ufoeretrygd: { grad: 0 },
       },
       afp: 'ja_privat' as const,
@@ -610,18 +610,21 @@ describe('apiSlice - utils', () => {
         generateAlderspensjonRequestBody({
           ...args,
           foedselsdato: null,
+          loependeVedtak: { ...args.loependeVedtak, harLoependeVedtak: true },
         })
       ).toEqual(undefined)
       expect(
         generateAlderspensjonRequestBody({
           ...args,
           foedselsdato: undefined,
+          loependeVedtak: { ...args.loependeVedtak, harLoependeVedtak: true },
         })
       ).toEqual(undefined)
       expect(
         generateAlderspensjonRequestBody({
           ...args,
           heltUttak: undefined,
+          loependeVedtak: { ...args.loependeVedtak, harLoependeVedtak: true },
         })
       ).toEqual(undefined)
     })
