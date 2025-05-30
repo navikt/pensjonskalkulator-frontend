@@ -24,73 +24,70 @@ export function useBeregningsdetaljer(
       : []
 
     const grunnpensjonObjekt: DetaljRad[] = alderspensjonVedUttak
-      .map((ap) => [
-        {
-          tekst: 'Grunnpensjon (kap. 19)',
-          verdi:
-            ap.grunnpensjon !== undefined && ap.grunnpensjon >= 0
-              ? `${formatInntekt(Math.round(ap.grunnpensjon / 12))} kr`
-              : `${formatInntekt(ap.grunnpensjon)} kr`,
-        },
-        {
-          tekst: 'Tilleggspensjon (kap. 19)',
-          verdi:
-            ap.tilleggspensjon !== undefined && ap.tilleggspensjon >= 0
-              ? `${formatInntekt(Math.round(ap.tilleggspensjon / 12))} kr`
-              : `${formatInntekt(ap.tilleggspensjon)} kr`,
-        },
-        {
-          tekst: 'Skjermingstillegg (kap. 19)',
-          verdi:
-            ap.skjermingstillegg !== undefined && ap.skjermingstillegg >= 0
-              ? `${formatInntekt(Math.round(ap.skjermingstillegg / 12))} kr`
-              : `${formatInntekt(ap.skjermingstillegg)} kr`,
-        },
-        {
-          tekst: 'Pensjonstillegg (kap. 19)',
-          verdi:
-            ap.pensjonstillegg !== undefined && ap.pensjonstillegg >= 0
-              ? `${formatInntekt(Math.round(ap.pensjonstillegg / 12))} kr`
-              : `${formatInntekt(ap.pensjonstillegg)} kr`,
-        },
-        {
-          tekst: 'Inntektspensjon (kap. 20)',
-          verdi:
-            ap.inntektspensjonBeloep !== undefined &&
-            ap.inntektspensjonBeloep >= 0
-              ? `${formatInntekt(Math.round(ap.inntektspensjonBeloep / 12))} kr`
-              : `${formatInntekt(ap.inntektspensjonBeloep)} kr`,
-        },
-        {
-          tekst: 'Garantipensjon (kap. 20)',
-          verdi:
-            ap.garantipensjonBeloep !== undefined &&
-            ap.garantipensjonBeloep >= 0
-              ? `${formatInntekt(Math.round(ap.garantipensjonBeloep / 12))} kr`
-              : `${formatInntekt(ap.garantipensjonBeloep)} kr`,
-        },
-        {
-          tekst: 'Sum månedlig alderspensjon',
-          verdi: (() => {
-            const sum =
-              (ap.grunnpensjon ?? 0) +
-              (ap.tilleggspensjon ?? 0) +
-              (ap.skjermingstillegg ?? 0) +
-              (ap.pensjonstillegg ?? 0) +
-              (ap.inntektspensjonBeloep ?? 0) +
-              (ap.garantipensjonBeloep ?? 0)
-            return sum >= 0
-              ? `${formatInntekt(Math.round(sum / 12))} kr`
-              : `${formatInntekt(sum)} kr`
-          })(),
-        },
-      ])
+      .map((ap) => {
+        // Set negative values to 0 for all fields
+        const grunnpensjon =
+          ap.grunnpensjon && ap.grunnpensjon > 0 ? ap.grunnpensjon : 0
+        const tilleggspensjon =
+          ap.tilleggspensjon && ap.tilleggspensjon > 0 ? ap.tilleggspensjon : 0
+        const skjermingstillegg =
+          ap.skjermingstillegg && ap.skjermingstillegg > 0
+            ? ap.skjermingstillegg
+            : 0
+        const pensjonstillegg =
+          ap.pensjonstillegg && ap.pensjonstillegg > 0 ? ap.pensjonstillegg : 0
+        const inntektspensjonBeloep =
+          ap.inntektspensjonBeloep && ap.inntektspensjonBeloep > 0
+            ? ap.inntektspensjonBeloep
+            : 0
+        const garantipensjonBeloep =
+          ap.garantipensjonBeloep && ap.garantipensjonBeloep > 0
+            ? ap.garantipensjonBeloep
+            : 0
+
+        return [
+          {
+            tekst: 'Grunnpensjon (kap. 19)',
+            verdi: `${formatInntekt(Math.round(grunnpensjon / 12))} kr`,
+          },
+          {
+            tekst: 'Tilleggspensjon (kap. 19)',
+            verdi: `${formatInntekt(Math.round(tilleggspensjon / 12))} kr`,
+          },
+          {
+            tekst: 'Skjermingstillegg (kap. 19)',
+            verdi: `${formatInntekt(Math.round(skjermingstillegg / 12))} kr`,
+          },
+          {
+            tekst: 'Pensjonstillegg (kap. 19)',
+            verdi: `${formatInntekt(Math.round(pensjonstillegg / 12))} kr`,
+          },
+          {
+            tekst: 'Inntektspensjon (kap. 20)',
+            verdi: `${formatInntekt(Math.round(inntektspensjonBeloep / 12))} kr`,
+          },
+          {
+            tekst: 'Garantipensjon (kap. 20)',
+            verdi: `${formatInntekt(Math.round(garantipensjonBeloep / 12))} kr`,
+          },
+          {
+            tekst: 'Sum månedlig alderspensjon',
+            verdi: `${formatInntekt(
+              Math.round(
+                (grunnpensjon +
+                  tilleggspensjon +
+                  skjermingstillegg +
+                  pensjonstillegg +
+                  inntektspensjonBeloep +
+                  garantipensjonBeloep) /
+                  12
+              )
+            )} kr`,
+          },
+        ]
+      })
       .flat()
-      .filter(
-        (rad) =>
-          rad.verdi !== '0 kr' &&
-          !(typeof rad.verdi === 'string' && rad.verdi.startsWith('-'))
-      )
+      .filter((rad) => rad.verdi !== '0 kr')
 
     const opptjeningKap19Objekt: DetaljRad[] = (() => {
       if (
