@@ -217,7 +217,12 @@ export const useSimuleringChartLocalState = (initialValues: {
                       gradertUttaksperiode && uttaksalder
                         ? {
                             fra: gradertUttaksperiode?.uttaksalder,
-                            til: getAlderMinus1Maaned(uttaksalder),
+                            til:
+                              // Vis inntekt ved siden av pre2025 offentlig AFP frem til 67
+                              pre2025OffentligAfp &&
+                              gradertUttaksperiode.aarligInntektVsaPensjonBeloep
+                                ? getAlderMinus1Maaned({ aar: 67, maaneder: 0 })
+                                : getAlderMinus1Maaned(uttaksalder),
                             beloep: formatInntektToNumber(
                               gradertUttaksperiode?.aarligInntektVsaPensjonBeloep
                             ),
