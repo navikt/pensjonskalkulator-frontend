@@ -44,6 +44,11 @@ export function useBeregningsdetaljer(
         gradertIndex >= 0
       ) {
         indices.push(gradertIndex)
+      } else if (
+        uttaksalder.aar === gradertUttaksperiode.uttaksalder.aar &&
+        uttaksalder.maaneder !== gradertUttaksperiode.uttaksalder.maaneder
+      ) {
+        indices.push(1)
       }
     }
 
