@@ -29,6 +29,7 @@ import {
   landingPageAccessGuard,
   stepAFPAccessGuard,
   stepSamtykkeOffentligAFPAccessGuard,
+  stepSamtykkePensjonsavtaler,
   stepSivilstandAccessGuard,
   stepStartAccessGuard,
   stepUfoeretrygdAFPAccessGuard,
@@ -116,7 +117,7 @@ export const routes: RouteObject[] = [
         element: <StepSamtykkeOffentligAFP />,
       },
       {
-        loader: directAccessGuard,
+        loader: stepSamtykkePensjonsavtaler,
         path: paths.samtykke,
         element: <StepSamtykkePensjonsavtaler />,
       },

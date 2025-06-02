@@ -206,7 +206,7 @@ describe('AvansertSkjemaForBrukereMedKap19Afp', () => {
       })
       it('Når alle feltene fylles ut og resetForm kalles, nullstilles alle feltene', async () => {
         const user = userEvent.setup()
-        const { store } = await render(
+        const { store } = render(
           <BeregningContext.Provider
             value={{
               ...contextMockedValues,
@@ -226,7 +226,7 @@ describe('AvansertSkjemaForBrukereMedKap19Afp', () => {
             },
           }
         )
-        store.dispatch(apiSlice.endpoints.getInntekt.initiate())
+        await store.dispatch(apiSlice.endpoints.getInntekt.initiate())
 
         // Endrer inntekt frem til uttak
         await user.click(
@@ -290,9 +290,7 @@ describe('AvansertSkjemaForBrukereMedKap19Afp', () => {
           screen.getByTestId(`${AVANSERT_FORM_NAMES.inntektVsaAfpRadio}-ja`)
         )
 
-        const inputField = await screen.getByTestId(
-          AVANSERT_FORM_NAMES.inntektVsaAfp
-        )
+        const inputField = screen.getByTestId(AVANSERT_FORM_NAMES.inntektVsaAfp)
 
         await user.type(inputField, '1')
         await user.type(inputField, '2')
@@ -302,36 +300,31 @@ describe('AvansertSkjemaForBrukereMedKap19Afp', () => {
         await user.type(inputField, '0')
         // Sjekker at feltene er fylt ut
 
-        expect(
-          (
-            (await screen.findByTestId(
-              `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
-            )) as HTMLSelectElement
-          ).value
-        ).toBe('62')
-        expect(
-          (
-            (await screen.findByTestId(
-              `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`
-            )) as HTMLSelectElement
-          ).value
-        ).toBe('5')
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+        const uttaksalderHeltUttakAar = (await screen.findByTestId(
+          `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
+        )) as HTMLSelectElement
 
-        expect(
-          (
-            screen.getByTestId(
-              `${AVANSERT_FORM_NAMES.afpInntektMaanedFoerUttakRadio}-ja`
-            ) as HTMLInputElement
-          ).checked
-        ).toBe(true)
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+        const uttaksalderHeltUttakMaaneder = (await screen.findByTestId(
+          `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`
+        )) as HTMLSelectElement
 
-        expect(
-          (
-            screen.getByTestId(
-              `${AVANSERT_FORM_NAMES.inntektVsaAfpRadio}-ja`
-            ) as HTMLInputElement
-          ).checked
-        ).toBe(true)
+        expect(uttaksalderHeltUttakAar.value).toBe('62')
+        expect(uttaksalderHeltUttakMaaneder.value).toBe('5')
+
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+        const afpInntektMaanedFoerUttakRadio = screen.getByTestId(
+          `${AVANSERT_FORM_NAMES.afpInntektMaanedFoerUttakRadio}-ja`
+        ) as HTMLInputElement
+        expect(afpInntektMaanedFoerUttakRadio.checked).toBe(true)
+
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+        const inntektVsaAfpRadio = screen.getByTestId(
+          `${AVANSERT_FORM_NAMES.inntektVsaAfpRadio}-ja`
+        ) as HTMLInputElement
+
+        expect(inntektVsaAfpRadio.checked).toBe(true)
 
         expect(
           await screen.findByTestId(AVANSERT_FORM_NAMES.inntektVsaAfp)
@@ -339,24 +332,23 @@ describe('AvansertSkjemaForBrukereMedKap19Afp', () => {
 
         fireEvent.click(screen.getByText('beregning.avansert.button.nullstill'))
 
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+        const nullstiltUttaksalderHeltUttakAar = (await screen.findByTestId(
+          `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
+        )) as HTMLSelectElement
+
+        const nullstiltUttaksalderHeltUttakMaaneder =
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+          (await screen.findByTestId(
+            `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`
+          )) as HTMLSelectElement
+
         // Sjekker at feltene er nullstilt
         expect(
           await screen.findByTestId('formatert-inntekt-frem-til-uttak')
         ).toHaveTextContent('521 338')
-        expect(
-          (
-            (await screen.findByTestId(
-              `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
-            )) as HTMLSelectElement
-          ).value
-        ).toBe('')
-        expect(
-          (
-            (await screen.findByTestId(
-              `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`
-            )) as HTMLSelectElement
-          ).value
-        ).toBe('')
+        expect(nullstiltUttaksalderHeltUttakAar.value).toBe('')
+        expect(nullstiltUttaksalderHeltUttakMaaneder.value).toBe('')
 
         expect(
           screen.queryByTestId(

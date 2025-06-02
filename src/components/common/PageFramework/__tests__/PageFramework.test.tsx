@@ -30,48 +30,40 @@ describe('PageFramework', () => {
     const button = await screen.findByTestId(
       'landingside-enkel-kalkulator-button'
     )
-    user.click(button)
-    expect(await screen.findByTestId('pageframework-loader')).toBeVisible()
+    await user.click(button)
+    expect(screen.getByTestId('pageframework-loader')).toBeVisible()
   })
 
   it('rendrer slik den skal, med wrapper og Heading på riktig nivå', async () => {
     render(<PageFramework />, { hasLogin: true })
-    await waitFor(async () => {
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
-        'pageframework.title'
-      )
-    })
+    expect(await screen.findByRole('heading', { level: 1 })).toHaveTextContent(
+      'pageframework.title'
+    )
   })
 
   it('rendrer slik den skal med hvit bakgrunn', async () => {
     render(<PageFramework hasWhiteBg />, {
       hasLogin: true,
     })
-    await waitFor(async () => {
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
-        'pageframework.title'
-      )
-    })
+    expect(await screen.findByRole('heading', { level: 1 })).toHaveTextContent(
+      'pageframework.title'
+    )
   })
 
   it('rendrer slik den skal i full bredde', async () => {
     render(<PageFramework isFullWidth shouldShowLogo={false} />, {
       hasLogin: true,
     })
-    await waitFor(async () => {
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
-        'pageframework.title'
-      )
-    })
+    expect(await screen.findByRole('heading', { level: 1 })).toHaveTextContent(
+      'pageframework.title'
+    )
   })
 
   it('rendrer slik den skal med logo', async () => {
     render(<PageFramework shouldShowLogo={true} />, {
       hasLogin: true,
     })
-    await waitFor(async () => {
-      expect(screen.getByTestId('framework-logo')).toBeInTheDocument()
-    })
+    expect(await screen.findByTestId('framework-logo')).toBeInTheDocument()
   })
 
   it('scroller på toppen av siden når en route endrer seg', async () => {
@@ -100,7 +92,8 @@ describe('PageFramework', () => {
       baseUrl: `${HOST_BASEURL}`,
     })
 
-    const windowSpy = vi.spyOn(window, 'open')
+    const windowOpenMock = vi.fn()
+    vi.stubGlobal('open', windowOpenMock)
 
     render(
       <PageFramework shouldRedirectNonAuthenticated>
@@ -111,7 +104,7 @@ describe('PageFramework', () => {
     await Promise.resolve()
 
     await waitFor(() =>
-      expect(windowSpy).toHaveBeenCalledWith(
+      expect(windowOpenMock).toHaveBeenCalledWith(
         'http://localhost:8088/pensjon/kalkulator/oauth2/login?redirect=%2F',
         '_self'
       )

@@ -523,7 +523,7 @@ describe('BeregningAvansert', () => {
         expect(
           await screen.findByText('grunnlag.forbehold.title')
         ).toBeInTheDocument()
-        expect(await screen.findByText('savnerdunoe.title')).toBeInTheDocument()
+        expect(screen.queryByText('savnerdunoe.title')).not.toBeInTheDocument()
         expect(
           screen.queryByText('savnerdunoe.ingress')
         ).not.toBeInTheDocument()

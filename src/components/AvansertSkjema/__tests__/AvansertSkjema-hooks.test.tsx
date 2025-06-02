@@ -899,8 +899,8 @@ describe('AvansertSkjema-hooks', () => {
   describe('useFormValidationErrors', () => {
     const mockedFormatMessageFunction = vi
       .fn()
-      .mockImplementation(({ id: string }) => {
-        return string
+      .mockImplementation(({ id }: { id: string }) => {
+        return id
       })
     const mockedIntlShape = {
       formatMessage: mockedFormatMessageFunction,
@@ -1003,7 +1003,7 @@ describe('AvansertSkjema-hooks', () => {
       })
 
       // gradertAgePickerError
-      const gradertAgePickerError = await render(
+      const gradertAgePickerError = render(
         result.current.gradertUttakAgePickerError as React.ReactElement
       )
       expect(gradertAgePickerError.asFragment()).toMatchInlineSnapshot(`
@@ -1019,7 +1019,7 @@ describe('AvansertSkjema-hooks', () => {
       `)
 
       // heltAgePickerError
-      const heltAgePickerError = await render(
+      const heltAgePickerError = render(
         result.current.heltUttakAgePickerError as React.ReactElement
       )
       expect(heltAgePickerError.asFragment()).toMatchInlineSnapshot(`

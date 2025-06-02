@@ -15,8 +15,6 @@ import { userInputInitialState } from '@/state/userInput/userInputSlice'
 import * as userInputReducerUtils from '@/state/userInput/userInputSlice'
 import { render, screen, userEvent, waitFor } from '@/test-utils'
 
-const initialGetState = store.getState
-
 const navigateMock = vi.fn()
 vi.mock(import('react-router'), async (importOriginal) => {
   const actual = await importOriginal()
@@ -46,7 +44,6 @@ describe('StepAFP', () => {
     vi.clearAllMocks()
     vi.resetAllMocks()
     vi.resetModules()
-    store.getState = initialGetState
   })
 
   it('har riktig sidetittel', async () => {
@@ -311,7 +308,11 @@ describe('StepAFP', () => {
     await waitFor(async () => {
       await user.click(await screen.findByText('stegvisning.tilbake'))
     })
-    expect(navigateMock).toHaveBeenCalledWith(paths.utenlandsopphold)
+    expect(navigateMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        search: expect.stringContaining('back=true') as string,
+      })
+    )
   })
 
   describe('Gitt at brukeren er logget på som veileder', async () => {

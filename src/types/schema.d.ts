@@ -1223,11 +1223,13 @@ export interface components {
       fom: string
     }
     LoependeVedtakV4: {
+      harLoependeVedtak: boolean
       alderspensjon?: components['schemas']['AlderspensjonDetaljerV4']
       fremtidigAlderspensjon?: components['schemas']['FremtidigAlderspensjonDetaljerV4']
       ufoeretrygd: components['schemas']['UfoeretrygdDetaljerV4']
       afpPrivat?: components['schemas']['LoependeFraV4']
       afpOffentlig?: components['schemas']['LoependeFraV4']
+      pre2025OffentligAfp?: components['schemas']['LoependeFraV4']
     }
     UfoeretrygdDetaljerV4: {
       /** Format: int32 */
@@ -1442,6 +1444,13 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
+          /** @example {
+           *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+           *       "status": 503,
+           *       "error": "Service Unavailable",
+           *       "message": "En feil inntraff",
+           *       "path": "/api/ressurs"
+           *     } */
           '*/*': unknown
         }
       }
@@ -1475,6 +1484,13 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
+          /** @example {
+           *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+           *       "status": 503,
+           *       "error": "Service Unavailable",
+           *       "message": "En feil inntraff",
+           *       "path": "/api/ressurs"
+           *     } */
           '*/*': unknown
         }
       }
@@ -1565,6 +1581,13 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
+          /** @example {
+           *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+           *       "status": 503,
+           *       "error": "Service Unavailable",
+           *       "message": "En feil inntraff",
+           *       "path": "/api/ressurs"
+           *     } */
           '*/*': unknown
         }
       }
@@ -1598,6 +1621,13 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
+          /** @example {
+           *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+           *       "status": 503,
+           *       "error": "Service Unavailable",
+           *       "message": "En feil inntraff",
+           *       "path": "/api/ressurs"
+           *     } */
           '*/*': unknown
         }
       }
@@ -1655,6 +1685,13 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
+          /** @example {
+           *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+           *       "status": 503,
+           *       "error": "Service Unavailable",
+           *       "message": "En feil inntraff",
+           *       "path": "/api/ressurs"
+           *     } */
           '*/*': unknown
         }
       }
@@ -1721,6 +1758,13 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
+          /** @example {
+           *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+           *       "status": 503,
+           *       "error": "Service Unavailable",
+           *       "message": "En feil inntraff",
+           *       "path": "/api/ressurs"
+           *     } */
           '*/*': unknown
         }
       }
@@ -1750,6 +1794,13 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
+          /** @example {
+           *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+           *       "status": 503,
+           *       "error": "Service Unavailable",
+           *       "message": "En feil inntraff",
+           *       "path": "/api/ressurs"
+           *     } */
           '*/*': unknown
         }
       }
@@ -1788,6 +1839,13 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
+          /** @example {
+           *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+           *       "status": 503,
+           *       "error": "Service Unavailable",
+           *       "message": "En feil inntraff",
+           *       "path": "/api/ressurs"
+           *     } */
           '*/*': unknown
         }
       }
@@ -1817,6 +1875,13 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
+          /** @example {
+           *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+           *       "status": 503,
+           *       "error": "Service Unavailable",
+           *       "message": "En feil inntraff",
+           *       "path": "/api/ressurs"
+           *     } */
           '*/*': unknown
         }
       }
@@ -1846,6 +1911,13 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
+          /** @example {
+           *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+           *       "status": 503,
+           *       "error": "Service Unavailable",
+           *       "message": "En feil inntraff",
+           *       "path": "/api/ressurs"
+           *     } */
           '*/*': unknown
         }
       }
@@ -1884,6 +1956,13 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
+          /** @example {
+           *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+           *       "status": 503,
+           *       "error": "Service Unavailable",
+           *       "message": "En feil inntraff",
+           *       "path": "/api/ressurs"
+           *     } */
           '*/*': unknown
         }
       }
@@ -1913,6 +1992,13 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
+          /** @example {
+           *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+           *       "status": 503,
+           *       "error": "Service Unavailable",
+           *       "message": "En feil inntraff",
+           *       "path": "/api/ressurs"
+           *     } */
           '*/*': unknown
         }
       }
@@ -1942,6 +2028,13 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
+          /** @example {
+           *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+           *       "status": 503,
+           *       "error": "Service Unavailable",
+           *       "message": "En feil inntraff",
+           *       "path": "/api/ressurs"
+           *     } */
           '*/*': unknown
         }
       }
@@ -1991,6 +2084,13 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
+          /** @example {
+           *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+           *       "status": 503,
+           *       "error": "Service Unavailable",
+           *       "message": "En feil inntraff",
+           *       "path": "/api/ressurs"
+           *     } */
           '*/*': unknown
         }
       }
@@ -2020,6 +2120,13 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
+          /** @example {
+           *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+           *       "status": 503,
+           *       "error": "Service Unavailable",
+           *       "message": "En feil inntraff",
+           *       "path": "/api/ressurs"
+           *     } */
           '*/*': unknown
         }
       }
@@ -2049,6 +2156,13 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
+          /** @example {
+           *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+           *       "status": 503,
+           *       "error": "Service Unavailable",
+           *       "message": "En feil inntraff",
+           *       "path": "/api/ressurs"
+           *     } */
           '*/*': unknown
         }
       }
@@ -2078,6 +2192,13 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
+          /** @example {
+           *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+           *       "status": 503,
+           *       "error": "Service Unavailable",
+           *       "message": "En feil inntraff",
+           *       "path": "/api/ressurs"
+           *     } */
           '*/*': unknown
         }
       }
@@ -2147,6 +2268,13 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
+          /** @example {
+           *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+           *       "status": 503,
+           *       "error": "Service Unavailable",
+           *       "message": "En feil inntraff",
+           *       "path": "/api/ressurs"
+           *     } */
           '*/*': unknown
         }
       }
@@ -2176,6 +2304,13 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
+          /** @example {
+           *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+           *       "status": 503,
+           *       "error": "Service Unavailable",
+           *       "message": "En feil inntraff",
+           *       "path": "/api/ressurs"
+           *     } */
           '*/*': unknown
         }
       }
@@ -2207,6 +2342,13 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
+          /** @example {
+           *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+           *       "status": 503,
+           *       "error": "Service Unavailable",
+           *       "message": "En feil inntraff",
+           *       "path": "/api/ressurs"
+           *     } */
           '*/*': unknown
         }
       }
