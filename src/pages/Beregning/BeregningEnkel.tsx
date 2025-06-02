@@ -46,7 +46,7 @@ import {
 } from '@/state/userInput/selectors'
 import {
   getBrukerensAlderISluttenAvMaaneden,
-  isAlderOver75,
+  isAlder75MaanedenFylt,
   isFoedtFoer1964,
 } from '@/utils/alder'
 import { logger } from '@/utils/logging'
@@ -241,13 +241,9 @@ export const BeregningEnkel = () => {
   }
 
   const isOver75AndNoLoependeVedtak =
+    !loependeVedtak.harLoependeVedtak &&
     !!person?.foedselsdato &&
-    isAlderOver75(person.foedselsdato) &&
-    !loependeVedtak.alderspensjon &&
-    !loependeVedtak.afpPrivat &&
-    !loependeVedtak.afpOffentlig &&
-    !loependeVedtak.pre2025OffentligAfp &&
-    loependeVedtak.ufoeretrygd.grad === 0
+    isAlder75MaanedenFylt(person.foedselsdato)
 
   return (
     <>
