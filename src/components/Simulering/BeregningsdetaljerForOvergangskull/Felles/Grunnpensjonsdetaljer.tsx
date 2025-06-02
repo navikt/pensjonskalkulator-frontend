@@ -1,7 +1,7 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
 
-import { HStack, Heading } from '@navikt/ds-react'
+import { HStack, Heading, VStack } from '@navikt/ds-react'
 
 import { useAppSelector } from '@/state/hooks'
 import { selectCurrentSimulation } from '@/state/userInput/selectors'
@@ -22,9 +22,6 @@ export const Grunnpensjonsdetaljer: React.FC<GrunnpensjonsdetaljerProps> = ({
     selectCurrentSimulation
   )
 
-  console.log(grunnpensjonObjekter.length)
-  console.log(grunnpensjonObjekter)
-
   const gradertUttak =
     grunnpensjonObjekter.length === 2 ? grunnpensjonObjekter[0] : null
   const heltUttak =
@@ -33,7 +30,7 @@ export const Grunnpensjonsdetaljer: React.FC<GrunnpensjonsdetaljerProps> = ({
       : (grunnpensjonObjekter[0] ?? [])
 
   return (
-    <>
+    <VStack gap="20">
       {gradertUttak && gradertUttak.length > 0 && (
         <div className="gradertUttak">
           <Heading size="small" level="3">
@@ -123,6 +120,6 @@ export const Grunnpensjonsdetaljer: React.FC<GrunnpensjonsdetaljerProps> = ({
           ))}
         </dl>
       </div>
-    </>
+    </VStack>
   )
 }
