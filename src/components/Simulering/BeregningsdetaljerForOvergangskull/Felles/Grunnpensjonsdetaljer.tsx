@@ -13,7 +13,6 @@ import styles from './Pensjonsdetaljer.module.scss'
 
 export interface GrunnpensjonsdetaljerProps {
   grunnpensjonObjekter: DetaljRad[][]
-  uttaksalder: Alder | null
 }
 
 export const Grunnpensjonsdetaljer: React.FC<GrunnpensjonsdetaljerProps> = ({

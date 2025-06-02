@@ -46,7 +46,7 @@ const mockAfp = {
 describe('useBeregningsdetaljer', () => {
   it('returnerer tomme arrays hvis ingen input', () => {
     const { result } = renderHook(() => useBeregningsdetaljer())
-    expect(result.current.grunnpensjonObjekt).toEqual([])
+    expect(result.current.grunnpensjonObjekter).toEqual([])
     expect(result.current.opptjeningKap19Objekt).toEqual([])
     expect(result.current.opptjeningKap20Objekt).toEqual([])
     expect(result.current.opptjeningPre2025OffentligAfpObjekt).toEqual([])
@@ -57,7 +57,7 @@ describe('useBeregningsdetaljer', () => {
       const { result } = renderHook(() =>
         useBeregningsdetaljer([mockAlderspensjon], mockAfp)
       )
-      expect(result.current.grunnpensjonObjekt).toEqual(
+      expect(result.current.grunnpensjonObjekter).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             tekst: 'Grunnpensjon (kap. 19)',
@@ -123,7 +123,7 @@ describe('useBeregningsdetaljer', () => {
         const { result } = renderHook(() =>
           useBeregningsdetaljer([mock], mockAfp)
         )
-        expect(result.current.grunnpensjonObjekt).toEqual([])
+        expect(result.current.grunnpensjonObjekter).toEqual([])
       })
     })
   })
