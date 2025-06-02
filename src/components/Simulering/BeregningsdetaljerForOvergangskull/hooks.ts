@@ -101,15 +101,13 @@ export function useBeregningsdetaljer(
         {
           tekst: 'Sum månedlig alderspensjon',
           verdi: `${formatInntekt(
-            Math.round(
-              (grunnpensjon +
-                tilleggspensjon +
-                skjermingstillegg +
-                pensjonstillegg +
-                inntektspensjonBeloep +
-                garantipensjonBeloep) /
-                12
-            )
+            (grunnpensjon +
+              tilleggspensjon +
+              skjermingstillegg +
+              pensjonstillegg +
+              inntektspensjonBeloep +
+              garantipensjonBeloep) /
+              12
           )} kr`,
         },
       ].filter((rad) => rad.verdi !== '0 kr')
