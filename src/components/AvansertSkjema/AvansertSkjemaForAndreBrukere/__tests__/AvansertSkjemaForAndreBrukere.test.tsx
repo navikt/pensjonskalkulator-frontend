@@ -1099,6 +1099,7 @@ describe('AvansertSkjemaForAndreBrukere', () => {
         hasVilkaarIkkeOppfylt: false,
         localInntektFremTilUttak: null,
         loependeVedtak: {
+          harLoependeVedtak: false,
           ufoeretrygd: { grad: 0 },
         } satisfies LoependeVedtak,
         normertPensjonsalder: {
@@ -1424,6 +1425,7 @@ describe('AvansertSkjemaForAndreBrukere', () => {
         hasVilkaarIkkeOppfylt: false,
         localInntektFremTilUttak: null,
         loependeVedtak: {
+          harLoependeVedtak: false,
           ufoeretrygd: { grad: 0 },
         } satisfies LoependeVedtak,
         normertPensjonsalder: {
@@ -1923,6 +1925,7 @@ describe('AvansertSkjemaForAndreBrukere', () => {
                   requestId: 'xTaE6mOydr5ZI75UXq4Wi',
                   startedTimeStamp: 1688046411971,
                   data: {
+                    harLoependeVedtak: true,
                     alderspensjon: {
                       grad: 100,
                       fom: new Date().toLocaleDateString('en-CA'), // dette gir dato i format yyyy-mm-dd
