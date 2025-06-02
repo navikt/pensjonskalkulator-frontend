@@ -52,27 +52,27 @@ export function useBeregningsdetaljer(
       if (!ap) return []
       const grunnpensjon =
         ap.grunnpensjon && ap.grunnpensjon > 0
-          ? Math.round(ap.grunnpensjon) / 12
+          ? Math.round(ap.grunnpensjon / 12)
           : 0
       const tilleggspensjon =
         ap.tilleggspensjon && ap.tilleggspensjon > 0
-          ? Math.round(ap.tilleggspensjon) / 12
+          ? Math.round(ap.tilleggspensjon / 12)
           : 0
       const skjermingstillegg =
         ap.skjermingstillegg && ap.skjermingstillegg > 0
-          ? Math.round(ap.skjermingstillegg) / 12
+          ? Math.round(ap.skjermingstillegg / 12)
           : 0
       const pensjonstillegg =
         ap.pensjonstillegg && ap.pensjonstillegg > 0
-          ? Math.round(ap.pensjonstillegg) / 12
+          ? Math.round(ap.pensjonstillegg / 12)
           : 0
       const inntektspensjonBeloep =
         ap.inntektspensjonBeloep && ap.inntektspensjonBeloep > 0
-          ? Math.round(ap.inntektspensjonBeloep) / 12
+          ? Math.round(ap.inntektspensjonBeloep / 12)
           : 0
       const garantipensjonBeloep =
         ap.garantipensjonBeloep && ap.garantipensjonBeloep > 0
-          ? Math.round(ap.garantipensjonBeloep) / 12
+          ? Math.round(ap.garantipensjonBeloep / 12)
           : 0
 
       return [

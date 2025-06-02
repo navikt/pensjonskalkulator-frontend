@@ -23,7 +23,7 @@ export const Grunnpensjonsdetaljer: React.FC<GrunnpensjonsdetaljerProps> = ({
   )
 
   const gradertUttak =
-    grunnpensjonObjekter.length === 2 ? grunnpensjonObjekter[0] : null
+    grunnpensjonObjekter.length === 2 ? grunnpensjonObjekter[0] : []
   const heltUttak =
     grunnpensjonObjekter.length === 2
       ? grunnpensjonObjekter[1]
@@ -31,7 +31,7 @@ export const Grunnpensjonsdetaljer: React.FC<GrunnpensjonsdetaljerProps> = ({
 
   return (
     <VStack gap="20">
-      {gradertUttak && gradertUttak.length > 0 && (
+      {gradertUttaksperiode && (
         <div className="gradertUttak">
           <Heading size="small" level="3">
             <FormattedMessage
