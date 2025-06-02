@@ -101,27 +101,27 @@ export function useBeregningsdetaljer(
       ) {
         return []
       }
-      return (
-        alderspensjonVedUttak
-          //TODO: Konvert andelsbroekKap20 til string i følgende format: 1/10
-          .map((ap) => [
-            { tekst: 'Andelsbrøk', verdi: ap.andelsbroekKap19 },
-            { tekst: 'Sluttpoengtall', verdi: ap.sluttpoengtall },
-            {
-              tekst: 'Poengår',
-              verdi: (ap.poengaarFoer92 ?? 0) + (ap.poengaarEtter91 ?? 0),
-            },
-            { tekst: 'Trygdetid', verdi: ap.trygdetidKap19 },
-          ])
-          .flat()
-          .filter(
-            (rad) =>
-              rad.verdi !== undefined &&
-              (rad.tekst === 'Poengår' ||
-                rad.tekst === 'Trygdetid' ||
-                rad.verdi !== 0)
-          )
-      )
+      return alderspensjonVedUttak
+        .map((ap) => [
+          {
+            tekst: 'Andelsbrøk',
+            verdi: ap.andelsbroekKap19 ? `${ap.andelsbroekKap19 * 10}/10` : 0,
+          },
+          { tekst: 'Sluttpoengtall', verdi: ap.sluttpoengtall },
+          {
+            tekst: 'Poengår',
+            verdi: (ap.poengaarFoer92 ?? 0) + (ap.poengaarEtter91 ?? 0),
+          },
+          { tekst: 'Trygdetid', verdi: ap.trygdetidKap19 },
+        ])
+        .flat()
+        .filter(
+          (rad) =>
+            rad.verdi !== undefined &&
+            (rad.tekst === 'Poengår' ||
+              rad.tekst === 'Trygdetid' ||
+              rad.verdi !== 0)
+        )
     })()
 
     const opptjeningKap20Objekt: DetaljRad[] = (() => {
@@ -131,26 +131,26 @@ export function useBeregningsdetaljer(
       ) {
         return []
       }
-      return (
-        alderspensjonVedUttak
-          //TODO: Konvert andelsbroekKap20 til string i følgende format: 1/10
-          .map((ap) => [
-            { tekst: 'Andelsbrøk', verdi: ap.andelsbroekKap20 },
-            { tekst: 'Trygdetid', verdi: ap.trygdetidKap20 },
-            {
-              tekst: 'Pensjonbeholdning før uttak',
-              verdi: ap.pensjonBeholdningFoerUttakBeloep,
-            },
-          ])
-          .flat()
-          .filter(
-            (rad) =>
-              rad.verdi !== undefined &&
-              (rad.tekst === 'Trygdetid' ||
-                rad.tekst === 'Pensjonbeholdning før uttak' ||
-                rad.verdi !== 0)
-          )
-      )
+      return alderspensjonVedUttak
+        .map((ap) => [
+          {
+            tekst: 'Andelsbrøk',
+            verdi: ap.andelsbroekKap20 ? `${ap.andelsbroekKap20 * 10}/10` : 0,
+          },
+          { tekst: 'Trygdetid', verdi: ap.trygdetidKap20 },
+          {
+            tekst: 'Pensjonbeholdning før uttak',
+            verdi: ap.pensjonBeholdningFoerUttakBeloep,
+          },
+        ])
+        .flat()
+        .filter(
+          (rad) =>
+            rad.verdi !== undefined &&
+            (rad.tekst === 'Trygdetid' ||
+              rad.tekst === 'Pensjonbeholdning før uttak' ||
+              rad.verdi !== 0)
+        )
     })()
 
     const opptjeningPre2025OffentligAfpObjekt: DetaljRad[] = pre2025OffentligAfp
