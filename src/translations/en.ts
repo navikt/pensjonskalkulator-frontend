@@ -357,10 +357,12 @@ export default {
   'beregning.tabell.lukk': 'Close calculation table',
   'beregning.tabell.vis': 'Show calculation table',
   'beregning.tabell.sum': 'Total',
-  'beregning.detaljer.grunnpensjon.title': 'MANGLER_TEKST',
-  'beregning.detaljer.opptjeningsdetaljer.kap19.title': 'MANGLER_TEKST',
-  'beregning.detaljer.opptjeningsdetaljer.kap20.title': 'MANGLER_TEKST',
-  'beregning.detaljer.opptjeningsdetaljer.pre2025OffentligAfp.title':
+  'beregning.detaljer.grunnpensjon.heltUttak.title': 'MANGLER_TEKST',
+  'beregning.detaljer.grunnpensjon.gradertUttak.title': 'MANGLER_TEKST',
+  'beregning.detaljer.grunnpensjon.table.title': 'MANGLER_TEKST',
+  'beregning.detaljer.opptjeningsdetaljer.kap19.table.title': 'MANGLER_TEKST',
+  'beregning.detaljer.opptjeningsdetaljer.kap20.table.title': 'MANGLER_TEKST',
+  'beregning.detaljer.opptjeningsdetaljer.pre2025OffentligAfp.table.title':
     'MANGLER_TEKST',
   'beregning.avansert.link.endre_valgene_dine': 'Change your choices',
   'beregning.avansert.link.endre_avanserte_valg': 'Change advanced choices',

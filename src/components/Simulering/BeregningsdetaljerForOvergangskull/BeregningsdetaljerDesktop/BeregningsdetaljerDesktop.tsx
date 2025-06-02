@@ -7,9 +7,7 @@ import { Opptjeningsdetaljer } from '../Felles/Opptjeningsdetaljer'
 import { DetaljRad } from '../hooks'
 
 export interface BeregningsdetaljerDesktopProps {
-  gradertUttaksperiode: GradertUttak | null
-  uttaksalder: Alder | null
-  grunnpensjonObjekt: DetaljRad[]
+  grunnpensjonObjekter: DetaljRad[][]
   opptjeningKap19Objekt: DetaljRad[]
   opptjeningKap20Objekt: DetaljRad[]
   opptjeningPre2025OffentligAfpObjekt?: DetaljRad[]
@@ -18,19 +16,13 @@ export interface BeregningsdetaljerDesktopProps {
 export const BeregningsdetaljerDesktop: React.FC<
   BeregningsdetaljerDesktopProps
 > = ({
-  gradertUttaksperiode,
-  uttaksalder,
-  grunnpensjonObjekt,
+  grunnpensjonObjekter,
   opptjeningKap19Objekt,
   opptjeningKap20Objekt,
   opptjeningPre2025OffentligAfpObjekt,
 }) => (
   <HStack gap="20" width="100%">
-    <Grunnpensjonsdetaljer
-      grunnpensjonObjekt={grunnpensjonObjekt}
-      gradertUttaksperiode={gradertUttaksperiode}
-      uttaksalder={uttaksalder}
-    />
+    <Grunnpensjonsdetaljer grunnpensjonObjekter={grunnpensjonObjekter} />
     <Opptjeningsdetaljer
       opptjeningKap19Objekt={opptjeningKap19Objekt}
       opptjeningKap20Objekt={opptjeningKap20Objekt}

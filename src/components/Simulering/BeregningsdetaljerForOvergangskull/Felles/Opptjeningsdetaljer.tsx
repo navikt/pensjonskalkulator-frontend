@@ -25,7 +25,7 @@ export const Opptjeningsdetaljer: React.FC<OpptjeningsdetaljerProps> = ({
           <dl>
             <div className={styles.hstackRow}>
               <strong>
-                <FormattedMessage id="beregning.detaljer.opptjeningsdetaljer.kap19.title" />
+                <FormattedMessage id="beregning.detaljer.opptjeningsdetaljer.kap19.table.title" />
               </strong>
             </div>
             {opptjeningKap19Objekt.map((detalj, index) => (
@@ -43,7 +43,7 @@ export const Opptjeningsdetaljer: React.FC<OpptjeningsdetaljerProps> = ({
           <dl>
             <div className={styles.hstackRow}>
               <strong>
-                <FormattedMessage id="beregning.detaljer.opptjeningsdetaljer.kap20.title" />
+                <FormattedMessage id="beregning.detaljer.opptjeningsdetaljer.kap20.table.title" />
               </strong>
             </div>
             {opptjeningKap20Objekt.map((detalj, index) => (
@@ -63,7 +63,7 @@ export const Opptjeningsdetaljer: React.FC<OpptjeningsdetaljerProps> = ({
           <dl>
             <div className={styles.hstackRow}>
               <strong>
-                <FormattedMessage id="beregning.detaljer.opptjeningsdetaljer.pre2025OffentligAfp.title" />
+                <FormattedMessage id="beregning.detaljer.opptjeningsdetaljer.pre2025OffentligAfp.table.title" />
               </strong>
             </div>
             {opptjeningPre2025OffentligAfpObjekt.map((detalj, index) => (

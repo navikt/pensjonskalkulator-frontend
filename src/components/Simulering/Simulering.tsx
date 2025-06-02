@@ -294,6 +294,7 @@ export const Simulering = ({
         )}
 
       <BeregningsdetaljerForOvergangskull
+        key={`${uttaksalder?.aar ?? ''}-${uttaksalder?.maaneder ?? ''}-${gradertUttaksperiode?.uttaksalder?.aar ?? ''}-${gradertUttaksperiode?.uttaksalder?.maaneder ?? ''}-${gradertUttaksperiode?.grad ?? ''}`}
         alderspensjonListe={alderspensjonListe}
       />
     </section>

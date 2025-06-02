@@ -1,5 +1,7 @@
 import { useMemo } from 'react'
 
+import { useAppSelector } from '@/state/hooks'
+import { selectCurrentSimulation } from '@/state/userInput/selectors'
 import { formatInntekt } from '@/utils/inntekt'
 
 export interface DetaljRad {
@@ -8,7 +10,7 @@ export interface DetaljRad {
 }
 
 export interface BeregningsdetaljerRader {
-  grunnpensjonObjekt: DetaljRad[]
+  grunnpensjonObjekter: DetaljRad[][]
   opptjeningKap19Objekt: DetaljRad[]
   opptjeningKap20Objekt: DetaljRad[]
   opptjeningPre2025OffentligAfpObjekt: DetaljRad[]
@@ -18,81 +20,100 @@ export function useBeregningsdetaljer(
   alderspensjonListe?: AlderspensjonPensjonsberegning[],
   pre2025OffentligAfp?: pre2025OffentligPensjonsberegning
 ): BeregningsdetaljerRader {
+  const { uttaksalder, gradertUttaksperiode } = useAppSelector(
+    selectCurrentSimulation
+  )
+
   return useMemo(() => {
     const alderspensjonVedUttak = alderspensjonListe?.[0]
       ? [alderspensjonListe[0]]
       : []
 
-    const grunnpensjonObjekt: DetaljRad[] = alderspensjonVedUttak
-      .map((ap) => {
-        const grunnpensjon =
-          ap.grunnpensjon && ap.grunnpensjon > 0
-            ? Math.round(ap.grunnpensjon)
-            : 0
-        const tilleggspensjon =
-          ap.tilleggspensjon && ap.tilleggspensjon > 0
-            ? Math.round(ap.tilleggspensjon)
-            : 0
-        const skjermingstillegg =
-          ap.skjermingstillegg && ap.skjermingstillegg > 0
-            ? Math.round(ap.skjermingstillegg)
-            : 0
-        const pensjonstillegg =
-          ap.pensjonstillegg && ap.pensjonstillegg > 0
-            ? Math.round(ap.pensjonstillegg)
-            : 0
-        const inntektspensjonBeloep =
-          ap.inntektspensjonBeloep && ap.inntektspensjonBeloep > 0
-            ? Math.round(ap.inntektspensjonBeloep)
-            : 0
-        const garantipensjonBeloep =
-          ap.garantipensjonBeloep && ap.garantipensjonBeloep > 0
-            ? Math.round(ap.garantipensjonBeloep)
-            : 0
+    const indices: number[] = [0]
+    if (
+      gradertUttaksperiode &&
+      uttaksalder &&
+      alderspensjonListe &&
+      alderspensjonListe.length > 1
+    ) {
+      const gradertIndex =
+        uttaksalder.aar - gradertUttaksperiode.uttaksalder.aar
+      if (
+        gradertIndex !== 0 &&
+        gradertIndex < alderspensjonListe.length &&
+        gradertIndex >= 0
+      ) {
+        indices.push(gradertIndex)
+      }
+    }
 
-        return [
-          {
-            tekst: 'Grunnpensjon (kap. 19)',
-            verdi: `${formatInntekt(grunnpensjon / 12)} kr`,
-          },
-          {
-            tekst: 'Tilleggspensjon (kap. 19)',
-            verdi: `${formatInntekt(tilleggspensjon / 12)} kr`,
-          },
-          {
-            tekst: 'Skjermingstillegg (kap. 19)',
-            verdi: `${formatInntekt(skjermingstillegg / 12)} kr`,
-          },
-          {
-            tekst: 'Pensjonstillegg (kap. 19)',
-            verdi: `${formatInntekt(pensjonstillegg / 12)} kr`,
-          },
-          {
-            tekst: 'Inntektspensjon (kap. 20)',
-            verdi: `${formatInntekt(inntektspensjonBeloep / 12)} kr`,
-          },
-          {
-            tekst: 'Garantipensjon (kap. 20)',
-            verdi: `${formatInntekt(garantipensjonBeloep / 12)} kr`,
-          },
-          {
-            tekst: 'Sum månedlig alderspensjon',
-            verdi: `${formatInntekt(
-              Math.round(
-                (grunnpensjon +
-                  tilleggspensjon +
-                  skjermingstillegg +
-                  pensjonstillegg +
-                  inntektspensjonBeloep +
-                  garantipensjonBeloep) /
-                  12
-              )
-            )} kr`,
-          },
-        ]
-      })
-      .flat()
-      .filter((rad) => rad.verdi !== '0 kr')
+    const grunnpensjonObjekter: DetaljRad[][] = indices.map((index) => {
+      const ap = alderspensjonListe?.[index]
+      if (!ap) return []
+      const grunnpensjon =
+        ap.grunnpensjon && ap.grunnpensjon > 0 ? Math.round(ap.grunnpensjon) : 0
+      const tilleggspensjon =
+        ap.tilleggspensjon && ap.tilleggspensjon > 0
+          ? Math.round(ap.tilleggspensjon)
+          : 0
+      const skjermingstillegg =
+        ap.skjermingstillegg && ap.skjermingstillegg > 0
+          ? Math.round(ap.skjermingstillegg)
+          : 0
+      const pensjonstillegg =
+        ap.pensjonstillegg && ap.pensjonstillegg > 0
+          ? Math.round(ap.pensjonstillegg)
+          : 0
+      const inntektspensjonBeloep =
+        ap.inntektspensjonBeloep && ap.inntektspensjonBeloep > 0
+          ? Math.round(ap.inntektspensjonBeloep)
+          : 0
+      const garantipensjonBeloep =
+        ap.garantipensjonBeloep && ap.garantipensjonBeloep > 0
+          ? Math.round(ap.garantipensjonBeloep)
+          : 0
+
+      return [
+        {
+          tekst: 'Grunnpensjon (kap. 19)',
+          verdi: `${formatInntekt(grunnpensjon / 12)} kr`,
+        },
+        {
+          tekst: 'Tilleggspensjon (kap. 19)',
+          verdi: `${formatInntekt(tilleggspensjon / 12)} kr`,
+        },
+        {
+          tekst: 'Skjermingstillegg (kap. 19)',
+          verdi: `${formatInntekt(skjermingstillegg / 12)} kr`,
+        },
+        {
+          tekst: 'Pensjonstillegg (kap. 19)',
+          verdi: `${formatInntekt(pensjonstillegg / 12)} kr`,
+        },
+        {
+          tekst: 'Inntektspensjon (kap. 20)',
+          verdi: `${formatInntekt(inntektspensjonBeloep / 12)} kr`,
+        },
+        {
+          tekst: 'Garantipensjon (kap. 20)',
+          verdi: `${formatInntekt(garantipensjonBeloep / 12)} kr`,
+        },
+        {
+          tekst: 'Sum månedlig alderspensjon',
+          verdi: `${formatInntekt(
+            Math.round(
+              (grunnpensjon +
+                tilleggspensjon +
+                skjermingstillegg +
+                pensjonstillegg +
+                inntektspensjonBeloep +
+                garantipensjonBeloep) /
+                12
+            )
+          )} kr`,
+        },
+      ].filter((rad) => rad.verdi !== '0 kr')
+    })
 
     const opptjeningKap19Objekt: DetaljRad[] = (() => {
       if (
@@ -140,7 +161,7 @@ export function useBeregningsdetaljer(
           { tekst: 'Trygdetid', verdi: ap.trygdetidKap20 },
           {
             tekst: 'Pensjonbeholdning før uttak',
-            verdi: ap.pensjonBeholdningFoerUttakBeloep,
+            verdi: `${formatInntekt(ap.pensjonBeholdningFoerUttakBeloep)} kr`,
           },
         ])
         .flat()
@@ -177,7 +198,7 @@ export function useBeregningsdetaljer(
       : []
 
     return {
-      grunnpensjonObjekt,
+      grunnpensjonObjekter,
       opptjeningKap19Objekt,
       opptjeningKap20Objekt,
       opptjeningPre2025OffentligAfpObjekt,

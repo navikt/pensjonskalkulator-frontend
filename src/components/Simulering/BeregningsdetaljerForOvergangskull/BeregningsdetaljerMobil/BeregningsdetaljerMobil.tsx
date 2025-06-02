@@ -8,9 +8,7 @@ import { Opptjeningsdetaljer } from '../Felles/Opptjeningsdetaljer'
 import { DetaljRad } from '../hooks'
 
 export interface BeregningsdetaljerMobilProps {
-  gradertUttaksperiode: GradertUttak | null
-  uttaksalder: Alder | null
-  grunnpensjonObjekt: DetaljRad[]
+  grunnpensjonObjekter: DetaljRad[][]
   opptjeningKap19Objekt: DetaljRad[]
   opptjeningKap20Objekt: DetaljRad[]
   opptjeningPre2025OffentligAfpObjekt?: DetaljRad[]
@@ -19,9 +17,7 @@ export interface BeregningsdetaljerMobilProps {
 export const BeregningsdetaljerMobil: React.FC<
   BeregningsdetaljerMobilProps
 > = ({
-  gradertUttaksperiode,
-  uttaksalder,
-  grunnpensjonObjekt,
+  grunnpensjonObjekter,
   opptjeningKap19Objekt,
   opptjeningKap20Objekt,
   opptjeningPre2025OffentligAfpObjekt,
@@ -30,11 +26,7 @@ export const BeregningsdetaljerMobil: React.FC<
     <Heading size="small" level="3">
       <FormattedMessage id="maanedsbeloep.title" />
     </Heading>
-    <Grunnpensjonsdetaljer
-      grunnpensjonObjekt={grunnpensjonObjekt}
-      gradertUttaksperiode={gradertUttaksperiode}
-      uttaksalder={uttaksalder}
-    />
+    <Grunnpensjonsdetaljer grunnpensjonObjekter={grunnpensjonObjekter} />
     <Opptjeningsdetaljer
       opptjeningKap19Objekt={opptjeningKap19Objekt}
       opptjeningKap20Objekt={opptjeningKap20Objekt}

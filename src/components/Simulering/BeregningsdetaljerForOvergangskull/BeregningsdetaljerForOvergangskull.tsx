@@ -4,9 +4,6 @@ import React from 'react'
 
 import { Box /* Heading */ } from '@navikt/ds-react'
 
-import { useAppSelector } from '@/state/hooks'
-import { selectCurrentSimulation } from '@/state/userInput/selectors'
-
 import { BeregningsdetaljerDesktop } from './BeregningsdetaljerDesktop/BeregningsdetaljerDesktop'
 import { BeregningsdetaljerMobil } from './BeregningsdetaljerMobil/BeregningsdetaljerMobil'
 import { useBeregningsdetaljer } from './hooks'
@@ -22,12 +19,8 @@ export const BeregningsdetaljerForOvergangskull: React.FC<Props> = ({
   alderspensjonListe,
   pre2025OffentligAfp,
 }) => {
-  const { uttaksalder, gradertUttaksperiode } = useAppSelector(
-    selectCurrentSimulation
-  )
-
   const {
-    grunnpensjonObjekt,
+    grunnpensjonObjekter,
     opptjeningKap19Objekt,
     opptjeningKap20Objekt,
     opptjeningPre2025OffentligAfpObjekt,
@@ -41,9 +34,7 @@ export const BeregningsdetaljerForOvergangskull: React.FC<Props> = ({
 
       <div className={styles.beregningsdetaljerForOvergangskullDesktopOnly}>
         <BeregningsdetaljerDesktop
-          uttaksalder={uttaksalder}
-          gradertUttaksperiode={gradertUttaksperiode}
-          grunnpensjonObjekt={grunnpensjonObjekt}
+          grunnpensjonObjekter={grunnpensjonObjekter}
           opptjeningKap19Objekt={opptjeningKap19Objekt}
           opptjeningKap20Objekt={opptjeningKap20Objekt}
           opptjeningPre2025OffentligAfpObjekt={
@@ -54,9 +45,7 @@ export const BeregningsdetaljerForOvergangskull: React.FC<Props> = ({
 
       <div className={styles.beregningsdetaljerForOvergangskullMobileOnly}>
         <BeregningsdetaljerMobil
-          uttaksalder={uttaksalder}
-          gradertUttaksperiode={gradertUttaksperiode}
-          grunnpensjonObjekt={grunnpensjonObjekt}
+          grunnpensjonObjekter={grunnpensjonObjekter}
           opptjeningKap19Objekt={opptjeningKap19Objekt}
           opptjeningKap20Objekt={opptjeningKap20Objekt}
           opptjeningPre2025OffentligAfpObjekt={
