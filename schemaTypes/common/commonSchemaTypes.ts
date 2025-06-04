@@ -13,6 +13,7 @@ export const nameField = defineField({
   type: 'string',
   description: 'Denne brukes som ID i koden',
   validation: (rule) => rule.required().error('Påkrevd'),
+  readOnly: ({ document }) => Boolean(document?.name),
 })
 
 export const overskriftField = defineField({
