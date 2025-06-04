@@ -14,7 +14,9 @@ describe('SanityReadmore', () => {
 
     expect(screen.getByText('Hva som er opphold utenfor Norge')).toBeVisible()
 
-    expect(screen.getByText('Lorem')).toBeInTheDocument()
+    expect(
+      screen.getByText(/Som hovedregel er dette opphold utenfor Norge/i)
+    ).toBeInTheDocument()
   })
 
   it('kaster runtime error når id ikke finnes i readMoreData', () => {
