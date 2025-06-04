@@ -16,7 +16,6 @@ import sanityGuidePanelDataResponse from './data/sanity-guidepanel-data.json' wi
 import sanityReadMoreDataResponse from './data/sanity-readmore-data.json' with { type: 'json' }
 import tidligstMuligHeltUttakResponse from './data/tidligstMuligHeltUttak.json' with { type: 'json' }
 import disableSpraakvelgerToggleResponse from './data/unleash-disable-spraakvelger.json' with { type: 'json' }
-import enableSanityToggleResponse from './data/unleash-enable-sanity.json' with { type: 'json' }
 import enableUtvidetSimuleringsresultatPluginToggleResponse from './data/unleash-utvidet-simuleringsresultat.json' with { type: 'json' }
 import enableVedlikeholdsmodusToggleResponse from './data/unleash-vedlikeholdmodus.json' with { type: 'json' }
 
