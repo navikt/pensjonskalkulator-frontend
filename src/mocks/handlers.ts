@@ -187,14 +187,6 @@ export const getHandlers = (baseUrl: string = API_PATH) => [
     }
   ),
 
-  http.get(
-    `${baseUrl}/feature/pensjonskalkulator.hent-tekster-fra-sanity`,
-    async () => {
-      await delay(TEST_DELAY)
-      return HttpResponse.json(enableSanityToggleResponse)
-    }
-  ),
-
   http.get(`${baseUrl}/feature/utvidet-simuleringsresultat`, async () => {
     await delay(TEST_DELAY)
     return HttpResponse.json(

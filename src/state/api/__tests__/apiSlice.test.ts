@@ -564,48 +564,6 @@ describe('apiSlice', () => {
     })
   })
 
-  describe('getSanityFeatureToggle', () => {
-    it('returnerer data ved vellykket query', async () => {
-      const storeRef = setupStore(undefined, true)
-      return storeRef
-        .dispatch(apiSlice.endpoints.getSanityFeatureToggle.initiate())
-        .then((result) => {
-          expect(result.status).toBe('fulfilled')
-          expect(result.data).toMatchObject(enableSanityToggleResponse)
-        })
-    })
-
-    it('returnerer undefined ved feilende query', async () => {
-      const storeRef = setupStore(undefined, true)
-      mockErrorResponse('/feature/pensjonskalkulator.hent-tekster-fra-sanity')
-      return storeRef
-        .dispatch(apiSlice.endpoints.getSanityFeatureToggle.initiate())
-        .then((result) => {
-          expect(result.status).toBe('rejected')
-          expect(result.data).toBe(undefined)
-        })
-    })
-
-    it('kaster feil ved uventet format på responsen', async () => {
-      const storeRef = setupStore(undefined, true)
-
-      mockResponse('/feature/pensjonskalkulator.hent-tekster-fra-sanity', {
-        status: 200,
-        json: { lorem: 'ipsum' },
-      })
-
-      await swallowErrorsAsync(async () => {
-        await storeRef
-          .dispatch(apiSlice.endpoints.getSanityFeatureToggle.initiate())
-          .then((result) => {
-            expect(result).toThrow(Error)
-            expect(result.status).toBe('rejected')
-            expect(result.data).toBe(undefined)
-          })
-      })
-    })
-  })
-
   describe('getUtvidetSimuleringsresultatFeatureToggle', () => {
     it('returnerer data ved vellykket query', async () => {
       const storeRef = setupStore(undefined, true)
