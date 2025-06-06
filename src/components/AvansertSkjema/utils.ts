@@ -22,20 +22,20 @@ export type AvansertFormNames =
   (typeof AVANSERT_FORM_NAMES)[keyof typeof AVANSERT_FORM_NAMES]
 
 export const AVANSERT_FORM_NAMES = {
-  form: 'avansert-beregning',
+  beregningsTypeRadio: 'beregnings-type-radio',
   endringAlertFremtidigDato: 'endring-alert-fremtidig-dato',
-  uttaksgrad: 'uttaksgrad',
-  uttaksalderHeltUttak: 'uttaksalder-helt-uttak',
-  uttaksalderGradertUttak: 'uttaksalder-gradert-uttak',
-  inntektVsaHeltUttakRadio: 'inntekt-vsa-helt-uttak-radio',
+  form: 'avansert-beregning',
+  inntektVsaGradertUttak: 'inntekt-vsa-gradert-uttak',
   inntektVsaGradertUttakRadio: 'inntekt-vsa-gradert-uttak-radio',
   inntektVsaHeltUttak: 'inntekt-vsa-helt-uttak',
+  inntektVsaHeltUttakRadio: 'inntekt-vsa-helt-uttak-radio',
   inntektVsaHeltUttakSluttAlder: 'inntekt-vsa-helt-uttak-slutt-alder',
-  inntektVsaGradertUttak: 'inntekt-vsa-gradert-uttak',
   afpInntektMaanedFoerUttakRadio: 'afp-inntekt-maaned-foer-uttak-radio',
   inntektVsaAfpRadio: 'inntekt-vsa-afp-radio',
   inntektVsaAfp: 'inntekt-vsa-afp',
-  beregningsTypeRadio: 'beregnings-type-radio',
+  uttaksgrad: 'uttaksgrad',
+  uttaksalderGradertUttak: 'uttaksalder-gradert-uttak',
+  uttaksalderHeltUttak: 'uttaksalder-helt-uttak',
 }
 
 const validateAlderForGradertUttak = (
