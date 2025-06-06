@@ -24,6 +24,7 @@ export interface UserInputState {
   epsHarInntektOver2G: boolean | null
   afpInntektMaanedFoerUttak: boolean | null
   currentSimulation: Simulation
+  xAxis: string[]
 }
 
 export const userInputInitialState: UserInputState = {
@@ -45,6 +46,7 @@ export const userInputInitialState: UserInputState = {
     aarligInntektFoerUttakBeloep: null,
     gradertUttaksperiode: null,
   },
+  xAxis: [],
 }
 
 export const userInputSlice = createSlice({
@@ -161,6 +163,9 @@ export const userInputSlice = createSlice({
           }
         : null
     },
+    setXAxis: (state, action: PayloadAction<string[]>) => {
+      state.xAxis = action.payload
+    },
     flush: (state) => {
       state.harUtenlandsopphold = null
       state.utenlandsperioder = []
@@ -173,6 +178,7 @@ export const userInputSlice = createSlice({
       state.afpUtregningValg = null
       state.afpInntektMaanedFoerUttak = null
       state.currentSimulation = { ...userInputInitialState.currentSimulation }
+      state.xAxis = []
     },
     flushCurrentSimulation: (state) => {
       state.currentSimulation = userInputInitialState.currentSimulation

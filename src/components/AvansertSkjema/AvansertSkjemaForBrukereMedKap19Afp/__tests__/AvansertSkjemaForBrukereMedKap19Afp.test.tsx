@@ -150,7 +150,7 @@ describe('AvansertSkjemaForBrukereMedKap19Afp', () => {
             `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
           ),
           {
-            target: { value: '62' },
+            target: { value: '65' },
           }
         )
 
@@ -160,7 +160,7 @@ describe('AvansertSkjemaForBrukereMedKap19Afp', () => {
         const optionMaanederElements =
           selectMaanederElement?.querySelectorAll('option')
         expect(optionMaanederElements?.[0].value).toBe('')
-        expect(optionMaanederElements?.[1].value).toBe('1')
+        expect(optionMaanederElements?.[1].value).toBe('0')
 
         fireEvent.change(
           screen.getByTestId(
@@ -170,6 +170,19 @@ describe('AvansertSkjemaForBrukereMedKap19Afp', () => {
             target: { value: '5' },
           }
         )
+
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+        const uttaksalderHeltUttakAar = (await screen.findByTestId(
+          `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
+        )) as HTMLSelectElement
+
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+        const uttaksalderHeltUttakMaaneder = (await screen.findByTestId(
+          `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`
+        )) as HTMLSelectElement
+
+        expect(uttaksalderHeltUttakAar.value).toBe('65')
+        expect(uttaksalderHeltUttakMaaneder.value).toBe('5')
 
         await user.click(
           screen.getByTestId(
@@ -259,7 +272,7 @@ describe('AvansertSkjemaForBrukereMedKap19Afp', () => {
             `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
           ),
           {
-            target: { value: '62' },
+            target: { value: '65' },
           }
         )
 
@@ -269,7 +282,7 @@ describe('AvansertSkjemaForBrukereMedKap19Afp', () => {
         const optionMaanederElements =
           selectMaanederElement?.querySelectorAll('option')
         expect(optionMaanederElements?.[0].value).toBe('')
-        expect(optionMaanederElements?.[1].value).toBe('1')
+        expect(optionMaanederElements?.[1].value).toBe('0')
 
         fireEvent.change(
           screen.getByTestId(
@@ -310,7 +323,7 @@ describe('AvansertSkjemaForBrukereMedKap19Afp', () => {
           `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`
         )) as HTMLSelectElement
 
-        expect(uttaksalderHeltUttakAar.value).toBe('62')
+        expect(uttaksalderHeltUttakAar.value).toBe('65')
         expect(uttaksalderHeltUttakMaaneder.value).toBe('5')
 
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion

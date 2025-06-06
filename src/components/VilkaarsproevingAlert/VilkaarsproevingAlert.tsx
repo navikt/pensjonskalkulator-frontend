@@ -21,12 +21,14 @@ export interface Props {
   alternativ: Vilkaarsproeving['alternativ']
   uttaksalder: Alder
   withAFP?: boolean
+  onAlderspensjonUtenAFPClick?: () => void
 }
 
 export const VilkaarsproevingAlert = ({
   alternativ,
   uttaksalder,
   withAFP = false,
+  onAlderspensjonUtenAFPClick,
 }: Props) => {
   const intl = useIntl()
   const navigate = useNavigate()
@@ -148,6 +150,7 @@ export const VilkaarsproevingAlert = ({
                 href="#"
                 onClick={(e) => {
                   e.preventDefault()
+                  if (onAlderspensjonUtenAFPClick) onAlderspensjonUtenAFPClick()
                   navigate(paths.afp)
                 }}
               >
