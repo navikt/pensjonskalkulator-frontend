@@ -256,7 +256,6 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
                 <VilkaarsproevingAlert
                   alternativ={vilkaarsproeving?.alternativ}
                   uttaksalder={uttaksalder}
-                  onAlderspensjonUtenAFPClick={resetForm}
                 />
               )}
           </div>

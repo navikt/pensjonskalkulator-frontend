@@ -10,6 +10,7 @@ import { paths } from '@/router/constants'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
   selectAfp,
+  selectAfpUtregningValg,
   selectCurrentSimulation,
   selectFoedselsdato,
   selectIsEndring,
@@ -35,6 +36,7 @@ export const GrunnlagAFP: React.FC = () => {
 
   const afp = useAppSelector(selectAfp) ?? 'vet_ikke' // Vi har fallback for å unngå "missing translation" error ved flush() i GoToStart
   const skalBeregneAfpKap19 = useAppSelector(selectSkalBeregneAfpKap19)
+  const afpUtregningValg = useAppSelector(selectAfpUtregningValg)
   const foedselsdato = useAppSelector(selectFoedselsdato)
   const samtykkeOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
   const isEndring = useAppSelector(selectIsEndring)
@@ -48,6 +50,10 @@ export const GrunnlagAFP: React.FC = () => {
 
   const formatertAfpHeader = React.useMemo(() => {
     const afpString = formatAfp(intl, afp ?? 'vet_ikke')
+
+    if (afpUtregningValg === 'KUN_ALDERSPENSJON') {
+      return formatAfp(intl, 'nei')
+    }
 
     if (
       loependeVedtak &&
@@ -67,8 +73,9 @@ export const GrunnlagAFP: React.FC = () => {
     }
 
     if (
-      (!skalBeregneAfpKap19 && hasAFP && isUfoerAndDontWantAfp) ||
-      (hasOffentligAFP && !samtykkeOffentligAFP && !isUfoerAndDontWantAfp)
+      !skalBeregneAfpKap19 &&
+      ((hasAFP && isUfoerAndDontWantAfp) ||
+        (hasOffentligAFP && !samtykkeOffentligAFP && !isUfoerAndDontWantAfp))
     ) {
       return `${afpString} (${intl.formatMessage({ id: 'grunnlag.afp.ikke_beregnet' })})`
     }
@@ -100,6 +107,10 @@ export const GrunnlagAFP: React.FC = () => {
   const formatertAfpIngress = React.useMemo(() => {
     if (isEndring && loependeVedtak.afpPrivat) {
       return 'grunnlag.afp.ingress.ja_privat.endring'
+    }
+
+    if (afpUtregningValg === 'KUN_ALDERSPENSJON') {
+      return 'grunnlag.afp.ingress.nei'
     }
 
     if (

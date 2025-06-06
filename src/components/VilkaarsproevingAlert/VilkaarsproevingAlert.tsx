@@ -7,13 +7,14 @@ import { ExternalLinkIcon } from '@navikt/aksel-icons'
 import { Alert, Link } from '@navikt/ds-react'
 
 import { paths } from '@/router/constants'
-import { useAppSelector } from '@/state/hooks'
+import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
   selectCurrentSimulation,
   selectNedreAldersgrense,
   selectNormertPensjonsalder,
   selectSkalBeregneAfpKap19,
 } from '@/state/userInput/selectors'
+import { userInputActions } from '@/state/userInput/userInputSlice'
 import { formatUttaksalder } from '@/utils/alder'
 import { getFormatMessageValues } from '@/utils/translations'
 
@@ -21,17 +22,16 @@ export interface Props {
   alternativ: Vilkaarsproeving['alternativ']
   uttaksalder: Alder
   withAFP?: boolean
-  onAlderspensjonUtenAFPClick?: () => void
 }
 
 export const VilkaarsproevingAlert = ({
   alternativ,
   uttaksalder,
   withAFP = false,
-  onAlderspensjonUtenAFPClick,
 }: Props) => {
   const intl = useIntl()
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   const { gradertUttaksperiode } = useAppSelector(selectCurrentSimulation)
   const normertPensjonsalder = useAppSelector(selectNormertPensjonsalder)
   const nedreAldersgrense = useAppSelector(selectNedreAldersgrense)
@@ -150,7 +150,7 @@ export const VilkaarsproevingAlert = ({
                 href="#"
                 onClick={(e) => {
                   e.preventDefault()
-                  if (onAlderspensjonUtenAFPClick) onAlderspensjonUtenAFPClick()
+                  dispatch(userInputActions.resetCurrentSimulation())
                   navigate(paths.afp)
                 }}
               >
