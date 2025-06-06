@@ -150,6 +150,7 @@ export const VilkaarsproevingAlert = ({
                 href="#"
                 onClick={(e) => {
                   e.preventDefault()
+                  dispatch(userInputActions.setAfpInntektMaanedFoerUttak(null))
                   dispatch(userInputActions.resetCurrentSimulation())
                   navigate(paths.afp)
                 }}
