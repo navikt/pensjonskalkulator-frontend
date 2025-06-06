@@ -15,6 +15,7 @@ import {
   selectIsEndring,
   selectLoependeVedtak,
   selectSamtykkeOffentligAFP,
+  selectSkalBeregneAfpKap19,
   selectUfoeregrad,
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
@@ -33,6 +34,7 @@ export const GrunnlagAFP: React.FC = () => {
   const intl = useIntl()
 
   const afp = useAppSelector(selectAfp) ?? 'vet_ikke' // Vi har fallback for å unngå "missing translation" error ved flush() i GoToStart
+  const skalBeregneAfpKap19 = useAppSelector(selectSkalBeregneAfpKap19)
   const foedselsdato = useAppSelector(selectFoedselsdato)
   const samtykkeOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
   const isEndring = useAppSelector(selectIsEndring)
@@ -65,7 +67,7 @@ export const GrunnlagAFP: React.FC = () => {
     }
 
     if (
-      (hasAFP && isUfoerAndDontWantAfp) ||
+      (!skalBeregneAfpKap19 && hasAFP && isUfoerAndDontWantAfp) ||
       (hasOffentligAFP && !samtykkeOffentligAFP && !isUfoerAndDontWantAfp)
     ) {
       return `${afpString} (${intl.formatMessage({ id: 'grunnlag.afp.ikke_beregnet' })})`
