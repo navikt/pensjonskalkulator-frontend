@@ -118,6 +118,7 @@ export default defineConfig({
         'src/types',
         'src/paths.ts',
         'schemaTypes/**',
+        'src/components/Signals/**',
       ],
       perFile: true,
       thresholds: {
