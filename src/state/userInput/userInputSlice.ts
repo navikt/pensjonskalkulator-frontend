@@ -163,6 +163,9 @@ export const userInputSlice = createSlice({
           }
         : null
     },
+    resetCurrentSimulation: (state) => {
+      state.currentSimulation = { ...userInputInitialState.currentSimulation }
+    },
     setXAxis: (state, action: PayloadAction<string[]>) => {
       state.xAxis = action.payload
     },
