@@ -31,6 +31,7 @@ import {
   selectNedreAldersgrense,
   selectNormertPensjonsalder,
 } from '@/state/userInput/selectors'
+import { userInputActions } from '@/state/userInput/userInputSlice'
 import { getBrukerensAlderISluttenAvMaaneden } from '@/utils/alder'
 import {
   formatInntekt,
@@ -356,6 +357,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
                           href="#"
                           onClick={(e) => {
                             e.preventDefault()
+                            dispatch(userInputActions.resetCurrentSimulation())
                             navigate(paths.afp)
                           }}
                         >
