@@ -159,7 +159,6 @@ export const VilkaarsproevingAlert = ({
                   dispatch(
                     userInputActions.setCurrentSimulationUttaksalder(null)
                   )
-                  //dispatch(userInputActions.resetCurrentSimulation())
                   navigate(paths.afp)
                 }}
               >
