@@ -357,7 +357,17 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
                           href="#"
                           onClick={(e) => {
                             e.preventDefault()
-                            dispatch(userInputActions.resetCurrentSimulation())
+                            dispatch(
+                              userInputActions.setAfpInntektMaanedFoerUttak(
+                                null
+                              )
+                            )
+                            dispatch(
+                              userInputActions.setCurrentSimulationGradertUttaksperiode(
+                                null
+                              )
+                            )
+                            //dispatch(userInputActions.resetCurrentSimulation())
                             navigate(paths.afp)
                           }}
                         >

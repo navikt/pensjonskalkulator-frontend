@@ -151,7 +151,12 @@ export const VilkaarsproevingAlert = ({
                 onClick={(e) => {
                   e.preventDefault()
                   dispatch(userInputActions.setAfpInntektMaanedFoerUttak(null))
-                  dispatch(userInputActions.resetCurrentSimulation())
+                  dispatch(
+                    userInputActions.setCurrentSimulationGradertUttaksperiode(
+                      null
+                    )
+                  )
+                  //dispatch(userInputActions.resetCurrentSimulation())
                   navigate(paths.afp)
                 }}
               >
