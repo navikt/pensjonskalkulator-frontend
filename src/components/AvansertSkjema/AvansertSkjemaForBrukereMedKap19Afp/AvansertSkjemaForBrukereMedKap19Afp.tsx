@@ -367,6 +367,11 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
                                 null
                               )
                             )
+                            dispatch(
+                              userInputActions.setCurrentSimulationUttaksalder(
+                                null
+                              )
+                            )
                             //dispatch(userInputActions.resetCurrentSimulation())
                             navigate(paths.afp)
                           }}
