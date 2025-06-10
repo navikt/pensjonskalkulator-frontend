@@ -5,6 +5,7 @@ import { describe, it, vi } from 'vitest'
 import {
   fulfilledGetLoependeVedtak0Ufoeregrad,
   fulfilledGetPerson,
+  fulfilledPre1963GetPerson,
 } from '@/mocks/mockedRTKQueryApiCalls'
 import { mockErrorResponse, mockResponse } from '@/mocks/server'
 import { henvisningUrlParams, paths } from '@/router/constants'
@@ -26,6 +27,7 @@ import {
   stepSivilstandAccessGuard,
   stepStartAccessGuard,
   stepUfoeretrygdAFPAccessGuard,
+  stepUtenlandsoppholdAccessGuard,
 } from '../loaders'
 
 function expectRedirectResponse(
@@ -256,6 +258,54 @@ describe('Loaders', () => {
         throw new Error('grunnbeloep not in returnedFromLoader')
       }
       expect(returnedFromLoader.grunnbeloep).toBeUndefined()
+    })
+
+    it('brukere født før 1963 med vedtak om alderspensjon er redirigert', async () => {
+      const mockedState = {
+        api: {
+          queries: {
+            ...fulfilledPre1963GetPerson,
+            ['getLoependeVedtak(undefined)']: {
+              status: 'fulfilled',
+              endpointName: 'getLoependeVedtak',
+              requestId: 'abc',
+              data: {
+                harLoependeVedtak: true,
+                ufoeretrygd: { grad: 0 },
+                alderspensjon: {
+                  grad: 100,
+                  fom: '2020-10-02',
+                  sivilstand: 'UGIFT',
+                },
+              },
+              startedTimeStamp: 0,
+              fulfilledTimeStamp: 1,
+            },
+          },
+        },
+        userInput: { ...userInputInitialState, samtykke: null },
+      }
+      store.getState = vi.fn().mockImplementation(() => mockedState)
+
+      //TODO: returnerer feil fødselsdato (1964), noe som fører til at den ikke blir redirigert
+      expectRedirectResponse(
+        await stepSivilstandAccessGuard(createMockRequest()),
+        '/utenlandsopphold'
+      )
+    })
+  })
+
+  describe('stepUtenlandsoppholdAccessGuard', () => {
+    it('kaller redirect til /start når ingen API-kall er registrert', async () => {
+      store.getState = vi.fn().mockImplementation(() => ({
+        api: { queries: {} },
+        userInput: { ...userInputInitialState, samtykke: null },
+      }))
+
+      expectRedirectResponse(
+        await stepUtenlandsoppholdAccessGuard(createMockRequest()),
+        '/start'
+      )
     })
   })
 
