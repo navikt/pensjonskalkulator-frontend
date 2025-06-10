@@ -1,7 +1,6 @@
 import React from 'react'
-import { FormattedMessage } from 'react-intl'
 
-import { HStack, Heading } from '@navikt/ds-react'
+import { VStack } from '@navikt/ds-react'
 
 import { Grunnpensjonsdetaljer } from '../Felles/Grunnpensjonsdetaljer'
 import { Opptjeningsdetaljer } from '../Felles/Opptjeningsdetaljer'
@@ -11,6 +10,7 @@ export interface BeregningsdetaljerMobilProps {
   grunnpensjonObjekter: DetaljRad[][]
   opptjeningKap19Objekt: DetaljRad[]
   opptjeningKap20Objekt: DetaljRad[]
+  opptjeningAfpPrivatObjekt?: DetaljRad[]
   opptjeningPre2025OffentligAfpObjekt?: DetaljRad[]
 }
 
@@ -20,17 +20,16 @@ export const BeregningsdetaljerMobil: React.FC<
   grunnpensjonObjekter,
   opptjeningKap19Objekt,
   opptjeningKap20Objekt,
+  opptjeningAfpPrivatObjekt,
   opptjeningPre2025OffentligAfpObjekt,
 }) => (
-  <HStack gap="4 8" width="100%" marginBlock="2 0">
-    <Heading size="small" level="3">
-      <FormattedMessage id="maanedsbeloep.title" />
-    </Heading>
+  <VStack gap="4 8" width="100%" marginBlock="2 0">
     <Grunnpensjonsdetaljer grunnpensjonObjekter={grunnpensjonObjekter} />
     <Opptjeningsdetaljer
       opptjeningKap19Objekt={opptjeningKap19Objekt}
       opptjeningKap20Objekt={opptjeningKap20Objekt}
+      opptjeningAfpPrivatObjekt={opptjeningAfpPrivatObjekt}
       opptjeningPre2025OffentligAfpObjekt={opptjeningPre2025OffentligAfpObjekt}
     />
-  </HStack>
+  </VStack>
 )

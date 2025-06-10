@@ -403,6 +403,8 @@ const translations = {
     'Opptjening alderspensjon etter kapittel 19',
   'beregning.detaljer.opptjeningsdetaljer.kap20.table.title':
     'Opptjening alderspensjon etter kapittel 20',
+  'beregning.detaljer.opptjeningsdetaljer.afpPrivat.table.title':
+    'Månedlig avtalefestet pensjon (AFP)',
   'beregning.detaljer.opptjeningsdetaljer.pre2025OffentligAfp.table.title':
     'Opptjening avtalefestet pensjon (AFP)',
   'beregning.avansert.link.endre_valgene_dine': 'Endre valgene dine',

@@ -362,6 +362,8 @@ export default {
   'beregning.detaljer.grunnpensjon.table.title': 'MANGLER_TEKST',
   'beregning.detaljer.opptjeningsdetaljer.kap19.table.title': 'MANGLER_TEKST',
   'beregning.detaljer.opptjeningsdetaljer.kap20.table.title': 'MANGLER_TEKST',
+  'beregning.detaljer.opptjeningsdetaljer.afpPrivat.table.title':
+    'MANGLER_TEKST',
   'beregning.detaljer.opptjeningsdetaljer.pre2025OffentligAfp.table.title':
     'MANGLER_TEKST',
   'beregning.avansert.link.endre_valgene_dine': 'Change your choices',

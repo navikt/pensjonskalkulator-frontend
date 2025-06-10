@@ -13,11 +13,13 @@ export interface BeregningsdetaljerRader {
   grunnpensjonObjekter: DetaljRad[][]
   opptjeningKap19Objekt: DetaljRad[]
   opptjeningKap20Objekt: DetaljRad[]
+  opptjeningAfpPrivatObjekt: DetaljRad[]
   opptjeningPre2025OffentligAfpObjekt: DetaljRad[]
 }
 
 export function useBeregningsdetaljer(
   alderspensjonListe?: AlderspensjonPensjonsberegning[],
+  afpPrivatListe?: AfpPensjonsberegning[],
   pre2025OffentligAfp?: pre2025OffentligPensjonsberegning
 ): BeregningsdetaljerRader {
   const { uttaksalder, gradertUttaksperiode } = useAppSelector(
@@ -119,6 +121,25 @@ export function useBeregningsdetaljer(
       ].filter((rad) => rad.verdi !== '0 kr')
     })
 
+    const opptjeningAfpPrivatObjekt: DetaljRad[] = (afpPrivatListe ?? [])
+      .map((afp) => [
+        // {
+        //   tekst: 'Kompensasjonstillegg',
+        //   verdi: afp.kompensasjonstillegg
+        // },
+        // { tekst: 'Kronetillegg', verdi: afp.kronetillegg },
+        // {
+        //   tekst: 'Livsvarig del',
+        //   verdi: `${formatInntekt(afp.pensjonBeholdningFoerUttakBeloep)} kr`,
+        // },
+        {
+          tekst: 'Sum månedlig AFP',
+          verdi: `${formatInntekt(afp.maanedligBeloep)} kr`,
+        },
+      ])
+      .flat()
+      .filter((rad) => rad.verdi !== '0 kr')
+
     const opptjeningKap19Objekt: DetaljRad[] = (() => {
       if (
         alderspensjonVedUttak.length === 0 ||
@@ -205,6 +226,7 @@ export function useBeregningsdetaljer(
       grunnpensjonObjekter,
       opptjeningKap19Objekt,
       opptjeningKap20Objekt,
+      opptjeningAfpPrivatObjekt,
       opptjeningPre2025OffentligAfpObjekt,
     }
   }, [alderspensjonListe, pre2025OffentligAfp])
