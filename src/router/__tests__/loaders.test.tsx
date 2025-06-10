@@ -217,7 +217,10 @@ describe('Loaders', () => {
         userInput: { ...userInputInitialState, samtykke: null },
       }))
 
-      expectRedirectResponse(await stepSivilstandAccessGuard(), '/start')
+      expectRedirectResponse(
+        await stepSivilstandAccessGuard(createMockRequest()),
+        '/start'
+      )
     })
 
     it('returnerer person og grunnbeloep', async () => {
@@ -226,7 +229,8 @@ describe('Loaders', () => {
         userInput: { ...userInputInitialState },
       }))
 
-      const returnedFromLoader = await stepSivilstandAccessGuard()
+      const returnedFromLoader =
+        await stepSivilstandAccessGuard(createMockRequest())
       expect(returnedFromLoader).toHaveProperty('person')
       if (!('person' in returnedFromLoader)) {
         throw new Error('person not in returnedFromLoader')
@@ -245,7 +249,8 @@ describe('Loaders', () => {
         userInput: { ...userInputInitialState },
       }))
 
-      const returnedFromLoader = await stepSivilstandAccessGuard()
+      const returnedFromLoader =
+        await stepSivilstandAccessGuard(createMockRequest())
       expect(returnedFromLoader).toHaveProperty('grunnbeloep')
       if (!('grunnbeloep' in returnedFromLoader)) {
         throw new Error('grunnbeloep not in returnedFromLoader')
