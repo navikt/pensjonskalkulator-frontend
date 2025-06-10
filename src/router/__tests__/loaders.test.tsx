@@ -260,34 +260,40 @@ describe('Loaders', () => {
       expect(returnedFromLoader.grunnbeloep).toBeUndefined()
     })
 
-    it('brukere født før 1963 med vedtak om alderspensjon er redirigert', async () => {
+    it('redirigerer brukere født før 1963 med vedtak om alderspensjon', async () => {
+      mockResponse('/v4/person', {
+        json: {
+          navn: 'Test Person',
+          sivilstand: 'UGIFT',
+          foedselsdato: '1960-04-30',
+          pensjoneringAldre: {
+            normertPensjoneringsalder: { aar: 67, maaneder: 0 },
+            nedreAldersgrense: { aar: 62, maaneder: 0 },
+          },
+        },
+      })
+      mockResponse('/v4/vedtak/loepende-vedtak', {
+        json: {
+          harLoependeVedtak: true,
+          ufoeretrygd: { grad: 0 },
+          alderspensjon: {
+            grad: 100,
+            fom: '2020-10-02',
+            sivilstand: 'UGIFT',
+          },
+        },
+      })
       const mockedState = {
         api: {
           queries: {
             ...fulfilledPre1963GetPerson,
-            ['getLoependeVedtak(undefined)']: {
-              status: 'fulfilled',
-              endpointName: 'getLoependeVedtak',
-              requestId: 'abc',
-              data: {
-                harLoependeVedtak: true,
-                ufoeretrygd: { grad: 0 },
-                alderspensjon: {
-                  grad: 100,
-                  fom: '2020-10-02',
-                  sivilstand: 'UGIFT',
-                },
-              },
-              startedTimeStamp: 0,
-              fulfilledTimeStamp: 1,
-            },
           },
         },
         userInput: { ...userInputInitialState, samtykke: null },
       }
+
       store.getState = vi.fn().mockImplementation(() => mockedState)
 
-      //TODO: returnerer feil fødselsdato (1964), noe som fører til at den ikke blir redirigert
       expectRedirectResponse(
         await stepSivilstandAccessGuard(createMockRequest()),
         '/utenlandsopphold'
@@ -305,6 +311,45 @@ describe('Loaders', () => {
       expectRedirectResponse(
         await stepUtenlandsoppholdAccessGuard(createMockRequest()),
         '/start'
+      )
+    })
+    it('redirigerer brukere født før 1963 med vedtak om alderspensjon', async () => {
+      mockResponse('/v4/person', {
+        json: {
+          navn: 'Test Person',
+          sivilstand: 'UGIFT',
+          foedselsdato: '1960-04-30',
+          pensjoneringAldre: {
+            normertPensjoneringsalder: { aar: 67, maaneder: 0 },
+            nedreAldersgrense: { aar: 62, maaneder: 0 },
+          },
+        },
+      })
+      mockResponse('/v4/vedtak/loepende-vedtak', {
+        json: {
+          harLoependeVedtak: true,
+          ufoeretrygd: { grad: 0 },
+          alderspensjon: {
+            grad: 100,
+            fom: '2020-10-02',
+            sivilstand: 'UGIFT',
+          },
+        },
+      })
+      const mockedState = {
+        api: {
+          queries: {
+            ...fulfilledPre1963GetPerson,
+          },
+        },
+        userInput: { ...userInputInitialState, samtykke: null },
+      }
+
+      store.getState = vi.fn().mockImplementation(() => mockedState)
+
+      expectRedirectResponse(
+        await stepUtenlandsoppholdAccessGuard(createMockRequest()),
+        '/afp'
       )
     })
   })
