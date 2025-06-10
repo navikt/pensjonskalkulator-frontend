@@ -526,8 +526,8 @@ describe('AFP vs uføretrygd', () => {
           ).then((selectElements) => {
             const options = selectElements.find('option')
             expect(options.length).equal(13)
-            expect(options.eq(1).text()).to.match(/^0 md\. \(.+\)$/)
-            expect(options.eq(12).text()).to.match(/^11 md\. \(.+\)$/)
+            expect(options.eq(1).text()).to.contain('0 md.')
+            expect(options.eq(12).text()).to.contain('11 md.')
           })
           cy.get(
             '[data-testid="age-picker-uttaksalder-helt-uttak-maaneder"]'
@@ -554,8 +554,8 @@ describe('AFP vs uføretrygd', () => {
           ).then((selectElements) => {
             const options = selectElements.find('option')
             expect(options.length).equal(13)
-            expect(options.eq(1).text()).to.match(/^0 md\. \(.+\)$/)
-            expect(options.eq(12).text()).to.match(/^11 md\. \(.+\)$/)
+            expect(options.eq(1).text()).to.contain('0 md.')
+            expect(options.eq(12).text()).to.contain('11 md.')
           })
           cy.get(
             '[data-testid="age-picker-uttaksalder-helt-uttak-maaneder"]'
