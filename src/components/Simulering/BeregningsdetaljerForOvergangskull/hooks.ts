@@ -185,7 +185,7 @@ export function useBeregningsdetaljer(
           },
           { tekst: 'Trygdetid', verdi: ap.trygdetidKap20 },
           {
-            tekst: 'Pensjonbeholdning før uttak',
+            tekst: 'Pensjonsbeholdning før uttak',
             verdi: `${formatInntekt(ap.pensjonBeholdningFoerUttakBeloep)} kr`,
           },
         ])
