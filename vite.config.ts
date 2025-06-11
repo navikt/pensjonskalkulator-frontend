@@ -95,11 +95,6 @@ export default defineConfig({
     globals: true,
     setupFiles: 'src/test-setup.ts',
     testTimeout: 10000,
-    environmentOptions: {
-      jsdom: {
-        url: 'http://localhost/',
-      },
-    },
     coverage: {
       provider: 'v8',
       all: true,
