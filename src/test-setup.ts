@@ -8,18 +8,6 @@ import { HOST_BASEURL } from './paths'
 
 global.scrollTo = () => vi.fn()
 
-// Mock window.location for React Router
-Object.defineProperty(window, 'location', {
-  value: {
-    href: 'http://localhost/',
-    origin: 'http://localhost',
-    pathname: '/',
-    search: '',
-    hash: '',
-  },
-  writable: true,
-})
-
 window.matchMedia =
   window.matchMedia ||
   function () {
