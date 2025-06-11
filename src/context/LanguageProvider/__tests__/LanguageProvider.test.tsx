@@ -12,6 +12,16 @@ import { sanityClient } from '@/utils/sanity'
 import { setupStore } from '../../../state/store'
 import { LanguageProvider } from '../LanguageProvider'
 
+// Mock the nav decorator modules to prevent timeout issues
+vi.mock('@navikt/nav-dekoratoren-moduler', () => ({
+  onLanguageSelect: vi.fn((callback) => {
+    // Store the callback but don't set up any listeners or timeouts
+    return vi.fn()
+  }),
+  setAvailableLanguages: vi.fn(),
+  getAmplitudeInstance: vi.fn(() => vi.fn()),
+}))
+
 function TestComponent() {
   const intl = useIntl()
   const { forbeholdAvsnittData, guidePanelData, readMoreData } =
@@ -35,22 +45,24 @@ function TestComponent() {
 
 describe('LanguageProvider', () => {
   let defaultFetchSpy: ReturnType<typeof vi.spyOn>
+
   beforeAll(() => {
     defaultFetchSpy = vi
       .spyOn(sanityClient, 'fetch')
       .mockResolvedValue([] as unknown as RawQuerylessQueryResponse<unknown>)
   })
 
-  afterAll(() => {
-    defaultFetchSpy.mockRestore()
-  })
-
   afterEach(() => {
+    // Clear cookies
     document.cookie.split(';').forEach(function (c) {
       document.cookie = c
         .replace(/^ +/, '')
         .replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/')
     })
+  })
+
+  afterAll(() => {
+    defaultFetchSpy.mockRestore()
   })
 
   it('gir tilgang til react-intl translations', async () => {
