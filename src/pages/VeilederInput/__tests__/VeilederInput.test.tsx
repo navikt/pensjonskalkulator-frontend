@@ -79,7 +79,7 @@ describe('VeilederInput', () => {
       const fetchMock = vi.spyOn(global, 'fetch')
 
       // Setup mock implementation that handles specific URLs
-      fetchMock.mockImplementation((url, options) => {
+      fetchMock.mockImplementation((url) => {
         const requestUrl = url instanceof Request ? url.url : String(url)
 
         // If this is the encrypt endpoint, reject with an error
@@ -121,9 +121,7 @@ describe('VeilederInput', () => {
 
       // Wait for the error alert to appear - this is the main assertion
       // Wait for the error alert to appear, with increased timeout since fetch mock might take longer
-      expect(
-        await screen.findByTestId('error-alert', { timeout: 3000 })
-      ).toBeVisible()
+      expect(await screen.findByTestId('error-alert')).toBeVisible()
 
       // Verify that encrypt endpoint was called
       await waitFor(() => {
