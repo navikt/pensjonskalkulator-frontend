@@ -75,26 +75,32 @@ describe('VeilederInput', () => {
       const cache = console.error
       console.error = () => {}
 
-      // Mock API responses - with encryption failing with error
-      const fetchMock = vi.spyOn(global, 'fetch')
-
-      // Setup mock implementation that handles specific URLs
-      fetchMock.mockImplementation((url) => {
-        const requestUrl = url instanceof Request ? url.url : String(url)
-
-        // If this is the encrypt endpoint, reject with an error
-        if (requestUrl.includes('/api/v1/encrypt')) {
-          return Promise.reject(new Error('Encryption failed'))
-        }
-
-        // For all other requests, return success
-        return Promise.resolve({
+      const fetchMock = vi
+        .spyOn(global, 'fetch')
+        .mockResolvedValueOnce({
           ok: true,
           status: 200,
           statusText: 'fullfilled',
-          json: () => Promise.resolve({}),
+          type: 'default',
+          url: 'http://localhost:8088/pensjon/kalkulator/oauth2/session',
+          redirected: false,
         } as Response)
-      })
+        .mockResolvedValueOnce({
+          ok: true,
+          status: 200,
+          statusText: 'fullfilled',
+          type: 'default',
+          url: 'http://localhost:8088/pensjon/kalkulator/oauth2/session',
+          redirected: false,
+        } as Response)
+        .mockRejectedValueOnce({
+          ok: false,
+          status: 503,
+          statusText: 'error',
+          type: 'default',
+          url: 'http://localhost:8088/pensjon/kalkulator/api/v1/encrypt',
+          redirected: false,
+        } as Response)
 
       const user = userEvent.setup()
 
@@ -118,22 +124,19 @@ describe('VeilederInput', () => {
       await user.type(input, '9')
 
       await user.click(submitButton)
-
-      // Wait for the error alert to appear - this is the main assertion
-      // Wait for the error alert to appear, with increased timeout since fetch mock might take longer
+      expect(fetchMock).toHaveBeenNthCalledWith(
+        1,
+        'http://localhost:8088/pensjon/kalkulator/oauth2/session'
+      )
+      expect(fetchMock).toHaveBeenNthCalledWith(
+        3,
+        'http://localhost:8088/pensjon/kalkulator/api/v1/encrypt',
+        {
+          body: '10036599999',
+          method: 'POST',
+        }
+      )
       expect(await screen.findByTestId('error-alert')).toBeVisible()
-
-      // Verify that encrypt endpoint was called
-      await waitFor(() => {
-        const calls = fetchMock.mock.calls.filter((call) => {
-          const req = call[0]
-          return (req instanceof Request || String(req))
-            .toString()
-            .includes('encrypt')
-        })
-        expect(calls.length).toBeGreaterThan(0)
-      })
-
       console.error = cache
     })
   })
