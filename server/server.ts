@@ -337,7 +337,11 @@ app.get('*', redirect1963Middleware, async (_req: Request, res: Response) => {
   }
 })
 
-app.listen(PORT, () => {
+app.listen(PORT, (error) => {
+  if (error) {
+    logger.error('Failed to start server', error)
+    throw error
+  }
   logger.info(
     `Server is running on http://localhost:${PORT} using ${AUTH_PROVIDER} as auth provider`
   )
