@@ -399,8 +399,7 @@ const translations = {
   'beregning.avansert.link.endre_valgene_dine': 'Endre valgene dine',
   'beregning.avansert.link.endre_avanserte_valg': 'Endre avanserte valg',
   'beregning.avansert.link.om_vilkaar_for_afp': 'Om vilkår for uttak av AFP',
-  'beregning.avansert.endring_banner.title':
-    'Alderspensjon før skatt når du er ',
+  'beregning.avansert.endring_banner.title': 'Alderspensjon når du er ',
   'beregning.avansert.endring_banner.kr_md': 'kr/md.',
   'beregning.avansert.maanedsbeloep.table_title': 'Månedlig pensjon',
   'beregning.avansert.maanedsbeloep.box_title': 'Ved ',
@@ -444,7 +443,7 @@ const translations = {
   'beregning.avansert.rediger.uttaksgrad.ufoeretrygd.validation_error':
     'Du må sette ned uttaksgraden slik at gradene av alderspensjon og uføretrygd ikke overstiger 100 % til sammen. Etter {normertPensjonsalder} kan du velge 100 % uttak.',
   'beregning.avansert.rediger.inntekt_vsa_helt_uttak.beloep.validation_error':
-    'Du må fylle ut forventet inntekt samtidig som du tar ut <nowrap>100 %</nowrap> pensjon.',
+    'Du må fylle ut forventet årsinntekt samtidig som du tar ut <nowrap>100 %</nowrap> pensjon.',
   'beregning.avansert.rediger.radio.inntekt_vsa_gradert_uttak':
     'Forventer du å ha inntekt samtidig som du tar ut <nowrap>{grad} %</nowrap> pensjon?',
   'beregning.avansert.rediger.radio.inntekt_vsa_gradert_uttak.description':
@@ -460,7 +459,7 @@ const translations = {
   'beregning.avansert.rediger.radio.inntekt_vsa_gradert_uttak.description.validation_error':
     'Du må svare på om du forventer å ha inntekt samtidig som du tar ut <nowrap>{grad} %</nowrap> pensjon.',
   'beregning.avansert.rediger.inntekt_vsa_gradert_uttak.beloep.validation_error':
-    'Du må fylle ut forventet inntekt samtidig som du tar ut <nowrap>{grad} %</nowrap> pensjon.',
+    'Du må fylle ut forventet årsinntekt samtidig som du tar ut <nowrap>{grad} %</nowrap> pensjon.',
   'beregning.avansert.rediger.inntekt_vsa_gradert_uttak.label':
     'Hva er din forventede årsinntekt samtidig som du tar ut <nowrap>{grad} %</nowrap> alderspensjon?',
   'beregning.avansert.rediger.inntekt_vsa_gradert_uttak.description':

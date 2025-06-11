@@ -7,7 +7,7 @@ import {
   fulfilledGetPerson,
 } from '@/mocks/mockedRTKQueryApiCalls'
 import { mockErrorResponse, mockResponse } from '@/mocks/server'
-import { henvisningUrlParams, paths } from '@/router/constants'
+import { paths } from '@/router/constants'
 import type { Reason } from '@/router/loaders'
 import * as apiSliceUtils from '@/state/api/apiSlice'
 import { store } from '@/state/store'
