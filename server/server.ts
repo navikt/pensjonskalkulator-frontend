@@ -319,23 +319,30 @@ const redirect1963Middleware = async (
 }
 
 // For alle andre endepunkt svar med /veileder/veileder.html (siden vi bruker react-router)
-app.get('/pensjon/kalkulator/veileder?*', (_req: Request, res: Response) => {
-  if (AUTH_PROVIDER === 'azure') {
-    return res.sendFile(__dirname + '/veileder/index.html')
-  } else {
-    return res.redirect('/pensjon/kalkulator')
+app.get(
+  '/pensjon/kalkulator/veileder{/*splat}',
+  (_req: Request, res: Response) => {
+    if (AUTH_PROVIDER === 'azure') {
+      return res.sendFile(__dirname + '/veileder/index.html')
+    } else {
+      return res.redirect('/pensjon/kalkulator')
+    }
   }
-})
+)
 
-app.get('*', redirect1963Middleware, async (_req: Request, res: Response) => {
-  if (AUTH_PROVIDER === 'idporten') {
-    res.sendFile(__dirname + '/index.html')
-    return
-  } else if (AUTH_PROVIDER === 'azure') {
-    res.redirect('/pensjon/kalkulator/veileder')
-    return
+app.get(
+  '/*splat',
+  redirect1963Middleware,
+  async (_req: Request, res: Response) => {
+    if (AUTH_PROVIDER === 'idporten') {
+      res.sendFile(__dirname + '/index.html')
+      return
+    } else if (AUTH_PROVIDER === 'azure') {
+      res.redirect('/pensjon/kalkulator/veileder')
+      return
+    }
   }
-})
+)
 
 app.listen(PORT, (error) => {
   if (error) {
