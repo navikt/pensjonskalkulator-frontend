@@ -176,24 +176,6 @@ describe('Loaders', () => {
       expectRedirectResponse(await stepStartAccessGuard(), paths.uventetFeil)
     })
 
-    it('Når brukeren har medlemskap til Apoterkerne, redirigeres brukeren til riktig URL', async () => {
-      mockResponse('/v2/ekskludert', {
-        json: {
-          ekskludert: true,
-          aarsak: 'ER_APOTEKER',
-        },
-      })
-
-      store.getState = vi.fn().mockImplementation(() => ({
-        userInput: { ...userInputInitialState },
-      }))
-
-      expectRedirectResponse(
-        await stepStartAccessGuard(),
-        `${paths.henvisning}/${henvisningUrlParams.apotekerne}`
-      )
-    })
-
     it('Når vedlikeholdsmodus er aktivert blir man redirigert', async () => {
       mockResponse('/feature/pensjonskalkulator.vedlikeholdsmodus', {
         json: { enabled: true },
@@ -611,7 +593,7 @@ describe('Loaders', () => {
       await expect(returnedFromLoader).rejects.toThrow()
     })
 
-    it('Gitt at getEkskludertStatus har tidligere feilet kalles den på nytt. Når den er vellykket og viser at brukeren er apoteker, er brukeren redirigert', async () => {
+    it('Gitt at getEkskludertStatus har tidligere feilet kalles den på nytt. Når den er vellykket og viser at brukeren er apoteker, og `erApoteker` settes', async () => {
       mockResponse('/v2/ekskludert', {
         status: 200,
         json: {
@@ -642,10 +624,13 @@ describe('Loaders', () => {
       }
       store.getState = vi.fn().mockImplementation(() => mockedState)
 
-      expectRedirectResponse(
-        await stepAFPAccessGuard(createMockRequest()),
-        `${paths.henvisning}/${henvisningUrlParams.apotekerne}`
-      )
+      const returnedFromLoader = await stepAFPAccessGuard(createMockRequest())
+      expect(returnedFromLoader).toHaveProperty('erApoteker')
+      if (!('erApoteker' in returnedFromLoader)) {
+        throw new Error('erApoteker not in returnedFromLoader')
+      }
+
+      expect(returnedFromLoader.erApoteker).toBe(true)
     })
 
     it('Gitt at getEkskludertStatus har tidligere feilet kalles den på nytt. Når den er vellykket i tillegg til de to andre kallene kastes ikke feil', async () => {

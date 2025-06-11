@@ -251,7 +251,6 @@ export const stepAFPAccessGuard = async ({ request }: LoaderFunctionArgs) => {
   const erApoteker = await store
     .dispatch(apiSlice.endpoints.getErApoteker.initiate())
     .unwrap()
-    .catch(() => false)
 
   const isEndring = isLoependeVedtakEndring(loependeVedtak)
   const isKap19 = isFoedtFoer1963(person.foedselsdato) || erApoteker

@@ -1,4 +1,4 @@
 {
-  "ekskludert": true,
-  "aarsak": "ER_APOTEKER"
+  "ekskludert": false,
+  "aarsak": "NONE"
 }
