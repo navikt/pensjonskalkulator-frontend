@@ -123,15 +123,15 @@ export function useBeregningsdetaljer(
 
     const opptjeningAfpPrivatObjekt: DetaljRad[] = (afpPrivatListe ?? [])
       .map((afp) => [
-        // {
-        //   tekst: 'Kompensasjonstillegg',
-        //   verdi: afp.kompensasjonstillegg
-        // },
-        // { tekst: 'Kronetillegg', verdi: afp.kronetillegg },
-        // {
-        //   tekst: 'Livsvarig del',
-        //   verdi: `${formatInntekt(afp.pensjonBeholdningFoerUttakBeloep)} kr`,
-        // },
+        {
+          tekst: 'Kompensasjonstillegg',
+          verdi: afp.kompensasjonstillegg,
+        },
+        { tekst: 'Kronetillegg', verdi: afp.kronetillegg },
+        {
+          tekst: 'Livsvarig del',
+          verdi: `${formatInntekt(afp.livsvarig)} kr`,
+        },
         {
           tekst: 'Sum månedlig AFP',
           verdi: `${formatInntekt(afp.maanedligBeloep)} kr`,

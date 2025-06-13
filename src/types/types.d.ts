@@ -96,7 +96,7 @@ declare global {
     aarligInntektVsaPensjonBeloep?: string
   }
   type AfpPensjonsberegning =
-    components['schemas']['PersonligSimuleringAarligPensjonResultV8']
+    components['schemas']['PersonligSimuleringAfpPrivatResultV8']
   type AlderspensjonPensjonsberegning =
     components['schemas']['PersonligSimuleringAlderspensjonResultV8']
   type pre2025OffentligPensjonsberegning =
