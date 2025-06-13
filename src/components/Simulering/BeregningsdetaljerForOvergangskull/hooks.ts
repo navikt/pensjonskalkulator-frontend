@@ -19,7 +19,7 @@ export interface BeregningsdetaljerRader {
 
 export function useBeregningsdetaljer(
   alderspensjonListe?: AlderspensjonPensjonsberegning[],
-  afpPrivatListe?: AfpPensjonsberegning[],
+  afpPrivatListe?: AfpPrivatPensjonsberegning[],
   pre2025OffentligAfp?: pre2025OffentligPensjonsberegning
 ): BeregningsdetaljerRader {
   const { uttaksalder, gradertUttaksperiode } = useAppSelector(

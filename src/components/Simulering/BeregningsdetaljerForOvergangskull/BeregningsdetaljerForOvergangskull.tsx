@@ -12,7 +12,7 @@ import styles from './BeregningsdetaljerForOvergangskull.module.scss'
 
 interface Props {
   alderspensjonListe?: AlderspensjonPensjonsberegning[]
-  afpPrivatListe?: AfpPensjonsberegning[]
+  afpPrivatListe?: AfpPrivatPensjonsberegning[]
   pre2025OffentligAfp?: pre2025OffentligPensjonsberegning
 }
 

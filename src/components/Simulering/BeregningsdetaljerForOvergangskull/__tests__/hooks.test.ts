@@ -26,7 +26,16 @@ const mockAlderspensjon = {
   pensjonBeholdningFoerUttakBeloep: 80000,
 }
 
-const mockAfp = {
+const mockAfpPrivat = {
+  alder: 62,
+  beloep: 15000,
+  kompensasjonstillegg: 500,
+  kronetillegg: 1000,
+  livsvarig: 12000,
+  maanedligBeloep: 15000,
+}
+
+const mockPre2025OffentligAfp = {
   alderAar: 62,
   totaltAfpBeloep: 15000,
   tidligereArbeidsinntekt: 500000,
@@ -55,7 +64,11 @@ describe('useBeregningsdetaljer', () => {
   describe('Gitt at brukeren har alderspensjon', () => {
     it('returneres riktige rader for grunnpensjonObjekt', () => {
       const { result } = renderHook(() =>
-        useBeregningsdetaljer([mockAlderspensjon], mockAfp)
+        useBeregningsdetaljer(
+          [mockAlderspensjon],
+          [mockAfpPrivat],
+          mockPre2025OffentligAfp
+        )
       )
       expect(result.current.grunnpensjonObjekter).toEqual(
         expect.arrayContaining([
@@ -102,7 +115,11 @@ describe('useBeregningsdetaljer', () => {
           garantipensjonBeloep: 0,
         }
         const { result } = renderHook(() =>
-          useBeregningsdetaljer([mock], mockAfp)
+          useBeregningsdetaljer(
+            [mock],
+            [mockAfpPrivat],
+            mockPre2025OffentligAfp
+          )
         )
         expect(result.current.opptjeningKap19Objekt).toEqual(
           expect.arrayContaining([])
@@ -121,7 +138,11 @@ describe('useBeregningsdetaljer', () => {
           garantipensjonBeloep: -600,
         }
         const { result } = renderHook(() =>
-          useBeregningsdetaljer([mock], mockAfp)
+          useBeregningsdetaljer(
+            [mock],
+            [mockAfpPrivat],
+            mockPre2025OffentligAfp
+          )
         )
         expect(result.current.grunnpensjonObjekter).toEqual([])
       })
@@ -131,7 +152,11 @@ describe('useBeregningsdetaljer', () => {
   describe('Gitt at brukeren har opptjening i kapittel 19', () => {
     it('returneres riktige rader for opptjeningKap19Objekt', () => {
       const { result } = renderHook(() =>
-        useBeregningsdetaljer([mockAlderspensjon], mockAfp)
+        useBeregningsdetaljer(
+          [mockAlderspensjon],
+          [mockAfpPrivat],
+          mockPre2025OffentligAfp
+        )
       )
       expect(result.current.opptjeningKap19Objekt).toEqual(
         expect.arrayContaining([
@@ -151,7 +176,11 @@ describe('useBeregningsdetaljer', () => {
           poengaarEtter91: 0,
         }
         const { result } = renderHook(() =>
-          useBeregningsdetaljer([mock], mockAfp)
+          useBeregningsdetaljer(
+            [mock],
+            [mockAfpPrivat],
+            mockPre2025OffentligAfp
+          )
         )
         expect(result.current.opptjeningKap19Objekt).toEqual(
           expect.arrayContaining([
@@ -163,7 +192,11 @@ describe('useBeregningsdetaljer', () => {
       it('vises Trygdetid selv om verdien er 0', () => {
         const mock = { ...mockAlderspensjon, trygdetidKap19: 0 }
         const { result } = renderHook(() =>
-          useBeregningsdetaljer([mock], mockAfp)
+          useBeregningsdetaljer(
+            [mock],
+            [mockAfpPrivat],
+            mockPre2025OffentligAfp
+          )
         )
         expect(result.current.opptjeningKap19Objekt).toEqual(
           expect.arrayContaining([
@@ -179,7 +212,11 @@ describe('useBeregningsdetaljer', () => {
           sluttpoengtall: 0,
         }
         const { result } = renderHook(() =>
-          useBeregningsdetaljer([mock], mockAfp)
+          useBeregningsdetaljer(
+            [mock],
+            [mockAfpPrivat],
+            mockPre2025OffentligAfp
+          )
         )
         expect(result.current.opptjeningKap19Objekt).not.toContain(
           expect.arrayContaining([
@@ -194,7 +231,11 @@ describe('useBeregningsdetaljer', () => {
   describe('Gitt at brukeren har opptjening i kapittel 20', () => {
     it('returneres riktige rader for opptjeningKap20Objekt', () => {
       const { result } = renderHook(() =>
-        useBeregningsdetaljer([mockAlderspensjon], mockAfp)
+        useBeregningsdetaljer(
+          [mockAlderspensjon],
+          [mockAfpPrivat],
+          mockPre2025OffentligAfp
+        )
       )
       expect(result.current.opptjeningKap20Objekt).toEqual(
         expect.arrayContaining([
@@ -212,7 +253,11 @@ describe('useBeregningsdetaljer', () => {
       it('vises Trygdetid selv om verdien er 0', () => {
         const mock = { ...mockAlderspensjon, trygdetidKap20: 0 }
         const { result } = renderHook(() =>
-          useBeregningsdetaljer([mock], mockAfp)
+          useBeregningsdetaljer(
+            [mock],
+            [mockAfpPrivat],
+            mockPre2025OffentligAfp
+          )
         )
         expect(result.current.opptjeningKap20Objekt).toEqual(
           expect.arrayContaining([
@@ -227,7 +272,11 @@ describe('useBeregningsdetaljer', () => {
           pensjonBeholdningFoerUttakBeloep: 0,
         }
         const { result } = renderHook(() =>
-          useBeregningsdetaljer([mock], mockAfp)
+          useBeregningsdetaljer(
+            [mock],
+            [mockAfpPrivat],
+            mockPre2025OffentligAfp
+          )
         )
         expect(result.current.opptjeningKap20Objekt).toEqual(
           expect.arrayContaining([
@@ -245,7 +294,11 @@ describe('useBeregningsdetaljer', () => {
           andelsbroekKap20: 0,
         }
         const { result } = renderHook(() =>
-          useBeregningsdetaljer([mock], mockAfp)
+          useBeregningsdetaljer(
+            [mock],
+            [mockAfpPrivat],
+            mockPre2025OffentligAfp
+          )
         )
         expect(result.current.opptjeningKap19Objekt).not.toContain(
           expect.arrayContaining([
@@ -258,7 +311,13 @@ describe('useBeregningsdetaljer', () => {
 
   describe('Gitt at brukeren har gammel Afp', () => {
     it('returneres riktige rader for opptjeningPre2025OffentligAfpObjekt', () => {
-      const { result } = renderHook(() => useBeregningsdetaljer([], mockAfp))
+      const { result } = renderHook(() =>
+        useBeregningsdetaljer(
+          [mockAlderspensjon],
+          [mockAfpPrivat],
+          mockPre2025OffentligAfp
+        )
+      )
       expect(result.current.opptjeningPre2025OffentligAfpObjekt).toEqual(
         expect.arrayContaining([
           expect.objectContaining({ tekst: 'AFP grad', verdi: 50 }),
@@ -271,8 +330,12 @@ describe('useBeregningsdetaljer', () => {
 
     describe('Når det er felter som har verdi 0', () => {
       it('vises Poengår selv om verdien er 0', () => {
-        const mock = { ...mockAfp, poengaarTom1991: 0, poengaarFom1992: 0 }
-        const { result } = renderHook(() => useBeregningsdetaljer([], mock))
+        const mock = {
+          ...mockPre2025OffentligAfp,
+          poengaarTom1991: 0,
+          poengaarFom1992: 0,
+        }
+        const { result } = renderHook(() => useBeregningsdetaljer([], [], mock))
         expect(result.current.opptjeningPre2025OffentligAfpObjekt).toEqual(
           expect.arrayContaining([
             expect.objectContaining({ tekst: 'Poengår', verdi: 0 }),
@@ -281,8 +344,8 @@ describe('useBeregningsdetaljer', () => {
       })
 
       it('vises Trygdetid selv om verdien er 0', () => {
-        const mock = { ...mockAfp, trygdetid: 0 }
-        const { result } = renderHook(() => useBeregningsdetaljer([], mock))
+        const mock = { ...mockPre2025OffentligAfp, trygdetid: 0 }
+        const { result } = renderHook(() => useBeregningsdetaljer([], [], mock))
         expect(result.current.opptjeningPre2025OffentligAfpObjekt).toEqual(
           expect.arrayContaining([
             expect.objectContaining({ tekst: 'Trygdetid', verdi: 0 }),
@@ -291,8 +354,12 @@ describe('useBeregningsdetaljer', () => {
       })
 
       it('skjules andre felter med verdi 0', () => {
-        const mock = { ...mockAfp, afpGrad: 0, sluttpoengtall: 0 }
-        const { result } = renderHook(() => useBeregningsdetaljer([], mock))
+        const mock = {
+          ...mockPre2025OffentligAfp,
+          afpGrad: 0,
+          sluttpoengtall: 0,
+        }
+        const { result } = renderHook(() => useBeregningsdetaljer([], [], mock))
         expect(
           result.current.opptjeningPre2025OffentligAfpObjekt
         ).not.toContain(
