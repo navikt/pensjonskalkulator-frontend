@@ -412,8 +412,18 @@ export const stepSamtykkePensjonsavtaler = async ({
     .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
     .unwrap()
 
+  const person = await store
+    .dispatch(apiSlice.endpoints.getPerson.initiate())
+    .unwrap()
+
   const isEndring = isLoependeVedtakEndring(loependeVedtak)
-  const stepArrays = getStepArrays(isEndring, false)
+  const isKap19 = isFoedtFoer1963(person.foedselsdato)
+
+  const stepArrays = getStepArrays(isEndring, isKap19)
+
+  if (isEndring && isKap19) {
+    return skip(stepArrays, paths.samtykke, request)
+  }
 
   if (loependeVedtak.pre2025OffentligAfp && !isEndring) {
     return skip(stepArrays, paths.samtykke, request)
