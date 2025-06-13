@@ -10,7 +10,7 @@ describe('stegvisning - SamtykkePensjonsavtaler', () => {
   const onPreviousMock = vi.fn()
   const onNextMock = vi.fn()
   it('rendrer slik den skal når samtykket ikke er oppgitt', async () => {
-    const result = render(
+    render(
       <SamtykkePensjonsavtaler
         harSamtykket={null}
         onCancel={onCancelMock}
@@ -27,7 +27,6 @@ describe('stegvisning - SamtykkePensjonsavtaler', () => {
       expect(screen.getAllByRole('radio')).toHaveLength(2)
       expect(radioButtons[0]).not.toBeChecked()
       expect(radioButtons[1]).not.toBeChecked()
-      expect(result.asFragment()).toMatchSnapshot()
     })
   })
   describe('rendrer slik den skal når samtykket er oppgitt', async () => {
@@ -80,14 +79,10 @@ describe('stegvisning - SamtykkePensjonsavtaler', () => {
 
     await user.click(screen.getByText('stegvisning.neste'))
 
-    waitFor(() => {
-      expect(
-        screen.getByText(
-          'stegvisning.samtykke_pensjonsavtaler.validation_error'
-        )
-      ).toBeInTheDocument()
-      expect(onNextMock).not.toHaveBeenCalled()
-    })
+    expect(
+      screen.getByText('stegvisning.samtykke_pensjonsavtaler.validation_error')
+    ).toBeInTheDocument()
+    expect(onNextMock).not.toHaveBeenCalled()
 
     await user.click(radioButtons[0])
 
@@ -99,9 +94,7 @@ describe('stegvisning - SamtykkePensjonsavtaler', () => {
 
     await user.click(screen.getByText('stegvisning.neste'))
 
-    waitFor(() => {
-      expect(onNextMock).toHaveBeenCalled()
-    })
+    expect(onNextMock).toHaveBeenCalled()
   })
 
   it('kaller onPrevious når brukeren klikker på Tilbake', async () => {
@@ -120,9 +113,7 @@ describe('stegvisning - SamtykkePensjonsavtaler', () => {
     const radioButtons = screen.getAllByRole('radio')
     expect(radioButtons[0]).toBeChecked()
     await user.click(screen.getByText('stegvisning.tilbake'))
-    waitFor(() => {
-      expect(onPreviousMock).toHaveBeenCalled()
-    })
+    expect(onPreviousMock).toHaveBeenCalled()
   })
 
   it('kaller onCancelMock når brukeren klikker på Avbryt', async () => {
@@ -137,9 +128,7 @@ describe('stegvisning - SamtykkePensjonsavtaler', () => {
     )
     expect(screen.getByText('stegvisning.avbryt')).toBeInTheDocument()
     await user.click(screen.getByText('stegvisning.avbryt'))
-    waitFor(() => {
-      expect(onCancelMock).toHaveBeenCalled()
-    })
+    expect(onCancelMock).toHaveBeenCalled()
   })
 
   it('viser ikke avbryt knapp når onCancel ikke er definert', async () => {

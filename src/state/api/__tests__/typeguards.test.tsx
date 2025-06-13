@@ -272,7 +272,7 @@ describe('Typeguards', () => {
         ])
       ).toBeTruthy()
     })
-    it('returnerer false når typen er undefined eller at AfpPrivatPensjonsberegning inneholder noe annet enn number', () => {
+    it('returnerer false når typen er undefined eller at AfpPensjonsberegning inneholder noe annet enn number', () => {
       expect(isPensjonsberegningArray(undefined)).toBeFalsy()
 
       expect(
@@ -805,6 +805,7 @@ describe('Typeguards', () => {
 
   describe('isLoependeVedtak', () => {
     const correctResponse: LoependeVedtak = {
+      harLoependeVedtak: true,
       alderspensjon: {
         grad: 0,
         fom: '2020-10-02',

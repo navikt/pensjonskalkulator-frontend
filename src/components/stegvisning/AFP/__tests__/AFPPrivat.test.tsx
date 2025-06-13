@@ -19,7 +19,7 @@ describe('stegvisning - AFP - født før 1963 og og fylt 67 år, eller født fø
   const onNextMock = vi.fn()
 
   it('rendrer slik den skal når afp ikke er oppgitt', async () => {
-    const result = render(
+    render(
       <AFPPrivat
         previousAfp={null}
         onCancel={onCancelMock}
@@ -40,12 +40,11 @@ describe('stegvisning - AFP - født før 1963 og og fylt 67 år, eller født fø
       expect(radioButtons).toHaveLength(2)
       expect(radioButtons[0]).not.toBeChecked()
       expect(radioButtons[1]).not.toBeChecked()
-      expect(result.asFragment()).toMatchSnapshot()
     })
   })
 
   it('rendrer slik den skal når afp er oppgitt', async () => {
-    const result = render(
+    render(
       <AFPPrivat
         previousAfp="nei"
         onCancel={onCancelMock}
@@ -61,7 +60,6 @@ describe('stegvisning - AFP - født før 1963 og og fylt 67 år, eller født fø
       expect(radioButtons).toHaveLength(2)
       expect(radioButtons[0]).not.toBeChecked()
       expect(radioButtons[1]).toBeChecked()
-      expect(result.asFragment()).toMatchSnapshot()
     })
   })
 
@@ -79,12 +77,10 @@ describe('stegvisning - AFP - født før 1963 og og fylt 67 år, eller født fø
 
     await user.click(screen.getByText('stegvisning.neste'))
 
-    waitFor(() => {
-      expect(
-        screen.getByText('stegvisning.afpPrivat.validation_error')
-      ).toBeInTheDocument()
-      expect(onNextMock).not.toHaveBeenCalled()
-    })
+    expect(
+      screen.getByText('stegvisning.afpPrivat.validation_error')
+    ).toBeInTheDocument()
+    expect(onNextMock).not.toHaveBeenCalled()
 
     await user.click(radioButtons[0])
 
@@ -94,9 +90,7 @@ describe('stegvisning - AFP - født før 1963 og og fylt 67 år, eller født fø
 
     await user.click(screen.getByText('stegvisning.neste'))
 
-    waitFor(() => {
-      expect(onNextMock).toHaveBeenCalled()
-    })
+    expect(onNextMock).toHaveBeenCalled()
   })
 
   it('kaller onNext når brukeren klikker på Neste', async () => {
@@ -112,9 +106,7 @@ describe('stegvisning - AFP - født før 1963 og og fylt 67 år, eller født fø
     const radioButtons = screen.getAllByRole('radio')
     await user.click(radioButtons[0])
     await user.click(screen.getByText('stegvisning.neste'))
-    waitFor(() => {
-      expect(onNextMock).toHaveBeenCalled()
-    })
+    expect(onNextMock).toHaveBeenCalled()
   })
 
   it('kaller onPrevious når brukeren klikker på Tilbake', async () => {
@@ -146,9 +138,7 @@ describe('stegvisning - AFP - født før 1963 og og fylt 67 år, eller født fø
 
     expect(screen.getByText('stegvisning.avbryt')).toBeInTheDocument()
     await user.click(screen.getByText('stegvisning.avbryt'))
-    waitFor(() => {
-      expect(onCancelMock).toHaveBeenCalled()
-    })
+    expect(onCancelMock).toHaveBeenCalled()
   })
 
   it('viser ikke avbryt knapp når onCancel ikke er definert', async () => {

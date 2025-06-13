@@ -15,8 +15,6 @@ import { fireEvent, render, screen, userEvent, waitFor } from '@/test-utils'
 
 import { Beregning } from '../Beregning'
 
-const previousWindow = window
-
 const navigateMock = vi.fn()
 vi.mock(import('react-router'), async (importOriginal) => {
   const actual = await importOriginal()
@@ -53,8 +51,6 @@ describe('Beregning', () => {
           samtykke: false,
           currentSimulation: {
             ...userInputInitialState.currentSimulation,
-            formatertUttaksalderReadOnly:
-              '70 alder.aar string.og 4 alder.maaned',
             uttaksalder: { aar: 70, maaneder: 4 },
           },
         },
@@ -80,8 +76,6 @@ describe('Beregning', () => {
             samtykke: false,
             currentSimulation: {
               beregningsvalg: null,
-              formatertUttaksalderReadOnly:
-                '70 alder.aar string.og 4 alder.maaned',
               uttaksalder: { aar: 70, maaneder: 4 },
               aarligInntektFoerUttakBeloep: '300 000',
               gradertUttaksperiode: null,
@@ -109,8 +103,6 @@ describe('Beregning', () => {
             samtykke: false,
             currentSimulation: {
               beregningsvalg: null,
-              formatertUttaksalderReadOnly:
-                '70 alder.aar string.og 4 alder.maaned',
               uttaksalder: { aar: 70, maaneder: 4 },
               aarligInntektFoerUttakBeloep: '300 000',
               gradertUttaksperiode: null,
@@ -145,8 +137,6 @@ describe('Beregning', () => {
             samtykke: true,
             currentSimulation: {
               beregningsvalg: null,
-              formatertUttaksalderReadOnly:
-                '70 alder.aar string.og 4 alder.maaned',
               uttaksalder: { aar: 70, maaneder: 4 },
               aarligInntektFoerUttakBeloep: '300 000',
               gradertUttaksperiode: null,
@@ -267,8 +257,6 @@ describe('Beregning', () => {
             samtykke: false,
             currentSimulation: {
               ...userInputInitialState.currentSimulation,
-              formatertUttaksalderReadOnly:
-                '70 alder.aar string.og 4 alder.maaned',
               uttaksalder: { aar: 70, maaneder: 4 },
             },
           },
@@ -293,17 +281,17 @@ describe('Beregning', () => {
 
   describe('Gitt at brukeren navigerer tilbake', () => {
     beforeEach(() => {
-      global.window = Object.create(window)
+      // Use the global window mock but update the href for this specific test context
       Object.defineProperty(window, 'location', {
         value: {
           href: paths.beregningAvansert,
+          origin: 'http://localhost',
+          pathname: paths.beregningAvansert,
+          search: '',
+          hash: '',
         },
         writable: true,
       })
-    })
-
-    afterEach(() => {
-      global.window = previousWindow
     })
 
     function NavigateWrapper({ children }: { children: React.ReactNode }) {
@@ -327,10 +315,13 @@ describe('Beregning', () => {
     }
 
     it('når brukeren har gjort en Enkel simulering og trykker på tilbakeknappen, vises ikke Avbryt-Modalen', async () => {
-      global.window = Object.create(window)
       Object.defineProperty(window, 'location', {
         value: {
           href: paths.beregningEnkel,
+          origin: 'http://localhost',
+          pathname: paths.beregningEnkel,
+          search: '',
+          hash: '',
         },
         writable: true,
       })
@@ -350,8 +341,6 @@ describe('Beregning', () => {
               samtykke: true,
               currentSimulation: {
                 beregningsvalg: null,
-                formatertUttaksalderReadOnly:
-                  '70 alder.aar string.og 4 alder.maaned',
                 uttaksalder: { aar: 70, maaneder: 4 },
                 aarligInntektFoerUttakBeloep: '300 000',
                 gradertUttaksperiode: null,
@@ -467,8 +456,6 @@ describe('Beregning', () => {
               samtykke: false,
               currentSimulation: {
                 ...userInputInitialState.currentSimulation,
-                formatertUttaksalderReadOnly:
-                  '70 alder.aar string.og 4 alder.maaned',
                 uttaksalder: { aar: 70, maaneder: 4 },
               },
             },

@@ -6,7 +6,6 @@ import {
   fulfilledGetPerson,
   fulfilledGetPersonMedOekteAldersgrenser,
 } from '@/mocks/mockedRTKQueryApiCalls'
-import { mockResponse } from '@/mocks/server'
 import * as userInputReducerUtils from '@/state/userInput/userInputSlice'
 import { userInputInitialState } from '@/state/userInput/userInputSlice'
 import { render, screen, waitFor } from '@/test-utils'
@@ -145,6 +144,55 @@ describe('TidligstMuligUttaksalder', () => {
         expect(
           screen.getByText('tidligstmuliguttak.1963.ingress_2')
         ).toBeInTheDocument()
+        expect(
+          screen.queryByText('tidligstmuliguttak.1964.ingress_2')
+        ).not.toBeInTheDocument()
+      })
+      expect(
+        screen.queryByText(
+          'tidligstmuliguttak.info_omstillingsstoenad_og_gjenlevende'
+        )
+      ).not.toBeInTheDocument()
+    })
+
+    it('når brukeren er over 75 år, vises riktig ingress.', async () => {
+      render(
+        <TidligstMuligUttaksalder
+          tidligstMuligUttak={{ aar: 62, maaneder: 9 }}
+          ufoeregrad={0}
+          show1963Text={true}
+          isOver75AndNoLoependeVedtak={true}
+        />,
+        {
+          preloadedState: {
+            api: {
+              //@ts-ignore
+              queries: {
+                ...fulfilledGetPerson,
+              },
+            },
+            userInput: {
+              ...userInputInitialState,
+            },
+          },
+        }
+      )
+      await waitFor(() => {
+        expect(screen.getByTestId('om_TMU')).toBeInTheDocument()
+        expect(
+          screen.getByText('Beregningen din viser at du kan ta ut', {
+            exact: false,
+          })
+        ).toBeInTheDocument()
+        expect(
+          screen.getByText('62 alder.aar string.og 9 alder.maaneder', {
+            exact: false,
+          })
+        ).toBeInTheDocument()
+
+        expect(
+          screen.queryByText('tidligstmuliguttak.1963.ingress_2')
+        ).not.toBeInTheDocument()
         expect(
           screen.queryByText('tidligstmuliguttak.1964.ingress_2')
         ).not.toBeInTheDocument()
@@ -306,12 +354,7 @@ describe('TidligstMuligUttaksalder', () => {
       })
     })
 
-    it('viser riktig ingress med gradert ufoeretrygd når AFP er valgt og featureToggle er på.', async () => {
-      mockResponse('/feature/pensjonskalkulator.gradert-ufoere-afp', {
-        status: 200,
-        json: { enabled: true },
-      })
-
+    it('viser riktig ingress med gradert ufoeretrygd når AFP er valgt.', async () => {
       render(
         <TidligstMuligUttaksalder
           tidligstMuligUttak={undefined}

@@ -10,7 +10,7 @@ import { render, screen } from '@/test-utils'
 import { InfoOmFremtidigVedtak } from '..'
 
 describe('InfoOmFremtidigVedtak', () => {
-  it('Ved gjeldende vedtak uten fremtidig vedtak, returnerer null', () => {
+  it('Ved gjeldende vedtak uten fremtidig vedtak, returnerer null', async () => {
     const { asFragment } = render(
       <InfoOmFremtidigVedtak
         loependeVedtak={
@@ -23,7 +23,7 @@ describe('InfoOmFremtidigVedtak', () => {
     expect(asFragment()).toMatchInlineSnapshot(`<DocumentFragment />`)
   })
 
-  it('Ved både gjeldende og fremtidig vedtak, returnerer null', () => {
+  it('Ved både gjeldende og fremtidig vedtak, returnerer null', async () => {
     const { asFragment } = render(
       <InfoOmFremtidigVedtak
         loependeVedtak={

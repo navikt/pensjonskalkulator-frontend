@@ -2,8 +2,10 @@ import { add, endOfDay, format } from 'date-fns'
 import HighchartsReact from 'highcharts-react-official'
 import React from 'react'
 import { IntlProvider } from 'react-intl'
+import { Provider } from 'react-redux'
 import { describe, expect, it } from 'vitest'
 
+import { setupStore } from '@/state/store'
 import { renderHook } from '@/test-utils'
 import { DATE_BACKEND_FORMAT } from '@/utils/dates'
 
@@ -19,10 +21,13 @@ import globalClassNames from './Simulering.module.scss'
 
 describe('Simulering-hooks', () => {
   const wrapper = ({ children }: { children: React.ReactNode }) => {
+    const store = setupStore(undefined, true)
     return (
-      <IntlProvider locale="nb" messages={translations_nb}>
-        {children}
-      </IntlProvider>
+      <Provider store={store}>
+        <IntlProvider locale="nb" messages={translations_nb}>
+          {children}
+        </IntlProvider>
+      </Provider>
     )
   }
 
@@ -326,12 +331,12 @@ describe('Simulering-hooks', () => {
             {
               "color": "var(--a-deepblue-500)",
               "data": [
+                0,
+                0,
+                0,
+                0,
                 234518,
                 234722,
-                234756,
-                234756,
-                234756,
-                234756,
                 234756,
                 234756,
                 234756,
@@ -940,12 +945,12 @@ describe('Simulering-hooks', () => {
             {
               "color": "var(--a-deepblue-500)",
               "data": [
+                0,
+                0,
+                0,
+                0,
                 234518,
                 234722,
-                234756,
-                234756,
-                234756,
-                234756,
                 234756,
                 234756,
                 234756,
@@ -1260,12 +1265,12 @@ describe('Simulering-hooks', () => {
             {
               "color": "var(--a-deepblue-500)",
               "data": [
+                0,
+                0,
+                0,
+                0,
                 234518,
                 234722,
-                234756,
-                234756,
-                234756,
-                234756,
                 234756,
                 234756,
                 234756,
@@ -1581,12 +1586,12 @@ describe('Simulering-hooks', () => {
             {
               "color": "var(--a-deepblue-500)",
               "data": [
+                0,
+                0,
+                0,
+                0,
                 234518,
                 234722,
-                234756,
-                234756,
-                234756,
-                234756,
                 234756,
                 234756,
                 234756,

@@ -30,7 +30,7 @@ describe('Simuleringsdetaljer', () => {
     expect(screen.getByText('Ingen opptjeningsgrunnlag')).toBeVisible()
   })
 
-  it('viser opptjeningsgrunnlag', () => {
+  it('viser opptjeningsgrunnlag', async () => {
     const opptjeningsgrunnlag = [
       { aar: 2020, pensjonsgivendeInntektBeloep: 500000 },
       { aar: 2021, pensjonsgivendeInntektBeloep: 550000 },
@@ -130,6 +130,7 @@ describe('Simuleringsdetaljer', () => {
               <dd>
                 Ingen alderspensjon
               </dd>
+              Ingen gammel AFP data
             </dl>
           </div>
         </div>
@@ -142,7 +143,7 @@ describe('Simuleringsdetaljer', () => {
     expect(screen.getByText('Ingen alderspensjon')).toBeVisible()
   })
 
-  it('viser alderspensjon', () => {
+  it('viser alderspensjon', async () => {
     const alderspensjonListe = [
       {
         alder: 67,
@@ -333,6 +334,7 @@ describe('Simuleringsdetaljer', () => {
                   </li>
                 </ul>
               </dd>
+              Ingen gammel AFP data
             </dl>
           </div>
         </div>
@@ -340,7 +342,7 @@ describe('Simuleringsdetaljer', () => {
     `)
   })
 
-  it('Når inntektspensjonBeloep, garantipensjonBeloepviser, pensjonBeholdningFoerUttakBeloep, grunnpensjon, tilleggspensjon, pensjonstillegg og skjermingstillegg er undefined, viser alderspensjon.', () => {
+  it('Når inntektspensjonBeloep, garantipensjonBeloepviser, pensjonBeholdningFoerUttakBeloep, grunnpensjon, tilleggspensjon, pensjonstillegg og skjermingstillegg er undefined, viser alderspensjon.', async () => {
     const alderspensjonListe = [
       {
         alder: 67,
@@ -531,6 +533,7 @@ describe('Simuleringsdetaljer', () => {
                   </li>
                 </ul>
               </dd>
+              Ingen gammel AFP data
             </dl>
           </div>
         </div>

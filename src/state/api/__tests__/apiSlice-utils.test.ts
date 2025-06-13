@@ -141,6 +141,7 @@ describe('apiSlice - utils', () => {
         getSimuleringstypeFromRadioEllerVedtak(
           loependeVedtak_75_ufoeregrad,
           'ja_offentlig',
+          null,
           'uten_afp'
         )
       ).toEqual('ALDERSPENSJON')
@@ -148,6 +149,7 @@ describe('apiSlice - utils', () => {
         getSimuleringstypeFromRadioEllerVedtak(
           loependeVedtak_75_ufoeregrad,
           'ja_privat',
+          null,
           'med_afp'
         )
       ).toEqual('ALDERSPENSJON_MED_AFP_PRIVAT')
@@ -155,12 +157,14 @@ describe('apiSlice - utils', () => {
         getSimuleringstypeFromRadioEllerVedtak(
           loependeVedtak_75_ufoeregrad,
           'ja_offentlig',
+          null,
           'med_afp'
         )
       ).toEqual('ALDERSPENSJON_MED_AFP_OFFENTLIG_LIVSVARIG')
       expect(
         getSimuleringstypeFromRadioEllerVedtak(
           loependeVedtak_75_ufoeregrad,
+          null,
           null,
           'med_afp'
         )
@@ -211,6 +215,7 @@ describe('apiSlice - utils', () => {
   describe('generateTidligstMuligHeltUttakRequestBody', () => {
     const requestBody = {
       loependeVedtak: {
+        harLoependeVedtak: false,
         ufoeretrygd: { grad: 0 },
       } satisfies LoependeVedtak,
       afp: null,
@@ -245,6 +250,7 @@ describe('apiSlice - utils', () => {
         generateTidligstMuligHeltUttakRequestBody({
           ...requestBody,
           loependeVedtak: {
+            harLoependeVedtak: true,
             ufoeretrygd: { grad: 50 },
           },
           afp: 'ja_privat',
@@ -255,6 +261,7 @@ describe('apiSlice - utils', () => {
         generateTidligstMuligHeltUttakRequestBody({
           ...requestBody,
           loependeVedtak: {
+            harLoependeVedtak: true,
             alderspensjon: {
               grad: 50,
               fom: '2012-12-12',
@@ -269,6 +276,7 @@ describe('apiSlice - utils', () => {
         generateTidligstMuligHeltUttakRequestBody({
           ...requestBody,
           loependeVedtak: {
+            harLoependeVedtak: true,
             alderspensjon: {
               grad: 50,
               fom: '2012-12-12',
@@ -391,6 +399,7 @@ describe('apiSlice - utils', () => {
   describe('generateAlderspensjonEnkelRequestBody', () => {
     const requestBody = {
       loependeVedtak: {
+        harLoependeVedtak: false,
         ufoeretrygd: { grad: 0 },
       } satisfies LoependeVedtak,
       afp: 'ja_privat' as const,
@@ -457,6 +466,7 @@ describe('apiSlice - utils', () => {
         generateAlderspensjonEnkelRequestBody({
           ...requestBody,
           loependeVedtak: {
+            harLoependeVedtak: true,
             ufoeretrygd: { grad: 50 },
           },
         })?.simuleringstype
@@ -465,6 +475,7 @@ describe('apiSlice - utils', () => {
         generateAlderspensjonEnkelRequestBody({
           ...requestBody,
           loependeVedtak: {
+            harLoependeVedtak: true,
             alderspensjon: {
               grad: 50,
               fom: '2012-12-12',
@@ -478,6 +489,7 @@ describe('apiSlice - utils', () => {
         generateAlderspensjonEnkelRequestBody({
           ...requestBody,
           loependeVedtak: {
+            harLoependeVedtak: true,
             alderspensjon: {
               grad: 50,
               fom: '2012-12-12',
@@ -492,6 +504,7 @@ describe('apiSlice - utils', () => {
         generateAlderspensjonEnkelRequestBody({
           ...requestBody,
           loependeVedtak: {
+            harLoependeVedtak: true,
             alderspensjon: {
               grad: 50,
               fom: '2012-12-12',
@@ -577,6 +590,7 @@ describe('apiSlice - utils', () => {
   describe('generateAlderspensjonRequestBody', () => {
     const args = {
       loependeVedtak: {
+        harLoependeVedtak: false,
         ufoeretrygd: { grad: 0 },
       },
       afp: 'ja_privat' as const,
@@ -651,6 +665,7 @@ describe('apiSlice - utils', () => {
           ...args,
           afp: null,
           loependeVedtak: {
+            harLoependeVedtak: true,
             ufoeretrygd: { grad: 60 },
           },
         })?.simuleringstype
@@ -659,6 +674,7 @@ describe('apiSlice - utils', () => {
         generateAlderspensjonRequestBody({
           ...args,
           loependeVedtak: {
+            harLoependeVedtak: true,
             alderspensjon: { grad: 60, fom: '2010-10-10', sivilstand: 'UGIFT' },
             ufoeretrygd: { grad: 0 },
           },
@@ -669,6 +685,7 @@ describe('apiSlice - utils', () => {
           ...args,
           afp: null,
           loependeVedtak: {
+            harLoependeVedtak: true,
             alderspensjon: { grad: 60, fom: '2010-10-10', sivilstand: 'UGIFT' },
             ufoeretrygd: { grad: 0 },
           },
@@ -678,6 +695,7 @@ describe('apiSlice - utils', () => {
         generateAlderspensjonRequestBody({
           ...args,
           loependeVedtak: {
+            harLoependeVedtak: true,
             ufoeretrygd: { grad: 50 },
           },
           beregningsvalg: 'uten_afp',
@@ -687,6 +705,7 @@ describe('apiSlice - utils', () => {
         generateAlderspensjonRequestBody({
           ...args,
           loependeVedtak: {
+            harLoependeVedtak: true,
             ufoeretrygd: { grad: 50 },
           },
           beregningsvalg: 'med_afp',

@@ -4,9 +4,7 @@ import { describe, it, vi } from 'vitest'
 import {
   fulfilledGetLoependeVedtak0Ufoeregrad,
   fulfilledGetLoependeVedtakLoependeAlderspensjon,
-  fulfilledGetPerson,
   fulfilledGetPersonYngreEnnAfpUfoereOppsigelsesalder,
-  rejectedGetInntekt,
 } from '@/mocks/mockedRTKQueryApiCalls'
 import { mockResponse } from '@/mocks/server'
 import { BASE_PATH, paths } from '@/router/constants'
@@ -16,8 +14,6 @@ import { store } from '@/state/store'
 import { userInputInitialState } from '@/state/userInput/userInputSlice'
 import * as userInputReducerUtils from '@/state/userInput/userInputSlice'
 import { render, screen, userEvent, waitFor } from '@/test-utils'
-
-const initialGetState = store.getState
 
 const navigateMock = vi.fn()
 vi.mock(import('react-router'), async (importOriginal) => {
@@ -48,17 +44,12 @@ describe('StepAFP', () => {
     vi.clearAllMocks()
     vi.resetAllMocks()
     vi.resetModules()
-    store.getState = initialGetState
   })
 
   it('har riktig sidetittel', async () => {
     store.getState = vi.fn().mockImplementation(() => ({
       api: {
-        queries: {
-          ...rejectedGetInntekt,
-          ...fulfilledGetPerson,
-          ...fulfilledGetLoependeVedtak0Ufoeregrad,
-        },
+        queries: { mock: 'mock' },
       },
       userInput: {
         ...userInputReducerUtils.userInputInitialState,
@@ -204,7 +195,7 @@ describe('StepAFP', () => {
     })
   })
 
-  it('Når brukeren som er i overgangskullet uten vedtak om alderspensjon velger afp og klikker på Neste, registrerer afp og skalBeregneAfp, og navigerer videre til neste steg', async () => {
+  it('Når brukeren som er i overgangskullet uten vedtak om alderspensjon velger afp og klikker på Neste, registrerer afp og skalBeregneAfpKap19, og navigerer videre til neste steg', async () => {
     mockResponse('/v4/person', {
       status: 200,
       json: {
@@ -228,9 +219,9 @@ describe('StepAFP', () => {
       userInputReducerUtils.userInputActions,
       'setAfp'
     )
-    const setSkalBeregneAfpMock = vi.spyOn(
+    const setSkalBeregneAfpKap19Mock = vi.spyOn(
       userInputReducerUtils.userInputActions,
-      'setSkalBeregneAfp'
+      'setAfpUtregningValg'
     )
     const user = userEvent.setup()
 
@@ -252,12 +243,14 @@ describe('StepAFP', () => {
 
     const radioButtonsAfp = await screen.findAllByRole('radio')
     await user.click(radioButtonsAfp[0])
-    const radioButtonsSkalBeregneAfp = await screen.findAllByRole('radio')
-    await user.click(radioButtonsSkalBeregneAfp[4])
+    const radioButtonsSkalBeregneAfpKap19 = await screen.findAllByRole('radio')
+    await user.click(radioButtonsSkalBeregneAfpKap19[4])
     await user.click(screen.getByText('stegvisning.neste'))
 
     expect(setAfpMock).toHaveBeenCalledWith('ja_offentlig')
-    expect(setSkalBeregneAfpMock).toHaveBeenCalledWith(true)
+    expect(setSkalBeregneAfpKap19Mock).toHaveBeenCalledWith(
+      'AFP_ETTERFULGT_AV_ALDERSPENSJON'
+    )
     expect(navigateMock).toHaveBeenCalledWith(paths.ufoeretrygdAFP)
   })
 
@@ -315,7 +308,11 @@ describe('StepAFP', () => {
     await waitFor(async () => {
       await user.click(await screen.findByText('stegvisning.tilbake'))
     })
-    expect(navigateMock).toHaveBeenCalledWith(paths.utenlandsopphold)
+    expect(navigateMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        search: expect.stringContaining('back=true') as string,
+      })
+    )
   })
 
   describe('Gitt at brukeren er logget på som veileder', async () => {

@@ -53,6 +53,7 @@ describe('AvansertSkjema-utils', () => {
         {
           foedselsdato: '1963-04-30',
           loependeVedtak: {
+            harLoependeVedtak: false,
             ufoeretrygd: { grad: 0 },
           },
           localInntektFremTilUttak: null,
@@ -62,7 +63,8 @@ describe('AvansertSkjema-utils', () => {
             aar: 67,
             maaneder: 0,
           },
-        }
+        },
+        false
       )
       expect(dispatchMock).not.toHaveBeenCalled()
       expect(gaaTilResultatMock).not.toHaveBeenCalled()
@@ -84,6 +86,7 @@ describe('AvansertSkjema-utils', () => {
           {
             foedselsdato: '1963-04-30',
             loependeVedtak: {
+              harLoependeVedtak: false,
               ufoeretrygd: { grad: 0 },
             },
             localInntektFremTilUttak: null,
@@ -149,6 +152,7 @@ describe('AvansertSkjema-utils', () => {
           {
             foedselsdato: '1963-04-30',
             loependeVedtak: {
+              harLoependeVedtak: false,
               ufoeretrygd: { grad: 0 },
             },
             localInntektFremTilUttak: '500 000',
@@ -158,7 +162,8 @@ describe('AvansertSkjema-utils', () => {
               aar: 67,
               maaneder: 0,
             },
-          }
+          },
+          false
         )
 
         expect(dispatchMock).toHaveBeenCalledTimes(5)
@@ -241,6 +246,7 @@ describe('AvansertSkjema-utils', () => {
           {
             foedselsdato: '1963-04-30',
             loependeVedtak: {
+              harLoependeVedtak: false,
               ufoeretrygd: { grad: 0 },
             },
             localInntektFremTilUttak: '500 000',
@@ -299,6 +305,7 @@ describe('AvansertSkjema-utils', () => {
           {
             foedselsdato: '1963-04-30',
             loependeVedtak: {
+              harLoependeVedtak: false,
               ufoeretrygd: { grad: 0 },
             },
             localInntektFremTilUttak: '500 000',
@@ -331,6 +338,7 @@ describe('AvansertSkjema-utils', () => {
           {
             foedselsdato: '1963-04-30',
             loependeVedtak: {
+              harLoependeVedtak: false,
               ufoeretrygd: { grad: 0 },
             },
             localInntektFremTilUttak: '500 000',
@@ -364,16 +372,22 @@ describe('AvansertSkjema-utils', () => {
       inntektVsaHeltUttakSluttAlderAarFormData: '75',
       inntektVsaHeltUttakSluttAlderMaanederFormData: '0',
       inntektVsaGradertUttakFormData: '99000',
+      afpInntektMaanedFoerUttakRadioFormData: null,
+      inntektVsaAfpRadioFormData: null,
+      inntektVsaAfpFormData: null,
     }
 
     const mockedFoedselsdato = '1963-04-30'
     const mockedLoependeVedtak = {
+      harLoependeVedtak: false,
       ufoeretrygd: { grad: 0 },
     }
     const mockedLoependeVedtak100 = {
+      harLoependeVedtak: true,
       ufoeretrygd: { grad: 100 },
     }
     const mockedLoependeVedtak60 = {
+      harLoependeVedtak: true,
       ufoeretrygd: { grad: 60 },
     }
     const mockedNormertPensjonsalder = { aar: 67, maaneder: 0 }
@@ -482,6 +496,7 @@ describe('AvansertSkjema-utils', () => {
 
     it('returnerer false når uttaksgrad er endret til en grad mellom 20-80 før 12 md fra datoen til vedtaket', () => {
       const mockedLoependeVedtakEndring: LoependeVedtak = {
+        harLoependeVedtak: true,
         alderspensjon: {
           fom: '2025-10-01',
           grad: 100,
@@ -555,6 +570,7 @@ describe('AvansertSkjema-utils', () => {
           mockedFoedselsdato,
           mockedNormertPensjonsalder,
           {
+            harLoependeVedtak: true,
             alderspensjon: {
               fom: '2025-10-01',
               grad: 40,

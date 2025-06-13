@@ -11,12 +11,12 @@ import { render, screen } from '@/test-utils'
 import { InfoOmLoependeVedtak } from '..'
 
 describe('InfoOmLoependeVedtak', () => {
-  it('Når vedtaket ikke er oppgitt, returnerer null', () => {
+  it('Når vedtaket ikke er oppgitt, returnerer null', async () => {
     const { asFragment } = render(<InfoOmLoependeVedtak />)
     expect(asFragment()).toMatchInlineSnapshot(`<DocumentFragment />`)
   })
 
-  it('Når vedtaket ikke gjelder alderspensjon, returnerer null', () => {
+  it('Når vedtaket ikke gjelder alderspensjon, returnerer null', async () => {
     const { asFragment } = render(
       <InfoOmLoependeVedtak
         loependeVedtak={

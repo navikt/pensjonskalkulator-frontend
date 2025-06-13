@@ -18,7 +18,7 @@ describe('Endring av alderspensjon', () => {
           },
           { fixture: 'alderspensjon_endring.json' }
         ).as('fetchAlderspensjon')
-        cy.clock(new Date(2028, 7, 1, 12, 0, 0), ['Date'])
+        cy.clock(new Date(2029, 7, 1, 12, 0, 0), ['Date'])
         cy.login()
       })
 
@@ -40,6 +40,7 @@ describe('Endring av alderspensjon', () => {
               url: '/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak',
             },
             {
+              harLoependeVedtak: true,
               alderspensjon: {
                 grad: 80,
                 fom: '2010-10-10',
@@ -191,7 +192,7 @@ describe('Endring av alderspensjon', () => {
         it('forventer jeg å se resultatet for alderspensjon i graf og tabell uten AFP.', () => {
           cy.contains('Beregning').should('exist')
           cy.contains('Pensjonsgivende inntekt').should('exist')
-          cy.contains('AFP (avtalefestet pensjon)').should('not.exist')
+          cy.contains('AFP (avtalefestet pensjon)').should('not.be.visible')
           cy.contains('Pensjonsavtaler (arbeidsgivere m.m.)').should(
             'not.exist'
           )
@@ -239,7 +240,7 @@ describe('Endring av alderspensjon', () => {
           })
 
           it('forventer jeg å kunne velge pensjonsalder for endring mellom dagens alder + 1 md og 75 år + 0 md.', () => {
-            // datoen som er mocked er 01. August 2028. Brukeren som er født 1963-04-30 er 65 år gammel og 3 md.
+            // datoen som er mocked er 01. August 2029. Brukeren som er født 1964-04-30 er 65 år gammel og 3 md.
             cy.contains('Når vil du endre alderspensjonen din?').should('exist')
             cy.contains('Velg år').should('exist')
             cy.get(
@@ -325,12 +326,6 @@ describe('Endring av alderspensjon', () => {
             cy.contains('Beregn ny pensjon').click()
 
             cy.contains('Beregning').should('exist')
-            cy.contains('Valgene dine').click({ force: true })
-            cy.contains('65 år og 4 md. (01.09.2028)').should('exist')
-            cy.contains('Alderspensjon: 100 %').should('exist')
-            cy.contains(
-              'Pensjonsgivende årsinntekt t.o.m. 75 år og 3 md.: 100 000 kr før skatt'
-            ).should('exist')
           })
         })
 
@@ -411,19 +406,19 @@ describe('Endring av alderspensjon', () => {
             })
 
             it('forventer jeg informasjon om hva siste månedlige utbetaling var og hva månedlig alderspensjon vil bli de månedene jeg har valgt å endre fra.', () => {
-              cy.contains('Alderspensjon før skatt når du er')
+              cy.contains('Alderspensjon når du er')
               cy.contains('65 år og 4 md. (40 %): 12 342 kr/md.')
               cy.contains('67 år (100 %): 28 513 kr/md.')
             })
 
-            it('forventer jeg en knapp for å endre mine valg.', () => {
+            it('forventer jeg en lenke for å endre mine valg.', () => {
               cy.contains('Endre valgene dine')
             })
 
             it('forventer jeg å se resultatet for alderspensjon i graf og tabell uten AFP.', () => {
               cy.contains('Beregning').should('exist')
               cy.contains('Pensjonsgivende inntekt').should('exist')
-              cy.contains('AFP (avtalefestet pensjon)').should('not.exist')
+              cy.contains('AFP (avtalefestet pensjon)').should('not.be.visible')
               cy.contains('Pensjonsavtaler (arbeidsgivere m.m.)').should(
                 'not.exist'
               )
@@ -431,21 +426,6 @@ describe('Endring av alderspensjon', () => {
               cy.contains('Tusen kroner').should('exist')
               cy.contains('65').should('exist')
               cy.contains('77+').should('exist')
-            })
-
-            it('forventer jeg ett resultatkort hvor jeg ser mine valg og kan endre mine valg.', () => {
-              cy.contains('Beregning').should('exist')
-              cy.contains('Valgene dine').click({ force: true })
-              cy.contains('65 år og 4 md. (01.09.2028)').should('exist')
-              cy.contains('Alderspensjon: 40 %').should('exist')
-              cy.contains(
-                'Pensjonsgivende årsinntekt: 300 000 kr før skatt'
-              ).should('exist')
-              cy.contains('67 år (01.05.2030)').should('exist')
-              cy.contains('Alderspensjon: 100 %').should('exist')
-              cy.contains(
-                'Pensjonsgivende årsinntekt til 75 år: 100 000 kr før skatt'
-              ).should('exist')
             })
 
             it('forventer jeg informasjon om at pensjonsavtaler ikke er med i beregningen.', () => {
@@ -486,6 +466,7 @@ describe('Endring av alderspensjon', () => {
             url: '/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak',
           },
           {
+            harLoependeVedtak: true,
             alderspensjon: {
               grad: 80,
               fom: '2010-10-10',
@@ -502,7 +483,7 @@ describe('Endring av alderspensjon', () => {
           },
           { fixture: 'alderspensjon_endring.json' }
         ).as('fetchAlderspensjon')
-        cy.clock(new Date(2028, 7, 1, 12, 0, 0), ['Date'])
+        cy.clock(new Date(2029, 7, 1, 12, 0, 0), ['Date'])
         cy.login()
       })
 
@@ -524,6 +505,7 @@ describe('Endring av alderspensjon', () => {
               url: '/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak',
             },
             {
+              harLoependeVedtak: true,
               alderspensjon: {
                 grad: 80,
                 fom: '2010-10-10',
@@ -567,7 +549,7 @@ describe('Endring av alderspensjon', () => {
         })
 
         it('forventer jeg å kunne velge pensjonsalder for endring mellom dagens alder + 1 md og 75 år + 0 md.', () => {
-          // datoen som er mocked er 01. August 2028. Brukeren som er født 1963-04-30 er 65 år gammel og 3 md.
+          // datoen som er mocked er 01. August 2029. Brukeren som er født 1964-04-30 er 65 år gammel og 3 md.
           cy.contains('Når vil du endre alderspensjonen din?').should('exist')
           cy.contains('Velg år').should('exist')
           cy.get('[data-testid="age-picker-uttaksalder-helt-uttak-aar"]').then(
@@ -653,12 +635,6 @@ describe('Endring av alderspensjon', () => {
           cy.contains('Beregn ny pensjon').click()
 
           cy.contains('Beregning').should('exist')
-          cy.contains('Valgene dine').click({ force: true })
-          cy.contains('65 år og 4 md. (01.09.2028)').should('exist')
-          cy.contains('Alderspensjon: 100 %').should('exist')
-          cy.contains(
-            'Pensjonsgivende årsinntekt t.o.m. 75 år og 3 md.: 100 000 kr før skatt'
-          ).should('exist')
         })
       })
 
@@ -740,12 +716,12 @@ describe('Endring av alderspensjon', () => {
           })
 
           it('forventer jeg informasjon om hva siste månedlige utbetaling var og hva månedlig alderspensjon vil bli de månedene jeg har valgt å endre fra.', () => {
-            cy.contains('Alderspensjon før skatt når du er')
+            cy.contains('Alderspensjon når du er')
             cy.contains('65 år og 4 md. (40 %): 12 342 kr/md.')
             cy.contains('67 år (100 %): 28 513 kr/md.')
           })
 
-          it('forventer jeg en knapp for å endre mine valg.', () => {
+          it('forventer jeg en lenke for å endre mine valg.', () => {
             cy.contains('Endre valgene dine')
           })
 
@@ -760,21 +736,6 @@ describe('Endring av alderspensjon', () => {
             cy.contains('Tusen kroner').should('exist')
             cy.contains('65').should('exist')
             cy.contains('77+').should('exist')
-          })
-
-          it('forventer jeg ett resultatkort hvor jeg ser mine valg og kan endre mine valg.', () => {
-            cy.contains('Beregning').should('exist')
-            cy.contains('Valgene dine').click({ force: true })
-            cy.contains('65 år og 4 md. (01.09.2028)').should('exist')
-            cy.contains('Alderspensjon: 40 %').should('exist')
-            cy.contains(
-              'Pensjonsgivende årsinntekt: 300 000 kr før skatt'
-            ).should('exist')
-            cy.contains('67 år (01.05.2030)').should('exist')
-            cy.contains('Alderspensjon: 100 %').should('exist')
-            cy.contains(
-              'Pensjonsgivende årsinntekt til 75 år: 100 000 kr før skatt'
-            ).should('exist')
           })
 
           it('forventer jeg informasjon om at pensjonsavtaler ikke er med i beregningen.', () => {
@@ -793,7 +754,7 @@ describe('Endring av alderspensjon', () => {
               'Beregningen bruker trygdetiden du har i Norge fra vedtaket ditt om alderspensjon.'
             ).should('exist')
             cy.contains('AFP:').click({ force: true })
-            cy.contains('Privat (Uendret)').should('exist')
+            cy.contains('Privat (uendret)').should('exist')
           })
 
           it('forventer jeg lenke til søknad om endring av alderspensjon.', () => {
@@ -815,6 +776,7 @@ describe('Endring av alderspensjon', () => {
             url: '/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak',
           },
           {
+            harLoependeVedtak: true,
             alderspensjon: {
               grad: 80,
               fom: '2010-10-10',
@@ -831,7 +793,7 @@ describe('Endring av alderspensjon', () => {
           },
           { fixture: 'alderspensjon_endring.json' }
         ).as('fetchAlderspensjon')
-        cy.clock(new Date(2028, 7, 1, 12, 0, 0), ['Date'])
+        cy.clock(new Date(2029, 7, 1, 12, 0, 0), ['Date'])
         cy.login()
       })
 
@@ -851,6 +813,7 @@ describe('Endring av alderspensjon', () => {
               url: '/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak',
             },
             {
+              harLoependeVedtak: true,
               alderspensjon: {
                 grad: 80,
                 fom: '2010-10-10',
@@ -895,7 +858,7 @@ describe('Endring av alderspensjon', () => {
         })
 
         it('forventer jeg å kunne velge pensjonsalder for endring mellom dagens alder + 1 md og 75 år + 0 md.', () => {
-          // datoen som er mocked er 01. August 2028. Brukeren som er født 1963-04-30 er 65 år gammel og 3 md.
+          // datoen som er mocked er 01. August 2029. Brukeren som er født 1964-04-30 er 65 år gammel og 3 md.
           cy.contains('Når vil du endre alderspensjonen din?').should('exist')
           cy.contains('Velg år').should('exist')
           cy.get('[data-testid="age-picker-uttaksalder-helt-uttak-aar"]').then(
@@ -981,12 +944,6 @@ describe('Endring av alderspensjon', () => {
           cy.contains('Beregn ny pensjon').click()
 
           cy.contains('Beregning').should('exist')
-          cy.contains('Valgene dine').click({ force: true })
-          cy.contains('65 år og 4 md. (01.09.2028)').should('exist')
-          cy.contains('Alderspensjon: 100 %').should('exist')
-          cy.contains(
-            'Pensjonsgivende årsinntekt t.o.m. 75 år og 3 md.: 100 000 kr før skatt'
-          ).should('exist')
         })
       })
 
@@ -1066,12 +1023,12 @@ describe('Endring av alderspensjon', () => {
           })
 
           it('forventer jeg informasjon om hva siste månedlige utbetaling var og hva månedlig alderspensjon vil bli de månedene jeg har valgt å endre fra.', () => {
-            cy.contains('Alderspensjon før skatt når du er')
+            cy.contains('Alderspensjon når du er')
             cy.contains('65 år og 4 md. (40 %): 12 342 kr/md.')
             cy.contains('67 år (100 %): 28 513 kr/md.')
           })
 
-          it('forventer jeg en knapp for å endre mine valg.', () => {
+          it('forventer jeg en lenke for å endre mine valg.', () => {
             cy.contains('Endre valgene dine')
           })
 
@@ -1087,21 +1044,6 @@ describe('Endring av alderspensjon', () => {
             cy.contains('Tusen kroner').should('exist')
             cy.contains('65').should('exist')
             cy.contains('77+').should('exist')
-          })
-
-          it('forventer jeg ett resultatkort hvor jeg ser mine valg og kan endre mine valg.', () => {
-            cy.contains('Beregning').should('exist')
-            cy.contains('Valgene dine').click({ force: true })
-            cy.contains('65 år og 4 md. (01.09.2028)').should('exist')
-            cy.contains('Alderspensjon: 40 %').should('exist')
-            cy.contains(
-              'Pensjonsgivende årsinntekt: 300 000 kr før skatt'
-            ).should('exist')
-            cy.contains('67 år (01.05.2030)').should('exist')
-            cy.contains('Alderspensjon: 100 %').should('exist')
-            cy.contains(
-              'Pensjonsgivende årsinntekt til 75 år: 100 000 kr før skatt'
-            ).should('exist')
           })
 
           it('forventer jeg informasjon om at pensjonsavtaler ikke er med i beregningen.', () => {
@@ -1120,7 +1062,7 @@ describe('Endring av alderspensjon', () => {
               'Beregningen bruker trygdetiden du har i Norge fra vedtaket ditt om alderspensjon.'
             ).should('exist')
             cy.contains('AFP:').click({ force: true })
-            cy.contains('Offentlig (Uendret)').should('exist')
+            cy.contains('Offentlig (uendret)').should('exist')
           })
 
           it('forventer jeg lenke til søknad om endring av alderspensjon.', () => {
@@ -1141,6 +1083,7 @@ describe('Endring av alderspensjon', () => {
             url: '/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak',
           },
           {
+            harLoependeVedtak: true,
             alderspensjon: {
               grad: 50,
               fom: '2010-10-10',
@@ -1156,7 +1099,7 @@ describe('Endring av alderspensjon', () => {
           },
           { fixture: 'alderspensjon_endring.json' }
         ).as('fetchAlderspensjon')
-        cy.clock(new Date(2028, 7, 1, 12, 0, 0), ['Date'])
+        cy.clock(new Date(2029, 7, 1, 12, 0, 0), ['Date'])
         cy.login()
       })
 
@@ -1178,6 +1121,7 @@ describe('Endring av alderspensjon', () => {
               url: '/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak',
             },
             {
+              harLoependeVedtak: true,
               alderspensjon: {
                 grad: 50,
                 fom: '2010-10-10',
@@ -1220,7 +1164,7 @@ describe('Endring av alderspensjon', () => {
         })
 
         it('forventer jeg å kunne velge pensjonsalder for endring mellom dagens alder + 1 md og 75 år + 0 md.', () => {
-          // datoen som er mocked er 01. August 2028. Brukeren som er født 1963-04-30 er 65 år gammel og 3 md.
+          // datoen som er mocked er 01. August 2029. Brukeren som er født 1964-04-30 er 65 år gammel og 3 md.
           cy.contains('Når vil du endre alderspensjonen din?').should('exist')
           cy.contains('Velg år').should('exist')
           cy.get('[data-testid="age-picker-uttaksalder-helt-uttak-aar"]').then(
@@ -1365,12 +1309,12 @@ describe('Endring av alderspensjon', () => {
           })
 
           it('forventer jeg informasjon om hva siste månedlige utbetaling var og hva månedlig alderspensjon vil bli de månedene jeg har valgt å endre fra.', () => {
-            cy.contains('Alderspensjon før skatt når du er')
+            cy.contains('Alderspensjon når du er')
             cy.contains('65 år og 4 md. (40 %): 12 342 kr/md.')
             cy.contains('67 år (100 %): 28 513 kr/md.')
           })
 
-          it('forventer jeg en knapp for å endre mine valg.', () => {
+          it('forventer jeg en lenke for å endre mine valg.', () => {
             cy.contains('Endre valgene dine')
           })
 
@@ -1387,28 +1331,13 @@ describe('Endring av alderspensjon', () => {
             cy.contains('77+').should('exist')
           })
 
-          it('forventer jeg ett resultatkort hvor jeg ser mine valg og kan endre mine valg.', () => {
-            cy.contains('Beregning').should('exist')
-            cy.contains('Valgene dine').click({ force: true })
-            cy.contains('65 år og 4 md. (01.09.2028)').should('exist')
-            cy.contains('Alderspensjon: 40 %').should('exist')
-            cy.contains(
-              'Pensjonsgivende årsinntekt: 300 000 kr før skatt'
-            ).should('exist')
-            cy.contains('67 år (01.05.2030)').should('exist')
-            cy.contains('Alderspensjon: 100 %').should('exist')
-            cy.contains(
-              'Pensjonsgivende årsinntekt til 75 år: 100 000 kr før skatt'
-            ).should('exist')
-          })
-
           it('forventer jeg informasjon om at pensjonsavtaler ikke er med i beregningen.', () => {
             cy.contains(
               'Pensjonsavtaler fra arbeidsgivere og egen sparing er ikke med i beregningen.'
             ).should('exist')
           })
 
-          it('forventer jeg tilpasset informasjon i grunnlag: at opphold utenfor Norge er hentet fra vedtak og at info om AFP er skjult.', () => {
+          it('forventer jeg tilpasset informasjon i grunnlag: at opphold utenfor Norge er hentet fra vedtak', () => {
             cy.contains('Beregning').should('exist')
             cy.contains('Øvrig grunnlag for beregningen').should('exist')
             cy.contains('Sivilstand:').click({ force: true })
@@ -1417,7 +1346,7 @@ describe('Endring av alderspensjon', () => {
             cy.contains(
               'Beregningen bruker trygdetiden du har i Norge fra vedtaket ditt om alderspensjon.'
             ).should('exist')
-            cy.contains('AFP:').should('not.exist')
+            cy.contains('AFP: Nei').should('exist')
           })
 
           it('forventer jeg lenke til søknad om endring av alderspensjon.', () => {
@@ -1438,6 +1367,7 @@ describe('Endring av alderspensjon', () => {
             url: '/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak',
           },
           {
+            harLoependeVedtak: true,
             alderspensjon: {
               grad: 0,
               fom: '2010-10-10',
@@ -1453,7 +1383,7 @@ describe('Endring av alderspensjon', () => {
           },
           { fixture: 'alderspensjon_endring.json' }
         ).as('fetchAlderspensjon')
-        cy.clock(new Date(2028, 7, 1, 12, 0, 0), ['Date'])
+        cy.clock(new Date(2029, 7, 1, 12, 0, 0), ['Date'])
         cy.login()
       })
 
@@ -1475,6 +1405,7 @@ describe('Endring av alderspensjon', () => {
               url: '/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak',
             },
             {
+              harLoependeVedtak: true,
               alderspensjon: {
                 grad: 0,
                 fom: '2010-10-10',
@@ -1517,7 +1448,7 @@ describe('Endring av alderspensjon', () => {
         })
 
         it('forventer jeg å kunne velge pensjonsalder for endring mellom ubetinget uttaksalder og 75 år + 0 md.', () => {
-          // datoen som er mocked er 01. August 2028. Allikevel skal brukeren ikke kunne begynne uttak før at er over ibetinget uttaksalder
+          // datoen som er mocked er 01. August 2029. Allikevel skal brukeren ikke kunne begynne uttak før at er over ibetinget uttaksalder
           cy.contains('Når vil du endre alderspensjonen din?').should('exist')
           cy.contains('Velg år').should('exist')
           cy.get('[data-testid="age-picker-uttaksalder-helt-uttak-aar"]').then(
@@ -1603,12 +1534,6 @@ describe('Endring av alderspensjon', () => {
           cy.contains('Beregn ny pensjon').click()
 
           cy.contains('Beregning').should('exist')
-          cy.contains('Valgene dine').click({ force: true })
-          cy.contains('67 år og 4 md. (01.09.2030)').should('exist')
-          cy.contains('Alderspensjon: 100 %').should('exist')
-          cy.contains(
-            'Pensjonsgivende årsinntekt t.o.m. 75 år og 3 md.: 100 000 kr før skatt'
-          ).should('exist')
         })
       })
 
@@ -1690,12 +1615,12 @@ describe('Endring av alderspensjon', () => {
           })
 
           it('forventer jeg informasjon om hva siste månedlige utbetaling var og hva månedlig alderspensjon vil bli de månedene jeg har valgt å endre fra.', () => {
-            cy.contains('Alderspensjon før skatt når du er')
+            cy.contains('Alderspensjon når du er')
             cy.contains('67 år og 4 md. (40 %): 12 342 kr/md.')
             cy.contains('70 år (100 %): 28 513 kr/md.')
           })
 
-          it('forventer jeg en knapp for å endre mine valg.', () => {
+          it('forventer jeg en lenke for å endre mine valg.', () => {
             cy.contains('Endre valgene dine')
           })
 
@@ -1712,28 +1637,13 @@ describe('Endring av alderspensjon', () => {
             cy.contains('77+').should('exist')
           })
 
-          it('forventer jeg ett resultatkort hvor jeg ser mine valg og kan endre mine valg.', () => {
-            cy.contains('Beregning').should('exist')
-            cy.contains('Valgene dine').click({ force: true })
-            cy.contains('67 år og 4 md. (01.09.2030)').should('exist')
-            cy.contains('Alderspensjon: 40 %').should('exist')
-            cy.contains(
-              'Pensjonsgivende årsinntekt: 300 000 kr før skatt'
-            ).should('exist')
-            cy.contains('70 år (01.05.2033)').should('exist')
-            cy.contains('Alderspensjon: 100 %').should('exist')
-            cy.contains(
-              'Pensjonsgivende årsinntekt til 75 år: 100 000 kr før skatt'
-            ).should('exist')
-          })
-
           it('forventer jeg informasjon om at pensjonsavtaler ikke er med i beregningen.', () => {
             cy.contains(
               'Pensjonsavtaler fra arbeidsgivere og egen sparing er ikke med i beregningen.'
             ).should('exist')
           })
 
-          it('forventer jeg tilpasset informasjon i grunnlag: at opphold utenfor Norge er hentet fra vedtak og at AFP Privat er uendret ', () => {
+          it('forventer jeg tilpasset informasjon i grunnlag: at opphold utenfor Norge er hentet fra vedtak og at AFP: Nei vises', () => {
             cy.contains('Beregning').should('exist')
             cy.contains('Øvrig grunnlag for beregningen').should('exist')
             cy.contains('Sivilstand:').click({ force: true })
@@ -1742,7 +1652,7 @@ describe('Endring av alderspensjon', () => {
             cy.contains(
               'Beregningen bruker trygdetiden du har i Norge fra vedtaket ditt om alderspensjon.'
             ).should('exist')
-            cy.contains('AFP:').should('not.exist')
+            cy.contains('AFP: Nei').should('exist')
           })
 
           it('forventer jeg lenke til søknad om endring av alderspensjon.', () => {

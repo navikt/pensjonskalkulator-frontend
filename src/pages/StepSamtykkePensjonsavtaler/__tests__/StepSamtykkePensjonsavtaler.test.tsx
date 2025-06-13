@@ -10,7 +10,7 @@ import {
 import { paths } from '@/router/constants'
 import * as apiSliceUtils from '@/state/api/apiSlice'
 import { userInputInitialState } from '@/state/userInput/userInputSlice'
-import { render, screen, userEvent, waitFor } from '@/test-utils'
+import { render, screen, userEvent } from '@/test-utils'
 
 import { StepSamtykkePensjonsavtaler } from '..'
 
@@ -97,19 +97,18 @@ describe('StepSamtykkePensjonsavtaler', () => {
   it('navigerer tilbake når brukeren klikker på Tilbake', async () => {
     const user = userEvent.setup()
 
-    const { store } = render(<StepSamtykkePensjonsavtaler />, {
+    render(<StepSamtykkePensjonsavtaler />, {
       preloadedState: {
         userInput: { ...userInputInitialState, afp: 'nei' },
       },
-      hasRouter: false,
     })
-    await store.dispatch(
-      apiSliceUtils.apiSlice.endpoints.getLoependeVedtak.initiate()
+
+    await user.click(screen.getByText('stegvisning.tilbake'))
+    expect(navigateMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        search: expect.stringContaining('back=true') as string,
+      })
     )
-    await waitFor(async () => {
-      await user.click(screen.getByText('stegvisning.tilbake'))
-      expect(navigateMock).toHaveBeenCalledWith(paths.afp)
-    })
   })
 
   describe('Gitt at brukeren er logget på som veileder', async () => {

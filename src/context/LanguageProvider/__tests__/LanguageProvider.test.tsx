@@ -1,7 +1,9 @@
+import { RawQuerylessQueryResponse } from '@sanity/client'
 import { render, screen, waitFor } from '@testing-library/react'
 import React from 'react'
 import { useIntl } from 'react-intl'
 import { Provider } from 'react-redux'
+import { vi } from 'vitest'
 
 import { SanityContext } from '@/context/SanityContext'
 import { mockErrorResponse } from '@/mocks/server'
@@ -32,12 +34,25 @@ function TestComponent() {
 }
 
 describe('LanguageProvider', () => {
+  let defaultFetchSpy: ReturnType<typeof vi.spyOn>
+
+  beforeAll(() => {
+    defaultFetchSpy = vi
+      .spyOn(sanityClient, 'fetch')
+      .mockResolvedValue([] as unknown as RawQuerylessQueryResponse<unknown>)
+  })
+
   afterEach(() => {
+    // Clear cookies
     document.cookie.split(';').forEach(function (c) {
       document.cookie = c
         .replace(/^ +/, '')
         .replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/')
     })
+  })
+
+  afterAll(() => {
+    defaultFetchSpy.mockRestore()
   })
 
   it('gir tilgang til react-intl translations', async () => {
@@ -129,24 +144,30 @@ describe('LanguageProvider', () => {
     await waitFor(() => {
       expect(sanityClientFetchMock).toHaveBeenCalledTimes(6)
 
-      expect(sanityClientFetchMock.mock.calls[0][0]).toBe(
-        '*[_type == "forbeholdAvsnitt" && language == "nb"] | order(order asc) | {overskrift,innhold}'
-      )
-      expect(sanityClientFetchMock.mock.calls[1][0]).toBe(
-        '*[_type == "guidepanel" && language == "nb"] | {name,overskrift,innhold}'
-      )
-      expect(sanityClientFetchMock.mock.calls[2][0]).toBe(
-        '*[_type == "readmore" && language == "nb"] | {name,overskrift,innhold}'
-      )
-      expect(sanityClientFetchMock.mock.calls[3][0]).toBe(
-        '*[_type == "forbeholdAvsnitt" && language == "en"] | order(order asc) | {overskrift,innhold}'
-      )
-      expect(sanityClientFetchMock.mock.calls[4][0]).toBe(
-        '*[_type == "guidepanel" && language == "en"] | {name,overskrift,innhold}'
-      )
-      expect(sanityClientFetchMock.mock.calls[5][0]).toBe(
-        '*[_type == "readmore" && language == "en"] | {name,overskrift,innhold}'
-      )
+      expect(sanityClientFetchMock.mock.calls[0]).toStrictEqual([
+        '*[_type == "forbeholdAvsnitt" && language == $locale] | order(order asc) | {overskrift,innhold}',
+        { locale: 'nb' },
+      ])
+      expect(sanityClientFetchMock.mock.calls[1]).toStrictEqual([
+        '*[_type == "guidepanel" && language == $locale] | {name,overskrift,innhold}',
+        { locale: 'nb' },
+      ])
+      expect(sanityClientFetchMock.mock.calls[2]).toStrictEqual([
+        '*[_type == "readmore" && language == $locale] | {name,overskrift,innhold}',
+        { locale: 'nb' },
+      ])
+      expect(sanityClientFetchMock.mock.calls[3]).toStrictEqual([
+        '*[_type == "forbeholdAvsnitt" && language == $locale] | order(order asc) | {overskrift,innhold}',
+        { locale: 'en' },
+      ])
+      expect(sanityClientFetchMock.mock.calls[4]).toStrictEqual([
+        '*[_type == "guidepanel" && language == $locale] | {name,overskrift,innhold}',
+        { locale: 'en' },
+      ])
+      expect(sanityClientFetchMock.mock.calls[5]).toStrictEqual([
+        '*[_type == "readmore" && language == $locale] | {name,overskrift,innhold}',
+        { locale: 'en' },
+      ])
     })
 
     await waitFor(() => {

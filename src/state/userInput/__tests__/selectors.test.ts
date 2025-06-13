@@ -19,7 +19,6 @@ import {
   selectEpsHarInntektOver2G,
   selectEpsHarPensjon,
   selectFoedselsdato,
-  selectFormatertUttaksalderReadOnly,
   selectHarUtenlandsopphold,
   selectIsEndring,
   selectIsVeileder,
@@ -38,7 +37,6 @@ describe('userInput selectors', () => {
 
   const currentSimulation: Simulation = {
     beregningsvalg: null,
-    formatertUttaksalderReadOnly: '62 alder.aar string.og 5 alder.maaneder',
     uttaksalder: { aar: 62, maaneder: 5 },
     aarligInntektFoerUttakBeloep: '0',
     gradertUttaksperiode: null,
@@ -226,6 +224,7 @@ describe('userInput selectors', () => {
               requestId: 'xTaE6mOydr5ZI75UXq4Wi',
               startedTimeStamp: 1688046411971,
               data: {
+                harLoependeVedtak: true,
                 alderspensjon: {
                   grad: 100,
                   fom: '2020-10-02',
@@ -338,21 +337,6 @@ describe('userInput selectors', () => {
     expect(selectUtenlandsperioder(state)).toStrictEqual([utenlandsperiode])
   })
 
-  it('selectFormatertUttaksalder', () => {
-    const state: RootState = {
-      ...initialState,
-      userInput: {
-        ...initialState.userInput,
-        currentSimulation: {
-          ...currentSimulation,
-        },
-      },
-    }
-    expect(selectFormatertUttaksalderReadOnly(state)).toBe(
-      '62 alder.aar string.og 5 alder.maaneder'
-    )
-  })
-
   it('selectCurrentSimulation', () => {
     const state: RootState = {
       ...initialState,
@@ -438,6 +422,7 @@ describe('userInput selectors', () => {
         },
       }
       expect(selectLoependeVedtak(state)).toStrictEqual({
+        harLoependeVedtak: true,
         ufoeretrygd: { grad: 75 },
       })
     })

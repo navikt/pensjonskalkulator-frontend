@@ -27,7 +27,6 @@ describe('Pensjonsavtaler', () => {
 
   const currentSimulation: Simulation = {
     beregningsvalg: null,
-    formatertUttaksalderReadOnly: '67 år string.og 1 alder.maaned',
     uttaksalder: { aar: 70, maaneder: 0 },
     aarligInntektVsaHelPensjon: {
       beloep: '500 000',
@@ -201,6 +200,7 @@ describe('Pensjonsavtaler', () => {
                 requestId: 'xTaE6mOydr5ZI75UXq4Wi',
                 startedTimeStamp: 1688046411971,
                 data: {
+                  harLoependeVedtak: true,
                   ufoeretrygd: { grad: 75 },
                 } satisfies LoependeVedtak,
                 fulfilledTimeStamp: 1688046412103,

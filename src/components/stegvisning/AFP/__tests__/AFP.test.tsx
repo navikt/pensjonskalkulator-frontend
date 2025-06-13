@@ -52,7 +52,7 @@ describe('stegvisning - AFP - født etter 1963', () => {
   })
 
   it('rendrer slik den skal når afp er oppgitt', async () => {
-    const result = render(
+    render(
       <AFP
         previousAfp="nei"
         onCancel={onCancelMock}
@@ -70,7 +70,6 @@ describe('stegvisning - AFP - født etter 1963', () => {
       expect(radioButtons[1]).not.toBeChecked()
       expect(radioButtons[2]).toBeChecked()
       expect(radioButtons[3]).not.toBeChecked()
-      expect(result.asFragment()).toMatchSnapshot()
     })
   })
 
@@ -131,12 +130,10 @@ describe('stegvisning - AFP - født etter 1963', () => {
 
     await user.click(screen.getByText('stegvisning.neste'))
 
-    waitFor(() => {
-      expect(
-        screen.getByText('stegvisning.afp.validation_error')
-      ).toBeInTheDocument()
-      expect(onNextMock).not.toHaveBeenCalled()
-    })
+    expect(
+      screen.getByText('stegvisning.afp.validation_error')
+    ).toBeInTheDocument()
+    expect(onNextMock).not.toHaveBeenCalled()
 
     await user.click(radioButtons[0])
 
@@ -146,9 +143,7 @@ describe('stegvisning - AFP - født etter 1963', () => {
 
     await user.click(screen.getByText('stegvisning.neste'))
 
-    waitFor(() => {
-      expect(onNextMock).toHaveBeenCalled()
-    })
+    expect(onNextMock).toHaveBeenCalled()
   })
 
   it('kaller onNext når brukeren klikker på Neste', async () => {
@@ -164,9 +159,7 @@ describe('stegvisning - AFP - født etter 1963', () => {
     const radioButtons = screen.getAllByRole('radio')
     await user.click(radioButtons[0])
     await user.click(screen.getByText('stegvisning.neste'))
-    waitFor(() => {
-      expect(onNextMock).toHaveBeenCalled()
-    })
+    expect(onNextMock).toHaveBeenCalled()
   })
 
   it('kaller onPrevious når brukeren klikker på Tilbake', async () => {
@@ -198,9 +191,7 @@ describe('stegvisning - AFP - født etter 1963', () => {
 
     expect(screen.getByText('stegvisning.avbryt')).toBeInTheDocument()
     await user.click(screen.getByText('stegvisning.avbryt'))
-    waitFor(() => {
-      expect(onCancelMock).toHaveBeenCalled()
-    })
+    expect(onCancelMock).toHaveBeenCalled()
   })
 
   it('viser ikke avbryt knapp når onCancel ikke er definert', async () => {
