@@ -54,9 +54,9 @@ export const apiSlice = createApi({
         }
       },
     }),
-    getGrunnbelop: builder.query<number, void, { grunnbeløp: number }>({
+    getGrunnbeloep: builder.query<number, void>({
       query: () => 'https://g.nav.no/api/v1/grunnbel%C3%B8p',
-      transformResponse: (response) => {
+      transformResponse: (response: { grunnbeløp: number }) => {
         if (!response.grunnbeløp) {
           throw new Error(
             `Mottok ugyldig grunnbeløp: ${JSON.stringify(response)}`
@@ -200,15 +200,6 @@ export const apiSlice = createApi({
         return response
       },
     }),
-    getSanityFeatureToggle: builder.query<UnleashToggle, void>({
-      query: () => '/feature/pensjonskalkulator.hent-tekster-fra-sanity',
-      transformResponse: (response: UnleashToggle) => {
-        if (!isUnleashToggle(response)) {
-          throw new Error(`Mottok ugyldig unleash response:`, response)
-        }
-        return response
-      },
-    }),
     getUtvidetSimuleringsresultatFeatureToggle: builder.query<
       UnleashToggle,
       void
@@ -240,7 +231,7 @@ export const {
   useGetAnsattIdQuery,
   useGetInntektQuery,
   useGetPersonQuery,
-  useGetGrunnbelopQuery,
+  useGetGrunnbeloepQuery,
   useGetEkskludertStatusQuery,
   useGetOmstillingsstoenadOgGjenlevendeQuery,
   useGetLoependeVedtakQuery,
@@ -249,7 +240,6 @@ export const {
   useAlderspensjonQuery,
   usePensjonsavtalerQuery,
   useGetSpraakvelgerFeatureToggleQuery,
-  useGetSanityFeatureToggleQuery,
   useGetVedlikeholdsmodusFeatureToggleQuery,
   useGetUtvidetSimuleringsresultatFeatureToggleQuery,
 } = apiSlice

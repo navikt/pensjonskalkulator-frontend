@@ -5,6 +5,7 @@ import { describe, it, vi } from 'vitest'
 import {
   fulfilledGetLoependeVedtak0Ufoeregrad,
   fulfilledGetPerson,
+  fulfilledPre1963GetPerson,
 } from '@/mocks/mockedRTKQueryApiCalls'
 import { mockErrorResponse, mockResponse } from '@/mocks/server'
 import { henvisningUrlParams, paths } from '@/router/constants'
@@ -26,6 +27,7 @@ import {
   stepSivilstandAccessGuard,
   stepStartAccessGuard,
   stepUfoeretrygdAFPAccessGuard,
+  stepUtenlandsoppholdAccessGuard,
 } from '../loaders'
 
 function expectRedirectResponse(
@@ -217,26 +219,30 @@ describe('Loaders', () => {
         userInput: { ...userInputInitialState, samtykke: null },
       }))
 
-      expectRedirectResponse(await stepSivilstandAccessGuard(), '/start')
+      expectRedirectResponse(
+        await stepSivilstandAccessGuard(createMockRequest()),
+        '/start'
+      )
     })
 
-    it('returnerer person og grunnbelop', async () => {
+    it('returnerer person og grunnbeloep', async () => {
       store.getState = vi.fn().mockImplementation(() => ({
         api: { queries: { mock: 'mock' } },
         userInput: { ...userInputInitialState },
       }))
 
-      const returnedFromLoader = await stepSivilstandAccessGuard()
+      const returnedFromLoader =
+        await stepSivilstandAccessGuard(createMockRequest())
       expect(returnedFromLoader).toHaveProperty('person')
       if (!('person' in returnedFromLoader)) {
         throw new Error('person not in returnedFromLoader')
       }
 
       expect(returnedFromLoader.person.sivilstand).toBe('UGIFT')
-      expect(returnedFromLoader.grunnbelop).toBe(100000)
+      expect(returnedFromLoader.grunnbeloep).toBe(100000)
     })
 
-    it('returner undefined som grunnbelop dersom g.nav.no feiler', async () => {
+    it('returner undefined som grunnbeloep dersom g.nav.no feiler', async () => {
       mockErrorResponse('/api/v1/grunnbel%C3%B8p', {
         baseUrl: 'https://g.nav.no',
       })
@@ -245,12 +251,106 @@ describe('Loaders', () => {
         userInput: { ...userInputInitialState },
       }))
 
-      const returnedFromLoader = await stepSivilstandAccessGuard()
-      expect(returnedFromLoader).toHaveProperty('grunnbelop')
-      if (!('grunnbelop' in returnedFromLoader)) {
-        throw new Error('grunnbelop not in returnedFromLoader')
+      const returnedFromLoader =
+        await stepSivilstandAccessGuard(createMockRequest())
+      expect(returnedFromLoader).toHaveProperty('grunnbeloep')
+      if (!('grunnbeloep' in returnedFromLoader)) {
+        throw new Error('grunnbeloep not in returnedFromLoader')
       }
-      expect(returnedFromLoader.grunnbelop).toBeUndefined()
+      expect(returnedFromLoader.grunnbeloep).toBeUndefined()
+    })
+
+    it('redirigerer brukere født før 1963 med vedtak om alderspensjon', async () => {
+      mockResponse('/v4/person', {
+        json: {
+          navn: 'Test Person',
+          sivilstand: 'UGIFT',
+          foedselsdato: '1960-04-30',
+          pensjoneringAldre: {
+            normertPensjoneringsalder: { aar: 67, maaneder: 0 },
+            nedreAldersgrense: { aar: 62, maaneder: 0 },
+          },
+        },
+      })
+      mockResponse('/v4/vedtak/loepende-vedtak', {
+        json: {
+          harLoependeVedtak: true,
+          ufoeretrygd: { grad: 0 },
+          alderspensjon: {
+            grad: 100,
+            fom: '2020-10-02',
+            sivilstand: 'UGIFT',
+          },
+        },
+      })
+      const mockedState = {
+        api: {
+          queries: {
+            ...fulfilledPre1963GetPerson,
+          },
+        },
+        userInput: { ...userInputInitialState, samtykke: null },
+      }
+
+      store.getState = vi.fn().mockImplementation(() => mockedState)
+
+      expectRedirectResponse(
+        await stepSivilstandAccessGuard(createMockRequest()),
+        '/utenlandsopphold'
+      )
+    })
+  })
+
+  describe('stepUtenlandsoppholdAccessGuard', () => {
+    it('kaller redirect til /start når ingen API-kall er registrert', async () => {
+      store.getState = vi.fn().mockImplementation(() => ({
+        api: { queries: {} },
+        userInput: { ...userInputInitialState, samtykke: null },
+      }))
+
+      expectRedirectResponse(
+        await stepUtenlandsoppholdAccessGuard(createMockRequest()),
+        '/start'
+      )
+    })
+    it('redirigerer brukere født før 1963 med vedtak om alderspensjon', async () => {
+      mockResponse('/v4/person', {
+        json: {
+          navn: 'Test Person',
+          sivilstand: 'UGIFT',
+          foedselsdato: '1960-04-30',
+          pensjoneringAldre: {
+            normertPensjoneringsalder: { aar: 67, maaneder: 0 },
+            nedreAldersgrense: { aar: 62, maaneder: 0 },
+          },
+        },
+      })
+      mockResponse('/v4/vedtak/loepende-vedtak', {
+        json: {
+          harLoependeVedtak: true,
+          ufoeretrygd: { grad: 0 },
+          alderspensjon: {
+            grad: 100,
+            fom: '2020-10-02',
+            sivilstand: 'UGIFT',
+          },
+        },
+      })
+      const mockedState = {
+        api: {
+          queries: {
+            ...fulfilledPre1963GetPerson,
+          },
+        },
+        userInput: { ...userInputInitialState, samtykke: null },
+      }
+
+      store.getState = vi.fn().mockImplementation(() => mockedState)
+
+      expectRedirectResponse(
+        await stepUtenlandsoppholdAccessGuard(createMockRequest()),
+        '/afp'
+      )
     })
   })
 

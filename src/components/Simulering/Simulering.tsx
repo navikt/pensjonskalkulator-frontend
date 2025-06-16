@@ -50,6 +50,7 @@ interface Props {
   aarligInntektFoerUttakBeloep: string
   alderspensjonListe?: AlderspensjonPensjonsberegning[]
   afpPrivatListe?: AfpPrivatPensjonsberegning[]
+  pre2025OffentligAfp?: AfpEtterfulgtAvAlderspensjon
   afpOffentligListe?: AfpPensjonsberegning[]
   alderspensjonMaanedligVedEndring?: AlderspensjonMaanedligVedEndring
   showButtonsAndTable?: boolean
@@ -65,6 +66,7 @@ export const Simulering = ({
   headingLevel,
   aarligInntektFoerUttakBeloep,
   alderspensjonListe,
+  pre2025OffentligAfp,
   afpPrivatListe,
   afpOffentligListe,
   alderspensjonMaanedligVedEndring,
@@ -172,6 +174,7 @@ export const Simulering = ({
     aarligInntektVsaHelPensjon,
     isLoading,
     alderspensjonListe,
+    pre2025OffentligAfp,
     afpPrivatListe,
     afpOffentligListe,
     pensjonsavtaler: {
@@ -277,6 +280,7 @@ export const Simulering = ({
         <Simuleringsdetaljer
           alderspensjonListe={alderspensjonListe}
           detaljer={detaljer}
+          pre2025OffentligAfp={pre2025OffentligAfp}
         />
       )}
 
