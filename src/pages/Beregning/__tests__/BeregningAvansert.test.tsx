@@ -65,7 +65,6 @@ describe('BeregningAvansert', () => {
       userInput: {
         ...userInputInitialState,
         samtykke: true,
-        samboer: false,
         afp: 'ja_privat',
         currentSimulation: {
           ...userInputInitialState.currentSimulation,
@@ -163,6 +162,7 @@ describe('BeregningAvansert', () => {
         expect(initiateMock).toHaveBeenCalledWith(
           {
             aarligInntektFoerUttakBeloep: 521338,
+            afpInntektMaanedFoerUttak: undefined,
             epsHarInntektOver2G: false,
             epsHarPensjon: false,
             foedselsdato: '1963-04-30',
@@ -209,16 +209,9 @@ describe('BeregningAvansert', () => {
             <BeregningAvansert />
           </BeregningContext.Provider>,
           {
+            // @ts-ignore
             preloadedState: {
               ...preloadedState,
-              api: {
-                // @ts-ignore
-                queries: {
-                  ...fulfilledGetPerson,
-                  ...fulfilledGetInntekt,
-                  ...fulfilledGetLoependeVedtak75Ufoeregrad,
-                },
-              },
             },
           }
         )
@@ -257,6 +250,7 @@ describe('BeregningAvansert', () => {
         expect(initiateMock).toHaveBeenCalledWith(
           {
             aarligInntektFoerUttakBeloep: 521338,
+            afpInntektMaanedFoerUttak: undefined,
             epsHarInntektOver2G: false,
             epsHarPensjon: false,
             foedselsdato: '1963-04-30',
@@ -268,7 +262,7 @@ describe('BeregningAvansert', () => {
                 maaneder: 6,
               },
             },
-            simuleringstype: 'ALDERSPENSJON',
+            simuleringstype: 'ALDERSPENSJON_MED_AFP_PRIVAT',
             sivilstand: 'UGIFT',
             utenlandsperiodeListe: [],
           },
@@ -349,6 +343,7 @@ describe('BeregningAvansert', () => {
         expect(initiateMock).toHaveBeenCalledWith(
           {
             aarligInntektFoerUttakBeloep: 521338,
+            afpInntektMaanedFoerUttak: undefined,
             epsHarInntektOver2G: false,
             epsHarPensjon: false,
             foedselsdato: '1963-04-30',
@@ -441,6 +436,7 @@ describe('BeregningAvansert', () => {
         expect(initiateMock).toHaveBeenCalledWith(
           {
             aarligInntektFoerUttakBeloep: 521338,
+            afpInntektMaanedFoerUttak: undefined,
             epsHarInntektOver2G: false,
             epsHarPensjon: false,
             foedselsdato: '1963-04-30',
@@ -468,8 +464,7 @@ describe('BeregningAvansert', () => {
         )
       })
 
-      it('Når simuleringen svarer med en beregning, vises det resultatkort og simulering med tabell, Pensjonsavtaler, Grunnlag og Forbehold', async () => {
-        const user = userEvent.setup()
+      it('Når simuleringen svarer med en beregning, vises det simulering med tabell, Pensjonsavtaler, Grunnlag og Forbehold', async () => {
         const initiateMock = vi.spyOn(
           apiSliceUtils.apiSlice.endpoints.alderspensjon,
           'initiate'
@@ -506,13 +501,8 @@ describe('BeregningAvansert', () => {
         await waitFor(() => {
           expect(initiateMock).toHaveBeenCalledTimes(1)
         })
-
         expect(screen.getByText('beregning.intro.title')).toBeVisible()
         expect(screen.getByText('beregning.intro.description_1')).toBeVisible()
-
-        expect(
-          screen.getByText('beregning.avansert.resultatkort.tittel')
-        ).toBeVisible()
         expect(screen.getByText('pensjonsavtaler.title')).toBeVisible()
         expect(
           container.getElementsByClassName('highcharts-loading')
@@ -529,15 +519,11 @@ describe('BeregningAvansert', () => {
           await screen.findByTestId('highcharts-done-drawing')
         ).toBeVisible()
 
-        await user.click(
-          screen.getByText('beregning.avansert.resultatkort.button')
-        )
-
         expect(await screen.findByText('grunnlag.title')).toBeInTheDocument()
         expect(
           await screen.findByText('grunnlag.forbehold.title')
         ).toBeInTheDocument()
-        expect(await screen.findByText('savnerdunoe.title')).toBeInTheDocument()
+        expect(screen.queryByText('savnerdunoe.title')).not.toBeInTheDocument()
         expect(
           screen.queryByText('savnerdunoe.ingress')
         ).not.toBeInTheDocument()
@@ -647,7 +633,7 @@ describe('BeregningAvansert', () => {
         await waitFor(() => {
           expect(initiateMock).toHaveBeenCalledTimes(1)
           expect(
-            screen.getByText('beregning.avansert.resultatkort.tittel')
+            screen.getByText('beregning.avansert.link.endre_avanserte_valg')
           ).toBeVisible()
           expect(screen.getByText('beregning.error')).toBeVisible()
         })
@@ -657,9 +643,6 @@ describe('BeregningAvansert', () => {
         })
         await user.click(await screen.findByText('application.global.retry'))
         expect(initiateMock).toHaveBeenCalledTimes(3)
-        await user.click(
-          screen.getByText('beregning.avansert.resultatkort.button')
-        )
       })
 
       it('Når simulering svarer med errorcode 503, vises ErrorPageUnexpected ', async () => {
@@ -709,8 +692,7 @@ describe('BeregningAvansert', () => {
   })
 
   describe('Gitt at brukeren har vedtak om alderspensjon', () => {
-    it('Når simuleringen svarer med en beregning, vises det resultatkort og simulering med tabell, Grunnlag og Forbehold uten Pensjonsavtaler', async () => {
-      const user = userEvent.setup()
+    it('Når simuleringen svarer med en beregning, vises det og simulering med tabell, Grunnlag og Forbehold uten Pensjonsavtaler', async () => {
       const initiateMock = vi.spyOn(
         apiSliceUtils.apiSlice.endpoints.alderspensjon,
         'initiate'
@@ -753,14 +735,9 @@ describe('BeregningAvansert', () => {
       await waitFor(() => {
         expect(initiateMock).toHaveBeenCalledTimes(1)
       })
-
       expect(screen.getByText('beregning.intro.title.endring')).toBeVisible()
       expect(
         screen.getByText('beregning.intro.description_1.endring')
-      ).toBeVisible()
-
-      expect(
-        screen.getByText('beregning.avansert.resultatkort.tittel')
       ).toBeVisible()
       expect(
         screen.queryByText('pensjonsavtaler.title')
@@ -778,10 +755,6 @@ describe('BeregningAvansert', () => {
         ).toBeInTheDocument()
       })
       expect(await screen.findByTestId('highcharts-done-drawing')).toBeVisible()
-
-      await user.click(
-        screen.getByText('beregning.avansert.resultatkort.button')
-      )
 
       expect(await screen.findByText('grunnlag.title')).toBeInTheDocument()
       expect(
@@ -837,9 +810,6 @@ describe('BeregningAvansert', () => {
       await waitFor(() => {
         expect(initiateMock).toHaveBeenCalledTimes(1)
       })
-      expect(
-        screen.getByText('beregning.avansert.resultatkort.tittel')
-      ).toBeVisible()
 
       expect(
         container.getElementsByClassName('highcharts-loading')
@@ -856,6 +826,7 @@ describe('BeregningAvansert', () => {
       expect(initiateMock).toHaveBeenCalledWith(
         {
           aarligInntektFoerUttakBeloep: 521338,
+          afpInntektMaanedFoerUttak: undefined,
           epsHarInntektOver2G: false,
           epsHarPensjon: false,
           foedselsdato: '1963-04-30',

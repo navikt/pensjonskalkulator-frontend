@@ -1,35 +1,67 @@
+import { SerializedError } from '@reduxjs/toolkit'
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
-import { redirect } from 'react-router'
+import { LoaderFunctionArgs, redirect } from 'react-router'
 
+import { getStepArrays } from '@/components/stegvisning/utils'
 import { HOST_BASEURL } from '@/paths'
-import {
-  henvisningUrlParams,
-  paths,
-  stegvisningOrder,
-  stegvisningOrderEndring,
-} from '@/router/constants'
+import { henvisningUrlParams, paths } from '@/router/constants'
 import { apiSlice } from '@/state/api/apiSlice'
 import { store } from '@/state/store'
-import { selectAfp, selectIsVeileder } from '@/state/userInput/selectors'
+import {
+  selectAfp,
+  selectIsVeileder,
+  selectSkalBeregneAfpKap19,
+} from '@/state/userInput/selectors'
 import {
   AFP_UFOERE_OPPSIGELSESALDER,
   isFoedselsdatoOverAlder,
+  isFoedtFoer1963,
 } from '@/utils/alder'
 import { isLoependeVedtakEndring } from '@/utils/loependeVedtak'
 import { logger } from '@/utils/logging'
+import { skip } from '@/utils/navigation'
+
+export type SafeLoaderFunction<T> = (
+  args: LoaderFunctionArgs
+) => Promise<T | Response>
+
+export type Reason =
+  | 'INSUFFICIENT_LEVEL_OF_ASSURANCE'
+  | 'INVALID_REPRESENTASJON'
+
+interface ErrorData {
+  reason?: Reason
+}
+
+const getErrorStatus = (
+  error: FetchBaseQueryError | SerializedError | undefined
+) => {
+  if (!error) return undefined
+  if (typeof error === 'string') return error
+  if ('status' in error) return error.status
+}
+
+const getErrorData = (
+  error: FetchBaseQueryError | SerializedError | undefined
+): ErrorData | undefined => {
+  if (!error) return undefined
+  if ('data' in error) return error.data as ErrorData
+}
 
 export interface LoginContext {
   isLoggedIn: boolean
 }
 
-export type AuthenticationGuardLoader = { authResponse: Promise<Response> }
+export interface AuthenticationGuardData {
+  authResponse: Response
+}
 
-export async function authenticationGuard(): Promise<AuthenticationGuardLoader> {
-  const authResponse = fetch(`${HOST_BASEURL}/oauth2/session`)
+export const authenticationGuard = async () => {
+  const authResponse = await fetch(`${HOST_BASEURL}/oauth2/session`)
   return { authResponse }
 }
 
-export const directAccessGuard = async () => {
+export const directAccessGuard = (): Response | undefined => {
   const state = store.getState()
   // Dersom ingen kall er registrert i store betyr det at brukeren prøver å aksessere en url direkte
   if (
@@ -38,173 +70,223 @@ export const directAccessGuard = async () => {
   ) {
     return redirect(paths.start)
   }
-  return null
+  return undefined
 }
 
-// ////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
 
-export type LandingPageAccessGuardLoader = { shouldRedirectTo: Promise<string> }
-
-export const landingPageAccessGuard = async () => {
+export const landingPageAccessGuard = () => {
   const isVeileder = selectIsVeileder(store.getState())
   if (isVeileder) {
     return redirect(paths.start)
   }
 }
 
-/// ////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
 
-export type StepStartAccessGuardLoader = {
-  getPersonQuery: GetPersonQuery
-  getLoependeVedtakQuery: GetLoependeVedtakQuery
-  shouldRedirectTo: Promise<string>
-}
-
-export const stepStartAccessGuard = async (): Promise<
-  Response | StepStartAccessGuardLoader
-> => {
-  const featureToggle = await store
-    .dispatch(apiSlice.endpoints.getVedlikeholdsmodusFeatureToggle.initiate())
-    .unwrap()
-    .then((result) => result.enabled)
-    .catch(() => false)
-
-  if (featureToggle) {
-    return redirect(paths.kalkulatorVirkerIkke)
-  }
-
-  // Sørger for at brukeren er redirigert til henvisningsside iht. fødselsdato
+export const stepStartAccessGuard = async () => {
+  const vedlikeholdsmodusFeatureToggleQuery = store.dispatch(
+    apiSlice.endpoints.getVedlikeholdsmodusFeatureToggle.initiate()
+  )
   const getPersonQuery = store.dispatch(apiSlice.endpoints.getPerson.initiate())
-  // Sørger for at brukeren er redirigert til henvisningsside iht. ekskludertStatus
   const getEkskludertStatusQuery = store.dispatch(
     apiSlice.endpoints.getEkskludertStatus.initiate()
   )
-  // Henter løpende vedtak for endring
   const getLoependeVedtakQuery = store.dispatch(
     apiSlice.endpoints.getLoependeVedtak.initiate()
   )
 
-  // Henter inntekt til senere
+  // Henter data til senere i bakgrunnen (Unngår å vise spinner unødvendig og sparer tid for brukeren)
   store.dispatch(apiSlice.endpoints.getInntekt.initiate())
-  // Henter omstillingsstønad-og-gjenlevende til senere
   store.dispatch(
     apiSlice.endpoints.getOmstillingsstoenadOgGjenlevende.initiate()
   )
+  store.dispatch(apiSlice.endpoints.getGrunnbeloep.initiate())
 
-  const shouldRedirectTo = Promise.all([
+  const [
+    vedlikeholdsmodusFeatureToggle,
+    getLoependeVedtakRes,
+    getPersonRes,
+    getEkskludertStatusRes,
+  ] = await Promise.all([
+    vedlikeholdsmodusFeatureToggleQuery,
     getLoependeVedtakQuery,
     getPersonQuery,
     getEkskludertStatusQuery,
-  ]).then(([getLoependeVedtakRes, getPersonRes, getEkskludertStatusRes]) => {
-    if (
-      getEkskludertStatusRes?.data?.ekskludert &&
-      getEkskludertStatusRes?.data?.aarsak === 'ER_APOTEKER'
-    ) {
-      return `${paths.henvisning}/${henvisningUrlParams.apotekerne}`
-    }
+  ])
 
-    if (getLoependeVedtakRes.isError) {
-      logger('info', {
-        tekst: 'Redirect til /uventet-feil',
-        data: `fra Step Start Loader pga. feil med getLoependeVedtak med status: ${(getLoependeVedtakRes.error as FetchBaseQueryError).status}`,
-      })
-      return paths.uventetFeil
-    }
-    if (getLoependeVedtakRes.isSuccess) {
-      logger('info', {
-        tekst: 'hent uføregrad',
-        data:
-          getLoependeVedtakRes.data?.ufoeretrygd.grad === 0
-            ? 'Ingen uføretrygd'
-            : getLoependeVedtakRes.data?.ufoeretrygd.grad === 100
-              ? 'Hel uføretrygd'
-              : `Gradert uføretrygd`,
-      })
+  if (vedlikeholdsmodusFeatureToggle.data?.enabled) {
+    return redirect(paths.kalkulatorVirkerIkke)
+  }
 
-      if (getLoependeVedtakRes.data?.alderspensjon) {
-        logger('info', {
-          tekst: 'Vedtak alderspensjon',
-          data: getLoependeVedtakRes.data?.alderspensjon.grad,
-        })
+  if (
+    getEkskludertStatusRes.data?.ekskludert &&
+    getEkskludertStatusRes.data?.aarsak === 'ER_APOTEKER'
+  ) {
+    return redirect(`${paths.henvisning}/${henvisningUrlParams.apotekerne}`)
+  }
+
+  if (!getPersonRes.isSuccess) {
+    if (getErrorStatus(getPersonRes.error) === 403) {
+      if (
+        getErrorData(getPersonRes.error)?.reason === 'INVALID_REPRESENTASJON'
+      ) {
+        return redirect(paths.ingenTilgang)
       }
-      if (getLoependeVedtakRes.data?.afpPrivat) {
-        logger('info', {
-          tekst: 'Vedtak AFP Privat',
-        })
-      }
-      if (getLoependeVedtakRes.data?.afpOffentlig) {
-        logger('info', {
-          tekst: 'Vedtak AFP Offentlig',
-        })
-      }
-      if (getLoependeVedtakRes.data?.fremtidigAlderspensjon) {
-        logger('info', {
-          tekst: 'Fremtidig vedtak',
-        })
+      if (
+        getErrorData(getPersonRes.error)?.reason ===
+        'INSUFFICIENT_LEVEL_OF_ASSURANCE'
+      ) {
+        return redirect(paths.lavtSikkerhetsnivaa)
       }
     }
 
-    if (getPersonRes.isError) {
-      if ((getPersonRes.error as FetchBaseQueryError).status === 403) {
-        return paths.ingenTilgang
-      } else {
-        logger('info', {
-          tekst: 'Redirect til /uventet-feil',
-          data: `fra Step Start Loader pga. feil med getPerson med status: ${(getPersonRes.error as FetchBaseQueryError).status}`,
-        })
-        return paths.uventetFeil
+    logger('info', {
+      tekst: 'Redirect til /uventet-feil',
+      data: `fra Step Start Loader pga. feil med getPerson med status: ${getErrorStatus(getPersonRes.error)}`,
+    })
+    return redirect(paths.uventetFeil)
+  }
+
+  if (!getLoependeVedtakRes.isSuccess) {
+    if (getErrorStatus(getPersonRes.error) === 403) {
+      if (
+        getErrorData(getPersonRes.error)?.reason === 'INVALID_REPRESENTASJON'
+      ) {
+        return redirect(paths.ingenTilgang)
+      }
+      if (
+        getErrorData(getPersonRes.error)?.reason ===
+        'INSUFFICIENT_LEVEL_OF_ASSURANCE'
+      ) {
+        return redirect(paths.lavtSikkerhetsnivaa)
       }
     }
-    return ''
+
+    logger('info', {
+      tekst: 'Redirect til /uventet-feil',
+      data: `fra Step Start Loader pga. feil med getLoependeVedtak med status: ${getErrorStatus(getLoependeVedtakRes.error)}`,
+    })
+    return redirect(paths.uventetFeil)
+  }
+
+  logger('info', {
+    tekst: 'hent uføregrad',
+    data:
+      getLoependeVedtakRes.data.ufoeretrygd.grad === 0
+        ? 'Ingen uføretrygd'
+        : getLoependeVedtakRes.data.ufoeretrygd.grad === 100
+          ? 'Hel uføretrygd'
+          : `Gradert uføretrygd`,
   })
 
+  if (getLoependeVedtakRes.data.alderspensjon) {
+    logger('info', {
+      tekst: 'Vedtak alderspensjon',
+      data: getLoependeVedtakRes.data.alderspensjon.grad,
+    })
+  }
+
+  if (getLoependeVedtakRes.data.afpPrivat) {
+    logger('info', {
+      tekst: 'Vedtak AFP Privat',
+    })
+  }
+
+  if (getLoependeVedtakRes.data.afpOffentlig) {
+    logger('info', {
+      tekst: 'Vedtak AFP Offentlig',
+    })
+  }
+
+  if (getLoependeVedtakRes.data.fremtidigAlderspensjon) {
+    logger('info', {
+      tekst: 'Fremtidig vedtak',
+    })
+  }
+
+  if (getLoependeVedtakRes.data.pre2025OffentligAfp) {
+    logger('info', {
+      tekst: 'Vedtak om offentlig AFP pre 2025',
+    })
+  }
+
   return {
-    getPersonQuery,
-    getLoependeVedtakQuery,
-    shouldRedirectTo,
+    person: getPersonRes.data,
+    loependeVedtak: getLoependeVedtakRes.data,
   }
 }
 
-// ///////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
 
-export type StepSivilstandAccessGuardLoader = {
-  getPersonQuery: Promise<Person>
-  getGrunnbelopQuery: Promise<number | undefined>
-}
-
-export const stepSivilstandAccessGuard = async (): Promise<
-  Response | StepSivilstandAccessGuardLoader
-> => {
-  if (await directAccessGuard()) {
+export const stepSivilstandAccessGuard = async ({
+  request,
+}: LoaderFunctionArgs) => {
+  if (directAccessGuard()) {
     return redirect(paths.start)
   }
   const getPersonQuery = store
     .dispatch(apiSlice.endpoints.getPerson.initiate())
     .unwrap()
 
-  const getGrunnbelopQuery = store
-    .dispatch(apiSlice.endpoints.getGrunnbelop.initiate())
+  const getGrunnbeloepQuery = store
+    .dispatch(apiSlice.endpoints.getGrunnbeloep.initiate())
     .unwrap()
-    .then((grunnbelopRes) => grunnbelopRes)
+    .then((grunnbeloepRes) => grunnbeloepRes)
     .catch(() => undefined)
 
-  return {
+  const loependeVedtak = await store
+    .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
+    .unwrap()
+
+  const [person, grunnbeloep] = await Promise.all([
     getPersonQuery,
-    getGrunnbelopQuery,
+    getGrunnbeloepQuery,
+  ])
+
+  const isEndring = isLoependeVedtakEndring(loependeVedtak)
+  const isKap19 = isFoedtFoer1963(person.foedselsdato)
+
+  const stepArrays = getStepArrays(isEndring, isKap19)
+
+  if (isEndring && isKap19) {
+    return skip(stepArrays, paths.sivilstand, request)
+  }
+
+  return { person, grunnbeloep }
+}
+
+////////////////////////////////////////////////////////////////////////
+
+export const stepUtenlandsoppholdAccessGuard = async ({
+  request,
+}: LoaderFunctionArgs) => {
+  if (directAccessGuard()) {
+    return redirect(paths.start)
+  }
+
+  const person = await store
+    .dispatch(apiSlice.endpoints.getPerson.initiate())
+    .unwrap()
+
+  const loependeVedtak = await store
+    .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
+    .unwrap()
+
+  const isEndring = isLoependeVedtakEndring(loependeVedtak)
+  const isKap19 = isFoedtFoer1963(person.foedselsdato)
+
+  const stepArrays = getStepArrays(isEndring, isKap19)
+
+  if (isEndring && isKap19) {
+    return skip(stepArrays, paths.utenlandsopphold, request)
   }
 }
 
-/// ////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
 
-export type StepAFPAccessGuardLoader = {
-  person: Person
-  loependeVedtak: LoependeVedtak
-}
-
-export const stepAFPAccessGuard = async (): Promise<
-  Response | StepAFPAccessGuardLoader
-> => {
-  if (await directAccessGuard()) {
+export const stepAFPAccessGuard = async ({ request }: LoaderFunctionArgs) => {
+  if (directAccessGuard()) {
     return redirect(paths.start)
   }
 
@@ -234,9 +316,10 @@ export const stepAFPAccessGuard = async (): Promise<
     .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
     .unwrap()
 
-  const stepArrays = isLoependeVedtakEndring(loependeVedtak)
-    ? stegvisningOrderEndring
-    : stegvisningOrder
+  const isEndring = isLoependeVedtakEndring(loependeVedtak)
+  const isKap19 = isFoedtFoer1963(person.foedselsdato)
+
+  const stepArrays = getStepArrays(isEndring, isKap19)
 
   // Hvis brukeren mottar AFP skal hen ikke se AFP-steget
   // Hvis brukeren har 100% uføretrygd skal hen ikke se AFP-steget
@@ -245,11 +328,12 @@ export const stepAFPAccessGuard = async (): Promise<
     loependeVedtak.afpPrivat ||
     loependeVedtak.afpOffentlig ||
     loependeVedtak.ufoeretrygd.grad === 100 ||
+    loependeVedtak.pre2025OffentligAfp ||
     (loependeVedtak.ufoeretrygd.grad &&
       person.foedselsdato &&
       isFoedselsdatoOverAlder(person.foedselsdato, AFP_UFOERE_OPPSIGELSESALDER))
   ) {
-    return redirect(stepArrays[stepArrays.indexOf(paths.afp) + 1])
+    return skip(stepArrays, paths.afp, request)
   } else {
     return {
       person,
@@ -258,74 +342,95 @@ export const stepAFPAccessGuard = async (): Promise<
   }
 }
 
-/// ////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
 
-export const stepUfoeretrygdAFPAccessGuard =
-  async (): Promise<Response | null> => {
-    if (await directAccessGuard()) {
-      return redirect(paths.start)
-    }
-
-    const state = store.getState()
-    const afp = selectAfp(state)
-    const loependeVedtak =
-      apiSlice.endpoints.getLoependeVedtak.select()(state).data
-    if (!loependeVedtak) throw new Error('Missing loependeVedtak')
-
-    const stepArrays = isLoependeVedtakEndring(loependeVedtak)
-      ? stegvisningOrderEndring
-      : stegvisningOrder
-
-    // Brukere med uføretrygd som har svart ja eller vet_ikke til AFP kan se steget
-    if (loependeVedtak.ufoeretrygd.grad && afp && afp !== 'nei') {
-      return null
-    }
-    return redirect(stepArrays[stepArrays.indexOf(paths.ufoeretrygdAFP) + 1])
+export const stepUfoeretrygdAFPAccessGuard = async ({
+  request,
+}: LoaderFunctionArgs) => {
+  if (directAccessGuard()) {
+    return redirect(paths.start)
   }
 
-/// ////////////////////////////////////////////////////////////////////////
+  const state = store.getState()
+  const afp = selectAfp(state)
+  const loependeVedtak = await store
+    .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
+    .unwrap()
+  const showStep = loependeVedtak.ufoeretrygd.grad && afp && afp !== 'nei'
 
-export const stepSamtykkeOffentligAFPAccessGuard =
-  async (): Promise<Response | null> => {
-    if (await directAccessGuard()) {
-      return redirect(paths.start)
-    }
+  const isEndring = isLoependeVedtakEndring(loependeVedtak)
 
-    const state = store.getState()
-    const afp = selectAfp(state)
-    const getLoependeVedtakResponse =
-      apiSlice.endpoints.getLoependeVedtak.select(undefined)(state)
+  //Gjelder ikke for kap19
+  const stepArrays = getStepArrays(isEndring, false)
 
-    const stepArrays = isLoependeVedtakEndring(
-      getLoependeVedtakResponse.data as LoependeVedtak
-    )
-      ? stegvisningOrderEndring
-      : stegvisningOrder
+  // Brukere med uføretrygd som har svart ja eller vet_ikke til AFP kan se steget
+  if (showStep) {
+    return
+  }
+  return skip(stepArrays, paths.ufoeretrygdAFP, request)
+}
 
-    const getGradertUfoereAfpFeatureTogglequery = store.dispatch(
-      apiSlice.endpoints.getGradertUfoereAfpFeatureToggle.initiate()
-    )
+////////////////////////////////////////////////////////////////////////
 
-    // Wait for the feature toggle query to resolve
-    const toggleShowGradertUfoereAfp =
-      await getGradertUfoereAfpFeatureTogglequery
-        .unwrap()
-        .then((result) => result.enabled)
-        .catch(() => false)
-
-    const showStep = toggleShowGradertUfoereAfp
-      ? afp === 'ja_offentlig'
-      : (getLoependeVedtakResponse.data as LoependeVedtak).ufoeretrygd.grad ===
-          0 && afp === 'ja_offentlig'
-
-    // Bruker uten uføretrygd som svarer ja_offentlig til AFP kan se steget
-    if (showStep) {
-      return null
-    }
-
-    return redirect(
-      stepArrays[stepArrays.indexOf(paths.samtykkeOffentligAFP) + 1]
-    )
+export const stepSamtykkeOffentligAFPAccessGuard = async ({
+  request,
+}: LoaderFunctionArgs) => {
+  if (directAccessGuard()) {
+    return redirect(paths.start)
   }
 
-// ////////////////////////////////////////
+  const appState = store.getState()
+  const afp = selectAfp(appState)
+  const loependeVedtak = await store
+    .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
+    .unwrap()
+  const showStep = afp === 'ja_offentlig'
+
+  // Bruker uten uføretrygd som svarer ja_offentlig til AFP kan se steget
+  if (showStep) {
+    return
+  }
+
+  const isEndring = isLoependeVedtakEndring(loependeVedtak)
+
+  //Gjelder ikke for kap19
+  const stepArrays = getStepArrays(isEndring, false)
+
+  return skip(stepArrays, paths.samtykkeOffentligAFP, request)
+}
+
+////////////////////////////////////////////////////////////////////////
+
+export const stepSamtykkePensjonsavtaler = async ({
+  request,
+}: LoaderFunctionArgs) => {
+  if (directAccessGuard()) {
+    return redirect(paths.start)
+  }
+
+  const loependeVedtak = await store
+    .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
+    .unwrap()
+
+  const isEndring = isLoependeVedtakEndring(loependeVedtak)
+  const stepArrays = getStepArrays(isEndring, false)
+
+  if (loependeVedtak.pre2025OffentligAfp && !isEndring) {
+    return skip(stepArrays, paths.samtykke, request)
+  }
+}
+
+export const beregningEnkelAccessGuard = async () => {
+  if (directAccessGuard()) {
+    return redirect(paths.start)
+  }
+  const state = store.getState()
+  const skalBeregneAfpKap19 = selectSkalBeregneAfpKap19(state)
+  const loependeVedtak = await store
+    .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
+    .unwrap()
+
+  if (skalBeregneAfpKap19 || loependeVedtak.alderspensjon) {
+    return redirect(paths.beregningAvansert)
+  }
+}

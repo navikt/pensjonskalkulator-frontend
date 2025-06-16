@@ -31,6 +31,7 @@ import {
   selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
 
+import { MaanedsbeloepAvansertBeregning } from './MaanedsbeloepAvansertBeregning'
 import { SimuleringEndringBanner } from './SimuleringEndringBanner/SimuleringEndringBanner'
 import { SimuleringGrafNavigation } from './SimuleringGrafNavigation/SimuleringGrafNavigation'
 import { SimuleringPensjonsavtalerAlert } from './SimuleringPensjonsavtalerAlert/SimuleringPensjonsavtalerAlert'
@@ -47,8 +48,9 @@ interface Props {
   headingLevel: HeadingProps['level']
   aarligInntektFoerUttakBeloep: string
   alderspensjonListe?: AlderspensjonPensjonsberegning[]
-  afpPrivatListe?: AfpPrivatPensjonsberegning[]
-  afpOffentligListe?: AfpPrivatPensjonsberegning[]
+  pre2025OffentligAfp?: AfpEtterfulgtAvAlderspensjon
+  afpPrivatListe?: AfpPensjonsberegning[]
+  afpOffentligListe?: AfpPensjonsberegning[]
   alderspensjonMaanedligVedEndring?: AlderspensjonMaanedligVedEndring
   showButtonsAndTable?: boolean
   detaljer?: {
@@ -63,6 +65,7 @@ export const Simulering = ({
   headingLevel,
   aarligInntektFoerUttakBeloep,
   alderspensjonListe,
+  pre2025OffentligAfp,
   afpPrivatListe,
   afpOffentligListe,
   alderspensjonMaanedligVedEndring,
@@ -169,6 +172,7 @@ export const Simulering = ({
     aarligInntektVsaHelPensjon,
     isLoading,
     alderspensjonListe,
+    pre2025OffentligAfp,
     afpPrivatListe,
     afpOffentligListe,
     pensjonsavtaler: {
@@ -274,8 +278,23 @@ export const Simulering = ({
         <Simuleringsdetaljer
           alderspensjonListe={alderspensjonListe}
           detaljer={detaljer}
+          pre2025OffentligAfp={pre2025OffentligAfp}
         />
       )}
+
+      {!isOffentligTpLoading &&
+        !isLoading &&
+        !isPensjonsavtalerLoading &&
+        !isEndring &&
+        visning === 'avansert' && (
+          <MaanedsbeloepAvansertBeregning
+            alderspensjonMaanedligVedEndring={alderspensjonMaanedligVedEndring}
+            afpPrivatListe={afpPrivatListe}
+            afpOffentligListe={afpOffentligListe}
+            pensjonsavtaler={pensjonsavtalerData?.avtaler}
+            simulertTjenestepensjon={offentligTpData?.simulertTjenestepensjon}
+          />
+        )}
     </section>
   )
 }

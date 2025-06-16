@@ -1,4 +1,4 @@
-function expect_afp_og_pensjonsavtaler_i_graf_og_tabell() {
+export function expect_afp_og_pensjonsavtaler_i_graf_og_tabell() {
   cy.contains('Pensjonsgivende inntekt').should('be.visible')
   cy.contains('AFP (avtalefestet pensjon)').should('be.visible')
   cy.contains('Pensjonsavtaler (arbeidsgivere m.m.)').should('be.visible')
@@ -138,7 +138,7 @@ describe('Med samtykke - Offentlig tjenestepensjon', () => {
             })
 
             it('forventer jeg at AFP ikke vises i graf og tabell.', () => {
-              cy.contains('AFP (avtalefestet pensjon)').should('not.exist')
+              cy.contains('AFP (avtalefestet pensjon)').should('not.be.visible')
               cy.contains('Vis tabell av beregningen').click()
               cy.get('td button').first().click()
               cy.contains('dt', 'AFP (avtalefestet pensjon)').should(
@@ -217,7 +217,7 @@ describe('Med samtykke - Offentlig tjenestepensjon', () => {
             })
 
             it('forventer jeg at AFP ikke vises i graf og tabell.', () => {
-              cy.contains('AFP (avtalefestet pensjon)').should('not.exist')
+              cy.contains('AFP (avtalefestet pensjon)').should('not.be.visible')
               cy.contains('Vis tabell av beregningen').click()
               cy.get('td button').first().click()
               cy.contains('dt', 'AFP (avtalefestet pensjon)').should(
@@ -263,7 +263,7 @@ describe('Med samtykke - Offentlig tjenestepensjon', () => {
             })
 
             it('forventer jeg at AFP ikke vises i graf og tabell.', () => {
-              cy.contains('AFP (avtalefestet pensjon)').should('not.exist')
+              cy.contains('AFP (avtalefestet pensjon)').should('not.be.visible')
               cy.contains('Vis tabell av beregningen').click()
               cy.get('td button').first().click()
               cy.contains('dt', 'AFP (avtalefestet pensjon)').should(
@@ -342,7 +342,7 @@ describe('Med samtykke - Offentlig tjenestepensjon', () => {
             })
 
             it('forventer jeg at AFP ikke vises i graf og tabell.', () => {
-              cy.contains('AFP (avtalefestet pensjon)').should('not.exist')
+              cy.contains('AFP (avtalefestet pensjon)').should('not.be.visible')
               cy.contains('Vis tabell av beregningen').click()
               cy.get('td button').first().click()
               cy.contains('dt', 'AFP (avtalefestet pensjon)').should(
@@ -381,7 +381,7 @@ describe('Med samtykke - Offentlig tjenestepensjon', () => {
             simuleringsresultatStatus: 'OK',
             muligeTpLeverandoerListe: ['Kommunal Landspensjonskasse'],
             simulertTjenestepensjon: {
-              tpNummer: '4080',
+              tpNummer: '4082',
               tpLeverandoer: 'Kommunal Landspensjonskasse',
               simuleringsresultat: {
                 utbetalingsperioder: [
@@ -504,7 +504,7 @@ describe('Med samtykke - Offentlig tjenestepensjon', () => {
           })
 
           it('forventer jeg at AFP ikke vises i graf og tabell.', () => {
-            cy.contains('AFP (avtalefestet pensjon)').should('not.exist')
+            cy.contains('AFP (avtalefestet pensjon)').should('not.be.visible')
             cy.contains('Vis tabell av beregningen').click()
             cy.get('td button').first().click()
             cy.contains('dt', 'AFP (avtalefestet pensjon)').should('not.exist')
@@ -545,7 +545,7 @@ describe('Med samtykke - Offentlig tjenestepensjon', () => {
           })
 
           it('forventer jeg at AFP ikke vises i graf og tabell.', () => {
-            cy.contains('AFP (avtalefestet pensjon)').should('not.exist')
+            cy.contains('AFP (avtalefestet pensjon)').should('not.be.visible')
             cy.contains('Vis tabell av beregningen').click()
             cy.get('td button').first().click()
             cy.contains('dt', 'AFP (avtalefestet pensjon)').should('not.exist')

@@ -25,6 +25,7 @@ describe('Med ufoeretrygd', () => {
         },
         {
           ...loependeVedtakMock,
+          harLoependeVedtak: true,
           ufoeretrygd: { grad: 90 },
         } satisfies LoependeVedtak
       ).as('getLoependeVedtak')
@@ -51,6 +52,7 @@ describe('Med ufoeretrygd', () => {
         },
         {
           ...loependeVedtakMock,
+          harLoependeVedtak: true,
           ufoeretrygd: { grad: 90 },
         } satisfies LoependeVedtak
       ).as('getLoependeVedtak')
@@ -80,7 +82,7 @@ describe('Med ufoeretrygd', () => {
         cy.contains('button', '67 år').click()
         cy.contains('AFP: Nei').click()
         cy.contains(
-          'Starter du i jobb hos en arbeidsgiver som har avtale om AFP, må du være oppmerksom på at AFP og uføretrygd ikke kan kombineres. Du må velge mellom AFP og uføretrygd før du er 62 år.'
+          'Du har svart at du ikke har rett til AFP. Derfor vises ikke AFP i beregningen. Du kan endre valgene dine for AFP ved å gå tilbake til AFP (avtalefestet pensjon).'
         ).should('exist')
       })
     })
@@ -96,7 +98,10 @@ describe('Med ufoeretrygd', () => {
         cy.contains('button', 'Neste').click()
         cy.contains('Uføretrygd og AFP (avtalefestet pensjon)').should('exist')
         cy.contains(
-          'Gå videre for å se alderspensjon fra Nav og pensjonsavtaler.'
+          'AFP og uføretrygd kan ikke kombineres. Hvis du ikke gir oss beskjed, mister du retten til AFP (men beholder uføretrygden).'
+        ).should('exist')
+        cy.contains(
+          'Før du fyller 62 år må du velge mellom å få AFP eller å beholde uføretrygden.'
         ).should('exist')
         cy.contains('button', 'Neste').click()
       })
@@ -125,7 +130,10 @@ describe('Med ufoeretrygd', () => {
         cy.contains('button', 'Neste').click()
         cy.contains('Uføretrygd og AFP (avtalefestet pensjon)').should('exist')
         cy.contains(
-          'Gå videre for å se alderspensjon fra Nav og pensjonsavtaler.'
+          'AFP og uføretrygd kan ikke kombineres. Hvis du ikke gir oss beskjed, mister du retten til AFP (men beholder uføretrygden).'
+        ).should('exist')
+        cy.contains(
+          'Før du fyller 62 år må du velge mellom å få AFP eller å beholde uføretrygden.'
         ).should('exist')
         cy.contains('button', 'Neste').click()
       })
@@ -135,13 +143,12 @@ describe('Med ufoeretrygd', () => {
         cy.contains('button', 'Neste').click()
         cy.get('[type="radio"]').eq(1).check()
         cy.contains('button', 'Neste').click()
+        cy.get('[type="radio"]').eq(0).check()
+        cy.contains('button', 'Neste').click()
         cy.contains('button', '67 år').click()
-        cy.contains('AFP: Offentlig (Ikke beregnet)').click()
+        cy.contains('AFP: Offentlig (ikke beregnet)').click()
         cy.contains(
-          'Når du mottar uføretrygd, kan du ikke beregne AFP i kalkulatoren. AFP og uføretrygd kan ikke kombineres, og får du utbetalt uføretrygd etter du fyller 62 år mister du retten til AFP.'
-        ).should('exist')
-        cy.contains(
-          'For mer informasjon om AFP, kontakt din tjenestepensjonsordning.'
+          'Du har oppgitt AFP i offentlig sektor, men du har ikke samtykket til at Nav beregner den. Derfor vises ikke AFP i beregningen.'
         ).should('exist')
       })
     })
@@ -157,7 +164,10 @@ describe('Med ufoeretrygd', () => {
         cy.contains('button', 'Neste').click()
         cy.contains('Uføretrygd og AFP (avtalefestet pensjon)').should('exist')
         cy.contains(
-          'Gå videre for å se alderspensjon fra Nav og pensjonsavtaler.'
+          'AFP og uføretrygd kan ikke kombineres. Hvis du ikke gir oss beskjed, mister du retten til AFP (men beholder uføretrygden).'
+        ).should('exist')
+        cy.contains(
+          'Før du fyller 62 år må du velge mellom å få AFP eller å beholde uføretrygden.'
         ).should('exist')
         cy.contains('button', 'Neste').click()
       })
@@ -168,13 +178,10 @@ describe('Med ufoeretrygd', () => {
         cy.get('[type="radio"]').eq(1).check()
         cy.contains('button', 'Neste').click()
         cy.contains('button', '67 år').click()
-        cy.contains('AFP: Privat (Ikke beregnet)').click()
+        cy.contains('AFP: Privat (ikke beregnet)').click()
         cy.contains(
-          'Når du mottar uføretrygd, kan du ikke beregne AFP i kalkulatoren. AFP og uføretrygd kan ikke kombineres, og får du utbetalt uføretrygd etter du fyller 62 år mister du retten til AFP.'
+          'AFP og uføretrygd kan ikke kombineres, og får du utbetalt uføretrygd etter at du fyller 62 år mister du retten til AFP. Du må derfor velge mellom AFP og uføretrygd før du er 62 år.'
         ).should('exist')
-        cy.contains('Ønsker du hjelp til å vurdere alternativene dine').should(
-          'exist'
-        )
       })
     })
   })
@@ -195,6 +202,7 @@ describe('Med ufoeretrygd', () => {
         },
         {
           ...loependeVedtakMock,
+          harLoependeVedtak: true,
           ufoeretrygd: { grad: 90 },
         } satisfies LoependeVedtak
       ).as('getLoependeVedtak')
@@ -207,8 +215,8 @@ describe('Med ufoeretrygd', () => {
         cy.contains('button', '67 år').click()
       })
 
-      it('forventer jeg at informasjon om AFP ikke står i grunnlaget.', () => {
-        cy.contains('AFP').should('not.exist')
+      it('forventer jeg at informasjon om AFP står i grunnlaget.', () => {
+        cy.contains('AFP').should('exist')
       })
     })
   })
@@ -222,6 +230,7 @@ describe('Med ufoeretrygd', () => {
         },
         {
           ...loependeVedtakMock,
+          harLoependeVedtak: true,
           ufoeretrygd: { grad: 100 },
         } satisfies LoependeVedtak
       ).as('getLoependeVedtak')
@@ -261,6 +270,7 @@ describe('Med ufoeretrygd', () => {
         },
         {
           ...loependeVedtakMock,
+          harLoependeVedtak: true,
           ufoeretrygd: { grad: 75 },
         } satisfies LoependeVedtak
       ).as('getLoependeVedtak')
@@ -305,6 +315,7 @@ describe('Med ufoeretrygd', () => {
         },
         {
           ...loependeVedtakMock,
+          harLoependeVedtak: true,
           ufoeretrygd: { grad: 100 },
         } satisfies LoependeVedtak
       ).as('getLoependeVedtak')
@@ -367,6 +378,7 @@ describe('Med ufoeretrygd', () => {
         },
         {
           ...loependeVedtakMock,
+          harLoependeVedtak: true,
           ufoeretrygd: { grad: 40 },
         } satisfies LoependeVedtak
       ).as('getLoependeVedtak')

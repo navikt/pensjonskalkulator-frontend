@@ -24,6 +24,7 @@ describe('VilkaarsproevingAlert', () => {
         ...userInputInitialState,
       },
     }
+
     it('Når det foreslåtte alternativet er den default normert pensjonsalder, vises det riktig tekst', () => {
       render(
         <VilkaarsproevingAlert
@@ -217,6 +218,7 @@ describe('VilkaarsproevingAlert', () => {
       uttaksgrad: undefined,
       heltUttaksalder: { aar: 65, maaneder: 3 },
     }
+
     const mockedState = {
       api: {
         queries: {
@@ -227,6 +229,148 @@ describe('VilkaarsproevingAlert', () => {
         ...userInputInitialState,
       },
     }
+
+    it('Når det finnes et alternativ, vises det riktig intro tekst', () => {
+      render(
+        <VilkaarsproevingAlert
+          alternativ={{
+            ...alternativ,
+            gradertUttaksalder: { aar: 68, maaneder: 5 },
+            uttaksgrad: 40,
+          }}
+          uttaksalder={uttaksalder}
+          withAFP
+        />,
+        {
+          // @ts-ignore
+          preloadedState: {
+            ...mockedState,
+          },
+        }
+      )
+      expect(
+        screen.getByText('beregning.vilkaarsproeving.medAFP.intro', {
+          exact: false,
+        })
+      ).toBeInTheDocument()
+    })
+
+    it('Når det er gradert uttak med samme helt uttaksalder, vises det riktig tekst', () => {
+      render(
+        <VilkaarsproevingAlert
+          alternativ={{
+            ...alternativ,
+            heltUttaksalder: { ...uttaksalder },
+            gradertUttaksalder: { aar: 65, maaneder: 3 },
+            uttaksgrad: 40,
+          }}
+          uttaksalder={uttaksalder}
+          withAFP
+        />,
+        {
+          // @ts-ignore
+          preloadedState: {
+            ...mockedState,
+          },
+        }
+      )
+
+      expect(
+        screen.getByText('Et alternativ er at du ved 62 alder.aar kan ta ut ', {
+          exact: false,
+        })
+      ).toBeInTheDocument()
+
+      expect(
+        screen.getByText('alderspensjon. Prøv gjerne andre kombinasjoner.', {
+          exact: false,
+        })
+      ).toBeInTheDocument()
+    })
+
+    it('Når det er gradert uttak med ulik helt uttaksalder, vises det riktig tekst', () => {
+      render(
+        <VilkaarsproevingAlert
+          alternativ={{
+            ...alternativ,
+            gradertUttaksalder: { aar: 68, maaneder: 5 },
+            uttaksgrad: 40,
+          }}
+          uttaksalder={uttaksalder}
+          withAFP
+        />,
+        {
+          // @ts-ignore
+          preloadedState: {
+            ...mockedState,
+            userInput: {
+              ...userInputInitialState,
+              currentSimulation: {
+                ...userInputInitialState.currentSimulation,
+                gradertUttaksperiode: {
+                  grad: 60,
+                  uttaksalder: { aar: 65, maaneder: 3 },
+                },
+              },
+            },
+          },
+        }
+      )
+
+      expect(
+        screen.getByText('Et alternativ er at du ved 62 alder.aar kan ta ut ', {
+          exact: false,
+        })
+      ).toBeInTheDocument()
+
+      expect(
+        screen.getByText(
+          'alderspensjon ved 65 år og 3 måneder eller senere. Prøv gjerne andre kombinasjoner.',
+          {
+            exact: false,
+          }
+        )
+      ).toBeInTheDocument()
+    })
+
+    it('Når det er gradert uttak med ulik helt uttaksalder, vises det riktig tekst ved 100% uttaksgrad', () => {
+      render(
+        <VilkaarsproevingAlert
+          alternativ={{
+            ...alternativ,
+            gradertUttaksalder: { aar: 68, maaneder: 5 },
+            uttaksgrad: 40,
+          }}
+          uttaksalder={uttaksalder}
+          withAFP
+        />,
+        {
+          // @ts-ignore
+          preloadedState: {
+            ...mockedState,
+            userInput: {
+              ...userInputInitialState,
+              currentSimulation: {
+                ...userInputInitialState.currentSimulation,
+                gradertUttaksperiode: null,
+              },
+            },
+          },
+        }
+      )
+
+      expect(
+        screen.getByText('Et alternativ er at du ved 62 alder.aar kan ta ut ', {
+          exact: false,
+        })
+      ).toBeInTheDocument()
+
+      expect(
+        screen.getByText('alderspensjon. Prøv gjerne andre kombinasjoner.', {
+          exact: false,
+        })
+      ).toBeInTheDocument()
+    })
 
     it('Når det ikke er nok opptjening, vises det riktig tekst', () => {
       render(
@@ -252,18 +396,26 @@ describe('VilkaarsproevingAlert', () => {
         )
       ).toBeInTheDocument()
     })
+  })
+  describe('Gitt at brukeren har valgt å beregne AFP etterfulgt av alderspensjon', () => {
+    const uttaksalder = { aar: 63, maaneder: 3 }
+    const mockedState = {
+      api: {
+        queries: {
+          ...fulfilledGetPerson,
+        },
+      },
+      userInput: {
+        ...userInputInitialState,
+        afpUtregningValg: 'AFP_ETTERFULGT_AV_ALDERSPENSJON',
+      },
+    }
 
-    it('Når det er gradert uttak med samme helt uttaksalder, vises det riktig tekst', () => {
+    it('Når brukerens vilkaar ikke er oppfylt', () => {
       render(
         <VilkaarsproevingAlert
-          alternativ={{
-            ...alternativ,
-            heltUttaksalder: { ...uttaksalder },
-            gradertUttaksalder: { aar: 65, maaneder: 3 },
-            uttaksgrad: 40,
-          }}
+          alternativ={undefined}
           uttaksalder={uttaksalder}
-          withAFP
         />,
         {
           // @ts-ignore
@@ -273,55 +425,9 @@ describe('VilkaarsproevingAlert', () => {
         }
       )
 
-      expect(
-        screen.getByText('beregning.vilkaarsproeving.medAFP.intro', {
-          exact: false,
-        })
-      ).toBeInTheDocument()
-      expect(
-        screen.getByText('Et alternativ er at du ved 62 alder.aar kan ta ut ', {
-          exact: false,
-        })
-      ).toBeInTheDocument()
-      expect(
-        screen.getByText('alderspensjon. Prøv gjerne andre kombinasjoner.', {
-          exact: false,
-        })
-      ).toBeInTheDocument()
-    })
-
-    it('Når det er gradert uttak med ulik helt uttaksalder, vises det riktig tekst', () => {
-      render(
-        <VilkaarsproevingAlert
-          alternativ={{
-            ...alternativ,
-            gradertUttaksalder: { aar: 68, maaneder: 5 },
-            uttaksgrad: 40,
-          }}
-          uttaksalder={uttaksalder}
-          withAFP
-        />,
-        {
-          // @ts-ignore
-          preloadedState: {
-            ...mockedState,
-          },
-        }
-      )
-
-      expect(
-        screen.getByText('beregning.vilkaarsproeving.medAFP.intro', {
-          exact: false,
-        })
-      ).toBeInTheDocument()
-      expect(
-        screen.getByText('Et alternativ er at du ved 62 alder.aar kan ta ut ', {
-          exact: false,
-        })
-      ).toBeInTheDocument()
       expect(
         screen.getByText(
-          'alderspensjon ved 65 år og 3 måneder eller senere. Prøv gjerne andre kombinasjoner.',
+          'Med opplysninger vi har om deg, oppfyller du ikke vilkårene for AFP.',
           {
             exact: false,
           }

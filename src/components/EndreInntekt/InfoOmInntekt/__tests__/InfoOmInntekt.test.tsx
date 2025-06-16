@@ -3,7 +3,7 @@ import { render } from '@/test-utils'
 import { InfoOmInntekt } from '..'
 
 describe('InfoModalInntekt', () => {
-  it('viser fast info om inntekt', () => {
+  it('viser fast info om inntekt', async () => {
     const { getByTestId } = render(<InfoOmInntekt />)
 
     // Check for lists

@@ -1,7 +1,10 @@
+import { FormattedMessage } from 'react-intl'
 import { Navigate, Outlet, RouteObject } from 'react-router'
 
+import { Loader } from '@/components/common/Loader'
 import { PageFramework } from '@/components/common/PageFramework'
 import { Beregning } from '@/pages/Beregning'
+import { ErrorSecurityLevel } from '@/pages/ErrorSecurityLevel'
 import { Forbehold } from '@/pages/Forbehold'
 import { Henvisning } from '@/pages/Henvisning'
 import { IngenTilgang } from '@/pages/IngenTilgang'
@@ -21,18 +24,29 @@ import { ErrorPage404 } from './RouteErrorBoundary/ErrorPage404'
 import { paths } from './constants'
 import {
   authenticationGuard,
+  beregningEnkelAccessGuard,
   directAccessGuard,
   landingPageAccessGuard,
   stepAFPAccessGuard,
   stepSamtykkeOffentligAFPAccessGuard,
+  stepSamtykkePensjonsavtaler,
   stepSivilstandAccessGuard,
   stepStartAccessGuard,
   stepUfoeretrygdAFPAccessGuard,
+  stepUtenlandsoppholdAccessGuard,
 } from './loaders'
+
+const fallback = (
+  <Loader
+    size="3xlarge"
+    title={<FormattedMessage id="pageframework.loading" />}
+  />
+)
 
 export const routes: RouteObject[] = [
   {
     loader: authenticationGuard,
+    hydrateFallbackElement: fallback,
     element: (
       <PageFramework
         shouldShowLogo
@@ -57,6 +71,7 @@ export const routes: RouteObject[] = [
   },
   {
     loader: authenticationGuard,
+    hydrateFallbackElement: fallback,
     element: (
       <PageFramework>
         <Outlet />
@@ -83,7 +98,7 @@ export const routes: RouteObject[] = [
         element: <StepSivilstand />,
       },
       {
-        loader: directAccessGuard,
+        loader: stepUtenlandsoppholdAccessGuard,
         path: paths.utenlandsopphold,
         element: <StepUtenlandsopphold />,
       },
@@ -103,7 +118,7 @@ export const routes: RouteObject[] = [
         element: <StepSamtykkeOffentligAFP />,
       },
       {
-        loader: directAccessGuard,
+        loader: stepSamtykkePensjonsavtaler,
         path: paths.samtykke,
         element: <StepSamtykkePensjonsavtaler />,
       },
@@ -122,19 +137,25 @@ export const routes: RouteObject[] = [
         path: paths.ingenTilgang,
         element: <IngenTilgang />,
       },
+      {
+        loader: directAccessGuard,
+        path: paths.lavtSikkerhetsnivaa,
+        element: <ErrorSecurityLevel />,
+      },
     ],
   },
   {
     loader: authenticationGuard,
+    // showLoader={false} trengs for at det skal virke å vise modal i avansert skjema når man trykker på tilbakeknappen i nettleseren
     element: (
-      <PageFramework isFullWidth hasWhiteBg>
+      <PageFramework isFullWidth hasWhiteBg showLoader={false}>
         <Outlet />
       </PageFramework>
     ),
     ErrorBoundary: RouteErrorBoundary,
     children: [
       {
-        loader: directAccessGuard,
+        loader: beregningEnkelAccessGuard,
         path: paths.beregningEnkel,
         element: <Beregning visning="enkel" />,
       },

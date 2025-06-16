@@ -22,17 +22,20 @@ export type AvansertFormNames =
   (typeof AVANSERT_FORM_NAMES)[keyof typeof AVANSERT_FORM_NAMES]
 
 export const AVANSERT_FORM_NAMES = {
-  form: 'avansert-beregning',
+  beregningsTypeRadio: 'beregnings-type-radio',
   endringAlertFremtidigDato: 'endring-alert-fremtidig-dato',
-  uttaksgrad: 'uttaksgrad',
-  uttaksalderHeltUttak: 'uttaksalder-helt-uttak',
-  uttaksalderGradertUttak: 'uttaksalder-gradert-uttak',
-  inntektVsaHeltUttakRadio: 'inntekt-vsa-helt-uttak-radio',
+  form: 'avansert-beregning',
+  inntektVsaGradertUttak: 'inntekt-vsa-gradert-uttak',
   inntektVsaGradertUttakRadio: 'inntekt-vsa-gradert-uttak-radio',
   inntektVsaHeltUttak: 'inntekt-vsa-helt-uttak',
+  inntektVsaHeltUttakRadio: 'inntekt-vsa-helt-uttak-radio',
   inntektVsaHeltUttakSluttAlder: 'inntekt-vsa-helt-uttak-slutt-alder',
-  inntektVsaGradertUttak: 'inntekt-vsa-gradert-uttak',
-  beregningsTypeRadio: 'beregnings-type-radio',
+  afpInntektMaanedFoerUttakRadio: 'afp-inntekt-maaned-foer-uttak-radio',
+  inntektVsaAfpRadio: 'inntekt-vsa-afp-radio',
+  inntektVsaAfp: 'inntekt-vsa-afp',
+  uttaksgrad: 'uttaksgrad',
+  uttaksalderGradertUttak: 'uttaksalder-gradert-uttak',
+  uttaksalderHeltUttak: 'uttaksalder-helt-uttak',
 }
 
 const validateAlderForGradertUttak = (
@@ -157,7 +160,7 @@ const validateEndringGradertUttak = (
       logger('skjema validering feilet', {
         skjemanavn: AVANSERT_FORM_NAMES.form,
         data: 'Avansert - For tidlig endring av gradert uttak',
-        tekst: `Uttaksdato ${uttaksdato} er før ${formatertDato}`,
+        tekst: `Uttaksdato ${uttaksdato} er før ${formatertDato}`, // eslint-disable-line @typescript-eslint/restrict-template-expressions
       })
       window.scrollTo(0, 0)
       return false
@@ -180,13 +183,17 @@ export const validateAvansertBeregningSkjema = (
     inntektVsaHeltUttakSluttAlderAarFormData: FormDataEntryValue | null
     inntektVsaHeltUttakSluttAlderMaanederFormData: FormDataEntryValue | null
     inntektVsaGradertUttakFormData: FormDataEntryValue | null
+    afpInntektMaanedFoerUttakRadioFormData: FormDataEntryValue | null
+    inntektVsaAfpRadioFormData: FormDataEntryValue | null
+    inntektVsaAfpFormData: FormDataEntryValue | null
   },
   foedselsdato: string,
   normertPensjonsalder: Alder,
   loependeVedtak: LoependeVedtak,
   updateValidationErrorMessage: React.Dispatch<
     React.SetStateAction<Record<string, string>>
-  >
+  >,
+  validerKap19Afp: boolean = false
 ) => {
   const {
     beregningsvalgFormData,
@@ -201,6 +208,9 @@ export const validateAvansertBeregningSkjema = (
     inntektVsaHeltUttakSluttAlderAarFormData,
     inntektVsaHeltUttakSluttAlderMaanederFormData,
     inntektVsaGradertUttakFormData,
+    afpInntektMaanedFoerUttakRadioFormData,
+    inntektVsaAfpRadioFormData,
+    inntektVsaAfpFormData,
   } = inputData
 
   let isValid = true
@@ -230,6 +240,46 @@ export const validateAvansertBeregningSkjema = (
     )
   ) {
     isValid = false
+  }
+
+  if (validerKap19Afp) {
+    // Sjekker at radio for afpInntektMaanedFoerUttak er fylt ut
+    if (!afpInntektMaanedFoerUttakRadioFormData) {
+      isValid = false
+      updateValidationErrorMessage((prevState) => {
+        return {
+          ...prevState,
+          [AVANSERT_FORM_NAMES.afpInntektMaanedFoerUttakRadio]:
+            'beregning.avansert.rediger.radio.afp_inntekt_maaned_foer_uttak.validation_error',
+        }
+      })
+    }
+
+    // Sjekker at radio for InntektVsaAfpRadio er fylt ut
+    if (!inntektVsaAfpRadioFormData) {
+      isValid = false
+      updateValidationErrorMessage((prevState) => {
+        return {
+          ...prevState,
+          [AVANSERT_FORM_NAMES.inntektVsaAfpRadio]:
+            'beregning.avansert.rediger.radio.inntekt_vsa_afp.validation_error',
+        }
+      })
+    }
+
+    // Sjekker at radio for InntektVsaAfp er fylt ut
+    if (inntektVsaAfpRadioFormData === 'ja' && !inntektVsaAfpFormData) {
+      isValid = false
+      updateValidationErrorMessage((prevState) => {
+        return {
+          ...prevState,
+          [AVANSERT_FORM_NAMES.inntektVsaAfp]:
+            'beregning.avansert.rediger.inntekt_vsa_afp.validation_error',
+        }
+      })
+    }
+
+    return isValid
   }
 
   // Sjekker at uttaksgrad er fylt ut med en prosent
@@ -508,7 +558,8 @@ export const onAvansertBeregningSubmit = (
     localInntektFremTilUttak: string | null
     hasVilkaarIkkeOppfylt: boolean | undefined
     harAvansertSkjemaUnsavedChanges: boolean
-  }
+  },
+  validerKap19Afp: boolean = false
 ): void => {
   const {
     foedselsdato,
@@ -519,6 +570,7 @@ export const onAvansertBeregningSubmit = (
     harAvansertSkjemaUnsavedChanges,
   } = previousData
 
+  // TODO: Vurder å sende inn verdiene fra controlled state i stedet for direkte fra skjemaet, for bedre typer (kan unngå `as string` o.l.)
   const beregningsvalgFormData = data.get(
     AVANSERT_FORM_NAMES.beregningsTypeRadio
   ) as Beregningsvalg | null
@@ -553,6 +605,13 @@ export const onAvansertBeregningSubmit = (
   const inntektVsaGradertUttakFormData = data.get(
     AVANSERT_FORM_NAMES.inntektVsaGradertUttak
   )
+  const afpInntektMaanedFoerUttakRadioFormData = data.get(
+    AVANSERT_FORM_NAMES.afpInntektMaanedFoerUttakRadio
+  )
+  const inntektVsaAfpRadioFormData = data.get(
+    AVANSERT_FORM_NAMES.inntektVsaAfpRadio
+  )
+  const inntektVsaAfpFormData = data.get(AVANSERT_FORM_NAMES.inntektVsaAfp)
   if (
     !validateAvansertBeregningSkjema(
       {
@@ -568,11 +627,15 @@ export const onAvansertBeregningSubmit = (
         inntektVsaHeltUttakSluttAlderAarFormData,
         inntektVsaHeltUttakSluttAlderMaanederFormData,
         inntektVsaGradertUttakFormData,
+        afpInntektMaanedFoerUttakRadioFormData,
+        inntektVsaAfpRadioFormData,
+        inntektVsaAfpFormData,
       },
       foedselsdato,
       normertPensjonsalder,
       loependeVedtak,
-      setValidationErrors
+      setValidationErrors,
+      validerKap19Afp
     )
   ) {
     return
@@ -593,7 +656,7 @@ export const onAvansertBeregningSubmit = (
   }
 
   logger('valg av uttaksalder for 100 % alderspensjon', {
-    tekst: `${heltUttakAarFormData} år og ${heltUttakMaanederFormData} md.`,
+    tekst: `${heltUttakAarFormData} år og ${heltUttakMaanederFormData} md.`, // eslint-disable-line @typescript-eslint/no-base-to-string, @typescript-eslint/restrict-template-expressions
   })
 
   if (uttaksgradFormData === '100 %') {
@@ -602,12 +665,46 @@ export const onAvansertBeregningSubmit = (
       tekst: 'Inntekt vsa. helt uttak',
       valg: inntektVsaHeltUttakRadioFormData ? 'ja' : 'nei',
     })
+  } else if (afpInntektMaanedFoerUttakRadioFormData) {
+    //afp etterfulgt av AP
+    const afpInntektMaanedFoerUttak =
+      afpInntektMaanedFoerUttakRadioFormData === 'ja'
+        ? true
+        : afpInntektMaanedFoerUttakRadioFormData === 'nei'
+          ? false
+          : null
+    dispatch(
+      userInputActions.setAfpInntektMaanedFoerUttak(afpInntektMaanedFoerUttak)
+    )
+    if (inntektVsaAfpRadioFormData === 'ja') {
+      dispatch(
+        userInputActions.setCurrentSimulationGradertUttaksperiode({
+          uttaksalder: {
+            aar: parseInt(heltUttakAarFormData as string, 10),
+            maaneder: parseInt(heltUttakMaanederFormData as string, 10),
+          },
+          grad: 100,
+          aarligInntektVsaPensjonBeloep: inntektVsaAfpFormData as string,
+        })
+      )
+    } else {
+      dispatch(
+        userInputActions.setCurrentSimulationGradertUttaksperiode({
+          uttaksalder: {
+            aar: parseInt(heltUttakAarFormData as string, 10),
+            maaneder: parseInt(heltUttakMaanederFormData as string, 10),
+          },
+          grad: 100,
+          aarligInntektVsaPensjonBeloep: undefined,
+        })
+      )
+    }
   } else {
     logger('valg av uttaksgrad', {
-      tekst: `${uttaksgradFormData}`,
+      tekst: `${uttaksgradFormData}`, // eslint-disable-line @typescript-eslint/no-base-to-string, @typescript-eslint/restrict-template-expressions
     })
     logger('valg av uttaksalder for gradert alderspensjon', {
-      tekst: `${gradertUttakAarFormData} år og ${gradertUttakMaanederFormData} md.`,
+      tekst: `${gradertUttakAarFormData} år og ${gradertUttakMaanederFormData} md.`, // eslint-disable-line @typescript-eslint/no-base-to-string, @typescript-eslint/restrict-template-expressions
     })
     if (inntektVsaGradertUttakFormData) {
       logger('radiogroup valgt', {

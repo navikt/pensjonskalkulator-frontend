@@ -123,30 +123,6 @@ beforeEach(() => {
   cy.intercept(
     {
       method: 'GET',
-      url: '/pensjon/kalkulator/api/feature/pensjonskalkulator.hent-tekster-fra-sanity',
-    },
-    { fixture: 'toggle-enable-sanity.json' }
-  ).as('getFeatureToggleRedirect1963')
-
-  cy.intercept(
-    {
-      method: 'GET',
-      url: '/pensjon/kalkulator/api/feature/pensjonskalkulator.vis-otp-fra-klp',
-    },
-    { fixture: 'toggle-otp-fra-klp.json' }
-  ).as('getFeatureToggleOtpFraKlp')
-
-  cy.intercept(
-    {
-      method: 'GET',
-      url: '/pensjon/kalkulator/api/feature/pensjonskalkulator.gradert-ufoere-afp',
-    },
-    { fixture: 'toggle-gradert-ufoere-afp.json' }
-  ).as('getGradertUfoereAfpFeatureToggle')
-
-  cy.intercept(
-    {
-      method: 'GET',
       url: '/pensjon/kalkulator/api/feature/pensjonskalkulator.vedlikeholdsmodus',
     },
     { enabled: false }
@@ -231,38 +207,6 @@ beforeEach(() => {
       virkningstidspunktForMinsteinntekt: '2024-06-03',
     }
   ).as('getGrunnbeløp')
-
-  cy.intercept(
-    {
-      method: 'GET',
-      url: `https://g2by7q6m.apicdn.sanity.io/v2023-05-03/data/query/development?query=*%5B_type+%3D%3D+%22readmore%22+%26%26+language+%3D%3D+%22nb%22%5D*`,
-    },
-    { fixture: 'sanity-readmore-nb-data.json' }
-  ).as('fetchSanityReadMoreDataNb')
-
-  cy.intercept(
-    {
-      method: 'GET',
-      url: `https://g2by7q6m.apicdn.sanity.io/v2023-05-03/data/query/development?query=*%5B_type+%3D%3D+%22readmore%22+%26%26+language+%3D%3D+%22en%22%5D*`,
-    },
-    { fixture: 'sanity-readmore-en-data.json' }
-  ).as('fetchSanityReadMoreDataEn')
-
-  cy.intercept(
-    {
-      method: 'GET',
-      url: `https://g2by7q6m.apicdn.sanity.io/v2023-05-03/data/query/development?query=*%5B_type+%3D%3D+%22guidepanel%22+%26%26+language+%3D%3D+%22nb%22%5D*`,
-    },
-    { fixture: 'sanity-guidepanel-nb-data.json' }
-  ).as('fetchSanityGuidePanelDataNb')
-
-  cy.intercept(
-    {
-      method: 'GET',
-      url: `https://g2by7q6m.apicdn.sanity.io/v2023-05-03/data/query/development?query=*%5B_type+%3D%3D+%22forbeholdAvsnitt%22+%26%26*`,
-    },
-    { fixture: 'sanity-forbehold-avsnitt-data.json' }
-  ).as('fetchSanityForbeholdAvsnittData')
 
   cy.intercept(
     { url: 'https://api.uxsignals.com/v2/study/id/*/active' },

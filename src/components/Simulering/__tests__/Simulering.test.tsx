@@ -12,7 +12,7 @@ import {
   Simulation,
   userInputInitialState,
 } from '@/state/userInput/userInputSlice'
-import { act, render, screen, waitFor } from '@/test-utils'
+import { act, render, screen } from '@/test-utils'
 
 import afpOffentligData from '../../../mocks/data/afp-offentlig.json' with { type: 'json' }
 import afpPrivatData from '../../../mocks/data/afp-privat/67.json' with { type: 'json' }
@@ -40,6 +40,7 @@ describe('Simulering', () => {
         requestId: 'xTaE6mOydr5ZI75UXq4Wi',
         startedTimeStamp: 1688046411971,
         data: {
+          harLoependeVedtak: true,
           ufoeretrygd: { grad: 75 },
         } satisfies LoependeVedtak,
         fulfilledTimeStamp: 1688046412103,
@@ -811,11 +812,8 @@ describe('Simulering', () => {
         }
       )
 
-      await waitFor(async () => {
-        expect(
-          await screen.findByTestId('highcharts-done-drawing')
-        ).toBeVisible()
-      })
+      expect(await screen.findByTestId('highcharts-done-drawing')).toBeVisible()
+
       // Nødvendig for at animasjonen rekker å bli ferdig
       await act(async () => {
         await new Promise((r) => setTimeout(r, 500))
@@ -1029,9 +1027,7 @@ describe('Simulering', () => {
       expect(
         screen.getByText('beregning.highcharts.serie.tp.name')
       ).toBeVisible()
-      await waitFor(async () => {
-        expect(screen.getByTestId('pensjonsavtaler-alert')).toBeVisible()
-      })
+      expect(screen.getByTestId('pensjonsavtaler-alert')).toBeVisible()
     })
 
     it('Når brukeren med offentlig-tp ikke har noe privat pensjonsavtale, viser inntekt, alderspensjon og pensjonsavtaler.', async () => {
@@ -1120,9 +1116,7 @@ describe('Simulering', () => {
     const highChartsWrapper = await screen.findByTestId(
       'highcharts-aria-wrapper'
     )
-    await waitFor(() => {
-      expect(highChartsWrapper.getAttribute('aria-hidden')).toBe('true')
-    })
+    expect(highChartsWrapper.getAttribute('aria-hidden')).toBe('true')
   })
 
   describe('Gitt at simuleringen er i enkel visning', () => {
@@ -1155,6 +1149,41 @@ describe('Simulering', () => {
       )
       expect(screen.getByText('beregning.highcharts.title')).toBeVisible()
       expect(screen.getByText('beregning.highcharts.ingress')).toBeVisible()
+    })
+  })
+
+  describe('Gitt at simuleringen er i avansert visning', () => {
+    it('viser MaanedsbeloepAvansertBeregning komponenten når alle betingelsene er oppfylt', async () => {
+      render(
+        <Simulering
+          visning="avansert"
+          isLoading={false}
+          headingLevel="3"
+          alderspensjonListe={alderspensjonData.alderspensjon}
+          afpPrivatListe={afpPrivatData.afpPrivat}
+          showButtonsAndTable={true}
+          aarligInntektFoerUttakBeloep="500 000"
+        />,
+        {
+          preloadedState: {
+            api: {
+              /* @ts-ignore */
+              queries: {
+                ...fulfilledGetPerson,
+              },
+            },
+            userInput: {
+              ...userInputInitialState,
+              samtykke: true,
+              currentSimulation: { ...currentSimulation },
+            },
+          },
+        }
+      )
+
+      expect(
+        await screen.findByTestId('maanedsbloep-avansert-beregning')
+      ).toBeVisible()
     })
   })
 })

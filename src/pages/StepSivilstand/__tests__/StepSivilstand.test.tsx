@@ -2,7 +2,7 @@ import { RouterProvider, createMemoryRouter } from 'react-router'
 import { describe, it, vi } from 'vitest'
 
 import {
-  fulfilledGetGrunnbelop,
+  fulfilledGetGrunnbeloep,
   fulfilledGetPerson,
 } from '@/mocks/mockedRTKQueryApiCalls'
 import { BASE_PATH, paths } from '@/router/constants'
@@ -12,8 +12,6 @@ import { store } from '@/state/store'
 import { userInputInitialState } from '@/state/userInput/userInputSlice'
 import * as userInputReducerUtils from '@/state/userInput/userInputSlice'
 import { render, screen, userEvent, waitFor } from '@/test-utils'
-
-const initialGetState = store.getState
 
 const navigateMock = vi.fn()
 vi.mock(import('react-router'), async (importOriginal) => {
@@ -30,7 +28,7 @@ describe('StepSivilstand', () => {
       api: {
         queries: {
           ...fulfilledGetPerson,
-          ...fulfilledGetGrunnbelop,
+          ...fulfilledGetGrunnbeloep,
         },
       },
       userInput: {
@@ -44,10 +42,9 @@ describe('StepSivilstand', () => {
     vi.clearAllMocks()
     vi.resetAllMocks()
     vi.resetModules()
-    store.getState = initialGetState
   })
 
-  it('har riktig sidetittel og viser loader mens loaderen fetcher data', async () => {
+  it('har riktig sidetittel', async () => {
     const router = createMemoryRouter(routes, {
       basename: BASE_PATH,
       initialEntries: [`${BASE_PATH}${paths.sivilstand}`],
@@ -57,9 +54,6 @@ describe('StepSivilstand', () => {
     })
     await waitFor(async () => {
       expect(document.title).toBe('application.title.stegvisning.sivilstand')
-    })
-    await waitFor(async () => {
-      expect(await screen.findByTestId('sivilstand-loader')).toBeVisible()
     })
   })
 

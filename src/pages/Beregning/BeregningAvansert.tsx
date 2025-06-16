@@ -12,7 +12,6 @@ import { GrunnlagForbehold } from '@/components/GrunnlagForbehold'
 import { InfoOmLoependeVedtak } from '@/components/InfoOmLoependeVedtak'
 import { Pensjonsavtaler } from '@/components/Pensjonsavtaler'
 import { RedigerAvansertBeregning } from '@/components/RedigerAvansertBeregning'
-import { ResultatkortAvansertBeregning } from '@/components/ResultatkortAvansertBeregning'
 import { SavnerDuNoe } from '@/components/SavnerDuNoe'
 import { Simulering } from '@/components/Simulering'
 import { Alert as AlertDashBorder } from '@/components/common/Alert'
@@ -29,6 +28,7 @@ import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
   selectAarligInntektFoerUttakBeloep,
   selectAfp,
+  selectAfpInntektMaanedFoerUttak,
   selectCurrentSimulation,
   selectEpsHarInntektOver2G,
   selectEpsHarPensjon,
@@ -37,6 +37,7 @@ import {
   selectNormertPensjonsalder,
   selectSamtykkeOffentligAFP,
   selectSivilstand,
+  selectSkalBeregneAfpKap19,
   selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
 import { formatUttaksalder } from '@/utils/alder'
@@ -55,6 +56,7 @@ export const BeregningAvansert = () => {
 
   const harSamtykketOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
   const afp = useAppSelector(selectAfp)
+  const skalBeregneAfpKap19 = useAppSelector(selectSkalBeregneAfpKap19)
   const isEndring = useAppSelector(selectIsEndring)
   const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const aarligInntektFoerUttakBeloep = useAppSelector(
@@ -65,6 +67,9 @@ export const BeregningAvansert = () => {
   const epsHarInntektOver2G = useAppSelector(selectEpsHarInntektOver2G)
   const sivilstand = useAppSelector(selectSivilstand)
   const { data: person } = useGetPersonQuery()
+  const afpInntektMaanedFoerUttak = useAppSelector(
+    selectAfpInntektMaanedFoerUttak
+  )
 
   const normertPensjonsalder = useAppSelector(selectNormertPensjonsalder)
   const utenlandsperioder = useAppSelector(selectUtenlandsperioder)
@@ -85,6 +90,7 @@ export const BeregningAvansert = () => {
         return generateAlderspensjonRequestBody({
           loependeVedtak,
           afp: afp === 'ja_offentlig' && !harSamtykketOffentligAFP ? null : afp,
+          skalBeregneAfpKap19: skalBeregneAfpKap19,
           sivilstand: sivilstand,
           epsHarPensjon: epsHarPensjon,
           epsHarInntektOver2G: epsHarInntektOver2G,
@@ -97,6 +103,7 @@ export const BeregningAvansert = () => {
           },
           utenlandsperioder,
           beregningsvalg,
+          afpInntektMaanedFoerUttak: afpInntektMaanedFoerUttak,
         })
       }
     }, [
@@ -198,6 +205,29 @@ export const BeregningAvansert = () => {
           styles.container__hasTopMargin
         )}
       >
+        <Link
+          href="#"
+          className={styles.link}
+          onClick={(e) => {
+            e?.preventDefault()
+            logger('button klikk', {
+              tekst: isEndring
+                ? 'Beregning avansert: Endre valgene dine'
+                : 'Beregning avansert: Endre avanserte valg',
+            })
+            setAvansertSkjemaModus('redigering')
+          }}
+        >
+          <ArrowLeftIcon aria-hidden fontSize="1.5rem" />
+          <FormattedMessage
+            id={
+              isEndring
+                ? 'beregning.avansert.link.endre_valgene_dine'
+                : 'beregning.avansert.link.endre_avanserte_valg'
+            }
+          />
+        </Link>
+
         {isError ? (
           <>
             <Heading level="2" size="medium">
@@ -207,36 +237,9 @@ export const BeregningAvansert = () => {
             <AlertDashBorder onRetry={isError ? onRetry : undefined}>
               {isError && <FormattedMessage id="beregning.error" />}
             </AlertDashBorder>
-
-            <ResultatkortAvansertBeregning
-              onButtonClick={() => setAvansertSkjemaModus('redigering')}
-            />
           </>
         ) : (
           <>
-            <Link
-              href="#"
-              className={styles.link}
-              onClick={(e) => {
-                e?.preventDefault()
-                logger('button klikk', {
-                  tekst: isEndring
-                    ? 'Beregning avansert: Endre valgene dine'
-                    : 'Beregning avansert: Endre avanserte valg',
-                })
-                setAvansertSkjemaModus('redigering')
-              }}
-            >
-              <ArrowLeftIcon aria-hidden fontSize="1.5rem" />
-              <FormattedMessage
-                id={
-                  isEndring
-                    ? 'beregning.avansert.link.endre_valgene_dine'
-                    : 'beregning.avansert.link.endre_avanserte_valg'
-                }
-              />
-            </Link>
-
             <div
               className={clsx(styles.intro, {
                 [styles.intro__endring]: isEndring,
@@ -298,6 +301,7 @@ export const BeregningAvansert = () => {
               headingLevel="3"
               aarligInntektFoerUttakBeloep={aarligInntektFoerUttakBeloep ?? '0'}
               alderspensjonListe={alderspensjon?.alderspensjon}
+              pre2025OffentligAfp={alderspensjon?.pre2025OffentligAfp}
               afpPrivatListe={
                 (afp === 'ja_privat' || loependeVedtak.afpPrivat) &&
                 alderspensjon?.afpPrivat
@@ -329,10 +333,6 @@ export const BeregningAvansert = () => {
               }
             />
 
-            <ResultatkortAvansertBeregning
-              onButtonClick={() => setAvansertSkjemaModus('redigering')}
-            />
-
             {beregningsvalg === 'med_afp' && (
               <SanityGuidePanel
                 id="vurderer_du_a_velge_afp"
@@ -355,6 +355,7 @@ export const BeregningAvansert = () => {
                       .pensjonBeholdningFoerUttakBeloep
                   : undefined
               }
+              isEndring={isEndring}
             />
           </>
         )}
@@ -362,15 +363,21 @@ export const BeregningAvansert = () => {
 
       {!isError && (
         <>
-          <div
-            className={clsx(styles.background, styles.background__lightblue)}
-          >
-            <div className={styles.container}>
-              <SavnerDuNoe headingLevel="3" isEndring={isEndring} />
+          {isEndring && (
+            <div
+              className={clsx(styles.background, styles.background__lightblue)}
+            >
+              <div className={styles.container}>
+                <SavnerDuNoe headingLevel="3" isEndring={isEndring} />
+              </div>
             </div>
-          </div>
+          )}
 
-          <div className={styles.container}>
+          <div
+            className={clsx(styles.container, {
+              [styles.container__endring]: !isEndring,
+            })}
+          >
             <GrunnlagForbehold headingLevel="3" />
           </div>
         </>
