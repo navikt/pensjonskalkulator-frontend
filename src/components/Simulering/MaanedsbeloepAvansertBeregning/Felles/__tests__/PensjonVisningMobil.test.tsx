@@ -44,7 +44,7 @@ describe('MobilePensjonVisning', () => {
       maaneder: 0,
     })
 
-    expect(screen.getByText('10 000 kr')).toBeVisible()
+    expect(screen.getByText(/10 000\s*kr/)).toBeVisible()
     expect(screen.getByText('5 000 kr')).toBeVisible()
     expect(screen.getByText('20 000 kr')).toBeVisible()
 
@@ -121,7 +121,7 @@ describe('MobilePensjonVisning', () => {
     expect(readMoreElements[0].getAttribute('aria-expanded')).toBe('true')
     expect(readMoreElements[1].getAttribute('aria-expanded')).toBe('false')
 
-    expect(screen.getByText('10 000 kr')).toBeInTheDocument()
+    expect(screen.getByText(/10 000\s*kr/)).toBeInTheDocument()
     expect(screen.getByText('5 000 kr')).toBeInTheDocument()
     expect(screen.getByText('20 000 kr')).toBeInTheDocument()
   })

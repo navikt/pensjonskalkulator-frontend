@@ -20,7 +20,7 @@ export interface Pensjonsdata {
   afp: number | undefined
   pensjonsavtale: number
   alderspensjon: number | undefined
-  pre2025OffentligAfp: number | undefined
+  pre2025OffentligAfp?: number
 }
 
 interface PensjonBeregningerProps {

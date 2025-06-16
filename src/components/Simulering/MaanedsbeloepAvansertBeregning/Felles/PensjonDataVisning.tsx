@@ -53,7 +53,7 @@ export const PensjonDataVisning: React.FC<Props> = ({
                 <FormattedMessage id="beregning.avansert.maanedsbeloep.afp" />:
               </BodyLong>
             </th>
-            <td>
+            <td data-testid="maanedsbeloep-avansert-afp">
               {pre2025OffentligAfp
                 ? formatInntekt(pre2025OffentligAfp)
                 : formatInntekt(afp)}
@@ -70,7 +70,9 @@ export const PensjonDataVisning: React.FC<Props> = ({
                 :
               </BodyLong>
             </th>
-            <td>{formatInntekt(pensjonsavtale)} kr</td>
+            <td data-testid="maanedsbeloep-avansert-pensjonsavtale">
+              {formatInntekt(pensjonsavtale)} kr
+            </td>
           </tr>
         )}
 
@@ -85,7 +87,9 @@ export const PensjonDataVisning: React.FC<Props> = ({
                 :
               </BodyLong>
             </th>
-            <td>{formatInntekt(alderspensjon)} kr</td>
+            <td data-testid="maanedsbeloep-avansert-alderspensjon">
+              {formatInntekt(alderspensjon)} kr
+            </td>
           </tr>
         )}
 

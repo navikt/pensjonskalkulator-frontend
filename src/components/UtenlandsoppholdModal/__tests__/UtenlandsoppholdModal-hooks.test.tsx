@@ -1,4 +1,4 @@
-import { add, endOfDay, parse } from 'date-fns'
+import { add, parse, startOfDay } from 'date-fns'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { describe, expect, it } from 'vitest'
@@ -31,14 +31,14 @@ describe('UtenlandsoppholdModal-hooks', () => {
     .slice(0, 10)
     .replace(/-/g, '')
 
-  const expectedHundredYearsBeforeNow = add(endOfDay(new Date()), {
+  const expectedHundredYearsBeforeNow = add(startOfDay(new Date()), {
     years: -100,
   })
     .toISOString()
     .slice(0, 10)
     .replace(/-/g, '')
 
-  const expectedHundredYearsAfterNow = add(endOfDay(new Date()), {
+  const expectedHundredYearsAfterNow = add(startOfDay(new Date()), {
     years: 100,
   })
     .toISOString()
@@ -172,7 +172,7 @@ describe('UtenlandsoppholdModal-hooks', () => {
           .slice(0, 10)
           .replace(/-/g, '')
       ).toStrictEqual(
-        endOfDay(new Date()).toISOString().slice(0, 10).replace(/-/g, '')
+        startOfDay(new Date()).toISOString().slice(0, 10).replace(/-/g, '')
       )
       expect(
         result.current[3].datepickerProps.toDate

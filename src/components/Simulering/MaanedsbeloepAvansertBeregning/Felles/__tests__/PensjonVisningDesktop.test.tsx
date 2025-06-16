@@ -53,9 +53,9 @@ describe('DesktopPensjonVisning', () => {
       maaneder: 0,
     })
 
-    expect(screen.getByText('10 000 kr')).toBeVisible()
+    expect(screen.getByText(/10 000\s*kr/)).toBeVisible()
     expect(screen.getByText('5 000 kr')).toBeVisible()
-    expect(screen.getByText('12 000 kr')).toBeVisible()
+    expect(screen.getByText(/12 000\s*kr/)).toBeVisible()
     expect(screen.getByText('6 000 kr')).toBeVisible()
   })
 
@@ -92,5 +92,34 @@ describe('DesktopPensjonVisning', () => {
 
     const dateText = screen.getByTestId('maanedsbeloep-desktop-title')
     expect(dateText).toContainElement(screen.queryByText(/(januar 2030)/))
+  })
+
+  it('viser kun AFP og Alerdspensjon for pre2025OffentligAfp', () => {
+    const mockPensjonsDataPre2025OffentligAfp = [
+      {
+        alder: { aar: 65, maaneder: 3 },
+        grad: 100,
+        afp: 0,
+        pensjonsavtale: 0,
+        alderspensjon: undefined,
+        pre2025OffentligAfp: 15000,
+      },
+      {
+        alder: { aar: 65, maaneder: 3 },
+        grad: 100,
+        afp: 0,
+        pensjonsavtale: 0,
+        alderspensjon: 20000,
+        pre2025OffentligAfp: 15000,
+      },
+    ]
+    render(
+      <PensjonVisningDesktop
+        pensjonsdata={mockPensjonsDataPre2025OffentligAfp}
+        summerYtelser={mockSummerYtelser}
+        hentUttaksmaanedOgAar={mockHentUttaksmaanedOgAar}
+      />
+    )
+    expect(mockSummerYtelser).toHaveBeenCalledTimes(2)
   })
 })
