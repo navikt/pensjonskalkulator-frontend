@@ -1,7 +1,13 @@
 import { renderHook } from '@testing-library/react'
 import { vi } from 'vitest'
 
+import { useAppSelector } from '@/state/hooks'
+
 import { useBeregningsdetaljer } from '../hooks'
+
+vi.mock('@/state/hooks', () => ({
+  useAppSelector: vi.fn(),
+}))
 
 vi.mock('@/utils/inntekt', () => ({
   formatInntekt: (v: number) => v.toString(),
@@ -53,9 +59,17 @@ const mockPre2025OffentligAfp = {
 }
 
 describe('useBeregningsdetaljer', () => {
+  beforeEach(() => {
+    vi.resetAllMocks()
+    vi.mocked(useAppSelector).mockReturnValue({
+      uttaksalder: { aar: 67, maaneder: 0 },
+      gradertUttaksperiode: null,
+    })
+  })
+
   it('returnerer tomme arrays hvis ingen input', () => {
     const { result } = renderHook(() => useBeregningsdetaljer())
-    expect(result.current.grunnpensjonObjekter).toEqual([])
+    expect(result.current.grunnpensjonObjekter).toEqual([[]])
     expect(result.current.opptjeningKap19Objekt).toEqual([])
     expect(result.current.opptjeningKap20Objekt).toEqual([])
     expect(result.current.opptjeningPre2025OffentligAfpObjekt).toEqual([])
@@ -70,7 +84,7 @@ describe('useBeregningsdetaljer', () => {
           mockPre2025OffentligAfp
         )
       )
-      expect(result.current.grunnpensjonObjekter).toEqual(
+      expect(result.current.grunnpensjonObjekter).toEqual([
         expect.arrayContaining([
           expect.objectContaining({
             tekst: 'Grunnpensjon (kap. 19)',
@@ -100,8 +114,8 @@ describe('useBeregningsdetaljer', () => {
             tekst: 'Sum månedlig alderspensjon',
             verdi: '400 kr',
           }),
-        ])
-      )
+        ]),
+      ])
     })
     describe('Når det er felter som har verdi 0', () => {
       it('skjules feltene', () => {
@@ -121,9 +135,7 @@ describe('useBeregningsdetaljer', () => {
             mockPre2025OffentligAfp
           )
         )
-        expect(result.current.opptjeningKap19Objekt).toEqual(
-          expect.arrayContaining([])
-        )
+        expect(result.current.grunnpensjonObjekter).toEqual([[]])
       })
     })
     describe('Når det er felter som har negativ verdi', () => {
@@ -144,7 +156,7 @@ describe('useBeregningsdetaljer', () => {
             mockPre2025OffentligAfp
           )
         )
-        expect(result.current.grunnpensjonObjekter).toEqual([])
+        expect(result.current.grunnpensjonObjekter).toEqual([[]])
       })
     })
   })
@@ -160,7 +172,7 @@ describe('useBeregningsdetaljer', () => {
       )
       expect(result.current.opptjeningKap19Objekt).toEqual(
         expect.arrayContaining([
-          expect.objectContaining({ tekst: 'Andelsbrøk', verdi: 0.3 }),
+          expect.objectContaining({ tekst: 'Andelsbrøk', verdi: '3/10' }),
           expect.objectContaining({ tekst: 'Sluttpoengtall', verdi: 3 }),
           expect.objectContaining({ tekst: 'Poengår', verdi: 9 }),
           expect.objectContaining({ tekst: 'Trygdetid', verdi: 6 }),
@@ -218,12 +230,7 @@ describe('useBeregningsdetaljer', () => {
             mockPre2025OffentligAfp
           )
         )
-        expect(result.current.opptjeningKap19Objekt).not.toContain(
-          expect.arrayContaining([
-            expect.objectContaining({ tekst: 'Andelsbrøk', verdi: 0 }),
-            expect.objectContaining({ tekst: 'Sluttpoengtall', verdi: 0 }),
-          ])
-        )
+        expect(result.current.opptjeningKap19Objekt).toEqual([])
       })
     })
   })
@@ -239,11 +246,11 @@ describe('useBeregningsdetaljer', () => {
       )
       expect(result.current.opptjeningKap20Objekt).toEqual(
         expect.arrayContaining([
-          expect.objectContaining({ tekst: 'Andelsbrøk', verdi: 0.7 }),
+          expect.objectContaining({ tekst: 'Andelsbrøk', verdi: '7/10' }),
           expect.objectContaining({ tekst: 'Trygdetid', verdi: 7 }),
           expect.objectContaining({
-            tekst: 'Pensjonbeholdning før uttak',
-            verdi: 80000,
+            tekst: 'Pensjonsbeholdning før uttak',
+            verdi: '80000 kr',
           }),
         ])
       )
@@ -281,8 +288,8 @@ describe('useBeregningsdetaljer', () => {
         expect(result.current.opptjeningKap20Objekt).toEqual(
           expect.arrayContaining([
             expect.objectContaining({
-              tekst: 'Pensjonbeholdning før uttak',
-              verdi: 0,
+              tekst: 'Pensjonsbeholdning før uttak',
+              verdi: '0 kr',
             }),
           ])
         )
@@ -300,11 +307,7 @@ describe('useBeregningsdetaljer', () => {
             mockPre2025OffentligAfp
           )
         )
-        expect(result.current.opptjeningKap19Objekt).not.toContain(
-          expect.arrayContaining([
-            expect.objectContaining({ tekst: 'Andelsbrøk', verdi: 0 }),
-          ])
-        )
+        expect(result.current.opptjeningKap20Objekt).toEqual([])
       })
     })
   })
@@ -360,12 +363,10 @@ describe('useBeregningsdetaljer', () => {
           sluttpoengtall: 0,
         }
         const { result } = renderHook(() => useBeregningsdetaljer([], [], mock))
-        expect(
-          result.current.opptjeningPre2025OffentligAfpObjekt
-        ).not.toContain(
+        expect(result.current.opptjeningPre2025OffentligAfpObjekt).toEqual(
           expect.arrayContaining([
-            expect.objectContaining({ tekst: 'AFP grad', verdi: 0 }),
-            expect.objectContaining({ tekst: 'Sluttpoengtall', verdi: 0 }),
+            expect.objectContaining({ tekst: 'Poengår', verdi: 7 }),
+            expect.objectContaining({ tekst: 'Trygdetid', verdi: 5 }),
           ])
         )
       })
