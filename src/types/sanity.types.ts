@@ -199,6 +199,7 @@ export type Guidepanel = {
     markDefs?: Array<{
       href?: string
       blank?: boolean
+      className?: string
       _type: 'link'
       _key: string
     }>
@@ -230,6 +231,7 @@ export type ForbeholdAvsnitt = {
     markDefs?: Array<{
       href?: string
       blank?: boolean
+      className?: string
       _type: 'link'
       _key: string
     }>
@@ -260,6 +262,7 @@ export type Readmore = {
     markDefs?: Array<{
       href?: string
       blank?: boolean
+      className?: string
       _type: 'link'
       _key: string
     }>
@@ -312,6 +315,7 @@ export type ForbeholdAvsnittQueryResult = Array<{
     markDefs?: Array<{
       href?: string
       blank?: boolean
+      className?: string
       _type: 'link'
       _key: string
     }>
@@ -337,6 +341,7 @@ export type GuidePanelQueryResult = Array<{
     markDefs?: Array<{
       href?: string
       blank?: boolean
+      className?: string
       _type: 'link'
       _key: string
     }>
@@ -362,6 +367,7 @@ export type ReadMoreQueryResult = Array<{
     markDefs?: Array<{
       href?: string
       blank?: boolean
+      className?: string
       _type: 'link'
       _key: string
     }>
