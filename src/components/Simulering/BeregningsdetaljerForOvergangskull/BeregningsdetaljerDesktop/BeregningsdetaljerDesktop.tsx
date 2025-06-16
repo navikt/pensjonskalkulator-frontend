@@ -25,7 +25,12 @@ export const BeregningsdetaljerDesktop: React.FC<
   opptjeningPre2025OffentligAfpObjekt,
 }) => (
   <HStack gap="20" width="100%">
-    <Grunnpensjonsdetaljer grunnpensjonObjekter={grunnpensjonObjekter} />
+    <Grunnpensjonsdetaljer
+      grunnpensjonObjekter={grunnpensjonObjekter}
+      hasPre2025OffentligAfpUttaksalder={
+        opptjeningPre2025OffentligAfpObjekt ? true : false
+      }
+    />
     <Opptjeningsdetaljer
       opptjeningKap19Objekt={opptjeningKap19Objekt}
       opptjeningKap20Objekt={opptjeningKap20Objekt}

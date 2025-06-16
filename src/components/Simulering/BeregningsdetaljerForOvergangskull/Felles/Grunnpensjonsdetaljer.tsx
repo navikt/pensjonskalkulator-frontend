@@ -13,10 +13,12 @@ import styles from './Pensjonsdetaljer.module.scss'
 
 export interface GrunnpensjonsdetaljerProps {
   grunnpensjonObjekter: DetaljRad[][]
+  hasPre2025OffentligAfpUttaksalder: boolean
 }
 
 export const Grunnpensjonsdetaljer: React.FC<GrunnpensjonsdetaljerProps> = ({
   grunnpensjonObjekter,
+  hasPre2025OffentligAfpUttaksalder,
 }) => {
   const { uttaksalder, gradertUttaksperiode } = useAppSelector(
     selectCurrentSimulation
@@ -31,7 +33,7 @@ export const Grunnpensjonsdetaljer: React.FC<GrunnpensjonsdetaljerProps> = ({
 
   return (
     <VStack gap="20">
-      {gradertUttaksperiode && (
+      {gradertUttaksperiode && !hasPre2025OffentligAfpUttaksalder && (
         <div className="gradertUttak">
           <Heading size="small" level="3">
             <FormattedMessage
@@ -83,9 +85,12 @@ export const Grunnpensjonsdetaljer: React.FC<GrunnpensjonsdetaljerProps> = ({
             id="beregning.detaljer.grunnpensjon.heltUttak.title"
             values={{
               ...getFormatMessageValues(),
-              alderAar: `${uttaksalder?.aar} år`,
-              alderMd:
-                uttaksalder?.maaneder && uttaksalder.maaneder > 0
+              alderAar: hasPre2025OffentligAfpUttaksalder
+                ? '67 år'
+                : `${uttaksalder?.aar} år`,
+              alderMd: hasPre2025OffentligAfpUttaksalder
+                ? ''
+                : uttaksalder?.maaneder && uttaksalder.maaneder > 0
                   ? `og ${uttaksalder.maaneder} måneder`
                   : '',
               grad: 100,
