@@ -33,6 +33,7 @@ import {
 
 import { BeregningsdetaljerForOvergangskull } from './BeregningsdetaljerForOvergangskull'
 import { MaanedsbeloepAvansertBeregning } from './MaanedsbeloepAvansertBeregning'
+import { Pensjonsgivendeinntekt } from './Pensjonsgivendeinntekt'
 import { SimuleringEndringBanner } from './SimuleringEndringBanner/SimuleringEndringBanner'
 import { SimuleringGrafNavigation } from './SimuleringGrafNavigation/SimuleringGrafNavigation'
 import { SimuleringPensjonsavtalerAlert } from './SimuleringPensjonsavtalerAlert/SimuleringPensjonsavtalerAlert'
@@ -297,6 +298,8 @@ export const Simulering = ({
             simulertTjenestepensjon={offentligTpData?.simulertTjenestepensjon}
           />
         )}
+
+      <Pensjonsgivendeinntekt />
 
       <BeregningsdetaljerForOvergangskull
         alderspensjonListe={alderspensjonListe}
