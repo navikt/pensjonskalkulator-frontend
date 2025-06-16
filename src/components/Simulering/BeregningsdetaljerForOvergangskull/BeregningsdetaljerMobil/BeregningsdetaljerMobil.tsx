@@ -11,7 +11,7 @@ export interface BeregningsdetaljerMobilProps {
   grunnpensjonObjekter: DetaljRad[][]
   opptjeningKap19Objekt: DetaljRad[]
   opptjeningKap20Objekt: DetaljRad[]
-  opptjeningAfpPrivatObjekt?: DetaljRad[]
+  opptjeningAfpPrivatObjekt?: DetaljRad[][]
   opptjeningPre2025OffentligAfpObjekt?: DetaljRad[]
 }
 

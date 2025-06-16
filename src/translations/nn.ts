@@ -317,6 +317,8 @@ export default {
   'beregning.detaljer.grunnpensjon.heltUttak.title': 'MANGLER_TEKST',
   'beregning.detaljer.grunnpensjon.gradertUttak.title': 'MANGLER_TEKST',
   'beregning.detaljer.grunnpensjon.table.title': 'MANGLER_TEKST',
+  'beregning.detaljer.afpPrivat.heltUttak.title': 'MANGLER_TEKST',
+  'beregning.detaljer.afpPrivat.gradertUttak.title': 'MANGLER_TEKST',
   'beregning.detaljer.opptjeningsdetaljer.kap19.table.title': 'MANGLER_TEKST',
   'beregning.detaljer.opptjeningsdetaljer.kap20.table.title': 'MANGLER_TEKST',
   'beregning.detaljer.opptjeningsdetaljer.afpPrivat.table.title':

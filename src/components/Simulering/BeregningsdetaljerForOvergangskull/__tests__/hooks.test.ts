@@ -72,6 +72,7 @@ describe('useBeregningsdetaljer', () => {
     expect(result.current.grunnpensjonObjekter).toEqual([[]])
     expect(result.current.opptjeningKap19Objekt).toEqual([])
     expect(result.current.opptjeningKap20Objekt).toEqual([])
+    expect(result.current.opptjeningAfpPrivatObjekt).toEqual([])
     expect(result.current.opptjeningPre2025OffentligAfpObjekt).toEqual([])
   })
 
@@ -370,6 +371,159 @@ describe('useBeregningsdetaljer', () => {
           ])
         )
       })
+    })
+  })
+
+  describe('Gitt at brukeren har AFP privat', () => {
+    it('returnerer kun ett objekt når uttaksalder er 67 eller høyere', () => {
+      vi.mocked(useAppSelector).mockReturnValue({
+        uttaksalder: { aar: 67, maaneder: 0 },
+        gradertUttaksperiode: null,
+      })
+
+      const { result } = renderHook(() =>
+        useBeregningsdetaljer(
+          [mockAlderspensjon],
+          [mockAfpPrivat],
+          mockPre2025OffentligAfp
+        )
+      )
+
+      expect(result.current.opptjeningAfpPrivatObjekt).toHaveLength(1)
+      expect(result.current.opptjeningAfpPrivatObjekt[0]).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            tekst: 'Kompensasjonstillegg',
+            verdi: '500 kr',
+          }),
+          expect.objectContaining({
+            tekst: 'Kronetillegg',
+            verdi: '1000 kr',
+          }),
+          expect.objectContaining({
+            tekst: 'Livsvarig del',
+            verdi: '12000 kr',
+          }),
+          expect.objectContaining({
+            tekst: 'Sum månedlig AFP',
+            verdi: '15000 kr',
+          }),
+        ])
+      )
+    })
+
+    it('returnerer to objekter når uttaksalder er mindre enn 67 og AFP 67 finnes', () => {
+      vi.mocked(useAppSelector).mockReturnValue({
+        uttaksalder: { aar: 65, maaneder: 0 },
+        gradertUttaksperiode: null,
+      })
+
+      const afpPrivatListe = [
+        mockAfpPrivat, // alder 62
+        {
+          alder: 67,
+          beloep: 20000,
+          kompensasjonstillegg: 600,
+          kronetillegg: 1200,
+          livsvarig: 15000,
+          maanedligBeloep: 20000,
+        },
+      ]
+
+      const { result } = renderHook(() =>
+        useBeregningsdetaljer(
+          [mockAlderspensjon],
+          afpPrivatListe,
+          mockPre2025OffentligAfp
+        )
+      )
+
+      expect(result.current.opptjeningAfpPrivatObjekt).toHaveLength(2)
+
+      // First element (index 0 - uttaksalder)
+      expect(result.current.opptjeningAfpPrivatObjekt[0]).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            tekst: 'Kompensasjonstillegg',
+            verdi: '500 kr',
+          }),
+          expect.objectContaining({
+            tekst: 'Sum månedlig AFP',
+            verdi: '15000 kr',
+          }),
+        ])
+      )
+
+      // Second element (age 67)
+      expect(result.current.opptjeningAfpPrivatObjekt[1]).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            tekst: 'Kompensasjonstillegg',
+            verdi: '600 kr',
+          }),
+          expect.objectContaining({
+            tekst: 'Sum månedlig AFP',
+            verdi: '20000 kr',
+          }),
+        ])
+      )
+    })
+
+    it('returnerer kun ett objekt når uttaksalder er mindre enn 67 men AFP 67 ikke finnes', () => {
+      vi.mocked(useAppSelector).mockReturnValue({
+        uttaksalder: { aar: 65, maaneder: 0 },
+        gradertUttaksperiode: null,
+      })
+
+      const afpPrivatListe = [mockAfpPrivat] // Bare alder 62, ingen alder 67
+
+      const { result } = renderHook(() =>
+        useBeregningsdetaljer(
+          [mockAlderspensjon],
+          afpPrivatListe,
+          mockPre2025OffentligAfp
+        )
+      )
+
+      expect(result.current.opptjeningAfpPrivatObjekt).toHaveLength(1)
+    })
+
+    it('filtrerer bort rader med verdi 0 kr', () => {
+      const afpPrivatMedNull = {
+        ...mockAfpPrivat,
+        kompensasjonstillegg: 0,
+        kronetillegg: 0,
+      }
+
+      const { result } = renderHook(() =>
+        useBeregningsdetaljer(
+          [mockAlderspensjon],
+          [afpPrivatMedNull],
+          mockPre2025OffentligAfp
+        )
+      )
+
+      expect(result.current.opptjeningAfpPrivatObjekt[0]).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            tekst: 'Livsvarig del',
+            verdi: '12000 kr',
+          }),
+          expect.objectContaining({
+            tekst: 'Sum månedlig AFP',
+            verdi: '15000 kr',
+          }),
+        ])
+      )
+
+      // Should not contain kompensasjonstillegg or kronetillegg
+      expect(result.current.opptjeningAfpPrivatObjekt[0]).not.toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            tekst: 'Kompensasjonstillegg',
+          }),
+        ])
+      )
     })
   })
 })

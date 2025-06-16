@@ -399,6 +399,10 @@ const translations = {
     'Ved {alderAar} {alderMd} ({grad} %)',
   'beregning.detaljer.grunnpensjon.table.title':
     'Månedlig alderspensjon fra Nav',
+  'beregning.detaljer.afpPrivat.heltUttak.title':
+    'Ved {alderAar} {alderMd} ({grad} %)',
+  'beregning.detaljer.afpPrivat.gradertUttak.title':
+    'Ved {alderAar} {alderMd} ({grad} %)',
   'beregning.detaljer.opptjeningsdetaljer.kap19.table.title':
     'Opptjening alderspensjon etter kapittel 19',
   'beregning.detaljer.opptjeningsdetaljer.kap20.table.title':

@@ -115,6 +115,7 @@ export const Simulering = ({
       skip: !pensjonsavtalerRequestBody || !harSamtykket || !uttaksalder,
     }
   )
+  console.log(afpPrivatListe)
 
   useEffect(() => {
     if (harSamtykket && uttaksalder) {

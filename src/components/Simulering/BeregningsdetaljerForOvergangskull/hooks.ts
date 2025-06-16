@@ -13,7 +13,7 @@ export interface BeregningsdetaljerRader {
   grunnpensjonObjekter: DetaljRad[][]
   opptjeningKap19Objekt: DetaljRad[]
   opptjeningKap20Objekt: DetaljRad[]
-  opptjeningAfpPrivatObjekt: DetaljRad[]
+  opptjeningAfpPrivatObjekt: DetaljRad[][]
   opptjeningPre2025OffentligAfpObjekt: DetaljRad[]
 }
 
@@ -121,27 +121,43 @@ export function useBeregningsdetaljer(
       ].filter((rad) => rad.verdi !== '0 kr')
     })
 
-    const opptjeningAfpPrivatObjekt: DetaljRad[] =
-      afpPrivatListe && afpPrivatListe.length > 0
-        ? [
-            {
-              tekst: 'Kompensasjonstillegg',
-              verdi: `${formatInntekt(afpPrivatListe[0].kompensasjonstillegg)} kr`,
-            },
-            {
-              tekst: 'Kronetillegg',
-              verdi: `${formatInntekt(afpPrivatListe[0].kronetillegg)} kr`,
-            },
-            {
-              tekst: 'Livsvarig del',
-              verdi: `${formatInntekt(afpPrivatListe[0].livsvarig)} kr`,
-            },
-            {
-              tekst: 'Sum månedlig AFP',
-              verdi: `${formatInntekt(afpPrivatListe[0].maanedligBeloep)} kr`,
-            },
-          ].filter((rad) => rad.verdi !== '0 kr')
-        : []
+    const opptjeningAfpPrivatObjekt: DetaljRad[][] = (() => {
+      if (!afpPrivatListe || afpPrivatListe.length === 0) {
+        return []
+      }
+
+      const afpIndices: number[] = [0]
+      if (uttaksalder && uttaksalder.aar < 67) {
+        const afp67Index = afpPrivatListe.findIndex((afp) => afp.alder === 67)
+        if (afp67Index !== -1 && afp67Index !== 0) {
+          afpIndices.push(afp67Index)
+        }
+      }
+
+      return afpIndices.map((index) => {
+        const afp = afpPrivatListe[index]
+        if (!afp) return []
+
+        return [
+          {
+            tekst: 'Kompensasjonstillegg',
+            verdi: `${formatInntekt(afp.kompensasjonstillegg)} kr`,
+          },
+          {
+            tekst: 'Kronetillegg',
+            verdi: `${formatInntekt(afp.kronetillegg)} kr`,
+          },
+          {
+            tekst: 'Livsvarig del',
+            verdi: `${formatInntekt(afp.livsvarig)} kr`,
+          },
+          {
+            tekst: 'Sum månedlig AFP',
+            verdi: `${formatInntekt(afp.maanedligBeloep)} kr`,
+          },
+        ].filter((rad) => rad.verdi !== '0 kr')
+      })
+    })()
 
     const opptjeningKap19Objekt: DetaljRad[] = (() => {
       if (
@@ -232,5 +248,11 @@ export function useBeregningsdetaljer(
       opptjeningAfpPrivatObjekt,
       opptjeningPre2025OffentligAfpObjekt,
     }
-  }, [alderspensjonListe, pre2025OffentligAfp])
+  }, [
+    alderspensjonListe,
+    afpPrivatListe,
+    pre2025OffentligAfp,
+    uttaksalder,
+    gradertUttaksperiode,
+  ])
 }
