@@ -624,6 +624,7 @@ const translations = {
     'Pensjonen er beregnet med opplysningene vi har om deg og opplysningene du har oppgitt. Beregningen er gjort med gjeldende regelverk. Dette er et foreløpig estimat på hva du kan forvente deg i pensjon. Nav er ikke ansvarlig for beløpene som er hentet inn fra andre. ',
   'grunnlag.forbehold.link': 'Alle forbehold',
   'grunnlag.forbehold.title': 'Forbehold',
+  'grunnlag2.endre_inntekt.title': 'Pensjonsgivende inntekt frem til uttak',
   'savnerdunoe.title': 'Savner du noe?',
   'savnerdunoe.title.endring': 'Klar til å søke om endring?',
   'savnerdunoe.ingress':
