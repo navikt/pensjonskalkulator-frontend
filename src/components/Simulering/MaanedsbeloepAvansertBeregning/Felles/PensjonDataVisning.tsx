@@ -23,8 +23,16 @@ export const PensjonDataVisning: React.FC<Props> = ({
   hentUttaksMaanedOgAar,
 }) => {
   const intl = useIntl()
-  const { alder, grad, afp, pensjonsavtale, alderspensjon } = pensjonsdata
+  const {
+    alder,
+    grad,
+    afp,
+    pensjonsavtale,
+    alderspensjon,
+    pre2025OffentligAfp,
+  } = pensjonsdata
   const harKunAlderspensjon = alderspensjon && !afp && !pensjonsavtale
+  const harAFP = afp || (pre2025OffentligAfp && !alderspensjon)
   const captionTitle = (
     intl.formatMessage({ id: 'beregning.avansert.maanedsbeloep.table_title' }) +
     ' ' +
@@ -38,14 +46,19 @@ export const PensjonDataVisning: React.FC<Props> = ({
         {captionTitle}
       </BodyLong>
       <tbody>
-        {afp && (
+        {harAFP && (
           <tr className={styles.row}>
             <th scope="row">
               <BodyLong>
                 <FormattedMessage id="beregning.avansert.maanedsbeloep.afp" />:
               </BodyLong>
             </th>
-            <td>{formatInntekt(afp)} kr</td>
+            <td>
+              {pre2025OffentligAfp
+                ? formatInntekt(pre2025OffentligAfp)
+                : formatInntekt(afp)}
+              kr
+            </td>
           </tr>
         )}
 
@@ -76,7 +89,7 @@ export const PensjonDataVisning: React.FC<Props> = ({
           </tr>
         )}
 
-        {!harKunAlderspensjon && (
+        {!harKunAlderspensjon && !pre2025OffentligAfp && (
           <tr
             className={clsx(styles.row, styles.sum)}
             data-testid="maanedsbeloep-avansert-sum"
