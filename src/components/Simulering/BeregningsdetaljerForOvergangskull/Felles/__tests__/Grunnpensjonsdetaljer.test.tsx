@@ -78,7 +78,10 @@ describe('Gitt at Grunnpensjonsdetaljer rendres', () => {
 
   it('rendrer komponenten med kun helt uttak', () => {
     renderWithProviders(
-      <Grunnpensjonsdetaljer grunnpensjonObjekter={[mockHeltUttakData]} />
+      <Grunnpensjonsdetaljer
+        grunnpensjonObjekter={[mockHeltUttakData]}
+        hasPre2025OffentligAfpUttaksalder={false}
+      />
     )
 
     expect(screen.getByText('Grunnpensjon (kap. 19):')).toBeInTheDocument()
@@ -102,6 +105,7 @@ describe('Gitt at Grunnpensjonsdetaljer rendres', () => {
     renderWithProviders(
       <Grunnpensjonsdetaljer
         grunnpensjonObjekter={[mockGradertUttakData, mockHeltUttakData]}
+        hasPre2025OffentligAfpUttaksalder={false}
       />,
       stateWithGradertUttak
     )
@@ -123,7 +127,10 @@ describe('Gitt at Grunnpensjonsdetaljer rendres', () => {
 
   it('rendrer kun helt uttak når gradertUttaksperiode er null', () => {
     renderWithProviders(
-      <Grunnpensjonsdetaljer grunnpensjonObjekter={[mockHeltUttakData]} />
+      <Grunnpensjonsdetaljer
+        grunnpensjonObjekter={[mockHeltUttakData]}
+        hasPre2025OffentligAfpUttaksalder={false}
+      />
     )
 
     expect(screen.getByText('Grunnpensjon (kap. 19):')).toBeInTheDocument()
@@ -132,7 +139,10 @@ describe('Gitt at Grunnpensjonsdetaljer rendres', () => {
 
   it('håndterer tom grunnpensjonObjekter array', () => {
     const { container } = renderWithProviders(
-      <Grunnpensjonsdetaljer grunnpensjonObjekter={[]} />
+      <Grunnpensjonsdetaljer
+        grunnpensjonObjekter={[]}
+        hasPre2025OffentligAfpUttaksalder={false}
+      />
     )
 
     // Komponenten skal fortsatt rendre, men uten data
@@ -152,6 +162,7 @@ describe('Gitt at Grunnpensjonsdetaljer rendres', () => {
     renderWithProviders(
       <Grunnpensjonsdetaljer
         grunnpensjonObjekter={[mockGradertUttakData, mockHeltUttakData]}
+        hasPre2025OffentligAfpUttaksalder={false}
       />,
       stateWithGradertUttak
     )
@@ -162,7 +173,10 @@ describe('Gitt at Grunnpensjonsdetaljer rendres', () => {
 
   it('rendrer siste element i hver array med strong styling', () => {
     const { container } = renderWithProviders(
-      <Grunnpensjonsdetaljer grunnpensjonObjekter={[mockHeltUttakData]} />
+      <Grunnpensjonsdetaljer
+        grunnpensjonObjekter={[mockHeltUttakData]}
+        hasPre2025OffentligAfpUttaksalder={false}
+      />
     )
 
     const strongElements = container.querySelectorAll('strong')
@@ -176,7 +190,10 @@ describe('Gitt at Grunnpensjonsdetaljer rendres', () => {
     ]
 
     renderWithProviders(
-      <Grunnpensjonsdetaljer grunnpensjonObjekter={[objektMedUndefined]} />
+      <Grunnpensjonsdetaljer
+        grunnpensjonObjekter={[objektMedUndefined]}
+        hasPre2025OffentligAfpUttaksalder={false}
+      />
     )
 
     expect(screen.getByText('Test grunnpensjon:')).toBeInTheDocument()
@@ -185,7 +202,10 @@ describe('Gitt at Grunnpensjonsdetaljer rendres', () => {
 
   it('rendrer VStack med korrekt gap', () => {
     const { container } = renderWithProviders(
-      <Grunnpensjonsdetaljer grunnpensjonObjekter={[mockHeltUttakData]} />
+      <Grunnpensjonsdetaljer
+        grunnpensjonObjekter={[mockHeltUttakData]}
+        hasPre2025OffentligAfpUttaksalder={false}
+      />
     )
 
     const vStack = container.querySelector('.navds-stack')
@@ -194,7 +214,10 @@ describe('Gitt at Grunnpensjonsdetaljer rendres', () => {
 
   it('rendrer definition lists korrekt', () => {
     const { container } = renderWithProviders(
-      <Grunnpensjonsdetaljer grunnpensjonObjekter={[mockHeltUttakData]} />
+      <Grunnpensjonsdetaljer
+        grunnpensjonObjekter={[mockHeltUttakData]}
+        hasPre2025OffentligAfpUttaksalder={false}
+      />
     )
 
     const definitionLists = container.querySelectorAll('dl')
@@ -213,7 +236,10 @@ describe('Gitt at Grunnpensjonsdetaljer rendres', () => {
     }
 
     renderWithProviders(
-      <Grunnpensjonsdetaljer grunnpensjonObjekter={[mockHeltUttakData]} />,
+      <Grunnpensjonsdetaljer
+        grunnpensjonObjekter={[mockHeltUttakData]}
+        hasPre2025OffentligAfpUttaksalder={false}
+      />,
       stateWithMonths
     )
 
@@ -231,6 +257,7 @@ describe('Gitt at Grunnpensjonsdetaljer rendres', () => {
     renderWithProviders(
       <Grunnpensjonsdetaljer
         grunnpensjonObjekter={[mockGradertUttakData, mockHeltUttakData]}
+        hasPre2025OffentligAfpUttaksalder={false}
       />,
       stateWithGradertUttak
     )
