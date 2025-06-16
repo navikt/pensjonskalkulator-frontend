@@ -419,7 +419,7 @@ describe('useBeregningsdetaljer', () => {
       })
 
       const afpPrivatListe = [
-        mockAfpPrivat, // alder 62
+        mockAfpPrivat,
         {
           alder: 67,
           beloep: 20000,
@@ -440,7 +440,7 @@ describe('useBeregningsdetaljer', () => {
 
       expect(result.current.opptjeningAfpPrivatObjekt).toHaveLength(2)
 
-      // First element (index 0 - uttaksalder)
+      // Første element (index 0 - uttaksalder)
       expect(result.current.opptjeningAfpPrivatObjekt[0]).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -454,7 +454,7 @@ describe('useBeregningsdetaljer', () => {
         ])
       )
 
-      // Second element (age 67)
+      // Andre element (alder 67)
       expect(result.current.opptjeningAfpPrivatObjekt[1]).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -475,7 +475,7 @@ describe('useBeregningsdetaljer', () => {
         gradertUttaksperiode: null,
       })
 
-      const afpPrivatListe = [mockAfpPrivat] // Bare alder 62, ingen alder 67
+      const afpPrivatListe = [mockAfpPrivat]
 
       const { result } = renderHook(() =>
         useBeregningsdetaljer(
@@ -516,7 +516,6 @@ describe('useBeregningsdetaljer', () => {
         ])
       )
 
-      // Should not contain kompensasjonstillegg or kronetillegg
       expect(result.current.opptjeningAfpPrivatObjekt[0]).not.toEqual(
         expect.arrayContaining([
           expect.objectContaining({

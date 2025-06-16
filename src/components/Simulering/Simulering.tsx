@@ -31,7 +31,6 @@ import {
   selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
 
-import { BeregningsdetaljerForOvergangskull } from './BeregningsdetaljerForOvergangskull'
 import { MaanedsbeloepAvansertBeregning } from './MaanedsbeloepAvansertBeregning'
 import { SimuleringEndringBanner } from './SimuleringEndringBanner/SimuleringEndringBanner'
 import { SimuleringGrafNavigation } from './SimuleringGrafNavigation/SimuleringGrafNavigation'
@@ -297,12 +296,6 @@ export const Simulering = ({
             simulertTjenestepensjon={offentligTpData?.simulertTjenestepensjon}
           />
         )}
-
-      <BeregningsdetaljerForOvergangskull
-        key={`${uttaksalder?.aar ?? ''}-${uttaksalder?.maaneder ?? ''}-${gradertUttaksperiode?.uttaksalder?.aar ?? ''}-${gradertUttaksperiode?.uttaksalder?.maaneder ?? ''}-${gradertUttaksperiode?.grad ?? ''}`}
-        alderspensjonListe={alderspensjonListe}
-        afpPrivatListe={afpPrivatListe}
-      />
     </section>
   )
 }
