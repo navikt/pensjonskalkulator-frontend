@@ -2,6 +2,7 @@ import React from 'react'
 
 import { HStack } from '@navikt/ds-react'
 
+import { Afpdetaljer } from '../Felles/Afpdetaljer'
 import { Grunnpensjonsdetaljer } from '../Felles/Grunnpensjonsdetaljer'
 import { Opptjeningsdetaljer } from '../Felles/Opptjeningsdetaljer'
 import { DetaljRad } from '../hooks'
@@ -28,6 +29,8 @@ export const BeregningsdetaljerDesktop: React.FC<
     <Opptjeningsdetaljer
       opptjeningKap19Objekt={opptjeningKap19Objekt}
       opptjeningKap20Objekt={opptjeningKap20Objekt}
+    />
+    <Afpdetaljer
       opptjeningAfpPrivatObjekt={opptjeningAfpPrivatObjekt}
       opptjeningPre2025OffentligAfpObjekt={opptjeningPre2025OffentligAfpObjekt}
     />

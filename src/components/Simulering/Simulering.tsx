@@ -49,7 +49,7 @@ interface Props {
   headingLevel: HeadingProps['level']
   aarligInntektFoerUttakBeloep: string
   alderspensjonListe?: AlderspensjonPensjonsberegning[]
-  afpPrivatListe?: AfpPensjonsberegning[]
+  afpPrivatListe?: AfpPrivatPensjonsberegning[]
   afpOffentligListe?: AfpPensjonsberegning[]
   alderspensjonMaanedligVedEndring?: AlderspensjonMaanedligVedEndring
   showButtonsAndTable?: boolean
@@ -296,6 +296,7 @@ export const Simulering = ({
       <BeregningsdetaljerForOvergangskull
         key={`${uttaksalder?.aar ?? ''}-${uttaksalder?.maaneder ?? ''}-${gradertUttaksperiode?.uttaksalder?.aar ?? ''}-${gradertUttaksperiode?.uttaksalder?.maaneder ?? ''}-${gradertUttaksperiode?.grad ?? ''}`}
         alderspensjonListe={alderspensjonListe}
+        afpPrivatListe={afpPrivatListe}
       />
     </section>
   )

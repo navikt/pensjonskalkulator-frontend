@@ -121,24 +121,27 @@ export function useBeregningsdetaljer(
       ].filter((rad) => rad.verdi !== '0 kr')
     })
 
-    const opptjeningAfpPrivatObjekt: DetaljRad[] = (afpPrivatListe ?? [])
-      .map((afp) => [
-        {
-          tekst: 'Kompensasjonstillegg',
-          verdi: afp.kompensasjonstillegg,
-        },
-        { tekst: 'Kronetillegg', verdi: afp.kronetillegg },
-        {
-          tekst: 'Livsvarig del',
-          verdi: `${formatInntekt(afp.livsvarig)} kr`,
-        },
-        {
-          tekst: 'Sum månedlig AFP',
-          verdi: `${formatInntekt(afp.maanedligBeloep)} kr`,
-        },
-      ])
-      .flat()
-      .filter((rad) => rad.verdi !== '0 kr')
+    const opptjeningAfpPrivatObjekt: DetaljRad[] =
+      afpPrivatListe && afpPrivatListe.length > 0
+        ? [
+            {
+              tekst: 'Kompensasjonstillegg',
+              verdi: `${formatInntekt(afpPrivatListe[0].kompensasjonstillegg)} kr`,
+            },
+            {
+              tekst: 'Kronetillegg',
+              verdi: `${formatInntekt(afpPrivatListe[0].kronetillegg)} kr`,
+            },
+            {
+              tekst: 'Livsvarig del',
+              verdi: `${formatInntekt(afpPrivatListe[0].livsvarig)} kr`,
+            },
+            {
+              tekst: 'Sum månedlig AFP',
+              verdi: `${formatInntekt(afpPrivatListe[0].maanedligBeloep)} kr`,
+            },
+          ].filter((rad) => rad.verdi !== '0 kr')
+        : []
 
     const opptjeningKap19Objekt: DetaljRad[] = (() => {
       if (
