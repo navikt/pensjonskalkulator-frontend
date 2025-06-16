@@ -26,7 +26,6 @@ export const BeregningsdetaljerMobil: React.FC<
 }) => (
   <VStack gap="4 8" width="100%" marginBlock="2 0">
     <Grunnpensjonsdetaljer grunnpensjonObjekter={grunnpensjonObjekter} />
-    <Grunnpensjonsdetaljer grunnpensjonObjekter={grunnpensjonObjekter} />
     <Opptjeningsdetaljer
       opptjeningKap19Objekt={opptjeningKap19Objekt}
       opptjeningKap20Objekt={opptjeningKap20Objekt}

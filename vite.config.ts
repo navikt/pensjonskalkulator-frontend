@@ -103,6 +103,7 @@ export default defineConfig({
         '**/*/faro.ts',
         '*.config.ts',
         'cypress',
+        'sanity.cli.ts',
         'server/server.ts',
         'src/mocks',
         'src/mocks/mockedRTKQueryApiCalls.ts',
