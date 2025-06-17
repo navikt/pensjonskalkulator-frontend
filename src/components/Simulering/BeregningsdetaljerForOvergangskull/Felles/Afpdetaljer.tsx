@@ -91,7 +91,7 @@ export const Afpdetaljer: React.FC<AfpdetaljerProps> = ({
                 id="beregning.detaljer.afpPrivat.heltUttak.title"
                 values={{
                   ...getFormatMessageValues(),
-                  alderAar: `${uttaksalder?.aar} år`,
+                  alderAar: `${uttaksalder?.aar && uttaksalder.aar < 67 ? 67 : uttaksalder?.aar} år`,
                   alderMd: '',
                   grad: 100,
                 }}
