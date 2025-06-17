@@ -8,36 +8,36 @@ import { Opptjeningsdetaljer } from '../Felles/Opptjeningsdetaljer'
 import { DetaljRad } from '../hooks'
 
 export interface BeregningsdetaljerMobilProps {
-  grunnpensjonObjekter: DetaljRad[][]
-  opptjeningKap19Objekt: DetaljRad[]
-  opptjeningKap20Objekt: DetaljRad[]
-  opptjeningAfpPrivatObjekt?: DetaljRad[][]
-  opptjeningPre2025OffentligAfpObjekt?: DetaljRad[]
+  grunnpensjonListe: DetaljRad[][]
+  opptjeningKap19Liste: DetaljRad[]
+  opptjeningKap20Liste: DetaljRad[]
+  opptjeningAfpPrivatListe?: DetaljRad[][]
+  opptjeningPre2025OffentligAfpListe?: DetaljRad[]
 }
 
 export const BeregningsdetaljerMobil: React.FC<
   BeregningsdetaljerMobilProps
 > = ({
-  grunnpensjonObjekter,
-  opptjeningKap19Objekt,
-  opptjeningKap20Objekt,
-  opptjeningAfpPrivatObjekt,
-  opptjeningPre2025OffentligAfpObjekt,
+  grunnpensjonListe,
+  opptjeningKap19Liste,
+  opptjeningKap20Liste,
+  opptjeningAfpPrivatListe,
+  opptjeningPre2025OffentligAfpListe,
 }) => (
   <VStack gap="4 8" width="100%" marginBlock="2 0">
     <Grunnpensjonsdetaljer
-      grunnpensjonObjekter={grunnpensjonObjekter}
+      grunnpensjonListe={grunnpensjonListe}
       hasPre2025OffentligAfpUttaksalder={Boolean(
-        opptjeningPre2025OffentligAfpObjekt?.length
+        opptjeningPre2025OffentligAfpListe?.length
       )}
     />
     <Opptjeningsdetaljer
-      opptjeningKap19Objekt={opptjeningKap19Objekt}
-      opptjeningKap20Objekt={opptjeningKap20Objekt}
+      opptjeningKap19Liste={opptjeningKap19Liste}
+      opptjeningKap20Liste={opptjeningKap20Liste}
     />
     <Afpdetaljer
-      opptjeningAfpPrivatObjekt={opptjeningAfpPrivatObjekt}
-      opptjeningPre2025OffentligAfpObjekt={opptjeningPre2025OffentligAfpObjekt}
+      opptjeningAfpPrivatListe={opptjeningAfpPrivatListe}
+      opptjeningPre2025OffentligAfpListe={opptjeningPre2025OffentligAfpListe}
     />
   </VStack>
 )

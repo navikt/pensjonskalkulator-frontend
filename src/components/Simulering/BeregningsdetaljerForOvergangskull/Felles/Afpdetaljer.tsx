@@ -12,28 +12,28 @@ import { DetaljRad } from '../hooks'
 import styles from './Pensjonsdetaljer.module.scss'
 
 export interface AfpdetaljerProps {
-  opptjeningAfpPrivatObjekt?: DetaljRad[][]
-  opptjeningPre2025OffentligAfpObjekt?: DetaljRad[]
+  opptjeningAfpPrivatListe?: DetaljRad[][]
+  opptjeningPre2025OffentligAfpListe?: DetaljRad[]
 }
 
 export const Afpdetaljer: React.FC<AfpdetaljerProps> = ({
-  opptjeningAfpPrivatObjekt,
-  opptjeningPre2025OffentligAfpObjekt,
+  opptjeningAfpPrivatListe,
+  opptjeningPre2025OffentligAfpListe,
 }) => {
   const { uttaksalder } = useAppSelector(selectCurrentSimulation)
 
   const afpPrivatAtUttaksalder =
-    opptjeningAfpPrivatObjekt && opptjeningAfpPrivatObjekt.length === 2
-      ? opptjeningAfpPrivatObjekt[0]
+    opptjeningAfpPrivatListe && opptjeningAfpPrivatListe.length === 2
+      ? opptjeningAfpPrivatListe[0]
       : []
   const afpPrivatAt67 =
-    opptjeningAfpPrivatObjekt && opptjeningAfpPrivatObjekt.length === 2
-      ? opptjeningAfpPrivatObjekt[1]
-      : (opptjeningAfpPrivatObjekt?.[0] ?? [])
+    opptjeningAfpPrivatListe && opptjeningAfpPrivatListe.length === 2
+      ? opptjeningAfpPrivatListe[1]
+      : (opptjeningAfpPrivatListe?.[0] ?? [])
 
   return (
     <section>
-      {opptjeningAfpPrivatObjekt && opptjeningAfpPrivatObjekt.length > 0 && (
+      {opptjeningAfpPrivatListe && opptjeningAfpPrivatListe.length > 0 && (
         <VStack gap="20">
           {afpPrivatAtUttaksalder.length > 0 &&
             uttaksalder &&
@@ -128,15 +128,15 @@ export const Afpdetaljer: React.FC<AfpdetaljerProps> = ({
         </VStack>
       )}
 
-      {opptjeningPre2025OffentligAfpObjekt &&
-        opptjeningPre2025OffentligAfpObjekt.length > 0 && (
+      {opptjeningPre2025OffentligAfpListe &&
+        opptjeningPre2025OffentligAfpListe.length > 0 && (
           <dl>
             <div className={styles.hstackRow}>
               <strong>
                 <FormattedMessage id="beregning.detaljer.opptjeningsdetaljer.pre2025OffentligAfp.table.title" />
               </strong>
             </div>
-            {opptjeningPre2025OffentligAfpObjekt.map((detalj, index) => (
+            {opptjeningPre2025OffentligAfpListe.map((detalj, index) => (
               <React.Fragment key={index}>
                 <HStack justify="space-between" className={styles.hstackRow}>
                   <dt>{`${detalj.tekst}:`}</dt>

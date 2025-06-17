@@ -7,13 +7,13 @@ import { BeregningsdetaljerMobil } from '../BeregningsdetaljerMobil'
 // Mock the child components
 vi.mock('../../Felles/Grunnpensjonsdetaljer', () => ({
   Grunnpensjonsdetaljer: ({
-    grunnpensjonObjekter,
+    grunnpensjonListe,
   }: {
-    grunnpensjonObjekter: DetaljRad[][]
+    grunnpensjonListe: DetaljRad[][]
   }) => (
     <div
       data-testid="grunnpensjonsdetaljer"
-      data-objekter-length={grunnpensjonObjekter.length}
+      data-objekter-length={grunnpensjonListe.length}
     >
       Grunnpensjonsdetaljer Mock
     </div>
@@ -22,16 +22,16 @@ vi.mock('../../Felles/Grunnpensjonsdetaljer', () => ({
 
 vi.mock('../../Felles/Opptjeningsdetaljer', () => ({
   Opptjeningsdetaljer: ({
-    opptjeningKap19Objekt,
-    opptjeningKap20Objekt,
+    opptjeningKap19Liste,
+    opptjeningKap20Liste,
   }: {
-    opptjeningKap19Objekt: DetaljRad[]
-    opptjeningKap20Objekt: DetaljRad[]
+    opptjeningKap19Liste: DetaljRad[]
+    opptjeningKap20Liste: DetaljRad[]
   }) => (
     <div
       data-testid="opptjeningsdetaljer"
-      data-kap19-length={opptjeningKap19Objekt.length}
-      data-kap20-length={opptjeningKap20Objekt.length}
+      data-kap19-length={opptjeningKap19Liste.length}
+      data-kap20-length={opptjeningKap20Liste.length}
     >
       Opptjeningsdetaljer Mock
     </div>
@@ -40,16 +40,16 @@ vi.mock('../../Felles/Opptjeningsdetaljer', () => ({
 
 vi.mock('../../Felles/Afpdetaljer', () => ({
   Afpdetaljer: ({
-    opptjeningAfpPrivatObjekt,
-    opptjeningPre2025OffentligAfpObjekt,
+    opptjeningAfpPrivatListe,
+    opptjeningPre2025OffentligAfpListe,
   }: {
-    opptjeningAfpPrivatObjekt?: DetaljRad[][]
-    opptjeningPre2025OffentligAfpObjekt?: DetaljRad[]
+    opptjeningAfpPrivatListe?: DetaljRad[][]
+    opptjeningPre2025OffentligAfpListe?: DetaljRad[]
   }) => (
     <div
       data-testid="afpdetaljer"
-      data-afp-privat-length={opptjeningAfpPrivatObjekt?.length ?? ''}
-      data-pre2025-length={opptjeningPre2025OffentligAfpObjekt?.length ?? ''}
+      data-afp-privat-length={opptjeningAfpPrivatListe?.length ?? ''}
+      data-pre2025-length={opptjeningPre2025OffentligAfpListe?.length ?? ''}
     >
       Afpdetaljer Mock
     </div>
@@ -57,7 +57,7 @@ vi.mock('../../Felles/Afpdetaljer', () => ({
 }))
 
 describe('Gitt at BeregningsdetaljerMobil rendres', () => {
-  const mockGrunnpensjonObjekter: DetaljRad[][] = [
+  const mockGrunnpensjonListe: DetaljRad[][] = [
     [
       { tekst: 'Trygdetid', verdi: 40 },
       { tekst: 'Sluttpoengtall', verdi: 6.5 },
@@ -65,32 +65,32 @@ describe('Gitt at BeregningsdetaljerMobil rendres', () => {
     [{ tekst: 'Pensjonsbeholdning', verdi: '500000 kr' }],
   ]
 
-  const mockOpptjeningKap19Objekt: DetaljRad[] = [
+  const mockOpptjeningKap19Liste: DetaljRad[] = [
     { tekst: 'Andelsbrøk', verdi: '10/10' },
     { tekst: 'Sluttpoengtall', verdi: 6.5 },
   ]
 
-  const mockOpptjeningKap20Objekt: DetaljRad[] = [
+  const mockOpptjeningKap20Liste: DetaljRad[] = [
     { tekst: 'Pensjonsbeholdning før uttak', verdi: '500000 kr' },
     { tekst: 'Trygdetid', verdi: 40 },
   ]
 
-  const mockOpptjeningAfpPrivatObjekt: DetaljRad[][] = [
+  const mockOpptjeningAfpPrivatListe: DetaljRad[][] = [
     [
       { tekst: 'AFP grad', verdi: 100 },
       { tekst: 'Kompensasjonsgrad', verdi: 0.76 },
     ],
   ]
 
-  const mockOpptjeningPre2025OffentligAfpObjekt: DetaljRad[] = [
+  const mockOpptjeningPre2025OffentligAfpListe: DetaljRad[] = [
     { tekst: 'AFP grad', verdi: 100 },
     { tekst: 'Sluttpoengtall', verdi: 6.5 },
   ]
 
   const defaultProps = {
-    grunnpensjonObjekter: mockGrunnpensjonObjekter,
-    opptjeningKap19Objekt: mockOpptjeningKap19Objekt,
-    opptjeningKap20Objekt: mockOpptjeningKap20Objekt,
+    grunnpensjonListe: mockGrunnpensjonListe,
+    opptjeningKap19Liste: mockOpptjeningKap19Liste,
+    opptjeningKap20Liste: mockOpptjeningKap20Liste,
   }
 
   afterEach(() => {
@@ -100,9 +100,9 @@ describe('Gitt at BeregningsdetaljerMobil rendres', () => {
   it('rendrer komponenten med påkrevde props', () => {
     render(<BeregningsdetaljerMobil {...defaultProps} />)
 
-    expect(screen.getByTestId('grunnpensjonsdetaljer')).toBeInTheDocument()
-    expect(screen.getByTestId('opptjeningsdetaljer')).toBeInTheDocument()
-    expect(screen.getByTestId('afpdetaljer')).toBeInTheDocument()
+    expect(screen.getByTestId('grunnpensjonsdetaljer')).toBeVisible()
+    expect(screen.getByTestId('opptjeningsdetaljer')).toBeVisible()
+    expect(screen.getByTestId('afpdetaljer')).toBeVisible()
   })
 
   it('rendrer VStack med korrekte props', () => {
@@ -112,7 +112,7 @@ describe('Gitt at BeregningsdetaljerMobil rendres', () => {
     expect(vStack).toHaveClass('navds-stack')
   })
 
-  it('sender grunnpensjonObjekter til Grunnpensjonsdetaljer komponent', () => {
+  it('sender grunnpensjonListe til Grunnpensjonsdetaljer komponent', () => {
     render(<BeregningsdetaljerMobil {...defaultProps} />)
 
     const grunnpensjonsdetaljer = screen.getByTestId('grunnpensjonsdetaljer')
@@ -131,9 +131,9 @@ describe('Gitt at BeregningsdetaljerMobil rendres', () => {
     render(
       <BeregningsdetaljerMobil
         {...defaultProps}
-        opptjeningAfpPrivatObjekt={mockOpptjeningAfpPrivatObjekt}
-        opptjeningPre2025OffentligAfpObjekt={
-          mockOpptjeningPre2025OffentligAfpObjekt
+        opptjeningAfpPrivatListe={mockOpptjeningAfpPrivatListe}
+        opptjeningPre2025OffentligAfpListe={
+          mockOpptjeningPre2025OffentligAfpListe
         }
       />
     )
@@ -153,16 +153,16 @@ describe('Gitt at BeregningsdetaljerMobil rendres', () => {
 
   it('håndterer tomme matriser for påkrevde props', () => {
     const emptyProps = {
-      grunnpensjonObjekter: [] as DetaljRad[][],
-      opptjeningKap19Objekt: [] as DetaljRad[],
-      opptjeningKap20Objekt: [] as DetaljRad[],
+      grunnpensjonListe: [] as DetaljRad[][],
+      opptjeningKap19Liste: [] as DetaljRad[],
+      opptjeningKap20Liste: [] as DetaljRad[],
     }
 
     render(<BeregningsdetaljerMobil {...emptyProps} />)
 
-    expect(screen.getByTestId('grunnpensjonsdetaljer')).toBeInTheDocument()
-    expect(screen.getByTestId('opptjeningsdetaljer')).toBeInTheDocument()
-    expect(screen.getByTestId('afpdetaljer')).toBeInTheDocument()
+    expect(screen.getByTestId('grunnpensjonsdetaljer')).toBeVisible()
+    expect(screen.getByTestId('opptjeningsdetaljer')).toBeVisible()
+    expect(screen.getByTestId('afpdetaljer')).toBeVisible()
 
     const grunnpensjonsdetaljer = screen.getByTestId('grunnpensjonsdetaljer')
     expect(grunnpensjonsdetaljer).toHaveAttribute('data-objekter-length', '0')

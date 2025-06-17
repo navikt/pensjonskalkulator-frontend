@@ -19,21 +19,21 @@ const renderWithIntl = (component: React.ReactElement) => {
 }
 
 describe('Gitt at Opptjeningsdetaljer rendres', () => {
-  const mockOpptjeningKap19Objekt: DetaljRad[] = [
+  const mockOpptjeningKap19Liste: DetaljRad[] = [
     { tekst: 'Andelsbrøk', verdi: '10/10' },
     { tekst: 'Sluttpoengtall', verdi: 6.5 },
     { tekst: 'Grunnpensjon', verdi: '180 000 kr' },
   ]
 
-  const mockOpptjeningKap20Objekt: DetaljRad[] = [
+  const mockOpptjeningKap20Liste: DetaljRad[] = [
     { tekst: 'Pensjonsbeholdning før uttak', verdi: '500 000 kr' },
     { tekst: 'Trygdetid', verdi: 40 },
     { tekst: 'Alderspensjon', verdi: '200 000 kr' },
   ]
 
   const defaultProps = {
-    opptjeningKap19Objekt: mockOpptjeningKap19Objekt,
-    opptjeningKap20Objekt: mockOpptjeningKap20Objekt,
+    opptjeningKap19Liste: mockOpptjeningKap19Liste,
+    opptjeningKap20Liste: mockOpptjeningKap20Liste,
   }
 
   it('rendrer komponenten med påkrevde props', () => {
@@ -48,32 +48,30 @@ describe('Gitt at Opptjeningsdetaljer rendres', () => {
   it('rendrer kap19 opptjeningsdetaljer når data er tilgjengelig', () => {
     renderWithIntl(<Opptjeningsdetaljer {...defaultProps} />)
 
-    expect(screen.getByText('Andelsbrøk:')).toBeInTheDocument()
-    expect(screen.getByText('10/10')).toBeInTheDocument()
-    expect(screen.getByText('Sluttpoengtall:')).toBeInTheDocument()
-    expect(screen.getByText('6.5')).toBeInTheDocument()
-    expect(screen.getByText('Grunnpensjon:')).toBeInTheDocument()
-    expect(screen.getByText('180 000 kr')).toBeInTheDocument()
+    expect(screen.getByText('Andelsbrøk:')).toBeVisible()
+    expect(screen.getByText('10/10')).toBeVisible()
+    expect(screen.getByText('Sluttpoengtall:')).toBeVisible()
+    expect(screen.getByText('6.5')).toBeVisible()
+    expect(screen.getByText('Grunnpensjon:')).toBeVisible()
+    expect(screen.getByText('180 000 kr')).toBeVisible()
   })
 
   it('rendrer kap20 opptjeningsdetaljer når data er tilgjengelig', () => {
     renderWithIntl(<Opptjeningsdetaljer {...defaultProps} />)
 
-    expect(
-      screen.getByText('Pensjonsbeholdning før uttak:')
-    ).toBeInTheDocument()
-    expect(screen.getByText('500 000 kr')).toBeInTheDocument()
-    expect(screen.getByText('Trygdetid:')).toBeInTheDocument()
-    expect(screen.getByText('40')).toBeInTheDocument()
-    expect(screen.getByText('Alderspensjon:')).toBeInTheDocument()
-    expect(screen.getByText('200 000 kr')).toBeInTheDocument()
+    expect(screen.getByText('Pensjonsbeholdning før uttak:')).toBeVisible()
+    expect(screen.getByText('500 000 kr')).toBeVisible()
+    expect(screen.getByText('Trygdetid:')).toBeVisible()
+    expect(screen.getByText('40')).toBeVisible()
+    expect(screen.getByText('Alderspensjon:')).toBeVisible()
+    expect(screen.getByText('200 000 kr')).toBeVisible()
   })
 
   it('rendrer ikke kap19 seksjon når data er tom', () => {
     renderWithIntl(
       <Opptjeningsdetaljer
-        opptjeningKap19Objekt={[]}
-        opptjeningKap20Objekt={mockOpptjeningKap20Objekt}
+        opptjeningKap19Liste={[]}
+        opptjeningKap20Liste={mockOpptjeningKap20Liste}
       />
     )
 
@@ -84,8 +82,8 @@ describe('Gitt at Opptjeningsdetaljer rendres', () => {
   it('rendrer ikke kap20 seksjon når data er tom', () => {
     renderWithIntl(
       <Opptjeningsdetaljer
-        opptjeningKap19Objekt={mockOpptjeningKap19Objekt}
-        opptjeningKap20Objekt={[]}
+        opptjeningKap19Liste={mockOpptjeningKap19Liste}
+        opptjeningKap20Liste={[]}
       />
     )
 
@@ -98,13 +96,13 @@ describe('Gitt at Opptjeningsdetaljer rendres', () => {
   it('håndterer tomme arrays for begge objekter', () => {
     const { container } = renderWithIntl(
       <Opptjeningsdetaljer
-        opptjeningKap19Objekt={[]}
-        opptjeningKap20Objekt={[]}
+        opptjeningKap19Liste={[]}
+        opptjeningKap20Liste={[]}
       />
     )
 
     const section = container.querySelector('section')
-    expect(section).toBeInTheDocument()
+    expect(section).toBeVisible()
     expect(screen.queryByText('Andelsbrøk:')).not.toBeInTheDocument()
     expect(
       screen.queryByText('Pensjonsbeholdning før uttak:')
@@ -119,13 +117,13 @@ describe('Gitt at Opptjeningsdetaljer rendres', () => {
 
     renderWithIntl(
       <Opptjeningsdetaljer
-        opptjeningKap19Objekt={objektMedUndefined}
-        opptjeningKap20Objekt={[]}
+        opptjeningKap19Liste={objektMedUndefined}
+        opptjeningKap20Liste={[]}
       />
     )
 
-    expect(screen.getByText('Test tekst:')).toBeInTheDocument()
-    expect(screen.getByText('Test tekst 2:')).toBeInTheDocument()
+    expect(screen.getByText('Test tekst:')).toBeVisible()
+    expect(screen.getByText('Test tekst 2:')).toBeVisible()
   })
 
   it('rendrer VStack med korrekt gap', () => {
@@ -134,7 +132,7 @@ describe('Gitt at Opptjeningsdetaljer rendres', () => {
     )
 
     const vStack = container.querySelector('.navds-stack')
-    expect(vStack).toBeInTheDocument()
+    expect(vStack).toBeVisible()
   })
 
   it('rendrer definition lists korrekt', () => {

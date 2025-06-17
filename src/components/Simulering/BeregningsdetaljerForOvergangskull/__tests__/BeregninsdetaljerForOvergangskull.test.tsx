@@ -18,10 +18,10 @@ vi.mock('@/state/hooks', () => ({
 }))
 vi.mock('../hooks', () => ({
   useBeregningsdetaljer: () => ({
-    grunnpensjonObjekt: [],
-    opptjeningKap19Objekt: [],
-    opptjeningKap20Objekt: [],
-    opptjeningPre2025OffentligAfpObjekt: [],
+    grunnpensjonListe: [],
+    opptjeningKap19Liste: [],
+    opptjeningKap20Liste: [],
+    opptjeningPre2025OffentligAfpListe: [],
   }),
 }))
 
@@ -34,7 +34,7 @@ describe('BeregningsdetaljerForOvergangskull', () => {
     render(<BeregningsdetaljerForOvergangskull />)
     expect(
       screen.getByTestId('beregningsdetaljer-for-overgangskull')
-    ).toBeInTheDocument()
+    ).toBeVisible()
   })
 
   it('Rendrer desktop komponent ved større skjermstørrelse', () => {

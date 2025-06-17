@@ -10,11 +10,11 @@ export interface DetaljRad {
 }
 
 export interface BeregningsdetaljerRader {
-  grunnpensjonObjekter: DetaljRad[][]
-  opptjeningKap19Objekt: DetaljRad[]
-  opptjeningKap20Objekt: DetaljRad[]
-  opptjeningAfpPrivatObjekt: DetaljRad[][]
-  opptjeningPre2025OffentligAfpObjekt: DetaljRad[]
+  grunnpensjonListe: DetaljRad[][]
+  opptjeningKap19Liste: DetaljRad[]
+  opptjeningKap20Liste: DetaljRad[]
+  opptjeningAfpPrivatListe: DetaljRad[][]
+  opptjeningPre2025OffentligAfpListe: DetaljRad[]
 }
 
 export function useBeregningsdetaljer(
@@ -54,7 +54,7 @@ export function useBeregningsdetaljer(
       }
     }
 
-    const grunnpensjonObjekter: DetaljRad[][] = indices.map((index) => {
+    const grunnpensjonListe: DetaljRad[][] = indices.map((index) => {
       const ap = alderspensjonListe?.[index]
       if (!ap) return []
       const grunnpensjon =
@@ -121,7 +121,7 @@ export function useBeregningsdetaljer(
       ].filter((rad) => rad.verdi !== '0 kr')
     })
 
-    const opptjeningAfpPrivatObjekt: DetaljRad[][] = (() => {
+    const opptjeningAfpPrivatListe: DetaljRad[][] = (() => {
       if (!afpPrivatListe || afpPrivatListe.length === 0) {
         return []
       }
@@ -159,7 +159,7 @@ export function useBeregningsdetaljer(
       })
     })()
 
-    const opptjeningKap19Objekt: DetaljRad[] = (() => {
+    const opptjeningKap19Liste: DetaljRad[] = (() => {
       if (
         alderspensjonVedUttak.length === 0 ||
         alderspensjonVedUttak[0].andelsbroekKap19 === 0
@@ -189,7 +189,7 @@ export function useBeregningsdetaljer(
         )
     })()
 
-    const opptjeningKap20Objekt: DetaljRad[] = (() => {
+    const opptjeningKap20Liste: DetaljRad[] = (() => {
       if (
         alderspensjonVedUttak.length === 0 ||
         alderspensjonVedUttak[0].andelsbroekKap20 === 0
@@ -218,7 +218,7 @@ export function useBeregningsdetaljer(
         )
     })()
 
-    const opptjeningPre2025OffentligAfpObjekt: DetaljRad[] = pre2025OffentligAfp
+    const opptjeningPre2025OffentligAfpListe: DetaljRad[] = pre2025OffentligAfp
       ? [
           { tekst: 'AFP grad', verdi: pre2025OffentligAfp.afpGrad },
           {
@@ -242,11 +242,11 @@ export function useBeregningsdetaljer(
       : []
 
     return {
-      grunnpensjonObjekter,
-      opptjeningKap19Objekt,
-      opptjeningKap20Objekt,
-      opptjeningAfpPrivatObjekt,
-      opptjeningPre2025OffentligAfpObjekt,
+      grunnpensjonListe,
+      opptjeningKap19Liste,
+      opptjeningKap20Liste,
+      opptjeningAfpPrivatListe,
+      opptjeningPre2025OffentligAfpListe,
     }
   }, [
     alderspensjonListe,

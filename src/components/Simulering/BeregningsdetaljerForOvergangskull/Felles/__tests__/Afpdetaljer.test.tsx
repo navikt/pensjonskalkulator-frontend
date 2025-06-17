@@ -99,18 +99,18 @@ describe('Gitt at Afpdetaljer rendres', () => {
     }
 
     renderWithProviders(
-      <Afpdetaljer opptjeningAfpPrivatObjekt={[mockAfpPrivatAt67Data]} />,
+      <Afpdetaljer opptjeningAfpPrivatListe={[mockAfpPrivatAt67Data]} />,
       stateWith67
     )
 
-    expect(screen.getByText('Kompensasjonstillegg:')).toBeInTheDocument()
-    expect(screen.getByText('9 000 kr')).toBeInTheDocument()
-    expect(screen.getByText('Kronetillegg:')).toBeInTheDocument()
-    expect(screen.getByText('6 000 kr')).toBeInTheDocument()
-    expect(screen.getByText('Livsvarig del:')).toBeInTheDocument()
-    expect(screen.getByText('3 000 kr')).toBeInTheDocument()
-    expect(screen.getByText('Sum månedlig AFP:')).toBeInTheDocument()
-    expect(screen.getByText('18 000 kr')).toBeInTheDocument()
+    expect(screen.getByText('Kompensasjonstillegg:')).toBeVisible()
+    expect(screen.getByText('9 000 kr')).toBeVisible()
+    expect(screen.getByText('Kronetillegg:')).toBeVisible()
+    expect(screen.getByText('6 000 kr')).toBeVisible()
+    expect(screen.getByText('Livsvarig del:')).toBeVisible()
+    expect(screen.getByText('3 000 kr')).toBeVisible()
+    expect(screen.getByText('Sum månedlig AFP:')).toBeVisible()
+    expect(screen.getByText('18 000 kr')).toBeVisible()
   })
 
   it('rendrer både AFP privat ved uttaksalder og ved 67 når uttaksalder er under 67', () => {
@@ -120,7 +120,7 @@ describe('Gitt at Afpdetaljer rendres', () => {
 
     renderWithProviders(
       <Afpdetaljer
-        opptjeningAfpPrivatObjekt={[
+        opptjeningAfpPrivatListe={[
           mockAfpPrivatAtUttaksalderData,
           mockAfpPrivatAt67Data,
         ]}
@@ -135,15 +135,15 @@ describe('Gitt at Afpdetaljer rendres', () => {
     expect(screen.getAllByText('Sum månedlig AFP:')).toHaveLength(2)
 
     // Sjekker unike verdier for å verifisere at begge seksjoner er tilstede
-    expect(screen.getByText('8 000 kr')).toBeInTheDocument() // Kompensasjonstillegg ved uttaksalder
-    expect(screen.getByText('5 000 kr')).toBeInTheDocument() // Kronetillegg ved uttaksalder
-    expect(screen.getByText('2 000 kr')).toBeInTheDocument() // Livsvarig del ved uttaksalder
-    expect(screen.getByText('15 000 kr')).toBeInTheDocument() // Sum ved uttaksalder
+    expect(screen.getByText('8 000 kr')).toBeVisible() // Kompensasjonstillegg ved uttaksalder
+    expect(screen.getByText('5 000 kr')).toBeVisible() // Kronetillegg ved uttaksalder
+    expect(screen.getByText('2 000 kr')).toBeVisible() // Livsvarig del ved uttaksalder
+    expect(screen.getByText('15 000 kr')).toBeVisible() // Sum ved uttaksalder
 
-    expect(screen.getByText('9 000 kr')).toBeInTheDocument() // Kompensasjonstillegg ved 67
-    expect(screen.getByText('6 000 kr')).toBeInTheDocument() // Kronetillegg ved 67
-    expect(screen.getByText('3 000 kr')).toBeInTheDocument() // Livsvarig del ved 67
-    expect(screen.getByText('18 000 kr')).toBeInTheDocument() // Sum månedlig AFP ved 67
+    expect(screen.getByText('9 000 kr')).toBeVisible() // Kompensasjonstillegg ved 67
+    expect(screen.getByText('6 000 kr')).toBeVisible() // Kronetillegg ved 67
+    expect(screen.getByText('3 000 kr')).toBeVisible() // Livsvarig del ved 67
+    expect(screen.getByText('18 000 kr')).toBeVisible() // Sum månedlig AFP ved 67
   })
 
   it('rendrer ikke AFP privat ved uttaksalder når uttaksalder er 67 eller høyere', () => {
@@ -153,7 +153,7 @@ describe('Gitt at Afpdetaljer rendres', () => {
 
     renderWithProviders(
       <Afpdetaljer
-        opptjeningAfpPrivatObjekt={[
+        opptjeningAfpPrivatListe={[
           mockAfpPrivatAtUttaksalderData,
           mockAfpPrivatAt67Data,
         ]}
@@ -166,49 +166,49 @@ describe('Gitt at Afpdetaljer rendres', () => {
     expect(screen.queryByText('15 000 kr')).not.toBeInTheDocument()
 
     // Men skal vise AFP ved 67
-    expect(screen.getByText('Sum månedlig AFP:')).toBeInTheDocument()
-    expect(screen.getByText('18 000 kr')).toBeInTheDocument()
+    expect(screen.getByText('Sum månedlig AFP:')).toBeVisible()
+    expect(screen.getByText('18 000 kr')).toBeVisible()
   })
 
   it('rendrer pre-2025 offentlig AFP når data er tilgjengelig', () => {
     renderWithProviders(
       <Afpdetaljer
-        opptjeningPre2025OffentligAfpObjekt={mockPre2025OffentligAfpData}
+        opptjeningPre2025OffentligAfpListe={mockPre2025OffentligAfpData}
       />
     )
 
-    expect(screen.getByText('AFP grad:')).toBeInTheDocument()
-    expect(screen.getByText('100')).toBeInTheDocument()
-    expect(screen.getByText('Sluttpoengtall:')).toBeInTheDocument()
-    expect(screen.getByText('6.5')).toBeInTheDocument()
-    expect(screen.getByText('Poengår:')).toBeInTheDocument()
-    expect(screen.getByText('35')).toBeInTheDocument()
-    expect(screen.getByText('Trygdetid:')).toBeInTheDocument()
-    expect(screen.getByText('40')).toBeInTheDocument()
+    expect(screen.getByText('AFP grad:')).toBeVisible()
+    expect(screen.getByText('100')).toBeVisible()
+    expect(screen.getByText('Sluttpoengtall:')).toBeVisible()
+    expect(screen.getByText('6.5')).toBeVisible()
+    expect(screen.getByText('Poengår:')).toBeVisible()
+    expect(screen.getByText('35')).toBeVisible()
+    expect(screen.getByText('Trygdetid:')).toBeVisible()
+    expect(screen.getByText('40')).toBeVisible()
   })
 
   it('rendrer både AFP privat og pre-2025 offentlig AFP samtidig', () => {
     renderWithProviders(
       <Afpdetaljer
-        opptjeningAfpPrivatObjekt={[mockAfpPrivatAt67Data]}
-        opptjeningPre2025OffentligAfpObjekt={mockPre2025OffentligAfpData}
+        opptjeningAfpPrivatListe={[mockAfpPrivatAt67Data]}
+        opptjeningPre2025OffentligAfpListe={mockPre2025OffentligAfpData}
       />
     )
 
     // AFP privat
-    expect(screen.getByText('Kompensasjonstillegg:')).toBeInTheDocument()
-    expect(screen.getByText('Sum månedlig AFP:')).toBeInTheDocument()
+    expect(screen.getByText('Kompensasjonstillegg:')).toBeVisible()
+    expect(screen.getByText('Sum månedlig AFP:')).toBeVisible()
 
     // Pre-2025 offentlig AFP
-    expect(screen.getByText('AFP grad:')).toBeInTheDocument()
-    expect(screen.getByText('Trygdetid:')).toBeInTheDocument()
+    expect(screen.getByText('AFP grad:')).toBeVisible()
+    expect(screen.getByText('Trygdetid:')).toBeVisible()
   })
 
   it('rendrer ikke noe når alle data er tomme eller undefined', () => {
     const { container } = renderWithProviders(
       <Afpdetaljer
-        opptjeningAfpPrivatObjekt={[]}
-        opptjeningPre2025OffentligAfpObjekt={[]}
+        opptjeningAfpPrivatListe={[]}
+        opptjeningPre2025OffentligAfpListe={[]}
       />
     )
 
@@ -226,11 +226,11 @@ describe('Gitt at Afpdetaljer rendres', () => {
     ]
 
     renderWithProviders(
-      <Afpdetaljer opptjeningAfpPrivatObjekt={[objektMedUndefined]} />
+      <Afpdetaljer opptjeningAfpPrivatListe={[objektMedUndefined]} />
     )
 
-    expect(screen.getByText('Test AFP:')).toBeInTheDocument()
-    expect(screen.getByText('Test AFP 2:')).toBeInTheDocument()
+    expect(screen.getByText('Test AFP:')).toBeVisible()
+    expect(screen.getByText('Test AFP 2:')).toBeVisible()
   })
 
   it('rendrer headings korrekt for AFP privat seksjoner', () => {
@@ -240,7 +240,7 @@ describe('Gitt at Afpdetaljer rendres', () => {
 
     renderWithProviders(
       <Afpdetaljer
-        opptjeningAfpPrivatObjekt={[
+        opptjeningAfpPrivatListe={[
           mockAfpPrivatAtUttaksalderData,
           mockAfpPrivatAt67Data,
         ]}
@@ -254,7 +254,7 @@ describe('Gitt at Afpdetaljer rendres', () => {
 
   it('rendrer siste element i hver array med strong styling', () => {
     const { container } = renderWithProviders(
-      <Afpdetaljer opptjeningAfpPrivatObjekt={[mockAfpPrivatAt67Data]} />
+      <Afpdetaljer opptjeningAfpPrivatListe={[mockAfpPrivatAt67Data]} />
     )
 
     const strongElements = container.querySelectorAll('strong')
@@ -268,7 +268,7 @@ describe('Gitt at Afpdetaljer rendres', () => {
 
     renderWithProviders(
       <Afpdetaljer
-        opptjeningAfpPrivatObjekt={[
+        opptjeningAfpPrivatListe={[
           mockAfpPrivatAtUttaksalderData,
           mockAfpPrivatAt67Data,
         ]}
@@ -278,24 +278,24 @@ describe('Gitt at Afpdetaljer rendres', () => {
 
     // Skal vise begge seksjoner siden uttaksalder er under 67
     expect(screen.getAllByText('Sum månedlig AFP:')).toHaveLength(2)
-    expect(screen.getByText('15 000 kr')).toBeInTheDocument() // Ved uttaksalder
-    expect(screen.getByText('18 000 kr')).toBeInTheDocument() // Ved 67
+    expect(screen.getByText('15 000 kr')).toBeVisible() // Ved uttaksalder
+    expect(screen.getByText('18 000 kr')).toBeVisible() // Ved 67
   })
 
   it('rendrer VStack med korrekt gap for AFP privat', () => {
     const { container } = renderWithProviders(
-      <Afpdetaljer opptjeningAfpPrivatObjekt={[mockAfpPrivatAt67Data]} />
+      <Afpdetaljer opptjeningAfpPrivatListe={[mockAfpPrivatAt67Data]} />
     )
 
     const vStack = container.querySelector('.navds-stack')
-    expect(vStack).toBeInTheDocument()
+    expect(vStack).toBeVisible()
   })
 
   it('rendrer definition lists korrekt', () => {
     const { container } = renderWithProviders(
       <Afpdetaljer
-        opptjeningAfpPrivatObjekt={[mockAfpPrivatAt67Data]}
-        opptjeningPre2025OffentligAfpObjekt={mockPre2025OffentligAfpData}
+        opptjeningAfpPrivatListe={[mockAfpPrivatAt67Data]}
+        opptjeningPre2025OffentligAfpListe={mockPre2025OffentligAfpData}
       />
     )
 
@@ -308,14 +308,14 @@ describe('Gitt at Afpdetaljer rendres', () => {
     expect(definitions.length).toBeGreaterThan(0)
   })
 
-  it('håndterer kun ett element i opptjeningAfpPrivatObjekt array', () => {
+  it('håndterer kun ett element i opptjeningAfpPrivatListe array', () => {
     renderWithProviders(
-      <Afpdetaljer opptjeningAfpPrivatObjekt={[mockAfpPrivatAt67Data]} />
+      <Afpdetaljer opptjeningAfpPrivatListe={[mockAfpPrivatAt67Data]} />
     )
 
     // Skal bare vise AFP ved 67 (siden det kun er ett element)
-    expect(screen.getByText('Sum månedlig AFP:')).toBeInTheDocument()
-    expect(screen.getByText('18 000 kr')).toBeInTheDocument()
+    expect(screen.getByText('Sum månedlig AFP:')).toBeVisible()
+    expect(screen.getByText('18 000 kr')).toBeVisible()
     expect(screen.queryByText('15 000 kr')).not.toBeInTheDocument() // Ikke uttaksalder data
   })
 })

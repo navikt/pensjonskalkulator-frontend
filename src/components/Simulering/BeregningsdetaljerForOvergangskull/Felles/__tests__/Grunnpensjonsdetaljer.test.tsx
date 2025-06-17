@@ -79,19 +79,19 @@ describe('Gitt at Grunnpensjonsdetaljer rendres', () => {
   it('rendrer komponenten med kun helt uttak', () => {
     renderWithProviders(
       <Grunnpensjonsdetaljer
-        grunnpensjonObjekter={[mockHeltUttakData]}
+        grunnpensjonListe={[mockHeltUttakData]}
         hasPre2025OffentligAfpUttaksalder={false}
       />
     )
 
-    expect(screen.getByText('Grunnpensjon (kap. 19):')).toBeInTheDocument()
-    expect(screen.getByText('12 000 kr')).toBeInTheDocument()
-    expect(screen.getByText('Tilleggspensjon (kap. 19):')).toBeInTheDocument()
-    expect(screen.getByText('8 000 kr')).toBeInTheDocument()
-    expect(screen.getByText('Inntektspensjon (kap. 20):')).toBeInTheDocument()
-    expect(screen.getByText('15 000 kr')).toBeInTheDocument()
-    expect(screen.getByText('Sum månedlig alderspensjon:')).toBeInTheDocument()
-    expect(screen.getByText('41 000 kr')).toBeInTheDocument()
+    expect(screen.getByText('Grunnpensjon (kap. 19):')).toBeVisible()
+    expect(screen.getByText('12 000 kr')).toBeVisible()
+    expect(screen.getByText('Tilleggspensjon (kap. 19):')).toBeVisible()
+    expect(screen.getByText('8 000 kr')).toBeVisible()
+    expect(screen.getByText('Inntektspensjon (kap. 20):')).toBeVisible()
+    expect(screen.getByText('15 000 kr')).toBeVisible()
+    expect(screen.getByText('Sum månedlig alderspensjon:')).toBeVisible()
+    expect(screen.getByText('41 000 kr')).toBeVisible()
   })
 
   it('rendrer både gradert og helt uttak når begge er tilgjengelige', () => {
@@ -104,21 +104,21 @@ describe('Gitt at Grunnpensjonsdetaljer rendres', () => {
 
     renderWithProviders(
       <Grunnpensjonsdetaljer
-        grunnpensjonObjekter={[mockGradertUttakData, mockHeltUttakData]}
+        grunnpensjonListe={[mockGradertUttakData, mockHeltUttakData]}
         hasPre2025OffentligAfpUttaksalder={false}
       />,
       stateWithGradertUttak
     )
 
     // Gradert uttak - check unique values to distinguish from helt uttak
-    expect(screen.getByText('6 000 kr')).toBeInTheDocument() // Gradert uttak amount (unique)
-    expect(screen.getByText('4 000 kr')).toBeInTheDocument() // Tilleggspensjon gradert (unique)
-    expect(screen.getByText('20 000 kr')).toBeInTheDocument() // Sum gradert (unique)
+    expect(screen.getByText('6 000 kr')).toBeVisible() // Gradert uttak amount (unique)
+    expect(screen.getByText('4 000 kr')).toBeVisible() // Tilleggspensjon gradert (unique)
+    expect(screen.getByText('20 000 kr')).toBeVisible() // Sum gradert (unique)
 
     // Helt uttak - check unique values
-    expect(screen.getByText('12 000 kr')).toBeInTheDocument() // Helt uttak amount (unique)
-    expect(screen.getByText('8 000 kr')).toBeInTheDocument() // Tilleggspensjon helt (unique)
-    expect(screen.getByText('41 000 kr')).toBeInTheDocument() // Sum helt (unique)
+    expect(screen.getByText('12 000 kr')).toBeVisible() // Helt uttak amount (unique)
+    expect(screen.getByText('8 000 kr')).toBeVisible() // Tilleggspensjon helt (unique)
+    expect(screen.getByText('41 000 kr')).toBeVisible() // Sum helt (unique)
 
     // Check that both sections exist
     expect(screen.getAllByText('Grunnpensjon (kap. 19):')).toHaveLength(2)
@@ -128,19 +128,19 @@ describe('Gitt at Grunnpensjonsdetaljer rendres', () => {
   it('rendrer kun helt uttak når gradertUttaksperiode er null', () => {
     renderWithProviders(
       <Grunnpensjonsdetaljer
-        grunnpensjonObjekter={[mockHeltUttakData]}
+        grunnpensjonListe={[mockHeltUttakData]}
         hasPre2025OffentligAfpUttaksalder={false}
       />
     )
 
-    expect(screen.getByText('Grunnpensjon (kap. 19):')).toBeInTheDocument()
+    expect(screen.getByText('Grunnpensjon (kap. 19):')).toBeVisible()
     expect(screen.queryByText('6 000 kr')).not.toBeInTheDocument() // Gradert amount should not be visible
   })
 
-  it('håndterer tom grunnpensjonObjekter array', () => {
+  it('håndterer tom grunnpensjonListe array', () => {
     const { container } = renderWithProviders(
       <Grunnpensjonsdetaljer
-        grunnpensjonObjekter={[]}
+        grunnpensjonListe={[]}
         hasPre2025OffentligAfpUttaksalder={false}
       />
     )
@@ -161,7 +161,7 @@ describe('Gitt at Grunnpensjonsdetaljer rendres', () => {
 
     renderWithProviders(
       <Grunnpensjonsdetaljer
-        grunnpensjonObjekter={[mockGradertUttakData, mockHeltUttakData]}
+        grunnpensjonListe={[mockGradertUttakData, mockHeltUttakData]}
         hasPre2025OffentligAfpUttaksalder={false}
       />,
       stateWithGradertUttak
@@ -174,7 +174,7 @@ describe('Gitt at Grunnpensjonsdetaljer rendres', () => {
   it('rendrer siste element i hver array med strong styling', () => {
     const { container } = renderWithProviders(
       <Grunnpensjonsdetaljer
-        grunnpensjonObjekter={[mockHeltUttakData]}
+        grunnpensjonListe={[mockHeltUttakData]}
         hasPre2025OffentligAfpUttaksalder={false}
       />
     )
@@ -191,19 +191,19 @@ describe('Gitt at Grunnpensjonsdetaljer rendres', () => {
 
     renderWithProviders(
       <Grunnpensjonsdetaljer
-        grunnpensjonObjekter={[objektMedUndefined]}
+        grunnpensjonListe={[objektMedUndefined]}
         hasPre2025OffentligAfpUttaksalder={false}
       />
     )
 
-    expect(screen.getByText('Test grunnpensjon:')).toBeInTheDocument()
-    expect(screen.getByText('Test tilleggspensjon:')).toBeInTheDocument()
+    expect(screen.getByText('Test grunnpensjon:')).toBeVisible()
+    expect(screen.getByText('Test tilleggspensjon:')).toBeVisible()
   })
 
   it('rendrer VStack med korrekt gap', () => {
     const { container } = renderWithProviders(
       <Grunnpensjonsdetaljer
-        grunnpensjonObjekter={[mockHeltUttakData]}
+        grunnpensjonListe={[mockHeltUttakData]}
         hasPre2025OffentligAfpUttaksalder={false}
       />
     )
@@ -215,7 +215,7 @@ describe('Gitt at Grunnpensjonsdetaljer rendres', () => {
   it('rendrer definition lists korrekt', () => {
     const { container } = renderWithProviders(
       <Grunnpensjonsdetaljer
-        grunnpensjonObjekter={[mockHeltUttakData]}
+        grunnpensjonListe={[mockHeltUttakData]}
         hasPre2025OffentligAfpUttaksalder={false}
       />
     )
@@ -237,16 +237,16 @@ describe('Gitt at Grunnpensjonsdetaljer rendres', () => {
 
     renderWithProviders(
       <Grunnpensjonsdetaljer
-        grunnpensjonObjekter={[mockHeltUttakData]}
+        grunnpensjonListe={[mockHeltUttakData]}
         hasPre2025OffentligAfpUttaksalder={false}
       />,
       stateWithMonths
     )
 
-    expect(screen.getByText('Grunnpensjon (kap. 19):')).toBeInTheDocument()
+    expect(screen.getByText('Grunnpensjon (kap. 19):')).toBeVisible()
   })
 
-  it('håndterer når grunnpensjonObjekter har nøyaktig 2 arrays', () => {
+  it('håndterer når grunnpensjonListe har nøyaktig 2 arrays', () => {
     const stateWithGradertUttak = {
       gradertUttaksperiode: {
         uttaksalder: { aar: 62, maaneder: 0 },
@@ -256,7 +256,7 @@ describe('Gitt at Grunnpensjonsdetaljer rendres', () => {
 
     renderWithProviders(
       <Grunnpensjonsdetaljer
-        grunnpensjonObjekter={[mockGradertUttakData, mockHeltUttakData]}
+        grunnpensjonListe={[mockGradertUttakData, mockHeltUttakData]}
         hasPre2025OffentligAfpUttaksalder={false}
       />,
       stateWithGradertUttak
@@ -265,7 +265,7 @@ describe('Gitt at Grunnpensjonsdetaljer rendres', () => {
     // Skal fungere korrekt med 2 arrays - gradert og helt uttak
     expect(screen.getAllByText('Grunnpensjon (kap. 19):')).toHaveLength(2)
     expect(screen.getAllByText('Sum månedlig alderspensjon:')).toHaveLength(2)
-    expect(screen.getByText('6 000 kr')).toBeInTheDocument() // Gradert uttak
-    expect(screen.getByText('12 000 kr')).toBeInTheDocument() // Helt uttak
+    expect(screen.getByText('6 000 kr')).toBeVisible() // Gradert uttak
+    expect(screen.getByText('12 000 kr')).toBeVisible() // Helt uttak
   })
 })

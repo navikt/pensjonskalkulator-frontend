@@ -1,8 +1,6 @@
 import React from 'react'
 
-//import { FormattedMessage } from 'react-intl'
-
-import { Box /* Heading */ } from '@navikt/ds-react'
+import { Box } from '@navikt/ds-react'
 
 import { BeregningsdetaljerDesktop } from './BeregningsdetaljerDesktop/BeregningsdetaljerDesktop'
 import { BeregningsdetaljerMobil } from './BeregningsdetaljerMobil/BeregningsdetaljerMobil'
@@ -22,11 +20,11 @@ export const BeregningsdetaljerForOvergangskull: React.FC<Props> = ({
   afpPrivatListe,
 }) => {
   const {
-    grunnpensjonObjekter,
-    opptjeningKap19Objekt,
-    opptjeningKap20Objekt,
-    opptjeningAfpPrivatObjekt,
-    opptjeningPre2025OffentligAfpObjekt,
+    grunnpensjonListe,
+    opptjeningKap19Liste,
+    opptjeningKap20Liste,
+    opptjeningAfpPrivatListe,
+    opptjeningPre2025OffentligAfpListe,
   } = useBeregningsdetaljer(
     alderspensjonListe,
     afpPrivatListe,
@@ -35,30 +33,26 @@ export const BeregningsdetaljerForOvergangskull: React.FC<Props> = ({
 
   return (
     <Box marginBlock="10 0" data-testid="beregningsdetaljer-for-overgangskull">
-      {/* <Heading size="small" level="2">
-        <FormattedMessage id="beregningsdetaljer.title" />
-      </Heading> */}
-
       <div className={styles.beregningsdetaljerForOvergangskullDesktopOnly}>
         <BeregningsdetaljerDesktop
-          grunnpensjonObjekter={grunnpensjonObjekter}
-          opptjeningKap19Objekt={opptjeningKap19Objekt}
-          opptjeningKap20Objekt={opptjeningKap20Objekt}
-          opptjeningAfpPrivatObjekt={opptjeningAfpPrivatObjekt}
-          opptjeningPre2025OffentligAfpObjekt={
-            opptjeningPre2025OffentligAfpObjekt
+          grunnpensjonListe={grunnpensjonListe}
+          opptjeningKap19Liste={opptjeningKap19Liste}
+          opptjeningKap20Liste={opptjeningKap20Liste}
+          opptjeningAfpPrivatListe={opptjeningAfpPrivatListe}
+          opptjeningPre2025OffentligAfpListe={
+            opptjeningPre2025OffentligAfpListe
           }
         />
       </div>
 
       <div className={styles.beregningsdetaljerForOvergangskullMobileOnly}>
         <BeregningsdetaljerMobil
-          grunnpensjonObjekter={grunnpensjonObjekter}
-          opptjeningKap19Objekt={opptjeningKap19Objekt}
-          opptjeningKap20Objekt={opptjeningKap20Objekt}
-          opptjeningAfpPrivatObjekt={opptjeningAfpPrivatObjekt}
-          opptjeningPre2025OffentligAfpObjekt={
-            opptjeningPre2025OffentligAfpObjekt
+          grunnpensjonListe={grunnpensjonListe}
+          opptjeningKap19Liste={opptjeningKap19Liste}
+          opptjeningKap20Liste={opptjeningKap20Liste}
+          opptjeningAfpPrivatListe={opptjeningAfpPrivatListe}
+          opptjeningPre2025OffentligAfpListe={
+            opptjeningPre2025OffentligAfpListe
           }
         />
       </div>
