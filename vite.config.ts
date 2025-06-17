@@ -105,6 +105,7 @@ export default defineConfig({
         'cypress',
         'sanity.cli.ts',
         'server/server.ts',
+        'server/ensureEnv.ts',
         'src/mocks',
         'src/mocks/mockedRTKQueryApiCalls.ts',
         'src/test-utils.tsx',
