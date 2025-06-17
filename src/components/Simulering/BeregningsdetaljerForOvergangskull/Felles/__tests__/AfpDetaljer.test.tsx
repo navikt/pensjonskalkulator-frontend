@@ -9,7 +9,7 @@ import {
 } from '@/state/userInput/userInputSlice'
 
 import { DetaljRad } from '../../hooks'
-import { AfpDetaljer } from '../AfpDetaljeer'
+import { AfpDetaljer } from '../AfpDetaljer'
 
 const mockMessages = {
   'beregning.detaljer.fom': 'Fra og med',

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { VStack } from '@navikt/ds-react'
 
-import { AfpDetaljer } from '../Felles/AfpDetaljeer'
+import { AfpDetaljer } from '../Felles/AfpDetaljer'
 import { AlderspensjonDetaljer } from '../Felles/AlderspensjonDetaljer'
 import { OpptjeningDetaljer } from '../Felles/OpptjeningDetaljer'
 import { DetaljRad } from '../hooks'
