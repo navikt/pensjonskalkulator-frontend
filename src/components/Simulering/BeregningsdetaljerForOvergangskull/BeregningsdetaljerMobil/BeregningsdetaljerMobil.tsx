@@ -27,9 +27,9 @@ export const BeregningsdetaljerMobil: React.FC<
   <VStack gap="4 8" width="100%" marginBlock="2 0">
     <Grunnpensjonsdetaljer
       grunnpensjonObjekter={grunnpensjonObjekter}
-      hasPre2025OffentligAfpUttaksalder={
-        opptjeningPre2025OffentligAfpObjekt ? true : false
-      }
+      hasPre2025OffentligAfpUttaksalder={Boolean(
+        opptjeningPre2025OffentligAfpObjekt?.length
+      )}
     />
     <Opptjeningsdetaljer
       opptjeningKap19Objekt={opptjeningKap19Objekt}
