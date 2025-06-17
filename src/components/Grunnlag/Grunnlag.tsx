@@ -9,6 +9,7 @@ import {
   Heading,
   HeadingProps,
   Link,
+  VStack,
 } from '@navikt/ds-react'
 
 import { AccordionItem } from '@/components/common/AccordionItem'
@@ -72,7 +73,7 @@ export const Grunnlag: React.FC<Props> = ({
         <FormattedMessage id="grunnlag.title" />
       </Heading>
 
-      <HStack gap="8">
+      <HStack gap="8" marginBlock="6 0">
         <GrunnlagItem color="gray">
           <Pensjonsgivendeinntekt goToAvansert={goToAvansert} />
         </GrunnlagItem>
@@ -81,6 +82,12 @@ export const Grunnlag: React.FC<Props> = ({
           {!isEndring && <Pensjonsavtaler headingLevel="3" />}
         </GrunnlagItem>
       </HStack>
+
+      <VStack marginBlock="12 0">
+        <Heading level={headingLevel} size="medium">
+          <FormattedMessage id="om_deg.title" />
+        </Heading>
+      </VStack>
 
       <Accordion>
         {visning === 'enkel' && (

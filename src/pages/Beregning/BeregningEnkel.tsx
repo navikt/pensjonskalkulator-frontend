@@ -369,7 +369,7 @@ export const BeregningEnkel = () => {
 
               <Grunnlag
                 visning="enkel"
-                headingLevel="3"
+                headingLevel="2"
                 harForLiteTrygdetid={alderspensjon?.harForLiteTrygdetid}
                 trygdetid={alderspensjon?.trygdetid}
                 pensjonsbeholdning={
