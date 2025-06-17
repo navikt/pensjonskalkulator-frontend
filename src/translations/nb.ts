@@ -550,7 +550,7 @@ const translations = {
     'Du kan legge til inntekt ved siden av pensjon i ',
   'grunnlag.inntekt.avansert_link': 'avansert kalkulator',
   'grunnlag.inntekt.ingress':
-    'Din siste pensjonsgivende inntekt fra Skatteetaten er <nowrap>{beloep} kr</nowrap> fra {aar}. Se tidligere inntekter i <dinPensjonBeholdningLink>Din pensjonsopptjening</dinPensjonBeholdningLink>',
+    'Din siste pensjonsgivende inntekt fra Skatteetaten er <nowrap>{beloep} kr</nowrap> fra {aar}. Se tidligere inntekter i <dinPensjonBeholdningLink>Din pensjonsopptjening</dinPensjonBeholdningLink>. Du kan legge til inntekt ved siden av pensjon i ',
   'grunnlag.inntekt.info_om_inntekt': 'Hva er pensjonsgivende inntekt?',
   'grunnlag.inntekt.info_om_inntekt.lukk': 'Lukk',
   'grunnlag.sivilstand.title': 'Sivilstand',

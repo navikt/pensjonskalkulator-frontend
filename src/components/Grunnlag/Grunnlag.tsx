@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router'
 import {
   Accordion,
   BodyLong,
+  HStack,
   Heading,
   HeadingProps,
   Link,
@@ -21,6 +22,7 @@ import { formatSivilstand } from '@/utils/sivilstand'
 import { getFormatMessageValues } from '@/utils/translations'
 
 import { GrunnlagItem } from '../GrunnlagItem'
+import { Pensjonsavtaler } from '../Pensjonsavtaler/Pensjonsavtaler'
 import { Pensjonsgivendeinntekt } from '../Simulering/Pensjonsgivendeinntekt'
 import { GrunnlagAFP } from './GrunnlagAFP'
 import { GrunnlagInntekt } from './GrunnlagInntekt'
@@ -70,9 +72,15 @@ export const Grunnlag: React.FC<Props> = ({
         <FormattedMessage id="grunnlag.title" />
       </Heading>
 
-      <GrunnlagItem color="gray">
-        <Pensjonsgivendeinntekt />
-      </GrunnlagItem>
+      <HStack gap="2">
+        <GrunnlagItem color="gray">
+          <Pensjonsgivendeinntekt goToAvansert={goToAvansert} />
+        </GrunnlagItem>
+
+        <GrunnlagItem color="green">
+          {!isEndring && <Pensjonsavtaler headingLevel="3" />}
+        </GrunnlagItem>
+      </HStack>
 
       <Accordion>
         {visning === 'enkel' && (

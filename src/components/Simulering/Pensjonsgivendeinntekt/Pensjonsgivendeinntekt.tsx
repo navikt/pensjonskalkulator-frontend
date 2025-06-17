@@ -1,26 +1,37 @@
 import React from 'react'
-import { FormattedMessage, useIntl } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 
-import { BodyLong, Box, HStack, Heading } from '@navikt/ds-react'
+import { BodyLong, HStack, Heading, Link, VStack } from '@navikt/ds-react'
 
 import { EndreInntekt } from '@/components/EndreInntekt'
+import { SanityReadmore } from '@/components/common/SanityReadmore'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
-import { selectAarligInntektFoerUttakBeloepFraBrukerInput } from '@/state/userInput/selectors'
+import {
+  selectAarligInntektFoerUttakBeloepFraBrukerInput,
+  selectAarligInntektFoerUttakBeloepFraSkatt,
+} from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
 import { getFormatMessageValues } from '@/utils/translations'
 
 import styles from './Pensjonsgivendeinntekt.module.scss'
 
-export const Pensjonsgivendeinntekt = () => {
-  const intl = useIntl()
+interface Props {
+  goToAvansert: React.MouseEventHandler<HTMLAnchorElement>
+}
+
+export const Pensjonsgivendeinntekt: React.FC<Props> = ({ goToAvansert }) => {
   const dispatch = useAppDispatch()
 
   const aarligInntektFoerUttakBeloepFraBrukerInput = useAppSelector(
     selectAarligInntektFoerUttakBeloepFraBrukerInput
   )
 
+  const aarligInntektFoerUttakBeloepFraSkatt = useAppSelector(
+    selectAarligInntektFoerUttakBeloepFraSkatt
+  )
+
   return (
-    <HStack gap="2">
+    <VStack gap="2">
       <Heading level="2" size="small">
         <FormattedMessage id="grunnlag2.endre_inntekt.title" />
       </Heading>
@@ -29,15 +40,17 @@ export const Pensjonsgivendeinntekt = () => {
           id="grunnlag.inntekt.ingress"
           values={{
             ...getFormatMessageValues(),
-            beloep: 400,
-            aar: 3,
+            beloep: aarligInntektFoerUttakBeloepFraSkatt?.beloep,
+            aar: aarligInntektFoerUttakBeloepFraSkatt?.aar,
           }}
         />
+        <Link href="#" onClick={goToAvansert}>
+          <FormattedMessage id="grunnlag.inntekt.avansert_link" />
+        </Link>
       </BodyLong>
       <EndreInntekt
         visning="enkel"
         variant="secondary"
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         className={styles.endreInntektButton}
         value={aarligInntektFoerUttakBeloepFraBrukerInput}
         onSubmit={(uformatertInntekt) => {
@@ -49,6 +62,7 @@ export const Pensjonsgivendeinntekt = () => {
           dispatch(userInputActions.setCurrentSimulationUttaksalder(null))
         }}
       />
-    </HStack>
+      <SanityReadmore id="om_pensjonsgivende_inntekt" />
+    </VStack>
   )
 }
