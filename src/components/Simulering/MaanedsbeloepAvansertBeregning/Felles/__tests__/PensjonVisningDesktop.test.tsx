@@ -1,6 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
 
-import { mockResponse } from '@/mocks/server'
 import { render, screen } from '@/test-utils'
 
 import { Pensjonsdata } from '../../hooks'
@@ -116,24 +115,6 @@ describe('DesktopPensjonVisning', () => {
     ]
 
     beforeEach(() => {
-      mockResponse('/v4/person', {
-        status: 200,
-        json: {
-          navn: 'Ola',
-          sivilstand: 'GIFT',
-          foedselsdato: '1960-04-30',
-          pensjoneringAldre: {
-            normertPensjoneringsalder: {
-              aar: 67,
-              maaneder: 0,
-            },
-            nedreAldersgrense: {
-              aar: 62,
-              maaneder: 0,
-            },
-          },
-        },
-      })
       render(
         <PensjonVisningDesktop
           pensjonsdata={mockPensjonsdataPre2025OffentligAfp}
