@@ -121,6 +121,7 @@ export default defineConfig({
         'src/paths.ts',
         'schemaTypes/**',
         'src/components/Signals/**',
+        'src/components/Simulering/Simuleringsdetaljer/Simuleringsdetaljer.tsx',
       ],
       perFile: true,
       thresholds: {
