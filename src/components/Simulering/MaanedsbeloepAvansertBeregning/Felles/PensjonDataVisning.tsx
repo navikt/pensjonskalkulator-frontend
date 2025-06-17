@@ -31,6 +31,7 @@ export const PensjonDataVisning: React.FC<Props> = ({
     alderspensjon,
     pre2025OffentligAfp,
   } = pensjonsdata
+
   const harKunAlderspensjon = alderspensjon && !afp && !pensjonsavtale
   const harAFP = afp || (pre2025OffentligAfp && !alderspensjon)
   const captionTitle = (

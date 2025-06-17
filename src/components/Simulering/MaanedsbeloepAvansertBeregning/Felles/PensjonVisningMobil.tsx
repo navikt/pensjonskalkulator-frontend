@@ -48,18 +48,20 @@ export const PensjonVisningMobil: React.FC<Props> = ({
     >
       <VStack gap="2">
         {pensjonsdata.map((data, index) => {
-          const kapittel20AP =
+          const isKapittel20AP =
             data.alderspensjon &&
             !data.afp &&
             !data.pensjonsavtale &&
             !data.pre2025OffentligAfp
-          const kapittel19OffentligAFP =
+
+          const isKapittel19OffentligAFP =
             data.pre2025OffentligAfp && !data.alderspensjon
 
-          const uttaksalder =
+          const formattedUttaksalder =
             data.alderspensjon && data.pre2025OffentligAfp
               ? `${TIDLIGST_UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP.aar} år`
               : formatUttaksalder(intl, data.alder)
+
           return (
             <ReadMore
               key={`mobile-${index}`}
@@ -68,8 +70,8 @@ export const PensjonVisningMobil: React.FC<Props> = ({
                 intl.formatMessage({
                   id: 'beregning.avansert.maanedsbeloep.box_title',
                 }) +
-                uttaksalder +
-                (((kapittel20AP || kapittel19OffentligAFP) &&
+                formattedUttaksalder +
+                (((isKapittel20AP || isKapittel19OffentligAFP) &&
                   ` (${hentUttaksmaanedOgAar(data.alder)})`) ||
                   '')
               }

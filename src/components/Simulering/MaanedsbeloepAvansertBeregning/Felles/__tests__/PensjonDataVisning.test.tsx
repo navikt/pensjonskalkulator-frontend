@@ -111,7 +111,9 @@ describe('PensjonDataVisning', () => {
       alderspensjon: 0,
       pre2025OffentligAfp: 29373,
     }
+
     const mockSummerYtelserGammelAfp = vi.fn(() => 0)
+
     render(
       <PensjonDataVisning
         pensjonsdata={mockPensjonDataGammelAfp}
@@ -141,7 +143,9 @@ describe('PensjonDataVisning', () => {
       alderspensjon: 25778,
       pre2025OffentligAfp: 29373,
     }
+
     const mockSummerYtelserGammelAfp = vi.fn(() => 0)
+
     render(
       <PensjonDataVisning
         pensjonsdata={mockPensjonDataGammelAfpOgAP}
