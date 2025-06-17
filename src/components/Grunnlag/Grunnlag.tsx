@@ -72,7 +72,7 @@ export const Grunnlag: React.FC<Props> = ({
         <FormattedMessage id="grunnlag.title" />
       </Heading>
 
-      <HStack gap="2">
+      <HStack gap="8">
         <GrunnlagItem color="gray">
           <Pensjonsgivendeinntekt goToAvansert={goToAvansert} />
         </GrunnlagItem>

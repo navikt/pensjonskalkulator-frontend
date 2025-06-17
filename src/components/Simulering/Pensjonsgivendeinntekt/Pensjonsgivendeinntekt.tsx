@@ -1,7 +1,7 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
 
-import { BodyLong, HStack, Heading, Link, VStack } from '@navikt/ds-react'
+import { BodyLong, Heading, Link, VStack } from '@navikt/ds-react'
 
 import { EndreInntekt } from '@/components/EndreInntekt'
 import { SanityReadmore } from '@/components/common/SanityReadmore'

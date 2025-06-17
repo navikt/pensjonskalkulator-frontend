@@ -9,7 +9,6 @@ import { BodyLong, BodyShort, Heading, HeadingProps } from '@navikt/ds-react'
 
 import { TabellVisning } from '@/components/TabellVisning'
 import {
-  useGetUtvidetSimuleringsresultatFeatureToggleQuery,
   useOffentligTpQuery,
   usePensjonsavtalerQuery,
 } from '@/state/api/apiSlice'
@@ -32,11 +31,9 @@ import {
 } from '@/state/userInput/selectors'
 
 import { MaanedsbeloepAvansertBeregning } from './MaanedsbeloepAvansertBeregning'
-import { Pensjonsgivendeinntekt } from './Pensjonsgivendeinntekt'
 import { SimuleringEndringBanner } from './SimuleringEndringBanner/SimuleringEndringBanner'
 import { SimuleringGrafNavigation } from './SimuleringGrafNavigation/SimuleringGrafNavigation'
 import { SimuleringPensjonsavtalerAlert } from './SimuleringPensjonsavtalerAlert/SimuleringPensjonsavtalerAlert'
-import { Simuleringsdetaljer } from './Simuleringsdetaljer/Simuleringsdetaljer'
 import {
   useHighchartsRegressionPlugin,
   useSimuleringChartLocalState,
@@ -71,7 +68,6 @@ export const Simulering = ({
   afpOffentligListe,
   alderspensjonMaanedligVedEndring,
   showButtonsAndTable,
-  detaljer,
   visning,
 }: Props) => {
   const harSamtykket = useAppSelector(selectSamtykke)
@@ -85,8 +81,6 @@ export const Simulering = ({
   const utenlandsperioder = useAppSelector(selectUtenlandsperioder)
   const { uttaksalder, aarligInntektVsaHelPensjon, gradertUttaksperiode } =
     useAppSelector(selectCurrentSimulation)
-  const { data: utvidetSimuleringsresultatFeatureToggle } =
-    useGetUtvidetSimuleringsresultatFeatureToggleQuery()
 
   const chartRef = useRef<HighchartsReact.RefObject>(null)
 

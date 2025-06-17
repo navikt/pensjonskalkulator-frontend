@@ -8,7 +8,6 @@ import { Alert, Heading } from '@navikt/ds-react'
 
 import { Grunnlag } from '@/components/Grunnlag'
 import { GrunnlagForbehold } from '@/components/GrunnlagForbehold'
-import { Pensjonsavtaler } from '@/components/Pensjonsavtaler'
 import { SavnerDuNoe } from '@/components/SavnerDuNoe'
 import { Signals } from '@/components/Signals'
 import { Simulering } from '@/components/Simulering'
