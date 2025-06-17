@@ -368,7 +368,7 @@ export const BeregningEnkel = () => {
                 }
               />
 
-              {!isEndring && <Pensjonsavtaler headingLevel="3" />}
+              {/* {!isEndring && <Pensjonsavtaler headingLevel="3" />} */}
 
               <Grunnlag
                 visning="enkel"

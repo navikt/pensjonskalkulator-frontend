@@ -20,6 +20,8 @@ import { formatInntekt } from '@/utils/inntekt'
 import { formatSivilstand } from '@/utils/sivilstand'
 import { getFormatMessageValues } from '@/utils/translations'
 
+import { GrunnlagItem } from '../GrunnlagItem'
+import { Pensjonsgivendeinntekt } from '../Simulering/Pensjonsgivendeinntekt'
 import { GrunnlagAFP } from './GrunnlagAFP'
 import { GrunnlagInntekt } from './GrunnlagInntekt'
 import { GrunnlagSection } from './GrunnlagSection'
@@ -67,6 +69,10 @@ export const Grunnlag: React.FC<Props> = ({
       <Heading level={headingLevel} size="medium">
         <FormattedMessage id="grunnlag.title" />
       </Heading>
+
+      <GrunnlagItem color="gray">
+        <Pensjonsgivendeinntekt />
+      </GrunnlagItem>
 
       <Accordion>
         {visning === 'enkel' && (

@@ -20,38 +20,35 @@ export const Pensjonsgivendeinntekt = () => {
   )
 
   return (
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    <Box className={styles.pensjonsgivendeInntektContainer}>
-      <HStack paddingBlock="3" paddingInline="7 0" gap="2">
-        <Heading level="2" size="small">
-          <FormattedMessage id="grunnlag2.endre_inntekt.title" />
-        </Heading>
-        <BodyLong>
-          <FormattedMessage
-            id="grunnlag.inntekt.ingress"
-            values={{
-              ...getFormatMessageValues(),
-              beloep: 400,
-              aar: 3,
-            }}
-          />
-        </BodyLong>
-        <EndreInntekt
-          visning="enkel"
-          variant="secondary"
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          className={styles.endreInntektButton}
-          value={aarligInntektFoerUttakBeloepFraBrukerInput}
-          onSubmit={(uformatertInntekt) => {
-            dispatch(
-              userInputActions.setCurrentSimulationAarligInntektFoerUttakBeloep(
-                uformatertInntekt
-              )
-            )
-            dispatch(userInputActions.setCurrentSimulationUttaksalder(null))
+    <HStack gap="2">
+      <Heading level="2" size="small">
+        <FormattedMessage id="grunnlag2.endre_inntekt.title" />
+      </Heading>
+      <BodyLong>
+        <FormattedMessage
+          id="grunnlag.inntekt.ingress"
+          values={{
+            ...getFormatMessageValues(),
+            beloep: 400,
+            aar: 3,
           }}
         />
-      </HStack>
-    </Box>
+      </BodyLong>
+      <EndreInntekt
+        visning="enkel"
+        variant="secondary"
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        className={styles.endreInntektButton}
+        value={aarligInntektFoerUttakBeloepFraBrukerInput}
+        onSubmit={(uformatertInntekt) => {
+          dispatch(
+            userInputActions.setCurrentSimulationAarligInntektFoerUttakBeloep(
+              uformatertInntekt
+            )
+          )
+          dispatch(userInputActions.setCurrentSimulationUttaksalder(null))
+        }}
+      />
+    </HStack>
   )
 }

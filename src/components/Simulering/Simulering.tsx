@@ -275,13 +275,13 @@ export const Simulering = ({
       )}
 
       {/* c8 ignore next 6 - detaljer skal kun vises i dev for test formål */}
-      {utvidetSimuleringsresultatFeatureToggle?.enabled && detaljer && (
+      {/* {utvidetSimuleringsresultatFeatureToggle?.enabled && detaljer && (
         <Simuleringsdetaljer
           alderspensjonListe={alderspensjonListe}
           detaljer={detaljer}
           pre2025OffentligAfp={pre2025OffentligAfp}
         />
-      )}
+      )} */}
 
       {!isOffentligTpLoading &&
         !isLoading &&
@@ -296,7 +296,6 @@ export const Simulering = ({
             simulertTjenestepensjon={offentligTpData?.simulertTjenestepensjon}
           />
         )}
-      <Pensjonsgivendeinntekt />
     </section>
   )
 }
