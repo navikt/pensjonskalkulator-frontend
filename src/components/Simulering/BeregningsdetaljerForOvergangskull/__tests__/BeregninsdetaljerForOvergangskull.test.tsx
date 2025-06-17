@@ -18,7 +18,7 @@ vi.mock('@/state/hooks', () => ({
 }))
 vi.mock('../hooks', () => ({
   useBeregningsdetaljer: () => ({
-    grunnpensjonListe: [],
+    alderspensjonDetaljerListe: [],
     opptjeningKap19Liste: [],
     opptjeningKap20Liste: [],
     opptjeningPre2025OffentligAfpListe: [],

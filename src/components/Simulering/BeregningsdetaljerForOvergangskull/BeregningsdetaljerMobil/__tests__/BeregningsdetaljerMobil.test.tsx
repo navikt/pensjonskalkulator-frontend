@@ -5,23 +5,23 @@ import { DetaljRad } from '../../hooks'
 import { BeregningsdetaljerMobil } from '../BeregningsdetaljerMobil'
 
 // Mock the child components
-vi.mock('../../Felles/Grunnpensjonsdetaljer', () => ({
-  Grunnpensjonsdetaljer: ({
-    grunnpensjonListe,
+vi.mock('../../Felles/AlderspensjonDetaljer', () => ({
+  AlderspensjonDetaljer: ({
+    alderspensjonDetaljerListe,
   }: {
-    grunnpensjonListe: DetaljRad[][]
+    alderspensjonDetaljerListe: DetaljRad[][]
   }) => (
     <div
-      data-testid="grunnpensjonsdetaljer"
-      data-objekter-length={grunnpensjonListe.length}
+      data-testid="AlderspensjonDetaljer"
+      data-objekter-length={alderspensjonDetaljerListe.length}
     >
-      Grunnpensjonsdetaljer Mock
+      AlderspensjonDetaljer Mock
     </div>
   ),
 }))
 
-vi.mock('../../Felles/Opptjeningsdetaljer', () => ({
-  Opptjeningsdetaljer: ({
+vi.mock('../../Felles/OpptjeningDetaljer', () => ({
+  OpptjeningDetaljer: ({
     opptjeningKap19Liste,
     opptjeningKap20Liste,
   }: {
@@ -29,17 +29,17 @@ vi.mock('../../Felles/Opptjeningsdetaljer', () => ({
     opptjeningKap20Liste: DetaljRad[]
   }) => (
     <div
-      data-testid="opptjeningsdetaljer"
+      data-testid="OpptjeningDetaljer"
       data-kap19-length={opptjeningKap19Liste.length}
       data-kap20-length={opptjeningKap20Liste.length}
     >
-      Opptjeningsdetaljer Mock
+      OpptjeningDetaljer Mock
     </div>
   ),
 }))
 
-vi.mock('../../Felles/Afpdetaljer', () => ({
-  Afpdetaljer: ({
+vi.mock('../../Felles/AfpDetaljer', () => ({
+  AfpDetaljer: ({
     opptjeningAfpPrivatListe,
     opptjeningPre2025OffentligAfpListe,
   }: {
@@ -47,17 +47,17 @@ vi.mock('../../Felles/Afpdetaljer', () => ({
     opptjeningPre2025OffentligAfpListe?: DetaljRad[]
   }) => (
     <div
-      data-testid="afpdetaljer"
+      data-testid="AfpDetaljer"
       data-afp-privat-length={opptjeningAfpPrivatListe?.length ?? ''}
       data-pre2025-length={opptjeningPre2025OffentligAfpListe?.length ?? ''}
     >
-      Afpdetaljer Mock
+      AfpDetaljer Mock
     </div>
   ),
 }))
 
 describe('Gitt at BeregningsdetaljerMobil rendres', () => {
-  const mockGrunnpensjonListe: DetaljRad[][] = [
+  const mockalderspensjonDetaljerListe: DetaljRad[][] = [
     [
       { tekst: 'Trygdetid', verdi: 40 },
       { tekst: 'Sluttpoengtall', verdi: 6.5 },
@@ -88,7 +88,7 @@ describe('Gitt at BeregningsdetaljerMobil rendres', () => {
   ]
 
   const defaultProps = {
-    grunnpensjonListe: mockGrunnpensjonListe,
+    alderspensjonDetaljerListe: mockalderspensjonDetaljerListe,
     opptjeningKap19Liste: mockOpptjeningKap19Liste,
     opptjeningKap20Liste: mockOpptjeningKap20Liste,
   }
@@ -100,9 +100,9 @@ describe('Gitt at BeregningsdetaljerMobil rendres', () => {
   it('rendrer komponenten med påkrevde props', () => {
     render(<BeregningsdetaljerMobil {...defaultProps} />)
 
-    expect(screen.getByTestId('grunnpensjonsdetaljer')).toBeVisible()
-    expect(screen.getByTestId('opptjeningsdetaljer')).toBeVisible()
-    expect(screen.getByTestId('afpdetaljer')).toBeVisible()
+    expect(screen.getByTestId('AlderspensjonDetaljer')).toBeVisible()
+    expect(screen.getByTestId('OpptjeningDetaljer')).toBeVisible()
+    expect(screen.getByTestId('AfpDetaljer')).toBeVisible()
   })
 
   it('rendrer VStack med korrekte props', () => {
@@ -112,22 +112,22 @@ describe('Gitt at BeregningsdetaljerMobil rendres', () => {
     expect(vStack).toHaveClass('navds-stack')
   })
 
-  it('sender grunnpensjonListe til Grunnpensjonsdetaljer komponent', () => {
+  it('sender alderspensjonDetaljerListe til AlderspensjonDetaljer komponent', () => {
     render(<BeregningsdetaljerMobil {...defaultProps} />)
 
-    const grunnpensjonsdetaljer = screen.getByTestId('grunnpensjonsdetaljer')
-    expect(grunnpensjonsdetaljer).toHaveAttribute('data-objekter-length', '2')
+    const AlderspensjonDetaljer = screen.getByTestId('AlderspensjonDetaljer')
+    expect(AlderspensjonDetaljer).toHaveAttribute('data-objekter-length', '2')
   })
 
-  it('sender korrekte props til Opptjeningsdetaljer', () => {
+  it('sender korrekte props til OpptjeningDetaljer', () => {
     render(<BeregningsdetaljerMobil {...defaultProps} />)
 
-    const opptjeningsdetaljer = screen.getByTestId('opptjeningsdetaljer')
-    expect(opptjeningsdetaljer).toHaveAttribute('data-kap19-length', '2')
-    expect(opptjeningsdetaljer).toHaveAttribute('data-kap20-length', '2')
+    const OpptjeningDetaljer = screen.getByTestId('OpptjeningDetaljer')
+    expect(OpptjeningDetaljer).toHaveAttribute('data-kap19-length', '2')
+    expect(OpptjeningDetaljer).toHaveAttribute('data-kap20-length', '2')
   })
 
-  it('sender valgfrie AFP props til Afpdetaljer når de er tilgjengelige', () => {
+  it('sender valgfrie AFP props til AfpDetaljer når de er tilgjengelige', () => {
     render(
       <BeregningsdetaljerMobil
         {...defaultProps}
@@ -138,38 +138,38 @@ describe('Gitt at BeregningsdetaljerMobil rendres', () => {
       />
     )
 
-    const afpdetaljer = screen.getByTestId('afpdetaljer')
-    expect(afpdetaljer).toHaveAttribute('data-afp-privat-length', '1')
-    expect(afpdetaljer).toHaveAttribute('data-pre2025-length', '2')
+    const AfpDetaljer = screen.getByTestId('AfpDetaljer')
+    expect(AfpDetaljer).toHaveAttribute('data-afp-privat-length', '1')
+    expect(AfpDetaljer).toHaveAttribute('data-pre2025-length', '2')
   })
 
-  it('sender undefined AFP props til Afpdetaljer når de ikke er tilgjengelige', () => {
+  it('sender undefined AFP props til AfpDetaljer når de ikke er tilgjengelige', () => {
     render(<BeregningsdetaljerMobil {...defaultProps} />)
 
-    const afpdetaljer = screen.getByTestId('afpdetaljer')
-    expect(afpdetaljer).toHaveAttribute('data-afp-privat-length', '')
-    expect(afpdetaljer).toHaveAttribute('data-pre2025-length', '')
+    const AfpDetaljer = screen.getByTestId('AfpDetaljer')
+    expect(AfpDetaljer).toHaveAttribute('data-afp-privat-length', '')
+    expect(AfpDetaljer).toHaveAttribute('data-pre2025-length', '')
   })
 
   it('håndterer tomme matriser for påkrevde props', () => {
     const emptyProps = {
-      grunnpensjonListe: [] as DetaljRad[][],
+      alderspensjonDetaljerListe: [] as DetaljRad[][],
       opptjeningKap19Liste: [] as DetaljRad[],
       opptjeningKap20Liste: [] as DetaljRad[],
     }
 
     render(<BeregningsdetaljerMobil {...emptyProps} />)
 
-    expect(screen.getByTestId('grunnpensjonsdetaljer')).toBeVisible()
-    expect(screen.getByTestId('opptjeningsdetaljer')).toBeVisible()
-    expect(screen.getByTestId('afpdetaljer')).toBeVisible()
+    expect(screen.getByTestId('AlderspensjonDetaljer')).toBeVisible()
+    expect(screen.getByTestId('OpptjeningDetaljer')).toBeVisible()
+    expect(screen.getByTestId('AfpDetaljer')).toBeVisible()
 
-    const grunnpensjonsdetaljer = screen.getByTestId('grunnpensjonsdetaljer')
-    expect(grunnpensjonsdetaljer).toHaveAttribute('data-objekter-length', '0')
+    const AlderspensjonDetaljer = screen.getByTestId('AlderspensjonDetaljer')
+    expect(AlderspensjonDetaljer).toHaveAttribute('data-objekter-length', '0')
 
-    const opptjeningsdetaljer = screen.getByTestId('opptjeningsdetaljer')
-    expect(opptjeningsdetaljer).toHaveAttribute('data-kap19-length', '0')
-    expect(opptjeningsdetaljer).toHaveAttribute('data-kap20-length', '0')
+    const OpptjeningDetaljer = screen.getByTestId('OpptjeningDetaljer')
+    expect(OpptjeningDetaljer).toHaveAttribute('data-kap19-length', '0')
+    expect(OpptjeningDetaljer).toHaveAttribute('data-kap20-length', '0')
   })
 
   it('rendrer alle komponenter i riktig rekkefølge', () => {
@@ -178,8 +178,8 @@ describe('Gitt at BeregningsdetaljerMobil rendres', () => {
     const vStack = container.firstChild as HTMLElement
     const children = Array.from(vStack.children)
 
-    expect(children[0]).toHaveAttribute('data-testid', 'grunnpensjonsdetaljer')
-    expect(children[1]).toHaveAttribute('data-testid', 'opptjeningsdetaljer')
-    expect(children[2]).toHaveAttribute('data-testid', 'afpdetaljer')
+    expect(children[0]).toHaveAttribute('data-testid', 'AlderspensjonDetaljer')
+    expect(children[1]).toHaveAttribute('data-testid', 'OpptjeningDetaljer')
+    expect(children[2]).toHaveAttribute('data-testid', 'AfpDetaljer')
   })
 })

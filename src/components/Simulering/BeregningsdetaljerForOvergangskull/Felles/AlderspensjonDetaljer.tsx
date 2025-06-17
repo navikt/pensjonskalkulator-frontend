@@ -11,13 +11,13 @@ import { DetaljRad } from '../hooks'
 
 import styles from './Pensjonsdetaljer.module.scss'
 
-export interface GrunnpensjonsdetaljerProps {
-  grunnpensjonListe: DetaljRad[][]
+export interface AlderspensjonDetaljerProps {
+  alderspensjonDetaljerListe: DetaljRad[][]
   hasPre2025OffentligAfpUttaksalder: boolean
 }
 
-export const Grunnpensjonsdetaljer: React.FC<GrunnpensjonsdetaljerProps> = ({
-  grunnpensjonListe,
+export const AlderspensjonDetaljer: React.FC<AlderspensjonDetaljerProps> = ({
+  alderspensjonDetaljerListe,
   hasPre2025OffentligAfpUttaksalder,
 }) => {
   const { uttaksalder, gradertUttaksperiode } = useAppSelector(
@@ -25,11 +25,11 @@ export const Grunnpensjonsdetaljer: React.FC<GrunnpensjonsdetaljerProps> = ({
   )
 
   const gradertUttak =
-    grunnpensjonListe.length === 2 ? grunnpensjonListe[0] : []
+    alderspensjonDetaljerListe.length === 2 ? alderspensjonDetaljerListe[0] : []
   const heltUttak =
-    grunnpensjonListe.length === 2
-      ? grunnpensjonListe[1]
-      : (grunnpensjonListe[0] ?? [])
+    alderspensjonDetaljerListe.length === 2
+      ? alderspensjonDetaljerListe[1]
+      : (alderspensjonDetaljerListe[0] ?? [])
 
   return (
     <VStack gap="20">

@@ -2,13 +2,13 @@ import { render, screen } from '@testing-library/react'
 import { IntlProvider } from 'react-intl'
 
 import { DetaljRad } from '../../hooks'
-import { Opptjeningsdetaljer } from '../Opptjeningsdetaljer'
+import { OpptjeningDetaljer } from '../OpptjeningDetaljer'
 
 const renderWithIntl = (component: React.ReactElement) => {
   const mockMessages = {
-    'beregning.detaljer.opptjeningsdetaljer.kap19.table.title':
+    'beregning.detaljer.OpptjeningDetaljer.kap19.table.title':
       'Kapitel 19 detaljer',
-    'beregning.detaljer.opptjeningsdetaljer.kap20.table.title':
+    'beregning.detaljer.OpptjeningDetaljer.kap20.table.title':
       'Kapitel 20 detaljer',
   }
   return render(
@@ -18,7 +18,7 @@ const renderWithIntl = (component: React.ReactElement) => {
   )
 }
 
-describe('Gitt at Opptjeningsdetaljer rendres', () => {
+describe('Gitt at OpptjeningDetaljer rendres', () => {
   const mockOpptjeningKap19Liste: DetaljRad[] = [
     { tekst: 'Andelsbrøk', verdi: '10/10' },
     { tekst: 'Sluttpoengtall', verdi: 6.5 },
@@ -38,15 +38,15 @@ describe('Gitt at Opptjeningsdetaljer rendres', () => {
 
   it('rendrer komponenten med påkrevde props', () => {
     const { container } = renderWithIntl(
-      <Opptjeningsdetaljer {...defaultProps} />
+      <OpptjeningDetaljer {...defaultProps} />
     )
 
     const section = container.querySelector('section')
     expect(section).toBeInTheDocument()
   })
 
-  it('rendrer kap19 opptjeningsdetaljer når data er tilgjengelig', () => {
-    renderWithIntl(<Opptjeningsdetaljer {...defaultProps} />)
+  it('rendrer kap19 OpptjeningDetaljer når data er tilgjengelig', () => {
+    renderWithIntl(<OpptjeningDetaljer {...defaultProps} />)
 
     expect(screen.getByText('Andelsbrøk:')).toBeVisible()
     expect(screen.getByText('10/10')).toBeVisible()
@@ -56,8 +56,8 @@ describe('Gitt at Opptjeningsdetaljer rendres', () => {
     expect(screen.getByText('180 000 kr')).toBeVisible()
   })
 
-  it('rendrer kap20 opptjeningsdetaljer når data er tilgjengelig', () => {
-    renderWithIntl(<Opptjeningsdetaljer {...defaultProps} />)
+  it('rendrer kap20 OpptjeningDetaljer når data er tilgjengelig', () => {
+    renderWithIntl(<OpptjeningDetaljer {...defaultProps} />)
 
     expect(screen.getByText('Pensjonsbeholdning før uttak:')).toBeVisible()
     expect(screen.getByText('500 000 kr')).toBeVisible()
@@ -69,7 +69,7 @@ describe('Gitt at Opptjeningsdetaljer rendres', () => {
 
   it('rendrer ikke kap19 seksjon når data er tom', () => {
     renderWithIntl(
-      <Opptjeningsdetaljer
+      <OpptjeningDetaljer
         opptjeningKap19Liste={[]}
         opptjeningKap20Liste={mockOpptjeningKap20Liste}
       />
@@ -81,7 +81,7 @@ describe('Gitt at Opptjeningsdetaljer rendres', () => {
 
   it('rendrer ikke kap20 seksjon når data er tom', () => {
     renderWithIntl(
-      <Opptjeningsdetaljer
+      <OpptjeningDetaljer
         opptjeningKap19Liste={mockOpptjeningKap19Liste}
         opptjeningKap20Liste={[]}
       />
@@ -95,10 +95,7 @@ describe('Gitt at Opptjeningsdetaljer rendres', () => {
 
   it('håndterer tomme arrays for begge objekter', () => {
     const { container } = renderWithIntl(
-      <Opptjeningsdetaljer
-        opptjeningKap19Liste={[]}
-        opptjeningKap20Liste={[]}
-      />
+      <OpptjeningDetaljer opptjeningKap19Liste={[]} opptjeningKap20Liste={[]} />
     )
 
     const section = container.querySelector('section')
@@ -116,7 +113,7 @@ describe('Gitt at Opptjeningsdetaljer rendres', () => {
     ]
 
     renderWithIntl(
-      <Opptjeningsdetaljer
+      <OpptjeningDetaljer
         opptjeningKap19Liste={objektMedUndefined}
         opptjeningKap20Liste={[]}
       />
@@ -128,7 +125,7 @@ describe('Gitt at Opptjeningsdetaljer rendres', () => {
 
   it('rendrer VStack med korrekt gap', () => {
     const { container } = renderWithIntl(
-      <Opptjeningsdetaljer {...defaultProps} />
+      <OpptjeningDetaljer {...defaultProps} />
     )
 
     const vStack = container.querySelector('.navds-stack')
@@ -137,7 +134,7 @@ describe('Gitt at Opptjeningsdetaljer rendres', () => {
 
   it('rendrer definition lists korrekt', () => {
     const { container } = renderWithIntl(
-      <Opptjeningsdetaljer {...defaultProps} />
+      <OpptjeningDetaljer {...defaultProps} />
     )
 
     const definitionLists = container.querySelectorAll('dl')
@@ -146,7 +143,7 @@ describe('Gitt at Opptjeningsdetaljer rendres', () => {
 
   it('rendrer HStack komponenter med space-between justering', () => {
     const { container } = renderWithIntl(
-      <Opptjeningsdetaljer {...defaultProps} />
+      <OpptjeningDetaljer {...defaultProps} />
     )
 
     const hStackElements = container.querySelectorAll('.navds-stack')

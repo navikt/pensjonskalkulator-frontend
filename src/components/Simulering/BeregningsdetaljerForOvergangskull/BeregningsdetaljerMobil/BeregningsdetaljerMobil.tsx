@@ -2,13 +2,13 @@ import React from 'react'
 
 import { VStack } from '@navikt/ds-react'
 
-import { Afpdetaljer } from '../Felles/Afpdetaljer'
-import { Grunnpensjonsdetaljer } from '../Felles/Grunnpensjonsdetaljer'
-import { Opptjeningsdetaljer } from '../Felles/Opptjeningsdetaljer'
+import { AfpDetaljer } from '../Felles/AfpDetaljer'
+import { AlderspensjonDetaljer } from '../Felles/AlderspensjonDetaljer'
+import { OpptjeningDetaljer } from '../Felles/OpptjeningDetaljer'
 import { DetaljRad } from '../hooks'
 
 export interface BeregningsdetaljerMobilProps {
-  grunnpensjonListe: DetaljRad[][]
+  alderspensjonDetaljerListe: DetaljRad[][]
   opptjeningKap19Liste: DetaljRad[]
   opptjeningKap20Liste: DetaljRad[]
   opptjeningAfpPrivatListe?: DetaljRad[][]
@@ -18,24 +18,24 @@ export interface BeregningsdetaljerMobilProps {
 export const BeregningsdetaljerMobil: React.FC<
   BeregningsdetaljerMobilProps
 > = ({
-  grunnpensjonListe,
+  alderspensjonDetaljerListe,
   opptjeningKap19Liste,
   opptjeningKap20Liste,
   opptjeningAfpPrivatListe,
   opptjeningPre2025OffentligAfpListe,
 }) => (
   <VStack gap="4 8" width="100%" marginBlock="2 0">
-    <Grunnpensjonsdetaljer
-      grunnpensjonListe={grunnpensjonListe}
+    <AlderspensjonDetaljer
+      alderspensjonDetaljerListe={alderspensjonDetaljerListe}
       hasPre2025OffentligAfpUttaksalder={Boolean(
         opptjeningPre2025OffentligAfpListe?.length
       )}
     />
-    <Opptjeningsdetaljer
+    <OpptjeningDetaljer
       opptjeningKap19Liste={opptjeningKap19Liste}
       opptjeningKap20Liste={opptjeningKap20Liste}
     />
-    <Afpdetaljer
+    <AfpDetaljer
       opptjeningAfpPrivatListe={opptjeningAfpPrivatListe}
       opptjeningPre2025OffentligAfpListe={opptjeningPre2025OffentligAfpListe}
     />

@@ -20,7 +20,7 @@ export const BeregningsdetaljerForOvergangskull: React.FC<Props> = ({
   afpPrivatListe,
 }) => {
   const {
-    grunnpensjonListe,
+    alderspensjonDetaljerListe,
     opptjeningKap19Liste,
     opptjeningKap20Liste,
     opptjeningAfpPrivatListe,
@@ -35,7 +35,7 @@ export const BeregningsdetaljerForOvergangskull: React.FC<Props> = ({
     <Box marginBlock="10 0" data-testid="beregningsdetaljer-for-overgangskull">
       <div className={styles.beregningsdetaljerForOvergangskullDesktopOnly}>
         <BeregningsdetaljerDesktop
-          grunnpensjonListe={grunnpensjonListe}
+          alderspensjonDetaljerListe={alderspensjonDetaljerListe}
           opptjeningKap19Liste={opptjeningKap19Liste}
           opptjeningKap20Liste={opptjeningKap20Liste}
           opptjeningAfpPrivatListe={opptjeningAfpPrivatListe}
@@ -47,7 +47,7 @@ export const BeregningsdetaljerForOvergangskull: React.FC<Props> = ({
 
       <div className={styles.beregningsdetaljerForOvergangskullMobileOnly}>
         <BeregningsdetaljerMobil
-          grunnpensjonListe={grunnpensjonListe}
+          alderspensjonDetaljerListe={alderspensjonDetaljerListe}
           opptjeningKap19Liste={opptjeningKap19Liste}
           opptjeningKap20Liste={opptjeningKap20Liste}
           opptjeningAfpPrivatListe={opptjeningAfpPrivatListe}

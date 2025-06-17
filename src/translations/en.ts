@@ -364,11 +364,11 @@ export default {
   'beregning.detaljer.grunnpensjon.table.title': 'MANGLER_TEKST',
   'beregning.detaljer.afpPrivat.heltUttak.title': 'MANGLER_TEKST',
   'beregning.detaljer.afpPrivat.gradertUttak.title': 'MANGLER_TEKST',
-  'beregning.detaljer.opptjeningsdetaljer.kap19.table.title': 'MANGLER_TEKST',
-  'beregning.detaljer.opptjeningsdetaljer.kap20.table.title': 'MANGLER_TEKST',
-  'beregning.detaljer.opptjeningsdetaljer.afpPrivat.table.title':
+  'beregning.detaljer.OpptjeningDetaljer.kap19.table.title': 'MANGLER_TEKST',
+  'beregning.detaljer.OpptjeningDetaljer.kap20.table.title': 'MANGLER_TEKST',
+  'beregning.detaljer.OpptjeningDetaljer.afpPrivat.table.title':
     'MANGLER_TEKST',
-  'beregning.detaljer.opptjeningsdetaljer.pre2025OffentligAfp.table.title':
+  'beregning.detaljer.OpptjeningDetaljer.pre2025OffentligAfp.table.title':
     'MANGLER_TEKST',
   'beregning.avansert.link.endre_valgene_dine': 'Change your choices',
   'beregning.avansert.link.endre_avanserte_valg': 'Change advanced choices',

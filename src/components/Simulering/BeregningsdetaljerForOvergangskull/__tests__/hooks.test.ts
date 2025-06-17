@@ -69,7 +69,7 @@ describe('useBeregningsdetaljer', () => {
 
   it('returnerer tomme arrays hvis ingen input', () => {
     const { result } = renderHook(() => useBeregningsdetaljer())
-    expect(result.current.grunnpensjonListe).toEqual([[]])
+    expect(result.current.alderspensjonDetaljerListe).toEqual([[]])
     expect(result.current.opptjeningKap19Liste).toEqual([])
     expect(result.current.opptjeningKap20Liste).toEqual([])
     expect(result.current.opptjeningAfpPrivatListe).toEqual([])
@@ -77,7 +77,7 @@ describe('useBeregningsdetaljer', () => {
   })
 
   describe('Gitt at brukeren har alderspensjon', () => {
-    it('returneres riktige rader for grunnpensjonListe', () => {
+    it('returneres riktige rader for alderspensjonDetaljerListe', () => {
       const { result } = renderHook(() =>
         useBeregningsdetaljer(
           [mockAlderspensjon],
@@ -85,7 +85,7 @@ describe('useBeregningsdetaljer', () => {
           mockPre2025OffentligAfp
         )
       )
-      expect(result.current.grunnpensjonListe).toEqual([
+      expect(result.current.alderspensjonDetaljerListe).toEqual([
         expect.arrayContaining([
           expect.objectContaining({
             tekst: 'Grunnpensjon (kap. 19)',
@@ -136,11 +136,11 @@ describe('useBeregningsdetaljer', () => {
             mockPre2025OffentligAfp
           )
         )
-        expect(result.current.grunnpensjonListe).toEqual([[]])
+        expect(result.current.alderspensjonDetaljerListe).toEqual([[]])
       })
     })
     describe('Når det er felter som har negativ verdi', () => {
-      it('skjules feltene i grunnpensjonListe', () => {
+      it('skjules feltene i alderspensjonDetaljerListe', () => {
         const mock = {
           ...mockAlderspensjon,
           grunnpensjon: -100,
@@ -157,7 +157,7 @@ describe('useBeregningsdetaljer', () => {
             mockPre2025OffentligAfp
           )
         )
-        expect(result.current.grunnpensjonListe).toEqual([[]])
+        expect(result.current.alderspensjonDetaljerListe).toEqual([[]])
       })
     })
   })

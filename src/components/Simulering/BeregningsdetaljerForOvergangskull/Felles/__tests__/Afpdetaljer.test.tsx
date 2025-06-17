@@ -9,7 +9,7 @@ import {
 } from '@/state/userInput/userInputSlice'
 
 import { DetaljRad } from '../../hooks'
-import { Afpdetaljer } from '../Afpdetaljer'
+import { AfpDetaljer } from '../AfpDetaljer'
 
 const mockMessages = {
   'beregning.detaljer.fom': 'Fra og med',
@@ -24,9 +24,9 @@ const mockMessages = {
   'beregning.detaljer.afpPrivat.heltUttak.title': 'AFP privat ved 67 år',
   'beregning.detaljer.afpPrivat.gradertUttak.title':
     'AFP privat ved uttaksalder',
-  'beregning.detaljer.opptjeningsdetaljer.afpPrivat.table.title':
+  'beregning.detaljer.OpptjeningDetaljer.afpPrivat.table.title':
     'AFP privat beregning',
-  'beregning.detaljer.opptjeningsdetaljer.pre2025OffentligAfp.table.title':
+  'beregning.detaljer.OpptjeningDetaljer.pre2025OffentligAfp.table.title':
     'AFP offentlig beregning',
 }
 
@@ -64,7 +64,7 @@ const renderWithProviders = (
   )
 }
 
-describe('Gitt at Afpdetaljer rendres', () => {
+describe('Gitt at AfpDetaljer rendres', () => {
   const mockAfpPrivatAtUttaksalderData: DetaljRad[] = [
     { tekst: 'Kompensasjonstillegg', verdi: '8 000 kr' },
     { tekst: 'Kronetillegg', verdi: '5 000 kr' },
@@ -87,7 +87,7 @@ describe('Gitt at Afpdetaljer rendres', () => {
   ]
 
   it('rendrer komponenten uten data', () => {
-    const { container } = renderWithProviders(<Afpdetaljer />)
+    const { container } = renderWithProviders(<AfpDetaljer />)
 
     const section = container.querySelector('section')
     expect(section).toBeInTheDocument()
@@ -99,7 +99,7 @@ describe('Gitt at Afpdetaljer rendres', () => {
     }
 
     renderWithProviders(
-      <Afpdetaljer opptjeningAfpPrivatListe={[mockAfpPrivatAt67Data]} />,
+      <AfpDetaljer opptjeningAfpPrivatListe={[mockAfpPrivatAt67Data]} />,
       stateWith67
     )
 
@@ -119,7 +119,7 @@ describe('Gitt at Afpdetaljer rendres', () => {
     }
 
     renderWithProviders(
-      <Afpdetaljer
+      <AfpDetaljer
         opptjeningAfpPrivatListe={[
           mockAfpPrivatAtUttaksalderData,
           mockAfpPrivatAt67Data,
@@ -152,7 +152,7 @@ describe('Gitt at Afpdetaljer rendres', () => {
     }
 
     renderWithProviders(
-      <Afpdetaljer
+      <AfpDetaljer
         opptjeningAfpPrivatListe={[
           mockAfpPrivatAtUttaksalderData,
           mockAfpPrivatAt67Data,
@@ -172,7 +172,7 @@ describe('Gitt at Afpdetaljer rendres', () => {
 
   it('rendrer pre-2025 offentlig AFP når data er tilgjengelig', () => {
     renderWithProviders(
-      <Afpdetaljer
+      <AfpDetaljer
         opptjeningPre2025OffentligAfpListe={mockPre2025OffentligAfpData}
       />
     )
@@ -189,7 +189,7 @@ describe('Gitt at Afpdetaljer rendres', () => {
 
   it('rendrer både AFP privat og pre-2025 offentlig AFP samtidig', () => {
     renderWithProviders(
-      <Afpdetaljer
+      <AfpDetaljer
         opptjeningAfpPrivatListe={[mockAfpPrivatAt67Data]}
         opptjeningPre2025OffentligAfpListe={mockPre2025OffentligAfpData}
       />
@@ -206,7 +206,7 @@ describe('Gitt at Afpdetaljer rendres', () => {
 
   it('rendrer ikke noe når alle data er tomme eller undefined', () => {
     const { container } = renderWithProviders(
-      <Afpdetaljer
+      <AfpDetaljer
         opptjeningAfpPrivatListe={[]}
         opptjeningPre2025OffentligAfpListe={[]}
       />
@@ -226,7 +226,7 @@ describe('Gitt at Afpdetaljer rendres', () => {
     ]
 
     renderWithProviders(
-      <Afpdetaljer opptjeningAfpPrivatListe={[objektMedUndefined]} />
+      <AfpDetaljer opptjeningAfpPrivatListe={[objektMedUndefined]} />
     )
 
     expect(screen.getByText('Test AFP:')).toBeVisible()
@@ -239,7 +239,7 @@ describe('Gitt at Afpdetaljer rendres', () => {
     }
 
     renderWithProviders(
-      <Afpdetaljer
+      <AfpDetaljer
         opptjeningAfpPrivatListe={[
           mockAfpPrivatAtUttaksalderData,
           mockAfpPrivatAt67Data,
@@ -254,7 +254,7 @@ describe('Gitt at Afpdetaljer rendres', () => {
 
   it('rendrer siste element i hver array med strong styling', () => {
     const { container } = renderWithProviders(
-      <Afpdetaljer opptjeningAfpPrivatListe={[mockAfpPrivatAt67Data]} />
+      <AfpDetaljer opptjeningAfpPrivatListe={[mockAfpPrivatAt67Data]} />
     )
 
     const strongElements = container.querySelectorAll('strong')
@@ -267,7 +267,7 @@ describe('Gitt at Afpdetaljer rendres', () => {
     }
 
     renderWithProviders(
-      <Afpdetaljer
+      <AfpDetaljer
         opptjeningAfpPrivatListe={[
           mockAfpPrivatAtUttaksalderData,
           mockAfpPrivatAt67Data,
@@ -284,7 +284,7 @@ describe('Gitt at Afpdetaljer rendres', () => {
 
   it('rendrer VStack med korrekt gap for AFP privat', () => {
     const { container } = renderWithProviders(
-      <Afpdetaljer opptjeningAfpPrivatListe={[mockAfpPrivatAt67Data]} />
+      <AfpDetaljer opptjeningAfpPrivatListe={[mockAfpPrivatAt67Data]} />
     )
 
     const vStack = container.querySelector('.navds-stack')
@@ -293,7 +293,7 @@ describe('Gitt at Afpdetaljer rendres', () => {
 
   it('rendrer definition lists korrekt', () => {
     const { container } = renderWithProviders(
-      <Afpdetaljer
+      <AfpDetaljer
         opptjeningAfpPrivatListe={[mockAfpPrivatAt67Data]}
         opptjeningPre2025OffentligAfpListe={mockPre2025OffentligAfpData}
       />
@@ -310,7 +310,7 @@ describe('Gitt at Afpdetaljer rendres', () => {
 
   it('håndterer kun ett element i opptjeningAfpPrivatListe array', () => {
     renderWithProviders(
-      <Afpdetaljer opptjeningAfpPrivatListe={[mockAfpPrivatAt67Data]} />
+      <AfpDetaljer opptjeningAfpPrivatListe={[mockAfpPrivatAt67Data]} />
     )
 
     // Skal bare vise AFP ved 67 (siden det kun er ett element)

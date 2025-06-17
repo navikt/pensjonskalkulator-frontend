@@ -11,12 +11,12 @@ import { DetaljRad } from '../hooks'
 
 import styles from './Pensjonsdetaljer.module.scss'
 
-export interface AfpdetaljerProps {
+export interface AfpDetaljerProps {
   opptjeningAfpPrivatListe?: DetaljRad[][]
   opptjeningPre2025OffentligAfpListe?: DetaljRad[]
 }
 
-export const Afpdetaljer: React.FC<AfpdetaljerProps> = ({
+export const AfpDetaljer: React.FC<AfpDetaljerProps> = ({
   opptjeningAfpPrivatListe,
   opptjeningPre2025OffentligAfpListe,
 }) => {
@@ -56,7 +56,7 @@ export const Afpdetaljer: React.FC<AfpdetaljerProps> = ({
                 <dl>
                   <div className={styles.hstackRow}>
                     <strong>
-                      <FormattedMessage id="beregning.detaljer.opptjeningsdetaljer.afpPrivat.table.title" />
+                      <FormattedMessage id="beregning.detaljer.OpptjeningDetaljer.afpPrivat.table.title" />
                     </strong>
                   </div>
                   {afpPrivatAtUttaksalder.map((detalj, index) => (
@@ -100,7 +100,7 @@ export const Afpdetaljer: React.FC<AfpdetaljerProps> = ({
             <dl>
               <div className={styles.hstackRow}>
                 <strong>
-                  <FormattedMessage id="beregning.detaljer.opptjeningsdetaljer.afpPrivat.table.title" />
+                  <FormattedMessage id="beregning.detaljer.OpptjeningDetaljer.afpPrivat.table.title" />
                 </strong>
               </div>
               {afpPrivatAt67.map((detalj, index) => (
@@ -133,7 +133,7 @@ export const Afpdetaljer: React.FC<AfpdetaljerProps> = ({
           <dl>
             <div className={styles.hstackRow}>
               <strong>
-                <FormattedMessage id="beregning.detaljer.opptjeningsdetaljer.pre2025OffentligAfp.table.title" />
+                <FormattedMessage id="beregning.detaljer.OpptjeningDetaljer.pre2025OffentligAfp.table.title" />
               </strong>
             </div>
             {opptjeningPre2025OffentligAfpListe.map((detalj, index) => (

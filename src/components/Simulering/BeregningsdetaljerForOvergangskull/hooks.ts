@@ -10,7 +10,7 @@ export interface DetaljRad {
 }
 
 export interface BeregningsdetaljerRader {
-  grunnpensjonListe: DetaljRad[][]
+  alderspensjonDetaljerListe: DetaljRad[][]
   opptjeningKap19Liste: DetaljRad[]
   opptjeningKap20Liste: DetaljRad[]
   opptjeningAfpPrivatListe: DetaljRad[][]
@@ -54,7 +54,7 @@ export function useBeregningsdetaljer(
       }
     }
 
-    const grunnpensjonListe: DetaljRad[][] = indices.map((index) => {
+    const alderspensjonDetaljerListe: DetaljRad[][] = indices.map((index) => {
       const ap = alderspensjonListe?.[index]
       if (!ap) return []
       const grunnpensjon =
@@ -242,7 +242,7 @@ export function useBeregningsdetaljer(
       : []
 
     return {
-      grunnpensjonListe,
+      alderspensjonDetaljerListe,
       opptjeningKap19Liste,
       opptjeningKap20Liste,
       opptjeningAfpPrivatListe,
