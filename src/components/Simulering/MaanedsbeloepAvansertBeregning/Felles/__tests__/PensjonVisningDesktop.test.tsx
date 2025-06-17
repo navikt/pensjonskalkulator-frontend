@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 
+import { mockResponse } from '@/mocks/server'
 import { render, screen } from '@/test-utils'
 
 import { Pensjonsdata } from '../../hooks'
@@ -94,8 +95,8 @@ describe('DesktopPensjonVisning', () => {
     expect(dateText).toContainElement(screen.queryByText(/(januar 2030)/))
   })
 
-  it('viser kun AFP og Alerdspensjon for pre2025OffentligAfp', () => {
-    const mockPensjonsDataPre2025OffentligAfp = [
+  describe('vise månedsbeløp for gammel AFP - pre2025OffentligAfp', () => {
+    const mockPensjonsdataPre2025OffentligAfp = [
       {
         alder: { aar: 65, maaneder: 3 },
         grad: 100,
@@ -113,13 +114,58 @@ describe('DesktopPensjonVisning', () => {
         pre2025OffentligAfp: 15000,
       },
     ]
-    render(
-      <PensjonVisningDesktop
-        pensjonsdata={mockPensjonsDataPre2025OffentligAfp}
-        summerYtelser={mockSummerYtelser}
-        hentUttaksmaanedOgAar={mockHentUttaksmaanedOgAar}
-      />
-    )
-    expect(mockSummerYtelser).toHaveBeenCalledTimes(2)
+
+    beforeEach(() => {
+      mockResponse('/v4/person', {
+        status: 200,
+        json: {
+          navn: 'Ola',
+          sivilstand: 'GIFT',
+          foedselsdato: '1960-04-30',
+          pensjoneringAldre: {
+            normertPensjoneringsalder: {
+              aar: 67,
+              maaneder: 0,
+            },
+            nedreAldersgrense: {
+              aar: 62,
+              maaneder: 0,
+            },
+          },
+        },
+      })
+      render(
+        <PensjonVisningDesktop
+          pensjonsdata={mockPensjonsdataPre2025OffentligAfp}
+          summerYtelser={mockSummerYtelser}
+          hentUttaksmaanedOgAar={mockHentUttaksmaanedOgAar}
+        />
+      )
+    })
+
+    it('viser kun AFP og Alerdspensjon for pre2025OffentligAfp', () => {
+      expect(mockSummerYtelser).toHaveBeenCalledTimes(2)
+      const sumText = screen.queryByTestId('maanedsbeloep-desktop-sum')
+      expect(sumText).not.toBeInTheDocument()
+    })
+
+    it('viser dato i parantes i tittel for pre2025OffentligAfp', () => {
+      const pre2025OffentligAfpMaanedsBeloepTittel = screen.getAllByTestId(
+        'maanedsbeloep-desktop-title'
+      )[0]
+
+      expect(pre2025OffentligAfpMaanedsBeloepTittel).toContainElement(
+        screen.queryByText(/(januar 2030)/)
+      )
+    })
+
+    it('viser bare tidlist uttaks alder for AP i tittel for pre2025OffentligAfp', () => {
+      const afpMaanedsBeloepTittel = screen.getAllByTestId(
+        'maanedsbeloep-desktop-title'
+      )[1]
+      expect(afpMaanedsBeloepTittel).toContainElement(
+        screen.queryByText(/67 år/)
+      )
+    })
   })
 })
