@@ -58,7 +58,7 @@ export const PensjonDataVisning: React.FC<Props> = ({
               {pre2025OffentligAfp
                 ? formatInntekt(pre2025OffentligAfp)
                 : formatInntekt(afp)}
-              kr
+              {' kr'}
             </td>
           </tr>
         )}
