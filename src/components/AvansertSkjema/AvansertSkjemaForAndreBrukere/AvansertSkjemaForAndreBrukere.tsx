@@ -23,7 +23,7 @@ import {
 } from '@/state/userInput/selectors'
 import {
   DEFAULT_MAX_OPPTJENINGSALDER,
-  TIDLIGST_UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP,
+  UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP,
   formatUttaksalder,
   getBrukerensAlderISluttenAvMaaneden,
 } from '@/utils/alder'
@@ -87,8 +87,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
     React.useState<boolean>(
       Boolean(
         uttaksalder &&
-          uttaksalder?.aar <
-            TIDLIGST_UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP.aar &&
+          uttaksalder?.aar < UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP.aar &&
           loependeVedtak.pre2025OffentligAfp
       )
     )
@@ -145,8 +144,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
         Boolean(
           alder &&
             alder.aar !== undefined &&
-            alder.aar <
-              TIDLIGST_UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP.aar &&
+            alder.aar < UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP.aar &&
             loependeVedtak.pre2025OffentligAfp
         )
       )
@@ -180,8 +178,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
       Boolean(
         alder &&
           alder.aar !== undefined &&
-          alder.aar <
-            TIDLIGST_UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP.aar &&
+          alder.aar < UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP.aar &&
           loependeVedtak.pre2025OffentligAfp
       )
     )

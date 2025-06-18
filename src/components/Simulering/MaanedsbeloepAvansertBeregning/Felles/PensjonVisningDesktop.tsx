@@ -4,7 +4,7 @@ import { useIntl } from 'react-intl'
 import { Box, HStack, Heading, VStack } from '@navikt/ds-react'
 
 import {
-  TIDLIGST_UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP,
+  UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP,
   formatUttaksalder,
 } from '@/utils/alder'
 
@@ -29,7 +29,7 @@ export const PensjonVisningDesktop: React.FC<Props> = ({
   return (
     <HStack gap="4 8" width="100%" marginBlock="2 0">
       {pensjonsdata.map((data, index) => {
-        const isKapittel20AP =
+        const isKapittel20AldersPensjon =
           data.alderspensjon &&
           !data.afp &&
           !data.pensjonsavtale &&
@@ -40,7 +40,7 @@ export const PensjonVisningDesktop: React.FC<Props> = ({
 
         const formattedUttaksalder =
           data.alderspensjon && data.pre2025OffentligAfp
-            ? `${TIDLIGST_UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP.aar} år`
+            ? `${UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP.aar} år`
             : formatUttaksalder(intl, data.alder)
 
         return (
@@ -65,7 +65,7 @@ export const PensjonVisningDesktop: React.FC<Props> = ({
                 })}
               ${formattedUttaksalder}
               ${
-                ((isKapittel20AP || isKapittel19OffentligAFP) &&
+                ((isKapittel20AldersPensjon || isKapittel19OffentligAFP) &&
                   ` (${hentUttaksmaanedOgAar(data.alder)})`) ||
                 ''
               }`}

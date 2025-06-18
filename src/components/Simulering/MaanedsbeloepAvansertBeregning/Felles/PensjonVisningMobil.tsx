@@ -4,7 +4,7 @@ import { useIntl } from 'react-intl'
 import { Box, ReadMore, VStack } from '@navikt/ds-react'
 
 import {
-  TIDLIGST_UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP,
+  UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP,
   formatUttaksalder,
 } from '@/utils/alder'
 
@@ -59,7 +59,7 @@ export const PensjonVisningMobil: React.FC<Props> = ({
 
           const formattedUttaksalder =
             data.alderspensjon && data.pre2025OffentligAfp
-              ? `${TIDLIGST_UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP.aar} år`
+              ? `${UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP.aar} år`
               : formatUttaksalder(intl, data.alder)
 
           return (
