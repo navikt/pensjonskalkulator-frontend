@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { FormattedMessage } from 'react-intl'
 
 import { HStack, Heading, VStack } from '@navikt/ds-react'
@@ -20,7 +20,9 @@ export const AfpDetaljer: React.FC<AfpDetaljerProps> = ({
   opptjeningAfpPrivatListe,
   opptjeningPre2025OffentligAfpListe,
 }) => {
-  const { uttaksalder } = useAppSelector(selectCurrentSimulation)
+  const { uttaksalder, gradertUttaksperiode } = useAppSelector(
+    selectCurrentSimulation
+  )
 
   const afpPrivatAtUttaksalder =
     opptjeningAfpPrivatListe && opptjeningAfpPrivatListe.length === 2
@@ -31,23 +33,28 @@ export const AfpDetaljer: React.FC<AfpDetaljerProps> = ({
       ? opptjeningAfpPrivatListe[1]
       : (opptjeningAfpPrivatListe?.[0] ?? [])
 
+  const currentAge = gradertUttaksperiode?.uttaksalder?.aar ?? uttaksalder?.aar
+  const currentMonths =
+    gradertUttaksperiode?.uttaksalder?.maaneder ?? uttaksalder?.maaneder
+
   return (
     <section>
       {opptjeningAfpPrivatListe && opptjeningAfpPrivatListe.length > 0 && (
         <VStack gap="20">
           {afpPrivatAtUttaksalder.length > 0 &&
             uttaksalder &&
-            uttaksalder.aar < 67 && (
+            currentAge &&
+            currentAge < 67 && (
               <div className="afpPrivatAtUttaksalder">
                 <Heading size="small" level="3">
                   <FormattedMessage
                     id="beregning.detaljer.afpPrivat.gradertUttak.title"
                     values={{
                       ...getFormatMessageValues(),
-                      alderAar: `${uttaksalder.aar} år`,
+                      alderAar: `${currentAge} år`,
                       alderMd:
-                        uttaksalder.maaneder && uttaksalder.maaneder > 0
-                          ? `og ${uttaksalder.maaneder} måneder`
+                        currentMonths && currentMonths > 0
+                          ? `og ${currentMonths} måneder`
                           : '',
                       grad: 100,
                     }}
@@ -60,7 +67,7 @@ export const AfpDetaljer: React.FC<AfpDetaljerProps> = ({
                     </strong>
                   </div>
                   {afpPrivatAtUttaksalder.map((detalj, index) => (
-                    <React.Fragment key={index}>
+                    <Fragment key={index}>
                       <HStack
                         justify="space-between"
                         className={styles.hstackRow}
@@ -80,7 +87,7 @@ export const AfpDetaljer: React.FC<AfpDetaljerProps> = ({
                           )}
                         </dd>
                       </HStack>
-                    </React.Fragment>
+                    </Fragment>
                   ))}
                 </dl>
               </div>
@@ -91,7 +98,7 @@ export const AfpDetaljer: React.FC<AfpDetaljerProps> = ({
                 id="beregning.detaljer.afpPrivat.heltUttak.title"
                 values={{
                   ...getFormatMessageValues(),
-                  alderAar: `${uttaksalder?.aar && uttaksalder.aar < 67 ? 67 : uttaksalder?.aar} år`,
+                  alderAar: `${currentAge && currentAge < 67 ? 67 : currentAge} år`,
                   alderMd: '',
                   grad: 100,
                 }}
@@ -104,7 +111,7 @@ export const AfpDetaljer: React.FC<AfpDetaljerProps> = ({
                 </strong>
               </div>
               {afpPrivatAt67.map((detalj, index) => (
-                <React.Fragment key={index}>
+                <Fragment key={index}>
                   <HStack justify="space-between" className={styles.hstackRow}>
                     <dt>
                       {index === afpPrivatAt67.length - 1 ? (
@@ -121,7 +128,7 @@ export const AfpDetaljer: React.FC<AfpDetaljerProps> = ({
                       )}
                     </dd>
                   </HStack>
-                </React.Fragment>
+                </Fragment>
               ))}
             </dl>
           </div>
@@ -137,12 +144,12 @@ export const AfpDetaljer: React.FC<AfpDetaljerProps> = ({
               </strong>
             </div>
             {opptjeningPre2025OffentligAfpListe.map((detalj, index) => (
-              <React.Fragment key={index}>
+              <Fragment key={index}>
                 <HStack justify="space-between" className={styles.hstackRow}>
                   <dt>{`${detalj.tekst}:`}</dt>
                   <dd>{detalj.verdi}</dd>
                 </HStack>
-              </React.Fragment>
+              </Fragment>
             ))}
           </dl>
         )}

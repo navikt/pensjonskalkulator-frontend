@@ -318,4 +318,171 @@ describe('Gitt at AfpDetaljer rendres', () => {
     expect(screen.getByText('18 000 kr')).toBeVisible()
     expect(screen.queryByText('15 000 kr')).not.toBeInTheDocument() // Ikke uttaksalder data
   })
+
+  describe('når gradertUttaksperiode er definert', () => {
+    it('bruker gradertUttaksperiode alder når den er definert istedenfor uttaksalder', () => {
+      const stateWithGradertUttak = {
+        uttaksalder: { aar: 67, maaneder: 0 },
+        gradertUttaksperiode: {
+          uttaksalder: { aar: 62, maaneder: 6 },
+          grad: 50,
+        },
+      }
+
+      renderWithProviders(
+        <AfpDetaljer
+          opptjeningAfpPrivatListe={[
+            mockAfpPrivatAtUttaksalderData,
+            mockAfpPrivatAt67Data,
+          ]}
+        />,
+        stateWithGradertUttak
+      )
+
+      // Skal vise begge seksjoner siden gradertUttak alder (62) er under 67
+      expect(screen.getAllByText('Sum månedlig AFP:')).toHaveLength(2)
+      expect(screen.getByText('15 000 kr')).toBeVisible() // Ved gradert uttaksalder
+      expect(screen.getByText('18 000 kr')).toBeVisible() // Ved 67
+    })
+
+    it('bruker gradertUttaksperiode når den er 67 eller høyere', () => {
+      const stateWithGradertUttakAt67 = {
+        uttaksalder: { aar: 68, maaneder: 0 }, // uttaksalder må være høyere enn gradert
+        gradertUttaksperiode: {
+          uttaksalder: { aar: 67, maaneder: 0 },
+          grad: 50,
+        },
+      }
+
+      renderWithProviders(
+        <AfpDetaljer
+          opptjeningAfpPrivatListe={[
+            mockAfpPrivatAtUttaksalderData,
+            mockAfpPrivatAt67Data,
+          ]}
+        />,
+        stateWithGradertUttakAt67
+      )
+
+      // Skal ikke vise AFP ved uttaksalder siden gradertUttak alder er 67
+      expect(screen.queryByText('15 000 kr')).not.toBeInTheDocument()
+      expect(screen.getByText('18 000 kr')).toBeVisible() // Bare ved 67
+    })
+
+    it('viser korrekt alder i heading når gradertUttaksperiode har måneder', () => {
+      const stateWithGradertUttakWithMonths = {
+        uttaksalder: { aar: 68, maaneder: 0 }, // uttaksalder må være høyere enn gradert
+        gradertUttaksperiode: {
+          uttaksalder: { aar: 63, maaneder: 8 },
+          grad: 75,
+        },
+      }
+
+      renderWithProviders(
+        <AfpDetaljer
+          opptjeningAfpPrivatListe={[
+            mockAfpPrivatAtUttaksalderData,
+            mockAfpPrivatAt67Data,
+          ]}
+        />,
+        stateWithGradertUttakWithMonths
+      )
+
+      // Begge seksjoner skal vises siden gradert alder (63) er under 67
+      expect(screen.getAllByText('Sum månedlig AFP:')).toHaveLength(2)
+    })
+
+    it('viser 67 år i "heltUttak" heading når gradertUttaksperiode alder er under 67', () => {
+      const stateWithGradertUttakUnder67 = {
+        uttaksalder: { aar: 68, maaneder: 0 }, // uttaksalder må være høyere enn gradert
+        gradertUttaksperiode: {
+          uttaksalder: { aar: 65, maaneder: 3 },
+          grad: 40,
+        },
+      }
+
+      renderWithProviders(
+        <AfpDetaljer
+          opptjeningAfpPrivatListe={[
+            mockAfpPrivatAtUttaksalderData,
+            mockAfpPrivatAt67Data,
+          ]}
+        />,
+        stateWithGradertUttakUnder67
+      )
+
+      // Skal vise begge seksjoner
+      expect(screen.getAllByText('Sum månedlig AFP:')).toHaveLength(2)
+    })
+
+    it('viser gradertUttaksperiode alder i "heltUttak" heading når den er 67 eller høyere', () => {
+      const stateWithGradertUttakOver67 = {
+        uttaksalder: { aar: 69, maaneder: 0 }, // uttaksalder må være høyere enn gradert
+        gradertUttaksperiode: {
+          uttaksalder: { aar: 68, maaneder: 2 },
+          grad: 80,
+        },
+      }
+
+      renderWithProviders(
+        <AfpDetaljer
+          opptjeningAfpPrivatListe={[
+            mockAfpPrivatAtUttaksalderData,
+            mockAfpPrivatAt67Data,
+          ]}
+        />,
+        stateWithGradertUttakOver67
+      )
+
+      // Skal bare vise AFP ved 67 seksjonen (siden gradert alder er over 67)
+      expect(screen.getAllByText('Sum månedlig AFP:')).toHaveLength(1)
+      expect(screen.queryByText('15 000 kr')).not.toBeInTheDocument() // Ikke uttaksalder data
+      expect(screen.getByText('18 000 kr')).toBeVisible() // Bare ved 67
+    })
+
+    it('håndterer gradertUttaksperiode uten måneder (0 måneder)', () => {
+      const stateWithGradertUttakNoMonths = {
+        uttaksalder: { aar: 68, maaneder: 6 }, // uttaksalder må være høyere enn gradert
+        gradertUttaksperiode: {
+          uttaksalder: { aar: 64, maaneder: 0 },
+          grad: 60,
+        },
+      }
+
+      renderWithProviders(
+        <AfpDetaljer
+          opptjeningAfpPrivatListe={[
+            mockAfpPrivatAtUttaksalderData,
+            mockAfpPrivatAt67Data,
+          ]}
+        />,
+        stateWithGradertUttakNoMonths
+      )
+
+      // Skal vise begge seksjoner siden gradert alder (64) er under 67
+      expect(screen.getAllByText('Sum månedlig AFP:')).toHaveLength(2)
+    })
+
+    it('fallback til uttaksalder når gradertUttaksperiode mangler uttaksalder', () => {
+      const stateWithIncompleteGradertUttak = {
+        uttaksalder: { aar: 65, maaneder: 4 },
+        gradertUttaksperiode: {
+          grad: 100,
+        },
+      }
+
+      renderWithProviders(
+        <AfpDetaljer
+          opptjeningAfpPrivatListe={[
+            mockAfpPrivatAtUttaksalderData,
+            mockAfpPrivatAt67Data,
+          ]}
+        />,
+        stateWithIncompleteGradertUttak
+      )
+
+      // Skal falle tilbake til uttaksalder (65) og vise begge seksjoner
+      expect(screen.getAllByText('Sum månedlig AFP:')).toHaveLength(2)
+    })
+  })
 })
