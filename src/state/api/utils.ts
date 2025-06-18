@@ -284,12 +284,12 @@ export const generatePensjonsavtalerRequestBody = (args: {
 
       {
         startAlder: {
-          aar: skalBeregneAfpKap19 ? 67 : heltUttak.uttaksalder.aar ?? 0,
+          aar: skalBeregneAfpKap19 ? 67 : (heltUttak.uttaksalder.aar ?? 0),
           maaneder: skalBeregneAfpKap19
             ? 0
             : heltUttak.uttaksalder.maaneder > 0
-            ? heltUttak.uttaksalder.maaneder
-            : 0,
+              ? heltUttak.uttaksalder.maaneder
+              : 0,
         },
         grad: 100,
         aarligInntektVsaPensjon: heltUttak.aarligInntektVsaPensjon
