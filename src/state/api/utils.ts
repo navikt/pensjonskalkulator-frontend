@@ -240,6 +240,7 @@ export const generatePensjonsavtalerRequestBody = (args: {
   epsHarPensjon: boolean | null
   heltUttak: HeltUttak
   gradertUttak?: GradertUttak
+  skalBeregneAfpKap19?: boolean | null
 }): PensjonsavtalerRequestBody => {
   const {
     aarligInntektFoerUttakBeloep,
@@ -250,6 +251,7 @@ export const generatePensjonsavtalerRequestBody = (args: {
     epsHarInntektOver2G,
     heltUttak,
     gradertUttak,
+    skalBeregneAfpKap19,
   } = args
   return {
     aarligInntektFoerUttakBeloep: formatInntektToNumber(
@@ -282,11 +284,12 @@ export const generatePensjonsavtalerRequestBody = (args: {
 
       {
         startAlder: {
-          aar: heltUttak.uttaksalder.aar ?? 0,
-          maaneder:
-            heltUttak.uttaksalder.maaneder > 0
-              ? heltUttak.uttaksalder.maaneder
-              : 0,
+          aar: skalBeregneAfpKap19 ? 67 : heltUttak.uttaksalder.aar ?? 0,
+          maaneder: skalBeregneAfpKap19
+            ? 0
+            : heltUttak.uttaksalder.maaneder > 0
+            ? heltUttak.uttaksalder.maaneder
+            : 0,
         },
         grad: 100,
         aarligInntektVsaPensjon: heltUttak.aarligInntektVsaPensjon

@@ -24,6 +24,7 @@ import {
   selectFoedselsdato,
   selectSamtykke,
   selectSivilstand,
+  selectSkalBeregneAfpKap19,
   selectUfoeregrad,
   selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
@@ -57,6 +58,7 @@ export const Pensjonsavtaler = (props: {
   const utenlandsperioder = useAppSelector(selectUtenlandsperioder)
   const { uttaksalder, aarligInntektVsaHelPensjon, gradertUttaksperiode } =
     useAppSelector(selectCurrentSimulation)
+  const skalBeregneAfpKap19 = useAppSelector(selectSkalBeregneAfpKap19)
 
   const [offentligTpRequestBody, setOffentligTpRequestBody] = React.useState<
     OffentligTpRequestBody | undefined
@@ -109,6 +111,7 @@ export const Pensjonsavtaler = (props: {
           uttaksalder,
           aarligInntektVsaPensjon: aarligInntektVsaHelPensjon,
         },
+        skalBeregneAfpKap19,
       })
       setPensjonsavtalerRequestBody(requestBody)
     }
