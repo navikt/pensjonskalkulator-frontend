@@ -6,6 +6,9 @@ import { BodyLong, Heading, Radio, RadioGroup } from '@navikt/ds-react'
 import { Card } from '@/components/common/Card'
 import { SanityReadmore } from '@/components/common/SanityReadmore/SanityReadmore'
 import { paths } from '@/router/constants'
+import { useAppSelector } from '@/state/hooks'
+import { selectFoedselsdato } from '@/state/userInput/selectors'
+import { isFoedtFoer1963 } from '@/utils/alder'
 import { logger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
 
@@ -28,6 +31,10 @@ export function SamtykkePensjonsavtaler({
   onNext,
 }: Props) {
   const intl = useIntl()
+
+  const foedselsdato = useAppSelector(selectFoedselsdato)
+  const isKap19 = isFoedtFoer1963(foedselsdato!)
+
   const [validationError, setValidationError] = useState<string>('')
 
   const onSubmit = (e: FormEvent<HTMLFormElement>): void => {
@@ -76,14 +83,30 @@ export function SamtykkePensjonsavtaler({
             values={getFormatMessageValues()}
           />
         </BodyLong>
-        <SanityReadmore
-          id="dette_henter_vi_OFTP"
-          className={styles.readmoreOffentlig}
-        />
-        <SanityReadmore
-          id="dette_henter_vi_NP"
-          className={styles.readmorePrivat}
-        />
+
+        {!isKap19 ? (
+          <>
+            <SanityReadmore
+              id="dette_henter_vi_OFTP"
+              className={styles.readmoreOffentlig}
+            />
+            <SanityReadmore
+              id="dette_henter_vi_NP"
+              className={styles.readmorePrivat}
+            />
+          </>
+        ) : (
+          <>
+            <SanityReadmore
+              id="dette_henter_vi_NP"
+              className={styles.readmorePrivat}
+            />
+            <SanityReadmore
+              id="dette_sjekker_vi_OFTP"
+              className={styles.readmoreOffentlig}
+            />
+          </>
+        )}
 
         <RadioGroup
           className={styles.radiogroup}
