@@ -256,7 +256,7 @@ export const generatePensjonsavtalerRequestBody = (args: {
       aarligInntektFoerUttakBeloep
     ),
     uttaksperioder: [
-      // * TODO: Case 1: User has chosen graded pension
+      // * Case 1: User has chosen graded pension
       ...(gradertUttak
         ? [
             {
@@ -280,7 +280,7 @@ export const generatePensjonsavtalerRequestBody = (args: {
             },
           ]
         : []),
-      // * TODO: Case 2: User has chosen full pension
+      // * Case 2: User has chosen full pension
       ...(!gradertUttak
         ? [
             {
