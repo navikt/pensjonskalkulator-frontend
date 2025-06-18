@@ -98,9 +98,7 @@ export const usePensjonBeregninger = ({
         sumPensjonsavtaler(gradertAlder) + sumTjenestepensjon(gradertAlder),
       alderspensjon:
         alderspensjonMaanedligVedEndring?.gradertUttakMaanedligBeloep,
-      pre2025OffentligAfp: pre2025OffentligAfp
-        ? pre2025OffentligAfp.totaltAfpBeloep
-        : undefined,
+      pre2025OffentligAfp: pre2025OffentligAfp?.totaltAfpBeloep,
     })
   }
 
@@ -114,9 +112,7 @@ export const usePensjonBeregninger = ({
       pensjonsavtale:
         sumPensjonsavtaler(uttaksalder) + sumTjenestepensjon(uttaksalder),
       alderspensjon: alderspensjonMaanedligVedEndring?.heltUttakMaanedligBeloep,
-      pre2025OffentligAfp: pre2025OffentligAfp
-        ? pre2025OffentligAfp.totaltAfpBeloep
-        : undefined,
+      pre2025OffentligAfp: pre2025OffentligAfp?.totaltAfpBeloep,
     })
   }
 
