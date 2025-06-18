@@ -99,11 +99,11 @@ export function SamtykkePensjonsavtaler({
           <>
             <SanityReadmore
               id="dette_henter_vi_NP"
-              className={styles.readmorePrivat}
+              className={styles.readmoreOffentlig}
             />
             <SanityReadmore
               id="dette_sjekker_vi_OFTP"
-              className={styles.readmoreOffentlig}
+              className={styles.readmorePrivat}
             />
           </>
         )}
