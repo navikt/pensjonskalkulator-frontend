@@ -127,7 +127,10 @@ export function useBeregningsdetaljer(
       }
 
       const afpIndices: number[] = [0]
-      if (uttaksalder && uttaksalder.aar < 67) {
+      const currentAge =
+        gradertUttaksperiode?.uttaksalder?.aar ?? uttaksalder!.aar
+
+      if (currentAge < 67) {
         const afp67Index = afpPrivatListe.findIndex((afp) => afp.alder === 67)
         if (afp67Index !== -1 && afp67Index !== 0) {
           afpIndices.push(afp67Index)

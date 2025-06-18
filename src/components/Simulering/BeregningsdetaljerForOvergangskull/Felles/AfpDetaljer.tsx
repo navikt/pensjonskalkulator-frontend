@@ -42,7 +42,6 @@ export const AfpDetaljer: React.FC<AfpDetaljerProps> = ({
       {opptjeningAfpPrivatListe && opptjeningAfpPrivatListe.length > 0 && (
         <VStack gap="20">
           {afpPrivatAtUttaksalder.length > 0 &&
-            uttaksalder &&
             currentAge &&
             currentAge < 67 && (
               <div className="afpPrivatAtUttaksalder">
@@ -92,6 +91,7 @@ export const AfpDetaljer: React.FC<AfpDetaljerProps> = ({
                 </dl>
               </div>
             )}
+
           <div className="afpPrivatAt67">
             <Heading size="small" level="3">
               <FormattedMessage
