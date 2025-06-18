@@ -175,7 +175,7 @@ describe('MobilePensjonVisning', () => {
       )
     })
 
-    it('viser bare tidlist uttaks alder for AP i tittel for pre2025OffentligAfp', () => {
+    it('viser bare tidligst uttaks alder for AP i tittel for pre2025OffentligAfp', () => {
       const readMoreElements = screen.getAllByRole('button')
 
       expect(readMoreElements[1].getAttribute('aria-expanded')).toBe('false')

@@ -140,7 +140,7 @@ describe('DesktopPensjonVisning', () => {
       )
     })
 
-    it('viser bare tidlist uttaks alder for AP i tittel for pre2025OffentligAfp', () => {
+    it('viser bare tidligst uttaks alder for AP i tittel for pre2025OffentligAfp', () => {
       const afpMaanedsBeloepTittel = screen.getAllByTestId(
         'maanedsbeloep-desktop-title'
       )[1]
