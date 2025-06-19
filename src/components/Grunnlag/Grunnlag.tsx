@@ -15,7 +15,10 @@ import {
 import { AccordionItem } from '@/components/common/AccordionItem'
 import { paths } from '@/router/constants'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
-import { selectSivilstand } from '@/state/userInput/selectors'
+import {
+  selectLoependeVedtak,
+  selectSivilstand,
+} from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
 import { BeregningVisning } from '@/types/common-types'
 import { formatInntekt } from '@/utils/inntekt'
@@ -60,6 +63,7 @@ export const Grunnlag: React.FC<Props> = ({
 
   const intl = useIntl()
 
+  const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const sivilstand = useAppSelector(selectSivilstand)
 
   const formatertSivilstand = React.useMemo(
@@ -80,6 +84,39 @@ export const Grunnlag: React.FC<Props> = ({
 
         <GrunnlagItem color="green">
           {!isEndring && <Pensjonsavtaler headingLevel="3" />}
+        </GrunnlagItem>
+
+        <GrunnlagItem color="blue">
+          <BodyLong>
+            {loependeVedtak.harLoependeVedtak ? (
+              <>
+                <FormattedMessage
+                  id="grunnlag.alderspensjon.ingress"
+                  values={{
+                    ...getFormatMessageValues(),
+                  }}
+                />
+                {pensjonsbeholdning && pensjonsbeholdning >= 0 && (
+                  <FormattedMessage
+                    id="grunnlag.alderspensjon.ingress.pensjonsbeholdning"
+                    values={{
+                      ...getFormatMessageValues(),
+                      sum: formatInntekt(pensjonsbeholdning),
+                    }}
+                  />
+                )}
+                <FormattedMessage
+                  id="grunnlag.alderspensjon.ingress.link"
+                  values={{
+                    ...getFormatMessageValues(),
+                  }}
+                />
+              </>
+            ) : (
+              //TODO: Legg til nytt avsnitt
+              <FormattedMessage id="grunnlag.alderspensjon.ingress.link" />
+            )}
+          </BodyLong>
         </GrunnlagItem>
       </HStack>
 
@@ -139,41 +176,6 @@ export const Grunnlag: React.FC<Props> = ({
           harForLiteTrygdetid={harForLiteTrygdetid}
           trygdetid={trygdetid}
         />
-
-        <AccordionItem name="Grunnlag: Alderspensjon (NAV)">
-          <GrunnlagSection
-            headerTitle={intl.formatMessage({
-              id: 'grunnlag.alderspensjon.title',
-            })}
-            headerValue={intl.formatMessage({
-              id: 'grunnlag.alderspensjon.value',
-            })}
-          >
-            <BodyLong>
-              <FormattedMessage
-                id="grunnlag.alderspensjon.ingress"
-                values={{
-                  ...getFormatMessageValues(),
-                }}
-              />
-              {!isEndring && pensjonsbeholdning && pensjonsbeholdning >= 0 && (
-                <FormattedMessage
-                  id="grunnlag.alderspensjon.ingress.pensjonsbeholdning"
-                  values={{
-                    ...getFormatMessageValues(),
-                    sum: formatInntekt(pensjonsbeholdning),
-                  }}
-                />
-              )}
-              <FormattedMessage
-                id="grunnlag.alderspensjon.ingress.link"
-                values={{
-                  ...getFormatMessageValues(),
-                }}
-              />
-            </BodyLong>
-          </GrunnlagSection>
-        </AccordionItem>
 
         <GrunnlagAFP />
       </Accordion>
