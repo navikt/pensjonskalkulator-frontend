@@ -36,20 +36,29 @@ export function useBeregningsdetaljer(
       alderspensjonListe &&
       alderspensjonListe.length > 0
     ) {
-      // Finner index for gradertUttaksperiode
-      const gradertIndex = alderspensjonListe.findIndex(
-        (ap) => ap.alder === gradertUttaksperiode.uttaksalder.aar
-      )
-      if (gradertIndex !== -1) {
-        indices.push(gradertIndex)
-      }
-
       // Finner index for uttaksalder
       const uttaksIndex = alderspensjonListe.findIndex(
         (ap) => ap.alder === uttaksalder.aar
       )
-      if (uttaksIndex !== -1 && uttaksIndex !== gradertIndex) {
-        indices.push(uttaksIndex)
+
+      // Finner index for gradertUttaksperiode
+      const gradertIndex = alderspensjonListe.findIndex(
+        (ap) => ap.alder === gradertUttaksperiode.uttaksalder.aar
+      )
+
+      // Hvis uttaksalder og gradertUttaksperiode har samme år, prioriter uttaksalder
+      if (uttaksalder.aar === gradertUttaksperiode.uttaksalder.aar) {
+        if (uttaksIndex !== -1) {
+          indices.push(uttaksIndex)
+        }
+      } else {
+        // Forskjellige år - inkluder begge hvis de finnes
+        if (gradertIndex !== -1) {
+          indices.push(gradertIndex)
+        }
+        if (uttaksIndex !== -1) {
+          indices.push(uttaksIndex)
+        }
       }
     } else if (
       uttaksalder &&
@@ -233,7 +242,7 @@ export function useBeregningsdetaljer(
         (rad) =>
           rad.verdi !== undefined &&
           (rad.tekst === 'Trygdetid' ||
-            rad.tekst === 'Pensjonbeholdning før uttak' ||
+            rad.tekst === 'Pensjonsbeholdning før uttak' ||
             rad.verdi !== 0)
       )
     })()
