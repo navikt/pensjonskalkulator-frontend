@@ -31,54 +31,58 @@ export const AlderspensjonDetaljer: React.FC<AlderspensjonDetaljerProps> = ({
       ? alderspensjonDetaljerListe[1]
       : (alderspensjonDetaljerListe[0] ?? [])
 
+  console.log(alderspensjonDetaljerListe)
+
   return (
     <VStack gap="20">
-      {gradertUttaksperiode && !hasPre2025OffentligAfpUttaksalder && (
-        <div className="gradertUttak">
-          <Heading size="small" level="3">
-            <FormattedMessage
-              id="beregning.detaljer.grunnpensjon.gradertUttak.title"
-              values={{
-                ...getFormatMessageValues(),
-                alderAar: `${gradertUttaksperiode?.uttaksalder.aar} år`,
-                alderMd:
-                  gradertUttaksperiode?.uttaksalder.maaneder &&
-                  gradertUttaksperiode.uttaksalder.maaneder > 0
-                    ? `og ${gradertUttaksperiode.uttaksalder.maaneder} måneder`
-                    : '',
-                grad: gradertUttaksperiode?.grad,
-              }}
-            />
-          </Heading>
-          <dl>
-            <div className={styles.hstackRow}>
-              <strong>
-                <FormattedMessage id="beregning.detaljer.grunnpensjon.table.title" />
-              </strong>
-            </div>
-            {gradertUttak.map((detalj, index) => (
-              <React.Fragment key={index}>
-                <HStack justify="space-between" className={styles.hstackRow}>
-                  <dt>
-                    {index === gradertUttak.length - 1 ? (
-                      <strong>{detalj.tekst}:</strong>
-                    ) : (
-                      `${detalj.tekst}:`
-                    )}
-                  </dt>
-                  <dd>
-                    {index === gradertUttak.length - 1 ? (
-                      <strong>{detalj.verdi}</strong>
-                    ) : (
-                      detalj.verdi
-                    )}
-                  </dd>
-                </HStack>
-              </React.Fragment>
-            ))}
-          </dl>
-        </div>
-      )}
+      {gradertUttaksperiode &&
+        gradertUttaksperiode.uttaksalder.aar !== uttaksalder!.aar &&
+        !hasPre2025OffentligAfpUttaksalder && (
+          <div className="gradertUttak">
+            <Heading size="small" level="3">
+              <FormattedMessage
+                id="beregning.detaljer.grunnpensjon.gradertUttak.title"
+                values={{
+                  ...getFormatMessageValues(),
+                  alderAar: `${gradertUttaksperiode?.uttaksalder.aar} år`,
+                  alderMd:
+                    gradertUttaksperiode?.uttaksalder.maaneder &&
+                    gradertUttaksperiode.uttaksalder.maaneder > 0
+                      ? `og ${gradertUttaksperiode.uttaksalder.maaneder} måneder`
+                      : '',
+                  grad: gradertUttaksperiode?.grad,
+                }}
+              />
+            </Heading>
+            <dl>
+              <div className={styles.hstackRow}>
+                <strong>
+                  <FormattedMessage id="beregning.detaljer.grunnpensjon.table.title" />
+                </strong>
+              </div>
+              {gradertUttak.map((detalj, index) => (
+                <React.Fragment key={index}>
+                  <HStack justify="space-between" className={styles.hstackRow}>
+                    <dt>
+                      {index === gradertUttak.length - 1 ? (
+                        <strong>{detalj.tekst}:</strong>
+                      ) : (
+                        `${detalj.tekst}:`
+                      )}
+                    </dt>
+                    <dd>
+                      {index === gradertUttak.length - 1 ? (
+                        <strong>{detalj.verdi}</strong>
+                      ) : (
+                        detalj.verdi
+                      )}
+                    </dd>
+                  </HStack>
+                </React.Fragment>
+              ))}
+            </dl>
+          </div>
+        )}
       <div className="heltUttak">
         <Heading size="small" level="3">
           <FormattedMessage
