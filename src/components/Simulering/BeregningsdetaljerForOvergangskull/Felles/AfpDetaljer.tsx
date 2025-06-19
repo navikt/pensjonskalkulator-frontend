@@ -101,7 +101,13 @@ export const AfpDetaljer: React.FC<AfpDetaljerProps> = ({
                 values={{
                   ...getFormatMessageValues(),
                   alderAar: `${currentAge && currentAge < 67 ? 67 : currentAge} år`,
-                  alderMd: '',
+                  alderMd:
+                    currentAge &&
+                    currentAge >= 67 &&
+                    currentMonths &&
+                    currentMonths > 0
+                      ? `og ${currentMonths} måneder`
+                      : '',
                   grad: 100,
                 }}
               />
