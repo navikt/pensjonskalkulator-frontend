@@ -75,7 +75,7 @@ describe('useBeregningsdetaljer', () => {
 
   it('returnerer tomme arrays hvis ingen input', () => {
     const { result } = renderHook(() => useBeregningsdetaljer())
-    expect(result.current.alderspensjonDetaljerListe).toEqual([[]])
+    expect(result.current.alderspensjonDetaljerListe).toEqual([])
     expect(result.current.opptjeningKap19Liste).toEqual([])
     expect(result.current.opptjeningKap20Liste).toEqual([])
     expect(result.current.opptjeningAfpPrivatListe).toEqual([])
@@ -569,7 +569,7 @@ describe('useBeregningsdetaljer', () => {
         expect.arrayContaining([
           expect.objectContaining({
             tekst: 'Månedlig livsvarig avtalefestet pensjon (AFP)',
-            verdi: 12000,
+            verdi: '12000 kr',
           }),
         ])
       )

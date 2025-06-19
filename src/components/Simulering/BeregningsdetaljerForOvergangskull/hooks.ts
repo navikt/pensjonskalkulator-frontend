@@ -33,27 +33,44 @@ export function useBeregningsdetaljer(
       ? [alderspensjonListe[0]]
       : []
 
-    const indices: number[] = [0]
+    const indices: number[] = []
     if (
       gradertUttaksperiode &&
       uttaksalder &&
       alderspensjonListe &&
-      alderspensjonListe.length > 1
+      alderspensjonListe.length > 0
     ) {
-      const gradertIndex =
-        uttaksalder.aar - gradertUttaksperiode.uttaksalder.aar
-      if (
-        gradertIndex !== 0 &&
-        gradertIndex < alderspensjonListe.length &&
-        gradertIndex >= 0
-      ) {
+      // Finner index for gradertUttaksperiode
+      const gradertIndex = alderspensjonListe.findIndex(
+        (ap) => ap.alder === gradertUttaksperiode.uttaksalder.aar
+      )
+      if (gradertIndex !== -1) {
         indices.push(gradertIndex)
-      } else if (
-        uttaksalder.aar === gradertUttaksperiode.uttaksalder.aar &&
-        uttaksalder.maaneder !== gradertUttaksperiode.uttaksalder.maaneder
-      ) {
-        indices.push(1)
       }
+
+      // Finner index for uttaksalder
+      const uttaksIndex = alderspensjonListe.findIndex(
+        (ap) => ap.alder === uttaksalder.aar
+      )
+      if (uttaksIndex !== -1 && uttaksIndex !== gradertIndex) {
+        indices.push(uttaksIndex)
+      }
+    } else if (
+      uttaksalder &&
+      alderspensjonListe &&
+      alderspensjonListe.length > 0
+    ) {
+      // Kun uttaksalder, ingen gradertUttaksperiode
+      const uttaksIndex = alderspensjonListe.findIndex(
+        (ap) => ap.alder === uttaksalder.aar
+      )
+      if (uttaksIndex !== -1) {
+        indices.push(uttaksIndex)
+      }
+    }
+
+    if (indices.length === 0 && alderspensjonListe?.[0]) {
+      indices.push(0)
     }
 
     const alderspensjonDetaljerListe: DetaljRad[][] = indices.map((index) => {
