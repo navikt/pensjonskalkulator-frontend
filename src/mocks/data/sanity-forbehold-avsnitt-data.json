@@ -491,14 +491,14 @@
           "style": "normal"
         },
         {
-          "_key": "dd43f438fa83",
+          "_key": "be3d57c3df4a",
           "_type": "block",
           "children": [
             {
-              "_key": "f0e375037108",
+              "_key": "4126a9e4b33a",
               "_type": "span",
               "marks": [],
-              "text": "Beregning av privat tjenestepensjon graderes likt som alderspensjon for de avtalene der det er mulig. Offentlig tjenestepensjon beregnes kun med 100 % uttaksgrad."
+              "text": "Pensjonsavtaler beregnes kun med 100 % uttaksgrad. Dette gjelder selv om du har beregnet gradert alderspensjon fra Nav."
             }
           ],
           "markDefs": [],
