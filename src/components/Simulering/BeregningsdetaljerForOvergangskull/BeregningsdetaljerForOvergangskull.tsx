@@ -12,23 +12,27 @@ import styles from './BeregningsdetaljerForOvergangskull.module.scss'
 interface Props {
   alderspensjonListe?: AlderspensjonPensjonsberegning[]
   afpPrivatListe?: AfpPrivatPensjonsberegning[]
+  afpOffentligListe?: AfpPensjonsberegning[]
   pre2025OffentligAfp?: pre2025OffentligPensjonsberegning
 }
 
 export const BeregningsdetaljerForOvergangskull: React.FC<Props> = ({
   alderspensjonListe,
-  pre2025OffentligAfp,
   afpPrivatListe,
+  afpOffentligListe,
+  pre2025OffentligAfp,
 }) => {
   const {
     alderspensjonDetaljerListe,
     opptjeningKap19Liste,
     opptjeningKap20Liste,
     opptjeningAfpPrivatListe,
+    opptjeningAfpOffentligListe,
     opptjeningPre2025OffentligAfpListe,
   } = useBeregningsdetaljer(
     alderspensjonListe,
     afpPrivatListe,
+    afpOffentligListe,
     pre2025OffentligAfp
   )
 
@@ -46,6 +50,7 @@ export const BeregningsdetaljerForOvergangskull: React.FC<Props> = ({
       />
       <AfpDetaljer
         opptjeningAfpPrivatListe={opptjeningAfpPrivatListe}
+        opptjeningAfpOffentligListe={opptjeningAfpOffentligListe}
         opptjeningPre2025OffentligAfpListe={opptjeningPre2025OffentligAfpListe}
       />
     </>

@@ -14,12 +14,14 @@ export interface BeregningsdetaljerRader {
   opptjeningKap19Liste: DetaljRad[]
   opptjeningKap20Liste: DetaljRad[]
   opptjeningAfpPrivatListe: DetaljRad[][]
+  opptjeningAfpOffentligListe: DetaljRad[]
   opptjeningPre2025OffentligAfpListe: DetaljRad[]
 }
 
 export function useBeregningsdetaljer(
   alderspensjonListe?: AlderspensjonPensjonsberegning[],
   afpPrivatListe?: AfpPrivatPensjonsberegning[],
+  afpOffentligListe?: AfpPensjonsberegning[],
   pre2025OffentligAfp?: pre2025OffentligPensjonsberegning
 ): BeregningsdetaljerRader {
   const { uttaksalder, gradertUttaksperiode } = useAppSelector(
@@ -221,6 +223,21 @@ export function useBeregningsdetaljer(
         )
     })()
 
+    const opptjeningAfpOffentligListe: DetaljRad[] = (() => {
+      if (!afpOffentligListe || afpOffentligListe.length === 0) {
+        return []
+      }
+
+      const lastAfpElement = afpOffentligListe[afpOffentligListe.length - 1]
+
+      return [
+        {
+          tekst: 'Månedlig livsvarig avtalefestet pensjon (AFP)',
+          verdi: lastAfpElement.maanedligBeloep,
+        },
+      ].filter((rad) => rad.verdi !== 0)
+    })()
+
     const opptjeningPre2025OffentligAfpListe: DetaljRad[] = pre2025OffentligAfp
       ? [
           { tekst: 'AFP grad', verdi: pre2025OffentligAfp.afpGrad },
@@ -249,11 +266,13 @@ export function useBeregningsdetaljer(
       opptjeningKap19Liste,
       opptjeningKap20Liste,
       opptjeningAfpPrivatListe,
+      opptjeningAfpOffentligListe,
       opptjeningPre2025OffentligAfpListe,
     }
   }, [
     alderspensjonListe,
     afpPrivatListe,
+    afpOffentligListe,
     pre2025OffentligAfp,
     uttaksalder,
     gradertUttaksperiode,

@@ -41,6 +41,12 @@ const mockAfpPrivat = {
   maanedligBeloep: 15000,
 }
 
+const mockAfpOffentlig = {
+  alder: 62,
+  beloep: 12000,
+  maanedligBeloep: 12000,
+}
+
 const mockPre2025OffentligAfp = {
   alderAar: 62,
   totaltAfpBeloep: 15000,
@@ -73,6 +79,7 @@ describe('useBeregningsdetaljer', () => {
     expect(result.current.opptjeningKap19Liste).toEqual([])
     expect(result.current.opptjeningKap20Liste).toEqual([])
     expect(result.current.opptjeningAfpPrivatListe).toEqual([])
+    expect(result.current.opptjeningAfpOffentligListe).toEqual([])
     expect(result.current.opptjeningPre2025OffentligAfpListe).toEqual([])
   })
 
@@ -82,6 +89,7 @@ describe('useBeregningsdetaljer', () => {
         useBeregningsdetaljer(
           [mockAlderspensjon],
           [mockAfpPrivat],
+          [mockAfpOffentlig],
           mockPre2025OffentligAfp
         )
       )
@@ -133,6 +141,7 @@ describe('useBeregningsdetaljer', () => {
           useBeregningsdetaljer(
             [mock],
             [mockAfpPrivat],
+            [mockAfpOffentlig],
             mockPre2025OffentligAfp
           )
         )
@@ -154,6 +163,7 @@ describe('useBeregningsdetaljer', () => {
           useBeregningsdetaljer(
             [mock],
             [mockAfpPrivat],
+            [mockAfpOffentlig],
             mockPre2025OffentligAfp
           )
         )
@@ -168,6 +178,7 @@ describe('useBeregningsdetaljer', () => {
         useBeregningsdetaljer(
           [mockAlderspensjon],
           [mockAfpPrivat],
+          [mockAfpOffentlig],
           mockPre2025OffentligAfp
         )
       )
@@ -192,6 +203,7 @@ describe('useBeregningsdetaljer', () => {
           useBeregningsdetaljer(
             [mock],
             [mockAfpPrivat],
+            [mockAfpOffentlig],
             mockPre2025OffentligAfp
           )
         )
@@ -208,6 +220,7 @@ describe('useBeregningsdetaljer', () => {
           useBeregningsdetaljer(
             [mock],
             [mockAfpPrivat],
+            [mockAfpOffentlig],
             mockPre2025OffentligAfp
           )
         )
@@ -228,6 +241,7 @@ describe('useBeregningsdetaljer', () => {
           useBeregningsdetaljer(
             [mock],
             [mockAfpPrivat],
+            [mockAfpOffentlig],
             mockPre2025OffentligAfp
           )
         )
@@ -242,6 +256,7 @@ describe('useBeregningsdetaljer', () => {
         useBeregningsdetaljer(
           [mockAlderspensjon],
           [mockAfpPrivat],
+          [mockAfpOffentlig],
           mockPre2025OffentligAfp
         )
       )
@@ -264,6 +279,7 @@ describe('useBeregningsdetaljer', () => {
           useBeregningsdetaljer(
             [mock],
             [mockAfpPrivat],
+            [mockAfpOffentlig],
             mockPre2025OffentligAfp
           )
         )
@@ -283,6 +299,7 @@ describe('useBeregningsdetaljer', () => {
           useBeregningsdetaljer(
             [mock],
             [mockAfpPrivat],
+            [mockAfpOffentlig],
             mockPre2025OffentligAfp
           )
         )
@@ -305,6 +322,7 @@ describe('useBeregningsdetaljer', () => {
           useBeregningsdetaljer(
             [mock],
             [mockAfpPrivat],
+            [mockAfpOffentlig],
             mockPre2025OffentligAfp
           )
         )
@@ -319,6 +337,7 @@ describe('useBeregningsdetaljer', () => {
         useBeregningsdetaljer(
           [mockAlderspensjon],
           [mockAfpPrivat],
+          [mockAfpOffentlig],
           mockPre2025OffentligAfp
         )
       )
@@ -339,7 +358,7 @@ describe('useBeregningsdetaljer', () => {
           poengaarTom1991: 0,
           poengaarFom1992: 0,
         }
-        const { result } = renderHook(() => useBeregningsdetaljer([], [], mock))
+        const { result } = renderHook(() => useBeregningsdetaljer([], [], [], mock))
         expect(result.current.opptjeningPre2025OffentligAfpListe).toEqual(
           expect.arrayContaining([
             expect.objectContaining({ tekst: 'Poengår', verdi: 0 }),
@@ -349,7 +368,7 @@ describe('useBeregningsdetaljer', () => {
 
       it('vises Trygdetid selv om verdien er 0', () => {
         const mock = { ...mockPre2025OffentligAfp, trygdetid: 0 }
-        const { result } = renderHook(() => useBeregningsdetaljer([], [], mock))
+        const { result } = renderHook(() => useBeregningsdetaljer([], [], [], mock))
         expect(result.current.opptjeningPre2025OffentligAfpListe).toEqual(
           expect.arrayContaining([
             expect.objectContaining({ tekst: 'Trygdetid', verdi: 0 }),
@@ -363,7 +382,7 @@ describe('useBeregningsdetaljer', () => {
           afpGrad: 0,
           sluttpoengtall: 0,
         }
-        const { result } = renderHook(() => useBeregningsdetaljer([], [], mock))
+        const { result } = renderHook(() => useBeregningsdetaljer([], [], [], mock))
         expect(result.current.opptjeningPre2025OffentligAfpListe).toEqual(
           expect.arrayContaining([
             expect.objectContaining({ tekst: 'Poengår', verdi: 7 }),
@@ -385,6 +404,7 @@ describe('useBeregningsdetaljer', () => {
         useBeregningsdetaljer(
           [mockAlderspensjon],
           [mockAfpPrivat],
+          [mockAfpOffentlig],
           mockPre2025OffentligAfp
         )
       )
@@ -434,6 +454,7 @@ describe('useBeregningsdetaljer', () => {
         useBeregningsdetaljer(
           [mockAlderspensjon],
           afpPrivatListe,
+          [mockAfpOffentlig],
           mockPre2025OffentligAfp
         )
       )
@@ -481,6 +502,7 @@ describe('useBeregningsdetaljer', () => {
         useBeregningsdetaljer(
           [mockAlderspensjon],
           afpPrivatListe,
+          [mockAfpOffentlig],
           mockPre2025OffentligAfp
         )
       )
@@ -499,6 +521,7 @@ describe('useBeregningsdetaljer', () => {
         useBeregningsdetaljer(
           [mockAlderspensjon],
           [afpPrivatMedNull],
+          [mockAfpOffentlig],
           mockPre2025OffentligAfp
         )
       )
@@ -523,6 +546,69 @@ describe('useBeregningsdetaljer', () => {
           }),
         ])
       )
+    })
+  })
+
+  describe('Gitt at brukeren har AFP offentlig', () => {
+    it('returnerer riktige rader for opptjeningAfpOffentligListe', () => {
+      const { result } = renderHook(() =>
+        useBeregningsdetaljer(
+          [mockAlderspensjon],
+          [mockAfpPrivat],
+          [mockAfpOffentlig],
+          mockPre2025OffentligAfp
+        )
+      )
+      expect(result.current.opptjeningAfpOffentligListe).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            tekst: 'Månedlig livsvarig avtalefestet pensjon (AFP)',
+            verdi: 12000,
+          }),
+        ])
+      )
+    })
+
+    it('returnerer tom liste når AFP offentlig er undefined', () => {
+      const { result } = renderHook(() =>
+        useBeregningsdetaljer(
+          [mockAlderspensjon],
+          [mockAfpPrivat],
+          undefined,
+          mockPre2025OffentligAfp
+        )
+      )
+      expect(result.current.opptjeningAfpOffentligListe).toEqual([])
+    })
+
+    it('returnerer tom liste når AFP offentlig er tom liste', () => {
+      const { result } = renderHook(() =>
+        useBeregningsdetaljer(
+          [mockAlderspensjon],
+          [mockAfpPrivat],
+          [],
+          mockPre2025OffentligAfp
+        )
+      )
+      expect(result.current.opptjeningAfpOffentligListe).toEqual([])
+    })
+
+    it('filtrerer bort rader med verdi 0', () => {
+      const afpOffentligMedNull = {
+        ...mockAfpOffentlig,
+        maanedligBeloep: 0,
+      }
+
+      const { result } = renderHook(() =>
+        useBeregningsdetaljer(
+          [mockAlderspensjon],
+          [mockAfpPrivat],
+          [afpOffentligMedNull],
+          mockPre2025OffentligAfp
+        )
+      )
+
+      expect(result.current.opptjeningAfpOffentligListe).toEqual([])
     })
   })
 })

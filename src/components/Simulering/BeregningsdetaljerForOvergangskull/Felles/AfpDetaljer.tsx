@@ -13,11 +13,13 @@ import styles from './Pensjonsdetaljer.module.scss'
 
 export interface AfpDetaljerProps {
   opptjeningAfpPrivatListe?: DetaljRad[][]
+  opptjeningAfpOffentligListe?: DetaljRad[]
   opptjeningPre2025OffentligAfpListe?: DetaljRad[]
 }
 
 export const AfpDetaljer: React.FC<AfpDetaljerProps> = ({
   opptjeningAfpPrivatListe,
+  opptjeningAfpOffentligListe,
   opptjeningPre2025OffentligAfpListe,
 }) => {
   const { uttaksalder, gradertUttaksperiode } = useAppSelector(
@@ -99,10 +101,7 @@ export const AfpDetaljer: React.FC<AfpDetaljerProps> = ({
                 values={{
                   ...getFormatMessageValues(),
                   alderAar: `${currentAge && currentAge < 67 ? 67 : currentAge} år`,
-                  alderMd:
-                    currentMonths && currentMonths > 0
-                      ? `og ${currentMonths} måneder`
-                      : '',
+                  alderMd: '',
                   grad: 100,
                 }}
               />
@@ -151,6 +150,24 @@ export const AfpDetaljer: React.FC<AfpDetaljerProps> = ({
                 <HStack justify="space-between" className={styles.hstackRow}>
                   <dt>{`${detalj.tekst}:`}</dt>
                   <dd>{detalj.verdi}</dd>
+                </HStack>
+              </Fragment>
+            ))}
+          </dl>
+        )}
+
+      {opptjeningAfpOffentligListe &&
+        opptjeningAfpOffentligListe.length > 0 && (
+          <dl>
+            {opptjeningAfpOffentligListe.map((detalj, index) => (
+              <Fragment key={index}>
+                <HStack justify="space-between" className={styles.hstackRow}>
+                  <dt>
+                    <strong>{`${detalj.tekst}:`}</strong>
+                  </dt>
+                  <dd>
+                    <strong>{detalj.verdi}</strong>
+                  </dd>
                 </HStack>
               </Fragment>
             ))}
