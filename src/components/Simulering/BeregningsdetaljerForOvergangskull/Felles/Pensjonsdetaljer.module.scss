@@ -10,4 +10,10 @@
     margin-bottom: 0;
     padding-bottom: 0;
   }
+
+  &:only-child {
+    border-bottom: 1px solid var(--a-border-divider);
+    margin-bottom: var(--a-spacing-3);
+    padding-bottom: var(--a-spacing-3);
+  }
 }
