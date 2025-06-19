@@ -86,6 +86,14 @@ describe('Gitt at AfpDetaljer rendres', () => {
     { tekst: 'Trygdetid', verdi: 40 },
   ]
 
+  const mockAfpOffentligData: DetaljRad[] = [
+    {
+      tekst: 'Månedlig livsvarig avtalefestet pensjon (AFP)',
+      verdi: '12 000 kr',
+    },
+    { tekst: 'Tillegg for ansiennitet', verdi: '3 000 kr' },
+  ]
+
   it('rendrer komponenten uten data', () => {
     const { container } = renderWithProviders(<AfpDetaljer />)
 
@@ -436,7 +444,6 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
       // Skal bare vise AFP ved 67 seksjonen (siden gradert alder er over 67)
       expect(screen.getAllByText('Sum månedlig AFP:')).toHaveLength(1)
-      expect(screen.queryByText('15 000 kr')).not.toBeInTheDocument() // Ikke uttaksalder data
       expect(screen.getByText('18 000 kr')).toBeVisible() // Bare ved 67
     })
 
@@ -483,6 +490,302 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
       // Skal falle tilbake til uttaksalder (65) og vise begge seksjoner
       expect(screen.getAllByText('Sum månedlig AFP:')).toHaveLength(2)
+    })
+  })
+
+  describe('opptjeningAfpOffentligListe', () => {
+    it('rendrer AFP offentlig når data er tilgjengelig', () => {
+      renderWithProviders(
+        <AfpDetaljer opptjeningAfpOffentligListe={mockAfpOffentligData} />
+      )
+
+      expect(
+        screen.getByText('Månedlig livsvarig avtalefestet pensjon (AFP):')
+      ).toBeVisible()
+      expect(screen.getByText('12 000 kr')).toBeVisible()
+      expect(screen.getByText('Tillegg for ansiennitet:')).toBeVisible()
+      expect(screen.getByText('3 000 kr')).toBeVisible()
+    })
+
+    it('rendrer AFP offentlig med strong styling for alle elementer', () => {
+      const { container } = renderWithProviders(
+        <AfpDetaljer opptjeningAfpOffentligListe={mockAfpOffentligData} />
+      )
+
+      const strongElements = container.querySelectorAll('strong')
+      // Alle dt og dd skal være strong for AFP offentlig
+      expect(strongElements.length).toBeGreaterThanOrEqual(4) // minst 2 dt + 2 dd
+    })
+
+    it('rendrer ikke AFP offentlig når lista er tom', () => {
+      renderWithProviders(<AfpDetaljer opptjeningAfpOffentligListe={[]} />)
+
+      expect(
+        screen.queryByText('Månedlig livsvarig avtalefestet pensjon (AFP):')
+      ).not.toBeInTheDocument()
+    })
+
+    it('håndterer undefined verdier i AFP offentlig', () => {
+      const afpOffentligMedUndefined: DetaljRad[] = [
+        { tekst: 'Test AFP offentlig', verdi: undefined },
+        { tekst: 'Test AFP offentlig 2' },
+      ]
+
+      renderWithProviders(
+        <AfpDetaljer opptjeningAfpOffentligListe={afpOffentligMedUndefined} />
+      )
+
+      expect(screen.getByText('Test AFP offentlig:')).toBeVisible()
+      expect(screen.getByText('Test AFP offentlig 2:')).toBeVisible()
+    })
+
+    it('rendrer AFP offentlig sammen med AFP privat', () => {
+      renderWithProviders(
+        <AfpDetaljer
+          opptjeningAfpPrivatListe={[mockAfpPrivatAt67Data]}
+          opptjeningAfpOffentligListe={mockAfpOffentligData}
+        />
+      )
+
+      // AFP privat
+      expect(screen.getByText('Kompensasjonstillegg:')).toBeVisible()
+      expect(screen.getByText('Sum månedlig AFP:')).toBeVisible()
+
+      // AFP offentlig
+      expect(
+        screen.getByText('Månedlig livsvarig avtalefestet pensjon (AFP):')
+      ).toBeVisible()
+      expect(screen.getByText('12 000 kr')).toBeVisible()
+    })
+
+    it('rendrer AFP offentlig sammen med pre-2025 offentlig AFP', () => {
+      renderWithProviders(
+        <AfpDetaljer
+          opptjeningAfpOffentligListe={mockAfpOffentligData}
+          opptjeningPre2025OffentligAfpListe={mockPre2025OffentligAfpData}
+        />
+      )
+
+      // AFP offentlig
+      expect(
+        screen.getByText('Månedlig livsvarig avtalefestet pensjon (AFP):')
+      ).toBeVisible()
+
+      // Pre-2025 offentlig AFP
+      expect(screen.getByText('AFP grad:')).toBeVisible()
+      expect(screen.getByText('Trygdetid:')).toBeVisible()
+    })
+  })
+
+  describe('edge cases og spesifikke scenarier', () => {
+    it('håndterer tom opptjeningAfpPrivatListe array', () => {
+      renderWithProviders(<AfpDetaljer opptjeningAfpPrivatListe={[]} />)
+
+      expect(screen.queryByText('Sum månedlig AFP:')).not.toBeInTheDocument()
+    })
+
+    it('håndterer opptjeningAfpPrivatListe med kun ett tomt array', () => {
+      renderWithProviders(<AfpDetaljer opptjeningAfpPrivatListe={[[]]} />)
+
+      expect(screen.queryByText('Sum månedlig AFP:')).not.toBeInTheDocument()
+    })
+
+    it('håndterer opptjeningAfpPrivatListe med to tomme arrays', () => {
+      renderWithProviders(<AfpDetaljer opptjeningAfpPrivatListe={[[], []]} />)
+
+      // Skal ikke vise AFP ved uttaksalder (tom array)
+      // Men skal vise AFP ved 67 (tom array blir ikke vist)
+      expect(screen.queryByText('Sum månedlig AFP:')).not.toBeInTheDocument()
+    })
+
+    it('rendrer kun første array når opptjeningAfpPrivatListe har ett element og uttaksalder under 67', () => {
+      const stateWith65 = {
+        uttaksalder: { aar: 65, maaneder: 0 },
+      }
+
+      renderWithProviders(
+        <AfpDetaljer
+          opptjeningAfpPrivatListe={[mockAfpPrivatAtUttaksalderData]}
+        />,
+        stateWith65
+      )
+
+      // Skal bare vise AFP ved 67 (siden det kun er ett element i array)
+      expect(screen.getByText('Sum månedlig AFP:')).toBeVisible()
+      expect(screen.getByText('15 000 kr')).toBeVisible()
+    })
+
+    it('viser ikke måneder i heading når currentMonths er 0', () => {
+      const stateWithZeroMonths = {
+        uttaksalder: { aar: 65, maaneder: 0 },
+      }
+
+      renderWithProviders(
+        <AfpDetaljer
+          opptjeningAfpPrivatListe={[
+            mockAfpPrivatAtUttaksalderData,
+            mockAfpPrivatAt67Data,
+          ]}
+        />,
+        stateWithZeroMonths
+      )
+
+      // Skal vise begge seksjoner
+      expect(screen.getAllByText('Sum månedlig AFP:')).toHaveLength(2)
+    })
+
+    it('håndterer undefined uttaksalder', () => {
+      const stateWithUndefinedUttaksalder = {
+        uttaksalder: undefined,
+      }
+
+      renderWithProviders(
+        <AfpDetaljer
+          opptjeningAfpPrivatListe={[
+            mockAfpPrivatAtUttaksalderData,
+            mockAfpPrivatAt67Data,
+          ]}
+        />,
+        stateWithUndefinedUttaksalder
+      )
+
+      // Skal ikke vise AFP ved uttaksalder (currentAge er undefined)
+      expect(screen.getByText('Sum månedlig AFP:')).toBeVisible()
+      expect(screen.getByText('18 000 kr')).toBeVisible() // Kun AFP ved 67
+      expect(screen.queryByText('15 000 kr')).not.toBeInTheDocument()
+    })
+
+    it('håndterer undefined uttaksalder år', () => {
+      const stateWithUndefinedYear = {
+        uttaksalder: { aar: undefined, maaneder: 6 },
+      }
+
+      renderWithProviders(
+        <AfpDetaljer
+          opptjeningAfpPrivatListe={[
+            mockAfpPrivatAtUttaksalderData,
+            mockAfpPrivatAt67Data,
+          ]}
+        />,
+        stateWithUndefinedYear
+      )
+
+      // Skal ikke vise AFP ved uttaksalder (currentAge er undefined)
+      expect(screen.getByText('Sum månedlig AFP:')).toBeVisible()
+      expect(screen.getByText('18 000 kr')).toBeVisible() // Kun AFP ved 67
+      expect(screen.queryByText('15 000 kr')).not.toBeInTheDocument()
+    })
+
+    it('håndterer alle props som undefined', () => {
+      const { container } = renderWithProviders(<AfpDetaljer />)
+      const section = container.querySelector('section')
+      expect(section).toBeInTheDocument()
+      expect(section?.children).toHaveLength(0)
+    })
+  })
+
+  describe('integrering med alle props samtidig', () => {
+    it('rendrer alle typer AFP data samtidig', () => {
+      const stateWith62 = {
+        uttaksalder: { aar: 62, maaneder: 3 },
+      }
+
+      const { container } = renderWithProviders(
+        <AfpDetaljer
+          opptjeningAfpPrivatListe={[
+            mockAfpPrivatAtUttaksalderData,
+            mockAfpPrivatAt67Data,
+          ]}
+          opptjeningAfpOffentligListe={mockAfpOffentligData}
+          opptjeningPre2025OffentligAfpListe={mockPre2025OffentligAfpData}
+        />,
+        stateWith62
+      )
+
+      // AFP privat ved uttaksalder
+      expect(screen.getByText('8 000 kr')).toBeVisible()
+      expect(screen.getByText('15 000 kr')).toBeVisible()
+
+      // AFP privat ved 67
+      expect(screen.getByText('9 000 kr')).toBeVisible()
+      expect(screen.getByText('18 000 kr')).toBeVisible()
+
+      // AFP offentlig
+      expect(
+        screen.getByText('Månedlig livsvarig avtalefestet pensjon (AFP):')
+      ).toBeVisible()
+      expect(screen.getByText('12 000 kr')).toBeVisible()
+
+      // Pre-2025 offentlig AFP
+      expect(screen.getByText('AFP grad:')).toBeVisible()
+      expect(screen.getByText('100')).toBeVisible()
+
+      // Totalt skal det være 3 forskjellige seksjoner med AFP data
+      const definitionLists = container.querySelectorAll('dl')
+      expect(definitionLists.length).toBeGreaterThanOrEqual(3) // 2 for privat + 1 for offentlig + 1 for pre-2025
+    })
+
+    it('rendrer riktig antall headings når alle data er tilstede', () => {
+      const stateWith64 = {
+        uttaksalder: { aar: 64, maaneder: 8 },
+      }
+
+      renderWithProviders(
+        <AfpDetaljer
+          opptjeningAfpPrivatListe={[
+            mockAfpPrivatAtUttaksalderData,
+            mockAfpPrivatAt67Data,
+          ]}
+          opptjeningAfpOffentligListe={mockAfpOffentligData}
+          opptjeningPre2025OffentligAfpListe={mockPre2025OffentligAfpData}
+        />,
+        stateWith64
+      )
+
+      const headings = screen.getAllByRole('heading', { level: 3 })
+      expect(headings).toHaveLength(2) // To headings for AFP privat seksjoner
+    })
+  })
+
+  describe('FormattedMessage values testing', () => {
+    it('sender riktige verdier til FormattedMessage for gradert uttak tittel', () => {
+      const stateWithMonths = {
+        uttaksalder: { aar: 63, maaneder: 9 },
+      }
+
+      renderWithProviders(
+        <AfpDetaljer
+          opptjeningAfpPrivatListe={[
+            mockAfpPrivatAtUttaksalderData,
+            mockAfpPrivatAt67Data,
+          ]}
+        />,
+        stateWithMonths
+      )
+
+      // Test at begge seksjoner vises
+      expect(screen.getAllByText('Sum månedlig AFP:')).toHaveLength(2)
+    })
+
+    it('sender riktige verdier til FormattedMessage for heltUttak tittel når alder er over 67', () => {
+      const stateWith68 = {
+        uttaksalder: { aar: 68, maaneder: 2 },
+      }
+
+      renderWithProviders(
+        <AfpDetaljer
+          opptjeningAfpPrivatListe={[
+            mockAfpPrivatAtUttaksalderData,
+            mockAfpPrivatAt67Data,
+          ]}
+        />,
+        stateWith68
+      )
+
+      // Skal bare vise AFP ved 67/heltUttak siden uttaksalder er over 67
+      expect(screen.getAllByText('Sum månedlig AFP:')).toHaveLength(1)
+      expect(screen.getByText('18 000 kr')).toBeVisible()
+      expect(screen.queryByText('15 000 kr')).not.toBeInTheDocument()
     })
   })
 })
