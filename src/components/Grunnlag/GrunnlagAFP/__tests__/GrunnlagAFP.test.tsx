@@ -720,4 +720,91 @@ describe('Grunnlag - AFP', () => {
       expect(screen.getByText('afp.offentlig')).toBeVisible()
     })
   })
+  describe('Gitt at brukeren er apoteker', () => {
+    it('får brukeren riktig tittel og tekst når hen har vedtak om gradert uføretrygd,', () => {
+      render(<WrappedGrunnlagAFP />, {
+        preloadedApiState: {
+          getPerson: {
+            navn: 'Aprikos',
+            sivilstand: 'UGIFT',
+            foedselsdato: '1967-01-01',
+            pensjoneringAldre: {
+              normertPensjoneringsalder: {
+                aar: 67,
+                maaneder: 0,
+              },
+              nedreAldersgrense: {
+                aar: 62,
+                maaneder: 0,
+              },
+            },
+          },
+          getErApoteker: true,
+          getLoependeVedtak: {
+            harLoependeVedtak: false,
+            alderspensjon: {
+              grad: 0,
+              fom: '2025-03-01',
+              sivilstand: 'UGIFT',
+            },
+            ufoeretrygd: {
+              grad: 0,
+            },
+            pre2025OffentligAfp: {
+              fom: '2025-04-01',
+            },
+          },
+        },
+        preloadedState: {
+          userInput: { ...userInputInitialState },
+        },
+      })
+
+      expect(
+        screen.getByTestId('grunnlag.afp.ingress.overgangskull')
+      ).toBeVisible()
+    })
+
+    it.skip('får brukeren riktig tittel og tekst når hen har vedtak om AFP etterfulgt av AP,', () => {
+      const mockedQueries = {
+        ...fulfilledGetLoependeVedtakPre2025OffentligAfp,
+        ['getPerson(undefined)']: {
+          status: 'fulfilled',
+          endpointName: 'getPerson',
+          requestId: 'xTaE6mOydr5ZI75UXq4Wi',
+          startedTimeStamp: 1688046411971,
+          data: {
+            navn: 'Aprikos',
+            sivilstand: 'UGIFT',
+            foedselsdato: '1968-01-01',
+            pensjoneringAldre: {
+              normertPensjoneringsalder: {
+                aar: 67,
+                maaneder: 0,
+              },
+              nedreAldersgrense: {
+                aar: 62,
+                maaneder: 0,
+              },
+            },
+          },
+          fulfilledTimeStamp: 1688046412103,
+        },
+      }
+      render(<WrappedGrunnlagAFP />, {
+        preloadedState: {
+          api: {
+            // @ts-ignore
+            queries: { ...mockedQueries },
+          },
+          userInput: { ...userInputInitialState },
+        },
+      })
+
+      expect(
+        screen.getByText('grunnlag.afp.ingress.overgangskull')
+      ).toBeVisible()
+      expect(screen.getByText('afp.offentlig')).toBeVisible()
+    })
+  })
 })

@@ -65,6 +65,7 @@ export const apiSlice = createApi({
         return response.grunnbeløp
       },
     }),
+    // TODO: Fjernes
     getEkskludertStatus: builder.query<EkskludertStatus, void>({
       query: () => '/v2/ekskludert',
       transformResponse: (response) => {
