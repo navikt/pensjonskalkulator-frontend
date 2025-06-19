@@ -233,9 +233,9 @@ export function useBeregningsdetaljer(
       return [
         {
           tekst: 'Månedlig livsvarig avtalefestet pensjon (AFP)',
-          verdi: lastAfpElement.maanedligBeloep,
+          verdi: `${formatInntekt(lastAfpElement.maanedligBeloep)} kr`,
         },
-      ].filter((rad) => rad.verdi !== 0)
+      ].filter((rad) => rad.verdi !== '0 kr')
     })()
 
     const opptjeningPre2025OffentligAfpListe: DetaljRad[] = pre2025OffentligAfp
