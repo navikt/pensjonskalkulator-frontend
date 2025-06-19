@@ -28,6 +28,7 @@ import { getFormatMessageValues } from '@/utils/translations'
 import { GrunnlagItem } from '../GrunnlagItem'
 import { Pensjonsavtaler } from '../Pensjonsavtaler/Pensjonsavtaler'
 import { Pensjonsgivendeinntekt } from '../Simulering/Pensjonsgivendeinntekt'
+//import { SanityReadmore } from '../common/SanityReadmore'
 import { GrunnlagAFP } from './GrunnlagAFP'
 import { GrunnlagInntekt } from './GrunnlagInntekt'
 import { GrunnlagSection } from './GrunnlagSection'
@@ -91,31 +92,46 @@ export const Grunnlag: React.FC<Props> = ({
             {loependeVedtak.harLoependeVedtak ? (
               <>
                 <FormattedMessage
-                  id="grunnlag.alderspensjon.ingress"
+                  id="grunnlag.alderspensjon.endring.ingress"
                   values={{
                     ...getFormatMessageValues(),
                   }}
                 />
                 {pensjonsbeholdning && pensjonsbeholdning >= 0 && (
                   <FormattedMessage
-                    id="grunnlag.alderspensjon.ingress.pensjonsbeholdning"
+                    id="grunnlag.alderspensjon.endring.ingress.pensjonsbeholdning"
                     values={{
                       ...getFormatMessageValues(),
                       sum: formatInntekt(pensjonsbeholdning),
                     }}
                   />
                 )}
-                <FormattedMessage
-                  id="grunnlag.alderspensjon.ingress.link"
-                  values={{
-                    ...getFormatMessageValues(),
-                  }}
-                />
               </>
             ) : (
               //TODO: Legg til nytt avsnitt
-              <FormattedMessage id="grunnlag.alderspensjon.ingress.link" />
+              <>
+                <FormattedMessage
+                  id="grunnlag.alderspensjon.ingress"
+                  values={{
+                    ...getFormatMessageValues(),
+                    avansert: (
+                      <Link href="#" onClick={goToAvansert}>
+                        avansert kalkulator
+                      </Link>
+                    ),
+                  }}
+                />
+                {/* <SanityReadmore id="">
+                  //TODO: legg til detaljekomponent her
+                </SanityReadmore> */}
+              </>
             )}
+            <FormattedMessage
+              id="grunnlag.alderspensjon.ingress.link"
+              values={{
+                ...getFormatMessageValues(),
+              }}
+            />
           </BodyLong>
         </GrunnlagItem>
       </HStack>

@@ -448,9 +448,10 @@ export default {
   'grunnlag.opphold.avbryt_modal.avbryt': 'MANGLER_TEKST',
   'grunnlag.alderspensjon.title': 'Alderspensjon',
   'grunnlag.alderspensjon.value': 'Folketrygden (Nav)',
-  'grunnlag.alderspensjon.ingress':
+  'grunnlag.alderspensjon.ingress': 'MANGLER_TEKST',
+  'grunnlag.alderspensjon.endring.ingress':
     'Alderspensjon vert rekna ut frå pensjonsbehaldninga di i folketrygda. Viss du fortset å ha inntekt samstundes med at du tek ut pensjon, vil alderspensjonen din auke.',
-  'grunnlag.alderspensjon.ingress.pensjonsbeholdning':
+  'grunnlag.alderspensjon.endring.ingress.pensjonsbeholdning':
     '{br}{br}MANGLER_TEKST: {sum} kr',
   'grunnlag.alderspensjon.ingress.link':
     '{br}{br}<dinPensjonBeholdningLink>Di pensjonsopptening</dinPensjonBeholdningLink> {br}{br}<alderspensjonsreglerLink>Om reglane for alderspensjon</alderspensjonsreglerLink>',

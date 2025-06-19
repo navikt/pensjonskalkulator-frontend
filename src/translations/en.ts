@@ -525,9 +525,10 @@ export default {
   'grunnlag.opphold.avbryt_modal.avbryt': 'Cancel',
   'grunnlag.alderspensjon.title': 'retirement pension',
   'grunnlag.alderspensjon.value': 'National Insurance Scheme (Nav)',
-  'grunnlag.alderspensjon.ingress':
+  'grunnlag.alderspensjon.ingress': 'MANLGER_TEKST',
+  'grunnlag.alderspensjon.endring.ingress':
     'retirement pension is calculated based on your pension balance in the National Insurance Scheme. If you continue to have income while withdrawing pension, your retirement pension will increase.',
-  'grunnlag.alderspensjon.ingress.pensjonsbeholdning':
+  'grunnlag.alderspensjon.endring.ingress.pensjonsbeholdning':
     '{br}{br}Your pension balance before withdrawal: {sum} kr',
   'grunnlag.alderspensjon.ingress.link':
     '{br}{br}<dinPensjonBeholdningLink>Your pension accrual</dinPensjonBeholdningLink> {br}{br}<alderspensjonsreglerLink>About the rules for retirement pension</alderspensjonsreglerLink>',

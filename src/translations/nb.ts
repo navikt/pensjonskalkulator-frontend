@@ -585,8 +585,10 @@ const translations = {
   'grunnlag.alderspensjon.title': 'Alderspensjon',
   'grunnlag.alderspensjon.value': 'Folketrygden (Nav)',
   'grunnlag.alderspensjon.ingress':
+    'Alderspensjon beregnes ut ifra din opptjening i folketrygden. Hvis du fortsetter å ha inntekt samtidig som du tar ut pensjon, vil alderspensjonen din øke. Enkel beregning viser 100 % uttak av alderspensjon. I {avansert} kan du beregne alderspensjon med andre uttaksgrader.',
+  'grunnlag.alderspensjon.endring.ingress':
     'Alderspensjon beregnes ut ifra din pensjonsbeholdning i folketrygden. Hvis du fortsetter å ha inntekt samtidig som du tar ut pensjon, vil alderspensjonen din øke.',
-  'grunnlag.alderspensjon.ingress.pensjonsbeholdning':
+  'grunnlag.alderspensjon.endring.ingress.pensjonsbeholdning':
     '{br}{br}Din pensjonsopptjening før uttak: {sum} kr',
   'grunnlag.alderspensjon.ingress.link':
     '{br}{br}<dinPensjonBeholdningLink>Din pensjonsopptjening</dinPensjonBeholdningLink> {br}{br}<alderspensjonsreglerLink>Om reglene for alderspensjon</alderspensjonsreglerLink>',
