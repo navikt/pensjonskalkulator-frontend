@@ -29,10 +29,6 @@ export function useBeregningsdetaljer(
   )
 
   return useMemo(() => {
-    const alderspensjonVedUttak = alderspensjonListe?.[0]
-      ? [alderspensjonListe[0]]
-      : []
-
     const indices: number[] = []
     if (
       gradertUttaksperiode &&
@@ -183,61 +179,63 @@ export function useBeregningsdetaljer(
 
     const opptjeningKap19Liste: DetaljRad[] = (() => {
       if (
-        alderspensjonVedUttak.length === 0 ||
-        alderspensjonVedUttak[0].andelsbroekKap19 === 0
+        indices.length === 0 ||
+        !alderspensjonListe ||
+        !alderspensjonListe[indices[0]] ||
+        alderspensjonListe[indices[0]].andelsbroekKap19 === 0
       ) {
         return []
       }
-      return alderspensjonVedUttak
-        .map((ap) => [
-          {
-            tekst: 'Andelsbrøk',
-            verdi: ap.andelsbroekKap19 ? `${ap.andelsbroekKap19 * 10}/10` : 0,
-          },
-          { tekst: 'Sluttpoengtall', verdi: ap.sluttpoengtall },
-          {
-            tekst: 'Poengår',
-            verdi: (ap.poengaarFoer92 ?? 0) + (ap.poengaarEtter91 ?? 0),
-          },
-          { tekst: 'Trygdetid', verdi: ap.trygdetidKap19 },
-        ])
-        .flat()
-        .filter(
-          (rad) =>
-            rad.verdi !== undefined &&
-            (rad.tekst === 'Poengår' ||
-              rad.tekst === 'Trygdetid' ||
-              rad.verdi !== 0)
-        )
+
+      const ap = alderspensjonListe[indices[0]]
+      return [
+        {
+          tekst: 'Andelsbrøk',
+          verdi: ap.andelsbroekKap19 ? `${ap.andelsbroekKap19 * 10}/10` : 0,
+        },
+        { tekst: 'Sluttpoengtall', verdi: ap.sluttpoengtall },
+        {
+          tekst: 'Poengår',
+          verdi: (ap.poengaarFoer92 ?? 0) + (ap.poengaarEtter91 ?? 0),
+        },
+        { tekst: 'Trygdetid', verdi: ap.trygdetidKap19 },
+      ].filter(
+        (rad) =>
+          rad.verdi !== undefined &&
+          (rad.tekst === 'Poengår' ||
+            rad.tekst === 'Trygdetid' ||
+            rad.verdi !== 0)
+      )
     })()
 
     const opptjeningKap20Liste: DetaljRad[] = (() => {
       if (
-        alderspensjonVedUttak.length === 0 ||
-        alderspensjonVedUttak[0].andelsbroekKap20 === 0
+        indices.length === 0 ||
+        !alderspensjonListe ||
+        !alderspensjonListe[indices[0]] ||
+        alderspensjonListe[indices[0]].andelsbroekKap20 === 0
       ) {
         return []
       }
-      return alderspensjonVedUttak
-        .map((ap) => [
-          {
-            tekst: 'Andelsbrøk',
-            verdi: ap.andelsbroekKap20 ? `${ap.andelsbroekKap20 * 10}/10` : 0,
-          },
-          { tekst: 'Trygdetid', verdi: ap.trygdetidKap20 },
-          {
-            tekst: 'Pensjonsbeholdning før uttak',
-            verdi: `${formatInntekt(ap.pensjonBeholdningFoerUttakBeloep)} kr`,
-          },
-        ])
-        .flat()
-        .filter(
-          (rad) =>
-            rad.verdi !== undefined &&
-            (rad.tekst === 'Trygdetid' ||
-              rad.tekst === 'Pensjonbeholdning før uttak' ||
-              rad.verdi !== 0)
-        )
+
+      const ap = alderspensjonListe[indices[0]]
+      return [
+        {
+          tekst: 'Andelsbrøk',
+          verdi: ap.andelsbroekKap20 ? `${ap.andelsbroekKap20 * 10}/10` : 0,
+        },
+        { tekst: 'Trygdetid', verdi: ap.trygdetidKap20 },
+        {
+          tekst: 'Pensjonsbeholdning før uttak',
+          verdi: `${formatInntekt(ap.pensjonBeholdningFoerUttakBeloep)} kr`,
+        },
+      ].filter(
+        (rad) =>
+          rad.verdi !== undefined &&
+          (rad.tekst === 'Trygdetid' ||
+            rad.tekst === 'Pensjonbeholdning før uttak' ||
+            rad.verdi !== 0)
+      )
     })()
 
     const opptjeningAfpOffentligListe: DetaljRad[] = (() => {
