@@ -358,7 +358,9 @@ describe('useBeregningsdetaljer', () => {
           poengaarTom1991: 0,
           poengaarFom1992: 0,
         }
-        const { result } = renderHook(() => useBeregningsdetaljer([], [], [], mock))
+        const { result } = renderHook(() =>
+          useBeregningsdetaljer([], [], [], mock)
+        )
         expect(result.current.opptjeningPre2025OffentligAfpListe).toEqual(
           expect.arrayContaining([
             expect.objectContaining({ tekst: 'Poengår', verdi: 0 }),
@@ -368,7 +370,9 @@ describe('useBeregningsdetaljer', () => {
 
       it('vises Trygdetid selv om verdien er 0', () => {
         const mock = { ...mockPre2025OffentligAfp, trygdetid: 0 }
-        const { result } = renderHook(() => useBeregningsdetaljer([], [], [], mock))
+        const { result } = renderHook(() =>
+          useBeregningsdetaljer([], [], [], mock)
+        )
         expect(result.current.opptjeningPre2025OffentligAfpListe).toEqual(
           expect.arrayContaining([
             expect.objectContaining({ tekst: 'Trygdetid', verdi: 0 }),
@@ -382,7 +386,9 @@ describe('useBeregningsdetaljer', () => {
           afpGrad: 0,
           sluttpoengtall: 0,
         }
-        const { result } = renderHook(() => useBeregningsdetaljer([], [], [], mock))
+        const { result } = renderHook(() =>
+          useBeregningsdetaljer([], [], [], mock)
+        )
         expect(result.current.opptjeningPre2025OffentligAfpListe).toEqual(
           expect.arrayContaining([
             expect.objectContaining({ tekst: 'Poengår', verdi: 7 }),
