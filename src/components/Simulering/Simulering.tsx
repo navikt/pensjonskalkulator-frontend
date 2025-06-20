@@ -27,6 +27,7 @@ import {
   selectIsEndring,
   selectSamtykke,
   selectSivilstand,
+  selectSkalBeregneAfpKap19,
   selectUfoeregrad,
   selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
@@ -84,6 +85,7 @@ export const Simulering = ({
   const utenlandsperioder = useAppSelector(selectUtenlandsperioder)
   const { uttaksalder, aarligInntektVsaHelPensjon, gradertUttaksperiode } =
     useAppSelector(selectCurrentSimulation)
+  const skalBeregneAfpKap19 = useAppSelector(selectSkalBeregneAfpKap19)
   const { data: utvidetSimuleringsresultatFeatureToggle } =
     useGetUtvidetSimuleringsresultatFeatureToggleQuery()
 
@@ -149,6 +151,7 @@ export const Simulering = ({
             uttaksalder,
             aarligInntektVsaPensjon: aarligInntektVsaHelPensjon,
           },
+          skalBeregneAfpKap19,
         })
       )
     }
