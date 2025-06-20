@@ -719,9 +719,10 @@ describe('useBeregningsdetaljer', () => {
       )
 
       // Negative verdier skal filtreres bort
-      const grunnpensjonRad = result.current.pre2025OffentligAfpDetaljerListe.find(
-        rad => rad.tekst === 'Grunnpensjon (kap. 19)'
-      )
+      const grunnpensjonRad =
+        result.current.pre2025OffentligAfpDetaljerListe.find(
+          (rad) => rad.tekst === 'Grunnpensjon (kap. 19)'
+        )
       expect(grunnpensjonRad).toBeUndefined()
     })
 
@@ -736,7 +737,7 @@ describe('useBeregningsdetaljer', () => {
       )
 
       const sumRad = result.current.pre2025OffentligAfpDetaljerListe.find(
-        rad => rad.tekst === 'Sum månedlig AFP'
+        (rad) => rad.tekst === 'Sum månedlig AFP'
       )
       expect(sumRad).toBeDefined()
       // Verifiser at summen er korrekt (83 + 167 + 42 + 0 = 292)
