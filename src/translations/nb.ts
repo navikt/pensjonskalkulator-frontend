@@ -394,6 +394,28 @@ const translations = {
   'beregning.tabell.lukk': 'Lukk tabell av beregningen',
   'beregning.tabell.vis': 'Vis tabell av beregningen',
   'beregning.tabell.sum': 'Sum',
+  'beregning.detaljer.grunnpensjon.heltUttak.title':
+    'Ved {alderAar} {alderMd} ({grad} %)',
+  'beregning.detaljer.grunnpensjon.gradertUttak.title':
+    'Ved {alderAar} {alderMd} ({grad} %)',
+  'beregning.detaljer.grunnpensjon.afp.table.title':
+    'Månedlig avtalefestet pensjon (AFP)',
+  'beregning.detaljer.grunnpensjon.table.title':
+    'Månedlig alderspensjon fra Nav',
+  'beregning.detaljer.grunnpensjon.pre2025OffentligAfp.title':
+    'Ved {alderAar} {alderMd} ({grad} %)',
+  'beregning.detaljer.afpPrivat.heltUttak.title':
+    'Ved {alderAar} {alderMd} ({grad} %)',
+  'beregning.detaljer.afpPrivat.gradertUttak.title':
+    'Ved {alderAar} {alderMd} ({grad} %)',
+  'beregning.detaljer.OpptjeningDetaljer.kap19.table.title':
+    'Opptjening alderspensjon etter kapittel 19',
+  'beregning.detaljer.OpptjeningDetaljer.kap20.table.title':
+    'Opptjening alderspensjon etter kapittel 20',
+  'beregning.detaljer.OpptjeningDetaljer.afpPrivat.table.title':
+    'Månedlig avtalefestet pensjon (AFP)',
+  'beregning.detaljer.OpptjeningDetaljer.pre2025OffentligAfp.table.title':
+    'Opptjening avtalefestet pensjon (AFP)',
   'beregning.avansert.link.endre_valgene_dine': 'Endre valgene dine',
   'beregning.avansert.link.endre_avanserte_valg': 'Endre avanserte valg',
   'beregning.avansert.link.om_vilkaar_for_afp': 'Om vilkår for uttak av AFP',

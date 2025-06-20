@@ -636,6 +636,20 @@ export interface components {
       /** Format: int32 */
       maanedligBeloep?: number
     }
+    PersonligSimuleringAfpPrivatResultV8: {
+      /** Format: int32 */
+      alder: number
+      /** Format: int32 */
+      beloep: number
+      /** Format: int32 */
+      kompensasjonstillegg: number
+      /** Format: int32 */
+      kronetillegg: number
+      /** Format: int32 */
+      livsvarig: number
+      /** Format: int32 */
+      maanedligBeloep?: number
+    }
     PersonligSimuleringAlderResultV8: {
       /** Format: int32 */
       aar: number
@@ -725,7 +739,7 @@ export interface components {
       alderspensjon: components['schemas']['PersonligSimuleringAlderspensjonResultV8'][]
       alderspensjonMaanedligVedEndring?: components['schemas']['PersonligSimuleringMaanedligPensjonResultV8']
       pre2025OffentligAfp?: components['schemas']['PersonligSimuleringPre2025OffentligAfpResultV8']
-      afpPrivat?: components['schemas']['PersonligSimuleringAarligPensjonResultV8'][]
+      afpPrivat?: components['schemas']['PersonligSimuleringAfpPrivatResultV8'][]
       afpOffentlig?: components['schemas']['PersonligSimuleringAarligPensjonResultV8'][]
       vilkaarsproeving: components['schemas']['PersonligSimuleringVilkaarsproevingResultV8']
       harForLiteTrygdetid?: boolean
