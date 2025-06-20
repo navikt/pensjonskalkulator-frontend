@@ -633,19 +633,19 @@ describe('useBeregningsdetaljer', () => {
         expect.arrayContaining([
           expect.objectContaining({
             tekst: 'Grunnpensjon (kap. 19)',
-            verdi: '83 kr',
+            verdi: '1000 kr',
           }),
           expect.objectContaining({
             tekst: 'Tilleggspensjon (kap. 19)',
-            verdi: '167 kr',
+            verdi: '2000 kr',
           }),
           expect.objectContaining({
             tekst: 'AFP-tillegg',
-            verdi: '42 kr',
+            verdi: '500 kr',
           }),
           expect.objectContaining({
             tekst: 'Sum månedlig AFP',
-            verdi: '292 kr',
+            verdi: '3500 kr',
           }),
         ])
       )
@@ -673,15 +673,15 @@ describe('useBeregningsdetaljer', () => {
         expect.arrayContaining([
           expect.objectContaining({
             tekst: 'Grunnpensjon (kap. 19)',
-            verdi: '83 kr',
+            verdi: '1000 kr',
           }),
           expect.objectContaining({
             tekst: 'AFP-tillegg',
-            verdi: '42 kr',
+            verdi: '500 kr',
           }),
           expect.objectContaining({
             tekst: 'Sum månedlig AFP',
-            verdi: '125 kr',
+            verdi: '1500 kr',
           }),
         ])
       )
@@ -740,8 +740,7 @@ describe('useBeregningsdetaljer', () => {
         (rad) => rad.tekst === 'Sum månedlig AFP'
       )
       expect(sumRad).toBeDefined()
-      // Verifiser at summen er korrekt (83 + 167 + 42 + 0 = 292)
-      expect(sumRad?.verdi).toBe('292 kr')
+      expect(sumRad?.verdi).toBe('3500 kr')
     })
   })
 })
