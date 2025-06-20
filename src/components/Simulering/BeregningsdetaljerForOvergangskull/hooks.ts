@@ -46,10 +46,10 @@ export function useBeregningsdetaljer(
         (ap) => ap.alder === gradertUttaksperiode.uttaksalder.aar
       )
 
-      // Hvis uttaksalder og gradertUttaksperiode har samme år, prioriter uttaksalder
+      // Hvis uttaksalder og gradertUttaksperiode har samme år, prioriter gradertUttaksperiode
       if (uttaksalder.aar === gradertUttaksperiode.uttaksalder.aar) {
-        if (uttaksIndex !== -1) {
-          indices.push(uttaksIndex)
+        if (gradertIndex !== -1) {
+          indices.push(gradertIndex)
         }
       } else {
         // Forskjellige år - inkluder begge hvis de finnes
