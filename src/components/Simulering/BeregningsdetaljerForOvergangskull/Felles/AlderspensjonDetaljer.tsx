@@ -24,14 +24,20 @@ export const AlderspensjonDetaljer: React.FC<AlderspensjonDetaljerProps> = ({
     selectCurrentSimulation
   )
 
+  // Når alder for gradertUttak er lik uttaksalder, skal gradertUttak prioriteres og vises
+  const hasSameAges = gradertUttaksperiode?.uttaksalder.aar === uttaksalder?.aar
   const gradertUttak =
-    alderspensjonDetaljerListe.length === 2 ? alderspensjonDetaljerListe[0] : []
+    alderspensjonDetaljerListe.length === 2
+      ? alderspensjonDetaljerListe[0]
+      : hasSameAges
+        ? (alderspensjonDetaljerListe[0] ?? [])
+        : []
   const heltUttak =
     alderspensjonDetaljerListe.length === 2
       ? alderspensjonDetaljerListe[1]
-      : (alderspensjonDetaljerListe[0] ?? [])
-
-  console.log(alderspensjonDetaljerListe)
+      : !hasSameAges
+        ? (alderspensjonDetaljerListe[0] ?? [])
+        : []
 
   return (
     <VStack gap="20">

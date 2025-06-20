@@ -268,4 +268,36 @@ describe('Gitt at AlderspensjonDetaljer rendres', () => {
     expect(screen.getByText('6 000 kr')).toBeVisible() // Gradert uttak
     expect(screen.getByText('12 000 kr')).toBeVisible() // Helt uttak
   })
+
+  it('prioriterer gradert uttak når uttaksalder og gradert uttaksalder er like', () => {
+    const stateWithSameAges = {
+      uttaksalder: { aar: 67, maaneder: 6 },
+      gradertUttaksperiode: {
+        uttaksalder: { aar: 67, maaneder: 0 },
+        grad: 50,
+      },
+    }
+
+    renderWithProviders(
+      <AlderspensjonDetaljer
+        alderspensjonDetaljerListe={[mockGradertUttakData]}
+        hasPre2025OffentligAfpUttaksalder={false}
+      />,
+      stateWithSameAges
+    )
+
+    // Skal kun vise gradert uttak seksjon
+    expect(screen.getAllByText('Grunnpensjon (kap. 19):')).toHaveLength(1)
+    expect(screen.getAllByText('Sum månedlig alderspensjon:')).toHaveLength(1)
+
+    // Skal vise gradert uttak data
+    expect(screen.getByText('6 000 kr')).toBeVisible() // Gradert uttak beløp
+    expect(screen.getByText('4 000 kr')).toBeVisible() // Tilleggspensjon gradert
+    expect(screen.getByText('20 000 kr')).toBeVisible() // Sum gradert
+
+    // Skal ikke vise helt uttak data
+    expect(screen.queryByText('12 000 kr')).not.toBeInTheDocument()
+    expect(screen.queryByText('8 000 kr')).not.toBeInTheDocument()
+    expect(screen.queryByText('41 000 kr')).not.toBeInTheDocument()
+  })
 })
