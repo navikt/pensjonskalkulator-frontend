@@ -21,6 +21,7 @@ export interface Pensjonsdata {
   pensjonsavtale: number
   alderspensjon: number | undefined
   pre2025OffentligAfp?: number
+  uttaksgrad?: 'helt' | 'gradert'
 }
 
 interface PensjonBeregningerProps {
@@ -74,7 +75,7 @@ export const usePensjonBeregninger = ({
       (data.pensjonsavtale || 0) +
       (data.afp || 0) +
       (data.alderspensjon || 0) +
-      (data.pre2025OffentligAfp || 0)
+      (data.uttaksgrad === 'gradert' ? data.pre2025OffentligAfp || 0 : 0)
     )
   }
 
@@ -102,6 +103,7 @@ export const usePensjonBeregninger = ({
       alderspensjon:
         alderspensjonMaanedligVedEndring?.gradertUttakMaanedligBeloep,
       pre2025OffentligAfp: pre2025OffentligAfp?.totaltAfpBeloep,
+      uttaksgrad: 'gradert',
     })
   }
 
@@ -115,6 +117,8 @@ export const usePensjonBeregninger = ({
       pensjonsavtale:
         sumPensjonsavtaler(uttaksalder) + sumTjenestepensjon(uttaksalder),
       alderspensjon: alderspensjonMaanedligVedEndring?.heltUttakMaanedligBeloep,
+      pre2025OffentligAfp: pre2025OffentligAfp?.totaltAfpBeloep,
+      uttaksgrad: 'helt',
     })
   }
 
