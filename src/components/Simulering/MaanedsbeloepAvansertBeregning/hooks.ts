@@ -9,6 +9,7 @@ import {
 } from '@/state/userInput/selectors'
 import { calculateUttaksalderAsDate } from '@/utils/alder'
 
+import { UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP } from './../../../utils/alder'
 import {
   hentSumOffentligTjenestepensjonVedUttak,
   hentSumPensjonsavtalerVedUttak,
@@ -115,7 +116,16 @@ export const usePensjonBeregninger = ({
         afpVedUttak('offentlig', uttaksalder) ||
         afpVedUttak('privat', uttaksalder),
       pensjonsavtale:
-        sumPensjonsavtaler(uttaksalder) + sumTjenestepensjon(uttaksalder),
+        sumPensjonsavtaler(
+          pre2025OffentligAfp
+            ? UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP
+            : uttaksalder
+        ) +
+        sumTjenestepensjon(
+          pre2025OffentligAfp
+            ? UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP
+            : uttaksalder
+        ),
       alderspensjon: alderspensjonMaanedligVedEndring?.heltUttakMaanedligBeloep,
       pre2025OffentligAfp: pre2025OffentligAfp?.totaltAfpBeloep,
       uttaksgrad: 'helt',
