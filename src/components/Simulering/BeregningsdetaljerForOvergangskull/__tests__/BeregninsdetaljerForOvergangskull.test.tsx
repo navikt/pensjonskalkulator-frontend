@@ -8,14 +8,17 @@ import { DetaljRad } from '../hooks'
 vi.mock('../Felles/AlderspensjonDetaljer', () => ({
   AlderspensjonDetaljer: ({
     alderspensjonDetaljerListe,
+    pre2025OffentligAfpDetaljerListe,
     hasPre2025OffentligAfpUttaksalder,
   }: {
     alderspensjonDetaljerListe: DetaljRad[][]
+    pre2025OffentligAfpDetaljerListe?: DetaljRad[]
     hasPre2025OffentligAfpUttaksalder: boolean
   }) => (
     <div
       data-testid="AlderspensjonDetaljer"
       data-objekter-length={alderspensjonDetaljerListe.length}
+      data-pre2025-afp-length={pre2025OffentligAfpDetaljerListe?.length || 0}
       data-has-pre2025-afp={hasPre2025OffentligAfpUttaksalder}
     >
       AlderspensjonDetaljer Mock
@@ -67,6 +70,10 @@ vi.mock('../hooks', () => ({
         { tekst: 'Sluttpoengtall', verdi: 6.5 },
       ],
       [{ tekst: 'Pensjonsbeholdning', verdi: '500000 kr' }],
+    ],
+    pre2025OffentligAfpDetaljerListe: [
+      { tekst: 'Grunnpensjon (kap. 19)', verdi: '12 000 kr' },
+      { tekst: 'Sum månedlig alderspensjon', verdi: '28 000 kr' },
     ],
     opptjeningKap19Liste: [
       { tekst: 'Andelsbrøk', verdi: '10/10' },
@@ -218,6 +225,20 @@ describe('BeregningsdetaljerForOvergangskull', () => {
     expect(children[0]).toHaveAttribute('data-testid', 'AlderspensjonDetaljer')
     expect(children[1]).toHaveAttribute('data-testid', 'OpptjeningDetaljer')
     expect(children[2]).toHaveAttribute('data-testid', 'AfpDetaljer')
+  })
+
+  it('sender korrekte props til AlderspensjonDetaljer inkludert pre2025OffentligAfpDetaljerListe', () => {
+    render(<BeregningsdetaljerForOvergangskull {...defaultProps} />)
+
+    const alderspensjonDetaljerComponents = screen.getAllByTestId(
+      'AlderspensjonDetaljer'
+    )
+
+    alderspensjonDetaljerComponents.forEach((component) => {
+      expect(component).toHaveAttribute('data-objekter-length', '2')
+      expect(component).toHaveAttribute('data-pre2025-afp-length', '2')
+      expect(component).toHaveAttribute('data-has-pre2025-afp', 'true')
+    })
   })
 
   it('håndterer valgfrie props', () => {

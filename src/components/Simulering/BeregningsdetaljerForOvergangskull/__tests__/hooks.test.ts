@@ -76,6 +76,7 @@ describe('useBeregningsdetaljer', () => {
   it('returnerer tomme arrays hvis ingen input', () => {
     const { result } = renderHook(() => useBeregningsdetaljer())
     expect(result.current.alderspensjonDetaljerListe).toEqual([])
+    expect(result.current.pre2025OffentligAfpDetaljerListe).toEqual([])
     expect(result.current.opptjeningKap19Liste).toEqual([])
     expect(result.current.opptjeningKap20Liste).toEqual([])
     expect(result.current.opptjeningAfpPrivatListe).toEqual([])
@@ -615,6 +616,131 @@ describe('useBeregningsdetaljer', () => {
       )
 
       expect(result.current.opptjeningAfpOffentligListe).toEqual([])
+    })
+  })
+
+  describe('Gitt at brukeren har pre2025OffentligAfp', () => {
+    it('returneres riktige rader for pre2025OffentligAfpDetaljerListe', () => {
+      const { result } = renderHook(() =>
+        useBeregningsdetaljer(
+          [mockAlderspensjon],
+          [mockAfpPrivat],
+          [mockAfpOffentlig],
+          mockPre2025OffentligAfp
+        )
+      )
+      expect(result.current.pre2025OffentligAfpDetaljerListe).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            tekst: 'Grunnpensjon (kap. 19)',
+            verdi: '83 kr',
+          }),
+          expect.objectContaining({
+            tekst: 'Tilleggspensjon (kap. 19)',
+            verdi: '167 kr',
+          }),
+          expect.objectContaining({
+            tekst: 'AFP-tillegg',
+            verdi: '42 kr',
+          }),
+          expect.objectContaining({
+            tekst: 'Sum månedlig AFP',
+            verdi: '292 kr',
+          }),
+        ])
+      )
+    })
+
+    it('filtrerer bort rader med verdi 0 fra pre2025OffentligAfpDetaljerListe', () => {
+      const pre2025AfpMedNuller = {
+        ...mockPre2025OffentligAfp,
+        grunnpensjon: 1000,
+        tilleggspensjon: 0,
+        afpTillegg: 500,
+        saertillegg: 0,
+      }
+
+      const { result } = renderHook(() =>
+        useBeregningsdetaljer(
+          [mockAlderspensjon],
+          [mockAfpPrivat],
+          [mockAfpOffentlig],
+          pre2025AfpMedNuller
+        )
+      )
+
+      expect(result.current.pre2025OffentligAfpDetaljerListe).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            tekst: 'Grunnpensjon (kap. 19)',
+            verdi: '83 kr',
+          }),
+          expect.objectContaining({
+            tekst: 'AFP-tillegg',
+            verdi: '42 kr',
+          }),
+          expect.objectContaining({
+            tekst: 'Sum månedlig AFP',
+            verdi: '125 kr',
+          }),
+        ])
+      )
+      expect(result.current.pre2025OffentligAfpDetaljerListe.length).toBe(3) // Kun non-zero values + sum
+    })
+
+    it('returnerer tom liste når pre2025OffentligAfp er undefined', () => {
+      const { result } = renderHook(() =>
+        useBeregningsdetaljer(
+          [mockAlderspensjon],
+          [mockAfpPrivat],
+          [mockAfpOffentlig],
+          undefined
+        )
+      )
+      expect(result.current.pre2025OffentligAfpDetaljerListe).toEqual([])
+    })
+
+    it('håndterer negative verdier korrekt i pre2025OffentligAfpDetaljerListe', () => {
+      const pre2025AfpMedNegative = {
+        ...mockPre2025OffentligAfp,
+        grunnpensjon: -1000,
+        tilleggspensjon: 2000,
+        afpTillegg: 500,
+        saertillegg: 0,
+      }
+
+      const { result } = renderHook(() =>
+        useBeregningsdetaljer(
+          [mockAlderspensjon],
+          [mockAfpPrivat],
+          [mockAfpOffentlig],
+          pre2025AfpMedNegative
+        )
+      )
+
+      // Negative verdier skal filtreres bort
+      const grunnpensjonRad = result.current.pre2025OffentligAfpDetaljerListe.find(
+        rad => rad.tekst === 'Grunnpensjon (kap. 19)'
+      )
+      expect(grunnpensjonRad).toBeUndefined()
+    })
+
+    it('inkluderer alle komponenter i summen for pre2025OffentligAfpDetaljerListe', () => {
+      const { result } = renderHook(() =>
+        useBeregningsdetaljer(
+          [mockAlderspensjon],
+          [mockAfpPrivat],
+          [mockAfpOffentlig],
+          mockPre2025OffentligAfp
+        )
+      )
+
+      const sumRad = result.current.pre2025OffentligAfpDetaljerListe.find(
+        rad => rad.tekst === 'Sum månedlig AFP'
+      )
+      expect(sumRad).toBeDefined()
+      // Verifiser at summen er korrekt (83 + 167 + 42 + 0 = 292)
+      expect(sumRad?.verdi).toBe('292 kr')
     })
   })
 })
