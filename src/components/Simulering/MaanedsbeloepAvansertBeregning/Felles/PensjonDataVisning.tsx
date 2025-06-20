@@ -33,7 +33,11 @@ export const PensjonDataVisning: React.FC<Props> = ({
   } = pensjonsdata
 
   const harKunAlderspensjon = alderspensjon && !afp && !pensjonsavtale
-  const harAFP = afp || (pre2025OffentligAfp && !alderspensjon)
+  const harAFP = Boolean(afp || (pre2025OffentligAfp && !alderspensjon))
+  const harPre2025OffentligAfpOgPensjonsavtale = Boolean(
+    pre2025OffentligAfp && pensjonsavtale
+  )
+
   const captionTitle = (
     intl.formatMessage({ id: 'beregning.avansert.maanedsbeloep.table_title' }) +
     ' ' +
@@ -93,23 +97,24 @@ export const PensjonDataVisning: React.FC<Props> = ({
           </tr>
         )}
 
-        {!harKunAlderspensjon && !pre2025OffentligAfp && (
-          <tr
-            className={clsx(styles.row, styles.sum)}
-            data-testid="maanedsbeloep-avansert-sum"
-          >
-            <th scope="row">
-              <BodyLong>
-                <FormattedMessage
-                  id="beregning.avansert.maanedsbeloep.sum"
-                  values={{ maanedOgAar: hentUttaksMaanedOgAar(alder) }}
-                />
-                :
-              </BodyLong>
-            </th>
-            <td>{formatInntektMedKr(summerYtelser(pensjonsdata))}</td>
-          </tr>
-        )}
+        {!harKunAlderspensjon &&
+          (!pre2025OffentligAfp || harPre2025OffentligAfpOgPensjonsavtale) && (
+            <tr
+              className={clsx(styles.row, styles.sum)}
+              data-testid="maanedsbeloep-avansert-sum"
+            >
+              <th scope="row">
+                <BodyLong>
+                  <FormattedMessage
+                    id="beregning.avansert.maanedsbeloep.sum"
+                    values={{ maanedOgAar: hentUttaksMaanedOgAar(alder) }}
+                  />
+                  :
+                </BodyLong>
+              </th>
+              <td>{formatInntektMedKr(summerYtelser(pensjonsdata))}</td>
+            </tr>
+          )}
       </tbody>
     </table>
   )

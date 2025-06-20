@@ -71,7 +71,10 @@ export const usePensjonBeregninger = ({
 
   const summerYtelser = (data: Pensjonsdata): number => {
     return (
-      (data.pensjonsavtale || 0) + (data.afp || 0) + (data.alderspensjon || 0)
+      (data.pensjonsavtale || 0) +
+      (data.afp || 0) +
+      (data.alderspensjon || 0) +
+      (data.pre2025OffentligAfp || 0)
     )
   }
 
