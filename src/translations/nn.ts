@@ -316,6 +316,8 @@ export default {
   'beregning.tabell.lukk': 'Lukk tabell av utrekninga',
   'beregning.tabell.vis': 'Vis tabell av utrekninga',
   'beregning.tabell.sum': 'Sum',
+  'beregning.detaljer.lukk': 'MANGLER_TEKST',
+  'beregning.detaljer.vis': 'MANGLER_TEKST',
   'beregning.avansert.link.endre_valgene_dine': 'MANGLER_TEKST',
   'beregning.avansert.link.endre_avanserte_valg': 'MANGLER_TEKST',
   'beregning.avansert.link.om_vilkaar_for_afp': 'MANGLER_TEKST',

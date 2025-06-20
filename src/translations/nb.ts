@@ -394,6 +394,8 @@ const translations = {
   'beregning.tabell.lukk': 'Lukk tabell av beregningen',
   'beregning.tabell.vis': 'Vis tabell av beregningen',
   'beregning.tabell.sum': 'Sum',
+  'beregning.detaljer.lukk': 'Skjul detaljer om din {ytelse}',
+  'beregning.detaljer.vis': 'Vis detaljer om din {ytelse}',
   'beregning.avansert.link.endre_valgene_dine': 'Endre valgene dine',
   'beregning.avansert.link.endre_avanserte_valg': 'Endre avanserte valg',
   'beregning.avansert.link.om_vilkaar_for_afp': 'Om vilkår for uttak av AFP',

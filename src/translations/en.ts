@@ -359,6 +359,8 @@ export default {
   'beregning.tabell.lukk': 'Close calculation table',
   'beregning.tabell.vis': 'Show calculation table',
   'beregning.tabell.sum': 'Total',
+  'beregning.detaljer.lukk': 'MANGLER_TEKST',
+  'beregning.detaljer.vis': 'MANGLER_TEKST',
   'beregning.avansert.link.endre_valgene_dine': 'Change your choices',
   'beregning.avansert.link.endre_avanserte_valg': 'Change advanced choices',
   'beregning.avansert.link.om_vilkaar_for_afp': 'MANGLER_TEKST',

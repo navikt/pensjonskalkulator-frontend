@@ -9,6 +9,7 @@ import {
   Heading,
   HeadingProps,
   Link,
+  ReadMore,
   VStack,
 } from '@navikt/ds-react'
 
@@ -63,9 +64,14 @@ export const Grunnlag: React.FC<Props> = ({
   }
 
   const intl = useIntl()
-
   const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const sivilstand = useAppSelector(selectSivilstand)
+
+  const [isAFPDokumentasjonVisible, setIsAFPDokumentasjonVisible] =
+    React.useState<boolean>(false)
+
+  const [isAlderspensjonDetaljerVisible, setIsAlderspensjonDetaljerVisible] =
+    React.useState<boolean>(false)
 
   const formatertSivilstand = React.useMemo(
     () => formatSivilstand(intl, sivilstand!),
@@ -87,52 +93,114 @@ export const Grunnlag: React.FC<Props> = ({
           {!isEndring && <Pensjonsavtaler headingLevel="3" />}
         </GrunnlagItem>
 
+        <GrunnlagItem color="purple">
+          <GrunnlagAFP />
+          <ReadMore
+            name="Listekomponenter for AFP"
+            open={isAFPDokumentasjonVisible}
+            header={
+              isAFPDokumentasjonVisible
+                ? intl.formatMessage(
+                    {
+                      id: 'beregning.detaljer.lukk',
+                    },
+                    {
+                      ...getFormatMessageValues(),
+                      ytelse: 'AFP',
+                    }
+                  )
+                : intl.formatMessage(
+                    {
+                      id: 'beregning.detaljer.vis',
+                    },
+                    {
+                      ...getFormatMessageValues(),
+                      ytelse: 'AFP',
+                    }
+                  )
+            }
+            onOpenChange={setIsAFPDokumentasjonVisible}
+          >
+            <p>Hei, her skal listekomponent for Afp ligge</p>
+          </ReadMore>
+        </GrunnlagItem>
+
+        {/*TODO: Flytt hele denne i en egen komponent */}
         <GrunnlagItem color="blue">
-          <BodyLong>
-            {loependeVedtak.harLoependeVedtak ? (
-              <>
-                <FormattedMessage
-                  id="grunnlag.alderspensjon.endring.ingress"
-                  values={{
-                    ...getFormatMessageValues(),
-                  }}
-                />
-                {pensjonsbeholdning && pensjonsbeholdning >= 0 && (
+          <VStack gap="3">
+            <Heading level="2" size="small">
+              <FormattedMessage id="beregning.highcharts.serie.alderspensjon.name" />
+            </Heading>
+            <BodyLong>
+              {loependeVedtak.harLoependeVedtak ? (
+                <>
                   <FormattedMessage
-                    id="grunnlag.alderspensjon.endring.ingress.pensjonsbeholdning"
+                    id="grunnlag.alderspensjon.endring.ingress"
                     values={{
                       ...getFormatMessageValues(),
-                      sum: formatInntekt(pensjonsbeholdning),
                     }}
                   />
-                )}
-              </>
-            ) : (
-              //TODO: Legg til nytt avsnitt
-              <>
-                <FormattedMessage
-                  id="grunnlag.alderspensjon.ingress"
-                  values={{
-                    ...getFormatMessageValues(),
-                    avansert: (
-                      <Link href="#" onClick={goToAvansert}>
-                        avansert kalkulator
-                      </Link>
-                    ),
-                  }}
-                />
-                {/* <SanityReadmore id="">
-                  //TODO: legg til detaljekomponent her
-                </SanityReadmore> */}
-              </>
-            )}
-            <FormattedMessage
-              id="grunnlag.alderspensjon.ingress.link"
-              values={{
-                ...getFormatMessageValues(),
-              }}
-            />
-          </BodyLong>
+                  {pensjonsbeholdning && pensjonsbeholdning >= 0 && (
+                    <FormattedMessage
+                      id="grunnlag.alderspensjon.endring.ingress.pensjonsbeholdning"
+                      values={{
+                        ...getFormatMessageValues(),
+                        sum: formatInntekt(pensjonsbeholdning),
+                      }}
+                    />
+                  )}
+                </>
+              ) : (
+                <>
+                  <FormattedMessage
+                    id="grunnlag.alderspensjon.ingress"
+                    values={{
+                      ...getFormatMessageValues(),
+                      avansert: (
+                        <Link href="#" onClick={goToAvansert}>
+                          avansert kalkulator
+                        </Link>
+                      ),
+                    }}
+                  />
+                  <ReadMore
+                    name="Listekomponenter for alderspensjon"
+                    open={isAlderspensjonDetaljerVisible}
+                    header={
+                      isAlderspensjonDetaljerVisible
+                        ? intl.formatMessage(
+                            {
+                              id: 'beregning.detaljer.lukk',
+                            },
+                            {
+                              ...getFormatMessageValues(),
+                              ytelse: 'alderspensjon',
+                            }
+                          )
+                        : intl.formatMessage(
+                            {
+                              id: 'beregning.detaljer.vis',
+                            },
+                            {
+                              ...getFormatMessageValues(),
+                              ytelse: 'alderspensjon',
+                            }
+                          )
+                    }
+                    onOpenChange={setIsAlderspensjonDetaljerVisible}
+                  >
+                    <p>Hei, her skal listekomponent for alderspensjon ligge</p>
+                  </ReadMore>
+                </>
+              )}
+              <FormattedMessage
+                id="grunnlag.alderspensjon.ingress.link"
+                values={{
+                  ...getFormatMessageValues(),
+                }}
+              />
+            </BodyLong>
+          </VStack>
         </GrunnlagItem>
       </HStack>
 
@@ -143,31 +211,6 @@ export const Grunnlag: React.FC<Props> = ({
       </VStack>
 
       <Accordion>
-        {visning === 'enkel' && (
-          <AccordionItem name="Grunnlag: Uttaksgrad">
-            <GrunnlagSection
-              headerTitle={intl.formatMessage({
-                id: 'grunnlag.uttaksgrad.title',
-              })}
-              headerValue="100 %"
-            >
-              <BodyLong>
-                <FormattedMessage
-                  id="grunnlag.uttaksgrad.ingress"
-                  values={{
-                    ...getFormatMessageValues(),
-                  }}
-                />
-                <br />
-                <br />
-                <Link href="#" onClick={goToAvansert}>
-                  <FormattedMessage id="grunnlag.uttaksgrad.avansert_link" />
-                </Link>
-              </BodyLong>
-            </GrunnlagSection>
-          </AccordionItem>
-        )}
-
         {visning === 'enkel' && <GrunnlagInntekt goToAvansert={goToAvansert} />}
 
         <AccordionItem name="Gunnlag: Sivilstand">
@@ -192,8 +235,6 @@ export const Grunnlag: React.FC<Props> = ({
           harForLiteTrygdetid={harForLiteTrygdetid}
           trygdetid={trygdetid}
         />
-
-        <GrunnlagAFP />
       </Accordion>
     </section>
   )
