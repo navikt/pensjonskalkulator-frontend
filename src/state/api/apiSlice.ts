@@ -65,6 +65,7 @@ export const apiSlice = createApi({
         return response.grunnbeløp
       },
     }),
+    // TODO: Fjernes
     getEkskludertStatus: builder.query<EkskludertStatus, void>({
       query: () => '/v2/ekskludert',
       transformResponse: (response) => {
@@ -75,6 +76,18 @@ export const apiSlice = createApi({
           )
         }
         return response
+      },
+    }),
+    getErApoteker: builder.query<boolean, void>({
+      query: () => '/v2/ekskludert',
+      transformResponse: (response) => {
+        if (!isEkskludertStatus(response)) {
+          throw new Error(
+            `Mottok ugyldig ekskludert response:`,
+            response as ErrorOptions
+          )
+        }
+        return response.ekskludert && response.aarsak === 'ER_APOTEKER'
       },
     }),
     getOmstillingsstoenadOgGjenlevende: builder.query<
@@ -233,6 +246,7 @@ export const {
   useGetPersonQuery,
   useGetGrunnbeloepQuery,
   useGetEkskludertStatusQuery,
+  useGetErApotekerQuery,
   useGetOmstillingsstoenadOgGjenlevendeQuery,
   useGetLoependeVedtakQuery,
   useOffentligTpQuery,

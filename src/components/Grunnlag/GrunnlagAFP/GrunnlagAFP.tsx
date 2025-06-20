@@ -12,6 +12,7 @@ import {
   selectAfp,
   selectAfpUtregningValg,
   selectCurrentSimulation,
+  selectErApoteker,
   selectFoedselsdato,
   selectIsEndring,
   selectLoependeVedtak,
@@ -37,6 +38,7 @@ export const GrunnlagAFP: React.FC = () => {
   const afp = useAppSelector(selectAfp) ?? 'vet_ikke' // Vi har fallback for å unngå "missing translation" error ved flush() i GoToStart
   const skalBeregneAfpKap19 = useAppSelector(selectSkalBeregneAfpKap19)
   const afpUtregningValg = useAppSelector(selectAfpUtregningValg)
+  const erApoteker = useAppSelector(selectErApoteker)
   const foedselsdato = useAppSelector(selectFoedselsdato)
   const samtykkeOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
   const isEndring = useAppSelector(selectIsEndring)
@@ -59,7 +61,7 @@ export const GrunnlagAFP: React.FC = () => {
       loependeVedtak &&
       loependeVedtak.pre2025OffentligAfp &&
       foedselsdato &&
-      isFoedtFoer1963(foedselsdato)
+      (isFoedtFoer1963(foedselsdato) || erApoteker)
     ) {
       return formatAfp(intl, 'ja_offentlig')
     }
@@ -117,7 +119,7 @@ export const GrunnlagAFP: React.FC = () => {
       loependeVedtak &&
       loependeVedtak.pre2025OffentligAfp &&
       foedselsdato &&
-      isFoedtFoer1963(foedselsdato)
+      (isFoedtFoer1963(foedselsdato) || erApoteker)
     ) {
       return 'grunnlag.afp.ingress.overgangskull'
     }
