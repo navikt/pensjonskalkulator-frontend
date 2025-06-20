@@ -300,4 +300,36 @@ describe('Gitt at AlderspensjonDetaljer rendres', () => {
     expect(screen.queryByText('8 000 kr')).not.toBeInTheDocument()
     expect(screen.queryByText('41 000 kr')).not.toBeInTheDocument()
   })
+
+  it('prioriterer helt uttak når uttaksalder og gradert uttaksalder er like og hasPre2025OffentligAfpUttaksalder er true', () => {
+    const stateWithSameAges = {
+      uttaksalder: { aar: 67, maaneder: 0 },
+      gradertUttaksperiode: {
+        uttaksalder: { aar: 67, maaneder: 0 },
+        grad: 50,
+      },
+    }
+
+    renderWithProviders(
+      <AlderspensjonDetaljer
+        alderspensjonDetaljerListe={[mockHeltUttakData]}
+        hasPre2025OffentligAfpUttaksalder={true} // Pre-2025 AFP case
+      />,
+      stateWithSameAges
+    )
+
+    // Skal kun vise helt uttak seksjon siden hasPre2025OffentligAfpUttaksalder er true
+    expect(screen.getAllByText('Grunnpensjon (kap. 19):')).toHaveLength(1)
+    expect(screen.getAllByText('Sum månedlig alderspensjon:')).toHaveLength(1)
+
+    // Skal vise helt uttak data
+    expect(screen.getByText('12 000 kr')).toBeVisible() // Helt uttak beløp
+    expect(screen.getByText('8 000 kr')).toBeVisible() // Tilleggspensjon helt
+    expect(screen.getByText('41 000 kr')).toBeVisible() // Sum helt
+
+    // Skal ikke vise gradert uttak data siden pre-2025 AFP prioriterer helt uttak
+    expect(screen.queryByText('6 000 kr')).not.toBeInTheDocument()
+    expect(screen.queryByText('4 000 kr')).not.toBeInTheDocument()
+    expect(screen.queryByText('20 000 kr')).not.toBeInTheDocument()
+  })
 })

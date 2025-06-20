@@ -25,17 +25,22 @@ export const AlderspensjonDetaljer: React.FC<AlderspensjonDetaljerProps> = ({
   )
 
   // Når alder for gradertUttak er lik uttaksalder, skal gradertUttak prioriteres og vises
+  // men hvis hasPre2025OffentligAfpUttaksalder er true, skal heltUttak vises
   const hasSameAges = gradertUttaksperiode?.uttaksalder.aar === uttaksalder?.aar
+  const showGradertWhenSameAges =
+    hasSameAges && !hasPre2025OffentligAfpUttaksalder
+  const showHeltWhenSameAges = hasSameAges && hasPre2025OffentligAfpUttaksalder
+
   const gradertUttak =
     alderspensjonDetaljerListe.length === 2
       ? alderspensjonDetaljerListe[0]
-      : hasSameAges
+      : showGradertWhenSameAges
         ? (alderspensjonDetaljerListe[0] ?? [])
         : []
   const heltUttak =
     alderspensjonDetaljerListe.length === 2
       ? alderspensjonDetaljerListe[1]
-      : !hasSameAges
+      : !hasSameAges || showHeltWhenSameAges
         ? (alderspensjonDetaljerListe[0] ?? [])
         : []
 
@@ -87,7 +92,8 @@ export const AlderspensjonDetaljer: React.FC<AlderspensjonDetaljerProps> = ({
           </dl>
         </div>
       )}
-      {gradertUttaksperiode?.uttaksalder.aar !== uttaksalder!.aar && (
+      {(gradertUttaksperiode?.uttaksalder.aar !== uttaksalder!.aar ||
+        showHeltWhenSameAges) && (
         <div className="heltUttak">
           <Heading size="small" level="3">
             <FormattedMessage
