@@ -18,7 +18,9 @@ const mockMessages = {
   'beregning.detaljer.kr': 'kr',
   'beregning.detaljer.grunnpensjon.heltUttak.title': 'Helt uttak',
   'beregning.detaljer.grunnpensjon.gradertUttak.title': 'Gradert uttak',
+  'beregning.detaljer.grunnpensjon.pre2025OffentligAfp.title': 'Pre-2025 AFP',
   'beregning.detaljer.grunnpensjon.table.title': 'Grunnpensjon (kr)',
+  'beregning.detaljer.grunnpensjon.afp.table.title': 'AFP (kr)',
 }
 
 const createMockStore = (customState = {}) => {
@@ -76,6 +78,16 @@ describe('Gitt at AlderspensjonDetaljer rendres', () => {
     { tekst: 'Sum månedlig alderspensjon', verdi: '20 000 kr' },
   ]
 
+  const mockPre2025AfpData: DetaljRad[] = [
+    { tekst: 'Grunnpensjon (kap. 19)', verdi: '10 000 kr' },
+    { tekst: 'Tilleggspensjon (kap. 19)', verdi: '7 000 kr' },
+    { tekst: 'Skjermingstillegg (kap. 19)', verdi: '1 500 kr' },
+    { tekst: 'Pensjonstillegg (kap. 19)', verdi: '500 kr' },
+    { tekst: 'Inntektspensjon (kap. 20)', verdi: '12 000 kr' },
+    { tekst: 'Garantipensjon (kap. 20)', verdi: '2 000 kr' },
+    { tekst: 'Sum månedlig AFP', verdi: '33 000 kr' },
+  ]
+
   it('rendrer komponenten med kun helt uttak', () => {
     renderWithProviders(
       <AlderspensjonDetaljer
@@ -110,17 +122,17 @@ describe('Gitt at AlderspensjonDetaljer rendres', () => {
       stateWithGradertUttak
     )
 
-    // Gradert uttak - check unique values to distinguish from helt uttak
+    // Gradert uttak - sjekker unike verdier for å skille fra helt uttak
     expect(screen.getByText('6 000 kr')).toBeVisible() // Gradert uttak amount (unique)
     expect(screen.getByText('4 000 kr')).toBeVisible() // Tilleggspensjon gradert (unique)
     expect(screen.getByText('20 000 kr')).toBeVisible() // Sum gradert (unique)
 
-    // Helt uttak - check unique values
+    // Helt uttak - sjekker unike verdier
     expect(screen.getByText('12 000 kr')).toBeVisible() // Helt uttak amount (unique)
     expect(screen.getByText('8 000 kr')).toBeVisible() // Tilleggspensjon helt (unique)
     expect(screen.getByText('41 000 kr')).toBeVisible() // Sum helt (unique)
 
-    // Check that both sections exist
+    // Sjekker at begge seksjoner eksisterer
     expect(screen.getAllByText('Grunnpensjon (kap. 19):')).toHaveLength(2)
     expect(screen.getAllByText('Sum månedlig alderspensjon:')).toHaveLength(2)
   })
@@ -134,7 +146,7 @@ describe('Gitt at AlderspensjonDetaljer rendres', () => {
     )
 
     expect(screen.getByText('Grunnpensjon (kap. 19):')).toBeVisible()
-    expect(screen.queryByText('6 000 kr')).not.toBeInTheDocument() // Gradert amount should not be visible
+    expect(screen.queryByText('6 000 kr')).not.toBeInTheDocument()
   })
 
   it('håndterer tom alderspensjonDetaljerListe array', () => {
@@ -223,7 +235,6 @@ describe('Gitt at AlderspensjonDetaljer rendres', () => {
     const definitionLists = container.querySelectorAll('dl')
     expect(definitionLists).toHaveLength(1)
 
-    // Check that dt and dd elements exist
     const terms = container.querySelectorAll('dt')
     const definitions = container.querySelectorAll('dd')
     expect(terms.length).toBeGreaterThan(0)
@@ -331,5 +342,175 @@ describe('Gitt at AlderspensjonDetaljer rendres', () => {
     expect(screen.queryByText('6 000 kr')).not.toBeInTheDocument()
     expect(screen.queryByText('4 000 kr')).not.toBeInTheDocument()
     expect(screen.queryByText('20 000 kr')).not.toBeInTheDocument()
+  })
+
+  it('rendrer pre2025OffentligAfp section når pre2025OffentligAfpDetaljerListe er tilgjengelig', () => {
+    renderWithProviders(
+      <AlderspensjonDetaljer
+        alderspensjonDetaljerListe={[mockHeltUttakData]}
+        pre2025OffentligAfpDetaljerListe={mockPre2025AfpData}
+        hasPre2025OffentligAfpUttaksalder={true}
+      />
+    )
+
+    expect(screen.getByText('10 000 kr')).toBeVisible() // Grunnpensjon
+    expect(screen.getByText('7 000 kr')).toBeVisible() // Tilleggspensjon
+    expect(screen.getByText('1 500 kr')).toBeVisible() // Skjermingstillegg
+    expect(screen.getByText('500 kr')).toBeVisible() // Pensjonstillegg
+    // 2 000 kr kommer i begge seksjoner, så sjekk at det er flere instanser
+    expect(screen.getAllByText('2 000 kr')).toHaveLength(2) // Kommer i både pre-2025 AFP og helt uttak
+
+    expect(screen.getAllByText('Sum månedlig alderspensjon:')).toHaveLength(1)
+    expect(screen.getAllByText('Sum månedlig AFP:')).toHaveLength(1)
+    expect(screen.getByText('33 000 kr')).toBeVisible() // Pre-2025 AFP sum fra mockPre2025AfpData
+    expect(screen.getByText('41 000 kr')).toBeVisible() // Vanlig helt uttak sum
+  })
+
+  it('viser ikke pre2025OffentligAfp section når pre2025OffentligAfpDetaljerListe er tom', () => {
+    renderWithProviders(
+      <AlderspensjonDetaljer
+        alderspensjonDetaljerListe={[mockHeltUttakData]}
+        pre2025OffentligAfpDetaljerListe={[]}
+        hasPre2025OffentligAfpUttaksalder={false}
+      />
+    )
+
+    expect(screen.queryByText('AFP-tillegg:')).not.toBeInTheDocument()
+    expect(screen.queryByText('Særtillegg:')).not.toBeInTheDocument()
+    expect(screen.getAllByText('Sum månedlig alderspensjon:')).toHaveLength(1)
+  })
+
+  it('viser ikke pre2025OffentligAfp seksjon når pre2025OffentligAfpDetaljerListe er undefined', () => {
+    renderWithProviders(
+      <AlderspensjonDetaljer
+        alderspensjonDetaljerListe={[mockHeltUttakData]}
+        hasPre2025OffentligAfpUttaksalder={false}
+      />
+    )
+
+    expect(screen.queryByText('AFP-tillegg:')).not.toBeInTheDocument()
+    expect(screen.queryByText('Særtillegg:')).not.toBeInTheDocument()
+    expect(screen.getAllByText('Sum månedlig alderspensjon:')).toHaveLength(1)
+  })
+
+  it('rendrer pre2025OffentligAfp med korrekt styling for siste element', () => {
+    const { container } = renderWithProviders(
+      <AlderspensjonDetaljer
+        alderspensjonDetaljerListe={[mockHeltUttakData]}
+        pre2025OffentligAfpDetaljerListe={mockPre2025AfpData}
+        hasPre2025OffentligAfpUttaksalder={true}
+      />
+    )
+
+    // Sjekker at den siste elementet i pre-2025 AFP listen har strong styling
+    const strongElements = container.querySelectorAll('strong')
+    const lastStrongText = Array.from(strongElements).find((el) =>
+      el.textContent?.includes('Sum månedlig AFP')
+    )
+    expect(lastStrongText).toBeInTheDocument()
+  })
+
+  it('håndterer uttaksalder formatting korrekt for pre2025OffentligAfp heading', () => {
+    const stateWithMonths = {
+      uttaksalder: { aar: 65, maaneder: 6 },
+    }
+
+    renderWithProviders(
+      <AlderspensjonDetaljer
+        alderspensjonDetaljerListe={[mockHeltUttakData]}
+        pre2025OffentligAfpDetaljerListe={mockPre2025AfpData}
+        hasPre2025OffentligAfpUttaksalder={true}
+      />,
+      stateWithMonths
+    )
+
+    const headings = screen.getAllByRole('heading', { level: 3 })
+    expect(headings).toHaveLength(2)
+  })
+
+  it('kombinerer pre2025OffentligAfp med gradert og helt uttak korrekt', () => {
+    const stateWithGradertUttak = {
+      uttaksalder: { aar: 67, maaneder: 0 },
+      gradertUttaksperiode: {
+        uttaksalder: { aar: 62, maaneder: 0 },
+        grad: 50,
+      },
+    }
+
+    renderWithProviders(
+      <AlderspensjonDetaljer
+        alderspensjonDetaljerListe={[mockGradertUttakData, mockHeltUttakData]}
+        pre2025OffentligAfpDetaljerListe={mockPre2025AfpData}
+        hasPre2025OffentligAfpUttaksalder={true}
+      />,
+      stateWithGradertUttak
+    )
+
+    // Når hasPre2025OffentligAfpUttaksalder er true, vises ikke gradert uttak
+    // Skal kun vise pre-2025 AFP og helt uttak seksjoner
+    expect(screen.getAllByText('Grunnpensjon (kap. 19):')).toHaveLength(2)
+
+    // Sjekk unike verdier fra hver seksjon
+    expect(screen.getByText('33 000 kr')).toBeVisible() // Pre-2025 AFP sum
+    expect(screen.getByText('41 000 kr')).toBeVisible() // Helt sum
+
+    // Skal ikke vise gradert uttak verdier når pre-2025 AFP er til stede
+    expect(screen.queryByText('20 000 kr')).not.toBeInTheDocument() // Gradert sum skal ikke være synlig
+
+    // Sjekk pre-2025 AFP seksjonstittel
+    expect(screen.getByText('Pre-2025 AFP')).toBeVisible()
+    expect(screen.getByText('Helt uttak')).toBeVisible()
+  })
+
+  it('håndterer undefined verdier i pre2025OffentligAfpDetaljerListe', () => {
+    const mockDataWithUndefined: DetaljRad[] = [
+      { tekst: 'Grunnpensjon (kap. 19)', verdi: undefined },
+      { tekst: 'AFP-tillegg' },
+      { tekst: 'Sum månedlig alderspensjon', verdi: '15 000 kr' },
+    ]
+
+    renderWithProviders(
+      <AlderspensjonDetaljer
+        alderspensjonDetaljerListe={[mockHeltUttakData]}
+        pre2025OffentligAfpDetaljerListe={mockDataWithUndefined}
+        hasPre2025OffentligAfpUttaksalder={true}
+      />
+    )
+
+    expect(
+      screen.getAllByText('Grunnpensjon (kap. 19):').length
+    ).toBeGreaterThan(0)
+    expect(screen.getByText('AFP-tillegg:')).toBeVisible()
+    expect(screen.getAllByText('15 000 kr')).toHaveLength(2)
+  })
+
+  it('skjuler gradert uttak når hasPre2025OffentligAfpUttaksalder er true', () => {
+    const stateWithGradertUttak = {
+      uttaksalder: { aar: 67, maaneder: 0 },
+      gradertUttaksperiode: {
+        uttaksalder: { aar: 62, maaneder: 0 },
+        grad: 50,
+      },
+    }
+
+    renderWithProviders(
+      <AlderspensjonDetaljer
+        alderspensjonDetaljerListe={[mockHeltUttakData]}
+        pre2025OffentligAfpDetaljerListe={mockPre2025AfpData}
+        hasPre2025OffentligAfpUttaksalder={true}
+      />,
+      stateWithGradertUttak
+    )
+
+    // Skal ikke vise gradert uttak seksjon når pre-2025 AFP er til stede
+    expect(screen.queryByText('6 000 kr')).not.toBeInTheDocument()
+    expect(screen.queryByText('4 000 kr')).not.toBeInTheDocument()
+    expect(screen.queryByText('20 000 kr')).not.toBeInTheDocument()
+
+    // Skal vise pre-2025 AFP og helt uttak
+    expect(screen.getAllByText('Sum månedlig alderspensjon:')).toHaveLength(1)
+    expect(screen.getAllByText('Sum månedlig AFP:')).toHaveLength(1)
+    expect(screen.getByText('33 000 kr')).toBeVisible() // Pre-2025 AFP sum from mockPre2025AfpData
+    expect(screen.getByText('41 000 kr')).toBeVisible() // Helt uttak sum
   })
 })

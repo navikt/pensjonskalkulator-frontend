@@ -11,6 +11,7 @@ export interface DetaljRad {
 
 export interface BeregningsdetaljerRader {
   alderspensjonDetaljerListe: DetaljRad[][]
+  pre2025OffentligAfpDetaljerListe: DetaljRad[]
   opptjeningKap19Liste: DetaljRad[]
   opptjeningKap20Liste: DetaljRad[]
   opptjeningAfpPrivatListe: DetaljRad[][]
@@ -144,6 +145,55 @@ export function useBeregningsdetaljer(
         },
       ].filter((rad) => rad.verdi !== '0 kr')
     })
+
+    const pre2025OffentligAfpDetaljerListe: DetaljRad[] = pre2025OffentligAfp
+      ? (() => {
+          const grunnpensjon =
+            pre2025OffentligAfp.grunnpensjon &&
+            pre2025OffentligAfp.grunnpensjon > 0
+              ? Math.round(pre2025OffentligAfp.grunnpensjon / 12)
+              : 0
+          const tilleggspensjon =
+            pre2025OffentligAfp.tilleggspensjon &&
+            pre2025OffentligAfp.tilleggspensjon > 0
+              ? Math.round(pre2025OffentligAfp.tilleggspensjon / 12)
+              : 0
+          const afpTillegg =
+            pre2025OffentligAfp.afpTillegg && pre2025OffentligAfp.afpTillegg > 0
+              ? Math.round(pre2025OffentligAfp.afpTillegg / 12)
+              : 0
+          const saertillegg =
+            pre2025OffentligAfp.saertillegg &&
+            pre2025OffentligAfp.saertillegg > 0
+              ? Math.round(pre2025OffentligAfp.saertillegg / 12)
+              : 0
+
+          return [
+            {
+              tekst: 'Grunnpensjon (kap. 19)',
+              verdi: `${formatInntekt(grunnpensjon)} kr`,
+            },
+            {
+              tekst: 'Tilleggspensjon (kap. 19)',
+              verdi: `${formatInntekt(tilleggspensjon)} kr`,
+            },
+            {
+              tekst: 'AFP-tillegg',
+              verdi: `${formatInntekt(afpTillegg)} kr`,
+            },
+            {
+              tekst: 'Særtillegg',
+              verdi: `${formatInntekt(saertillegg)} kr`,
+            },
+            {
+              tekst: 'Sum månedlig AFP',
+              verdi: `${formatInntekt(
+                grunnpensjon + tilleggspensjon + afpTillegg + saertillegg
+              )} kr`,
+            },
+          ].filter((rad) => rad.verdi !== '0 kr')
+        })()
+      : []
 
     const opptjeningAfpPrivatListe: DetaljRad[][] = (() => {
       if (!afpPrivatListe || afpPrivatListe.length === 0) {
@@ -287,6 +337,7 @@ export function useBeregningsdetaljer(
 
     return {
       alderspensjonDetaljerListe,
+      pre2025OffentligAfpDetaljerListe,
       opptjeningKap19Liste,
       opptjeningKap20Liste,
       opptjeningAfpPrivatListe,

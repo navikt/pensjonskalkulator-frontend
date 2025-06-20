@@ -398,8 +398,12 @@ const translations = {
     'Ved {alderAar} {alderMd} ({grad} %)',
   'beregning.detaljer.grunnpensjon.gradertUttak.title':
     'Ved {alderAar} {alderMd} ({grad} %)',
+  'beregning.detaljer.grunnpensjon.afp.table.title':
+    'Månedlig avtalefestet pensjon (AFP)',
   'beregning.detaljer.grunnpensjon.table.title':
     'Månedlig alderspensjon fra Nav',
+  'beregning.detaljer.grunnpensjon.pre2025OffentligAfp.title':
+    'Ved {alderAar} {alderMd} ({grad} %)',
   'beregning.detaljer.afpPrivat.heltUttak.title':
     'Ved {alderAar} {alderMd} ({grad} %)',
   'beregning.detaljer.afpPrivat.gradertUttak.title':

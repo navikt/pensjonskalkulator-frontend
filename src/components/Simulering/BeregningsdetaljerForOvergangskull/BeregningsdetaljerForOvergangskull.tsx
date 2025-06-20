@@ -24,6 +24,7 @@ export const BeregningsdetaljerForOvergangskull: React.FC<Props> = ({
 }) => {
   const {
     alderspensjonDetaljerListe,
+    pre2025OffentligAfpDetaljerListe,
     opptjeningKap19Liste,
     opptjeningKap20Liste,
     opptjeningAfpPrivatListe,
@@ -40,6 +41,7 @@ export const BeregningsdetaljerForOvergangskull: React.FC<Props> = ({
     <>
       <AlderspensjonDetaljer
         alderspensjonDetaljerListe={alderspensjonDetaljerListe}
+        pre2025OffentligAfpDetaljerListe={pre2025OffentligAfpDetaljerListe}
         hasPre2025OffentligAfpUttaksalder={Boolean(
           opptjeningPre2025OffentligAfpListe?.length
         )}
