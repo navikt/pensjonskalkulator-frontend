@@ -151,21 +151,21 @@ export function useBeregningsdetaljer(
           const grunnpensjon =
             pre2025OffentligAfp.grunnpensjon &&
             pre2025OffentligAfp.grunnpensjon > 0
-              ? Math.round(pre2025OffentligAfp.grunnpensjon / 12)
+              ? Math.round(pre2025OffentligAfp.grunnpensjon)
               : 0
           const tilleggspensjon =
             pre2025OffentligAfp.tilleggspensjon &&
             pre2025OffentligAfp.tilleggspensjon > 0
-              ? Math.round(pre2025OffentligAfp.tilleggspensjon / 12)
+              ? Math.round(pre2025OffentligAfp.tilleggspensjon)
               : 0
           const afpTillegg =
             pre2025OffentligAfp.afpTillegg && pre2025OffentligAfp.afpTillegg > 0
-              ? Math.round(pre2025OffentligAfp.afpTillegg / 12)
+              ? Math.round(pre2025OffentligAfp.afpTillegg)
               : 0
           const saertillegg =
             pre2025OffentligAfp.saertillegg &&
             pre2025OffentligAfp.saertillegg > 0
-              ? Math.round(pre2025OffentligAfp.saertillegg / 12)
+              ? Math.round(pre2025OffentligAfp.saertillegg)
               : 0
 
           return [
