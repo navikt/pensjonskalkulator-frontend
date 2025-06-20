@@ -115,7 +115,6 @@ export const usePensjonBeregninger = ({
       pensjonsavtale:
         sumPensjonsavtaler(uttaksalder) + sumTjenestepensjon(uttaksalder),
       alderspensjon: alderspensjonMaanedligVedEndring?.heltUttakMaanedligBeloep,
-      pre2025OffentligAfp: pre2025OffentligAfp?.totaltAfpBeloep,
     })
   }
 
