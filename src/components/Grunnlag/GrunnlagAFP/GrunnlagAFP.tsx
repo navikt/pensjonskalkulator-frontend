@@ -2,9 +2,8 @@ import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useNavigate } from 'react-router'
 
-import { BodyLong, Link } from '@navikt/ds-react'
+import { BodyLong, Heading, Link, VStack } from '@navikt/ds-react'
 
-import { AccordionItem } from '@/components/common/AccordionItem'
 import { BeregningContext } from '@/pages/Beregning/context'
 import { paths } from '@/router/constants'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
@@ -28,8 +27,6 @@ import {
 } from '@/utils/alder'
 import { logger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
-
-import { GrunnlagSection } from '../GrunnlagSection'
 
 export const GrunnlagAFP: React.FC = () => {
   const intl = useIntl()
@@ -184,26 +181,23 @@ export const GrunnlagAFP: React.FC = () => {
   ])
 
   return (
-    <AccordionItem name="Grunnlag: AFP">
-      <GrunnlagSection
-        headerTitle={intl.formatMessage({
-          id: 'grunnlag.afp.title',
-        })}
-        headerValue={formatertAfpHeader}
-      >
-        <BodyLong data-testid={formatertAfpIngress}>
-          <FormattedMessage
-            id={formatertAfpIngress}
-            values={{
-              ...getFormatMessageValues(),
-              goToAFP: GoToAFP,
-              goToAvansert: GoToAvansert,
-              goToStart: GoToStart,
-            }}
-          />
-        </BodyLong>
-      </GrunnlagSection>
-    </AccordionItem>
+    <VStack gap="3">
+      <Heading level="2" size="small">
+        <FormattedMessage id="beregning.highcharts.serie.afp.name" />
+        {formatertAfpHeader}
+      </Heading>
+      <BodyLong data-testid={formatertAfpIngress}>
+        <FormattedMessage
+          id={formatertAfpIngress}
+          values={{
+            ...getFormatMessageValues(),
+            goToAFP: GoToAFP,
+            goToAvansert: GoToAvansert,
+            goToStart: GoToStart,
+          }}
+        />
+      </BodyLong>
+    </VStack>
   )
 }
 

@@ -359,11 +359,12 @@ export default {
   'beregning.tabell.lukk': 'Close calculation table',
   'beregning.tabell.vis': 'Show calculation table',
   'beregning.tabell.sum': 'Total',
+  'beregning.detaljer.lukk': 'MANGLER_TEKST',
+  'beregning.detaljer.vis': 'MANGLER_TEKST',
   'beregning.avansert.link.endre_valgene_dine': 'Change your choices',
   'beregning.avansert.link.endre_avanserte_valg': 'Change advanced choices',
   'beregning.avansert.link.om_vilkaar_for_afp': 'MANGLER_TEKST',
-  'beregning.avansert.endring_banner.title':
-    'retirement pension before tax when you are ',
+  'beregning.avansert.endring_banner.title': 'MANGLER_TEKST',
   'beregning.avansert.endring_banner.kr_md': 'kr/mo.',
   'beregning.avansert.maanedsbeloep.table_title': 'MANGLER_TEKST',
   'beregning.avansert.maanedsbeloep.box_title': 'MANGLER_TEKST',
@@ -526,9 +527,10 @@ export default {
   'grunnlag.opphold.avbryt_modal.avbryt': 'Cancel',
   'grunnlag.alderspensjon.title': 'retirement pension',
   'grunnlag.alderspensjon.value': 'National Insurance Scheme (Nav)',
-  'grunnlag.alderspensjon.ingress':
+  'grunnlag.alderspensjon.ingress': 'MANLGER_TEKST',
+  'grunnlag.alderspensjon.endring.ingress':
     'retirement pension is calculated based on your pension balance in the National Insurance Scheme. If you continue to have income while withdrawing pension, your retirement pension will increase.',
-  'grunnlag.alderspensjon.ingress.pensjonsbeholdning':
+  'grunnlag.alderspensjon.endring.ingress.pensjonsbeholdning':
     '{br}{br}Your pension balance before withdrawal: {sum} kr',
   'grunnlag.alderspensjon.ingress.link':
     '{br}{br}<dinPensjonBeholdningLink>Your pension accrual</dinPensjonBeholdningLink> {br}{br}<alderspensjonsreglerLink>About the rules for retirement pension</alderspensjonsreglerLink>',

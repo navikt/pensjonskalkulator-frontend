@@ -394,11 +394,12 @@ const translations = {
   'beregning.tabell.lukk': 'Lukk tabell av beregningen',
   'beregning.tabell.vis': 'Vis tabell av beregningen',
   'beregning.tabell.sum': 'Sum',
+  'beregning.detaljer.lukk': 'Skjul detaljer om din {ytelse}',
+  'beregning.detaljer.vis': 'Vis detaljer om din {ytelse}',
   'beregning.avansert.link.endre_valgene_dine': 'Endre valgene dine',
   'beregning.avansert.link.endre_avanserte_valg': 'Endre avanserte valg',
   'beregning.avansert.link.om_vilkaar_for_afp': 'Om vilkår for uttak av AFP',
-  'beregning.avansert.endring_banner.title':
-    'Alderspensjon før skatt når du er ',
+  'beregning.avansert.endring_banner.title': 'Alderspensjon når du er ',
   'beregning.avansert.endring_banner.kr_md': 'kr/md.',
   'beregning.avansert.maanedsbeloep.table_title': 'Månedlig pensjon',
   'beregning.avansert.maanedsbeloep.box_title': 'Ved ',
@@ -442,7 +443,7 @@ const translations = {
   'beregning.avansert.rediger.uttaksgrad.ufoeretrygd.validation_error':
     'Du må sette ned uttaksgraden slik at gradene av alderspensjon og uføretrygd ikke overstiger 100 % til sammen. Etter {normertPensjonsalder} kan du velge 100 % uttak.',
   'beregning.avansert.rediger.inntekt_vsa_helt_uttak.beloep.validation_error':
-    'Du må fylle ut forventet inntekt samtidig som du tar ut <nowrap>100 %</nowrap> pensjon.',
+    'Du må fylle ut forventet årsinntekt samtidig som du tar ut <nowrap>100 %</nowrap> pensjon.',
   'beregning.avansert.rediger.radio.inntekt_vsa_gradert_uttak':
     'Forventer du å ha inntekt samtidig som du tar ut <nowrap>{grad} %</nowrap> pensjon?',
   'beregning.avansert.rediger.radio.inntekt_vsa_gradert_uttak.description':
@@ -458,7 +459,7 @@ const translations = {
   'beregning.avansert.rediger.radio.inntekt_vsa_gradert_uttak.description.validation_error':
     'Du må svare på om du forventer å ha inntekt samtidig som du tar ut <nowrap>{grad} %</nowrap> pensjon.',
   'beregning.avansert.rediger.inntekt_vsa_gradert_uttak.beloep.validation_error':
-    'Du må fylle ut forventet inntekt samtidig som du tar ut <nowrap>{grad} %</nowrap> pensjon.',
+    'Du må fylle ut forventet årsinntekt samtidig som du tar ut <nowrap>{grad} %</nowrap> pensjon.',
   'beregning.avansert.rediger.inntekt_vsa_gradert_uttak.label':
     'Hva er din forventede årsinntekt samtidig som du tar ut <nowrap>{grad} %</nowrap> alderspensjon?',
   'beregning.avansert.rediger.inntekt_vsa_gradert_uttak.description':
@@ -517,7 +518,7 @@ const translations = {
     '{br}{br}Et alternativ er at du ved {nedreAldersgrense} kan ta ut <nowrap>{alternativtGrad} %</nowrap> alderspensjon. Prøv gjerne andre kombinasjoner.',
   'beregning.vilkaarsproeving.alternativer.medAFP.ikkeNokOpptjening':
     'Opptjeningen din er ikke høy nok til uttak av alderspensjon ved {nedreAldersgrense}.{br}{br}Kalkulatoren kan ikke beregne uttak etter {nedreAldersgrense}. Hvis du tar ut alderspensjon og AFP senere enn dette, vil du i perioden fra du er 62 år frem til uttak ikke få uføretrygd. Kontakt Nav for veiledning hvis du vurderer å si fra deg uføretrygden.{br}{br}Har du rett til livsvarig AFP i offentlig sektor kan du ta ut AFP før alderspensjon. Kontakt tjenestepensjonsordningen din for veiledning.',
-  'grunnlag.title': 'Øvrig grunnlag for beregningen',
+  'grunnlag.title': 'Om inntekten og pensjonen din',
   'maanedsbeloep.title': 'Månedlig pensjon',
   'beregning.avansert.avbryt_modal.title':
     'Hvis du går ut av Avansert, mister du alle valgene dine.',
@@ -551,7 +552,7 @@ const translations = {
     'Du kan legge til inntekt ved siden av pensjon i ',
   'grunnlag.inntekt.avansert_link': 'avansert kalkulator',
   'grunnlag.inntekt.ingress':
-    'Din siste pensjonsgivende inntekt fra Skatteetaten er <nowrap>{beloep} kr</nowrap> fra {aar}. Se tidligere inntekter i <dinPensjonBeholdningLink>Din pensjonsopptjening</dinPensjonBeholdningLink>',
+    'Din siste pensjonsgivende inntekt fra Skatteetaten er <nowrap>{beloep} kr</nowrap> fra {aar}. Se tidligere inntekter i <dinPensjonBeholdningLink>Din pensjonsopptjening</dinPensjonBeholdningLink>. Du kan legge til inntekt ved siden av pensjon i ',
   'grunnlag.inntekt.info_om_inntekt': 'Hva er pensjonsgivende inntekt?',
   'grunnlag.inntekt.info_om_inntekt.lukk': 'Lukk',
   'grunnlag.sivilstand.title': 'Sivilstand',
@@ -586,9 +587,11 @@ const translations = {
   'grunnlag.alderspensjon.title': 'Alderspensjon',
   'grunnlag.alderspensjon.value': 'Folketrygden (Nav)',
   'grunnlag.alderspensjon.ingress':
+    'Alderspensjon beregnes ut ifra din opptjening i folketrygden. Hvis du fortsetter å ha inntekt samtidig som du tar ut pensjon, vil alderspensjonen din øke. Enkel beregning viser 100 % uttak av alderspensjon. I {avansert} kan du beregne alderspensjon med andre uttaksgrader.',
+  'grunnlag.alderspensjon.endring.ingress':
     'Alderspensjon beregnes ut ifra din pensjonsbeholdning i folketrygden. Hvis du fortsetter å ha inntekt samtidig som du tar ut pensjon, vil alderspensjonen din øke.',
-  'grunnlag.alderspensjon.ingress.pensjonsbeholdning':
-    '{br}{br}Din pensjonsbeholdning før uttak: {sum} kr',
+  'grunnlag.alderspensjon.endring.ingress.pensjonsbeholdning':
+    '{br}{br}Din pensjonsopptjening før uttak: {sum} kr',
   'grunnlag.alderspensjon.ingress.link':
     '{br}{br}<dinPensjonBeholdningLink>Din pensjonsopptjening</dinPensjonBeholdningLink> {br}{br}<alderspensjonsreglerLink>Om reglene for alderspensjon</alderspensjonsreglerLink>',
   'grunnlag.afp.title': 'AFP',
@@ -625,6 +628,8 @@ const translations = {
     'Pensjonen er beregnet med opplysningene vi har om deg og opplysningene du har oppgitt. Beregningen er gjort med gjeldende regelverk. Dette er et foreløpig estimat på hva du kan forvente deg i pensjon. Nav er ikke ansvarlig for beløpene som er hentet inn fra andre. ',
   'grunnlag.forbehold.link': 'Alle forbehold',
   'grunnlag.forbehold.title': 'Forbehold',
+  'om_deg.title': 'Om deg',
+  'grunnlag2.endre_inntekt.title': 'Pensjonsgivende inntekt frem til uttak',
   'savnerdunoe.title': 'Savner du noe?',
   'savnerdunoe.title.endring': 'Klar til å søke om endring?',
   'savnerdunoe.ingress':
