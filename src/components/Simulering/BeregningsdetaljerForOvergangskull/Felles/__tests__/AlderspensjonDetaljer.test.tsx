@@ -78,8 +78,6 @@ describe('Gitt at AlderspensjonDetaljer rendres', () => {
     { tekst: 'Sum månedlig alderspensjon', verdi: '20 000 kr' },
   ]
 
-
-
   it('rendrer komponenten med kun helt uttak', () => {
     renderWithProviders(
       <AlderspensjonDetaljer
@@ -335,6 +333,4 @@ describe('Gitt at AlderspensjonDetaljer rendres', () => {
     expect(screen.queryByText('4 000 kr')).not.toBeInTheDocument()
     expect(screen.queryByText('20 000 kr')).not.toBeInTheDocument()
   })
-
-
 })

@@ -1057,11 +1057,11 @@ describe('Gitt at AfpDetaljer rendres', () => {
     })
 
     it('viser ikke pre2025OffentligAfpDetaljerListe når tom', () => {
-      renderWithProviders(
-        <AfpDetaljer pre2025OffentligAfpDetaljerListe={[]} />
-      )
+      renderWithProviders(<AfpDetaljer pre2025OffentligAfpDetaljerListe={[]} />)
 
-      expect(screen.queryByText('Grunnpensjon (kap. 19):')).not.toBeInTheDocument()
+      expect(
+        screen.queryByText('Grunnpensjon (kap. 19):')
+      ).not.toBeInTheDocument()
     })
 
     it('håndterer currentAge som undefined', () => {
@@ -1138,7 +1138,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
       expect(screen.getByText('Kompensasjonstillegg:')).toBeVisible() // AFP privat
       expect(screen.getByText('Grunnpensjon (kap. 19):')).toBeVisible() // pre2025 detaljer
       expect(screen.getByText('AFP grad:')).toBeVisible() // opptjening pre2025
-      expect(screen.getByText('Månedlig livsvarig avtalefestet pensjon (AFP):')).toBeVisible() // AFP offentlig
+      expect(
+        screen.getByText('Månedlig livsvarig avtalefestet pensjon (AFP):')
+      ).toBeVisible() // AFP offentlig
     })
   })
 })
