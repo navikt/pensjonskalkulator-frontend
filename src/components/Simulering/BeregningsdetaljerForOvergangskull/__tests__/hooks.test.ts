@@ -79,8 +79,8 @@ describe('useBeregningsdetaljer', () => {
     expect(result.current.pre2025OffentligAfpDetaljerListe).toEqual([])
     expect(result.current.opptjeningKap19Liste).toEqual([])
     expect(result.current.opptjeningKap20Liste).toEqual([])
-    expect(result.current.opptjeningAfpPrivatListe).toEqual([])
-    expect(result.current.opptjeningAfpOffentligListe).toEqual([])
+    expect(result.current.afpPrivatDetaljerListe).toEqual([])
+    expect(result.current.afpOffentligDetaljerListe).toEqual([])
     expect(result.current.opptjeningPre2025OffentligAfpListe).toEqual([])
   })
 
@@ -416,8 +416,8 @@ describe('useBeregningsdetaljer', () => {
         )
       )
 
-      expect(result.current.opptjeningAfpPrivatListe).toHaveLength(1)
-      expect(result.current.opptjeningAfpPrivatListe[0]).toEqual(
+      expect(result.current.afpPrivatDetaljerListe).toHaveLength(1)
+      expect(result.current.afpPrivatDetaljerListe[0]).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             tekst: 'Kompensasjonstillegg',
@@ -466,10 +466,10 @@ describe('useBeregningsdetaljer', () => {
         )
       )
 
-      expect(result.current.opptjeningAfpPrivatListe).toHaveLength(2)
+      expect(result.current.afpPrivatDetaljerListe).toHaveLength(2)
 
       // Første element (index 0 - uttaksalder)
-      expect(result.current.opptjeningAfpPrivatListe[0]).toEqual(
+      expect(result.current.afpPrivatDetaljerListe[0]).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             tekst: 'Kompensasjonstillegg',
@@ -483,7 +483,7 @@ describe('useBeregningsdetaljer', () => {
       )
 
       // Andre element (alder 67)
-      expect(result.current.opptjeningAfpPrivatListe[1]).toEqual(
+      expect(result.current.afpPrivatDetaljerListe[1]).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             tekst: 'Kompensasjonstillegg',
@@ -514,7 +514,7 @@ describe('useBeregningsdetaljer', () => {
         )
       )
 
-      expect(result.current.opptjeningAfpPrivatListe).toHaveLength(1)
+      expect(result.current.afpPrivatDetaljerListe).toHaveLength(1)
     })
 
     it('filtrerer bort rader med verdi 0 kr', () => {
@@ -533,7 +533,7 @@ describe('useBeregningsdetaljer', () => {
         )
       )
 
-      expect(result.current.opptjeningAfpPrivatListe[0]).toEqual(
+      expect(result.current.afpPrivatDetaljerListe[0]).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             tekst: 'Livsvarig del',
@@ -546,7 +546,7 @@ describe('useBeregningsdetaljer', () => {
         ])
       )
 
-      expect(result.current.opptjeningAfpPrivatListe[0]).not.toEqual(
+      expect(result.current.afpPrivatDetaljerListe[0]).not.toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             tekst: 'Kompensasjonstillegg',
@@ -557,7 +557,7 @@ describe('useBeregningsdetaljer', () => {
   })
 
   describe('Gitt at brukeren har AFP offentlig', () => {
-    it('returnerer riktige rader for opptjeningAfpOffentligListe', () => {
+    it('returnerer riktige rader for afpOffentligDetaljerListe', () => {
       const { result } = renderHook(() =>
         useBeregningsdetaljer(
           [mockAlderspensjon],
@@ -566,7 +566,7 @@ describe('useBeregningsdetaljer', () => {
           mockPre2025OffentligAfp
         )
       )
-      expect(result.current.opptjeningAfpOffentligListe).toEqual(
+      expect(result.current.afpOffentligDetaljerListe).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             tekst: 'Månedlig livsvarig avtalefestet pensjon (AFP)',
@@ -585,7 +585,7 @@ describe('useBeregningsdetaljer', () => {
           mockPre2025OffentligAfp
         )
       )
-      expect(result.current.opptjeningAfpOffentligListe).toEqual([])
+      expect(result.current.afpOffentligDetaljerListe).toEqual([])
     })
 
     it('returnerer tom liste når AFP offentlig er tom liste', () => {
@@ -597,7 +597,7 @@ describe('useBeregningsdetaljer', () => {
           mockPre2025OffentligAfp
         )
       )
-      expect(result.current.opptjeningAfpOffentligListe).toEqual([])
+      expect(result.current.afpOffentligDetaljerListe).toEqual([])
     })
 
     it('filtrerer bort rader med verdi 0', () => {
@@ -615,7 +615,7 @@ describe('useBeregningsdetaljer', () => {
         )
       )
 
-      expect(result.current.opptjeningAfpOffentligListe).toEqual([])
+      expect(result.current.afpOffentligDetaljerListe).toEqual([])
     })
   })
 

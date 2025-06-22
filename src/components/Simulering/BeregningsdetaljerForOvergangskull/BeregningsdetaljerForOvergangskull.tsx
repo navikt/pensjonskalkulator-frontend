@@ -27,8 +27,8 @@ export const BeregningsdetaljerForOvergangskull: React.FC<Props> = ({
     pre2025OffentligAfpDetaljerListe,
     opptjeningKap19Liste,
     opptjeningKap20Liste,
-    opptjeningAfpPrivatListe,
-    opptjeningAfpOffentligListe,
+    afpPrivatDetaljerListe,
+    afpOffentligDetaljerListe,
     opptjeningPre2025OffentligAfpListe,
   } = useBeregningsdetaljer(
     alderspensjonListe,
@@ -41,7 +41,6 @@ export const BeregningsdetaljerForOvergangskull: React.FC<Props> = ({
     <>
       <AlderspensjonDetaljer
         alderspensjonDetaljerListe={alderspensjonDetaljerListe}
-        pre2025OffentligAfpDetaljerListe={pre2025OffentligAfpDetaljerListe}
         hasPre2025OffentligAfpUttaksalder={Boolean(
           opptjeningPre2025OffentligAfpListe?.length
         )}
@@ -51,8 +50,9 @@ export const BeregningsdetaljerForOvergangskull: React.FC<Props> = ({
         opptjeningKap20Liste={opptjeningKap20Liste}
       />
       <AfpDetaljer
-        opptjeningAfpPrivatListe={opptjeningAfpPrivatListe}
-        opptjeningAfpOffentligListe={opptjeningAfpOffentligListe}
+        afpPrivatDetaljerListe={afpPrivatDetaljerListe}
+        afpOffentligDetaljerListe={afpOffentligDetaljerListe}
+        pre2025OffentligAfpDetaljerListe={pre2025OffentligAfpDetaljerListe}
         opptjeningPre2025OffentligAfpListe={opptjeningPre2025OffentligAfpListe}
       />
     </>
