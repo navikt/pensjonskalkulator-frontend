@@ -8,17 +8,14 @@ import { DetaljRad } from '../hooks'
 vi.mock('../Felles/AlderspensjonDetaljer', () => ({
   AlderspensjonDetaljer: ({
     alderspensjonDetaljerListe,
-    pre2025OffentligAfpDetaljerListe,
     hasPre2025OffentligAfpUttaksalder,
   }: {
     alderspensjonDetaljerListe: DetaljRad[][]
-    pre2025OffentligAfpDetaljerListe?: DetaljRad[]
     hasPre2025OffentligAfpUttaksalder: boolean
   }) => (
     <div
       data-testid="AlderspensjonDetaljer"
       data-objekter-length={alderspensjonDetaljerListe.length}
-      data-pre2025-afp-length={pre2025OffentligAfpDetaljerListe?.length || 0}
       data-has-pre2025-afp={hasPre2025OffentligAfpUttaksalder}
     >
       AlderspensjonDetaljer Mock
@@ -46,15 +43,18 @@ vi.mock('../Felles/OpptjeningDetaljer', () => ({
 
 vi.mock('../Felles/AfpDetaljer', () => ({
   AfpDetaljer: ({
-    opptjeningAfpPrivatListe,
+    afpPrivatDetaljerListe,
+    afpOffentligDetaljerListe,
     opptjeningPre2025OffentligAfpListe,
   }: {
-    opptjeningAfpPrivatListe?: DetaljRad[][]
+    afpPrivatDetaljerListe?: DetaljRad[][]
+    afpOffentligDetaljerListe?: DetaljRad[]
     opptjeningPre2025OffentligAfpListe?: DetaljRad[]
   }) => (
     <div
       data-testid="AfpDetaljer"
-      data-afp-privat-length={opptjeningAfpPrivatListe?.length ?? ''}
+      data-afp-privat-length={afpPrivatDetaljerListe?.length ?? ''}
+      data-afp-offentlig-length={afpOffentligDetaljerListe?.length ?? ''}
       data-pre2025-length={opptjeningPre2025OffentligAfpListe?.length ?? ''}
     >
       AfpDetaljer Mock
@@ -83,7 +83,7 @@ vi.mock('../hooks', () => ({
       { tekst: 'Pensjonsbeholdning før uttak', verdi: '500000 kr' },
       { tekst: 'Trygdetid', verdi: 40 },
     ],
-    opptjeningAfpPrivatListe: [
+    afpPrivatDetaljerListe: [
       [
         { tekst: 'AFP grad', verdi: 100 },
         { tekst: 'Kompensasjonsgrad', verdi: 0.76 },
@@ -227,7 +227,7 @@ describe('BeregningsdetaljerForOvergangskull', () => {
     expect(children[2]).toHaveAttribute('data-testid', 'AfpDetaljer')
   })
 
-  it('sender korrekte props til AlderspensjonDetaljer inkludert pre2025OffentligAfpDetaljerListe', () => {
+  it('sender korrekte props til AlderspensjonDetaljer og AfpDetaljer', () => {
     render(<BeregningsdetaljerForOvergangskull {...defaultProps} />)
 
     const alderspensjonDetaljerComponents = screen.getAllByTestId(
@@ -236,8 +236,13 @@ describe('BeregningsdetaljerForOvergangskull', () => {
 
     alderspensjonDetaljerComponents.forEach((component) => {
       expect(component).toHaveAttribute('data-objekter-length', '2')
-      expect(component).toHaveAttribute('data-pre2025-afp-length', '2')
       expect(component).toHaveAttribute('data-has-pre2025-afp', 'true')
+    })
+
+    const afpDetaljerComponents = screen.getAllByTestId('AfpDetaljer')
+
+    afpDetaljerComponents.forEach((component) => {
+      expect(component).toHaveAttribute('data-pre2025-length', '2')
     })
   })
 

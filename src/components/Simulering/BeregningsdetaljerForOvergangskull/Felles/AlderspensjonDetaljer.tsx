@@ -13,13 +13,11 @@ import styles from './Pensjonsdetaljer.module.scss'
 
 export interface AlderspensjonDetaljerProps {
   alderspensjonDetaljerListe: DetaljRad[][]
-  pre2025OffentligAfpDetaljerListe?: DetaljRad[]
   hasPre2025OffentligAfpUttaksalder: boolean
 }
 
 export const AlderspensjonDetaljer: React.FC<AlderspensjonDetaljerProps> = ({
   alderspensjonDetaljerListe,
-  pre2025OffentligAfpDetaljerListe,
   hasPre2025OffentligAfpUttaksalder,
 }) => {
   const { uttaksalder, gradertUttaksperiode } = useAppSelector(
@@ -94,49 +92,6 @@ export const AlderspensjonDetaljer: React.FC<AlderspensjonDetaljerProps> = ({
           </dl>
         </div>
       )}
-      {pre2025OffentligAfpDetaljerListe &&
-        pre2025OffentligAfpDetaljerListe.length > 0 && (
-          <div className="pre2025OffentligAfpUttak">
-            <Heading size="small" level="3">
-              <FormattedMessage
-                id="beregning.detaljer.grunnpensjon.pre2025OffentligAfp.title"
-                values={{
-                  ...getFormatMessageValues(),
-                  alderAar: `${uttaksalder?.aar} år`,
-                  alderMd: `og ${uttaksalder!.maaneder} måneder`,
-                  grad: 100,
-                }}
-              />
-            </Heading>
-            <dl>
-              <div className={styles.hstackRow}>
-                <strong>
-                  <FormattedMessage id="beregning.detaljer.grunnpensjon.afp.table.title" />
-                </strong>
-              </div>
-              {pre2025OffentligAfpDetaljerListe.map((detalj, index) => (
-                <React.Fragment key={index}>
-                  <HStack justify="space-between" className={styles.hstackRow}>
-                    <dt>
-                      {index === pre2025OffentligAfpDetaljerListe.length - 1 ? (
-                        <strong>{detalj.tekst}:</strong>
-                      ) : (
-                        `${detalj.tekst}:`
-                      )}
-                    </dt>
-                    <dd>
-                      {index === pre2025OffentligAfpDetaljerListe.length - 1 ? (
-                        <strong>{detalj.verdi}</strong>
-                      ) : (
-                        detalj.verdi
-                      )}
-                    </dd>
-                  </HStack>
-                </React.Fragment>
-              ))}
-            </dl>
-          </div>
-        )}
       {(gradertUttaksperiode?.uttaksalder.aar !== uttaksalder!.aar ||
         showHeltWhenSameAges) && (
         <div className="heltUttak">

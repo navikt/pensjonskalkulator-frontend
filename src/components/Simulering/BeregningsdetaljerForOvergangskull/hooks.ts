@@ -14,8 +14,8 @@ export interface BeregningsdetaljerRader {
   pre2025OffentligAfpDetaljerListe: DetaljRad[]
   opptjeningKap19Liste: DetaljRad[]
   opptjeningKap20Liste: DetaljRad[]
-  opptjeningAfpPrivatListe: DetaljRad[][]
-  opptjeningAfpOffentligListe: DetaljRad[]
+  afpPrivatDetaljerListe: DetaljRad[][]
+  afpOffentligDetaljerListe: DetaljRad[]
   opptjeningPre2025OffentligAfpListe: DetaljRad[]
 }
 
@@ -195,7 +195,7 @@ export function useBeregningsdetaljer(
         })()
       : []
 
-    const opptjeningAfpPrivatListe: DetaljRad[][] = (() => {
+    const afpPrivatDetaljerListe: DetaljRad[][] = (() => {
       if (!afpPrivatListe || afpPrivatListe.length === 0) {
         return []
       }
@@ -297,7 +297,7 @@ export function useBeregningsdetaljer(
       )
     })()
 
-    const opptjeningAfpOffentligListe: DetaljRad[] = (() => {
+    const afpOffentligDetaljerListe: DetaljRad[] = (() => {
       if (!afpOffentligListe || afpOffentligListe.length === 0) {
         return []
       }
@@ -340,8 +340,8 @@ export function useBeregningsdetaljer(
       pre2025OffentligAfpDetaljerListe,
       opptjeningKap19Liste,
       opptjeningKap20Liste,
-      opptjeningAfpPrivatListe,
-      opptjeningAfpOffentligListe,
+      afpPrivatDetaljerListe,
+      afpOffentligDetaljerListe,
       opptjeningPre2025OffentligAfpListe,
     }
   }, [
