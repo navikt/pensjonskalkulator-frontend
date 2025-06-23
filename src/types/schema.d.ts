@@ -693,6 +693,8 @@ export interface components {
       pensjonstillegg?: number
       /** Format: int32 */
       skjermingstillegg?: number
+      /** Format: int32 */
+      kapittel19Gjenlevendetillegg?: number
     }
     PersonligSimuleringAlternativResultV8: {
       gradertUttaksalder?: components['schemas']['PersonligSimuleringAlderResultV8']
@@ -894,6 +896,7 @@ export interface components {
       epsHarPensjon: boolean
       epsHarInntektOver2G: boolean
       brukerBaOmAfp: boolean
+      erApoteker?: boolean
     }
     SimuleringOffentligTjenestepensjonAlderV2: {
       /** Format: int32 */

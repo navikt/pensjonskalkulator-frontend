@@ -107,6 +107,11 @@ export function useBeregningsdetaljer(
           ? Math.round(ap.garantipensjonBeloep / 12)
           : 0
 
+      const gjenlevendetillegg =
+        ap.kapittel19Gjenlevendetillegg && ap.kapittel19Gjenlevendetillegg > 0
+          ? Math.round(ap.kapittel19Gjenlevendetillegg / 12)
+          : 0
+
       return [
         {
           tekst: 'Grunnpensjon (kap. 19)',
@@ -133,6 +138,10 @@ export function useBeregningsdetaljer(
           verdi: `${formatInntekt(garantipensjonBeloep)} kr`,
         },
         {
+          tekst: 'Gjenlevendetillegg (kap. 19)',
+          verdi: `${formatInntekt(gjenlevendetillegg)} kr`,
+        },
+        {
           tekst: 'Sum månedlig alderspensjon',
           verdi: `${formatInntekt(
             grunnpensjon +
@@ -140,7 +149,8 @@ export function useBeregningsdetaljer(
               skjermingstillegg +
               pensjonstillegg +
               inntektspensjonBeloep +
-              garantipensjonBeloep
+              garantipensjonBeloep +
+              gjenlevendetillegg
           )} kr`,
         },
       ].filter((rad) => rad.verdi !== '0 kr')
