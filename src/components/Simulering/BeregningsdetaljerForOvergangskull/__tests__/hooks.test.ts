@@ -302,6 +302,34 @@ describe('useBeregningsdetaljer', () => {
         )
         expect(result.current.opptjeningKap19Liste).toEqual([[]])
       })
+
+      it('skjules Andelsbrøk når verdien er 10/10', () => {
+        const mock = {
+          ...mockAlderspensjon,
+          andelsbroekKap19: 1, // 1 * 10 = 10/10
+        }
+        const { result } = renderHook(() =>
+          useBeregningsdetaljer(
+            [mock],
+            [mockAfpPrivat],
+            [mockAfpOffentlig],
+            mockPre2025OffentligAfp
+          )
+        )
+        const opptjeningResult = result.current.opptjeningKap19Liste[0]
+        const andelsbroekRad = opptjeningResult?.find(
+          (rad) => rad.tekst === 'Andelsbrøk'
+        )
+        expect(andelsbroekRad).toBeUndefined()
+        // But other fields should still be present
+        expect(opptjeningResult).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({ tekst: 'Sluttpoengtall', verdi: 3 }),
+            expect.objectContaining({ tekst: 'Poengår', verdi: 9 }),
+            expect.objectContaining({ tekst: 'Trygdetid', verdi: 6 }),
+          ])
+        )
+      })
     })
   })
 
@@ -382,6 +410,36 @@ describe('useBeregningsdetaljer', () => {
           )
         )
         expect(result.current.opptjeningKap20Liste).toEqual([[]])
+      })
+
+      it('skjules Andelsbrøk når verdien er 10/10', () => {
+        const mock = {
+          ...mockAlderspensjon,
+          andelsbroekKap20: 1, // 1 * 10 = 10/10
+        }
+        const { result } = renderHook(() =>
+          useBeregningsdetaljer(
+            [mock],
+            [mockAfpPrivat],
+            [mockAfpOffentlig],
+            mockPre2025OffentligAfp
+          )
+        )
+        const opptjeningResult = result.current.opptjeningKap20Liste[0]
+        const andelsbroekRad = opptjeningResult?.find(
+          (rad) => rad.tekst === 'Andelsbrøk'
+        )
+        expect(andelsbroekRad).toBeUndefined()
+        // But other fields should still be present
+        expect(opptjeningResult).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({ tekst: 'Trygdetid', verdi: 7 }),
+            expect.objectContaining({
+              tekst: 'Pensjonsbeholdning før uttak',
+              verdi: '80000 kr',
+            }),
+          ])
+        )
       })
     })
   })

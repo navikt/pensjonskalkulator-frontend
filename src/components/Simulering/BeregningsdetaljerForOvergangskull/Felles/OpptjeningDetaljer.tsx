@@ -73,9 +73,9 @@ export const OpptjeningDetaljer: React.FC<OpptjeningDetaljerProps> = ({
       // Only add the group if it has sections
       if (sectionsInGroup.length > 0) {
         sectionGroups.push(
-          <HStack key={`group-${i}`} gap="8">
+          <VStack key={`group-${i}`} gap="8">
             {sectionsInGroup}
-          </HStack>
+          </VStack>
         )
       }
     }
