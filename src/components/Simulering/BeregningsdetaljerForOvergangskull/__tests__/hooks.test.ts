@@ -155,7 +155,7 @@ describe('useBeregningsdetaljer', () => {
         expect(result.current.alderspensjonDetaljerListe).toEqual([[]])
       })
     })
-    
+
     describe('Når det er gjenlevendetillegg', () => {
       it('inkluderes gjenlevendetillegg i beregningen', () => {
         const mockMedGjenlevendetillegg = {
@@ -193,7 +193,8 @@ describe('useBeregningsdetaljer', () => {
             mockPre2025OffentligAfp
           )
         )
-        const alderspensjonDetaljer = result.current.alderspensjonDetaljerListe[0]
+        const alderspensjonDetaljer =
+          result.current.alderspensjonDetaljerListe[0]
         const gjenlevendetilleggRad = alderspensjonDetaljer.find(
           (rad) => rad.tekst === 'Gjenlevendetillegg (kap. 19)'
         )
