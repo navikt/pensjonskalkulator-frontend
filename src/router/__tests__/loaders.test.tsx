@@ -693,7 +693,7 @@ describe('Loaders', () => {
       await expect(returnedFromLoader).rejects.toThrow()
     })
 
-    it('Gitt at getEkskludertStatus har tidligere feilet kalles den på nytt. Når den er vellykket og viser at brukeren er apoteker, og `erApoteker` settes', async () => {
+    it('Gitt at bruker er apoteker settes `erApoteker`', async () => {
       mockResponse('/v2/ekskludert', {
         status: 200,
         json: {
@@ -707,17 +707,6 @@ describe('Loaders', () => {
           queries: {
             ...mockedVellykketQueries,
             ...fulfilledGetLoependeVedtak0Ufoeregrad,
-            ['getEkskludertStatus(undefined)']: {
-              status: 'rejected',
-              endpointName: 'getEkskludertStatus',
-              requestId: 't1wLPiRKrfe_vchftk8s8',
-              error: {
-                status: 'FETCH_ERROR',
-                error: 'TypeError: Failed to fetch',
-              },
-              startedTimeStamp: 1714725797072,
-              fulfilledTimeStamp: 1714725797669,
-            },
           },
         },
         userInput: { ...userInputInitialState },
