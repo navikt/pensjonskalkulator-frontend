@@ -49,7 +49,10 @@ export const PensjonDataVisning: React.FC<Props> = ({
       <tbody>
         {harAFP && (
           <tr className={styles.row}>
-            <th scope="row">
+            <th
+              scope="row"
+              className={clsx(styles.afpMetric, styles.afpMetric__purple)}
+            >
               <BodyLong>
                 <FormattedMessage id="beregning.avansert.maanedsbeloep.afp" />:
               </BodyLong>
@@ -64,7 +67,10 @@ export const PensjonDataVisning: React.FC<Props> = ({
 
         {pensjonsavtale > 0 && (
           <tr className={styles.row}>
-            <th scope="row">
+            <th
+              scope="row"
+              className={clsx(styles.afpMetric, styles.afpMetric__green)}
+            >
               <BodyLong>
                 <FormattedMessage id="beregning.avansert.maanedsbeloep.pensjonsavtaler" />
                 :
@@ -78,7 +84,10 @@ export const PensjonDataVisning: React.FC<Props> = ({
 
         {alderspensjon && (
           <tr className={styles.row}>
-            <th scope="row">
+            <th
+              scope="row"
+              className={clsx(styles.afpMetric, styles.afpMetric__blue)}
+            >
               <BodyLong>
                 <FormattedMessage
                   id="beregning.avansert.maanedsbeloep.alderspensjon"

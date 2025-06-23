@@ -49,7 +49,6 @@ export const PensjonVisningDesktop: React.FC<Props> = ({
             borderRadius="medium"
             paddingInline="6"
             paddingBlock="4"
-            background="bg-subtle"
             maxWidth={{ sm: '27rem', md: '31rem' }}
             flexGrow="1"
             height="fit-content"
