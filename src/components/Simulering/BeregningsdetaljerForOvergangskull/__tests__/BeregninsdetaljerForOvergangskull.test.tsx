@@ -28,8 +28,8 @@ vi.mock('../Felles/OpptjeningDetaljer', () => ({
     opptjeningKap19Liste,
     opptjeningKap20Liste,
   }: {
-    opptjeningKap19Liste: DetaljRad[]
-    opptjeningKap20Liste: DetaljRad[]
+    opptjeningKap19Liste: DetaljRad[][]
+    opptjeningKap20Liste: DetaljRad[][]
   }) => (
     <div
       data-testid="OpptjeningDetaljer"

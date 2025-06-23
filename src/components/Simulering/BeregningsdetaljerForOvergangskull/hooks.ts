@@ -12,8 +12,8 @@ export interface DetaljRad {
 export interface BeregningsdetaljerRader {
   alderspensjonDetaljerListe: DetaljRad[][]
   pre2025OffentligAfpDetaljerListe: DetaljRad[]
-  opptjeningKap19Liste: DetaljRad[]
-  opptjeningKap20Liste: DetaljRad[]
+  opptjeningKap19Liste: DetaljRad[][]
+  opptjeningKap20Liste: DetaljRad[][]
   afpPrivatDetaljerListe: DetaljRad[][]
   afpOffentligDetaljerListe: DetaljRad[]
   opptjeningPre2025OffentligAfpListe: DetaljRad[]
@@ -236,17 +236,12 @@ export function useBeregningsdetaljer(
       })
     })()
 
-    const opptjeningKap19Liste: DetaljRad[] = (() => {
-      if (
-        indices.length === 0 ||
-        !alderspensjonListe ||
-        !alderspensjonListe[indices[0]] ||
-        alderspensjonListe[indices[0]].andelsbroekKap19 === 0
-      ) {
+    const opptjeningKap19Liste: DetaljRad[][] = indices.map((index) => {
+      const ap = alderspensjonListe?.[index]
+      if (!ap || ap.andelsbroekKap19 === 0) {
         return []
       }
 
-      const ap = alderspensjonListe[indices[0]]
       return [
         {
           tekst: 'Andelsbrøk',
@@ -265,19 +260,14 @@ export function useBeregningsdetaljer(
             rad.tekst === 'Trygdetid' ||
             rad.verdi !== 0)
       )
-    })()
+    })
 
-    const opptjeningKap20Liste: DetaljRad[] = (() => {
-      if (
-        indices.length === 0 ||
-        !alderspensjonListe ||
-        !alderspensjonListe[indices[0]] ||
-        alderspensjonListe[indices[0]].andelsbroekKap20 === 0
-      ) {
+    const opptjeningKap20Liste: DetaljRad[][] = indices.map((index) => {
+      const ap = alderspensjonListe?.[index]
+      if (!ap || ap.andelsbroekKap20 === 0) {
         return []
       }
 
-      const ap = alderspensjonListe[indices[0]]
       return [
         {
           tekst: 'Andelsbrøk',
@@ -295,7 +285,7 @@ export function useBeregningsdetaljer(
             rad.tekst === 'Pensjonsbeholdning før uttak' ||
             rad.verdi !== 0)
       )
-    })()
+    })
 
     const afpOffentligDetaljerListe: DetaljRad[] = (() => {
       if (!afpOffentligListe || afpOffentligListe.length === 0) {
