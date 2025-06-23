@@ -4,7 +4,7 @@ import { LoaderFunctionArgs, redirect } from 'react-router'
 
 import { getStepArrays } from '@/components/stegvisning/utils'
 import { HOST_BASEURL } from '@/paths'
-import { henvisningUrlParams, paths } from '@/router/constants'
+import { paths } from '@/router/constants'
 import { apiSlice } from '@/state/api/apiSlice'
 import { store } from '@/state/store'
 import {
@@ -89,9 +89,6 @@ export const stepStartAccessGuard = async () => {
     apiSlice.endpoints.getVedlikeholdsmodusFeatureToggle.initiate()
   )
   const getPersonQuery = store.dispatch(apiSlice.endpoints.getPerson.initiate())
-  const getEkskludertStatusQuery = store.dispatch(
-    apiSlice.endpoints.getEkskludertStatus.initiate()
-  )
   const getLoependeVedtakQuery = store.dispatch(
     apiSlice.endpoints.getLoependeVedtak.initiate()
   )
@@ -102,28 +99,17 @@ export const stepStartAccessGuard = async () => {
     apiSlice.endpoints.getOmstillingsstoenadOgGjenlevende.initiate()
   )
   store.dispatch(apiSlice.endpoints.getGrunnbeloep.initiate())
+  store.dispatch(apiSlice.endpoints.getErApoteker.initiate())
 
-  const [
-    vedlikeholdsmodusFeatureToggle,
-    getLoependeVedtakRes,
-    getPersonRes,
-    getEkskludertStatusRes,
-  ] = await Promise.all([
-    vedlikeholdsmodusFeatureToggleQuery,
-    getLoependeVedtakQuery,
-    getPersonQuery,
-    getEkskludertStatusQuery,
-  ])
+  const [vedlikeholdsmodusFeatureToggle, getLoependeVedtakRes, getPersonRes] =
+    await Promise.all([
+      vedlikeholdsmodusFeatureToggleQuery,
+      getLoependeVedtakQuery,
+      getPersonQuery,
+    ])
 
   if (vedlikeholdsmodusFeatureToggle.data?.enabled) {
     return redirect(paths.kalkulatorVirkerIkke)
-  }
-
-  if (
-    getEkskludertStatusRes.data?.ekskludert &&
-    getEkskludertStatusRes.data?.aarsak === 'ER_APOTEKER'
-  ) {
-    return redirect(`${paths.henvisning}/${henvisningUrlParams.apotekerne}`)
   }
 
   if (!getPersonRes.isSuccess) {
@@ -296,18 +282,6 @@ export const stepAFPAccessGuard = async ({ request }: LoaderFunctionArgs) => {
     .dispatch(apiSlice.endpoints.getOmstillingsstoenadOgGjenlevende.initiate())
     .unwrap()
 
-  const ekskludertStatus = await store
-    .dispatch(apiSlice.endpoints.getEkskludertStatus.initiate())
-    .unwrap()
-
-  if (
-    // TODO: Hva skjer om man _bare_ er eksludert, men ikke apoteker
-    ekskludertStatus.ekskludert &&
-    ekskludertStatus.aarsak === 'ER_APOTEKER'
-  ) {
-    return redirect(`${paths.henvisning}/${henvisningUrlParams.apotekerne}`)
-  }
-
   const person = await store
     .dispatch(apiSlice.endpoints.getPerson.initiate())
     .unwrap()
@@ -316,8 +290,12 @@ export const stepAFPAccessGuard = async ({ request }: LoaderFunctionArgs) => {
     .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
     .unwrap()
 
+  const erApoteker = await store
+    .dispatch(apiSlice.endpoints.getErApoteker.initiate())
+    .unwrap()
+
   const isEndring = isLoependeVedtakEndring(loependeVedtak)
-  const isKap19 = isFoedtFoer1963(person.foedselsdato)
+  const isKap19 = isFoedtFoer1963(person.foedselsdato) || erApoteker
 
   const stepArrays = getStepArrays(isEndring, isKap19)
 
@@ -338,6 +316,7 @@ export const stepAFPAccessGuard = async ({ request }: LoaderFunctionArgs) => {
     return {
       person,
       loependeVedtak,
+      erApoteker,
     }
   }
 }
