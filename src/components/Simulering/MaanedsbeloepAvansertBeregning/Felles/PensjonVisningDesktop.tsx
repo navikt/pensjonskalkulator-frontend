@@ -18,12 +18,14 @@ interface Props {
   pensjonsdata: Pensjonsdata[]
   summerYtelser: (data: Pensjonsdata) => number
   hentUttaksmaanedOgAar: (alder: Alder) => string
+  harGradering?: boolean
 }
 
 export const PensjonVisningDesktop: React.FC<Props> = ({
   pensjonsdata,
   summerYtelser,
   hentUttaksmaanedOgAar,
+  harGradering,
 }) => {
   const intl = useIntl()
 
@@ -51,14 +53,14 @@ export const PensjonVisningDesktop: React.FC<Props> = ({
             key={`desktop-${index}`}
             borderRadius="medium"
             paddingInline="0 6"
-            paddingBlock="4"
+            paddingBlock="4 0"
             maxWidth={{ sm: '27rem', md: '31rem' }}
             flexGrow="1"
             height="fit-content"
           >
             <VStack gap="1">
-              <div className={styles.desktopDivider}>
-                <Divider smallMargin />
+              <div className={styles.dividerWrapper}>
+                <Divider mediumMargin noMarginTop />
               </div>
 
               <Heading
@@ -81,9 +83,10 @@ export const PensjonVisningDesktop: React.FC<Props> = ({
                 pensjonsdata={data}
                 summerYtelser={summerYtelser}
                 hentUttaksMaanedOgAar={hentUttaksmaanedOgAar}
+                harGradering={harGradering}
               />
-              <div className={styles.desktopDivider}>
-                <Divider smallMargin />
+              <div className={styles.dividerWrapper}>
+                <Divider mediumMargin noMarginBottom />
               </div>
             </VStack>
           </Box>

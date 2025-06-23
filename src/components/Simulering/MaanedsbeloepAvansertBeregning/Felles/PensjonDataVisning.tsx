@@ -15,12 +15,14 @@ interface Props {
   pensjonsdata: Pensjonsdata
   summerYtelser: (data: Pensjonsdata) => number
   hentUttaksMaanedOgAar: (alder: Alder) => string
+  harGradering?: boolean
 }
 
 export const PensjonDataVisning: React.FC<Props> = ({
   pensjonsdata,
   summerYtelser,
   hentUttaksMaanedOgAar,
+  harGradering,
 }) => {
   const intl = useIntl()
   const {
@@ -51,7 +53,11 @@ export const PensjonDataVisning: React.FC<Props> = ({
           <tr className={styles.row}>
             <th
               scope="row"
-              className={clsx(styles.afpMetric, styles.afpMetric__purple)}
+              className={clsx(
+                styles.monthlyPayoutElement,
+                styles.monthlyPayoutElement__purple,
+                !harGradering && styles.noGradering
+              )}
             >
               <BodyLong>
                 <FormattedMessage id="beregning.avansert.maanedsbeloep.afp" />:
@@ -69,7 +75,11 @@ export const PensjonDataVisning: React.FC<Props> = ({
           <tr className={styles.row}>
             <th
               scope="row"
-              className={clsx(styles.afpMetric, styles.afpMetric__green)}
+              className={clsx(
+                styles.monthlyPayoutElement,
+                styles.monthlyPayoutElement__green,
+                !harGradering && styles.noGradering
+              )}
             >
               <BodyLong>
                 <FormattedMessage id="beregning.avansert.maanedsbeloep.pensjonsavtaler" />
@@ -86,7 +96,11 @@ export const PensjonDataVisning: React.FC<Props> = ({
           <tr className={styles.row}>
             <th
               scope="row"
-              className={clsx(styles.afpMetric, styles.afpMetric__blue)}
+              className={clsx(
+                styles.monthlyPayoutElement,
+                styles.monthlyPayoutElement__blue,
+                !harGradering && styles.noGradering
+              )}
             >
               <BodyLong>
                 <FormattedMessage
@@ -107,7 +121,10 @@ export const PensjonDataVisning: React.FC<Props> = ({
             className={clsx(styles.row, styles.sum)}
             data-testid="maanedsbeloep-avansert-sum"
           >
-            <th scope="row">
+            <th
+              scope="row"
+              className={clsx(!harGradering && styles.noGradering)}
+            >
               <BodyLong>
                 <FormattedMessage
                   id="beregning.avansert.maanedsbeloep.sum"

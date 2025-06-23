@@ -1,4 +1,4 @@
 declare const classNames: {
-  readonly desktopDivider: "desktopDivider";
+  readonly dividerWrapper: "dividerWrapper";
 };
 export = classNames;

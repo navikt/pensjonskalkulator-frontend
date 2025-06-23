@@ -1,10 +1,11 @@
 declare const classNames: {
   readonly container: "container";
   readonly row: "row";
-  readonly afpMetric: "afpMetric";
-  readonly afpMetric__blue: "afpMetric__blue";
-  readonly afpMetric__purple: "afpMetric__purple";
-  readonly afpMetric__green: "afpMetric__green";
+  readonly noGradering: "noGradering";
+  readonly monthlyPayoutElement: "monthlyPayoutElement";
+  readonly monthlyPayoutElement__blue: "monthlyPayoutElement__blue";
+  readonly monthlyPayoutElement__purple: "monthlyPayoutElement__purple";
+  readonly monthlyPayoutElement__green: "monthlyPayoutElement__green";
   readonly sum: "sum";
 };
 export = classNames;

@@ -19,6 +19,10 @@
     td {
       font-size: var(--a-font-size-medium);
     }
+
+    th.noGradering {
+      padding: 0;
+    }
   }
 
   td {
@@ -28,7 +32,7 @@
 }
 
 @media screen and (min-width: variables.$a-breakpoint-sm) {
-  .afpMetric {
+  .monthlyPayoutElement {
     box-sizing: border-box;
     border-left: var(--a-spacing-1-alt) solid transparent;
 
@@ -51,5 +55,9 @@
 
   * {
     font-weight: var(--a-font-weight-bold);
+  }
+
+  th {
+    padding: 0;
   }
 }
