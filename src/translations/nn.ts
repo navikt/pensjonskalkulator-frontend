@@ -429,6 +429,7 @@ export default {
   'beregning.vilkaarsproeving.alternativer.medAFP.ikkeNokOpptjening':
     'MANGLER_TEKST',
   'grunnlag.title': 'Grunnlaget for utrekninga',
+  'grunnlag.endring.title': 'MANGLER_TEKST',
   'maanedsbeloep.title': 'MANGLER_TEKST',
   'grunnlag.uttaksgrad.title': 'Uttaksgrad',
   'grunnlag.uttaksgrad.avansert_link': 'MANGLER_TEKST',

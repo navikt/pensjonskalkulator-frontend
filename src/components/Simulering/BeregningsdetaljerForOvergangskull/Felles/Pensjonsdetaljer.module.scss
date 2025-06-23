@@ -17,3 +17,18 @@
     padding-bottom: var(--a-spacing-3);
   }
 }
+
+.alderspensjonDetaljer {
+  flex: 1;
+  min-width: 0;
+}
+
+.opptjeningDetaljer {
+  flex: 1;
+  min-width: 0;
+  margin-top: 2rem;
+}
+
+.afpSectionWithoutHeading {
+  margin-top: 3rem;
+}

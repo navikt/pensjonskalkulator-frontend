@@ -84,8 +84,8 @@ export const OpptjeningDetaljer: React.FC<OpptjeningDetaljerProps> = ({
   }
 
   return (
-    <section>
-      <VStack gap="20">{renderOpptjeningSections()}</VStack>
-    </section>
+    <VStack gap="20" className={styles.opptjeningDetaljer as string}>
+      {renderOpptjeningSections()}
+    </VStack>
   )
 }

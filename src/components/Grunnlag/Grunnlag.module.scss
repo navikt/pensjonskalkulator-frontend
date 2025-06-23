@@ -1,5 +1,39 @@
 @use '../../scss/variables';
 
+.visListekomponenter {
+  width: 100%;
+
+  :global {
+    .navds-read-more__content {
+      border-left: 0;
+      margin-left: 0;
+      padding-left: 0;
+      width: 100%;
+      max-width: none;
+    }
+  }
+}
+
+.wideDetailedView {
+  :global {
+    .navds-read-more__content {
+      position: relative !important;
+      width: calc(100% + 50% + 20px) !important;
+      max-width: none !important;
+      margin-left: 0 !important;
+      margin-right: calc(-50% - 20px) !important;
+      padding-left: 0 !important;
+      padding-right: var(--a-spacing-4) !important;
+      box-sizing: border-box !important;
+
+      @media (width <= 768px) {
+        width: 100% !important;
+        margin-right: 0 !important;
+      }
+    }
+  }
+}
+
 .section {
   display: flex;
   flex-direction: column;

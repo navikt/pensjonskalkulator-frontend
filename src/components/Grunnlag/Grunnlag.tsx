@@ -105,7 +105,11 @@ export const Grunnlag: React.FC<Props> = ({
   return (
     <section className={styles.section}>
       <Heading level={headingLevel} size="medium">
-        <FormattedMessage id="grunnlag.title" />
+        {isEndring || visning === 'avansert' ? (
+          <FormattedMessage id="grunnlag.endring.title" />
+        ) : (
+          <FormattedMessage id="grunnlag.title" />
+        )}
       </Heading>
 
       <HStack gap="8" marginBlock="6 0">
@@ -115,9 +119,11 @@ export const Grunnlag: React.FC<Props> = ({
           </GrunnlagItem>
         )}
 
-        <GrunnlagItem color="green">
-          {!isEndring && <Pensjonsavtaler headingLevel="3" />}
-        </GrunnlagItem>
+        {!isEndring && (
+          <GrunnlagItem color="green">
+            <Pensjonsavtaler headingLevel="3" />
+          </GrunnlagItem>
+        )}
 
         <GrunnlagItem color="purple">
           <GrunnlagAFP />
@@ -145,6 +151,7 @@ export const Grunnlag: React.FC<Props> = ({
                     }
                   )
             }
+            className={`${styles.visListekomponenter} ${styles.wideDetailedView}`}
             onOpenChange={setIsAFPDokumentasjonVisible}
           >
             <AfpDetaljerGrunnlag
@@ -160,7 +167,6 @@ export const Grunnlag: React.FC<Props> = ({
           </ReadMore>
         </GrunnlagItem>
 
-        {/*TODO: Flytt hele denne i en egen komponent */}
         <GrunnlagItem color="blue">
           <VStack gap="3">
             <Heading level="2" size="small">
@@ -222,6 +228,7 @@ export const Grunnlag: React.FC<Props> = ({
                         }
                       )
                 }
+                className={`${styles.visListekomponenter} ${styles.wideDetailedView}`}
                 onOpenChange={setIsAlderspensjonDetaljerVisible}
               >
                 <AlderspensjonDetaljerGrunnlag

@@ -201,7 +201,7 @@ export const AfpDetaljer: React.FC<AfpDetaljerProps> = ({
 
           {opptjeningPre2025OffentligAfpListe &&
             opptjeningPre2025OffentligAfpListe.length > 0 && (
-              <dl>
+              <dl className={styles.afpSectionWithoutHeading as string}>
                 <div className={styles.hstackRow}>
                   <strong>
                     <FormattedMessage id="beregning.detaljer.OpptjeningDetaljer.pre2025OffentligAfp.table.title" />
@@ -224,7 +224,7 @@ export const AfpDetaljer: React.FC<AfpDetaljerProps> = ({
       )}
 
       {afpOffentligDetaljerListe && afpOffentligDetaljerListe.length > 0 && (
-        <dl>
+        <dl className={styles.afpSectionWithoutHeading as string}>
           {afpOffentligDetaljerListe.map((detalj, index) => (
             <Fragment key={index}>
               <HStack justify="space-between" className={styles.hstackRow}>
