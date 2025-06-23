@@ -130,16 +130,16 @@ export function useBeregningsdetaljer(
           verdi: `${formatInntekt(pensjonstillegg)} kr`,
         },
         {
+          tekst: 'Gjenlevendetillegg (kap. 19)',
+          verdi: `${formatInntekt(gjenlevendetillegg)} kr`,
+        },
+        {
           tekst: 'Inntektspensjon (kap. 20)',
           verdi: `${formatInntekt(inntektspensjonBeloep)} kr`,
         },
         {
           tekst: 'Garantipensjon (kap. 20)',
           verdi: `${formatInntekt(garantipensjonBeloep)} kr`,
-        },
-        {
-          tekst: 'Gjenlevendetillegg (kap. 19)',
-          verdi: `${formatInntekt(gjenlevendetillegg)} kr`,
         },
         {
           tekst: 'Sum månedlig alderspensjon',
