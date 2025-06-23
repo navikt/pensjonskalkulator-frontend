@@ -30,6 +30,7 @@ const mockAlderspensjon = {
   trygdetidKap19: 6,
   trygdetidKap20: 7,
   pensjonBeholdningFoerUttakBeloep: 80000,
+  kapittel19Gjenlevendetillegg: 342,
 }
 
 const mockAfpPrivat = {
@@ -121,8 +122,12 @@ describe('useBeregningsdetaljer', () => {
             verdi: '50 kr',
           }),
           expect.objectContaining({
+            tekst: 'Gjenlevendetillegg (kap. 19)',
+            verdi: '29 kr',
+          }),
+          expect.objectContaining({
             tekst: 'Sum månedlig alderspensjon',
-            verdi: '400 kr',
+            verdi: '429 kr',
           }),
         ]),
       ])
@@ -137,6 +142,7 @@ describe('useBeregningsdetaljer', () => {
           pensjonstillegg: 0,
           inntektspensjonBeloep: 0,
           garantipensjonBeloep: 0,
+          kapittel19Gjenlevendetillegg: 0,
         }
         const { result } = renderHook(() =>
           useBeregningsdetaljer(
@@ -149,6 +155,52 @@ describe('useBeregningsdetaljer', () => {
         expect(result.current.alderspensjonDetaljerListe).toEqual([[]])
       })
     })
+    
+    describe('Når det er gjenlevendetillegg', () => {
+      it('inkluderes gjenlevendetillegg i beregningen', () => {
+        const mockMedGjenlevendetillegg = {
+          ...mockAlderspensjon,
+          kapittel19Gjenlevendetillegg: 600, // 50 kr per måned
+        }
+        const { result } = renderHook(() =>
+          useBeregningsdetaljer(
+            [mockMedGjenlevendetillegg],
+            [mockAfpPrivat],
+            [mockAfpOffentlig],
+            mockPre2025OffentligAfp
+          )
+        )
+        expect(result.current.alderspensjonDetaljerListe).toEqual([
+          expect.arrayContaining([
+            expect.objectContaining({
+              tekst: 'Gjenlevendetillegg (kap. 19)',
+              verdi: '50 kr',
+            }),
+          ]),
+        ])
+      })
+
+      it('skjules når gjenlevendetillegg er 0', () => {
+        const mockUtenGjenlevendetillegg = {
+          ...mockAlderspensjon,
+          kapittel19Gjenlevendetillegg: 0,
+        }
+        const { result } = renderHook(() =>
+          useBeregningsdetaljer(
+            [mockUtenGjenlevendetillegg],
+            [mockAfpPrivat],
+            [mockAfpOffentlig],
+            mockPre2025OffentligAfp
+          )
+        )
+        const alderspensjonDetaljer = result.current.alderspensjonDetaljerListe[0]
+        const gjenlevendetilleggRad = alderspensjonDetaljer.find(
+          (rad) => rad.tekst === 'Gjenlevendetillegg (kap. 19)'
+        )
+        expect(gjenlevendetilleggRad).toBeUndefined()
+      })
+    })
+
     describe('Når det er felter som har negativ verdi', () => {
       it('skjules feltene i alderspensjonDetaljerListe', () => {
         const mock = {
@@ -159,6 +211,7 @@ describe('useBeregningsdetaljer', () => {
           pensjonstillegg: -400,
           inntektspensjonBeloep: -500,
           garantipensjonBeloep: -600,
+          kapittel19Gjenlevendetillegg: -342,
         }
         const { result } = renderHook(() =>
           useBeregningsdetaljer(
