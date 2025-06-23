@@ -3,6 +3,7 @@ import { useIntl } from 'react-intl'
 
 import { Box, HStack, Heading, VStack } from '@navikt/ds-react'
 
+import { Divider } from '@/components/common/Divider'
 import {
   UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP,
   formatUttaksalder,
@@ -10,6 +11,8 @@ import {
 
 import { Pensjonsdata } from '../hooks'
 import { PensjonDataVisning } from './PensjonDataVisning'
+
+import styles from './PensjonVisningDesktop.module.scss'
 
 interface Props {
   pensjonsdata: Pensjonsdata[]
@@ -47,13 +50,17 @@ export const PensjonVisningDesktop: React.FC<Props> = ({
           <Box
             key={`desktop-${index}`}
             borderRadius="medium"
-            paddingInline="6"
+            paddingInline="0 6"
             paddingBlock="4"
             maxWidth={{ sm: '27rem', md: '31rem' }}
             flexGrow="1"
             height="fit-content"
           >
             <VStack gap="1">
+              <div className={styles.desktopDivider}>
+                <Divider smallMargin />
+              </div>
+
               <Heading
                 size="xsmall"
                 level="4"
@@ -75,6 +82,9 @@ export const PensjonVisningDesktop: React.FC<Props> = ({
                 summerYtelser={summerYtelser}
                 hentUttaksMaanedOgAar={hentUttaksmaanedOgAar}
               />
+              <div className={styles.desktopDivider}>
+                <Divider smallMargin />
+              </div>
             </VStack>
           </Box>
         )

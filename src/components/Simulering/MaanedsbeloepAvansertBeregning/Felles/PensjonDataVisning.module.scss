@@ -27,19 +27,22 @@
   }
 }
 
-.afpMetric {
-  border-left: var(--a-spacing-1-alt) solid transparent;
+@media screen and (min-width: variables.$a-breakpoint-sm) {
+  .afpMetric {
+    box-sizing: border-box;
+    border-left: var(--a-spacing-1-alt) solid transparent;
 
-  &__blue {
-    border-color: var(--a-deepblue-500);
-  }
+    &__blue {
+      border-color: var(--a-deepblue-500);
+    }
 
-  &__purple {
-    border-color: var(--a-purple-400);
-  }
+    &__purple {
+      border-color: var(--a-purple-400);
+    }
 
-  &__green {
-    border-color: var(--a-data-surface-5);
+    &__green {
+      border-color: var(--a-data-surface-5);
+    }
   }
 }
 
