@@ -380,6 +380,10 @@ export const BeregningEnkel = () => {
                     : undefined
                 }
                 isEndring={isEndring}
+                alderspensjonListe={alderspensjon?.alderspensjon}
+                afpPrivatListe={alderspensjon?.afpPrivat}
+                afpOffentligListe={alderspensjon?.afpOffentlig}
+                pre2025OffentligAfp={alderspensjon?.pre2025OffentligAfp}
               />
             </>
           )}

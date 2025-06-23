@@ -31,6 +31,10 @@ describe('Grunnlag', () => {
         visning={visning}
         pensjonsbeholdning={pensjonsbeholdning}
         isEndring={false}
+        alderspensjonListe={undefined}
+        afpPrivatListe={undefined}
+        afpOffentligListe={undefined}
+        pre2025OffentligAfp={undefined}
       />,
       {
         preloadedState: {

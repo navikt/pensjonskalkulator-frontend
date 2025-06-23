@@ -28,8 +28,10 @@ import { getFormatMessageValues } from '@/utils/translations'
 
 import { GrunnlagItem } from '../GrunnlagItem'
 import { Pensjonsavtaler } from '../Pensjonsavtaler/Pensjonsavtaler'
+import { AfpDetaljerGrunnlag } from '../Simulering/BeregningsdetaljerForOvergangskull/AfpDetaljerGrunnlag'
+import { AlderspensjonDetaljerGrunnlag } from '../Simulering/BeregningsdetaljerForOvergangskull/AlderspensjonDetaljerGrunnlag'
+import { useBeregningsdetaljer } from '../Simulering/BeregningsdetaljerForOvergangskull/hooks'
 import { Pensjonsgivendeinntekt } from '../Simulering/Pensjonsgivendeinntekt'
-//import { SanityReadmore } from '../common/SanityReadmore'
 import { GrunnlagAFP } from './GrunnlagAFP'
 import { GrunnlagInntekt } from './GrunnlagInntekt'
 import { GrunnlagSection } from './GrunnlagSection'
@@ -44,6 +46,10 @@ interface Props {
   trygdetid?: number
   pensjonsbeholdning?: number
   isEndring: boolean
+  alderspensjonListe?: AlderspensjonPensjonsberegning[]
+  afpPrivatListe?: AfpPrivatPensjonsberegning[]
+  afpOffentligListe?: AfpPensjonsberegning[]
+  pre2025OffentligAfp?: pre2025OffentligPensjonsberegning
 }
 
 export const Grunnlag: React.FC<Props> = ({
@@ -53,6 +59,10 @@ export const Grunnlag: React.FC<Props> = ({
   trygdetid,
   pensjonsbeholdning,
   isEndring,
+  alderspensjonListe,
+  afpPrivatListe,
+  afpOffentligListe,
+  pre2025OffentligAfp,
 }) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
@@ -76,6 +86,21 @@ export const Grunnlag: React.FC<Props> = ({
   const formatertSivilstand = React.useMemo(
     () => formatSivilstand(intl, sivilstand!),
     [sivilstand]
+  )
+
+  const {
+    alderspensjonDetaljerListe,
+    pre2025OffentligAfpDetaljerListe,
+    opptjeningKap19Liste,
+    opptjeningKap20Liste,
+    afpPrivatDetaljerListe,
+    afpOffentligDetaljerListe,
+    opptjeningPre2025OffentligAfpListe,
+  } = useBeregningsdetaljer(
+    alderspensjonListe,
+    afpPrivatListe,
+    afpOffentligListe,
+    pre2025OffentligAfp
   )
 
   return (
@@ -121,7 +146,16 @@ export const Grunnlag: React.FC<Props> = ({
             }
             onOpenChange={setIsAFPDokumentasjonVisible}
           >
-            <p>Hei, her skal listekomponent for Afp ligge</p>
+            <AfpDetaljerGrunnlag
+              afpPrivatDetaljerListe={afpPrivatDetaljerListe}
+              afpOffentligDetaljerListe={afpOffentligDetaljerListe}
+              pre2025OffentligAfpDetaljerListe={
+                pre2025OffentligAfpDetaljerListe
+              }
+              opptjeningPre2025OffentligAfpListe={
+                opptjeningPre2025OffentligAfpListe
+              }
+            />
           </ReadMore>
         </GrunnlagItem>
 
@@ -189,7 +223,14 @@ export const Grunnlag: React.FC<Props> = ({
                     }
                     onOpenChange={setIsAlderspensjonDetaljerVisible}
                   >
-                    <p>Hei, her skal listekomponent for alderspensjon ligge</p>
+                    <AlderspensjonDetaljerGrunnlag
+                      alderspensjonDetaljerListe={alderspensjonDetaljerListe}
+                      opptjeningKap19Liste={opptjeningKap19Liste}
+                      opptjeningKap20Liste={opptjeningKap20Liste}
+                      hasPre2025OffentligAfpUttaksalder={Boolean(
+                        opptjeningPre2025OffentligAfpListe?.length
+                      )}
+                    />
                   </ReadMore>
                 </>
               )}
