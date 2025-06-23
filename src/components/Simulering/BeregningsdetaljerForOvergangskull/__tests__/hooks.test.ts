@@ -183,14 +183,14 @@ describe('useBeregningsdetaljer', () => {
           mockPre2025OffentligAfp
         )
       )
-      expect(result.current.opptjeningKap19Liste).toEqual(
+      expect(result.current.opptjeningKap19Liste).toEqual([
         expect.arrayContaining([
           expect.objectContaining({ tekst: 'Andelsbrøk', verdi: '3/10' }),
           expect.objectContaining({ tekst: 'Sluttpoengtall', verdi: 3 }),
           expect.objectContaining({ tekst: 'Poengår', verdi: 9 }),
           expect.objectContaining({ tekst: 'Trygdetid', verdi: 6 }),
-        ])
-      )
+        ]),
+      ])
     })
 
     describe('Når det er felter som har verdi 0', () => {
@@ -208,11 +208,11 @@ describe('useBeregningsdetaljer', () => {
             mockPre2025OffentligAfp
           )
         )
-        expect(result.current.opptjeningKap19Liste).toEqual(
+        expect(result.current.opptjeningKap19Liste).toEqual([
           expect.arrayContaining([
             expect.objectContaining({ tekst: 'Poengår', verdi: 0 }),
-          ])
-        )
+          ]),
+        ])
       })
 
       it('vises Trygdetid selv om verdien er 0', () => {
@@ -225,11 +225,11 @@ describe('useBeregningsdetaljer', () => {
             mockPre2025OffentligAfp
           )
         )
-        expect(result.current.opptjeningKap19Liste).toEqual(
+        expect(result.current.opptjeningKap19Liste).toEqual([
           expect.arrayContaining([
             expect.objectContaining({ tekst: 'Trygdetid', verdi: 0 }),
-          ])
-        )
+          ]),
+        ])
       })
 
       it('skjules andre felter med verdi 0', () => {
@@ -246,7 +246,7 @@ describe('useBeregningsdetaljer', () => {
             mockPre2025OffentligAfp
           )
         )
-        expect(result.current.opptjeningKap19Liste).toEqual([])
+        expect(result.current.opptjeningKap19Liste).toEqual([[]])
       })
     })
   })
@@ -261,7 +261,7 @@ describe('useBeregningsdetaljer', () => {
           mockPre2025OffentligAfp
         )
       )
-      expect(result.current.opptjeningKap20Liste).toEqual(
+      expect(result.current.opptjeningKap20Liste).toEqual([
         expect.arrayContaining([
           expect.objectContaining({ tekst: 'Andelsbrøk', verdi: '7/10' }),
           expect.objectContaining({ tekst: 'Trygdetid', verdi: 7 }),
@@ -269,8 +269,8 @@ describe('useBeregningsdetaljer', () => {
             tekst: 'Pensjonsbeholdning før uttak',
             verdi: '80000 kr',
           }),
-        ])
-      )
+        ]),
+      ])
     })
 
     describe('Når det er felter som har verdi 0', () => {
@@ -284,11 +284,11 @@ describe('useBeregningsdetaljer', () => {
             mockPre2025OffentligAfp
           )
         )
-        expect(result.current.opptjeningKap20Liste).toEqual(
+        expect(result.current.opptjeningKap20Liste).toEqual([
           expect.arrayContaining([
             expect.objectContaining({ tekst: 'Trygdetid', verdi: 0 }),
-          ])
-        )
+          ]),
+        ])
       })
 
       it('vises Pensjonbeholdning før uttak selv om verdien er 0', () => {
@@ -304,14 +304,14 @@ describe('useBeregningsdetaljer', () => {
             mockPre2025OffentligAfp
           )
         )
-        expect(result.current.opptjeningKap20Liste).toEqual(
+        expect(result.current.opptjeningKap20Liste).toEqual([
           expect.arrayContaining([
             expect.objectContaining({
               tekst: 'Pensjonsbeholdning før uttak',
               verdi: '0 kr',
             }),
-          ])
-        )
+          ]),
+        ])
       })
 
       it('skjules andre felter med verdi 0', () => {
@@ -327,7 +327,7 @@ describe('useBeregningsdetaljer', () => {
             mockPre2025OffentligAfp
           )
         )
-        expect(result.current.opptjeningKap20Liste).toEqual([])
+        expect(result.current.opptjeningKap20Liste).toEqual([[]])
       })
     })
   })
