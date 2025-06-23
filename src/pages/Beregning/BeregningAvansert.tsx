@@ -10,7 +10,6 @@ import { BodyLong, Heading, Link, VStack } from '@navikt/ds-react'
 import { Grunnlag } from '@/components/Grunnlag'
 import { GrunnlagForbehold } from '@/components/GrunnlagForbehold'
 import { InfoOmLoependeVedtak } from '@/components/InfoOmLoependeVedtak'
-import { Pensjonsavtaler } from '@/components/Pensjonsavtaler'
 import { RedigerAvansertBeregning } from '@/components/RedigerAvansertBeregning'
 import { SavnerDuNoe } from '@/components/SavnerDuNoe'
 import { Simulering } from '@/components/Simulering'
@@ -340,8 +339,6 @@ export const BeregningAvansert = () => {
                 hasSection
               />
             )}
-
-            {!isEndring && <Pensjonsavtaler headingLevel="2" />}
 
             <Grunnlag
               visning="avansert"
