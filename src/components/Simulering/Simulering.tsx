@@ -49,8 +49,8 @@ interface Props {
   headingLevel: HeadingProps['level']
   aarligInntektFoerUttakBeloep: string
   alderspensjonListe?: AlderspensjonPensjonsberegning[]
+  afpPrivatListe?: AfpPrivatPensjonsberegning[]
   pre2025OffentligAfp?: AfpEtterfulgtAvAlderspensjon
-  afpPrivatListe?: AfpPensjonsberegning[]
   afpOffentligListe?: AfpPensjonsberegning[]
   alderspensjonMaanedligVedEndring?: AlderspensjonMaanedligVedEndring
   showButtonsAndTable?: boolean
