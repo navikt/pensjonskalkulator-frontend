@@ -65,7 +65,6 @@ export const AfpDetaljer: React.FC<AfpDetaljerProps> = ({
                         currentMonths && currentMonths > 0
                           ? `og ${currentMonths} måneder`
                           : '',
-                      grad: 100,
                     }}
                   />
                 </Heading>
@@ -116,7 +115,6 @@ export const AfpDetaljer: React.FC<AfpDetaljerProps> = ({
                     currentMonths > 0
                       ? `og ${currentMonths} måneder`
                       : '',
-                  grad: 100,
                 }}
               />
             </Heading>
@@ -163,7 +161,6 @@ export const AfpDetaljer: React.FC<AfpDetaljerProps> = ({
                       ...getFormatMessageValues(),
                       alderAar: `${uttaksalder?.aar} år`,
                       alderMd: `og ${uttaksalder!.maaneder} måneder`,
-                      grad: 100,
                     }}
                   />
                 </Heading>
