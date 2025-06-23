@@ -16,25 +16,28 @@ export const OpptjeningDetaljer: React.FC<OpptjeningDetaljerProps> = ({
   opptjeningKap19Liste,
   opptjeningKap20Liste,
 }) => {
-  const renderOpptjeningSection = (
-    detaljListe: DetaljRad[][],
-    titleId: string,
-    sectionIndex: number
-  ) => {
-    if (!detaljListe || detaljListe.length === 0) return null
+  // Render sections in the correct order for gradert uttak
+  const renderOpptjeningSections = () => {
+    const maxLength = Math.max(
+      opptjeningKap19Liste?.length || 0,
+      opptjeningKap20Liste?.length || 0
+    )
 
-    return detaljListe
-      .map((detaljer, arrayIndex) => {
-        if (detaljer.length === 0) return null
+    const sectionGroups = []
 
-        return (
-          <dl key={`${sectionIndex}-${arrayIndex}`}>
+    for (let i = 0; i < maxLength; i++) {
+      const sectionsInGroup = []
+
+      // Render Kap 19 section for this index
+      if (opptjeningKap19Liste?.[i]?.length > 0) {
+        sectionsInGroup.push(
+          <dl key={`kap19-${i}`}>
             <div className={styles.hstackRow}>
               <strong>
-                <FormattedMessage id={titleId} />
+                <FormattedMessage id="beregning.detaljer.OpptjeningDetaljer.kap19.table.title" />
               </strong>
             </div>
-            {detaljer.map((detalj, index) => (
+            {opptjeningKap19Liste[i].map((detalj, index) => (
               <Fragment key={index}>
                 <HStack justify="space-between" className={styles.hstackRow}>
                   <dt>{`${detalj.tekst}:`}</dt>
@@ -44,24 +47,45 @@ export const OpptjeningDetaljer: React.FC<OpptjeningDetaljerProps> = ({
             ))}
           </dl>
         )
-      })
-      .filter(Boolean) // Remove null values
+      }
+
+      // Render Kap 20 section for this index
+      if (opptjeningKap20Liste?.[i]?.length > 0) {
+        sectionsInGroup.push(
+          <dl key={`kap20-${i}`}>
+            <div className={styles.hstackRow}>
+              <strong>
+                <FormattedMessage id="beregning.detaljer.OpptjeningDetaljer.kap20.table.title" />
+              </strong>
+            </div>
+            {opptjeningKap20Liste[i].map((detalj, index) => (
+              <Fragment key={index}>
+                <HStack justify="space-between" className={styles.hstackRow}>
+                  <dt>{`${detalj.tekst}:`}</dt>
+                  <dd>{detalj.verdi}</dd>
+                </HStack>
+              </Fragment>
+            ))}
+          </dl>
+        )
+      }
+
+      // Only add the group if it has sections
+      if (sectionsInGroup.length > 0) {
+        sectionGroups.push(
+          <VStack key={`group-${i}`} gap="8">
+            {sectionsInGroup}
+          </VStack>
+        )
+      }
+    }
+
+    return sectionGroups
   }
 
   return (
     <section>
-      <VStack gap="20">
-        {renderOpptjeningSection(
-          opptjeningKap19Liste,
-          'beregning.detaljer.OpptjeningDetaljer.kap19.table.title',
-          0
-        )}
-        {renderOpptjeningSection(
-          opptjeningKap20Liste,
-          'beregning.detaljer.OpptjeningDetaljer.kap20.table.title',
-          1
-        )}
-      </VStack>
+      <VStack gap="20">{renderOpptjeningSections()}</VStack>
     </section>
   )
 }
