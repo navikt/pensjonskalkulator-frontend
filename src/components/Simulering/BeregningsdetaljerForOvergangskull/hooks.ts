@@ -268,7 +268,7 @@ export function useBeregningsdetaljer(
           rad.verdi !== undefined &&
           (rad.tekst === 'Poengår' ||
             rad.tekst === 'Trygdetid' ||
-            rad.verdi !== 0)
+            (rad.verdi !== 0 && rad.verdi !== '10/10'))
       )
     })
 
@@ -293,7 +293,7 @@ export function useBeregningsdetaljer(
           rad.verdi !== undefined &&
           (rad.tekst === 'Trygdetid' ||
             rad.tekst === 'Pensjonsbeholdning før uttak' ||
-            rad.verdi !== 0)
+            (rad.verdi !== 0 && rad.verdi !== '10/10'))
       )
     })
 
