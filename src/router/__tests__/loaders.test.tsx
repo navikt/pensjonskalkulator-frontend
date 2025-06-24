@@ -20,10 +20,12 @@ import { DATE_BACKEND_FORMAT } from '@/utils/dates'
 
 import {
   authenticationGuard,
+  beregningEnkelAccessGuard,
   directAccessGuard,
   landingPageAccessGuard,
   stepAFPAccessGuard,
   stepSamtykkeOffentligAFPAccessGuard,
+  stepSamtykkePensjonsavtaler,
   stepSivilstandAccessGuard,
   stepStartAccessGuard,
   stepUfoeretrygdAFPAccessGuard,
@@ -693,7 +695,7 @@ describe('Loaders', () => {
       await expect(returnedFromLoader).rejects.toThrow()
     })
 
-    it('Gitt at getEkskludertStatus har tidligere feilet kalles den på nytt. Når den er vellykket og viser at brukeren er apoteker, og `erApoteker` settes', async () => {
+    it('Gitt at bruker er apoteker settes `erApoteker`', async () => {
       mockResponse('/v2/ekskludert', {
         status: 200,
         json: {
@@ -707,17 +709,6 @@ describe('Loaders', () => {
           queries: {
             ...mockedVellykketQueries,
             ...fulfilledGetLoependeVedtak0Ufoeregrad,
-            ['getEkskludertStatus(undefined)']: {
-              status: 'rejected',
-              endpointName: 'getEkskludertStatus',
-              requestId: 't1wLPiRKrfe_vchftk8s8',
-              error: {
-                status: 'FETCH_ERROR',
-                error: 'TypeError: Failed to fetch',
-              },
-              startedTimeStamp: 1714725797072,
-              fulfilledTimeStamp: 1714725797669,
-            },
           },
         },
         userInput: { ...userInputInitialState },
@@ -795,6 +786,30 @@ describe('Loaders', () => {
       const returnedFromLoader = stepAFPAccessGuard(createMockRequest())
       await expect(returnedFromLoader).rejects.toThrow()
     })
+  })
+
+  it('Apotekere med uføretrygd skal ikke få AFP steg', async () => {
+    mockResponse('/v2/ekskludert', {
+      status: 200,
+      json: {
+        ekskludert: true,
+        aarsak: 'ER_APOTEKER',
+      },
+    })
+    mockResponse('/v4/vedtak/loepende-vedtak', {
+      json: {
+        harLoependeVedtak: true,
+        ufoeretrygd: { grad: 75 },
+      } satisfies LoependeVedtak,
+    })
+    const mockedState = {
+      api: { queries: { mock: 'mock' } },
+    }
+    store.getState = vi.fn().mockImplementation(() => mockedState)
+
+    const returnedFromLoader = await stepAFPAccessGuard(createMockRequest())
+
+    expectRedirectResponse(returnedFromLoader, paths.beregningEnkel)
   })
 
   describe('stepUfoeretrygdAFPAccessGuard', () => {
@@ -954,5 +969,72 @@ describe('Loaders', () => {
         paths.samtykke
       )
     })
+  })
+  describe('stepSamtykkePensjonsavtaler', () => {
+    it('should skip if loapende pre2024OffentligAfp og ikke endring', async () => {
+      mockResponse('/v4/vedtak/loepende-vedtak', {
+        status: 200,
+        json: {
+          harLoependeVedtak: true,
+          ufoeretrygd: { grad: 0 },
+          pre2025OffentligAfp: {
+            fom: '2020-12-12',
+          },
+        } satisfies LoependeVedtak,
+      })
+
+      const returnedFromLoader =
+        await stepSamtykkePensjonsavtaler(createMockRequest())
+
+      expectRedirectResponse(returnedFromLoader, paths.beregningEnkel)
+    })
+    it('Når bruker er i endringsløp blir bruker ikke redirigert', async () => {
+      mockResponse('/v4/vedtak/loepende-vedtak', {
+        status: 200,
+        json: {
+          harLoependeVedtak: true,
+          ufoeretrygd: { grad: 0 },
+          alderspensjon: {
+            grad: 100,
+            fom: '2023-01-01',
+            sivilstand: 'GIFT',
+          },
+        } satisfies LoependeVedtak,
+      })
+      const returnedFromLoader =
+        await stepSamtykkePensjonsavtaler(createMockRequest())
+      expect(returnedFromLoader).toBeUndefined()
+    })
+  })
+
+  describe('beregningEnkelAccessGuard', () => {
+    it('should redirect hvis bruker har løpende vedtak', async () => {
+      mockResponse('/v4/vedtak/loepende-vedtak', {
+        status: 200,
+        json: {
+          harLoependeVedtak: true,
+          ufoeretrygd: { grad: 0 },
+          alderspensjon: {
+            grad: 100,
+            fom: '2023-01-01',
+            sivilstand: 'GIFT',
+          },
+        } satisfies LoependeVedtak,
+      })
+      const returnedFromLoader = await beregningEnkelAccessGuard()
+      expectRedirectResponse(returnedFromLoader, paths.beregningAvansert)
+    })
+  })
+  it('should redirect hvis bruker har er kap. 19', async () => {
+    const mockedState = {
+      api: { queries: { mock: 'mock' } },
+      userInput: {
+        ...userInputInitialState,
+        afpUtregningValg: 'AFP_ETTERFULGT_AV_ALDERSPENSJON',
+      },
+    }
+    store.getState = vi.fn().mockImplementation(() => mockedState)
+    const returnedFromLoader = await beregningEnkelAccessGuard()
+    expectRedirectResponse(returnedFromLoader, paths.beregningAvansert)
   })
 })

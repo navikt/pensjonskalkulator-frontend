@@ -307,6 +307,7 @@ export const stepAFPAccessGuard = async ({ request }: LoaderFunctionArgs) => {
     loependeVedtak.afpOffentlig ||
     loependeVedtak.ufoeretrygd.grad === 100 ||
     loependeVedtak.pre2025OffentligAfp ||
+    (loependeVedtak.ufoeretrygd.grad > 0 && erApoteker) ||
     (loependeVedtak.ufoeretrygd.grad &&
       person.foedselsdato &&
       isFoedselsdatoOverAlder(person.foedselsdato, AFP_UFOERE_OPPSIGELSESALDER))

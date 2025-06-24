@@ -51,6 +51,7 @@ export default {
   'error.virker_ikke.ingress': 'MANGLER_TEKST',
   'error.virker_ikke.link': 'MANGLER_TEKST',
   'error.virker_ikke.button': 'MANGLER_TEKST',
+  'error.apoteker_warning': 'MANGELR_TEKST',
   'landingsside.for.deg.foedt.foer.1963': 'For those born before 1963',
   'landingsside.du.maa.bruke.detaljert':
     'You must use our detailed calculator. It provides an estimate of',

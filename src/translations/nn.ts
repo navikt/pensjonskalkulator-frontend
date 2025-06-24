@@ -44,6 +44,7 @@ export default {
   'error.virker_ikke.ingress': 'MANGLER_TEKST',
   'error.virker_ikke.link': 'MANGLER_TEKST',
   'error.virker_ikke.button': 'MANGLER_TEKST',
+  'error.apoteker_warning': 'MANGELR_TEKST',
   'landingsside.for.deg.foedt.foer.1963': 'For deg født før 1963',
   'landingsside.du.maa.bruke.detaljert':
     'Du må bruke vår detaljerte kalkulator. Der får du rekna ut alderspensjonen frå folketrygda (Nav), avtalefesta pensjon (AFP) og pensjonsavtalar (arbeidsgjevarar og sparing)',
