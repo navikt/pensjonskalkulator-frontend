@@ -32,7 +32,7 @@ export const PensjonVisningDesktop: React.FC<Props> = ({
   if (!pensjonsdata.length) return null
 
   return (
-    <HStack gap="4 8" width="100%" marginBlock="2 0">
+    <HStack gap="4 12" width="100%" marginBlock="2 0">
       {pensjonsdata.map((data, index) => {
         const isKapittel20AldersPensjon =
           data.alderspensjon &&
