@@ -29,7 +29,7 @@ describe('Gitt at OpptjeningDetaljer rendres', () => {
 
   const mockOpptjeningKap20Liste: DetaljRad[][] = [
     [
-      { tekst: 'Pensjonsbeholdning før uttak', verdi: '500 000 kr' },
+      { tekst: 'Pensjonsbeholdning', verdi: '500 000 kr' },
       { tekst: 'Trygdetid', verdi: 40 },
       { tekst: 'Alderspensjon', verdi: '200 000 kr' },
     ],
@@ -63,7 +63,7 @@ describe('Gitt at OpptjeningDetaljer rendres', () => {
   it('rendrer kap20 OpptjeningDetaljer når data er tilgjengelig', () => {
     renderWithIntl(<OpptjeningDetaljer {...defaultProps} />)
 
-    expect(screen.getByText('Pensjonsbeholdning før uttak:')).toBeVisible()
+    expect(screen.getByText('Pensjonsbeholdning:')).toBeVisible()
     expect(screen.getByText('500 000 kr')).toBeVisible()
     expect(screen.getByText('Trygdetid:')).toBeVisible()
     expect(screen.getByText('40')).toBeVisible()
@@ -91,9 +91,7 @@ describe('Gitt at OpptjeningDetaljer rendres', () => {
       />
     )
 
-    expect(
-      screen.queryByText('Pensjonsbeholdning før uttak:')
-    ).not.toBeInTheDocument()
+    expect(screen.queryByText('Pensjonsbeholdning:')).not.toBeInTheDocument()
     expect(screen.queryByText('Trygdetid:')).not.toBeInTheDocument()
   })
 
@@ -105,9 +103,7 @@ describe('Gitt at OpptjeningDetaljer rendres', () => {
     const container_element = container.firstChild
     expect(container_element).toBeVisible()
     expect(screen.queryByText('Andelsbrøk:')).not.toBeInTheDocument()
-    expect(
-      screen.queryByText('Pensjonsbeholdning før uttak:')
-    ).not.toBeInTheDocument()
+    expect(screen.queryByText('Pensjonsbeholdning:')).not.toBeInTheDocument()
   })
 
   it('håndterer undefined verdier i DetaljRad objekter', () => {
@@ -242,7 +238,7 @@ describe('Gitt at OpptjeningDetaljer rendres', () => {
 
       const kap20MedMixedData: DetaljRad[][] = [
         [
-          { tekst: 'Pensjonsbeholdning før uttak', verdi: '300 000 kr' },
+          { tekst: 'Pensjonsbeholdning', verdi: '300 000 kr' },
           { tekst: 'Trygdetid', verdi: 25 },
         ], // Kap20 data for gradert periode
         [], // Ingen kap20 data for helt uttak periode
@@ -266,7 +262,7 @@ describe('Gitt at OpptjeningDetaljer rendres', () => {
       expect(screen.getByText('6.5')).toBeVisible()
 
       // Skal vise kap20 data fra første array (gradert periode)
-      expect(screen.getByText('Pensjonsbeholdning før uttak:')).toBeVisible()
+      expect(screen.getByText('Pensjonsbeholdning:')).toBeVisible()
       expect(screen.getByText('300 000 kr')).toBeVisible()
       expect(screen.getByText('Trygdetid:')).toBeVisible()
       expect(screen.getByText('25')).toBeVisible()
@@ -289,9 +285,7 @@ describe('Gitt at OpptjeningDetaljer rendres', () => {
 
       // Skal ikke vise noen detaljer
       expect(screen.queryByText('Andelsbrøk:')).not.toBeInTheDocument()
-      expect(
-        screen.queryByText('Pensjonsbeholdning før uttak:')
-      ).not.toBeInTheDocument()
+      expect(screen.queryByText('Pensjonsbeholdning:')).not.toBeInTheDocument()
     })
 
     it('korrekt key generation for arrays med mixed tomme/fulle arrays', () => {

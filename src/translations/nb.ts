@@ -409,9 +409,9 @@ const translations = {
   'beregning.detaljer.afpPrivat.heltUttak.title': 'Ved {alderAar} {alderMd}',
   'beregning.detaljer.afpPrivat.gradertUttak.title': 'Ved {alderAar} {alderMd}',
   'beregning.detaljer.OpptjeningDetaljer.kap19.table.title':
-    'Opptjening alderspensjon etter kapittel 19',
+    'Opptjening kapittel 19',
   'beregning.detaljer.OpptjeningDetaljer.kap20.table.title':
-    'Opptjening alderspensjon etter kapittel 20',
+    'Opptjening kapittel 20',
   'beregning.detaljer.OpptjeningDetaljer.afpPrivat.table.title':
     'Månedlig avtalefestet pensjon (AFP)',
   'beregning.detaljer.OpptjeningDetaljer.pre2025OffentligAfp.table.title':

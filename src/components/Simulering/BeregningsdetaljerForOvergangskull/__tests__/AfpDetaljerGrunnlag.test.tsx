@@ -41,11 +41,11 @@ describe('AfpDetaljerGrunnlag', () => {
     ],
     afpOffentligDetaljerListe: [
       { tekst: 'AFP-tillegg', verdi: '5 000 kr' },
-      { tekst: 'Sum månedlig AFP', verdi: '15 000 kr' },
+      { tekst: 'Sum AFP', verdi: '15 000 kr' },
     ],
     pre2025OffentligAfpDetaljerListe: [
       { tekst: 'Grunnpensjon (kap. 19)', verdi: '12 000 kr' },
-      { tekst: 'Sum månedlig alderspensjon', verdi: '28 000 kr' },
+      { tekst: 'Sum alderspensjon', verdi: '28 000 kr' },
     ],
     opptjeningPre2025OffentligAfpListe: [
       { tekst: 'AFP grad', verdi: 100 },

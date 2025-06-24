@@ -37,7 +37,7 @@ export const AlderspensjonDetaljerGrunnlag: React.FC<Props> = ({
   return (
     <Box data-testid="beregningsdetaljer-for-overgangskull">
       <div className={styles.beregningsdetaljerForOvergangskullDesktopOnly}>
-        <HStack gap="20" width="100%">
+        <HStack gap="10" width="100%">
           {renderDetaljer()}
         </HStack>
       </div>
