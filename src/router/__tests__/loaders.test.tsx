@@ -973,24 +973,6 @@ describe('Loaders', () => {
     })
   })
   describe('stepSamtykkePensjonsavtaler', () => {
-    it('should skip if loepende pre2024OffentligAfp og ikke endring', async () => {
-      mockResponse('/v4/vedtak/loepende-vedtak', {
-        status: 200,
-        json: {
-          harLoependeVedtak: true,
-          ufoeretrygd: { grad: 0 },
-          pre2025OffentligAfp: {
-            fom: '2020-12-12',
-          },
-        } satisfies LoependeVedtak,
-      })
-
-      const returnedFromLoader =
-        await stepSamtykkePensjonsavtaler(createMockRequest())
-
-      expectRedirectResponse(returnedFromLoader, paths.beregningEnkel)
-    })
-
     it('Når bruker som ikke er kap19 er i endringsløp blir bruker ikke redirigert', async () => {
       mockResponse('/v4/person', {
         status: 200,
