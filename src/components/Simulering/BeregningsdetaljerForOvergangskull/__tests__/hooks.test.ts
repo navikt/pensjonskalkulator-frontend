@@ -348,7 +348,7 @@ describe('useBeregningsdetaljer', () => {
           expect.objectContaining({ tekst: 'Andelsbrøk', verdi: '7/10' }),
           expect.objectContaining({ tekst: 'Trygdetid', verdi: 7 }),
           expect.objectContaining({
-            tekst: 'Pensjonsbeholdning før uttak',
+            tekst: 'Pensjonsbeholdning',
             verdi: '80000 kr',
           }),
         ]),
@@ -389,7 +389,7 @@ describe('useBeregningsdetaljer', () => {
         expect(result.current.opptjeningKap20Liste).toEqual([
           expect.arrayContaining([
             expect.objectContaining({
-              tekst: 'Pensjonsbeholdning før uttak',
+              tekst: 'Pensjonsbeholdning',
               verdi: '0 kr',
             }),
           ]),
@@ -435,7 +435,7 @@ describe('useBeregningsdetaljer', () => {
           expect.arrayContaining([
             expect.objectContaining({ tekst: 'Trygdetid', verdi: 7 }),
             expect.objectContaining({
-              tekst: 'Pensjonsbeholdning før uttak',
+              tekst: 'Pensjonsbeholdning',
               verdi: '80000 kr',
             }),
           ])

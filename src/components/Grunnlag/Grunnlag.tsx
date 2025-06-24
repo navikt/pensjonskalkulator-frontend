@@ -33,6 +33,7 @@ import { AlderspensjonDetaljerGrunnlag } from '../Simulering/BeregningsdetaljerF
 import { useBeregningsdetaljer } from '../Simulering/BeregningsdetaljerForOvergangskull/hooks'
 import { Pensjonsgivendeinntekt } from '../Simulering/Pensjonsgivendeinntekt'
 import { GrunnlagAFP } from './GrunnlagAFP'
+import { useFormatertAfpHeader } from './GrunnlagAFP/hooks'
 import { GrunnlagSection } from './GrunnlagSection'
 import { GrunnlagUtenlandsopphold } from './GrunnlagUtenlandsopphold'
 
@@ -87,6 +88,17 @@ export const Grunnlag: React.FC<Props> = ({
     [sivilstand]
   )
 
+  const formatertAfpHeader = useFormatertAfpHeader()
+
+  // Get translated values for "nei" and "vet_ikke" to compare against
+  const neiTranslated = intl.formatMessage({ id: 'afp.nei' })
+  const vetIkkeTranslated = intl.formatMessage({ id: 'afp.vet_ikke' })
+
+  // Hide ReadMore if AFP header is "Nei" or "Vet ikke"
+  const shouldShowAfpReadMore =
+    formatertAfpHeader !== neiTranslated &&
+    formatertAfpHeader !== vetIkkeTranslated
+
   const {
     alderspensjonDetaljerListe,
     pre2025OffentligAfpDetaljerListe,
@@ -127,44 +139,46 @@ export const Grunnlag: React.FC<Props> = ({
 
         <GrunnlagItem color="purple">
           <GrunnlagAFP />
-          <ReadMore
-            name="Listekomponenter for AFP"
-            open={isAFPDokumentasjonVisible}
-            header={
-              isAFPDokumentasjonVisible
-                ? intl.formatMessage(
-                    {
-                      id: 'beregning.detaljer.lukk',
-                    },
-                    {
-                      ...getFormatMessageValues(),
-                      ytelse: 'AFP',
-                    }
-                  )
-                : intl.formatMessage(
-                    {
-                      id: 'beregning.detaljer.vis',
-                    },
-                    {
-                      ...getFormatMessageValues(),
-                      ytelse: 'AFP',
-                    }
-                  )
-            }
-            className={`${styles.visListekomponenter} ${styles.wideDetailedView}`}
-            onOpenChange={setIsAFPDokumentasjonVisible}
-          >
-            <AfpDetaljerGrunnlag
-              afpPrivatDetaljerListe={afpPrivatDetaljerListe}
-              afpOffentligDetaljerListe={afpOffentligDetaljerListe}
-              pre2025OffentligAfpDetaljerListe={
-                pre2025OffentligAfpDetaljerListe
+          {shouldShowAfpReadMore && (
+            <ReadMore
+              name="Listekomponenter for AFP"
+              open={isAFPDokumentasjonVisible}
+              header={
+                isAFPDokumentasjonVisible
+                  ? intl.formatMessage(
+                      {
+                        id: 'beregning.detaljer.lukk',
+                      },
+                      {
+                        ...getFormatMessageValues(),
+                        ytelse: 'AFP',
+                      }
+                    )
+                  : intl.formatMessage(
+                      {
+                        id: 'beregning.detaljer.vis',
+                      },
+                      {
+                        ...getFormatMessageValues(),
+                        ytelse: 'AFP',
+                      }
+                    )
               }
-              opptjeningPre2025OffentligAfpListe={
-                opptjeningPre2025OffentligAfpListe
-              }
-            />
-          </ReadMore>
+              className={`${styles.visListekomponenter} ${styles.wideDetailedView}`}
+              onOpenChange={setIsAFPDokumentasjonVisible}
+            >
+              <AfpDetaljerGrunnlag
+                afpPrivatDetaljerListe={afpPrivatDetaljerListe}
+                afpOffentligDetaljerListe={afpOffentligDetaljerListe}
+                pre2025OffentligAfpDetaljerListe={
+                  pre2025OffentligAfpDetaljerListe
+                }
+                opptjeningPre2025OffentligAfpListe={
+                  opptjeningPre2025OffentligAfpListe
+                }
+              />
+            </ReadMore>
+          )}
         </GrunnlagItem>
 
         <GrunnlagItem color="blue">

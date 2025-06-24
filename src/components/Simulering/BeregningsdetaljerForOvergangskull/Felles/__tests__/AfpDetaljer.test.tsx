@@ -256,7 +256,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
       stateWith62
     )
 
-    const headings = screen.getAllByRole('heading', { level: 3 })
+    const headings = screen.getAllByRole('heading', { level: 4 })
     expect(headings).toHaveLength(2) // En for AFP ved uttaksalder og en for AFP ved 67
   })
 
@@ -742,7 +742,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
         stateWith64
       )
 
-      const headings = screen.getAllByRole('heading', { level: 3 })
+      const headings = screen.getAllByRole('heading', { level: 4 })
       expect(headings).toHaveLength(2) // To headings for AFP privat seksjoner
     })
   })
