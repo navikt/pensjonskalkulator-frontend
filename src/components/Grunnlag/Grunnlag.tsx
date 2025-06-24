@@ -169,7 +169,7 @@ export const Grunnlag: React.FC<Props> = ({
 
         <GrunnlagItem color="blue">
           <VStack gap="3">
-            <Heading level="2" size="small">
+            <Heading level="3" size="small">
               <FormattedMessage id="beregning.highcharts.serie.alderspensjon.name" />
             </Heading>
             <BodyLong>

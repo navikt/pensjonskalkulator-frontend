@@ -55,7 +55,7 @@ export const AfpDetaljer: React.FC<AfpDetaljerProps> = ({
             currentAge &&
             currentAge < 67 && (
               <div className="afpPrivatAtUttaksalder">
-                <Heading size="small" level="3">
+                <Heading size="small" level="4">
                   <FormattedMessage
                     id="beregning.detaljer.afpPrivat.gradertUttak.title"
                     values={{
@@ -102,7 +102,7 @@ export const AfpDetaljer: React.FC<AfpDetaljerProps> = ({
             )}
 
           <div className="afpPrivatAt67">
-            <Heading size="small" level="3">
+            <Heading size="small" level="4">
               <FormattedMessage
                 id="beregning.detaljer.afpPrivat.heltUttak.title"
                 values={{
@@ -154,7 +154,7 @@ export const AfpDetaljer: React.FC<AfpDetaljerProps> = ({
           {pre2025OffentligAfpDetaljerListe &&
             pre2025OffentligAfpDetaljerListe.length > 0 && (
               <div className="pre2025OffentligAfpUttak">
-                <Heading size="small" level="3">
+                <Heading size="small" level="4">
                   <FormattedMessage
                     id="beregning.detaljer.grunnpensjon.pre2025OffentligAfp.title"
                     values={{

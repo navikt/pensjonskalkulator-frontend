@@ -16,6 +16,11 @@ export const OpptjeningDetaljer: React.FC<OpptjeningDetaljerProps> = ({
   opptjeningKap19Liste,
   opptjeningKap20Liste,
 }) => {
+  // Count total number of opptjening elements
+  const totalOpptjeningElements =
+    (opptjeningKap19Liste?.length || 0) + (opptjeningKap20Liste?.length || 0)
+  const shouldUseHStack = totalOpptjeningElements === 4
+
   // Render sections in the correct order for gradert uttak
   const renderOpptjeningSections = () => {
     const maxLength = Math.max(
@@ -72,11 +77,19 @@ export const OpptjeningDetaljer: React.FC<OpptjeningDetaljerProps> = ({
 
       // Only add the group if it has sections
       if (sectionsInGroup.length > 0) {
-        sectionGroups.push(
-          <VStack key={`group-${i}`} gap="8">
-            {sectionsInGroup}
-          </VStack>
-        )
+        if (shouldUseHStack) {
+          sectionGroups.push(
+            <HStack key={`group-${i}`} gap="8">
+              {sectionsInGroup}
+            </HStack>
+          )
+        } else {
+          sectionGroups.push(
+            <VStack key={`group-${i}`} gap="8">
+              {sectionsInGroup}
+            </VStack>
+          )
+        }
       }
     }
 

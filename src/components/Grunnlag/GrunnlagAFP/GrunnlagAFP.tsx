@@ -182,7 +182,7 @@ export const GrunnlagAFP: React.FC = () => {
 
   return (
     <VStack gap="3">
-      <Heading level="2" size="small">
+      <Heading level="3" size="small">
         <FormattedMessage id="beregning.highcharts.serie.afp.name" />:{' '}
         <span style={{ fontWeight: 'normal' }}>{formatertAfpHeader}</span>
       </Heading>

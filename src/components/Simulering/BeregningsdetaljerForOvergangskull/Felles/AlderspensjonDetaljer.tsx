@@ -40,7 +40,7 @@ export const AlderspensjonDetaljer: React.FC<AlderspensjonDetaljerProps> = ({
         !hasPre2025OffentligAfpUttaksalder &&
         gradertUttaksperiode?.uttaksalder.aar !== uttaksalder?.aar && (
           <div className="gradertUttak">
-            <Heading size="small" level="3">
+            <Heading size="small" level="4">
               <FormattedMessage
                 id="beregning.detaljer.grunnpensjon.gradertUttak.title"
                 values={{
@@ -85,7 +85,7 @@ export const AlderspensjonDetaljer: React.FC<AlderspensjonDetaljerProps> = ({
           </div>
         )}
       <div className="heltUttak">
-        <Heading size="small" level="3">
+        <Heading size="small" level="4">
           <FormattedMessage
             id="beregning.detaljer.grunnpensjon.heltUttak.title"
             values={{

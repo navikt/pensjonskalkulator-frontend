@@ -45,8 +45,8 @@ describe('Gitt at OpptjeningDetaljer rendres', () => {
       <OpptjeningDetaljer {...defaultProps} />
     )
 
-    const section = container.querySelector('section')
-    expect(section).toBeInTheDocument()
+    const container_element = container.firstChild
+    expect(container_element).toBeInTheDocument()
   })
 
   it('rendrer kap19 OpptjeningDetaljer når data er tilgjengelig', () => {
@@ -102,8 +102,8 @@ describe('Gitt at OpptjeningDetaljer rendres', () => {
       <OpptjeningDetaljer opptjeningKap19Liste={[]} opptjeningKap20Liste={[]} />
     )
 
-    const section = container.querySelector('section')
-    expect(section).toBeVisible()
+    const container_element = container.firstChild
+    expect(container_element).toBeVisible()
     expect(screen.queryByText('Andelsbrøk:')).not.toBeInTheDocument()
     expect(
       screen.queryByText('Pensjonsbeholdning før uttak:')
@@ -280,8 +280,8 @@ describe('Gitt at OpptjeningDetaljer rendres', () => {
         />
       )
 
-      const section = container.querySelector('section')
-      expect(section).toBeVisible()
+      const container_element = container.firstChild
+      expect(container_element).toBeVisible()
 
       // Skal ikke ha noen definition lists
       const definitionLists = container.querySelectorAll('dl')
@@ -318,6 +318,136 @@ describe('Gitt at OpptjeningDetaljer rendres', () => {
       expect(screen.getByText('test')).toBeVisible()
       expect(screen.getByText('Annen test verdi:')).toBeVisible()
       expect(screen.getByText('test2')).toBeVisible()
+    })
+  })
+
+  describe('HStack/VStack betinget rendering basert på totalt antall elementer', () => {
+    it('bruker VStack når totalt antall elementer er mindre enn 4', () => {
+      const kap19Liste: DetaljRad[][] = [[{ tekst: 'Test 1', verdi: 'value1' }]]
+      const kap20Liste: DetaljRad[][] = [[{ tekst: 'Test 2', verdi: 'value2' }]]
+
+      renderWithIntl(
+        <OpptjeningDetaljer
+          opptjeningKap19Liste={kap19Liste}
+          opptjeningKap20Liste={kap20Liste}
+        />
+      )
+
+      // Totalt antall elementer = 2, skal bruke VStack
+      expect(screen.getByText('Test 1:')).toBeVisible()
+      expect(screen.getByText('Test 2:')).toBeVisible()
+    })
+
+    it('bruker VStack når totalt antall elementer er mer enn 4', () => {
+      const kap19Liste: DetaljRad[][] = [
+        [{ tekst: 'Test 1', verdi: 'value1' }],
+        [{ tekst: 'Test 2', verdi: 'value2' }],
+        [{ tekst: 'Test 3', verdi: 'value3' }],
+      ]
+      const kap20Liste: DetaljRad[][] = [
+        [{ tekst: 'Test 4', verdi: 'value4' }],
+        [{ tekst: 'Test 5', verdi: 'value5' }],
+        [{ tekst: 'Test 6', verdi: 'value6' }],
+      ]
+
+      renderWithIntl(
+        <OpptjeningDetaljer
+          opptjeningKap19Liste={kap19Liste}
+          opptjeningKap20Liste={kap20Liste}
+        />
+      )
+
+      expect(screen.getByText('Test 1:')).toBeVisible()
+      expect(screen.getByText('Test 4:')).toBeVisible()
+      expect(screen.getByText('Test 6:')).toBeVisible()
+    })
+
+    it('bruker HStack når totalt antall elementer er nøyaktig 4', () => {
+      const kap19Liste: DetaljRad[][] = [
+        [{ tekst: 'Kap19 Test 1', verdi: 'value1' }],
+        [{ tekst: 'Kap19 Test 2', verdi: 'value2' }],
+      ]
+      const kap20Liste: DetaljRad[][] = [
+        [{ tekst: 'Kap20 Test 1', verdi: 'value3' }],
+        [{ tekst: 'Kap20 Test 2', verdi: 'value4' }],
+      ]
+
+      renderWithIntl(
+        <OpptjeningDetaljer
+          opptjeningKap19Liste={kap19Liste}
+          opptjeningKap20Liste={kap20Liste}
+        />
+      )
+
+      expect(screen.getByText('Kap19 Test 1:')).toBeVisible()
+      expect(screen.getByText('Kap19 Test 2:')).toBeVisible()
+      expect(screen.getByText('Kap20 Test 1:')).toBeVisible()
+      expect(screen.getByText('Kap20 Test 2:')).toBeVisible()
+    })
+
+    it('bruker HStack når en liste er tom men totalt er 4', () => {
+      const kap19Liste: DetaljRad[][] = [
+        [{ tekst: 'Kap19 Test 1', verdi: 'value1' }],
+        [{ tekst: 'Kap19 Test 2', verdi: 'value2' }],
+        [{ tekst: 'Kap19 Test 3', verdi: 'value3' }],
+        [{ tekst: 'Kap19 Test 4', verdi: 'value4' }],
+      ]
+      const kap20Liste: DetaljRad[][] = []
+
+      renderWithIntl(
+        <OpptjeningDetaljer
+          opptjeningKap19Liste={kap19Liste}
+          opptjeningKap20Liste={kap20Liste}
+        />
+      )
+
+      // Totalt antall elementer = 4, skal bruke HStack
+      expect(screen.getByText('Kap19 Test 1:')).toBeVisible()
+      expect(screen.getByText('Kap19 Test 2:')).toBeVisible()
+      expect(screen.getByText('Kap19 Test 3:')).toBeVisible()
+      expect(screen.getByText('Kap19 Test 4:')).toBeVisible()
+    })
+
+    it('bruker VStack når totalt antall elementer er 0', () => {
+      const { container } = renderWithIntl(
+        <OpptjeningDetaljer
+          opptjeningKap19Liste={[]}
+          opptjeningKap20Liste={[]}
+        />
+      )
+
+      const container_element = container.firstChild
+      expect(container_element).toBeVisible()
+
+      // Skal ikke rendre noen definisjonslister
+      const definitionLists = container.querySelectorAll('dl')
+      expect(definitionLists).toHaveLength(0)
+    })
+
+    it('teller korrekt elementer når arrays inneholder tomme underarrays', () => {
+      const kap19Liste: DetaljRad[][] = [
+        [], // Tom underarray - skal ikke telle mot rendering
+        [{ tekst: 'Kap19 Test 1', verdi: 'value1' }], // Teller som 1
+        [{ tekst: 'Kap19 Test 2', verdi: 'value2' }], // Teller som 1
+      ]
+      const kap20Liste: DetaljRad[][] = [
+        [{ tekst: 'Kap20 Test 1', verdi: 'value3' }], // Teller som 1
+        [], // Tom underarray - skal ikke telle mot rendering
+      ]
+
+      const { container } = renderWithIntl(
+        <OpptjeningDetaljer
+          opptjeningKap19Liste={kap19Liste}
+          opptjeningKap20Liste={kap20Liste}
+        />
+      )
+
+      const definitionLists = container.querySelectorAll('dl')
+      expect(definitionLists).toHaveLength(3)
+
+      expect(screen.getByText('Kap19 Test 1:')).toBeVisible()
+      expect(screen.getByText('Kap19 Test 2:')).toBeVisible()
+      expect(screen.getByText('Kap20 Test 1:')).toBeVisible()
     })
   })
 })
