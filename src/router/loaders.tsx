@@ -409,10 +409,6 @@ export const stepSamtykkePensjonsavtaler = async ({
     return skip(stepArrays, paths.samtykke, request)
   }
 
-  if (loependeVedtak.pre2025OffentligAfp && !isEndring) {
-    return skip(stepArrays, paths.samtykke, request)
-  }
-
   return {
     erApoteker,
     isKap19,
