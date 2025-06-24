@@ -720,4 +720,94 @@ describe('Grunnlag - AFP', () => {
       expect(screen.getByText('afp.offentlig')).toBeVisible()
     })
   })
+  describe('Gitt at brukeren er apoteker', () => {
+    it('og født før 1963 får brukeren riktig tittel og tekst,', () => {
+      render(<WrappedGrunnlagAFP />, {
+        preloadedApiState: {
+          getPerson: {
+            navn: 'Aprikos',
+            sivilstand: 'UGIFT',
+            foedselsdato: '1961-01-01',
+            pensjoneringAldre: {
+              normertPensjoneringsalder: {
+                aar: 67,
+                maaneder: 0,
+              },
+              nedreAldersgrense: {
+                aar: 62,
+                maaneder: 0,
+              },
+            },
+          },
+          getErApoteker: true,
+          getLoependeVedtak: {
+            harLoependeVedtak: false,
+            alderspensjon: {
+              grad: 0,
+              fom: '2025-03-01',
+              sivilstand: 'UGIFT',
+            },
+            ufoeretrygd: {
+              grad: 0,
+            },
+            pre2025OffentligAfp: {
+              fom: '2025-04-01',
+            },
+          },
+        },
+        preloadedState: {
+          userInput: { ...userInputInitialState },
+        },
+      })
+
+      expect(
+        screen.getByTestId('grunnlag.afp.ingress.overgangskull')
+      ).toBeVisible()
+    })
+
+    it('og født etter 1973 får brukeren riktig tittel og tekst,', () => {
+      render(<WrappedGrunnlagAFP />, {
+        preloadedApiState: {
+          getPerson: {
+            navn: 'Aprikos',
+            sivilstand: 'UGIFT',
+            foedselsdato: '1967-01-01',
+            pensjoneringAldre: {
+              normertPensjoneringsalder: {
+                aar: 67,
+                maaneder: 0,
+              },
+              nedreAldersgrense: {
+                aar: 62,
+                maaneder: 0,
+              },
+            },
+          },
+          getErApoteker: true,
+          getLoependeVedtak: {
+            harLoependeVedtak: false,
+            alderspensjon: {
+              grad: 0,
+              fom: '2025-03-01',
+              sivilstand: 'UGIFT',
+            },
+            ufoeretrygd: {
+              grad: 0,
+            },
+            pre2025OffentligAfp: {
+              fom: '2025-04-01',
+            },
+          },
+        },
+        preloadedState: {
+          userInput: { ...userInputInitialState },
+        },
+      })
+
+      expect(
+        screen.getByText('grunnlag.afp.ingress.overgangskull')
+      ).toBeVisible()
+      expect(screen.getByText('afp.offentlig')).toBeVisible()
+    })
+  })
 })

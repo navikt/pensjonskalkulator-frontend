@@ -184,20 +184,6 @@
           ],
           "markDefs": [],
           "style": "normal"
-        },
-        {
-          "_key": "59dc7428c647",
-          "_type": "block",
-          "children": [
-            {
-              "_key": "64db95357397",
-              "_type": "span",
-              "marks": [],
-              "text": "Hvilken sats for minstepensjon du får kan påvirkes av sivilstanden din, og hvilke inntekter og ytelser ektefellen eller samboeren din har. Kalkulatoren kan ikke kontrollere ektefelles eller samboers ytelser. I noen tilfeller kan derfor feil sats for minstepensjon bli brukt."
-            }
-          ],
-          "markDefs": [],
-          "style": "normal"
         }
       ],
       "overskrift": "Sivilstand"
