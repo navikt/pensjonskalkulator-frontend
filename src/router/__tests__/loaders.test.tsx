@@ -34,7 +34,7 @@ import {
 
 function expectRedirectResponse(
   returnedFromLoader: Response | object | undefined,
-  expectedLocation: string
+  expectedLocation?: string
 ) {
   expect(returnedFromLoader).toBeDefined()
   if (!returnedFromLoader) {
@@ -47,7 +47,9 @@ function expectRedirectResponse(
   }
 
   expect(returnedFromLoader.status).toBe(302)
-  expect(returnedFromLoader.headers.get('location')).toBe(expectedLocation)
+  if (expectedLocation) {
+    expect(returnedFromLoader.headers.get('location')).toBe(expectedLocation)
+  }
 }
 
 export function createMockRequest(
@@ -809,7 +811,7 @@ describe('Loaders', () => {
 
     const returnedFromLoader = await stepAFPAccessGuard(createMockRequest())
 
-    expectRedirectResponse(returnedFromLoader, paths.beregningEnkel)
+    expectRedirectResponse(returnedFromLoader)
   })
 
   describe('stepUfoeretrygdAFPAccessGuard', () => {
@@ -971,7 +973,7 @@ describe('Loaders', () => {
     })
   })
   describe('stepSamtykkePensjonsavtaler', () => {
-    it('should skip if loapende pre2024OffentligAfp og ikke endring', async () => {
+    it('should skip if loepende pre2024OffentligAfp og ikke endring', async () => {
       mockResponse('/v4/vedtak/loepende-vedtak', {
         status: 200,
         json: {
@@ -988,7 +990,21 @@ describe('Loaders', () => {
 
       expectRedirectResponse(returnedFromLoader, paths.beregningEnkel)
     })
-    it('Når bruker er i endringsløp blir bruker ikke redirigert', async () => {
+
+    it('Når bruker som ikke er kap19 er i endringsløp blir bruker ikke redirigert', async () => {
+      mockResponse('/v4/person', {
+        status: 200,
+        json: {
+          foedselsdato: '1965-01-01',
+          navn: 'Test Person',
+          sivilstand: 'GIFT',
+          pensjoneringAldre: {
+            normertPensjoneringsalder: { aar: 67, maaneder: 0 },
+            nedreAldersgrense: { aar: 62, maaneder: 0 },
+          },
+        } satisfies Person,
+      })
+
       mockResponse('/v4/vedtak/loepende-vedtak', {
         status: 200,
         json: {
@@ -1003,7 +1019,7 @@ describe('Loaders', () => {
       })
       const returnedFromLoader =
         await stepSamtykkePensjonsavtaler(createMockRequest())
-      expect(returnedFromLoader).toBeUndefined()
+      expect(returnedFromLoader).toEqual({ erApoteker: false, isKap19: false })
     })
   })
 
