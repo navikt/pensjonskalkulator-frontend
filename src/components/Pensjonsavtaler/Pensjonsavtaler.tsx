@@ -21,6 +21,7 @@ import {
   selectCurrentSimulation,
   selectEpsHarInntektOver2G,
   selectEpsHarPensjon,
+  selectErApoteker,
   selectFoedselsdato,
   selectSamtykke,
   selectSivilstand,
@@ -55,6 +56,7 @@ export const Pensjonsavtaler = (props: {
   const foedselsdato = useAppSelector(selectFoedselsdato)
   const epsHarInntektOver2G = useAppSelector(selectEpsHarInntektOver2G)
   const epsHarPensjon = useAppSelector(selectEpsHarPensjon)
+  const erApoteker = useAppSelector(selectErApoteker)
   const utenlandsperioder = useAppSelector(selectUtenlandsperioder)
   const { uttaksalder, aarligInntektVsaHelPensjon, gradertUttaksperiode } =
     useAppSelector(selectCurrentSimulation)
@@ -88,6 +90,7 @@ export const Pensjonsavtaler = (props: {
           aarligInntektVsaPensjon: aarligInntektVsaHelPensjon,
         },
         utenlandsperioder,
+        erApoteker,
       })
       setOffentligTpRequestBody(requestBody)
     }
