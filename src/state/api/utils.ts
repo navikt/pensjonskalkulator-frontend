@@ -327,6 +327,7 @@ export const generateOffentligTpRequestBody = (args: {
   gradertUttak?: GradertUttak
   heltUttak?: HeltUttak
   utenlandsperioder: Utenlandsperiode[]
+  erApoteker?: boolean
 }): OffentligTpRequestBody | undefined => {
   const {
     afp,
@@ -338,6 +339,7 @@ export const generateOffentligTpRequestBody = (args: {
     gradertUttak,
     heltUttak,
     utenlandsperioder,
+    erApoteker,
   } = args
 
   if (!foedselsdato || !heltUttak) {
@@ -372,5 +374,6 @@ export const generateOffentligTpRequestBody = (args: {
     epsHarInntektOver2G: epsHarInntektOver2G ?? checkHarSamboer(sivilstand),
     epsHarPensjon: !!epsHarPensjon,
     brukerBaOmAfp: afp === 'ja_offentlig' || afp === 'ja_privat',
+    erApoteker: erApoteker,
   }
 }

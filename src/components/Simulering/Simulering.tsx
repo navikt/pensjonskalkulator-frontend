@@ -23,6 +23,7 @@ import {
   selectCurrentSimulation,
   selectEpsHarInntektOver2G,
   selectEpsHarPensjon,
+  selectErApoteker,
   selectFoedselsdato,
   selectIsEndring,
   selectSamtykke,
@@ -82,6 +83,7 @@ export const Simulering = ({
   const isEndring = useAppSelector(selectIsEndring)
   const epsHarPensjon = useAppSelector(selectEpsHarPensjon)
   const epsHarInntektOver2G = useAppSelector(selectEpsHarInntektOver2G)
+  const erApoteker = useAppSelector(selectErApoteker)
   const utenlandsperioder = useAppSelector(selectUtenlandsperioder)
   const { uttaksalder, aarligInntektVsaHelPensjon, gradertUttaksperiode } =
     useAppSelector(selectCurrentSimulation)
@@ -135,6 +137,7 @@ export const Simulering = ({
             aarligInntektVsaPensjon: aarligInntektVsaHelPensjon,
           },
           utenlandsperioder,
+          erApoteker,
         })
       )
 
