@@ -396,6 +396,10 @@ export const stepSamtykkePensjonsavtaler = async ({
     .dispatch(apiSlice.endpoints.getPerson.initiate())
     .unwrap()
 
+  const erApoteker = await store
+    .dispatch(apiSlice.endpoints.getErApoteker.initiate())
+    .unwrap()
+
   const isEndring = isLoependeVedtakEndring(loependeVedtak)
   const isKap19 = isFoedtFoer1963(person.foedselsdato)
 
@@ -403,6 +407,11 @@ export const stepSamtykkePensjonsavtaler = async ({
 
   if (isEndring && isKap19) {
     return skip(stepArrays, paths.samtykke, request)
+  }
+
+  return {
+    erApoteker,
+    isKap19,
   }
 }
 
