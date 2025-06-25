@@ -6,7 +6,7 @@ export const ApotekereWarning = ({ showWarning }: { showWarning: boolean }) => {
   if (!showWarning) return null
 
   return (
-    <Alert variant="warning">
+    <Alert variant="warning" data-testid="apotekere-warning">
       <FormattedMessage id="error.apoteker_warning" />
     </Alert>
   )
