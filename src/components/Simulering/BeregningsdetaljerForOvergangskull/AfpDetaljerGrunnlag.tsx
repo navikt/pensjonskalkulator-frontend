@@ -32,7 +32,7 @@ export const AfpDetaljerGrunnlag: React.FC<Props> = ({
   return (
     <Box data-testid="beregningsdetaljer-for-overgangskull">
       <div className={styles.beregningsdetaljerForOvergangskullDesktopOnly}>
-        <HStack gap="6" width="100%">
+        <HStack gap="20" width="100%">
           {renderDetaljer()}
         </HStack>
       </div>
