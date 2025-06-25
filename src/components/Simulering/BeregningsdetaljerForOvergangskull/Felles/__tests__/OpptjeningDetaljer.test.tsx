@@ -35,9 +35,18 @@ describe('Gitt at OpptjeningDetaljer rendres', () => {
     ],
   ]
 
+  const mockAlderspensjonDetaljerListe: DetaljRad[][] = [
+    [
+      { tekst: 'Grunnpensjon', verdi: '150 000 kr' },
+      { tekst: 'Tilleggspensjon', verdi: '50 000 kr' },
+    ],
+    [{ tekst: 'Alderspensjon', verdi: '200 000 kr' }],
+  ]
+
   const defaultProps = {
     opptjeningKap19Liste: mockOpptjeningKap19Liste,
     opptjeningKap20Liste: mockOpptjeningKap20Liste,
+    alderspensjonDetaljerListe: mockAlderspensjonDetaljerListe,
   }
 
   it('rendrer komponenten med påkrevde props', () => {
@@ -76,6 +85,7 @@ describe('Gitt at OpptjeningDetaljer rendres', () => {
       <OpptjeningDetaljer
         opptjeningKap19Liste={[]}
         opptjeningKap20Liste={mockOpptjeningKap20Liste}
+        alderspensjonDetaljerListe={mockAlderspensjonDetaljerListe}
       />
     )
 
@@ -88,6 +98,7 @@ describe('Gitt at OpptjeningDetaljer rendres', () => {
       <OpptjeningDetaljer
         opptjeningKap19Liste={mockOpptjeningKap19Liste}
         opptjeningKap20Liste={[]}
+        alderspensjonDetaljerListe={mockAlderspensjonDetaljerListe}
       />
     )
 
@@ -97,7 +108,11 @@ describe('Gitt at OpptjeningDetaljer rendres', () => {
 
   it('håndterer tomme arrays for begge objekter', () => {
     const { container } = renderWithIntl(
-      <OpptjeningDetaljer opptjeningKap19Liste={[]} opptjeningKap20Liste={[]} />
+      <OpptjeningDetaljer
+        opptjeningKap19Liste={[]}
+        opptjeningKap20Liste={[]}
+        alderspensjonDetaljerListe={mockAlderspensjonDetaljerListe}
+      />
     )
 
     const container_element = container.firstChild
@@ -115,6 +130,7 @@ describe('Gitt at OpptjeningDetaljer rendres', () => {
       <OpptjeningDetaljer
         opptjeningKap19Liste={objektMedUndefined}
         opptjeningKap20Liste={[]}
+        alderspensjonDetaljerListe={mockAlderspensjonDetaljerListe}
       />
     )
 
@@ -164,6 +180,7 @@ describe('Gitt at OpptjeningDetaljer rendres', () => {
         <OpptjeningDetaljer
           opptjeningKap19Liste={kap19MedTomForsteArray}
           opptjeningKap20Liste={[]}
+          alderspensjonDetaljerListe={mockAlderspensjonDetaljerListe}
         />
       )
 
@@ -187,6 +204,7 @@ describe('Gitt at OpptjeningDetaljer rendres', () => {
         <OpptjeningDetaljer
           opptjeningKap19Liste={kap19MedTomAndreArray}
           opptjeningKap20Liste={[]}
+          alderspensjonDetaljerListe={mockAlderspensjonDetaljerListe}
         />
       )
 
@@ -213,6 +231,7 @@ describe('Gitt at OpptjeningDetaljer rendres', () => {
         <OpptjeningDetaljer
           opptjeningKap19Liste={kap19MedBeggeArrays}
           opptjeningKap20Liste={[]}
+          alderspensjonDetaljerListe={mockAlderspensjonDetaljerListe}
         />
       )
 
@@ -248,6 +267,7 @@ describe('Gitt at OpptjeningDetaljer rendres', () => {
         <OpptjeningDetaljer
           opptjeningKap19Liste={kap19MedMixedData}
           opptjeningKap20Liste={kap20MedMixedData}
+          alderspensjonDetaljerListe={mockAlderspensjonDetaljerListe}
         />
       )
 
@@ -273,6 +293,7 @@ describe('Gitt at OpptjeningDetaljer rendres', () => {
         <OpptjeningDetaljer
           opptjeningKap19Liste={[[], []]}
           opptjeningKap20Liste={[[], []]}
+          alderspensjonDetaljerListe={mockAlderspensjonDetaljerListe}
         />
       )
 
@@ -300,6 +321,7 @@ describe('Gitt at OpptjeningDetaljer rendres', () => {
         <OpptjeningDetaljer
           opptjeningKap19Liste={kap19MedMixedData}
           opptjeningKap20Liste={[]}
+          alderspensjonDetaljerListe={mockAlderspensjonDetaljerListe}
         />
       )
 
@@ -324,6 +346,7 @@ describe('Gitt at OpptjeningDetaljer rendres', () => {
         <OpptjeningDetaljer
           opptjeningKap19Liste={kap19Liste}
           opptjeningKap20Liste={kap20Liste}
+          alderspensjonDetaljerListe={mockAlderspensjonDetaljerListe}
         />
       )
 
@@ -348,6 +371,7 @@ describe('Gitt at OpptjeningDetaljer rendres', () => {
         <OpptjeningDetaljer
           opptjeningKap19Liste={kap19Liste}
           opptjeningKap20Liste={kap20Liste}
+          alderspensjonDetaljerListe={mockAlderspensjonDetaljerListe}
         />
       )
 
@@ -370,6 +394,7 @@ describe('Gitt at OpptjeningDetaljer rendres', () => {
         <OpptjeningDetaljer
           opptjeningKap19Liste={kap19Liste}
           opptjeningKap20Liste={kap20Liste}
+          alderspensjonDetaljerListe={mockAlderspensjonDetaljerListe}
         />
       )
 
@@ -392,6 +417,7 @@ describe('Gitt at OpptjeningDetaljer rendres', () => {
         <OpptjeningDetaljer
           opptjeningKap19Liste={kap19Liste}
           opptjeningKap20Liste={kap20Liste}
+          alderspensjonDetaljerListe={mockAlderspensjonDetaljerListe}
         />
       )
 
@@ -407,6 +433,7 @@ describe('Gitt at OpptjeningDetaljer rendres', () => {
         <OpptjeningDetaljer
           opptjeningKap19Liste={[]}
           opptjeningKap20Liste={[]}
+          alderspensjonDetaljerListe={mockAlderspensjonDetaljerListe}
         />
       )
 
@@ -433,6 +460,7 @@ describe('Gitt at OpptjeningDetaljer rendres', () => {
         <OpptjeningDetaljer
           opptjeningKap19Liste={kap19Liste}
           opptjeningKap20Liste={kap20Liste}
+          alderspensjonDetaljerListe={mockAlderspensjonDetaljerListe}
         />
       )
 

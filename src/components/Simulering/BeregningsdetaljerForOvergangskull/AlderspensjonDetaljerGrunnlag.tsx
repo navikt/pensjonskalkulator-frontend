@@ -30,6 +30,7 @@ export const AlderspensjonDetaljerGrunnlag: React.FC<Props> = ({
       <OpptjeningDetaljer
         opptjeningKap19Liste={opptjeningKap19Liste}
         opptjeningKap20Liste={opptjeningKap20Liste}
+        alderspensjonDetaljerListe={alderspensjonDetaljerListe}
       />
     </>
   )

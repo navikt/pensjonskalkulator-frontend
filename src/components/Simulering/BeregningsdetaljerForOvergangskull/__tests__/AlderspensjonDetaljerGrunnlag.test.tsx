@@ -27,14 +27,17 @@ vi.mock('../Felles/OpptjeningDetaljer', () => ({
   OpptjeningDetaljer: ({
     opptjeningKap19Liste,
     opptjeningKap20Liste,
+    alderspensjonDetaljerListe,
   }: {
     opptjeningKap19Liste: DetaljRad[][]
     opptjeningKap20Liste: DetaljRad[][]
+    alderspensjonDetaljerListe: DetaljRad[][]
   }) => (
     <div
       data-testid="OpptjeningDetaljer"
       data-kap19-length={opptjeningKap19Liste.length}
       data-kap20-length={opptjeningKap20Liste.length}
+      data-alderspensjon-length={alderspensjonDetaljerListe.length}
     >
       OpptjeningDetaljer Mock
     </div>
