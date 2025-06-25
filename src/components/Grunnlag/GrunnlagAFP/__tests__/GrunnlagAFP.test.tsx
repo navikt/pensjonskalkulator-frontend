@@ -816,7 +816,7 @@ describe('Grunnlag - AFP', () => {
       ).toBeVisible()
     })
 
-    it('og født etter 1973 får brukeren riktig tittel og tekst,', () => {
+    it('og født etter 1963 får brukeren riktig tittel og tekst,', () => {
       render(<WrappedGrunnlagAFP />, {
         preloadedApiState: {
           getPerson: {
