@@ -620,7 +620,7 @@ const translations = {
     'Du har oppgitt AFP i offentlig sektor. Nav har ikke vurdert om du fyller alle vilkårene for AFP, men forutsetter at du gjør det. For mer informasjon om vilkårene, sjekk tjenestepensjonsordningen din.',
   'grunnlag.afp.ingress.overgangskull':
     'Beregningen av alderspensjon tar høyde for at du mottar AFP. AFP vises ikke i beregningen.',
-  'grunnlag.afp.ingress.overgangskull.ufoeretrygd':
+  'grunnlag.afp.ingress.overgangskull.ufoeretrygd_eller_ap':
     'Når du mottar uføretrygd eller alderspensjon kan du ikke beregne AFP i kalkulatoren.{br}{br} Hvis du vil beregne AFP i offentlig sektor og er under 65 år, kan du kontakte Nav på telefon 55 55 33 34. Er du over 65 år kan du kontakte tjenestepensjonsordningen din.{br}{br} AFP i privat sektor kan ikke kombineres med uføretrygd. Får du utbetalt uføretrygd etter du fyller 62 år mister du retten til AFP.{br}{br} Vil du vite mer? Les mer om <ufoeretrygdOgAfpLink>Uføretrygd og AFP</ufoeretrygdOgAfpLink>.',
   'grunnlag.afp.ingress.ja_offentlig.endring':
     'Du har AFP i offentlig sektor. Din AFP er ikke påvirket av endringen din av alderspensjon. Den fortsetter som før.',
