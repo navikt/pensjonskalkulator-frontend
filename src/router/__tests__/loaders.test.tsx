@@ -1003,6 +1003,77 @@ describe('Loaders', () => {
         await stepSamtykkePensjonsavtaler(createMockRequest())
       expect(returnedFromLoader).toEqual({ erApoteker: false, isKap19: false })
     })
+
+    it('Hopper over steg dersom bruker er kap19 og har alderspensjon vedtak', async () => {
+      mockResponse('/v4/person', {
+        status: 200,
+        json: {
+          foedselsdato: '1962-01-01',
+          navn: 'Test Person',
+          sivilstand: 'GIFT',
+          pensjoneringAldre: {
+            normertPensjoneringsalder: { aar: 67, maaneder: 0 },
+            nedreAldersgrense: { aar: 62, maaneder: 0 },
+          },
+        } satisfies Person,
+      })
+
+      mockResponse('/v4/vedtak/loepende-vedtak', {
+        status: 200,
+        json: {
+          harLoependeVedtak: true,
+          ufoeretrygd: { grad: 0 },
+          alderspensjon: {
+            grad: 100,
+            fom: '2023-01-01',
+            sivilstand: 'GIFT',
+          },
+        } satisfies LoependeVedtak,
+      })
+      const returnedFromLoader =
+        await stepSamtykkePensjonsavtaler(createMockRequest())
+
+      expectRedirectResponse(returnedFromLoader)
+    })
+
+    it('Hopper over steg dersom bruker er apoteker og har alderspensjon vedtak', async () => {
+      mockResponse('/v2/ekskludert', {
+        status: 200,
+        json: {
+          ekskludert: true,
+          aarsak: 'ER_APOTEKER',
+        },
+      })
+      mockResponse('/v4/person', {
+        status: 200,
+        json: {
+          foedselsdato: '1967-01-01',
+          navn: 'Test Person',
+          sivilstand: 'GIFT',
+          pensjoneringAldre: {
+            normertPensjoneringsalder: { aar: 67, maaneder: 0 },
+            nedreAldersgrense: { aar: 62, maaneder: 0 },
+          },
+        } satisfies Person,
+      })
+
+      mockResponse('/v4/vedtak/loepende-vedtak', {
+        status: 200,
+        json: {
+          harLoependeVedtak: true,
+          ufoeretrygd: { grad: 0 },
+          alderspensjon: {
+            grad: 100,
+            fom: '2023-01-01',
+            sivilstand: 'GIFT',
+          },
+        } satisfies LoependeVedtak,
+      })
+      const returnedFromLoader =
+        await stepSamtykkePensjonsavtaler(createMockRequest())
+
+      expectRedirectResponse(returnedFromLoader)
+    })
   })
 
   describe('beregningEnkelAccessGuard', () => {
