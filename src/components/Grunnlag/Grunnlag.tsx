@@ -89,14 +89,11 @@ export const Grunnlag: React.FC<Props> = ({
 
   const formatertAfpHeader = useFormatertAfpHeader()
 
-  // Get translated values for "nei" and "vet_ikke" to compare against
-  const neiTranslated = intl.formatMessage({ id: 'afp.nei' })
-  const vetIkkeTranslated = intl.formatMessage({ id: 'afp.vet_ikke' })
+  const afpNei = intl.formatMessage({ id: 'afp.nei' })
+  const afpVetIkke = intl.formatMessage({ id: 'afp.vet_ikke' })
 
-  // Hide ReadMore if AFP header is "Nei" or "Vet ikke"
   const shouldShowAfpReadMore =
-    formatertAfpHeader !== neiTranslated &&
-    formatertAfpHeader !== vetIkkeTranslated
+    formatertAfpHeader !== afpNei && formatertAfpHeader !== afpVetIkke
 
   const {
     alderspensjonDetaljerListe,
