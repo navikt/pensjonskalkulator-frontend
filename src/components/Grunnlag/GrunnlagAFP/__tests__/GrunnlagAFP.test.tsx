@@ -631,6 +631,57 @@ describe('Grunnlag - AFP', () => {
     })
   })
 
+  describe('Gitt at bruker er apoteker født etter 1963', () => {
+    it('får brukeren riktig tittel og tekst når hen har vedtak om gradert uføretrygd,', () => {
+      const mockedQueries = {
+        ...fulfilledGetLoependeVedtak75Ufoeregrad,
+        ['getPerson(undefined)']: {
+          status: 'fulfilled',
+          endpointName: 'getPerson',
+          requestId: 'xTaE6mOydr5ZI75UXq4Wi',
+          startedTimeStamp: 1688046411971,
+          data: {
+            navn: 'Aprikos',
+            sivilstand: 'UGIFT',
+            foedselsdato: '1965-01-01',
+            pensjoneringAldre: {
+              normertPensjoneringsalder: {
+                aar: 67,
+                maaneder: 0,
+              },
+              nedreAldersgrense: {
+                aar: 62,
+                maaneder: 0,
+              },
+            },
+          },
+          fulfilledTimeStamp: 1688046412103,
+        },
+      }
+      render(<WrappedGrunnlagAFP />, {
+        preloadedState: {
+          api: {
+            // @ts-ignore
+            queries: { ...mockedQueries },
+          },
+          userInput: { ...userInputInitialState },
+        },
+        preloadedApiState: {
+          getErApoteker: true,
+        },
+      })
+
+      expect(screen.getByText('grunnlag.afp.title')).toBeVisible()
+      expect(screen.getByText('afp.nei')).toBeVisible()
+      expect(
+        screen.getByText(
+          'Når du mottar uføretrygd eller alderspensjon kan du ikke beregne AFP i kalkulatoren.',
+          { exact: false }
+        )
+      ).toBeInTheDocument()
+    })
+  })
+
   describe('Gitt at brukeren er født før 1963,', () => {
     it('får brukeren riktig tittel og tekst når hen har vedtak om gradert uføretrygd,', () => {
       const mockedQueries = {
