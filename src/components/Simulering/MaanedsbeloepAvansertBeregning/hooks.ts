@@ -7,9 +7,11 @@ import {
   selectCurrentSimulation,
   selectFoedselsdato,
 } from '@/state/userInput/selectors'
-import { calculateUttaksalderAsDate } from '@/utils/alder'
+import {
+  UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP,
+  calculateUttaksalderAsDate,
+} from '@/utils/alder'
 
-import { UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP } from './../../../utils/alder'
 import {
   hentSumOffentligTjenestepensjonVedUttak,
   hentSumPensjonsavtalerVedUttak,
