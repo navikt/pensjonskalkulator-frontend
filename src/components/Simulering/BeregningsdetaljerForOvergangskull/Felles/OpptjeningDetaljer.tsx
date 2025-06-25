@@ -30,7 +30,7 @@ export const OpptjeningDetaljer: React.FC<OpptjeningDetaljerProps> = ({
       const firstSectionRows = alderspensjonDetaljerListe[0]?.length || 0
 
       const titleRowAndDataRowsHeight = `calc(${firstSectionRows + 1} * (var(--a-spacing-3) + var(--a-spacing-3)))`
-      const headingHeight = 'var(--a-font-line-height-small)'
+      const headingHeight = 'var(--a-spacing-8)'
       const gapBetweenSections = 'var(--a-spacing-14)'
 
       const totalSpacing = `calc(${headingHeight} + ${titleRowAndDataRowsHeight} + ${gapBetweenSections})`
