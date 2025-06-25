@@ -321,6 +321,8 @@ export const stepAFPAccessGuard = async ({ request }: LoaderFunctionArgs) => {
       isFoedselsdatoOverAlder(person.foedselsdato, AFP_UFOERE_OPPSIGELSESALDER))
   ) {
     return skip(stepArrays, paths.afp, request)
+  } else if (erApoteker && isEndring) {
+    return skip(stepArrays, paths.afp, request)
   } else {
     return {
       person,
