@@ -56,7 +56,6 @@ export const Grunnlag: React.FC<Props> = ({
   visning,
   headingLevel,
   harForLiteTrygdetid,
-  trygdetid,
   pensjonsbeholdning,
   isEndring,
   alderspensjonListe,
@@ -177,6 +176,27 @@ export const Grunnlag: React.FC<Props> = ({
                   opptjeningPre2025OffentligAfpListe
                 }
               />
+              {pre2025OffentligAfp &&
+                pre2025OffentligAfp.afpAvkortetTil70Prosent && (
+                  <FormattedMessage
+                    id="grunnlag.afp.avkortet.til.70.prosent"
+                    values={{
+                      ...getFormatMessageValues(),
+                    }}
+                  />
+                )}
+              {/* TODO: hvis pre2025OffentligAfp.afpAvkortetTil70Prosent eller
+              prosent afp redusert, så rendre linken  */}
+              {pre2025OffentligAfp &&
+                pre2025OffentligAfp.afpAvkortetTil70Prosent && (
+                  <Link
+                    href="https://www.nav.no/afp-offentlig#beregning"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <FormattedMessage id="grunnlag.afp.link.text" />
+                  </Link>
+                )}
             </ReadMore>
           )}
         </GrunnlagItem>
@@ -265,7 +285,8 @@ export const Grunnlag: React.FC<Props> = ({
         </GrunnlagItem>
       </HStack>
 
-      <VStack marginBlock="12 0">
+      {/* TODO: Fjern style når Accordion fjernes */}
+      <VStack marginBlock="12 0" style={{ marginBottom: '16px' }}>
         <Heading level={headingLevel} size="medium">
           <FormattedMessage id="om_deg.title" />
         </Heading>
@@ -290,10 +311,7 @@ export const Grunnlag: React.FC<Props> = ({
           </GrunnlagSection>
         </AccordionItem>
 
-        <GrunnlagUtenlandsopphold
-          harForLiteTrygdetid={harForLiteTrygdetid}
-          trygdetid={trygdetid}
-        />
+        <GrunnlagUtenlandsopphold harForLiteTrygdetid={harForLiteTrygdetid} />
       </Accordion>
     </section>
   )

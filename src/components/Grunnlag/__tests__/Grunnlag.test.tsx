@@ -362,5 +362,198 @@ describe('Grunnlag', () => {
       await user.click(await screen.findByTestId('grunnlag.afp.afp_link'))
       expect(navigateMock).toHaveBeenCalledWith(paths.afp)
     })
+
+    describe('Detaljer for pre2025OffentligAfp', () => {
+      it('viser AFP avkortet melding og lenke når afpAvkortetTil70Prosent er true', async () => {
+        const user = userEvent.setup()
+        const mockPre2025OffentligAfp = {
+          alderAar: 63,
+          totaltAfpBeloep: 29373,
+          tidligereArbeidsinntekt: 609000,
+          grunnbeloep: 124028,
+          sluttpoengtall: 3.91,
+          trygdetid: 40,
+          poengaarTom1991: 12,
+          poengaarFom1992: 28,
+          grunnpensjon: 10336,
+          tilleggspensjon: 17337,
+          afpTillegg: 1700,
+          saertillegg: 0,
+          afpGrad: 60,
+          afpAvkortetTil70Prosent: true,
+        }
+
+        render(
+          <Grunnlag
+            headingLevel="2"
+            visning="enkel"
+            isEndring={false}
+            pre2025OffentligAfp={mockPre2025OffentligAfp}
+          />,
+          {
+            preloadedState: {
+              api: {
+                //@ts-ignore
+                queries: {
+                  ...fulfilledGetLoependeVedtak0Ufoeregrad,
+                },
+              },
+              userInput: {
+                ...userInputInitialState,
+                afp: 'ja_offentlig',
+                currentSimulation: {
+                  ...userInputInitialState.currentSimulation,
+                  uttaksalder: { aar: 67, maaneder: 0 },
+                  aarligInntektFoerUttakBeloep: '500000',
+                },
+              },
+            },
+          }
+        )
+
+        // Click the AFP ReadMore button to expand the details
+        const buttons = screen.getAllByRole('button')
+        const afpReadMoreButton = buttons.find((button) =>
+          button.textContent?.includes('AFP')
+        )
+
+        if (afpReadMoreButton) {
+          await user.click(afpReadMoreButton)
+
+          expect(
+            screen.getByText('grunnlag.afp.avkortet.til.70.prosent')
+          ).toBeInTheDocument()
+
+          const navLink = screen.getByRole('link', {
+            name: 'grunnlag.afp.link.text',
+          })
+          expect(navLink).toBeVisible()
+          expect(navLink).toHaveAttribute(
+            'href',
+            'https://www.nav.no/afp-offentlig#beregning'
+          )
+          expect(navLink).toHaveAttribute('target', '_blank')
+          expect(navLink).toHaveAttribute('rel', 'noopener noreferrer')
+        }
+      })
+
+      it('skjuler AFP avkortet melding og lenke når afpAvkortetTil70Prosent er false', async () => {
+        const user = userEvent.setup()
+        const mockPre2025OffentligAfp = {
+          alderAar: 63,
+          totaltAfpBeloep: 29373,
+          tidligereArbeidsinntekt: 609000,
+          grunnbeloep: 124028,
+          sluttpoengtall: 3.91,
+          trygdetid: 40,
+          poengaarTom1991: 12,
+          poengaarFom1992: 28,
+          grunnpensjon: 10336,
+          tilleggspensjon: 17337,
+          afpTillegg: 1700,
+          saertillegg: 0,
+          afpGrad: 60,
+          afpAvkortetTil70Prosent: false,
+        }
+
+        render(
+          <Grunnlag
+            headingLevel="2"
+            visning="enkel"
+            isEndring={false}
+            pre2025OffentligAfp={mockPre2025OffentligAfp}
+          />,
+          {
+            preloadedState: {
+              api: {
+                //@ts-ignore
+                queries: {
+                  ...fulfilledGetLoependeVedtak0Ufoeregrad,
+                },
+              },
+              userInput: {
+                ...userInputInitialState,
+                afp: 'ja_offentlig',
+                currentSimulation: {
+                  ...userInputInitialState.currentSimulation,
+                  uttaksalder: { aar: 67, maaneder: 0 },
+                  aarligInntektFoerUttakBeloep: '500000',
+                },
+              },
+            },
+          }
+        )
+
+        const buttons = screen.getAllByRole('button')
+        const afpReadMoreButton = buttons.find((button) =>
+          button.textContent?.includes('AFP')
+        )
+
+        if (afpReadMoreButton) {
+          await user.click(afpReadMoreButton)
+
+          expect(
+            screen.queryByText('grunnlag.afp.avkortet.til.70.prosent')
+          ).not.toBeInTheDocument()
+
+          expect(
+            screen.queryByRole('link', {
+              name: 'grunnlag.afp.link.text',
+            })
+          ).not.toBeInTheDocument()
+        }
+      })
+
+      it('skjuler AFP avkortet melding og lenke når pre2025OffentligAfp er undefined', async () => {
+        const user = userEvent.setup()
+
+        render(
+          <Grunnlag
+            headingLevel="2"
+            visning="enkel"
+            isEndring={false}
+            pre2025OffentligAfp={undefined}
+          />,
+          {
+            preloadedState: {
+              api: {
+                //@ts-ignore
+                queries: {
+                  ...fulfilledGetLoependeVedtak0Ufoeregrad,
+                },
+              },
+              userInput: {
+                ...userInputInitialState,
+                afp: 'ja_offentlig',
+                currentSimulation: {
+                  ...userInputInitialState.currentSimulation,
+                  uttaksalder: { aar: 67, maaneder: 0 },
+                  aarligInntektFoerUttakBeloep: '500000',
+                },
+              },
+            },
+          }
+        )
+
+        const buttons = screen.getAllByRole('button')
+        const afpReadMoreButton = buttons.find((button) =>
+          button.textContent?.includes('AFP')
+        )
+
+        if (afpReadMoreButton) {
+          await user.click(afpReadMoreButton)
+
+          expect(
+            screen.queryByText('grunnlag.afp.avkortet.til.70.prosent')
+          ).not.toBeInTheDocument()
+
+          expect(
+            screen.queryByRole('link', {
+              name: 'grunnlag.afp.link.text',
+            })
+          ).not.toBeInTheDocument()
+        }
+      })
+    })
   })
 })

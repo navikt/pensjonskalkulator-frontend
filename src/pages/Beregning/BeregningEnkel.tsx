@@ -371,7 +371,6 @@ export const BeregningEnkel = () => {
                 visning="enkel"
                 headingLevel="2"
                 harForLiteTrygdetid={alderspensjon?.harForLiteTrygdetid}
-                trygdetid={alderspensjon?.trygdetid}
                 pensjonsbeholdning={
                   alderspensjon?.alderspensjon &&
                   alderspensjon?.alderspensjon.length > 0
