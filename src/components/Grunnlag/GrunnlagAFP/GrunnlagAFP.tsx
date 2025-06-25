@@ -84,7 +84,9 @@ export const GrunnlagAFP: React.FC = () => {
 
     if (
       ufoeregrad === 100 ||
-      (ufoeregrad > 0 && foedselsdato && isFoedtFoer1963(foedselsdato)) ||
+      (ufoeregrad > 0 &&
+        foedselsdato &&
+        (isFoedtFoer1963(foedselsdato) || erApoteker)) ||
       (ufoeregrad > 0 &&
         foedselsdato &&
         !isFoedtFoer1963(foedselsdato) &&
@@ -141,7 +143,11 @@ export const GrunnlagAFP: React.FC = () => {
       return 'grunnlag.afp.ingress.ufoeretrygd'
     }
 
-    if (ufoeregrad > 0 && foedselsdato && isFoedtFoer1963(foedselsdato)) {
+    if (
+      ufoeregrad > 0 &&
+      foedselsdato &&
+      (isFoedtFoer1963(foedselsdato) || erApoteker)
+    ) {
       return 'grunnlag.afp.ingress.overgangskull.ufoeretrygd'
     }
 
