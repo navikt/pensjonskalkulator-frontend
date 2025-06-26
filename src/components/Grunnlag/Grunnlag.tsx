@@ -13,7 +13,6 @@ import {
   VStack,
 } from '@navikt/ds-react'
 
-import { AccordionItem } from '@/components/common/AccordionItem'
 import { paths } from '@/router/constants'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
@@ -34,7 +33,6 @@ import { useBeregningsdetaljer } from '../Simulering/BeregningsdetaljerForOverga
 import { Pensjonsgivendeinntekt } from '../Simulering/Pensjonsgivendeinntekt'
 import { GrunnlagAFP } from './GrunnlagAFP'
 import { useFormatertAfpHeader } from './GrunnlagAFP/hooks'
-import { GrunnlagSection } from './GrunnlagSection'
 import { GrunnlagUtenlandsopphold } from './GrunnlagUtenlandsopphold'
 
 import styles from './Grunnlag.module.scss'
@@ -71,6 +69,11 @@ export const Grunnlag: React.FC<Props> = ({
     e.preventDefault()
     dispatch(userInputActions.flushCurrentSimulation())
     navigate(paths.beregningAvansert)
+  }
+
+  const goToSivilstand: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
+    e.preventDefault()
+    navigate(paths.sivilstand)
   }
 
   const intl = useIntl()
@@ -281,34 +284,27 @@ export const Grunnlag: React.FC<Props> = ({
             </BodyLong>
           </VStack>
         </GrunnlagItem>
+
+        <Heading level="3" size="small">
+          <FormattedMessage id="grunnlag.sivilstand.title" />:{' '}
+          <span style={{ fontWeight: 'normal' }}>{formatertSivilstand}</span>
+        </Heading>
+        <BodyLong>
+          <FormattedMessage
+            id="grunnlag.sivilstand.ingress"
+            values={{
+              ...getFormatMessageValues(),
+              sivilstand: (
+                <Link href="#" onClick={goToSivilstand}>
+                  Sivilstand
+                </Link>
+              ),
+            }}
+          />
+        </BodyLong>
       </HStack>
 
-      {/* TODO: Fjern style når Accordion fjernes */}
-      <VStack marginBlock="12 0" style={{ marginBottom: '16px' }}>
-        <Heading level={headingLevel} size="medium">
-          <FormattedMessage id="om_deg.title" />
-        </Heading>
-      </VStack>
-
       <Accordion>
-        <AccordionItem name="Gunnlag: Sivilstand">
-          <GrunnlagSection
-            headerTitle={intl.formatMessage({
-              id: 'grunnlag.sivilstand.title',
-            })}
-            headerValue={formatertSivilstand}
-          >
-            <BodyLong>
-              <FormattedMessage
-                id="grunnlag.sivilstand.ingress"
-                values={{
-                  ...getFormatMessageValues(),
-                }}
-              />
-            </BodyLong>
-          </GrunnlagSection>
-        </AccordionItem>
-
         <GrunnlagUtenlandsopphold
           harForLiteTrygdetid={harForLiteTrygdetid}
           trygdetid={trygdetid}
