@@ -25,6 +25,9 @@ export const OpptjeningDetaljer: React.FC<OpptjeningDetaljerProps> = ({
       opptjeningKap20Liste?.length || 0
     )
 
+    const firstSectionRows = alderspensjonDetaljerListe[0]?.length || 0
+    const remainingRows = firstSectionRows - maxOpptjeningLength
+
     // If only one section in alderspensjonDetaljerListe, simple spacing for first section
     if (alderspensjonDetaljerListe.length === 1) {
       return sectionIndex === 0 ? 'var(--a-spacing-8)' : 'var(--a-spacing-14)'
@@ -34,10 +37,10 @@ export const OpptjeningDetaljer: React.FC<OpptjeningDetaljerProps> = ({
     if (alderspensjonDetaljerListe.length === 2) {
       if (sectionIndex === 0) {
         return 'var(--a-spacing-8)'
+      } else if (remainingRows === 0) {
+        return 'var(--a-spacing-14)'
       } else if (sectionIndex === 1) {
         // Calculate offset to align with second alderspensjon section
-        const firstSectionRows = alderspensjonDetaljerListe[0]?.length || 0
-        const remainingRows = firstSectionRows - maxOpptjeningLength
         const headingHeight = 'var(--a-font-size-heading-small)'
         const dlRowsHeight = `calc(${remainingRows + 1} * (var(--a-spacing-3) + var(--a-spacing-3)))`
         const gapBetweenSections = 'var(--a-spacing-14)'
