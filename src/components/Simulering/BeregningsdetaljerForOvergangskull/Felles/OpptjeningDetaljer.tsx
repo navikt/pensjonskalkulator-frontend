@@ -41,10 +41,9 @@ export const OpptjeningDetaljer: React.FC<OpptjeningDetaljerProps> = ({
         return 'var(--a-spacing-14)'
       } else if (sectionIndex === 1) {
         // Calculate offset to align with second alderspensjon section
-        const headingHeight = 'var(--a-font-size-heading-small)'
         const dlRowsHeight = `calc(${remainingRows + 1} * (var(--a-spacing-3) + var(--a-spacing-3)))`
         const gapBetweenSections = 'var(--a-spacing-14)'
-        const totalSpacing = `calc(${headingHeight} + ${dlRowsHeight} + ${gapBetweenSections})`
+        const totalSpacing = `calc(${dlRowsHeight} + ${gapBetweenSections})`
         return totalSpacing
       } else {
         return 'var(--a-spacing-14)'
