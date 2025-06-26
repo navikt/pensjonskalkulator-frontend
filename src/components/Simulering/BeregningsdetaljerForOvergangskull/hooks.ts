@@ -220,6 +220,9 @@ export function useBeregningsdetaljer(
       )
       if (currentAgeIndex !== -1) {
         afpIndices.push(currentAgeIndex)
+      } else {
+        // If no exact age match, fallback to first element (usually the earliest available age)
+        afpIndices.push(0)
       }
 
       // If current age is less than 67, also include age 67 data
@@ -228,11 +231,6 @@ export function useBeregningsdetaljer(
         if (afp67Index !== -1 && !afpIndices.includes(afp67Index)) {
           afpIndices.push(afp67Index)
         }
-      }
-
-      // Fallback to first element if no specific age found
-      if (afpIndices.length === 0) {
-        afpIndices.push(0)
       }
 
       return afpIndices.map((index) => {
