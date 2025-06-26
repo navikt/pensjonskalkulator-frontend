@@ -9,7 +9,6 @@ import { BodyLong, BodyShort, Heading, HeadingProps } from '@navikt/ds-react'
 
 import { TabellVisning } from '@/components/TabellVisning'
 import {
-  useGetUtvidetSimuleringsresultatFeatureToggleQuery,
   useOffentligTpQuery,
   usePensjonsavtalerQuery,
 } from '@/state/api/apiSlice'
@@ -37,7 +36,6 @@ import { MaanedsbeloepAvansertBeregning } from './MaanedsbeloepAvansertBeregning
 import { SimuleringEndringBanner } from './SimuleringEndringBanner/SimuleringEndringBanner'
 import { SimuleringGrafNavigation } from './SimuleringGrafNavigation/SimuleringGrafNavigation'
 import { SimuleringPensjonsavtalerAlert } from './SimuleringPensjonsavtalerAlert/SimuleringPensjonsavtalerAlert'
-import { Simuleringsdetaljer } from './Simuleringsdetaljer/Simuleringsdetaljer'
 import {
   useHighchartsRegressionPlugin,
   useSimuleringChartLocalState,
@@ -72,7 +70,6 @@ export const Simulering = ({
   afpOffentligListe,
   alderspensjonMaanedligVedEndring,
   showButtonsAndTable,
-  detaljer,
   visning,
 }: Props) => {
   const harSamtykket = useAppSelector(selectSamtykke)
@@ -88,9 +85,6 @@ export const Simulering = ({
   const { uttaksalder, aarligInntektVsaHelPensjon, gradertUttaksperiode } =
     useAppSelector(selectCurrentSimulation)
   const skalBeregneAfpKap19 = useAppSelector(selectSkalBeregneAfpKap19)
-  const { data: utvidetSimuleringsresultatFeatureToggle } =
-    useGetUtvidetSimuleringsresultatFeatureToggleQuery()
-
   const chartRef = useRef<HighchartsReact.RefObject>(null)
 
   const [offentligTpRequestBody, setOffentligTpRequestBody] = useState<
@@ -280,13 +274,13 @@ export const Simulering = ({
       )}
 
       {/* c8 ignore next 6 - detaljer skal kun vises i dev for test formål */}
-      {utvidetSimuleringsresultatFeatureToggle?.enabled && detaljer && (
+      {/* {utvidetSimuleringsresultatFeatureToggle?.enabled && detaljer && (
         <Simuleringsdetaljer
           alderspensjonListe={alderspensjonListe}
           detaljer={detaljer}
           pre2025OffentligAfp={pre2025OffentligAfp}
         />
-      )}
+      )} */}
 
       {!isOffentligTpLoading &&
         !isLoading &&
