@@ -20,6 +20,11 @@ export const OpptjeningDetaljer: React.FC<OpptjeningDetaljerProps> = ({
 }) => {
   // Calculate spacing for each VStack section group
   const calculateSectionSpacing = (sectionIndex: number) => {
+    const maxOpptjeningLength = Math.max(
+      opptjeningKap19Liste?.length || 0,
+      opptjeningKap20Liste?.length || 0
+    )
+
     // If only one section in alderspensjonDetaljerListe, simple spacing for first section
     if (alderspensjonDetaljerListe.length === 1) {
       return sectionIndex === 0 ? 'var(--a-spacing-8)' : 'var(--a-spacing-14)'
@@ -30,10 +35,13 @@ export const OpptjeningDetaljer: React.FC<OpptjeningDetaljerProps> = ({
       if (sectionIndex === 0) {
         return 'var(--a-spacing-8)'
       } else if (sectionIndex === 1) {
+        // Calculate offset to align with second alderspensjon section
         const firstSectionRows = alderspensjonDetaljerListe[0]?.length || 0
-        const titleRowAndDataRowsHeight = `calc(${firstSectionRows + 1} * (var(--a-spacing-3) + var(--a-spacing-3)))`
+        const remainingRows = firstSectionRows - maxOpptjeningLength
         const headingHeight = 'var(--a-font-size-heading-small)'
-        const totalSpacing = `calc(${headingHeight} + ${titleRowAndDataRowsHeight})`
+        const dlRowsHeight = `calc(${remainingRows + 1} * (var(--a-spacing-3) + var(--a-spacing-3)))`
+        const gapBetweenSections = 'var(--a-spacing-14)'
+        const totalSpacing = `calc(${headingHeight} + ${dlRowsHeight} + ${gapBetweenSections})`
         return totalSpacing
       } else {
         return 'var(--a-spacing-14)'
