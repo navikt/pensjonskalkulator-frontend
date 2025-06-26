@@ -33,8 +33,7 @@ export const OpptjeningDetaljer: React.FC<OpptjeningDetaljerProps> = ({
         const firstSectionRows = alderspensjonDetaljerListe[0]?.length || 0
         const titleRowAndDataRowsHeight = `calc(${firstSectionRows + 1} * (var(--a-spacing-3) + var(--a-spacing-3)))`
         const headingHeight = 'var(--a-font-size-heading-small)'
-        const gapBetweenSections = 'var(--a-spacing-14)'
-        const totalSpacing = `calc(${headingHeight} + ${titleRowAndDataRowsHeight} + ${gapBetweenSections})`
+        const totalSpacing = `calc(${headingHeight} + ${titleRowAndDataRowsHeight})`
         return totalSpacing
       } else {
         return 'var(--a-spacing-14)'
@@ -101,6 +100,7 @@ export const OpptjeningDetaljer: React.FC<OpptjeningDetaljerProps> = ({
       if (sectionsInGroup.length > 0) {
         sectionGroups.push(
           <HStack
+            gap="8"
             key={`group-${i}`}
             style={{ marginTop: calculateSectionSpacing(i) }}
           >
