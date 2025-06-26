@@ -656,7 +656,7 @@ describe('Grunnlag - AFP', () => {
         },
       })
 
-      expect(screen.getByText('grunnlag.afp.title')).toBeVisible()
+      expect(screen.getByText('grunnlag.afp.title:')).toBeVisible()
       expect(screen.getByText('afp.nei')).toBeVisible()
       expect(
         screen.getByText(
