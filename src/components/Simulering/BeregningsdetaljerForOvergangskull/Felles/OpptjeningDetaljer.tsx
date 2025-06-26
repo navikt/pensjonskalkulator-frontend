@@ -18,30 +18,31 @@ export const OpptjeningDetaljer: React.FC<OpptjeningDetaljerProps> = ({
   opptjeningKap20Liste,
   alderspensjonDetaljerListe,
 }) => {
-  // Calculate spacing to align with AlderspensjonDetaljer
-  const calculateFirstSectionSpacing = () => {
-    // If only one section in alderspensjonDetaljerListe, only title spacing is needed
+  // Calculate spacing for each VStack section group
+  const calculateSectionSpacing = (sectionIndex: number) => {
+    // If only one section in alderspensjonDetaljerListe, simple spacing for first section
     if (alderspensjonDetaljerListe.length === 1) {
-      return 'var(--a-spacing-8)'
+      return sectionIndex === 0 ? 'var(--a-spacing-8)' : 'var(--a-spacing-14)'
     }
 
-    // If two sections, we need to calculate the height of the first section + gap
+    // If two sections in alderspensjonDetaljerListe
     if (alderspensjonDetaljerListe.length === 2) {
-      const firstSectionRows = alderspensjonDetaljerListe[0]?.length || 0
-
-      const titleRowAndDataRowsHeight = `calc(${firstSectionRows + 1} * (var(--a-spacing-3) + var(--a-spacing-3)))`
-      const headingHeight = 'var(--a-spacing-8)'
-      const gapBetweenSections = 'var(--a-spacing-14)'
-
-      const totalSpacing = `calc(${headingHeight} + ${titleRowAndDataRowsHeight} + ${gapBetweenSections})`
-
-      return totalSpacing
+      if (sectionIndex === 0) {
+        return 'var(--a-spacing-8)'
+      } else if (sectionIndex === 1) {
+        const firstSectionRows = alderspensjonDetaljerListe[0]?.length || 0
+        const titleRowAndDataRowsHeight = `calc(${firstSectionRows + 1} * (var(--a-spacing-3) + var(--a-spacing-3)))`
+        const headingHeight = 'var(--a-font-size-heading-small)'
+        const gapBetweenSections = 'var(--a-spacing-14)'
+        const totalSpacing = `calc(${headingHeight} + ${titleRowAndDataRowsHeight} + ${gapBetweenSections})`
+        return totalSpacing
+      } else {
+        return 'var(--a-spacing-14)'
+      }
     }
 
-    return 'var(--a-spacing-8)'
+    return sectionIndex === 0 ? '0' : 'var(--a-spacing-14)'
   }
-
-  const firstSectionSpacing = calculateFirstSectionSpacing()
   // Render sections in the correct order for gradert uttak
   const renderOpptjeningSections = () => {
     const maxLength = Math.max(
@@ -99,7 +100,10 @@ export const OpptjeningDetaljer: React.FC<OpptjeningDetaljerProps> = ({
       // Only add the group if it has sections
       if (sectionsInGroup.length > 0) {
         sectionGroups.push(
-          <HStack key={`group-${i}`} gap="8">
+          <HStack
+            key={`group-${i}`}
+            style={{ marginTop: calculateSectionSpacing(i) }}
+          >
             {sectionsInGroup}
           </HStack>
         )
@@ -110,11 +114,7 @@ export const OpptjeningDetaljer: React.FC<OpptjeningDetaljerProps> = ({
   }
 
   return (
-    <VStack
-      gap="14"
-      className={styles.opptjeningDetaljer as string}
-      style={{ marginTop: firstSectionSpacing }}
-    >
+    <VStack className={styles.opptjeningDetaljer as string}>
       {renderOpptjeningSections()}
     </VStack>
   )

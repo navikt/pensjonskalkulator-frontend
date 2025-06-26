@@ -56,6 +56,7 @@ export const Grunnlag: React.FC<Props> = ({
   visning,
   headingLevel,
   harForLiteTrygdetid,
+  trygdetid,
   pensjonsbeholdning,
   isEndring,
   alderspensjonListe,
@@ -308,7 +309,10 @@ export const Grunnlag: React.FC<Props> = ({
           </GrunnlagSection>
         </AccordionItem>
 
-        <GrunnlagUtenlandsopphold harForLiteTrygdetid={harForLiteTrygdetid} />
+        <GrunnlagUtenlandsopphold
+          harForLiteTrygdetid={harForLiteTrygdetid}
+          trygdetid={trygdetid}
+        />
       </Accordion>
     </section>
   )

@@ -25,10 +25,12 @@ import styles from './GrunnlagUtenlandsopphold.module.scss'
 
 interface Props {
   harForLiteTrygdetid?: boolean
+  trygdetid?: number
 }
 
 export const GrunnlagUtenlandsopphold: React.FC<Props> = ({
   harForLiteTrygdetid,
+  trygdetid,
 }) => {
   const intl = useIntl()
   const dispatch = useAppDispatch()
@@ -178,6 +180,18 @@ export const GrunnlagUtenlandsopphold: React.FC<Props> = ({
                     ),
                   }}
                 />
+                {trygdetid !== undefined && (
+                  <>
+                    <br /> <br />
+                    <FormattedMessage
+                      id="grunnlag.opphold.ingress.trygdetid"
+                      values={{
+                        ...getFormatMessageValues(),
+                        aar: trygdetid,
+                      }}
+                    />
+                  </>
+                )}
               </BodyLong>
             )}
 
