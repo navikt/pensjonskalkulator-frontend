@@ -205,7 +205,7 @@ export const Grunnlag: React.FC<Props> = ({
               <FormattedMessage id="beregning.highcharts.serie.alderspensjon.name" />
             </Heading>
             <BodyLong>
-              {loependeVedtak.alderspensjon ? (
+              {loependeVedtak.alderspensjon || visning === 'avansert' ? (
                 <>
                   <FormattedMessage
                     id="grunnlag.alderspensjon.endring.ingress"
