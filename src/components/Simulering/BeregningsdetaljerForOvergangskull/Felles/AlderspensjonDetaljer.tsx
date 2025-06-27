@@ -49,29 +49,34 @@ function renderDetaljer(
   alderspensjonDetaljForValgtUttak: AlderspensjonDetaljerListe
 ) {
   return Object.entries(alderspensjonDetaljForValgtUttak).map(
-    ([key, row]: [string, []]) => (
-      <dl key={key}>
-        <div className={styles.hstackRow}>
-          <strong>
-            <FormattedMessage id={titles[key]} />
-          </strong>
-        </div>
-        {row.map((detalj: { tekst: string; verdi: string }, index) => {
-          const isBold = index === row.length - 1 && key === 'alderspensjon'
-          return (
-            <React.Fragment key={index}>
-              <HStack justify="space-between" className={styles.hstackRow}>
-                <dt>
-                  {isBold ? <strong>{detalj.tekst}</strong> : detalj.tekst}
-                </dt>
-                <dd>
-                  {isBold ? <strong>{detalj.verdi}</strong> : detalj.verdi}
-                </dd>
-              </HStack>
-            </React.Fragment>
-          )
-        })}
-      </dl>
-    )
+    ([key, row]: [string, []]) => {
+      if (!row || row.length === 0) {
+        return null
+      }
+      return (
+        <dl key={key}>
+          <div className={styles.hstackRow}>
+            <strong>
+              <FormattedMessage id={titles[key]} />
+            </strong>
+          </div>
+          {row.map((detalj: { tekst: string; verdi: string }, index) => {
+            const isBold = index === row.length - 1 && key === 'alderspensjon'
+            return (
+              <React.Fragment key={index}>
+                <HStack justify="space-between" className={styles.hstackRow}>
+                  <dt>
+                    {isBold ? <strong>{detalj.tekst}</strong> : detalj.tekst}
+                  </dt>
+                  <dd>
+                    {isBold ? <strong>{detalj.verdi}</strong> : detalj.verdi}
+                  </dd>
+                </HStack>
+              </React.Fragment>
+            )
+          })}
+        </dl>
+      )
+    }
   )
 }
