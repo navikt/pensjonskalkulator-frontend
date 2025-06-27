@@ -3,6 +3,9 @@ import { FormattedMessage } from 'react-intl'
 
 import { HStack, VStack } from '@navikt/ds-react'
 
+import { useAppSelector } from '@/state/hooks'
+import { selectCurrentSimulation } from '@/state/userInput/selectors'
+
 import { DetaljRad } from '../hooks'
 
 import styles from './Pensjonsdetaljer.module.scss'
@@ -18,6 +21,8 @@ export const OpptjeningDetaljer: React.FC<OpptjeningDetaljerProps> = ({
   opptjeningKap20Liste,
   alderspensjonDetaljerListe,
 }) => {
+  const { gradertUttaksperiode } = useAppSelector(selectCurrentSimulation)
+
   // Calculate spacing for each VStack section group
   const calculateSectionSpacing = (sectionIndex: number) => {
     const maxOpptjeningLength = Math.max(
@@ -52,6 +57,7 @@ export const OpptjeningDetaljer: React.FC<OpptjeningDetaljerProps> = ({
 
     return sectionIndex === 0 ? '0' : 'var(--a-spacing-14)'
   }
+
   // Render sections in the correct order for gradert uttak
   const renderOpptjeningSections = () => {
     const maxLength = Math.max(
@@ -61,7 +67,11 @@ export const OpptjeningDetaljer: React.FC<OpptjeningDetaljerProps> = ({
 
     const sectionGroups = []
 
-    for (let i = 0; i < maxLength; i++) {
+    // If gradertUttaksperiode exists, only render the second section (index 1)
+    const startIndex = gradertUttaksperiode ? 1 : 0
+    const endIndex = gradertUttaksperiode ? 2 : maxLength
+
+    for (let i = startIndex; i < endIndex; i++) {
       const sectionsInGroup = []
 
       // Render Kap 19 section for this index
