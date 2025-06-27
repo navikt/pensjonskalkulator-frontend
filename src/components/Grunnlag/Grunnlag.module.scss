@@ -24,7 +24,7 @@
       box-sizing: border-box;
 
       @media (min-width: variables.$a-breakpoint-lg) {
-        width: 1024px;
+        width: calc(var(--a-spacing-32) * 8);
       }
     }
   }
