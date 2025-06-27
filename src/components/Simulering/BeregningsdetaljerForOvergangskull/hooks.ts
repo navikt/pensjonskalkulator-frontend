@@ -41,10 +41,16 @@ function getAlderspenListeForValgtUttaksalder(
       gradertUttaksperiode.uttaksalder.aar !== uttaksalder.aar
     ) {
       return gradertUttak
+    } else {
+      // heluttak
+      return ap.alder === uttaksalder.aar
     }
-    // heluttak
-    return ap.alder === uttaksalder.aar
   })
+
+  if (!filtrertAldersPensjonListe.length) {
+    // Bruker født < 1963, velger AFPOffentlig i simulering med uttaksalder < 67, hente første element fra listen siden den tilhører 67 år
+    filtrertAldersPensjonListe.push(alderspensjonListe[0])
+  }
   return filtrertAldersPensjonListe
 }
 
