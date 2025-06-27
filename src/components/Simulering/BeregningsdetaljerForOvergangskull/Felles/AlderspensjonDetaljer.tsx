@@ -38,6 +38,7 @@ export const AlderspensjonDetaljer: React.FC<AlderspensjonDetaljerProps> = ({
     <VStack gap="14" className={styles.alderspensjonDetaljer as string}>
       {gradertUttaksperiode &&
         !hasPre2025OffentligAfpUttaksalder &&
+        gradertUttaksperiode?.grad > 0 &&
         gradertUttaksperiode?.uttaksalder.aar !== uttaksalder?.aar && (
           <div className="gradertUttak">
             <Heading size="small" level="4">
