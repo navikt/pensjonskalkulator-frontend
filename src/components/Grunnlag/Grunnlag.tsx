@@ -99,8 +99,6 @@ export const Grunnlag: React.FC<Props> = ({
   const {
     alderspensjonDetaljerListe,
     pre2025OffentligAfpDetaljerListe,
-    opptjeningKap19Liste,
-    opptjeningKap20Liste,
     afpPrivatDetaljerListe,
     afpOffentligDetaljerListe,
     opptjeningPre2025OffentligAfpListe,
@@ -265,8 +263,6 @@ export const Grunnlag: React.FC<Props> = ({
               >
                 <AlderspensjonDetaljerGrunnlag
                   alderspensjonDetaljerListe={alderspensjonDetaljerListe}
-                  opptjeningKap19Liste={opptjeningKap19Liste}
-                  opptjeningKap20Liste={opptjeningKap20Liste}
                   hasPre2025OffentligAfpUttaksalder={Boolean(
                     opptjeningPre2025OffentligAfpListe?.length
                   )}
