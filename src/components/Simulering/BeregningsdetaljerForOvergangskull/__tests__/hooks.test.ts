@@ -78,8 +78,6 @@ describe('useBeregningsdetaljer', () => {
     const { result } = renderHook(() => useBeregningsdetaljer())
     expect(result.current.alderspensjonDetaljerListe).toEqual([])
     expect(result.current.pre2025OffentligAfpDetaljerListe).toEqual([])
-    expect(result.current.opptjeningKap19Liste).toEqual([])
-    expect(result.current.opptjeningKap20Liste).toEqual([])
     expect(result.current.afpPrivatDetaljerListe).toEqual([])
     expect(result.current.afpOffentligDetaljerListe).toEqual([])
     expect(result.current.opptjeningPre2025OffentligAfpListe).toEqual([])
@@ -195,9 +193,10 @@ describe('useBeregningsdetaljer', () => {
         )
         const alderspensjonDetaljer =
           result.current.alderspensjonDetaljerListe[0]
-        const gjenlevendetilleggRad = alderspensjonDetaljer.find(
-          (rad) => rad.tekst === 'Gjenlevendetillegg (kap. 19)'
-        )
+        const gjenlevendetilleggRad =
+          alderspensjonDetaljer.opptjeningKap19.find(
+            (rad) => rad.tekst === 'Gjenlevendetillegg (kap. 19)'
+          )
         expect(gjenlevendetilleggRad).toBeUndefined()
       })
     })
@@ -237,7 +236,9 @@ describe('useBeregningsdetaljer', () => {
           mockPre2025OffentligAfp
         )
       )
-      expect(result.current.opptjeningKap19Liste).toEqual([
+      expect(
+        result.current.alderspensjonDetaljerListe[0].opptjeningKap19
+      ).toEqual([
         expect.arrayContaining([
           expect.objectContaining({ tekst: 'Andelsbrøk', verdi: '3/10' }),
           expect.objectContaining({ tekst: 'Sluttpoengtall', verdi: 3 }),
@@ -262,7 +263,9 @@ describe('useBeregningsdetaljer', () => {
             mockPre2025OffentligAfp
           )
         )
-        expect(result.current.opptjeningKap19Liste).toEqual([
+        expect(
+          result.current.alderspensjonDetaljerListe[0].opptjeningKap19
+        ).toEqual([
           expect.arrayContaining([
             expect.objectContaining({ tekst: 'Poengår', verdi: 0 }),
           ]),
@@ -279,7 +282,9 @@ describe('useBeregningsdetaljer', () => {
             mockPre2025OffentligAfp
           )
         )
-        expect(result.current.opptjeningKap19Liste).toEqual([
+        expect(
+          result.current.alderspensjonDetaljerListe[0].opptjeningKap19
+        ).toEqual([
           expect.arrayContaining([
             expect.objectContaining({ tekst: 'Trygdetid', verdi: 0 }),
           ]),
@@ -300,7 +305,9 @@ describe('useBeregningsdetaljer', () => {
             mockPre2025OffentligAfp
           )
         )
-        expect(result.current.opptjeningKap19Liste).toEqual([[]])
+        expect(
+          result.current.alderspensjonDetaljerListe[0].opptjeningKap19
+        ).toEqual([[]])
       })
 
       it('skjules Andelsbrøk når verdien er 10/10', () => {
@@ -316,7 +323,8 @@ describe('useBeregningsdetaljer', () => {
             mockPre2025OffentligAfp
           )
         )
-        const opptjeningResult = result.current.opptjeningKap19Liste[0]
+        const opptjeningResult =
+          result.current.alderspensjonDetaljerListe[0].opptjeningKap19
         const andelsbroekRad = opptjeningResult?.find(
           (rad) => rad.tekst === 'Andelsbrøk'
         )
@@ -343,7 +351,9 @@ describe('useBeregningsdetaljer', () => {
           mockPre2025OffentligAfp
         )
       )
-      expect(result.current.opptjeningKap20Liste).toEqual([
+      expect(
+        result.current.alderspensjonDetaljerListe[0].opptjeningKap20
+      ).toEqual([
         expect.arrayContaining([
           expect.objectContaining({ tekst: 'Andelsbrøk', verdi: '7/10' }),
           expect.objectContaining({ tekst: 'Trygdetid', verdi: 7 }),
@@ -366,7 +376,9 @@ describe('useBeregningsdetaljer', () => {
             mockPre2025OffentligAfp
           )
         )
-        expect(result.current.opptjeningKap20Liste).toEqual([
+        expect(
+          result.current.alderspensjonDetaljerListe[0].opptjeningKap20
+        ).toEqual([
           expect.arrayContaining([
             expect.objectContaining({ tekst: 'Trygdetid', verdi: 0 }),
           ]),
@@ -386,7 +398,9 @@ describe('useBeregningsdetaljer', () => {
             mockPre2025OffentligAfp
           )
         )
-        expect(result.current.opptjeningKap20Liste).toEqual([
+        expect(
+          result.current.alderspensjonDetaljerListe[0].opptjeningKap20
+        ).toEqual([
           expect.arrayContaining([
             expect.objectContaining({
               tekst: 'Pensjonsbeholdning',
@@ -409,7 +423,9 @@ describe('useBeregningsdetaljer', () => {
             mockPre2025OffentligAfp
           )
         )
-        expect(result.current.opptjeningKap20Liste).toEqual([[]])
+        expect(
+          result.current.alderspensjonDetaljerListe[0].opptjeningKap20
+        ).toEqual([[]])
       })
 
       it('skjules Andelsbrøk når verdien er 10/10', () => {
@@ -425,7 +441,8 @@ describe('useBeregningsdetaljer', () => {
             mockPre2025OffentligAfp
           )
         )
-        const opptjeningResult = result.current.opptjeningKap20Liste[0]
+        const opptjeningResult =
+          result.current.alderspensjonDetaljerListe[0].opptjeningKap20
         const andelsbroekRad = opptjeningResult?.find(
           (rad) => rad.tekst === 'Andelsbrøk'
         )
