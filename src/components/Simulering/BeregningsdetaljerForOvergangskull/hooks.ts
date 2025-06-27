@@ -33,7 +33,9 @@ function getAlderspenListeForValgtUttaksalder(
   }
   const filtrertAldersPensjonListe = alderspensjonListe.filter((ap) => {
     const gradertUttak =
-      gradertUttaksperiode && ap.alder === gradertUttaksperiode.uttaksalder.aar
+      gradertUttaksperiode &&
+      ap.alder === gradertUttaksperiode.uttaksalder.aar &&
+      gradertUttaksperiode.grad > 0
     if (
       gradertUttak &&
       gradertUttaksperiode.uttaksalder.aar !== uttaksalder.aar
