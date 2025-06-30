@@ -183,14 +183,16 @@ export const Grunnlag: React.FC<Props> = ({
               {/* TODO: Flyttes inn i samme text som grunnlag.afp.avkortet.til.70.prosent hvis den er kun brukt her */}
               {pre2025OffentligAfp &&
                 pre2025OffentligAfp.afpAvkortetTil70Prosent && (
-                  <Link
-                    href="https://www.nav.no/afp-offentlig#beregning"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <span>
                     &nbsp;
-                    <FormattedMessage id="grunnlag.afp.link.text" />
-                  </Link>
+                    <Link
+                      href="https://www.nav.no/afp-offentlig#beregning"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <FormattedMessage id="grunnlag.afp.link.text" />
+                    </Link>
+                  </span>
                 )}
             </ReadMore>
           )}
