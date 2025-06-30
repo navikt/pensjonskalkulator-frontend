@@ -69,7 +69,7 @@ function renderDetaljer(
             return (
               <React.Fragment key={index}>
                 <HStack justify="space-between" className={styles.hstackRow}>
-                  <dt>
+                  <dt style={{ marginRight: '1rem' }}>
                     {isBold ? <strong>{detalj.tekst}</strong> : detalj.tekst}
                   </dt>
                   <dd>
