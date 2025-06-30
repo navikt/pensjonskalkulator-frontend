@@ -180,6 +180,7 @@ export const Grunnlag: React.FC<Props> = ({
                 )}
               {/* TODO: hvis pre2025OffentligAfp.afpAvkortetTil70Prosent eller
               prosent afp redusert, så rendre linken  */}
+              {/* TODO: Flyttes inn i samme text som grunnlag.afp.avkortet.til.70.prosent hvis den er kun brukt her */}
               {pre2025OffentligAfp &&
                 pre2025OffentligAfp.afpAvkortetTil70Prosent && (
                   <Link
@@ -187,6 +188,7 @@ export const Grunnlag: React.FC<Props> = ({
                     target="_blank"
                     rel="noopener noreferrer"
                   >
+                    &nbsp;
                     <FormattedMessage id="grunnlag.afp.link.text" />
                   </Link>
                 )}
