@@ -454,7 +454,6 @@ describe('useBeregningsdetaljer', () => {
         )
         const opptjeningResult =
           result.current.alderspensjonDetaljerListe[0].opptjeningKap20
-        console.log('opptjeningResult', opptjeningResult)
         const andelsbroekRad = opptjeningResult?.find(
           (rad) => rad.tekst === 'Andelsbrøk'
         )

@@ -326,16 +326,16 @@ export function useBeregningsdetaljer(
         gradertUttaksperiode?.uttaksalder.aar ?? Infinity
       )
 
-      const lastAfpElement = afpOffentligListe.findLast(
-        (it) => it.alder >= afpAar
-      )
+      const lastAfpElement = afpOffentligListe.find((it) => it.alder >= afpAar)
+
+      if (!lastAfpElement) return []
 
       return [
         {
           tekst: 'Månedlig livsvarig avtalefestet pensjon (AFP)',
           verdi: `${formatInntekt(lastAfpElement?.maanedligBeloep ?? 0)} kr`,
         },
-      ].filter((rad) => rad.verdi !== '0 kr')
+      ]
     })()
 
     const opptjeningPre2025OffentligAfpListe: DetaljRad[] = pre2025OffentligAfp
