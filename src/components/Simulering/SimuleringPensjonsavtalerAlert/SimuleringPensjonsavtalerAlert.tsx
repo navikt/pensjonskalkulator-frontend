@@ -204,6 +204,7 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
           variant={alert.variant === 'inline-info' ? 'info' : alert.variant}
           data-testid="pensjonsavtaler-alert"
           className={styles.alert}
+          {...(index === 1 && { style: { margin: '16px 0' } })}
           inline={alert.variant === 'inline-info'}
         >
           <FormattedMessage
