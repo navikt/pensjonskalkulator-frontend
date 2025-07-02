@@ -18,7 +18,7 @@ export const sanityClient = createClient({
   projectId: 'g2by7q6m',
   dataset,
   useCdn: true, // set to `false` to bypass the edge cache
-  apiVersion: '2025-01-29', // use current date (YYYY-MM-DD) to target the latest API version
+  apiVersion: '2025-07-02', // use current date (YYYY-MM-DD) to target the latest API version
 })
 
 export const getSanityPortableTextComponents = (
