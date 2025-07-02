@@ -1,6 +1,6 @@
 import { PortableTextReactComponents } from '@portabletext/react'
 import { createClient } from '@sanity/client'
-import React from 'react'
+import { type ReactNode } from 'react'
 import { IntlShape } from 'react-intl'
 
 import { ExternalLinkIcon } from '@navikt/aksel-icons'
@@ -42,7 +42,7 @@ export const getSanityPortableTextComponents = (
         children,
       }: {
         value?: { blank: boolean; href: string; className?: string }
-        children?: React.ReactNode
+        children?: ReactNode
       }) => {
         return value?.blank ? (
           <Link

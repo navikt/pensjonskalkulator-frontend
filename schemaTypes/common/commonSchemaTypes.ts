@@ -1,4 +1,3 @@
-import React from 'react'
 import { defineField } from 'sanity'
 
 import { NameFieldWithWarning } from '../components/NameFieldWithWarning'
