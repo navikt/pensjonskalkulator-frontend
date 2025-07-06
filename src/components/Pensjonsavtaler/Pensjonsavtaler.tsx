@@ -143,6 +143,13 @@ export const Pensjonsavtaler = (props: {
     navigate(paths.start)
   }
 
+  const showExplanation =
+    (isPensjonsavtalerSuccess &&
+      pensjonsavtaler?.avtaler &&
+      pensjonsavtaler?.avtaler.length > 0) ||
+    (offentligTp?.simuleringsresultatStatus === 'OK' &&
+      offentligTp?.simulertTjenestepensjon?.tpNummer !== undefined)
+
   return (
     <section className={styles.section}>
       <Heading id="pensjonsavtaler-heading" level={headingLevel} size="small">
@@ -166,14 +173,15 @@ export const Pensjonsavtaler = (props: {
               headingLevel={subHeadingLevel}
               privatePensjonsavtaler={pensjonsavtaler?.avtaler}
             />
+
             <OffentligTjenestepensjon
               isLoading={isOffentligTpLoading}
               isError={isOffentligTpError}
               offentligTp={offentligTp}
               headingLevel={subHeadingLevel}
             />
-            {(isPensjonsavtalerSuccess ||
-              offentligTp?.simulertTjenestepensjon) && (
+
+            {showExplanation && (
               <BodyLong className={styles.footnote}>
                 <FormattedMessage id="pensjonsavtaler.fra_og_med_forklaring" />
               </BodyLong>
