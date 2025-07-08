@@ -232,47 +232,47 @@ export const Grunnlag: React.FC<Props> = ({
                 />
               )}
             </BodyLong>
-            <ReadMore
-              name="Listekomponenter for alderspensjon"
-              open={isAlderspensjonDetaljerVisible}
-              header={
-                isAlderspensjonDetaljerVisible
-                  ? intl.formatMessage(
-                      {
-                        id: 'beregning.detaljer.lukk',
-                      },
-                      {
-                        ...getFormatMessageValues(),
-                        ytelse: 'alderspensjon',
-                      }
-                    )
-                  : intl.formatMessage(
-                      {
-                        id: 'beregning.detaljer.vis',
-                      },
-                      {
-                        ...getFormatMessageValues(),
-                        ytelse: 'alderspensjon',
-                      }
-                    )
-              }
-              className={`${styles.visListekomponenter} ${styles.wideDetailedView}`}
-              onOpenChange={setIsAlderspensjonDetaljerVisible}
-            >
-              <AlderspensjonDetaljerGrunnlag
-                alderspensjonDetaljerListe={alderspensjonDetaljerListe}
-                hasPre2025OffentligAfpUttaksalder={Boolean(
-                  opptjeningPre2025OffentligAfpListe?.length
-                )}
-              />
-              <FormattedMessage
-                id="grunnlag.alderspensjon.ingress.link"
-                values={{
-                  ...getFormatMessageValues(),
-                }}
-              />
-            </ReadMore>
           </VStack>
+          <ReadMore
+            name="Listekomponenter for alderspensjon"
+            open={isAlderspensjonDetaljerVisible}
+            header={
+              isAlderspensjonDetaljerVisible
+                ? intl.formatMessage(
+                    {
+                      id: 'beregning.detaljer.lukk',
+                    },
+                    {
+                      ...getFormatMessageValues(),
+                      ytelse: 'alderspensjon',
+                    }
+                  )
+                : intl.formatMessage(
+                    {
+                      id: 'beregning.detaljer.vis',
+                    },
+                    {
+                      ...getFormatMessageValues(),
+                      ytelse: 'alderspensjon',
+                    }
+                  )
+            }
+            className={`${styles.visListekomponenter} ${styles.wideDetailedView}`}
+            onOpenChange={setIsAlderspensjonDetaljerVisible}
+          >
+            <AlderspensjonDetaljerGrunnlag
+              alderspensjonDetaljerListe={alderspensjonDetaljerListe}
+              hasPre2025OffentligAfpUttaksalder={Boolean(
+                opptjeningPre2025OffentligAfpListe?.length
+              )}
+            />
+            <FormattedMessage
+              id="grunnlag.alderspensjon.ingress.link"
+              values={{
+                ...getFormatMessageValues(),
+              }}
+            />
+          </ReadMore>
         </GrunnlagItem>
       </HStack>
 
