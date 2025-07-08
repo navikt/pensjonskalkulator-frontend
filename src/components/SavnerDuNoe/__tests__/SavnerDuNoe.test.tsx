@@ -81,20 +81,19 @@ describe('SavnerDuNoe', () => {
     it('navigerer til ekstern URL når brukeren klikker på lenken', async () => {
       const user = userEvent.setup()
 
-      // * Mock window.location.href
-      vi.stubGlobal('window', {
-        ...window,
-        location: {
-          ...window.location,
-          href: '',
-        },
-      })
+      const openMock = vi.fn()
+      vi.spyOn(window, 'open').mockImplementation(openMock)
 
       render(<SavnerDuNoe isEndring={true} />)
 
       await user.click(screen.getByText('savnerdunoe.title.endring'))
 
-      expect(window.location.href).toContain('alderspensjon/endringssoknad')
+      expect(openMock).toHaveBeenCalledWith(
+        expect.stringContaining('alderspensjon/endringssoknad'),
+        '_blank',
+        'noopener'
+      )
+
       expect(navigateMock).not.toHaveBeenCalled()
     })
   })

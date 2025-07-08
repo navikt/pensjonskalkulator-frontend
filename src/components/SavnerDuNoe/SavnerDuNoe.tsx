@@ -24,14 +24,20 @@ export const SavnerDuNoe = ({ isEndring }: Props) => {
 
   const onClick = (): void => {
     if (isEndring) {
-      window.location.href = href
+      window.open(href, '_blank', 'noopener')
     } else {
       dispatch(userInputActions.flushCurrentSimulation())
       navigate(paths.beregningAvansert)
     }
   }
 
-  const handleClick = (e: React.MouseEvent): void => {
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>): void => {
+    const isPlainLeftClick =
+      e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey
+
+    // * Allow browser to handle middle-click, Cmd+click, etc.
+    if (!isPlainLeftClick) return
+
     e.preventDefault()
     wrapLogger('button klikk', {
       tekst: 'Savner du noe?',
@@ -42,7 +48,12 @@ export const SavnerDuNoe = ({ isEndring }: Props) => {
     <section className={styles.section}>
       <LinkCard>
         <LinkCard.Title>
-          <LinkCard.Anchor href={href} onClick={handleClick}>
+          <LinkCard.Anchor
+            href={href}
+            onClick={handleClick}
+            target={isEndring ? '_blank' : undefined}
+            rel={isEndring ? 'noopener' : undefined}
+          >
             <FormattedMessage
               id={isEndring ? 'savnerdunoe.title.endring' : 'savnerdunoe.title'}
             />
