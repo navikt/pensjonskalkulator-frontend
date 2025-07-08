@@ -1,4 +1,4 @@
-import React from 'react'
+import { MouseEvent, useContext, useEffect, useMemo, useState } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useNavigate } from 'react-router'
 
@@ -38,11 +38,12 @@ import { PrivatePensjonsavtaler } from './PrivatePensjonsavtaler'
 
 import styles from './Pensjonsavtaler.module.scss'
 
-export const Pensjonsavtaler = (props: {
+export const Pensjonsavtaler = ({
+  headingLevel,
+}: {
   headingLevel: Exclude<HeadingProps['level'], undefined>
 }) => {
-  const { headingLevel } = props
-  const { pensjonsavtalerShowMoreRef } = React.useContext(BeregningContext)
+  const { pensjonsavtalerShowMoreRef } = useContext(BeregningContext)
   const intl = useIntl()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
@@ -62,7 +63,7 @@ export const Pensjonsavtaler = (props: {
     useAppSelector(selectCurrentSimulation)
   const skalBeregneAfpKap19 = useAppSelector(selectSkalBeregneAfpKap19)
 
-  const [offentligTpRequestBody, setOffentligTpRequestBody] = React.useState<
+  const [offentligTpRequestBody, setOffentligTpRequestBody] = useState<
     OffentligTpRequestBody | undefined
   >(undefined)
 
@@ -75,7 +76,7 @@ export const Pensjonsavtaler = (props: {
   })
 
   // Hent Offentlig Tjenestepensjon
-  React.useEffect(() => {
+  useEffect(() => {
     if (harSamtykket && uttaksalder) {
       const requestBody = generateOffentligTpRequestBody({
         afp,
@@ -96,11 +97,12 @@ export const Pensjonsavtaler = (props: {
     }
   }, [harSamtykket, uttaksalder])
 
-  const [pensjonsavtalerRequestBody, setPensjonsavtalerRequestBody] =
-    React.useState<PensjonsavtalerRequestBody | undefined>(undefined)
+  const [pensjonsavtalerRequestBody, setPensjonsavtalerRequestBody] = useState<
+    PensjonsavtalerRequestBody | undefined
+  >(undefined)
 
   // Hent Private Pensjonsavtaler
-  React.useEffect(() => {
+  useEffect(() => {
     if (harSamtykket && uttaksalder) {
       const requestBody = generatePensjonsavtalerRequestBody({
         ufoeregrad,
@@ -131,13 +133,13 @@ export const Pensjonsavtaler = (props: {
     }
   )
 
-  const subHeadingLevel = React.useMemo(() => {
+  const subHeadingLevel = useMemo(() => {
     return (
       headingLevel ? (parseInt(headingLevel, 10) + 1).toString() : '4'
     ) as Exclude<HeadingProps['level'], undefined>
   }, [headingLevel])
 
-  const onCancel = (e: React.MouseEvent<HTMLAnchorElement>): void => {
+  const onCancel = (e: MouseEvent<HTMLAnchorElement>): void => {
     e.preventDefault()
     dispatch(userInputActions.flush())
     navigate(paths.start)
