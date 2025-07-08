@@ -363,7 +363,7 @@ export const BeregningAvansert = () => {
             </div>
           )}
 
-          <div className={clsx(styles.container)}>
+          <div className={styles.container}>
             <GrunnlagForbehold headingLevel="3" />
           </div>
         </>
