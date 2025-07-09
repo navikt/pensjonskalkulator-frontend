@@ -73,9 +73,9 @@ export const PensjonVisningDesktop: React.FC<Props> = ({
                 })}
               ${formattedUttaksalder}
               ${
-                (showKalenderMaaned &&
-                  ` (${hentUttaksmaanedOgAar(data.alder)})`) ||
-                ''
+                showKalenderMaaned
+                  ? ` (${hentUttaksmaanedOgAar(data.alder)})`
+                  : ''
               }`}
               </Heading>
 

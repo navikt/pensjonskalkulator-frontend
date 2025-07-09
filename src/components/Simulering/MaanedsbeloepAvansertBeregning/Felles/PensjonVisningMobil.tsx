@@ -65,9 +65,9 @@ export const PensjonVisningMobil: React.FC<Props> = ({
                   id: 'beregning.avansert.maanedsbeloep.box_title',
                 }) +
                 formattedUttaksalder +
-                ((showKalenderMaaned &&
-                  ` (${hentUttaksmaanedOgAar(data.alder)})`) ||
-                  '')
+                (showKalenderMaaned
+                  ? ` (${hentUttaksmaanedOgAar(data.alder)})`
+                  : '')
               }
             >
               <PensjonDataVisning
