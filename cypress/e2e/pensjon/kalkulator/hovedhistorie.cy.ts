@@ -11,6 +11,7 @@ describe('Hovedhistorie', () => {
     it('ønsker jeg å få informasjon om ny kalkulator og om jeg er i målgruppen for å bruke den.', () => {
       cy.visit('https://www.nav.no/planlegger-pensjon')
       cy.contains('a', 'Prøv pensjonskalkulatoren')
+        .should('be.visible')
         .should('have.attr', 'href')
         .and('include', 'https://www.nav.no/pensjon/kalkulator/login')
     })
@@ -607,7 +608,7 @@ describe('Hovedhistorie', () => {
         cy.contains('61').should('be.visible')
         cy.contains('87+').should('exist')
         cy.contains('button', '70 år').click({ force: true })
-        cy.contains('61').should('not.exist')
+        cy.contains('61').should('not.be.visible')
         cy.contains('69').should('be.visible')
         cy.contains('87+').should('exist')
         cy.contains('Klikk på søylene for detaljer').should('exist')
@@ -623,14 +624,13 @@ describe('Hovedhistorie', () => {
         cy.contains('Vis mindre').should('be.visible')
       })
 
-      it('forventer jeg å få informasjon om øvrig grunnlag for beregningen. Jeg må kunne trykke på de ulike faktorene for å få opp mer informasjon.', () => {
+      it('forventer jeg å få informasjon om inntekten og pensjonen din. Jeg må kunne trykke på de ulike faktorene for å få opp mer informasjon.', () => {
         cy.contains('button', '70').click()
-        cy.contains('Øvrig grunnlag for beregningen').should('exist')
-        cy.contains('Uttaksgrad:').click({ force: true })
-        cy.contains('Inntekt frem til uttak:').click({ force: true })
+        cy.contains('Om inntekten og pensjonen din').should('exist')
+        cy.contains('Pensjonsgivende inntekt frem til uttak').should('exist')
         cy.contains('Sivilstand:').click({ force: true })
         cy.contains('Opphold utenfor Norge:').click({ force: true })
-        cy.contains('AFP:').click({ force: true })
+        cy.contains('AFP:').should('exist')
       })
 
       it('forventer jeg å kunne lese enkle forbehold, og få lenke til utfyllende forbehold.', () => {
@@ -690,9 +690,8 @@ describe('Hovedhistorie', () => {
         cy.get('.highcharts-series-group .highcharts-series-0 path')
           .first()
           .click()
-        cy.contains('Pensjonsgivende inntekt').should('exist')
+        cy.contains('Pensjonsgivende inntekt frem til uttak').should('exist')
         cy.contains('521 338 kr').should('exist')
-        cy.contains('Inntekt frem til uttak: 521 338 kr').should('exist')
         cy.contains(
           'Beregningen din viser at du kan ta ut 100 % alderspensjon fra du er 62 år og 10 måneder'
         ).should('exist')
@@ -707,7 +706,7 @@ describe('Hovedhistorie', () => {
             maaneder: 0,
           }
         ).as('fetchTidligsteUttaksalder')
-        cy.contains('button', 'Inntekt frem til uttak').click()
+        cy.contains('Pensjonsgivende inntekt frem til uttak')
         cy.contains('button', 'Endre inntekt').click()
         cy.get('[data-testid="inntekt-textfield"]').type('0')
         cy.contains('button', 'Oppdater inntekt').click()
@@ -724,8 +723,6 @@ describe('Hovedhistorie', () => {
           .click()
         cy.contains('Pensjonsgivende inntekt').should('exist')
         cy.contains('521 338 kr').should('exist')
-        cy.contains('Inntekt frem til uttak: 521 338 kr').should('exist')
-        cy.contains('button', 'Inntekt frem til uttak').click()
 
         cy.contains('button', 'Endre inntekt').click()
         cy.get('[data-testid="inntekt-textfield"]').type('100000')
@@ -734,7 +731,6 @@ describe('Hovedhistorie', () => {
 
         cy.contains('button', '70').click()
         cy.get('[data-testid="alert-inntekt"]').should('not.exist')
-        cy.contains('Inntekt frem til uttak: 100 000 kr').should('exist')
         cy.get('.highcharts-series-group .highcharts-series-0 path')
           .first()
           .click({ force: true })
@@ -745,13 +741,15 @@ describe('Hovedhistorie', () => {
         cy.contains('Pensjonsgivende inntekt').should('exist')
         cy.contains('100 000').should('exist')
 
-        cy.contains('button', 'Inntekt frem til uttak').click()
+        cy.contains('Pensjonsgivende inntekt').should('exist')
         cy.contains('button', 'Endre inntekt').click()
         cy.get('[data-testid="inntekt-textfield"]').clear().type('800000')
         cy.contains('button', 'Oppdater inntekt').click()
 
         cy.contains('button', '70').click()
-        cy.contains('Inntekt frem til uttak: 800 000 kr').should('exist')
+        cy.contains(
+          'Din siste pensjonsgivende inntekt fra Skatteetaten er 521 338 kr'
+        ).should('exist')
         cy.get('.highcharts-series-group .highcharts-series-0 path')
           .first()
           .click()
@@ -766,21 +764,26 @@ describe('Hovedhistorie', () => {
           .click()
         cy.contains('Pensjonsgivende inntekt').should('exist')
         cy.contains('521 338 kr').should('exist')
-        cy.contains('Inntekt frem til uttak: 521 338 kr').should('exist')
-        cy.contains('button', 'Inntekt frem til uttak').click({ force: true })
+        cy.contains(
+          'Din siste pensjonsgivende inntekt fra Skatteetaten er 521 338 kr'
+        ).should('exist')
 
         cy.contains('button', 'Endre inntekt').click()
         cy.get('[data-testid="inntekt-textfield"]').type('100000')
         cy.contains('button', 'Oppdater inntekt').click()
         cy.contains('button', '70').click()
-        cy.contains('Inntekt frem til uttak: 100 000 kr').should('exist')
+        cy.contains(
+          'Din siste pensjonsgivende inntekt fra Skatteetaten er 521 338 kr'
+        ).should('exist')
 
         cy.contains('button', 'Tilbake til start').click({ force: true })
         cy.contains('button', 'Gå tilbake til start').click({ force: true })
         cy.fillOutStegvisning({ afp: 'ja_privat', samtykke: true })
         cy.wait('@fetchTidligsteUttaksalder')
         cy.contains('button', '70').click()
-        cy.contains('Inntekt frem til uttak: 521 338 kr').should('exist')
+        cy.contains(
+          'Din siste pensjonsgivende inntekt fra Skatteetaten er 521 338 kr'
+        ).should('exist')
       })
     })
   })

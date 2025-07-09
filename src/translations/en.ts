@@ -51,10 +51,11 @@ export default {
   'error.virker_ikke.ingress': 'MANGLER_TEKST',
   'error.virker_ikke.link': 'MANGLER_TEKST',
   'error.virker_ikke.button': 'MANGLER_TEKST',
+  'error.apoteker_warning': 'MANGELR_TEKST',
+  'landingsside.for.deg.som.kan.logge.inn': 'MANGLER_TEKST',
   'landingsside.for.deg.foedt.foer.1963': 'For those born before 1963',
   'landingsside.du.maa.bruke.detaljert':
     'You must use our detailed calculator. It provides an estimate of',
-  'landingsside.for.deg.foedt.etter.1963': 'For those born in 1963 or later',
   'landingsside.velge_mellom_detaljert_og_enkel':
     'In the pension calculator, you can get an estimate of',
   'landingsside.velge_mellom_detaljert_og_enkel_2': 'MANGLER_TEKST',
@@ -359,6 +360,22 @@ export default {
   'beregning.tabell.lukk': 'Close calculation table',
   'beregning.tabell.vis': 'Show calculation table',
   'beregning.tabell.sum': 'Total',
+  'beregning.detaljer.lukk': 'MANGLER_TEKST',
+  'beregning.detaljer.vis': 'MANGLER_TEKST',
+  'beregning.detaljer.grunnpensjon.heltUttak.title': 'MANGLER_TEKST',
+  'beregning.detaljer.grunnpensjon.gradertUttak.title': 'MANGLER_TEKST',
+  'beregning.detaljer.grunnpensjon.afp.table.title': 'MANGLER_TEKST',
+  'beregning.detaljer.grunnpensjon.table.title': 'MANGLER_TEKST',
+  'beregning.detaljer.grunnpensjon.pre2025OffentligAfp.title': 'MANGLER_TEKST',
+  'beregning.detaljer.afpPrivat.heltUttak.title': 'MANGLER_TEKST',
+  'beregning.detaljer.afpPrivat.gradertUttak.title': 'MANGLER_TEKST',
+  'beregning.detaljer.afpOffentlig.uttak.title': 'MANGLER_TEKST',
+  'beregning.detaljer.OpptjeningDetaljer.kap19.table.title': 'MANGLER_TEKST',
+  'beregning.detaljer.OpptjeningDetaljer.kap20.table.title': 'MANGLER_TEKST',
+  'beregning.detaljer.OpptjeningDetaljer.afpPrivat.table.title':
+    'MANGLER_TEKST',
+  'beregning.detaljer.OpptjeningDetaljer.pre2025OffentligAfp.table.title':
+    'MANGLER_TEKST',
   'beregning.avansert.link.endre_valgene_dine': 'Change your choices',
   'beregning.avansert.link.endre_avanserte_valg': 'Change advanced choices',
   'beregning.avansert.link.om_vilkaar_for_afp': 'MANGLER_TEKST',
@@ -460,6 +477,7 @@ export default {
   'beregning.vilkaarsproeving.alternativer.medAFP.ikkeNokOpptjening':
     'MANGLER_TEKST',
   'grunnlag.title': 'Other Basis for Calculation',
+  'grunnlag.endring.title': 'MANGLER_TEKST',
   'maanedsbeloep.title': 'MANGLER_TEKST',
   'beregning.avansert.avbryt_modal.title':
     'If you exit Advanced, you will lose all your choices.',
@@ -525,9 +543,10 @@ export default {
   'grunnlag.opphold.avbryt_modal.avbryt': 'Cancel',
   'grunnlag.alderspensjon.title': 'retirement pension',
   'grunnlag.alderspensjon.value': 'National Insurance Scheme (Nav)',
-  'grunnlag.alderspensjon.ingress':
+  'grunnlag.alderspensjon.ingress': 'MANLGER_TEKST',
+  'grunnlag.alderspensjon.endring.ingress':
     'retirement pension is calculated based on your pension balance in the National Insurance Scheme. If you continue to have income while withdrawing pension, your retirement pension will increase.',
-  'grunnlag.alderspensjon.ingress.pensjonsbeholdning':
+  'grunnlag.alderspensjon.endring.ingress.pensjonsbeholdning':
     '{br}{br}Your pension balance before withdrawal: {sum} kr',
   'grunnlag.alderspensjon.ingress.link':
     '{br}{br}<dinPensjonBeholdningLink>Your pension accrual</dinPensjonBeholdningLink> {br}{br}<alderspensjonsreglerLink>About the rules for retirement pension</alderspensjonsreglerLink>',
@@ -536,7 +555,7 @@ export default {
   'grunnlag.afp.endring': 'Unchanged',
   'grunnlag.afp.ingress.null': '-',
   'grunnlag.afp.ingress.overgangskull': 'MANGLER_TEKST',
-  'grunnlag.afp.ingress.overgangskull.ufoeretrygd': 'MANGLER_TEKST',
+  'grunnlag.afp.ingress.overgangskull.ufoeretrygd_eller_ap': 'MANGLER_TEKST',
   'grunnlag.afp.ingress.ja_offentlig':
     'You have indicated AFP in the public sector. Nav has not assessed whether you meet the conditions for AFP, but assumes that you do. For more information on the conditions, check with your occupational pension scheme.',
   'grunnlag.afp.ingress.ja_offentlig.endring':
@@ -555,15 +574,18 @@ export default {
   'grunnlag.afp.ingress.nei':
     'If you start a job with an employer that has an AFP agreement, we recommend that you make a <goToStart>new calculation</goToStart>.',
   'grunnlag.afp.ingress.ufoeretrygd': 'MANGLER_TEKST',
+  'grunnlag.afp.70prosentregel': 'MANGLER_TEKST',
+  'grunnlag.afp.avkortet.til.70.prosent': 'MANGLER_TEKST',
+  'grunnlag.afp.link.text': 'MANGLER_TEKST',
   'grunnlag.forbehold.ingress_1':
     'The pension has been calculated based on the information we have about you and the information you have provided. The calculation has been made in accordance with current regulations. This is a preliminary estimate of what you can expect to receive in pension. Nav is not responsible for the amounts obtained from other sources.',
   'grunnlag.forbehold.link': 'All reservations',
   'grunnlag.forbehold.title': 'Reservation',
   'savnerdunoe.title': 'Missing something?',
+  'savnerdunoe.title.endring': 'MANGLER_TEKST',
   'savnerdunoe.ingress':
     'More choices for withdrawal degree, pension age, and income can be found in Advanced.',
-  'savnerdunoe.button': 'Go to Advanced',
-  'savnerdunoe.body.endring': 'MANGLER_TEKST',
+  'savnerdunoe.ingress.endring': 'MANGLER_TEKST',
   'pensjonsavtaler.fra_og_med_forklaring':
     '“From” means “from and including.” “To” means “to and including.”',
   'pensjonsavtaler.private.title.ingen': 'Private pension agreements',

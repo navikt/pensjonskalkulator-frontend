@@ -62,7 +62,7 @@
             {
               "_key": "92cc758af4e1",
               "_type": "link",
-              "blank": true,
+              "blank": false,
               "className": "nowrap",
               "href": "tel:55553334"
             }

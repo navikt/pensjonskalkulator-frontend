@@ -9,7 +9,6 @@ import { BodyLong, BodyShort, Heading, HeadingProps } from '@navikt/ds-react'
 
 import { TabellVisning } from '@/components/TabellVisning'
 import {
-  useGetUtvidetSimuleringsresultatFeatureToggleQuery,
   useOffentligTpQuery,
   usePensjonsavtalerQuery,
 } from '@/state/api/apiSlice'
@@ -23,10 +22,12 @@ import {
   selectCurrentSimulation,
   selectEpsHarInntektOver2G,
   selectEpsHarPensjon,
+  selectErApoteker,
   selectFoedselsdato,
   selectIsEndring,
   selectSamtykke,
   selectSivilstand,
+  selectSkalBeregneAfpKap19,
   selectUfoeregrad,
   selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
@@ -35,7 +36,6 @@ import { MaanedsbeloepAvansertBeregning } from './MaanedsbeloepAvansertBeregning
 import { SimuleringEndringBanner } from './SimuleringEndringBanner/SimuleringEndringBanner'
 import { SimuleringGrafNavigation } from './SimuleringGrafNavigation/SimuleringGrafNavigation'
 import { SimuleringPensjonsavtalerAlert } from './SimuleringPensjonsavtalerAlert/SimuleringPensjonsavtalerAlert'
-import { Simuleringsdetaljer } from './Simuleringsdetaljer/Simuleringsdetaljer'
 import {
   useHighchartsRegressionPlugin,
   useSimuleringChartLocalState,
@@ -48,8 +48,8 @@ interface Props {
   headingLevel: HeadingProps['level']
   aarligInntektFoerUttakBeloep: string
   alderspensjonListe?: AlderspensjonPensjonsberegning[]
+  afpPrivatListe?: AfpPrivatPensjonsberegning[]
   pre2025OffentligAfp?: AfpEtterfulgtAvAlderspensjon
-  afpPrivatListe?: AfpPensjonsberegning[]
   afpOffentligListe?: AfpPensjonsberegning[]
   alderspensjonMaanedligVedEndring?: AlderspensjonMaanedligVedEndring
   showButtonsAndTable?: boolean
@@ -70,7 +70,6 @@ export const Simulering = ({
   afpOffentligListe,
   alderspensjonMaanedligVedEndring,
   showButtonsAndTable,
-  detaljer,
   visning,
 }: Props) => {
   const harSamtykket = useAppSelector(selectSamtykke)
@@ -81,12 +80,11 @@ export const Simulering = ({
   const isEndring = useAppSelector(selectIsEndring)
   const epsHarPensjon = useAppSelector(selectEpsHarPensjon)
   const epsHarInntektOver2G = useAppSelector(selectEpsHarInntektOver2G)
+  const erApoteker = useAppSelector(selectErApoteker)
   const utenlandsperioder = useAppSelector(selectUtenlandsperioder)
   const { uttaksalder, aarligInntektVsaHelPensjon, gradertUttaksperiode } =
     useAppSelector(selectCurrentSimulation)
-  const { data: utvidetSimuleringsresultatFeatureToggle } =
-    useGetUtvidetSimuleringsresultatFeatureToggleQuery()
-
+  const skalBeregneAfpKap19 = useAppSelector(selectSkalBeregneAfpKap19)
   const chartRef = useRef<HighchartsReact.RefObject>(null)
 
   const [offentligTpRequestBody, setOffentligTpRequestBody] = useState<
@@ -133,6 +131,7 @@ export const Simulering = ({
             aarligInntektVsaPensjon: aarligInntektVsaHelPensjon,
           },
           utenlandsperioder,
+          erApoteker,
         })
       )
 
@@ -149,6 +148,7 @@ export const Simulering = ({
             uttaksalder,
             aarligInntektVsaPensjon: aarligInntektVsaHelPensjon,
           },
+          skalBeregneAfpKap19,
         })
       )
     }
@@ -274,13 +274,13 @@ export const Simulering = ({
       )}
 
       {/* c8 ignore next 6 - detaljer skal kun vises i dev for test formål */}
-      {utvidetSimuleringsresultatFeatureToggle?.enabled && detaljer && (
+      {/* {utvidetSimuleringsresultatFeatureToggle?.enabled && detaljer && (
         <Simuleringsdetaljer
           alderspensjonListe={alderspensjonListe}
           detaljer={detaljer}
           pre2025OffentligAfp={pre2025OffentligAfp}
         />
-      )}
+      )} */}
 
       {!isOffentligTpLoading &&
         !isLoading &&
@@ -291,6 +291,7 @@ export const Simulering = ({
             alderspensjonMaanedligVedEndring={alderspensjonMaanedligVedEndring}
             afpPrivatListe={afpPrivatListe}
             afpOffentligListe={afpOffentligListe}
+            pre2025OffentligAfp={pre2025OffentligAfp}
             pensjonsavtaler={pensjonsavtalerData?.avtaler}
             simulertTjenestepensjon={offentligTpData?.simulertTjenestepensjon}
           />

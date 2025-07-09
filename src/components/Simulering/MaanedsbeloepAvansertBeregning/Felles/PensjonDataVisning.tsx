@@ -5,7 +5,7 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { BodyLong } from '@navikt/ds-react'
 
 import { formatUttaksalder } from '@/utils/alder'
-import { formatInntekt } from '@/utils/inntekt'
+import { formatInntektMedKr } from '@/utils/inntekt'
 
 import { Pensjonsdata } from '../hooks'
 
@@ -15,16 +15,31 @@ interface Props {
   pensjonsdata: Pensjonsdata
   summerYtelser: (data: Pensjonsdata) => number
   hentUttaksMaanedOgAar: (alder: Alder) => string
+  harGradering?: boolean
 }
 
 export const PensjonDataVisning: React.FC<Props> = ({
   pensjonsdata,
   summerYtelser,
   hentUttaksMaanedOgAar,
+  harGradering,
 }) => {
   const intl = useIntl()
-  const { alder, grad, afp, pensjonsavtale, alderspensjon } = pensjonsdata
+  const {
+    alder,
+    grad,
+    afp,
+    pensjonsavtale,
+    alderspensjon,
+    pre2025OffentligAfp,
+  } = pensjonsdata
+
   const harKunAlderspensjon = alderspensjon && !afp && !pensjonsavtale
+  const harAFP = Boolean(afp || (pre2025OffentligAfp && !alderspensjon))
+  const harPre2025OffentligAfpOgPensjonsavtale = Boolean(
+    pre2025OffentligAfp && pensjonsavtale
+  )
+
   const captionTitle = (
     intl.formatMessage({ id: 'beregning.avansert.maanedsbeloep.table_title' }) +
     ' ' +
@@ -38,32 +53,59 @@ export const PensjonDataVisning: React.FC<Props> = ({
         {captionTitle}
       </BodyLong>
       <tbody>
-        {afp && (
+        {harAFP && (
           <tr className={styles.row}>
-            <th scope="row">
+            <th
+              scope="row"
+              className={clsx(
+                styles.monthlyPayoutElement,
+                styles.monthlyPayoutElement__purple,
+                !harGradering && styles.noGradering
+              )}
+            >
               <BodyLong>
                 <FormattedMessage id="beregning.avansert.maanedsbeloep.afp" />:
               </BodyLong>
             </th>
-            <td>{formatInntekt(afp)} kr</td>
+            <td data-testid="maanedsbeloep-avansert-afp">
+              {pre2025OffentligAfp
+                ? formatInntektMedKr(pre2025OffentligAfp)
+                : formatInntektMedKr(afp)}
+            </td>
           </tr>
         )}
 
         {pensjonsavtale > 0 && (
           <tr className={styles.row}>
-            <th scope="row">
+            <th
+              scope="row"
+              className={clsx(
+                styles.monthlyPayoutElement,
+                styles.monthlyPayoutElement__green,
+                !harGradering && styles.noGradering
+              )}
+            >
               <BodyLong>
                 <FormattedMessage id="beregning.avansert.maanedsbeloep.pensjonsavtaler" />
                 :
               </BodyLong>
             </th>
-            <td>{formatInntekt(pensjonsavtale)} kr</td>
+            <td data-testid="maanedsbeloep-avansert-pensjonsavtale">
+              {formatInntektMedKr(pensjonsavtale)}
+            </td>
           </tr>
         )}
 
         {alderspensjon && (
           <tr className={styles.row}>
-            <th scope="row">
+            <th
+              scope="row"
+              className={clsx(
+                styles.monthlyPayoutElement,
+                styles.monthlyPayoutElement__blue,
+                !harGradering && styles.noGradering
+              )}
+            >
               <BodyLong>
                 <FormattedMessage
                   id="beregning.avansert.maanedsbeloep.alderspensjon"
@@ -72,27 +114,33 @@ export const PensjonDataVisning: React.FC<Props> = ({
                 :
               </BodyLong>
             </th>
-            <td>{formatInntekt(alderspensjon)} kr</td>
+            <td data-testid="maanedsbeloep-avansert-alderspensjon">
+              {formatInntektMedKr(alderspensjon)}
+            </td>
           </tr>
         )}
 
-        {!harKunAlderspensjon && (
-          <tr
-            className={clsx(styles.row, styles.sum)}
-            data-testid="maanedsbeloep-avansert-sum"
-          >
-            <th scope="row">
-              <BodyLong>
-                <FormattedMessage
-                  id="beregning.avansert.maanedsbeloep.sum"
-                  values={{ maanedOgAar: hentUttaksMaanedOgAar(alder) }}
-                />
-                :
-              </BodyLong>
-            </th>
-            <td>{formatInntekt(summerYtelser(pensjonsdata))} kr</td>
-          </tr>
-        )}
+        {!harKunAlderspensjon &&
+          (!pre2025OffentligAfp || harPre2025OffentligAfpOgPensjonsavtale) && (
+            <tr
+              className={clsx(styles.row, styles.sum)}
+              data-testid="maanedsbeloep-avansert-sum"
+            >
+              <th
+                scope="row"
+                className={clsx(!harGradering && styles.noGradering)}
+              >
+                <BodyLong>
+                  <FormattedMessage
+                    id="beregning.avansert.maanedsbeloep.sum"
+                    values={{ maanedOgAar: hentUttaksMaanedOgAar(alder) }}
+                  />
+                  :
+                </BodyLong>
+              </th>
+              <td>{formatInntektMedKr(summerYtelser(pensjonsdata))}</td>
+            </tr>
+          )}
       </tbody>
     </table>
   )
