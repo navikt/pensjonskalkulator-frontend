@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { HttpResponse, delay, http } from 'msw'
+import { HttpResponse, delay, http, passthrough } from 'msw'
 
 import { API_PATH, HOST_BASEURL } from '@/paths'
 
@@ -30,28 +30,15 @@ const testHandlers =
 // Mock handlers for external services to prevent CORS and auth errors during development
 const externalServiceHandlers = [
   // Mock NAV login session endpoint to prevent CORS errors
-  http.get('https://login.ekstern.dev.nav.no/oauth2/session', async () => {
-    await delay(100)
+  http.get('https://login.ekstern.dev.nav.no/oauth2/session', () => {
     return HttpResponse.json({
       session: { active: true, created_at: 'lorem', ends_in_seconds: 21592 },
       tokens: { expire_at: 'lorem', expire_in_seconds: 3592 },
     })
   }),
 
-  // Mock Amplitude analytics configuration to prevent 401 errors
-  http.get('https://sr-client-cfg.amplitude.com/config', async () => {
-    await delay(100)
-    return HttpResponse.json({
-      analyticsSDK: {
-        enabled: false,
-        sampling: 1.0,
-      },
-    })
-  }),
-
   // Mock Amplitude analytics configuration with query parameters
-  http.get('https://sr-client-cfg.amplitude.com/*', async () => {
-    await delay(100)
+  http.get('https://sr-client-cfg.amplitude.com/*', () => {
     return HttpResponse.json({
       analyticsSDK: {
         enabled: false,
@@ -60,16 +47,30 @@ const externalServiceHandlers = [
     })
   }),
 
-  // Mock other Amplitude endpoints that might be called
-  http.post('https://api2.amplitude.com/2/httpapi', async () => {
-    await delay(50)
-    return HttpResponse.json({ success: true })
+  // Mock specific Hotjar tracking endpoints (not JS files)
+  http.all('https://*.hotjar.com/*', ({ request }) => {
+    if (new URL(request.url).pathname.endsWith('.js')) {
+      return new HttpResponse('console.log("mocked hotjar")', {
+        headers: {
+          'Content-Type': 'application/javascript',
+        },
+      })
+    } else {
+      return passthrough()
+    }
   }),
 
-  // Mock any other amplitude endpoints
-  http.all('https://api.amplitude.com/*', async () => {
-    await delay(50)
-    return HttpResponse.json({ success: true })
+  // Mock specific Hotjar tracking endpoints (not JS files)
+  http.all('https://*.taskanalytics.com/*', ({ request }) => {
+    if (new URL(request.url).pathname.endsWith('.js')) {
+      return new HttpResponse('console.log("mocked task analytics")', {
+        headers: {
+          'Content-Type': 'application/javascript',
+        },
+      })
+    } else {
+      return passthrough()
+    }
   }),
 
   // Mock NAV representasjon banner API (not the JS file)
@@ -81,31 +82,8 @@ const externalServiceHandlers = [
     }
   ),
 
-  // Mock specific Hotjar tracking endpoints (not JS files)
-  http.post('https://api.hotjar.com/*', async () => {
-    await delay(50)
-    return HttpResponse.json({ success: true })
-  }),
-
-  http.post('https://insights.hotjar.com/*', async () => {
-    await delay(50)
-    return HttpResponse.json({ success: true })
-  }),
-
   // Mock specific NAV API endpoints (not static assets) - both encoded and unencoded URLs
   http.get('https://g.nav.no/api/v1/grunnbeløp', async () => {
-    await delay(100)
-    return HttpResponse.json({
-      dato: '2024-05-01',
-      grunnbeløp: 100000,
-      grunnbeløpPerMåned: 10000,
-      gjennomsnittPerÅr: 120000,
-      omregningsfaktor: 1,
-      virkningstidspunktForMinsteinntekt: '2024-06-03',
-    })
-  }),
-
-  http.get('https://g.nav.no/api/v1/grunnbel%C3%B8p', async () => {
     await delay(100)
     return HttpResponse.json({
       dato: '2024-05-01',
