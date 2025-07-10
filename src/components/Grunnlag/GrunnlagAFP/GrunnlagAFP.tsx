@@ -59,7 +59,16 @@ export const GrunnlagAFP: React.FC = () => {
       samtykkeOffentligAFP: samtykkeOffentligAFP,
       beregningsvalg: beregningsvalg,
     })
-  }, [intl])
+  }, [
+    intl,
+    afp,
+    afpUtregningValg,
+    erApoteker,
+    loependeVedtak,
+    ufoeregrad,
+    beregningsvalg,
+    foedselsdato,
+  ])
 
   const formatertAfpIngress = React.useMemo(() => {
     if (
