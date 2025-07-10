@@ -19,7 +19,7 @@ export function StepStart() {
 
   const loaderData = useLoaderData<typeof stepStartAccessGuard>()
 
-  // Handle case where loader data might be undefined (e.g., due to errors)
+  // * Handle case where loader data might be undefined (e.g., during reload)
   if (!loaderData) {
     return null
   }
@@ -39,7 +39,7 @@ export function StepStart() {
   const isVeileder = useAppSelector(selectIsVeileder)
 
   const onNext = () => {
-    //Hvis du har løpende vedtak om gammel offentlig AFP, men tidligere har hatt vedtak om alderspensjon så skal man bli redirigert til avansert beregning.
+    // * Hvis du har løpende vedtak om gammel offentlig AFP, men tidligere har hatt vedtak om alderspensjon så skal man bli redirigert til avansert beregning.
     if (
       loependeVedtak.pre2025OffentligAfp &&
       loependeVedtak.alderspensjon?.grad === 0

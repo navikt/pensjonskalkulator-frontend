@@ -129,7 +129,8 @@ export const stepStartAccessGuard = async () => {
 
     // * For login redirect we need to handle 401 specifically
     if (getErrorStatus(getPersonRes.error) === 401) {
-      throw new Error('Unauthorized')
+      window.location.reload()
+      return
     }
 
     logger('info', {
@@ -157,7 +158,8 @@ export const stepStartAccessGuard = async () => {
 
     // * For login redirect we need to handle 401 specifically
     if (getErrorStatus(getLoependeVedtakRes.error) === 401) {
-      throw new Error('Unauthorized')
+      window.location.reload()
+      return
     }
 
     logger('info', {
