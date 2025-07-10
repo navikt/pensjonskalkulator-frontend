@@ -1,4 +1,3 @@
-import { clsx } from 'clsx'
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { useNavigate } from 'react-router'
@@ -145,7 +144,7 @@ export const GrunnlagAFP: React.FC = () => {
       </Heading>
       <BodyLong
         data-testid={formatertAfpIngress}
-        className={clsx(styles.alderspensjonDetaljer)}
+        className={styles.alderspensjonDetaljer}
       >
         <FormattedMessage
           id={formatertAfpIngress}
