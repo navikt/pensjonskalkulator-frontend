@@ -127,6 +127,9 @@ export const stepStartAccessGuard = async () => {
       }
     }
 
+    // * For login redirect we need to handle 401 specifically
+    if (getErrorStatus(getPersonRes.error) === 401) return
+
     logger('info', {
       tekst: 'Redirect til /uventet-feil',
       data: `fra Step Start Loader pga. feil med getPerson med status: ${getErrorStatus(getPersonRes.error)}`,
@@ -148,6 +151,9 @@ export const stepStartAccessGuard = async () => {
         return redirect(paths.lavtSikkerhetsnivaa)
       }
     }
+
+    // * For login redirect we need to handle 401 specifically
+    if (getErrorStatus(getPersonRes.error) === 401) return
 
     logger('info', {
       tekst: 'Redirect til /uventet-feil',
