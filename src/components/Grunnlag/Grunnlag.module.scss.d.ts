@@ -1,5 +1,4 @@
 declare const classNames: {
-  readonly paddingLeft4: "paddingLeft4";
   readonly visListekomponenter: "visListekomponenter";
   readonly "navds-read-more__content": "navds-read-more__content";
   readonly wideDetailedView: "wideDetailedView";

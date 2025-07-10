@@ -139,13 +139,13 @@ export const GrunnlagAFP: React.FC = () => {
 
   return (
     <VStack gap="3">
-      <Heading level="3" size="small" className={styles.paddingLeft4}>
+      <Heading level="3" size="small">
         <FormattedMessage id="grunnlag.afp.title" />:{' '}
         <span style={{ fontWeight: 'normal' }}>{formatertAfpHeader}</span>
       </Heading>
       <BodyLong
         data-testid={formatertAfpIngress}
-        className={clsx(styles.alderspensjonDetaljer, styles.paddingLeft4)}
+        className={clsx(styles.alderspensjonDetaljer)}
       >
         <FormattedMessage
           id={formatertAfpIngress}

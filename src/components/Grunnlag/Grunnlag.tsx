@@ -156,8 +156,7 @@ export const Grunnlag: React.FC<Props> = ({
               }
               className={clsx(
                 styles.visListekomponenter,
-                styles.wideDetailedView,
-                styles.paddingLeft4
+                styles.wideDetailedView
               )}
               onOpenChange={setIsAFPDokumentasjonVisible}
             >
@@ -202,15 +201,10 @@ export const Grunnlag: React.FC<Props> = ({
 
         <GrunnlagItem color="blue">
           <VStack gap="3">
-            <Heading level="3" size="small" className={styles.paddingLeft4}>
+            <Heading level="3" size="small">
               <FormattedMessage id="beregning.highcharts.serie.alderspensjon.name" />
             </Heading>
-            <BodyLong
-              className={clsx(
-                styles.alderspensjonDetaljer,
-                styles.paddingLeft4
-              )}
-            >
+            <BodyLong className={styles.alderspensjonDetaljer}>
               {loependeVedtak.alderspensjon || visning === 'avansert' ? (
                 <FormattedMessage
                   id="grunnlag.alderspensjon.endring.ingress"
@@ -259,8 +253,7 @@ export const Grunnlag: React.FC<Props> = ({
             }
             className={clsx(
               styles.visListekomponenter,
-              styles.wideDetailedView,
-              styles.paddingLeft4
+              styles.wideDetailedView
             )}
             onOpenChange={setIsAlderspensjonDetaljerVisible}
           >
