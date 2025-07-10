@@ -346,6 +346,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
               >
                 <FormattedMessage id="stegvisning.radio_nei" />
               </Radio>
+
               {localHarAfpInntektMaanedFoerUttakRadio === false && (
                 <Alert
                   variant="info"
