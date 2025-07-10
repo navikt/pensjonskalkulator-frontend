@@ -34,7 +34,7 @@ import styles from '../Grunnlag.module.scss'
 
 export const GrunnlagAFP: React.FC = () => {
   const intl = useIntl()
-  const afp = useAppSelector(selectAfp) ?? 'vet_ikke' // Vi har fallback for å unngå "missing translation" error ved flush() i GoToStart
+  const afp = useAppSelector(selectAfp)
   const afpUtregningValg = useAppSelector(selectAfpUtregningValg)
   const erApoteker = useAppSelector(selectErApoteker)
   const foedselsdato = useAppSelector(selectFoedselsdato)
