@@ -40,16 +40,12 @@ export const afpContentIntl = (intl: IntlShape) => ({
 
   offentligAfpOgUforeKanIkkeBeregnes_3: {
     title: `${intl.formatMessage({ id: 'afp.offentlig' })} (${intl.formatMessage({ id: 'grunnlag.afp.ikke_beregnet' })})`,
-    content: intl.formatMessage({
-      id: 'grunnlag.afp.ingress.ja_offentlig.ufoeretrygd',
-    }),
+    content: 'grunnlag.afp.ingress.ja_offentlig.ufoeretrygd',
   },
 
   afpPrivat_4: {
     title: `${intl.formatMessage({ id: 'afp.privat' })}`,
-    content: intl.formatMessage({
-      id: 'grunnlag.afp.ingress.ja_privat',
-    }),
+    content: 'grunnlag.afp.ingress.ja_privat',
   },
 
   afpPrivatIkkeBeregnet_5: {
