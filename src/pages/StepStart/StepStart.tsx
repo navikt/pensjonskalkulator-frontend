@@ -17,8 +17,14 @@ export function StepStart() {
   const intl = useIntl()
   const navigate = useNavigate()
 
-  const { person, loependeVedtak } =
-    useLoaderData<typeof stepStartAccessGuard>()
+  const loaderData = useLoaderData<typeof stepStartAccessGuard>()
+
+  // Handle case where loader data might be undefined (e.g., due to errors)
+  if (!loaderData) {
+    return null
+  }
+
+  const { person, loependeVedtak } = loaderData
 
   const [{ onStegvisningNext, onStegvisningCancel }] = useStegvisningNavigation(
     paths.start
