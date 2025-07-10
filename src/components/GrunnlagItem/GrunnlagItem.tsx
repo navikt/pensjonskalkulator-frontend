@@ -16,9 +16,7 @@ export const GrunnlagItem: React.FC<GrunnlagItemProps> = ({
 }) => {
   return (
     <Box className={clsx(styles.border, styles[color])}>
-      <Box paddingInline="4 0" paddingBlock="4">
-        {children}
-      </Box>
+      <Box paddingBlock="4">{children}</Box>
     </Box>
   )
 }

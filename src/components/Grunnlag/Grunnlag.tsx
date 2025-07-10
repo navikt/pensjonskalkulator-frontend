@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useNavigate } from 'react-router'
@@ -163,7 +164,11 @@ export const Grunnlag: React.FC<Props> = ({
                       }
                     )
               }
-              className={`${styles.visListekomponenter} ${styles.wideDetailedView}`}
+              className={clsx(
+                styles.visListekomponenter,
+                styles.wideDetailedView,
+                styles.paddingLeft4
+              )}
               onOpenChange={setIsAFPDokumentasjonVisible}
             >
               <AfpDetaljerGrunnlag
@@ -207,10 +212,15 @@ export const Grunnlag: React.FC<Props> = ({
 
         <GrunnlagItem color="blue">
           <VStack gap="3">
-            <Heading level="3" size="small">
+            <Heading level="3" size="small" className={styles.paddingLeft4}>
               <FormattedMessage id="beregning.highcharts.serie.alderspensjon.name" />
             </Heading>
-            <BodyLong className={styles.alderspensjonDetaljer}>
+            <BodyLong
+              className={clsx(
+                styles.alderspensjonDetaljer,
+                styles.paddingLeft4
+              )}
+            >
               {loependeVedtak.alderspensjon || visning === 'avansert' ? (
                 <FormattedMessage
                   id="grunnlag.alderspensjon.endring.ingress"
@@ -257,7 +267,11 @@ export const Grunnlag: React.FC<Props> = ({
                     }
                   )
             }
-            className={`${styles.visListekomponenter} ${styles.wideDetailedView}`}
+            className={clsx(
+              styles.visListekomponenter,
+              styles.wideDetailedView,
+              styles.paddingLeft4
+            )}
             onOpenChange={setIsAlderspensjonDetaljerVisible}
           >
             <AlderspensjonDetaljerGrunnlag
