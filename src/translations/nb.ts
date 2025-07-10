@@ -619,7 +619,7 @@ const translations = {
   'grunnlag.alderspensjon.endring.ingress.pensjonsbeholdning':
     '{br}{br}Din pensjonsopptjening før uttak: {sum} kr',
   'grunnlag.alderspensjon.ingress.link':
-    '<dinPensjonBeholdningLink>Din pensjonsopptjening</dinPensjonBeholdningLink> {br}<alderspensjonsreglerLink>Om reglene for alderspensjon</alderspensjonsreglerLink>',
+    '<dinPensjonBeholdningLink>Din pensjonsopptjening</dinPensjonBeholdningLink> {br}{br}<alderspensjonsreglerLink>Om reglene for alderspensjon</alderspensjonsreglerLink>',
   'grunnlag.afp.title': 'AFP',
   'grunnlag.afp.ikke_beregnet': 'ikke beregnet',
   'grunnlag.afp.endring': 'uendret',
