@@ -49,7 +49,7 @@ export const afpContentIntl = (intl: IntlShape) => ({
   },
 
   afpPrivatIkkeBeregnet_5: {
-    title: `${intl.formatMessage({ id: 'afp.nei ' })} (${intl.formatMessage({ id: 'grunnlag.afp.ikke_beregnet' })})`,
+    title: `${intl.formatMessage({ id: 'afp.nei' })} (${intl.formatMessage({ id: 'grunnlag.afp.ikke_beregnet' })})`,
     content: 'grunnlag.afp.ingress.ja_privat.ufoeretrygd',
   },
 
@@ -69,8 +69,8 @@ export const afpContentIntl = (intl: IntlShape) => ({
   },
 
   afpUforetrygd_9: {
-    title: `${intl.formatMessage({ id: 'afp.uforetrygd' })}`,
-    content: 'grunnlag.afp.ingress.ja_uforetrygd',
+    title: `${intl.formatMessage({ id: 'afp.nei' })}`,
+    content: 'grunnlag.afp.ingress.overgangskull.ufoeretrygd_eller_ap',
   },
 
   afpUforetrygdNei_10: {
