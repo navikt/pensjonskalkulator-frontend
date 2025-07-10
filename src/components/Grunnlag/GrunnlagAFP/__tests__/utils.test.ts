@@ -323,6 +323,21 @@ describe('afpContent', () => {
       },
     }
 
+    it('født før 1963', () => {
+      const foedselsdato = '1951-01-01'
+      const actual = generateAfpContent(intl)({
+        erApoteker: false,
+        afpValg: null,
+        afpUtregning: null,
+        foedselsdato,
+        loependeVedtak,
+        samtykkeOffentligAFP: false,
+        beregningsvalg: null,
+      })
+
+      expect(actual).toStrictEqual(afpOutput.afpUforetrygd_9)
+    })
+
     describe('født etter 1963, ikke fylt 62 (59 år)', () => {
       const foedselsdato = '1966-01-01'
       describe('afpValg', () => {
@@ -427,21 +442,19 @@ describe('afpContent', () => {
       })
     })
 
-    describe('født etter 1963, fylt 62 (62 år)', () => {
+    it('født etter 1963, fylt 62 (62 år)', () => {
       const foedselsdato = '1963-01-01'
-      it('har ikke fått AFP steg', () => {
-        const actual = generateAfpContent(intl)({
-          erApoteker: false,
-          afpValg: null,
-          afpUtregning: null,
-          foedselsdato,
-          loependeVedtak,
-          samtykkeOffentligAFP: false,
-          beregningsvalg: null,
-        })
-
-        expect(actual).toStrictEqual(afpOutput.afpUforetrygdNei_10)
+      const actual = generateAfpContent(intl)({
+        erApoteker: false,
+        afpValg: null,
+        afpUtregning: null,
+        foedselsdato,
+        loependeVedtak,
+        samtykkeOffentligAFP: false,
+        beregningsvalg: null,
       })
+
+      expect(actual).toStrictEqual(afpOutput.afpUforetrygdNei_10)
     })
   })
 
@@ -487,7 +500,7 @@ describe('afpContent', () => {
     const loependeVedtak: LoependeVedtak = {
       harLoependeVedtak: true,
       ufoeretrygd: {
-        grad: 100,
+        grad: 50,
       },
     }
     describe('født etter 1963', () => {
