@@ -127,6 +127,12 @@ export const stepStartAccessGuard = async () => {
       }
     }
 
+    // * For login redirect we need to handle 401 specifically
+    if (getErrorStatus(getPersonRes.error) === 401) {
+      window.location.reload()
+      return
+    }
+
     logger('info', {
       tekst: 'Redirect til /uventet-feil',
       data: `fra Step Start Loader pga. feil med getPerson med status: ${getErrorStatus(getPersonRes.error)}`,
@@ -135,18 +141,25 @@ export const stepStartAccessGuard = async () => {
   }
 
   if (!getLoependeVedtakRes.isSuccess) {
-    if (getErrorStatus(getPersonRes.error) === 403) {
+    if (getErrorStatus(getLoependeVedtakRes.error) === 403) {
       if (
-        getErrorData(getPersonRes.error)?.reason === 'INVALID_REPRESENTASJON'
+        getErrorData(getLoependeVedtakRes.error)?.reason ===
+        'INVALID_REPRESENTASJON'
       ) {
         return redirect(paths.ingenTilgang)
       }
       if (
-        getErrorData(getPersonRes.error)?.reason ===
+        getErrorData(getLoependeVedtakRes.error)?.reason ===
         'INSUFFICIENT_LEVEL_OF_ASSURANCE'
       ) {
         return redirect(paths.lavtSikkerhetsnivaa)
       }
+    }
+
+    // * For login redirect we need to handle 401 specifically
+    if (getErrorStatus(getLoependeVedtakRes.error) === 401) {
+      window.location.reload()
+      return
     }
 
     logger('info', {
