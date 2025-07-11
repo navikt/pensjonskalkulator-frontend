@@ -119,7 +119,7 @@ describe('Loaders', () => {
 
       const returnedFromLoader = await stepStartAccessGuard()
       expect(returnedFromLoader).toHaveProperty('person')
-      if (!('person' in returnedFromLoader)) {
+      if (!returnedFromLoader || !('person' in returnedFromLoader)) {
         throw new Error('person not in returnedFromLoader')
       }
 
@@ -220,7 +220,7 @@ describe('Loaders', () => {
       const returnedFromLoader =
         await stepSivilstandAccessGuard(createMockRequest())
       expect(returnedFromLoader).toHaveProperty('person')
-      if (!('person' in returnedFromLoader)) {
+      if (!returnedFromLoader || !('person' in returnedFromLoader)) {
         throw new Error('person not in returnedFromLoader')
       }
 
@@ -240,7 +240,7 @@ describe('Loaders', () => {
       const returnedFromLoader =
         await stepSivilstandAccessGuard(createMockRequest())
       expect(returnedFromLoader).toHaveProperty('grunnbeloep')
-      if (!('grunnbeloep' in returnedFromLoader)) {
+      if (!returnedFromLoader || !('grunnbeloep' in returnedFromLoader)) {
         throw new Error('grunnbeloep not in returnedFromLoader')
       }
       expect(returnedFromLoader.grunnbeloep).toBeUndefined()
@@ -719,7 +719,7 @@ describe('Loaders', () => {
 
       const returnedFromLoader = await stepAFPAccessGuard(createMockRequest())
       expect(returnedFromLoader).toHaveProperty('erApoteker')
-      if (!('erApoteker' in returnedFromLoader)) {
+      if (!returnedFromLoader || !('erApoteker' in returnedFromLoader)) {
         throw new Error('erApoteker not in returnedFromLoader')
       }
 
