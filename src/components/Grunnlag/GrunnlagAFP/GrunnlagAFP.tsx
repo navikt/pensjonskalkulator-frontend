@@ -1,5 +1,5 @@
 import React from 'react'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { useNavigate } from 'react-router'
 
 import { BodyLong, Heading, Link, VStack } from '@navikt/ds-react'
@@ -28,11 +28,13 @@ import { logger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
 
 import { useFormatertAfpHeader } from './hooks'
+import { generateAfpContent } from './utils'
 
 import styles from '../Grunnlag.module.scss'
 
 export const GrunnlagAFP: React.FC = () => {
-  const afp = useAppSelector(selectAfp) ?? 'vet_ikke' // Vi har fallback for å unngå "missing translation" error ved flush() i GoToStart
+  const intl = useIntl()
+  const afp = useAppSelector(selectAfp)
   const afpUtregningValg = useAppSelector(selectAfpUtregningValg)
   const erApoteker = useAppSelector(selectErApoteker)
   const foedselsdato = useAppSelector(selectFoedselsdato)
@@ -46,6 +48,27 @@ export const GrunnlagAFP: React.FC = () => {
   const isUfoerAndDontWantAfp = !!ufoeregrad && beregningsvalg !== 'med_afp'
 
   const formatertAfpHeader = useFormatertAfpHeader()
+
+  const { title, content } = React.useMemo(() => {
+    return generateAfpContent(intl)({
+      afpUtregning: afpUtregningValg,
+      erApoteker: erApoteker ?? false,
+      loependeVedtak: loependeVedtak,
+      afpValg: afp,
+      foedselsdato: foedselsdato!,
+      samtykkeOffentligAFP: samtykkeOffentligAFP,
+      beregningsvalg: beregningsvalg,
+    })
+  }, [
+    intl,
+    afp,
+    afpUtregningValg,
+    erApoteker,
+    loependeVedtak,
+    ufoeregrad,
+    beregningsvalg,
+    foedselsdato,
+  ])
 
   const formatertAfpIngress = React.useMemo(() => {
     if (afp === 'nei') {
@@ -138,6 +161,7 @@ export const GrunnlagAFP: React.FC = () => {
 
   return (
     <VStack gap="3">
+      Gammel AFP Beregning visning:
       <Heading level="3" size="small">
         <FormattedMessage id="grunnlag.afp.title" />:{' '}
         <span style={{ fontWeight: 'normal' }}>{formatertAfpHeader}</span>
@@ -148,6 +172,22 @@ export const GrunnlagAFP: React.FC = () => {
       >
         <FormattedMessage
           id={formatertAfpIngress}
+          values={{
+            ...getFormatMessageValues(),
+            goToAFP: GoToAFP,
+            goToAvansert: GoToAvansert,
+            goToStart: GoToStart,
+          }}
+        />
+      </BodyLong>
+      Ny AFP Beregning visning:
+      <Heading level="3" size="small">
+        <FormattedMessage id="grunnlag.afp.title" />:{' '}
+        <span style={{ fontWeight: 'normal' }}>{title}</span>
+      </Heading>
+      <BodyLong data-testid={content} className={styles.alderspensjonDetaljer}>
+        <FormattedMessage
+          id={content}
           values={{
             ...getFormatMessageValues(),
             goToAFP: GoToAFP,
