@@ -225,19 +225,21 @@ export const AfpDetaljer: React.FC<AfpDetaljerProps> = ({
 
       {afpOffentligDetaljerListe && afpOffentligDetaljerListe.length > 0 && (
         <dl>
-          <Heading size="small" level="4" spacing>
-            <FormattedMessage
-              id="beregning.detaljer.afpOffentlig.uttak.title"
-              values={{
-                ...getFormatMessageValues(),
-                alderAar: `${currentAge} år`,
-                alderMd:
-                  currentMonths && currentMonths > 0
-                    ? `og ${currentMonths} måneder`
-                    : '',
-              }}
-            />
-          </Heading>
+          <div className={styles.hstackRow}>
+            <Heading size="small" level="4" spacing>
+              <FormattedMessage
+                id="beregning.detaljer.afpOffentlig.uttak.title"
+                values={{
+                  ...getFormatMessageValues(),
+                  alderAar: `${currentAge} år`,
+                  alderMd:
+                    currentMonths && currentMonths > 0
+                      ? `og ${currentMonths} måneder`
+                      : '',
+                }}
+              />
+            </Heading>
+          </div>
           {afpOffentligDetaljerListe.map((detalj, index) => (
             <Fragment key={index}>
               <HStack justify="space-between" className={styles.hstackRow}>
