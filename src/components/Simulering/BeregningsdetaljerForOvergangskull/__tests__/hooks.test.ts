@@ -74,10 +74,7 @@ describe('useBeregningsdetaljer', () => {
   it('returnerer tomme arrays hvis ingen input', () => {
     const { result } = renderHook(() => useBeregningsdetaljer())
     expect(result.current.alderspensjonDetaljerListe).toEqual([])
-    expect(result.current.pre2025OffentligAfpDetaljerListe).toEqual([])
-    expect(result.current.afpPrivatDetaljerListe).toEqual([])
-    expect(result.current.afpOffentligDetaljerListe).toEqual([])
-    expect(result.current.opptjeningPre2025OffentligAfpListe).toEqual([])
+    expect(result.current.afpDetaljerListe).toEqual([])
   })
 
   describe('Gitt at brukeren har alderspensjon', () => {
@@ -477,12 +474,13 @@ describe('useBeregningsdetaljer', () => {
       const { result } = renderHook(() =>
         useBeregningsdetaljer(
           [mockAlderspensjon],
-          [mockAfpPrivat],
-          [mockAfpOffentlig],
+          undefined, // Don't pass afpPrivat to test only pre2025
+          undefined, // Don't pass afpOffentlig to test only pre2025
           mockPre2025OffentligAfp
         )
       )
-      expect(result.current.opptjeningPre2025OffentligAfpListe).toEqual(
+      expect(result.current.afpDetaljerListe).toHaveLength(1)
+      expect(result.current.afpDetaljerListe[0].opptjeningPre2025OffentligAfp).toEqual(
         expect.arrayContaining([
           expect.objectContaining({ tekst: 'AFP grad', verdi: 50 }),
           expect.objectContaining({ tekst: 'Sluttpoengtall', verdi: 2 }),
@@ -502,7 +500,7 @@ describe('useBeregningsdetaljer', () => {
         const { result } = renderHook(() =>
           useBeregningsdetaljer([], [], [], mock)
         )
-        expect(result.current.opptjeningPre2025OffentligAfpListe).toEqual(
+        expect(result.current.afpDetaljerListe[0].opptjeningPre2025OffentligAfp).toEqual(
           expect.arrayContaining([
             expect.objectContaining({ tekst: 'Poengår', verdi: 0 }),
           ])
@@ -514,7 +512,7 @@ describe('useBeregningsdetaljer', () => {
         const { result } = renderHook(() =>
           useBeregningsdetaljer([], [], [], mock)
         )
-        expect(result.current.opptjeningPre2025OffentligAfpListe).toEqual(
+        expect(result.current.afpDetaljerListe[0].opptjeningPre2025OffentligAfp).toEqual(
           expect.arrayContaining([
             expect.objectContaining({ tekst: 'Trygdetid', verdi: 0 }),
           ])
@@ -530,7 +528,7 @@ describe('useBeregningsdetaljer', () => {
         const { result } = renderHook(() =>
           useBeregningsdetaljer([], [], [], mock)
         )
-        expect(result.current.opptjeningPre2025OffentligAfpListe).toEqual(
+        expect(result.current.afpDetaljerListe[0].opptjeningPre2025OffentligAfp).toEqual(
           expect.arrayContaining([
             expect.objectContaining({ tekst: 'Poengår', verdi: 7 }),
             expect.objectContaining({ tekst: 'Trygdetid', verdi: 5 }),
@@ -551,13 +549,13 @@ describe('useBeregningsdetaljer', () => {
         useBeregningsdetaljer(
           [mockAlderspensjon],
           [mockAfpPrivat],
-          [mockAfpOffentlig],
-          mockPre2025OffentligAfp
+          undefined, // Don't pass afpOffentlig to test only privat
+          undefined // Don't pass pre2025 to test only privat
         )
       )
 
-      expect(result.current.afpPrivatDetaljerListe).toHaveLength(1)
-      expect(result.current.afpPrivatDetaljerListe[0]).toEqual(
+      expect(result.current.afpDetaljerListe).toHaveLength(1)
+      expect(result.current.afpDetaljerListe[0].afpPrivat).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             tekst: 'Kompensasjonstillegg',
@@ -601,15 +599,15 @@ describe('useBeregningsdetaljer', () => {
         useBeregningsdetaljer(
           [mockAlderspensjon],
           afpPrivatListe,
-          [mockAfpOffentlig],
-          mockPre2025OffentligAfp
+          undefined, // Don't pass afpOffentlig to test only privat
+          undefined // Don't pass pre2025 to test only privat
         )
       )
 
-      expect(result.current.afpPrivatDetaljerListe).toHaveLength(2)
+      expect(result.current.afpDetaljerListe).toHaveLength(2)
 
       // Første element (index 0 - uttaksalder)
-      expect(result.current.afpPrivatDetaljerListe[0]).toEqual(
+      expect(result.current.afpDetaljerListe[0].afpPrivat).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             tekst: 'Kompensasjonstillegg',
@@ -623,7 +621,7 @@ describe('useBeregningsdetaljer', () => {
       )
 
       // Andre element (alder 67)
-      expect(result.current.afpPrivatDetaljerListe[1]).toEqual(
+      expect(result.current.afpDetaljerListe[1].afpPrivat).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             tekst: 'Kompensasjonstillegg',
@@ -649,12 +647,12 @@ describe('useBeregningsdetaljer', () => {
         useBeregningsdetaljer(
           [mockAlderspensjon],
           afpPrivatListe,
-          [mockAfpOffentlig],
-          mockPre2025OffentligAfp
+          undefined, // Don't pass afpOffentlig to test only privat
+          undefined // Don't pass pre2025 to test only privat
         )
       )
 
-      expect(result.current.afpPrivatDetaljerListe).toHaveLength(1)
+      expect(result.current.afpDetaljerListe).toHaveLength(1)
     })
 
     it('filtrerer bort rader med verdi 0 kr', () => {
@@ -668,12 +666,12 @@ describe('useBeregningsdetaljer', () => {
         useBeregningsdetaljer(
           [mockAlderspensjon],
           [afpPrivatMedNull],
-          [mockAfpOffentlig],
-          mockPre2025OffentligAfp
+          undefined, // Don't pass afpOffentlig to test only privat
+          undefined // Don't pass pre2025 to test only privat
         )
       )
 
-      expect(result.current.afpPrivatDetaljerListe[0]).toEqual(
+      expect(result.current.afpDetaljerListe[0].afpPrivat).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             tekst: 'Livsvarig del',
@@ -686,7 +684,7 @@ describe('useBeregningsdetaljer', () => {
         ])
       )
 
-      expect(result.current.afpPrivatDetaljerListe[0]).not.toEqual(
+      expect(result.current.afpDetaljerListe[0].afpPrivat).not.toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             tekst: 'Kompensasjonstillegg',
@@ -705,12 +703,15 @@ describe('useBeregningsdetaljer', () => {
       const { result } = renderHook(() =>
         useBeregningsdetaljer(
           [mockAlderspensjon],
-          [mockAfpPrivat],
+          undefined, // Don't pass afpPrivat to test only offentlig
           [mockAfpOffentlig],
-          mockPre2025OffentligAfp
+          undefined // Don't pass pre2025 to test only offentlig
         )
       )
-      expect(result.current.afpOffentligDetaljerListe).toEqual(
+      // Find the AFP offentlig item in the list
+      const afpOffentligItem = result.current.afpDetaljerListe.find(item => item.afpOffentlig.length > 0)
+      expect(afpOffentligItem).toBeDefined()
+      expect(afpOffentligItem?.afpOffentlig).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             tekst: 'Månedlig livsvarig avtalefestet pensjon (AFP)',
@@ -738,7 +739,9 @@ describe('useBeregningsdetaljer', () => {
           mockPre2025OffentligAfp
         )
       )
-      expect(result.current.afpOffentligDetaljerListe).toEqual(
+      const afpOffentligItem = result.current.afpDetaljerListe.find(item => item.afpOffentlig.length > 0)
+      expect(afpOffentligItem).toBeDefined()
+      expect(afpOffentligItem?.afpOffentlig).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             tekst: 'Månedlig livsvarig avtalefestet pensjon (AFP)',
@@ -757,7 +760,7 @@ describe('useBeregningsdetaljer', () => {
           mockPre2025OffentligAfp
         )
       )
-      expect(result.current.afpOffentligDetaljerListe).toEqual([])
+      expect(result.current.afpDetaljerListe.find(item => item.afpOffentlig.length > 0)?.afpOffentlig || []).toEqual([])
     })
 
     it('returnerer tom liste når AFP offentlig er tom liste', () => {
@@ -769,7 +772,7 @@ describe('useBeregningsdetaljer', () => {
           mockPre2025OffentligAfp
         )
       )
-      expect(result.current.afpOffentligDetaljerListe).toEqual([])
+      expect(result.current.afpDetaljerListe.find(item => item.afpOffentlig.length > 0)?.afpOffentlig || []).toEqual([])
     })
 
     it('filtrerer bort rader med verdi 0', () => {
@@ -787,7 +790,7 @@ describe('useBeregningsdetaljer', () => {
         )
       )
 
-      expect(result.current.afpOffentligDetaljerListe).toEqual([])
+      expect(result.current.afpDetaljerListe.find(item => item.afpOffentlig.length > 0)?.afpOffentlig || []).toEqual([])
     })
   })
 
@@ -801,7 +804,9 @@ describe('useBeregningsdetaljer', () => {
           mockPre2025OffentligAfp
         )
       )
-      expect(result.current.pre2025OffentligAfpDetaljerListe).toEqual(
+      const pre2025Item = result.current.afpDetaljerListe.find(item => item.pre2025OffentligAfp.length > 0)
+      expect(pre2025Item).toBeDefined()
+      expect(pre2025Item?.pre2025OffentligAfp).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             tekst: 'Grunnpensjon (kap. 19)',
@@ -841,7 +846,9 @@ describe('useBeregningsdetaljer', () => {
         )
       )
 
-      expect(result.current.pre2025OffentligAfpDetaljerListe).toEqual(
+      const pre2025Item = result.current.afpDetaljerListe.find(item => item.pre2025OffentligAfp.length > 0)
+      expect(pre2025Item).toBeDefined()
+      expect(pre2025Item?.pre2025OffentligAfp).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             tekst: 'Grunnpensjon (kap. 19)',
@@ -857,7 +864,7 @@ describe('useBeregningsdetaljer', () => {
           }),
         ])
       )
-      expect(result.current.pre2025OffentligAfpDetaljerListe.length).toBe(3) // Kun non-zero values + sum
+      expect(pre2025Item?.pre2025OffentligAfp.length).toBe(3) // Kun non-zero values + sum
     })
 
     it('returnerer tom liste når pre2025OffentligAfp er undefined', () => {
@@ -869,7 +876,7 @@ describe('useBeregningsdetaljer', () => {
           undefined
         )
       )
-      expect(result.current.pre2025OffentligAfpDetaljerListe).toEqual([])
+      expect(result.current.afpDetaljerListe.find(item => item.pre2025OffentligAfp.length > 0)?.pre2025OffentligAfp || []).toEqual([])
     })
 
     it('håndterer negative verdier korrekt i pre2025OffentligAfpDetaljerListe', () => {
@@ -892,7 +899,7 @@ describe('useBeregningsdetaljer', () => {
 
       // Negative verdier skal filtreres bort
       const grunnpensjonRad =
-        result.current.pre2025OffentligAfpDetaljerListe.find(
+        result.current.afpDetaljerListe[0].pre2025OffentligAfp.find(
           (rad) => rad.tekst === 'Grunnpensjon (kap. 19)'
         )
       expect(grunnpensjonRad).toBeUndefined()
@@ -908,7 +915,9 @@ describe('useBeregningsdetaljer', () => {
         )
       )
 
-      const sumRad = result.current.pre2025OffentligAfpDetaljerListe.find(
+      const pre2025Item = result.current.afpDetaljerListe.find(item => item.pre2025OffentligAfp.length > 0)
+      expect(pre2025Item).toBeDefined()
+      const sumRad = pre2025Item?.pre2025OffentligAfp.find(
         (rad) => rad.tekst === 'Sum AFP'
       )
       expect(sumRad).toBeDefined()
