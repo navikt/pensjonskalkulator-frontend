@@ -24,7 +24,7 @@ export const AfpDetaljerGrunnlag: React.FC<Props> = ({ afpDetaljerListe }) => {
   )
 
   return (
-    <VStack gap="14" width="100%">
+    <VStack gap="14" width="100%" data-testid="beregningsdetaljer-for-overgangskull">
       {afpDetaljerListe.map((afpDetaljForValgtUttak, index) => (
         <Box key={index}>
           <VStack gap="4 8" width="100%" marginBlock="6 4">

@@ -77,7 +77,7 @@ function renderDetaljer(
                     )}
                   </dt>
                   <dd>
-                    {isBold ? <strong>{detalj.verdi}:</strong> : detalj.verdi}
+                    {isBold ? <strong>{detalj.verdi}</strong> : detalj.verdi}
                   </dd>
                 </HStack>
               </React.Fragment>

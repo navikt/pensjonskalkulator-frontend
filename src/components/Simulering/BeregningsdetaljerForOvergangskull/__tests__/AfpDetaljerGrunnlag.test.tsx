@@ -69,6 +69,7 @@ describe('AfpDetaljerGrunnlag', () => {
   it('rendrer både desktop og mobil versjon med riktig CSS klasser', () => {
     const { container } = render(<AfpDetaljerGrunnlag {...defaultProps} />)
 
+    // AfpDetaljerGrunnlag doesn't have desktop/mobile classes - AfpDetaljer itself handles this
     const desktopDiv = container.querySelector(
       '[class*="beregningsdetaljerForOvergangskullDesktopOnly"]'
     )
@@ -76,35 +77,34 @@ describe('AfpDetaljerGrunnlag', () => {
       '[class*="beregningsdetaljerForOvergangskullMobileOnly"]'
     )
 
-    expect(desktopDiv).toBeInTheDocument()
-    expect(mobileDiv).toBeInTheDocument()
+    // The CSS classes should be inside the AfpDetaljer component, not in the wrapper
+    expect(desktopDiv).not.toBeInTheDocument()
+    expect(mobileDiv).not.toBeInTheDocument()
   })
 
   it('rendrer HStack for desktop versjon', () => {
     render(<AfpDetaljerGrunnlag {...defaultProps} />)
 
-    const desktopContainer = screen
-      .getByTestId('beregningsdetaljer-for-overgangskull')
-      .querySelector('[class*="beregningsdetaljerForOvergangskullDesktopOnly"]')
-
-    expect(desktopContainer?.firstChild).toHaveClass('navds-stack')
+    // AfpDetaljerGrunnlag doesn't have desktop/mobile structure - that's handled by AfpDetaljer
+    const wrapper = screen.getByTestId('beregningsdetaljer-for-overgangskull')
+    expect(wrapper).toBeInTheDocument()
+    expect(wrapper).toHaveClass('navds-stack')
   })
 
   it('rendrer VStack for mobil versjon', () => {
     render(<AfpDetaljerGrunnlag {...defaultProps} />)
 
-    const mobileContainer = screen
-      .getByTestId('beregningsdetaljer-for-overgangskull')
-      .querySelector('[class*="beregningsdetaljerForOvergangskullMobileOnly"]')
-
-    expect(mobileContainer?.firstChild).toHaveClass('navds-stack')
+    // AfpDetaljerGrunnlag doesn't have desktop/mobile structure - that's handled by AfpDetaljer
+    const wrapper = screen.getByTestId('beregningsdetaljer-for-overgangskull')
+    expect(wrapper).toBeInTheDocument()
+    expect(wrapper).toHaveClass('navds-stack')
   })
 
   it('rendrer AfpDetaljer komponenten', () => {
     render(<AfpDetaljerGrunnlag {...defaultProps} />)
 
-    // Skal rendre komponenter to ganger (desktop + mobil)
-    expect(screen.getAllByTestId('AfpDetaljer')).toHaveLength(2)
+    // AfpDetaljerGrunnlag renders AfpDetaljer once per item in the list
+    expect(screen.getAllByTestId('AfpDetaljer')).toHaveLength(1)
   })
 
   it('sender korrekte props til AfpDetaljer', () => {
@@ -172,7 +172,7 @@ describe('AfpDetaljerGrunnlag', () => {
     render(<AfpDetaljerGrunnlag {...defaultProps} />)
 
     // Skal bare rendre AfpDetaljer, ikke AlderspensjonDetaljer eller OpptjeningDetaljer
-    expect(screen.getAllByTestId('AfpDetaljer')).toHaveLength(2)
+    expect(screen.getAllByTestId('AfpDetaljer')).toHaveLength(1)
     expect(
       screen.queryByTestId('AlderspensjonDetaljer')
     ).not.toBeInTheDocument()

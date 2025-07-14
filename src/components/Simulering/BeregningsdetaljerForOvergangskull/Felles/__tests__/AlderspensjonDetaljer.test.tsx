@@ -20,6 +20,8 @@ const mockMessages = {
   'beregning.detaljer.grunnpensjon.pre2025OffentligAfp.title': 'Pre-2025 AFP',
   'beregning.detaljer.grunnpensjon.table.title': 'Grunnpensjon (kr)',
   'beregning.detaljer.grunnpensjon.afp.table.title': 'AFP (kr)',
+  'beregning.detaljer.OpptjeningDetaljer.kap19.table.title': 'Opptjening kapittel 19',
+  'beregning.detaljer.OpptjeningDetaljer.kap20.table.title': 'Opptjening kapittel 20',
 }
 
 const createMockStore = (customState = {}) => {
@@ -88,13 +90,13 @@ describe('Gitt at AlderspensjonDetaljer rendres', () => {
       />
     )
 
-    expect(screen.getAllByText('Grunnpensjon (kap. 19)')).toHaveLength(2)
+    expect(screen.getAllByText('Grunnpensjon (kap. 19):')).toHaveLength(2)
     expect(screen.getAllByText('12 000 kr')).toHaveLength(2)
-    expect(screen.getAllByText('Tilleggspensjon (kap. 19)')).toHaveLength(2)
+    expect(screen.getAllByText('Tilleggspensjon (kap. 19):')).toHaveLength(2)
     expect(screen.getAllByText('8 000 kr')).toHaveLength(2)
-    expect(screen.getAllByText('Inntektspensjon (kap. 20)')).toHaveLength(2)
+    expect(screen.getAllByText('Inntektspensjon (kap. 20):')).toHaveLength(2)
     expect(screen.getAllByText('15 000 kr')).toHaveLength(2)
-    expect(screen.getAllByText('Sum alderspensjon')).toHaveLength(2)
+    expect(screen.getAllByText('Sum alderspensjon:')).toHaveLength(2)
     expect(screen.getAllByText('41 000 kr')).toHaveLength(2)
   })
 
@@ -105,16 +107,16 @@ describe('Gitt at AlderspensjonDetaljer rendres', () => {
       />
     )
 
-    // Should render alderspensjon section (appears in both desktop and mobile)
-    expect(screen.getAllByText('Grunnpensjon (kap. 19)')).toHaveLength(2)
-    expect(screen.getAllByText('Sum alderspensjon')).toHaveLength(2)
+    // Skal rendre alderspensjon seksjon (både i desktop og mobile)
+    expect(screen.getAllByText('Grunnpensjon (kap. 19):')).toHaveLength(2)
+    expect(screen.getAllByText('Sum alderspensjon:')).toHaveLength(2)
 
-    // Should render opptjeningKap19 section (appears in both desktop and mobile)
-    expect(screen.getAllByText('Andelsbrøk')).toHaveLength(4) // 2 from kap19 and 2 from kap20
-    expect(screen.getAllByText('Sluttpoengtall')).toHaveLength(2)
+    // Skal rendre opptjeningKap19 seksjon (både i desktop og mobile)
+    expect(screen.getAllByText('Andelsbrøk:')).toHaveLength(4) // 2 from kap19 and 2 from kap20
+    expect(screen.getAllByText('Sluttpoengtall:')).toHaveLength(2)
 
-    // Should render opptjeningKap20 section (appears in both desktop and mobile)
-    expect(screen.getAllByText('Pensjonsbeholdning')).toHaveLength(2)
+    // Skal rendre opptjeningKap20 seksjon (både i desktop og mobile)
+    expect(screen.getAllByText('Pensjonsbeholdning:')).toHaveLength(2)
     expect(screen.getAllByText('500 000 kr')).toHaveLength(2)
   })
 
@@ -163,8 +165,8 @@ describe('Gitt at AlderspensjonDetaljer rendres', () => {
       />
     )
 
-    expect(screen.getAllByText('Test grunnpensjon')).toHaveLength(2)
-    expect(screen.getAllByText('Test tilleggspensjon')).toHaveLength(2)
+    expect(screen.getAllByText('Test grunnpensjon:')).toHaveLength(2)
+    expect(screen.getAllByText('Test tilleggspensjon:')).toHaveLength(2)
   })
 
   it('rendrer VStack med korrekt gap', () => {
