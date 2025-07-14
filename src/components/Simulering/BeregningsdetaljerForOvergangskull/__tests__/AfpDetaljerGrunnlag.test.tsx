@@ -20,8 +20,12 @@ vi.mock('../Felles/AfpDetaljer', () => ({
     <div
       data-testid="AfpDetaljer"
       data-afp-privat-length={afpDetaljForValgtUttak?.afpPrivat?.length ?? ''}
-      data-afp-offentlig-length={afpDetaljForValgtUttak?.afpOffentlig?.length ?? ''}
-      data-pre2025-afp-length={afpDetaljForValgtUttak?.pre2025OffentligAfp?.length ?? ''}
+      data-afp-offentlig-length={
+        afpDetaljForValgtUttak?.afpOffentlig?.length ?? ''
+      }
+      data-pre2025-afp-length={
+        afpDetaljForValgtUttak?.pre2025OffentligAfp?.length ?? ''
+      }
       data-pre2025-opptjening-length={
         afpDetaljForValgtUttak?.opptjeningPre2025OffentligAfp?.length ?? ''
       }

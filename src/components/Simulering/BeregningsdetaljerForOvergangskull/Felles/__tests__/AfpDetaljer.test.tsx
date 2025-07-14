@@ -125,7 +125,11 @@ describe('Gitt at AfpDetaljer rendres', () => {
     }
 
     renderWithProviders(
-      <AfpDetaljer afpDetaljForValgtUttak={createAfpDetaljerListe({ afpPrivat: mockAfpPrivatAt67Data })} />,
+      <AfpDetaljer
+        afpDetaljForValgtUttak={createAfpDetaljerListe({
+          afpPrivat: mockAfpPrivatAt67Data,
+        })}
+      />,
       stateWith67
     )
 
@@ -147,7 +151,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
     renderWithProviders(
       <AfpDetaljer
-        afpDetaljForValgtUttak={createAfpDetaljerListe({ afpPrivat: mockAfpPrivatAtUttaksalderData })}
+        afpDetaljForValgtUttak={createAfpDetaljerListe({
+          afpPrivat: mockAfpPrivatAtUttaksalderData,
+        })}
       />,
       stateWith62
     )
@@ -172,7 +178,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
     renderWithProviders(
       <AfpDetaljer
-        afpDetaljForValgtUttak={createAfpDetaljerListe({ afpPrivat: mockAfpPrivatAt67Data })}
+        afpDetaljForValgtUttak={createAfpDetaljerListe({
+          afpPrivat: mockAfpPrivatAt67Data,
+        })}
       />,
       stateWith67
     )
@@ -189,7 +197,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
   it('rendrer pre-2025 offentlig AFP når data er tilgjengelig', () => {
     renderWithProviders(
       <AfpDetaljer
-        afpDetaljForValgtUttak={createAfpDetaljerListe({ opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData })}
+        afpDetaljForValgtUttak={createAfpDetaljerListe({
+          opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData,
+        })}
       />
     )
 
@@ -206,9 +216,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
   it('rendrer både AFP privat og pre-2025 offentlig AFP samtidig', () => {
     renderWithProviders(
       <AfpDetaljer
-        afpDetaljForValgtUttak={createAfpDetaljerListe({ 
+        afpDetaljForValgtUttak={createAfpDetaljerListe({
           afpPrivat: mockAfpPrivatAt67Data,
-          opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData 
+          opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData,
         })}
       />
     )
@@ -224,9 +234,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
   it('rendrer ikke noe når alle data er tomme eller undefined', () => {
     const { container } = renderWithProviders(
-      <AfpDetaljer
-        afpDetaljForValgtUttak={createAfpDetaljerListe({})}
-      />
+      <AfpDetaljer afpDetaljForValgtUttak={createAfpDetaljerListe({})} />
     )
 
     // Kun box elementet skal være tilstede
@@ -243,7 +251,11 @@ describe('Gitt at AfpDetaljer rendres', () => {
     ]
 
     renderWithProviders(
-      <AfpDetaljer afpDetaljForValgtUttak={createAfpDetaljerListe({ afpPrivat: objektMedUndefined })} />
+      <AfpDetaljer
+        afpDetaljForValgtUttak={createAfpDetaljerListe({
+          afpPrivat: objektMedUndefined,
+        })}
+      />
     )
 
     expect(screen.getAllByText('Test AFP:')[0]).toBeVisible()
@@ -257,7 +269,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
     renderWithProviders(
       <AfpDetaljer
-        afpDetaljForValgtUttak={createAfpDetaljerListe({ afpPrivat: mockAfpPrivatAtUttaksalderData })}
+        afpDetaljForValgtUttak={createAfpDetaljerListe({
+          afpPrivat: mockAfpPrivatAtUttaksalderData,
+        })}
       />,
       stateWith62
     )
@@ -268,7 +282,11 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
   it('rendrer siste element i hver array med strong styling', () => {
     const { container } = renderWithProviders(
-      <AfpDetaljer afpDetaljForValgtUttak={createAfpDetaljerListe({ afpPrivat: mockAfpPrivatAt67Data })} />
+      <AfpDetaljer
+        afpDetaljForValgtUttak={createAfpDetaljerListe({
+          afpPrivat: mockAfpPrivatAt67Data,
+        })}
+      />
     )
 
     const strongElements = container.querySelectorAll('strong')
@@ -282,7 +300,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
     renderWithProviders(
       <AfpDetaljer
-        afpDetaljForValgtUttak={createAfpDetaljerListe({ afpPrivat: mockAfpPrivatAtUttaksalderData })}
+        afpDetaljForValgtUttak={createAfpDetaljerListe({
+          afpPrivat: mockAfpPrivatAtUttaksalderData,
+        })}
       />,
       stateWithMonths
     )
@@ -294,7 +314,11 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
   it('rendrer VStack med korrekt gap for AFP privat', () => {
     const { container } = renderWithProviders(
-      <AfpDetaljer afpDetaljForValgtUttak={createAfpDetaljerListe({ afpPrivat: mockAfpPrivatAt67Data })} />
+      <AfpDetaljer
+        afpDetaljForValgtUttak={createAfpDetaljerListe({
+          afpPrivat: mockAfpPrivatAt67Data,
+        })}
+      />
     )
 
     const vStack = container.querySelector('.navds-stack')
@@ -304,9 +328,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
   it('rendrer definition lists korrekt', () => {
     const { container } = renderWithProviders(
       <AfpDetaljer
-        afpDetaljForValgtUttak={createAfpDetaljerListe({ 
+        afpDetaljForValgtUttak={createAfpDetaljerListe({
           afpPrivat: mockAfpPrivatAt67Data,
-          opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData 
+          opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData,
         })}
       />
     )
@@ -322,7 +346,11 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
   it('håndterer kun ett element i afpPrivat array', () => {
     renderWithProviders(
-      <AfpDetaljer afpDetaljForValgtUttak={createAfpDetaljerListe({ afpPrivat: mockAfpPrivatAt67Data })} />
+      <AfpDetaljer
+        afpDetaljForValgtUttak={createAfpDetaljerListe({
+          afpPrivat: mockAfpPrivatAt67Data,
+        })}
+      />
     )
 
     // Skal vise AFP privat
@@ -342,7 +370,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
       renderWithProviders(
         <AfpDetaljer
-          afpDetaljForValgtUttak={createAfpDetaljerListe({ afpPrivat: mockAfpPrivatAtUttaksalderData })}
+          afpDetaljForValgtUttak={createAfpDetaljerListe({
+            afpPrivat: mockAfpPrivatAtUttaksalderData,
+          })}
         />,
         stateWithGradertUttak
       )
@@ -363,7 +393,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
       renderWithProviders(
         <AfpDetaljer
-          afpDetaljForValgtUttak={createAfpDetaljerListe({ afpPrivat: mockAfpPrivatAt67Data })}
+          afpDetaljForValgtUttak={createAfpDetaljerListe({
+            afpPrivat: mockAfpPrivatAt67Data,
+          })}
         />,
         stateWithGradertUttakAt67
       )
@@ -384,7 +416,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
       renderWithProviders(
         <AfpDetaljer
-          afpDetaljForValgtUttak={createAfpDetaljerListe({ afpPrivat: mockAfpPrivatAtUttaksalderData })}
+          afpDetaljForValgtUttak={createAfpDetaljerListe({
+            afpPrivat: mockAfpPrivatAtUttaksalderData,
+          })}
         />,
         stateWithGradertUttakWithMonths
       )
@@ -404,7 +438,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
       renderWithProviders(
         <AfpDetaljer
-          afpDetaljForValgtUttak={createAfpDetaljerListe({ afpPrivat: mockAfpPrivatAtUttaksalderData })}
+          afpDetaljForValgtUttak={createAfpDetaljerListe({
+            afpPrivat: mockAfpPrivatAtUttaksalderData,
+          })}
         />,
         stateWithGradertUttakUnder67
       )
@@ -424,7 +460,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
       renderWithProviders(
         <AfpDetaljer
-          afpDetaljForValgtUttak={createAfpDetaljerListe({ afpPrivat: mockAfpPrivatAt67Data })}
+          afpDetaljForValgtUttak={createAfpDetaljerListe({
+            afpPrivat: mockAfpPrivatAt67Data,
+          })}
         />,
         stateWithGradertUttakOver67
       )
@@ -445,7 +483,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
       renderWithProviders(
         <AfpDetaljer
-          afpDetaljForValgtUttak={createAfpDetaljerListe({ afpPrivat: mockAfpPrivatAtUttaksalderData })}
+          afpDetaljForValgtUttak={createAfpDetaljerListe({
+            afpPrivat: mockAfpPrivatAtUttaksalderData,
+          })}
         />,
         stateWithGradertUttakNoMonths
       )
@@ -464,7 +504,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
       renderWithProviders(
         <AfpDetaljer
-          afpDetaljForValgtUttak={createAfpDetaljerListe({ afpPrivat: mockAfpPrivatAtUttaksalderData })}
+          afpDetaljForValgtUttak={createAfpDetaljerListe({
+            afpPrivat: mockAfpPrivatAtUttaksalderData,
+          })}
         />,
         stateWithIncompleteGradertUttak
       )
@@ -477,7 +519,11 @@ describe('Gitt at AfpDetaljer rendres', () => {
   describe('afpOffentligDetaljerListe', () => {
     it('rendrer AFP offentlig når data er tilgjengelig', () => {
       renderWithProviders(
-        <AfpDetaljer afpDetaljForValgtUttak={createAfpDetaljerListe({ afpOffentlig: mockAfpOffentligData })} />
+        <AfpDetaljer
+          afpDetaljForValgtUttak={createAfpDetaljerListe({
+            afpOffentlig: mockAfpOffentligData,
+          })}
+        />
       )
 
       expect(
@@ -490,7 +536,11 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
     it('rendrer AFP offentlig med strong styling for alle elementer', () => {
       const { container } = renderWithProviders(
-        <AfpDetaljer afpDetaljForValgtUttak={createAfpDetaljerListe({ afpOffentlig: mockAfpOffentligData })} />
+        <AfpDetaljer
+          afpDetaljForValgtUttak={createAfpDetaljerListe({
+            afpOffentlig: mockAfpOffentligData,
+          })}
+        />
       )
 
       const strongElements = container.querySelectorAll('strong')
@@ -499,7 +549,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
     })
 
     it('rendrer ikke AFP offentlig når lista er tom', () => {
-      renderWithProviders(<AfpDetaljer afpDetaljForValgtUttak={createAfpDetaljerListe({})} />)
+      renderWithProviders(
+        <AfpDetaljer afpDetaljForValgtUttak={createAfpDetaljerListe({})} />
+      )
 
       expect(
         screen.queryByText('Månedlig livsvarig avtalefestet pensjon (AFP):')
@@ -513,7 +565,11 @@ describe('Gitt at AfpDetaljer rendres', () => {
       ]
 
       renderWithProviders(
-        <AfpDetaljer afpDetaljForValgtUttak={createAfpDetaljerListe({ afpOffentlig: afpOffentligMedUndefined })} />
+        <AfpDetaljer
+          afpDetaljForValgtUttak={createAfpDetaljerListe({
+            afpOffentlig: afpOffentligMedUndefined,
+          })}
+        />
       )
 
       expect(screen.getAllByText('Test AFP offentlig:')[0]).toBeVisible()
@@ -523,9 +579,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
     it('rendrer AFP offentlig sammen med AFP privat', () => {
       renderWithProviders(
         <AfpDetaljer
-          afpDetaljForValgtUttak={createAfpDetaljerListe({ 
+          afpDetaljForValgtUttak={createAfpDetaljerListe({
             afpPrivat: mockAfpPrivatAt67Data,
-            afpOffentlig: mockAfpOffentligData 
+            afpOffentlig: mockAfpOffentligData,
           })}
         />
       )
@@ -544,9 +600,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
     it('rendrer AFP offentlig sammen med pre-2025 offentlig AFP', () => {
       renderWithProviders(
         <AfpDetaljer
-          afpDetaljForValgtUttak={createAfpDetaljerListe({ 
+          afpDetaljForValgtUttak={createAfpDetaljerListe({
             afpOffentlig: mockAfpOffentligData,
-            opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData 
+            opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData,
           })}
         />
       )
@@ -564,19 +620,29 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
   describe('edge cases og spesifikke scenarier', () => {
     it('håndterer tom afpPrivat array', () => {
-      renderWithProviders(<AfpDetaljer afpDetaljForValgtUttak={createAfpDetaljerListe({})} />)
+      renderWithProviders(
+        <AfpDetaljer afpDetaljForValgtUttak={createAfpDetaljerListe({})} />
+      )
 
       expect(screen.queryByText('Sum AFP:')).not.toBeInTheDocument()
     })
 
     it('håndterer afpPrivat med kun tomt array', () => {
-      renderWithProviders(<AfpDetaljer afpDetaljForValgtUttak={createAfpDetaljerListe({ afpPrivat: [] })} />)
+      renderWithProviders(
+        <AfpDetaljer
+          afpDetaljForValgtUttak={createAfpDetaljerListe({ afpPrivat: [] })}
+        />
+      )
 
       expect(screen.queryByText('Sum AFP:')).not.toBeInTheDocument()
     })
 
     it('håndterer afpPrivat med tom array', () => {
-      renderWithProviders(<AfpDetaljer afpDetaljForValgtUttak={createAfpDetaljerListe({ afpPrivat: [] })} />)
+      renderWithProviders(
+        <AfpDetaljer
+          afpDetaljForValgtUttak={createAfpDetaljerListe({ afpPrivat: [] })}
+        />
+      )
 
       expect(screen.queryByText('Sum AFP:')).not.toBeInTheDocument()
     })
@@ -588,7 +654,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
       renderWithProviders(
         <AfpDetaljer
-          afpDetaljForValgtUttak={createAfpDetaljerListe({ afpPrivat: mockAfpPrivatAtUttaksalderData })}
+          afpDetaljForValgtUttak={createAfpDetaljerListe({
+            afpPrivat: mockAfpPrivatAtUttaksalderData,
+          })}
         />,
         stateWith65
       )
@@ -605,7 +673,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
       renderWithProviders(
         <AfpDetaljer
-          afpDetaljForValgtUttak={createAfpDetaljerListe({ afpPrivat: mockAfpPrivatAtUttaksalderData })}
+          afpDetaljForValgtUttak={createAfpDetaljerListe({
+            afpPrivat: mockAfpPrivatAtUttaksalderData,
+          })}
         />,
         stateWithZeroMonths
       )
@@ -621,7 +691,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
       renderWithProviders(
         <AfpDetaljer
-          afpDetaljForValgtUttak={createAfpDetaljerListe({ afpPrivat: mockAfpPrivatAt67Data })}
+          afpDetaljForValgtUttak={createAfpDetaljerListe({
+            afpPrivat: mockAfpPrivatAt67Data,
+          })}
         />,
         stateWithUndefinedUttaksalder
       )
@@ -638,7 +710,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
       renderWithProviders(
         <AfpDetaljer
-          afpDetaljForValgtUttak={createAfpDetaljerListe({ afpPrivat: mockAfpPrivatAt67Data })}
+          afpDetaljForValgtUttak={createAfpDetaljerListe({
+            afpPrivat: mockAfpPrivatAt67Data,
+          })}
         />,
         stateWithUndefinedYear
       )
@@ -649,7 +723,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
     })
 
     it('håndterer alle props som undefined', () => {
-      const { container } = renderWithProviders(<AfpDetaljer afpDetaljForValgtUttak={createAfpDetaljerListe({})} />)
+      const { container } = renderWithProviders(
+        <AfpDetaljer afpDetaljForValgtUttak={createAfpDetaljerListe({})} />
+      )
       const box = container.querySelector('.navds-box')
       expect(box).toBeInTheDocument()
     })
@@ -666,7 +742,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
           afpDetaljForValgtUttak={createAfpDetaljerListe({
             afpPrivat: mockAfpPrivatAtUttaksalderData,
             afpOffentlig: mockAfpOffentligData,
-            opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData
+            opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData,
           })}
         />,
         stateWith62
@@ -701,14 +777,16 @@ describe('Gitt at AfpDetaljer rendres', () => {
           afpDetaljForValgtUttak={createAfpDetaljerListe({
             afpPrivat: mockAfpPrivatAtUttaksalderData,
             afpOffentlig: mockAfpOffentligData,
-            opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData
+            opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData,
           })}
         />,
         stateWith64
       )
 
       const afpPrivatHeadings = screen.getAllByText('AFP privat beregning')
-      const afpOffentligHeadings = screen.getAllByText('AFP offentlig beregning')
+      const afpOffentligHeadings = screen.getAllByText(
+        'AFP offentlig beregning'
+      )
       expect(afpPrivatHeadings.length).toBeGreaterThanOrEqual(2) // Minst 2 headings (desktop + mobile)
       expect(afpOffentligHeadings.length).toBeGreaterThanOrEqual(2) // Minst 2 headings (desktop + mobile)
     })
@@ -722,7 +800,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
       renderWithProviders(
         <AfpDetaljer
-          afpDetaljForValgtUttak={createAfpDetaljerListe({ afpPrivat: mockAfpPrivatAtUttaksalderData })}
+          afpDetaljForValgtUttak={createAfpDetaljerListe({
+            afpPrivat: mockAfpPrivatAtUttaksalderData,
+          })}
         />,
         stateWithMonths
       )
@@ -738,7 +818,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
       renderWithProviders(
         <AfpDetaljer
-          afpDetaljForValgtUttak={createAfpDetaljerListe({ afpPrivat: mockAfpPrivatAt67Data })}
+          afpDetaljForValgtUttak={createAfpDetaljerListe({
+            afpPrivat: mockAfpPrivatAt67Data,
+          })}
         />,
         stateWith68
       )
@@ -753,7 +835,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
     it('rendrer pre-2025 offentlig AFP når data er tilgjengelig', () => {
       renderWithProviders(
         <AfpDetaljer
-          afpDetaljForValgtUttak={createAfpDetaljerListe({ opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData })}
+          afpDetaljForValgtUttak={createAfpDetaljerListe({
+            opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData,
+          })}
         />
       )
 
@@ -779,7 +863,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
     })
 
     it('rendrer ikke pre-2025 offentlig AFP når data er undefined', () => {
-      renderWithProviders(<AfpDetaljer afpDetaljForValgtUttak={createAfpDetaljerListe({})} />)
+      renderWithProviders(
+        <AfpDetaljer afpDetaljForValgtUttak={createAfpDetaljerListe({})} />
+      )
 
       expect(screen.queryByText('AFP grad:')).not.toBeInTheDocument()
       expect(screen.queryByText('Sluttpoengtall:')).not.toBeInTheDocument()
@@ -790,7 +876,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
     it('rendrer pre-2025 offentlig AFP med korrekt styling', () => {
       const { container } = renderWithProviders(
         <AfpDetaljer
-          afpDetaljForValgtUttak={createAfpDetaljerListe({ opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData })}
+          afpDetaljForValgtUttak={createAfpDetaljerListe({
+            opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData,
+          })}
         />
       )
 
@@ -812,7 +900,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
       renderWithProviders(
         <AfpDetaljer
-          afpDetaljForValgtUttak={createAfpDetaljerListe({ opptjeningPre2025OffentligAfp: mockDataWithUndefined })}
+          afpDetaljForValgtUttak={createAfpDetaljerListe({
+            opptjeningPre2025OffentligAfp: mockDataWithUndefined,
+          })}
         />
       )
 
@@ -825,9 +915,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
     it('rendrer pre-2025 offentlig AFP sammen med AFP privat', () => {
       renderWithProviders(
         <AfpDetaljer
-          afpDetaljForValgtUttak={createAfpDetaljerListe({ 
+          afpDetaljForValgtUttak={createAfpDetaljerListe({
             afpPrivat: mockAfpPrivatAt67Data,
-            opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData 
+            opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData,
           })}
         />
       )
@@ -846,9 +936,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
     it('rendrer pre-2025 offentlig AFP sammen med AFP offentlig', () => {
       renderWithProviders(
         <AfpDetaljer
-          afpDetaljForValgtUttak={createAfpDetaljerListe({ 
+          afpDetaljForValgtUttak={createAfpDetaljerListe({
             afpOffentlig: mockAfpOffentligData,
-            opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData 
+            opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData,
           })}
         />
       )
@@ -873,7 +963,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
           afpDetaljForValgtUttak={createAfpDetaljerListe({
             afpPrivat: mockAfpPrivatAtUttaksalderData,
             afpOffentlig: mockAfpOffentligData,
-            opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData
+            opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData,
           })}
         />,
         stateWith62
@@ -905,7 +995,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
       renderWithProviders(
         <AfpDetaljer
-          afpDetaljForValgtUttak={createAfpDetaljerListe({ afpPrivat: mockAfpPrivatAtUttaksalderData })}
+          afpDetaljForValgtUttak={createAfpDetaljerListe({
+            afpPrivat: mockAfpPrivatAtUttaksalderData,
+          })}
         />,
         stateWithMonths
       )
@@ -921,7 +1013,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
       renderWithProviders(
         <AfpDetaljer
-          afpDetaljForValgtUttak={createAfpDetaljerListe({ afpPrivat: mockAfpPrivatAtUttaksalderData })}
+          afpDetaljForValgtUttak={createAfpDetaljerListe({
+            afpPrivat: mockAfpPrivatAtUttaksalderData,
+          })}
         />,
         stateWithZeroMonths
       )
@@ -937,7 +1031,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
       renderWithProviders(
         <AfpDetaljer
-          afpDetaljForValgtUttak={createAfpDetaljerListe({ afpPrivat: mockAfpPrivatAt67Data })}
+          afpDetaljForValgtUttak={createAfpDetaljerListe({
+            afpPrivat: mockAfpPrivatAt67Data,
+          })}
         />,
         stateWith67AndMonths
       )
@@ -954,7 +1050,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
       renderWithProviders(
         <AfpDetaljer
-          afpDetaljForValgtUttak={createAfpDetaljerListe({ afpPrivat: mockAfpPrivatAt67Data })}
+          afpDetaljForValgtUttak={createAfpDetaljerListe({
+            afpPrivat: mockAfpPrivatAt67Data,
+          })}
         />,
         stateWith67NoMonths
       )
@@ -976,7 +1074,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
       renderWithProviders(
         <AfpDetaljer
-          afpDetaljForValgtUttak={createAfpDetaljerListe({ pre2025OffentligAfp: mockPre2025AfpDetaljerData })}
+          afpDetaljForValgtUttak={createAfpDetaljerListe({
+            pre2025OffentligAfp: mockPre2025AfpDetaljerData,
+          })}
         />,
         stateWithUttaksalder
       )
@@ -996,7 +1096,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
       const { container } = renderWithProviders(
         <AfpDetaljer
-          afpDetaljForValgtUttak={createAfpDetaljerListe({ pre2025OffentligAfp: mockPre2025AfpDetaljerData })}
+          afpDetaljForValgtUttak={createAfpDetaljerListe({
+            pre2025OffentligAfp: mockPre2025AfpDetaljerData,
+          })}
         />
       )
 
@@ -1005,7 +1107,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
     })
 
     it('viser ikke pre2025OffentligAfpDetaljerListe når tom', () => {
-      renderWithProviders(<AfpDetaljer afpDetaljForValgtUttak={createAfpDetaljerListe({})} />)
+      renderWithProviders(
+        <AfpDetaljer afpDetaljForValgtUttak={createAfpDetaljerListe({})} />
+      )
 
       expect(
         screen.queryByText('Grunnpensjon (kap. 19):')
@@ -1020,7 +1124,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
       renderWithProviders(
         <AfpDetaljer
-          afpDetaljForValgtUttak={createAfpDetaljerListe({ afpPrivat: mockAfpPrivatAt67Data })}
+          afpDetaljForValgtUttak={createAfpDetaljerListe({
+            afpPrivat: mockAfpPrivatAt67Data,
+          })}
         />,
         stateWithUndefinedAge
       )
@@ -1031,7 +1137,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
     })
 
     it('håndterer alle props som undefined samtidig', () => {
-      const { container } = renderWithProviders(<AfpDetaljer afpDetaljForValgtUttak={createAfpDetaljerListe({})} />)
+      const { container } = renderWithProviders(
+        <AfpDetaljer afpDetaljForValgtUttak={createAfpDetaljerListe({})} />
+      )
 
       const box = container.querySelector('.navds-box')
       expect(box).toBeInTheDocument()
@@ -1044,7 +1152,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
       renderWithProviders(
         <AfpDetaljer
-          afpDetaljForValgtUttak={createAfpDetaljerListe({ afpPrivat: mockAfpPrivatAt67Data })}
+          afpDetaljForValgtUttak={createAfpDetaljerListe({
+            afpPrivat: mockAfpPrivatAt67Data,
+          })}
         />,
         stateWith70
       )
@@ -1055,7 +1165,9 @@ describe('Gitt at AfpDetaljer rendres', () => {
     })
 
     it('håndterer tom afpPrivat med length 0', () => {
-      renderWithProviders(<AfpDetaljer afpDetaljForValgtUttak={createAfpDetaljerListe({})} />)
+      renderWithProviders(
+        <AfpDetaljer afpDetaljForValgtUttak={createAfpDetaljerListe({})} />
+      )
 
       expect(screen.queryByText('Sum AFP:')).not.toBeInTheDocument()
     })
@@ -1072,7 +1184,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
             afpPrivat: mockAfpPrivatAt67Data,
             pre2025OffentligAfp: mockPre2025AfpDetaljerData,
             opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData,
-            afpOffentlig: mockAfpOffentligData
+            afpOffentlig: mockAfpOffentligData,
           })}
         />
       )

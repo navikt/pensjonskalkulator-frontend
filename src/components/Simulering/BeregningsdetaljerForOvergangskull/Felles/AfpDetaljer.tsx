@@ -15,7 +15,6 @@ export interface AfpDetaljerProps {
 export const AfpDetaljer: React.FC<AfpDetaljerProps> = ({
   afpDetaljForValgtUttak,
 }) => {
-
   return (
     <Box data-testid="beregningsdetaljer-for-overgangskull">
       <div
@@ -62,7 +61,8 @@ function renderAfpDetaljer(afpDetaljForValgtUttak?: AfpDetaljerListe) {
           </strong>
         </div>
         {afpDetaljForValgtUttak.afpPrivat.map((detalj, detaljIndex) => {
-          const isBold = detaljIndex === afpDetaljForValgtUttak.afpPrivat.length - 1
+          const isBold =
+            detaljIndex === afpDetaljForValgtUttak.afpPrivat.length - 1
           return (
             <Fragment key={detaljIndex}>
               <HStack justify="space-between" className={styles.hstackRow}>

@@ -480,7 +480,9 @@ describe('useBeregningsdetaljer', () => {
         )
       )
       expect(result.current.afpDetaljerListe).toHaveLength(1)
-      expect(result.current.afpDetaljerListe[0].opptjeningPre2025OffentligAfp).toEqual(
+      expect(
+        result.current.afpDetaljerListe[0].opptjeningPre2025OffentligAfp
+      ).toEqual(
         expect.arrayContaining([
           expect.objectContaining({ tekst: 'AFP grad', verdi: 50 }),
           expect.objectContaining({ tekst: 'Sluttpoengtall', verdi: 2 }),
@@ -500,7 +502,9 @@ describe('useBeregningsdetaljer', () => {
         const { result } = renderHook(() =>
           useBeregningsdetaljer([], [], [], mock)
         )
-        expect(result.current.afpDetaljerListe[0].opptjeningPre2025OffentligAfp).toEqual(
+        expect(
+          result.current.afpDetaljerListe[0].opptjeningPre2025OffentligAfp
+        ).toEqual(
           expect.arrayContaining([
             expect.objectContaining({ tekst: 'Poengår', verdi: 0 }),
           ])
@@ -512,7 +516,9 @@ describe('useBeregningsdetaljer', () => {
         const { result } = renderHook(() =>
           useBeregningsdetaljer([], [], [], mock)
         )
-        expect(result.current.afpDetaljerListe[0].opptjeningPre2025OffentligAfp).toEqual(
+        expect(
+          result.current.afpDetaljerListe[0].opptjeningPre2025OffentligAfp
+        ).toEqual(
           expect.arrayContaining([
             expect.objectContaining({ tekst: 'Trygdetid', verdi: 0 }),
           ])
@@ -528,7 +534,9 @@ describe('useBeregningsdetaljer', () => {
         const { result } = renderHook(() =>
           useBeregningsdetaljer([], [], [], mock)
         )
-        expect(result.current.afpDetaljerListe[0].opptjeningPre2025OffentligAfp).toEqual(
+        expect(
+          result.current.afpDetaljerListe[0].opptjeningPre2025OffentligAfp
+        ).toEqual(
           expect.arrayContaining([
             expect.objectContaining({ tekst: 'Poengår', verdi: 7 }),
             expect.objectContaining({ tekst: 'Trygdetid', verdi: 5 }),
@@ -709,7 +717,9 @@ describe('useBeregningsdetaljer', () => {
         )
       )
       // Find the AFP offentlig item in the list
-      const afpOffentligItem = result.current.afpDetaljerListe.find(item => item.afpOffentlig.length > 0)
+      const afpOffentligItem = result.current.afpDetaljerListe.find(
+        (item) => item.afpOffentlig.length > 0
+      )
       expect(afpOffentligItem).toBeDefined()
       expect(afpOffentligItem?.afpOffentlig).toEqual(
         expect.arrayContaining([
@@ -739,7 +749,9 @@ describe('useBeregningsdetaljer', () => {
           mockPre2025OffentligAfp
         )
       )
-      const afpOffentligItem = result.current.afpDetaljerListe.find(item => item.afpOffentlig.length > 0)
+      const afpOffentligItem = result.current.afpDetaljerListe.find(
+        (item) => item.afpOffentlig.length > 0
+      )
       expect(afpOffentligItem).toBeDefined()
       expect(afpOffentligItem?.afpOffentlig).toEqual(
         expect.arrayContaining([
@@ -760,7 +772,11 @@ describe('useBeregningsdetaljer', () => {
           mockPre2025OffentligAfp
         )
       )
-      expect(result.current.afpDetaljerListe.find(item => item.afpOffentlig.length > 0)?.afpOffentlig || []).toEqual([])
+      expect(
+        result.current.afpDetaljerListe.find(
+          (item) => item.afpOffentlig.length > 0
+        )?.afpOffentlig || []
+      ).toEqual([])
     })
 
     it('returnerer tom liste når AFP offentlig er tom liste', () => {
@@ -772,7 +788,11 @@ describe('useBeregningsdetaljer', () => {
           mockPre2025OffentligAfp
         )
       )
-      expect(result.current.afpDetaljerListe.find(item => item.afpOffentlig.length > 0)?.afpOffentlig || []).toEqual([])
+      expect(
+        result.current.afpDetaljerListe.find(
+          (item) => item.afpOffentlig.length > 0
+        )?.afpOffentlig || []
+      ).toEqual([])
     })
 
     it('filtrerer bort rader med verdi 0', () => {
@@ -790,7 +810,11 @@ describe('useBeregningsdetaljer', () => {
         )
       )
 
-      expect(result.current.afpDetaljerListe.find(item => item.afpOffentlig.length > 0)?.afpOffentlig || []).toEqual([])
+      expect(
+        result.current.afpDetaljerListe.find(
+          (item) => item.afpOffentlig.length > 0
+        )?.afpOffentlig || []
+      ).toEqual([])
     })
   })
 
@@ -804,7 +828,9 @@ describe('useBeregningsdetaljer', () => {
           mockPre2025OffentligAfp
         )
       )
-      const pre2025Item = result.current.afpDetaljerListe.find(item => item.pre2025OffentligAfp.length > 0)
+      const pre2025Item = result.current.afpDetaljerListe.find(
+        (item) => item.pre2025OffentligAfp.length > 0
+      )
       expect(pre2025Item).toBeDefined()
       expect(pre2025Item?.pre2025OffentligAfp).toEqual(
         expect.arrayContaining([
@@ -846,7 +872,9 @@ describe('useBeregningsdetaljer', () => {
         )
       )
 
-      const pre2025Item = result.current.afpDetaljerListe.find(item => item.pre2025OffentligAfp.length > 0)
+      const pre2025Item = result.current.afpDetaljerListe.find(
+        (item) => item.pre2025OffentligAfp.length > 0
+      )
       expect(pre2025Item).toBeDefined()
       expect(pre2025Item?.pre2025OffentligAfp).toEqual(
         expect.arrayContaining([
@@ -876,7 +904,11 @@ describe('useBeregningsdetaljer', () => {
           undefined
         )
       )
-      expect(result.current.afpDetaljerListe.find(item => item.pre2025OffentligAfp.length > 0)?.pre2025OffentligAfp || []).toEqual([])
+      expect(
+        result.current.afpDetaljerListe.find(
+          (item) => item.pre2025OffentligAfp.length > 0
+        )?.pre2025OffentligAfp || []
+      ).toEqual([])
     })
 
     it('håndterer negative verdier korrekt i pre2025OffentligAfpDetaljerListe', () => {
@@ -915,7 +947,9 @@ describe('useBeregningsdetaljer', () => {
         )
       )
 
-      const pre2025Item = result.current.afpDetaljerListe.find(item => item.pre2025OffentligAfp.length > 0)
+      const pre2025Item = result.current.afpDetaljerListe.find(
+        (item) => item.pre2025OffentligAfp.length > 0
+      )
       expect(pre2025Item).toBeDefined()
       const sumRad = pre2025Item?.pre2025OffentligAfp.find(
         (rad) => rad.tekst === 'Sum AFP'
