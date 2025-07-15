@@ -112,7 +112,10 @@ describe('Gitt at AfpDetaljer rendres', () => {
   it('rendrer komponenten uten data', () => {
     const emptyAfpDetaljer = createAfpDetaljerListe({})
     const { container } = renderWithProviders(
-      <AfpDetaljer afpDetaljForValgtUttak={emptyAfpDetaljer} />
+      <AfpDetaljer
+        afpDetaljForValgtUttak={emptyAfpDetaljer}
+        alderspensjonColumnsCount={3}
+      />
     )
 
     const box = container.querySelector('.navds-box')
@@ -129,6 +132,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
         afpDetaljForValgtUttak={createAfpDetaljerListe({
           afpPrivat: mockAfpPrivatAt67Data,
         })}
+        alderspensjonColumnsCount={3}
       />,
       stateWith67
     )
@@ -154,6 +158,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
         afpDetaljForValgtUttak={createAfpDetaljerListe({
           afpPrivat: mockAfpPrivatAtUttaksalderData,
         })}
+        alderspensjonColumnsCount={3}
       />,
       stateWith62
     )
@@ -181,6 +186,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
         afpDetaljForValgtUttak={createAfpDetaljerListe({
           afpPrivat: mockAfpPrivatAt67Data,
         })}
+        alderspensjonColumnsCount={3}
       />,
       stateWith67
     )
@@ -200,6 +206,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
         afpDetaljForValgtUttak={createAfpDetaljerListe({
           opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData,
         })}
+        alderspensjonColumnsCount={3}
       />
     )
 
@@ -220,6 +227,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
           afpPrivat: mockAfpPrivatAt67Data,
           opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData,
         })}
+        alderspensjonColumnsCount={3}
       />
     )
 
@@ -234,7 +242,10 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
   it('rendrer ikke noe når alle data er tomme eller undefined', () => {
     const { container } = renderWithProviders(
-      <AfpDetaljer afpDetaljForValgtUttak={createAfpDetaljerListe({})} />
+      <AfpDetaljer
+        afpDetaljForValgtUttak={createAfpDetaljerListe({})}
+        alderspensjonColumnsCount={3}
+      />
     )
 
     // Kun box elementet skal være tilstede
@@ -255,6 +266,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
         afpDetaljForValgtUttak={createAfpDetaljerListe({
           afpPrivat: objektMedUndefined,
         })}
+        alderspensjonColumnsCount={3}
       />
     )
 
@@ -272,6 +284,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
         afpDetaljForValgtUttak={createAfpDetaljerListe({
           afpPrivat: mockAfpPrivatAtUttaksalderData,
         })}
+        alderspensjonColumnsCount={3}
       />,
       stateWith62
     )
@@ -286,6 +299,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
         afpDetaljForValgtUttak={createAfpDetaljerListe({
           afpPrivat: mockAfpPrivatAt67Data,
         })}
+        alderspensjonColumnsCount={3}
       />
     )
 
@@ -303,6 +317,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
         afpDetaljForValgtUttak={createAfpDetaljerListe({
           afpPrivat: mockAfpPrivatAtUttaksalderData,
         })}
+        alderspensjonColumnsCount={3}
       />,
       stateWithMonths
     )
@@ -318,6 +333,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
         afpDetaljForValgtUttak={createAfpDetaljerListe({
           afpPrivat: mockAfpPrivatAt67Data,
         })}
+        alderspensjonColumnsCount={3}
       />
     )
 
@@ -332,6 +348,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
           afpPrivat: mockAfpPrivatAt67Data,
           opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData,
         })}
+        alderspensjonColumnsCount={3}
       />
     )
 
@@ -350,6 +367,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
         afpDetaljForValgtUttak={createAfpDetaljerListe({
           afpPrivat: mockAfpPrivatAt67Data,
         })}
+        alderspensjonColumnsCount={3}
       />
     )
 
@@ -373,6 +391,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
           afpDetaljForValgtUttak={createAfpDetaljerListe({
             afpPrivat: mockAfpPrivatAtUttaksalderData,
           })}
+          alderspensjonColumnsCount={3}
         />,
         stateWithGradertUttak
       )
@@ -396,6 +415,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
           afpDetaljForValgtUttak={createAfpDetaljerListe({
             afpPrivat: mockAfpPrivatAt67Data,
           })}
+          alderspensjonColumnsCount={3}
         />,
         stateWithGradertUttakAt67
       )
@@ -419,6 +439,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
           afpDetaljForValgtUttak={createAfpDetaljerListe({
             afpPrivat: mockAfpPrivatAtUttaksalderData,
           })}
+          alderspensjonColumnsCount={3}
         />,
         stateWithGradertUttakWithMonths
       )
@@ -441,6 +462,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
           afpDetaljForValgtUttak={createAfpDetaljerListe({
             afpPrivat: mockAfpPrivatAtUttaksalderData,
           })}
+          alderspensjonColumnsCount={3}
         />,
         stateWithGradertUttakUnder67
       )
@@ -463,6 +485,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
           afpDetaljForValgtUttak={createAfpDetaljerListe({
             afpPrivat: mockAfpPrivatAt67Data,
           })}
+          alderspensjonColumnsCount={3}
         />,
         stateWithGradertUttakOver67
       )
@@ -486,6 +509,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
           afpDetaljForValgtUttak={createAfpDetaljerListe({
             afpPrivat: mockAfpPrivatAtUttaksalderData,
           })}
+          alderspensjonColumnsCount={3}
         />,
         stateWithGradertUttakNoMonths
       )
@@ -507,6 +531,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
           afpDetaljForValgtUttak={createAfpDetaljerListe({
             afpPrivat: mockAfpPrivatAtUttaksalderData,
           })}
+          alderspensjonColumnsCount={3}
         />,
         stateWithIncompleteGradertUttak
       )
@@ -523,6 +548,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
           afpDetaljForValgtUttak={createAfpDetaljerListe({
             afpOffentlig: mockAfpOffentligData,
           })}
+          alderspensjonColumnsCount={3}
         />
       )
 
@@ -540,6 +566,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
           afpDetaljForValgtUttak={createAfpDetaljerListe({
             afpOffentlig: mockAfpOffentligData,
           })}
+          alderspensjonColumnsCount={3}
         />
       )
 
@@ -550,7 +577,10 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
     it('rendrer ikke AFP offentlig når lista er tom', () => {
       renderWithProviders(
-        <AfpDetaljer afpDetaljForValgtUttak={createAfpDetaljerListe({})} />
+        <AfpDetaljer
+          afpDetaljForValgtUttak={createAfpDetaljerListe({})}
+          alderspensjonColumnsCount={3}
+        />
       )
 
       expect(
@@ -569,6 +599,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
           afpDetaljForValgtUttak={createAfpDetaljerListe({
             afpOffentlig: afpOffentligMedUndefined,
           })}
+          alderspensjonColumnsCount={3}
         />
       )
 
@@ -583,6 +614,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
             afpPrivat: mockAfpPrivatAt67Data,
             afpOffentlig: mockAfpOffentligData,
           })}
+          alderspensjonColumnsCount={3}
         />
       )
 
@@ -604,6 +636,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
             afpOffentlig: mockAfpOffentligData,
             opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData,
           })}
+          alderspensjonColumnsCount={3}
         />
       )
 
@@ -621,7 +654,10 @@ describe('Gitt at AfpDetaljer rendres', () => {
   describe('edge cases og spesifikke scenarier', () => {
     it('håndterer tom afpPrivat array', () => {
       renderWithProviders(
-        <AfpDetaljer afpDetaljForValgtUttak={createAfpDetaljerListe({})} />
+        <AfpDetaljer
+          afpDetaljForValgtUttak={createAfpDetaljerListe({})}
+          alderspensjonColumnsCount={3}
+        />
       )
 
       expect(screen.queryByText('Sum AFP:')).not.toBeInTheDocument()
@@ -631,6 +667,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
       renderWithProviders(
         <AfpDetaljer
           afpDetaljForValgtUttak={createAfpDetaljerListe({ afpPrivat: [] })}
+          alderspensjonColumnsCount={3}
         />
       )
 
@@ -641,6 +678,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
       renderWithProviders(
         <AfpDetaljer
           afpDetaljForValgtUttak={createAfpDetaljerListe({ afpPrivat: [] })}
+          alderspensjonColumnsCount={3}
         />
       )
 
@@ -657,6 +695,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
           afpDetaljForValgtUttak={createAfpDetaljerListe({
             afpPrivat: mockAfpPrivatAtUttaksalderData,
           })}
+          alderspensjonColumnsCount={3}
         />,
         stateWith65
       )
@@ -676,6 +715,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
           afpDetaljForValgtUttak={createAfpDetaljerListe({
             afpPrivat: mockAfpPrivatAtUttaksalderData,
           })}
+          alderspensjonColumnsCount={3}
         />,
         stateWithZeroMonths
       )
@@ -694,6 +734,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
           afpDetaljForValgtUttak={createAfpDetaljerListe({
             afpPrivat: mockAfpPrivatAt67Data,
           })}
+          alderspensjonColumnsCount={3}
         />,
         stateWithUndefinedUttaksalder
       )
@@ -713,6 +754,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
           afpDetaljForValgtUttak={createAfpDetaljerListe({
             afpPrivat: mockAfpPrivatAt67Data,
           })}
+          alderspensjonColumnsCount={3}
         />,
         stateWithUndefinedYear
       )
@@ -724,7 +766,10 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
     it('håndterer alle props som undefined', () => {
       const { container } = renderWithProviders(
-        <AfpDetaljer afpDetaljForValgtUttak={createAfpDetaljerListe({})} />
+        <AfpDetaljer
+          afpDetaljForValgtUttak={createAfpDetaljerListe({})}
+          alderspensjonColumnsCount={3}
+        />
       )
       const box = container.querySelector('.navds-box')
       expect(box).toBeInTheDocument()
@@ -744,6 +789,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
             afpOffentlig: mockAfpOffentligData,
             opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData,
           })}
+          alderspensjonColumnsCount={3}
         />,
         stateWith62
       )
@@ -779,6 +825,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
             afpOffentlig: mockAfpOffentligData,
             opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData,
           })}
+          alderspensjonColumnsCount={3}
         />,
         stateWith64
       )
@@ -803,6 +850,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
           afpDetaljForValgtUttak={createAfpDetaljerListe({
             afpPrivat: mockAfpPrivatAtUttaksalderData,
           })}
+          alderspensjonColumnsCount={3}
         />,
         stateWithMonths
       )
@@ -821,6 +869,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
           afpDetaljForValgtUttak={createAfpDetaljerListe({
             afpPrivat: mockAfpPrivatAt67Data,
           })}
+          alderspensjonColumnsCount={3}
         />,
         stateWith68
       )
@@ -838,6 +887,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
           afpDetaljForValgtUttak={createAfpDetaljerListe({
             opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData,
           })}
+          alderspensjonColumnsCount={3}
         />
       )
 
@@ -853,7 +903,10 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
     it('rendrer ikke pre-2025 offentlig AFP når data er tom', () => {
       renderWithProviders(
-        <AfpDetaljer afpDetaljForValgtUttak={createAfpDetaljerListe({})} />
+        <AfpDetaljer
+          afpDetaljForValgtUttak={createAfpDetaljerListe({})}
+          alderspensjonColumnsCount={3}
+        />
       )
 
       expect(screen.queryByText('AFP grad:')).not.toBeInTheDocument()
@@ -864,7 +917,10 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
     it('rendrer ikke pre-2025 offentlig AFP når data er undefined', () => {
       renderWithProviders(
-        <AfpDetaljer afpDetaljForValgtUttak={createAfpDetaljerListe({})} />
+        <AfpDetaljer
+          afpDetaljForValgtUttak={createAfpDetaljerListe({})}
+          alderspensjonColumnsCount={3}
+        />
       )
 
       expect(screen.queryByText('AFP grad:')).not.toBeInTheDocument()
@@ -879,6 +935,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
           afpDetaljForValgtUttak={createAfpDetaljerListe({
             opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData,
           })}
+          alderspensjonColumnsCount={3}
         />
       )
 
@@ -903,6 +960,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
           afpDetaljForValgtUttak={createAfpDetaljerListe({
             opptjeningPre2025OffentligAfp: mockDataWithUndefined,
           })}
+          alderspensjonColumnsCount={3}
         />
       )
 
@@ -919,6 +977,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
             afpPrivat: mockAfpPrivatAt67Data,
             opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData,
           })}
+          alderspensjonColumnsCount={3}
         />
       )
 
@@ -940,6 +999,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
             afpOffentlig: mockAfpOffentligData,
             opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData,
           })}
+          alderspensjonColumnsCount={3}
         />
       )
 
@@ -965,6 +1025,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
             afpOffentlig: mockAfpOffentligData,
             opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData,
           })}
+          alderspensjonColumnsCount={3}
         />,
         stateWith62
       )
@@ -998,6 +1059,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
           afpDetaljForValgtUttak={createAfpDetaljerListe({
             afpPrivat: mockAfpPrivatAtUttaksalderData,
           })}
+          alderspensjonColumnsCount={3}
         />,
         stateWithMonths
       )
@@ -1016,6 +1078,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
           afpDetaljForValgtUttak={createAfpDetaljerListe({
             afpPrivat: mockAfpPrivatAtUttaksalderData,
           })}
+          alderspensjonColumnsCount={3}
         />,
         stateWithZeroMonths
       )
@@ -1034,6 +1097,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
           afpDetaljForValgtUttak={createAfpDetaljerListe({
             afpPrivat: mockAfpPrivatAt67Data,
           })}
+          alderspensjonColumnsCount={3}
         />,
         stateWith67AndMonths
       )
@@ -1053,6 +1117,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
           afpDetaljForValgtUttak={createAfpDetaljerListe({
             afpPrivat: mockAfpPrivatAt67Data,
           })}
+          alderspensjonColumnsCount={3}
         />,
         stateWith67NoMonths
       )
@@ -1077,6 +1142,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
           afpDetaljForValgtUttak={createAfpDetaljerListe({
             pre2025OffentligAfp: mockPre2025AfpDetaljerData,
           })}
+          alderspensjonColumnsCount={3}
         />,
         stateWithUttaksalder
       )
@@ -1099,6 +1165,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
           afpDetaljForValgtUttak={createAfpDetaljerListe({
             pre2025OffentligAfp: mockPre2025AfpDetaljerData,
           })}
+          alderspensjonColumnsCount={3}
         />
       )
 
@@ -1108,7 +1175,10 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
     it('viser ikke pre2025OffentligAfpDetaljerListe når tom', () => {
       renderWithProviders(
-        <AfpDetaljer afpDetaljForValgtUttak={createAfpDetaljerListe({})} />
+        <AfpDetaljer
+          afpDetaljForValgtUttak={createAfpDetaljerListe({})}
+          alderspensjonColumnsCount={3}
+        />
       )
 
       expect(
@@ -1127,6 +1197,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
           afpDetaljForValgtUttak={createAfpDetaljerListe({
             afpPrivat: mockAfpPrivatAt67Data,
           })}
+          alderspensjonColumnsCount={3}
         />,
         stateWithUndefinedAge
       )
@@ -1138,7 +1209,10 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
     it('håndterer alle props som undefined samtidig', () => {
       const { container } = renderWithProviders(
-        <AfpDetaljer afpDetaljForValgtUttak={createAfpDetaljerListe({})} />
+        <AfpDetaljer
+          afpDetaljForValgtUttak={createAfpDetaljerListe({})}
+          alderspensjonColumnsCount={3}
+        />
       )
 
       const box = container.querySelector('.navds-box')
@@ -1155,6 +1229,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
           afpDetaljForValgtUttak={createAfpDetaljerListe({
             afpPrivat: mockAfpPrivatAt67Data,
           })}
+          alderspensjonColumnsCount={3}
         />,
         stateWith70
       )
@@ -1166,7 +1241,10 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
     it('håndterer tom afpPrivat med length 0', () => {
       renderWithProviders(
-        <AfpDetaljer afpDetaljForValgtUttak={createAfpDetaljerListe({})} />
+        <AfpDetaljer
+          afpDetaljForValgtUttak={createAfpDetaljerListe({})}
+          alderspensjonColumnsCount={3}
+        />
       )
 
       expect(screen.queryByText('Sum AFP:')).not.toBeInTheDocument()
@@ -1186,6 +1264,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
             opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData,
             afpOffentlig: mockAfpOffentligData,
           })}
+          alderspensjonColumnsCount={3}
         />
       )
 
