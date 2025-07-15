@@ -159,7 +159,18 @@ export const Grunnlag: React.FC<Props> = ({
               )}
               onOpenChange={setIsAFPDokumentasjonVisible}
             >
-              <AfpDetaljerGrunnlag afpDetaljerListe={afpDetaljerListe} />
+              <AfpDetaljerGrunnlag
+                afpDetaljerListe={afpDetaljerListe}
+                alderspensjonColumnsCount={
+                  alderspensjonDetaljerListe.length > 0
+                    ? [
+                        alderspensjonDetaljerListe[0].alderspensjon,
+                        alderspensjonDetaljerListe[0].opptjeningKap19,
+                        alderspensjonDetaljerListe[0].opptjeningKap20,
+                      ].filter((arr) => arr.length > 0).length
+                    : 0
+                }
+              />
               {pre2025OffentligAfp &&
                 pre2025OffentligAfp.afpAvkortetTil70Prosent && (
                   <FormattedMessage

@@ -12,15 +12,22 @@ import { AfpDetaljerListe } from './hooks'
 
 interface Props {
   afpDetaljerListe: AfpDetaljerListe[]
+  alderspensjonColumnsCount: number
 }
 
-export const AfpDetaljerGrunnlag: React.FC<Props> = ({ afpDetaljerListe }) => {
+export const AfpDetaljerGrunnlag: React.FC<Props> = ({
+  afpDetaljerListe,
+  alderspensjonColumnsCount,
+}) => {
   const { uttaksalder, gradertUttaksperiode } = useAppSelector(
     selectCurrentSimulation
   )
 
   const renderDetaljer = (afpDetaljForValgtUttak: AfpDetaljerListe) => (
-    <AfpDetaljer afpDetaljForValgtUttak={afpDetaljForValgtUttak} />
+    <AfpDetaljer
+      afpDetaljForValgtUttak={afpDetaljForValgtUttak}
+      alderspensjonColumnsCount={alderspensjonColumnsCount}
+    />
   )
 
   return (
