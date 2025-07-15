@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { FormattedMessage } from 'react-intl'
 
-import { Box, HStack, VStack } from '@navikt/ds-react'
+import { Box, HGrid, HStack, VStack } from '@navikt/ds-react'
 
 import { AfpDetaljerListe } from '../hooks'
 
@@ -10,10 +10,12 @@ import styles from './Pensjonsdetaljer.module.scss'
 
 export interface AfpDetaljerProps {
   afpDetaljForValgtUttak: AfpDetaljerListe
+  alderspensjonColumnsCount: number
 }
 
 export const AfpDetaljer: React.FC<AfpDetaljerProps> = ({
   afpDetaljForValgtUttak,
+  alderspensjonColumnsCount,
 }) => {
   return (
     <Box data-testid="beregningsdetaljer-for-overgangskull">
@@ -22,13 +24,9 @@ export const AfpDetaljer: React.FC<AfpDetaljerProps> = ({
           beregningsdetaljerStyles.beregningsdetaljerForOvergangskullDesktopOnly
         }
       >
-        <HStack
-          gap="12"
-          className={styles.hstackRow}
-          style={{ borderBottom: 'none' }}
-        >
+        <HGrid gap="12" columns={alderspensjonColumnsCount}>
           {renderAfpDetaljer(afpDetaljForValgtUttak)}
-        </HStack>
+        </HGrid>
       </div>
       <div
         className={
