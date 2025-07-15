@@ -44,49 +44,61 @@ export const AfpDetaljerGrunnlag: React.FC<Props> = ({ afpDetaljerListe }) => {
     afpDetaljForValgtUttak: AfpDetaljerListe,
     index: number = 0
   ) {
-    const currentAge =
-      gradertUttaksperiode?.uttaksalder?.aar ?? uttaksalder?.aar
-    const currentMonths =
-      gradertUttaksperiode?.uttaksalder?.maaneder ?? uttaksalder?.maaneder
-
-    // For AFP Privat - handle both current age and 67-year headings
+    // For AFP Privat - håndter både gradert uttak og 67-års overskrifter
     if (afpDetaljForValgtUttak.afpPrivat.length > 0) {
-      const isGradertUttak = Boolean(
-        gradertUttaksperiode &&
-          gradertUttaksperiode?.uttaksalder.aar !== uttaksalder?.aar &&
-          gradertUttaksperiode.grad > 0
-      )
+      // Bestem første alder (yngste mellom gradert uttak og helt uttak)
+      const firstAge =
+        gradertUttaksperiode?.uttaksalder?.aar ?? uttaksalder?.aar
+      const firstMonths =
+        gradertUttaksperiode?.uttaksalder?.maaneder ?? uttaksalder?.maaneder
 
-      if (index === 0 && isGradertUttak && currentAge && currentAge < 67) {
+      // Vis første heading når index er 0 og første alder er mindre enn 67
+      if (index === 0 && firstAge && firstAge < 67) {
         return (
           <Heading size="small" level="4">
             <FormattedMessage
               id="beregning.detaljer.afpPrivat.gradertUttak.title"
               values={{
                 ...getFormatMessageValues(),
-                alderAar: `${currentAge} år`,
+                alderAar: `${firstAge} år`,
                 alderMd:
-                  currentMonths && currentMonths > 0
-                    ? `og ${currentMonths} måneder`
+                  firstMonths && firstMonths > 0
+                    ? `og ${firstMonths} måneder`
                     : '',
               }}
             />
           </Heading>
         )
-      } else {
+      }
+
+      // Vis andre heading for 67-års når index er 1 og yngste alder er mindre enn 67
+      if (index === 1 && firstAge && firstAge < 67) {
         return (
           <Heading size="small" level="4">
             <FormattedMessage
               id="beregning.detaljer.afpPrivat.heltUttak.title"
               values={{
                 ...getFormatMessageValues(),
-                alderAar: `${currentAge && currentAge < 67 ? 67 : currentAge} år`,
+                alderAar: '67 år',
+                alderMd: '',
+              }}
+            />
+          </Heading>
+        )
+      }
+
+      // For uttaksaldre større enn 67 skal kun en heading rendres
+      if (firstAge && firstAge >= 67) {
+        return (
+          <Heading size="small" level="4">
+            <FormattedMessage
+              id="beregning.detaljer.afpPrivat.heltUttak.title"
+              values={{
+                ...getFormatMessageValues(),
+                alderAar: `${firstAge} år`,
                 alderMd:
-                  currentAge &&
-                  currentAge >= 67 &&
-                  currentMonths &&
-                  currentMonths > 0
-                    ? `og ${currentMonths} måneder`
+                  firstMonths && firstMonths > 0
+                    ? `og ${firstMonths} måneder`
                     : '',
               }}
             />
@@ -97,6 +109,11 @@ export const AfpDetaljerGrunnlag: React.FC<Props> = ({ afpDetaljerListe }) => {
 
     // For AFP Offentlig
     if (afpDetaljForValgtUttak.afpOffentlig.length > 0) {
+      const currentAge =
+        gradertUttaksperiode?.uttaksalder?.aar ?? uttaksalder?.aar
+      const currentMonths =
+        gradertUttaksperiode?.uttaksalder?.maaneder ?? uttaksalder?.maaneder
+
       return (
         <Heading size="small" level="4">
           <FormattedMessage
@@ -123,7 +140,10 @@ export const AfpDetaljerGrunnlag: React.FC<Props> = ({ afpDetaljerListe }) => {
             values={{
               ...getFormatMessageValues(),
               alderAar: `${uttaksalder?.aar} år`,
-              alderMd: `og ${uttaksalder!.maaneder} måneder`,
+              alderMd:
+                uttaksalder?.maaneder && uttaksalder.maaneder > 0
+                  ? `og ${uttaksalder.maaneder} måneder`
+                  : '',
             }}
           />
         </Heading>
