@@ -312,40 +312,53 @@ function getAfpDetaljerListe(
     )
   }
 
-  // Handle AFP Private
   if (afpPrivatListe && afpPrivatListe.length > 0) {
-    const currentAge =
-      gradertUttaksperiode?.uttaksalder?.aar ?? uttaksalder?.aar
+    const gradertUttakAge = gradertUttaksperiode?.uttaksalder?.aar
+    const heltUttakAge = uttaksalder?.aar
 
-    if (currentAge) {
-      // Find AFP data for current age
-      let afpPrivatVedUttak = afpPrivatListe.find(
-        (afp) => afp.alder === currentAge
+    // Adder alltid en entry for yngste alder
+    const firstAge = gradertUttakAge ?? heltUttakAge
+
+    if (firstAge) {
+      // Finner AFP data for yngste alder
+      let afpPrivatVedForsteUttak = afpPrivatListe.find(
+        (afp) => afp.alder === firstAge
       )
-      if (!afpPrivatVedUttak) {
-        // Fallback to first element
-        afpPrivatVedUttak = afpPrivatListe[0]
+      if (!afpPrivatVedForsteUttak) {
+        // Fallback til første element
+        afpPrivatVedForsteUttak = afpPrivatListe[0]
       }
 
-      if (afpPrivatVedUttak) {
+      if (afpPrivatVedForsteUttak) {
         afpDetaljerListe.push({
-          afpPrivat: getAfpPrivatDetails(afpPrivatVedUttak),
+          afpPrivat: getAfpPrivatDetails(afpPrivatVedForsteUttak),
           afpOffentlig: [],
           pre2025OffentligAfp: [],
           opptjeningPre2025OffentligAfp: [],
         })
       }
 
-      // If current age is less than 67, also include age 67 data
-      if (currentAge < 67) {
+      // Hvis første alder er mindre enn 67, inkluder også alder 67 data
+      if (firstAge < 67) {
         const afp67 = afpPrivatListe.find((afp) => afp.alder === 67)
-        if (afp67 && afp67 !== afpPrivatVedUttak) {
+        if (afp67) {
           afpDetaljerListe.push({
             afpPrivat: getAfpPrivatDetails(afp67),
             afpOffentlig: [],
             pre2025OffentligAfp: [],
             opptjeningPre2025OffentligAfp: [],
           })
+        } else {
+          // Hvis ikke, bruk den alderen som er nærmeste 67
+          const closestAfp67Plus = afpPrivatListe.find((afp) => afp.alder >= 67)
+          if (closestAfp67Plus) {
+            afpDetaljerListe.push({
+              afpPrivat: getAfpPrivatDetails(closestAfp67Plus),
+              afpOffentlig: [],
+              pre2025OffentligAfp: [],
+              opptjeningPre2025OffentligAfp: [],
+            })
+          }
         }
       }
     }
