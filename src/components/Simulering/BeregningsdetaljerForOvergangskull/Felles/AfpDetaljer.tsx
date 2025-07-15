@@ -88,7 +88,11 @@ function renderAfpDetaljer(afpDetaljForValgtUttak?: AfpDetaljerListe) {
       <dl key="afpOffentlig">
         {afpDetaljForValgtUttak.afpOffentlig.map((detalj, detaljIndex) => (
           <Fragment key={detaljIndex}>
-            <HStack justify="space-between" className={styles.hstackRow}>
+            <HStack
+              justify="space-between"
+              className={styles.hstackRow}
+              style={{ borderBottom: 'none' }}
+            >
               <dt style={{ marginRight: '1rem' }}>
                 <strong>{`${detalj.tekst}:`}</strong>
               </dt>
