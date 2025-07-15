@@ -109,15 +109,15 @@ describe('Gitt at AlderspensjonDetaljer rendres', () => {
       />
     )
 
-    // Skal rendre alderspensjon seksjon (både i desktop og mobile)
+    // Skal rendre alderspensjon seksjon (både på desktop og mobile)
     expect(screen.getAllByText('Grunnpensjon (kap. 19):')).toHaveLength(2)
     expect(screen.getAllByText('Sum alderspensjon:')).toHaveLength(2)
 
-    // Skal rendre opptjeningKap19 seksjon (både i desktop og mobile)
+    // Skal rendre opptjeningKap19 seksjon (både på desktop og mobile)
     expect(screen.getAllByText('Andelsbrøk:')).toHaveLength(4) // 2 from kap19 and 2 from kap20
     expect(screen.getAllByText('Sluttpoengtall:')).toHaveLength(2)
 
-    // Skal rendre opptjeningKap20 seksjon (både i desktop og mobile)
+    // Skal rendre opptjeningKap20 seksjon (både på desktop og mobile)
     expect(screen.getAllByText('Pensjonsbeholdning:')).toHaveLength(2)
     expect(screen.getAllByText('500 000 kr')).toHaveLength(2)
   })
