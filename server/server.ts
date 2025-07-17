@@ -278,6 +278,15 @@ app.use(
   })
 )
 
+app.use(
+  '/pensjon/kalkulator/v1',
+  createProxyMiddleware({
+    target: `${PENSJONSKALKULATOR_BACKEND}/api/v1`,
+    changeOrigin: true,
+    logger: logger,
+  })
+)
+
 const redirect1963Middleware = async (
   req: Request,
   res: Response,
