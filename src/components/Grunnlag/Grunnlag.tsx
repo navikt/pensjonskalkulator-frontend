@@ -93,6 +93,7 @@ export const Grunnlag: React.FC<Props> = ({
       pre2025OffentligAfp
     )
 
+  // Antall kolonner for AP detaljer som bestemmer hvor mange kolonner AFP detaljer skal ha.
   const alderspensjonColumnsCount = React.useMemo(() => {
     if (alderspensjonDetaljerListe.length === 0) {
       return 0
