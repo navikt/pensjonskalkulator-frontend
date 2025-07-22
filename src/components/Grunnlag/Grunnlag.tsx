@@ -94,18 +94,14 @@ export const Grunnlag: React.FC<Props> = ({
     )
 
   // Antall kolonner for AP detaljer som bestemmer hvor mange kolonner AFP detaljer skal ha.
-  const alderspensjonColumnsCount = React.useMemo(() => {
-    if (alderspensjonDetaljerListe.length === 0) {
-      return 0
-    }
-
-    const firstItem = alderspensjonDetaljerListe[0]
-    return [
-      firstItem.alderspensjon,
-      firstItem.opptjeningKap19,
-      firstItem.opptjeningKap20,
-    ].filter((arr) => arr.length > 0).length
-  }, [alderspensjonDetaljerListe])
+  const alderspensjonColumnsCount =
+    alderspensjonDetaljerListe.length === 0
+      ? 0
+      : [
+          alderspensjonDetaljerListe[0].alderspensjon,
+          alderspensjonDetaljerListe[0].opptjeningKap19,
+          alderspensjonDetaljerListe[0].opptjeningKap20,
+        ].filter((arr) => arr.length > 0).length
 
   // Når det ikke er noen detaljer for AFP, så er "Les mer" lenken skjult.
   const shouldHideAfpReadMore =
