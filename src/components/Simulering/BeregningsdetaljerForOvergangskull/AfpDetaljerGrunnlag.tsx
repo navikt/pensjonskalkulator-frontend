@@ -10,6 +10,25 @@ import { getFormatMessageValues } from '@/utils/translations'
 import { AfpDetaljer } from './Felles/AfpDetaljer'
 import { AfpDetaljerListe } from './hooks'
 
+interface HeadingProps {
+  messageId: string
+  age: number
+  months?: number
+}
+
+const renderAfpHeading = ({ messageId, age, months }: HeadingProps) => (
+  <Heading size="small" level="4">
+    <FormattedMessage
+      id={messageId}
+      values={{
+        ...getFormatMessageValues(),
+        alderAar: `${age} år`,
+        alderMd: months && months > 0 ? `og ${months} måneder` : '',
+      }}
+    />
+  </Heading>
+)
+
 interface Props {
   afpDetaljerListe: AfpDetaljerListe[]
   alderspensjonColumnsCount: number
@@ -61,56 +80,28 @@ export const AfpDetaljerGrunnlag: React.FC<Props> = ({
 
       // Vis første heading når index er 0 og første alder er mindre enn 67
       if (index === 0 && firstAge && firstAge < 67) {
-        return (
-          <Heading size="small" level="4">
-            <FormattedMessage
-              id="beregning.detaljer.afpPrivat.gradertUttak.title"
-              values={{
-                ...getFormatMessageValues(),
-                alderAar: `${firstAge} år`,
-                alderMd:
-                  firstMonths && firstMonths > 0
-                    ? `og ${firstMonths} måneder`
-                    : '',
-              }}
-            />
-          </Heading>
-        )
+        return renderAfpHeading({
+          messageId: 'beregning.detaljer.afpPrivat.gradertUttak.title',
+          age: firstAge,
+          months: firstMonths,
+        })
       }
 
       // Vis andre heading for 67-års når index er 1 og yngste alder er mindre enn 67
       if (index === 1 && firstAge && firstAge < 67) {
-        return (
-          <Heading size="small" level="4">
-            <FormattedMessage
-              id="beregning.detaljer.afpPrivat.heltUttak.title"
-              values={{
-                ...getFormatMessageValues(),
-                alderAar: '67 år',
-                alderMd: '',
-              }}
-            />
-          </Heading>
-        )
+        return renderAfpHeading({
+          messageId: 'beregning.detaljer.afpPrivat.heltUttak.title',
+          age: 67,
+        })
       }
 
       // For uttaksaldre større enn 67 skal kun en heading rendres
       if (firstAge && firstAge >= 67) {
-        return (
-          <Heading size="small" level="4">
-            <FormattedMessage
-              id="beregning.detaljer.afpPrivat.heltUttak.title"
-              values={{
-                ...getFormatMessageValues(),
-                alderAar: `${firstAge} år`,
-                alderMd:
-                  firstMonths && firstMonths > 0
-                    ? `og ${firstMonths} måneder`
-                    : '',
-              }}
-            />
-          </Heading>
-        )
+        return renderAfpHeading({
+          messageId: 'beregning.detaljer.afpPrivat.heltUttak.title',
+          age: firstAge,
+          months: firstMonths,
+        })
       }
     }
 
@@ -121,40 +112,25 @@ export const AfpDetaljerGrunnlag: React.FC<Props> = ({
       const currentMonths =
         gradertUttaksperiode?.uttaksalder?.maaneder ?? uttaksalder?.maaneder
 
-      return (
-        <Heading size="small" level="4">
-          <FormattedMessage
-            id="beregning.detaljer.afpOffentlig.uttak.title"
-            values={{
-              ...getFormatMessageValues(),
-              alderAar: `${currentAge} år`,
-              alderMd:
-                currentMonths && currentMonths > 0
-                  ? `og ${currentMonths} måneder`
-                  : '',
-            }}
-          />
-        </Heading>
-      )
+      if (currentAge) {
+        return renderAfpHeading({
+          messageId: 'beregning.detaljer.afpOffentlig.uttak.title',
+          age: currentAge,
+          months: currentMonths,
+        })
+      }
     }
 
     // For Pre-2025 Offentlig AFP
     if (afpDetaljForValgtUttak.pre2025OffentligAfp.length > 0) {
-      return (
-        <Heading size="small" level="4">
-          <FormattedMessage
-            id="beregning.detaljer.grunnpensjon.pre2025OffentligAfp.title"
-            values={{
-              ...getFormatMessageValues(),
-              alderAar: `${uttaksalder?.aar} år`,
-              alderMd:
-                uttaksalder?.maaneder && uttaksalder.maaneder > 0
-                  ? `og ${uttaksalder.maaneder} måneder`
-                  : '',
-            }}
-          />
-        </Heading>
-      )
+      if (uttaksalder?.aar) {
+        return renderAfpHeading({
+          messageId:
+            'beregning.detaljer.grunnpensjon.pre2025OffentligAfp.title',
+          age: uttaksalder.aar,
+          months: uttaksalder.maaneder,
+        })
+      }
     }
 
     return null
