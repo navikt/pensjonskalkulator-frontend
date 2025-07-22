@@ -60,8 +60,10 @@ function renderAfpDetailRow(
     totalItems: number
   }
 ) {
-  const isBold = config.allItemsBold || (config.boldLastItem && detaljIndex === config.totalItems - 1)
-  
+  const isBold =
+    config.allItemsBold ||
+    (config.boldLastItem && detaljIndex === config.totalItems - 1)
+
   return (
     <Fragment key={detaljIndex}>
       <HStack
@@ -70,21 +72,22 @@ function renderAfpDetailRow(
         style={config.noBorderBottom ? { borderBottom: 'none' } : undefined}
       >
         <dt style={{ marginRight: '1rem' }}>
-          {isBold ? (
-            <strong>{`${detalj.tekst}:`}</strong>
-          ) : (
-            `${detalj.tekst}:`
-          )}
+          {isBold ? <strong>{`${detalj.tekst}:`}</strong> : `${detalj.tekst}:`}
         </dt>
-        <dd>
-          {isBold ? <strong>{detalj.verdi}</strong> : detalj.verdi}
-        </dd>
+        <dd>{isBold ? <strong>{detalj.verdi}</strong> : detalj.verdi}</dd>
       </HStack>
     </Fragment>
   )
 }
 
-function renderAfpSection({ key, data, titleId, boldLastItem, allItemsBold, noBorderBottom }: AfpSectionConfig) {
+function renderAfpSection({
+  key,
+  data,
+  titleId,
+  boldLastItem,
+  allItemsBold,
+  noBorderBottom,
+}: AfpSectionConfig) {
   return (
     <dl key={key}>
       {titleId && (
@@ -156,7 +159,8 @@ function renderAfpDetaljer(afpDetaljForValgtUttak?: AfpDetaljerListe) {
       renderAfpSection({
         key: 'opptjeningPre2025OffentligAfp',
         data: afpDetaljForValgtUttak.opptjeningPre2025OffentligAfp,
-        titleId: 'beregning.detaljer.OpptjeningDetaljer.pre2025OffentligAfp.table.title',
+        titleId:
+          'beregning.detaljer.OpptjeningDetaljer.pre2025OffentligAfp.table.title',
       })
     )
   }
