@@ -46,6 +46,7 @@
 }
 
 .navds-show-more--closed .navds-show-more__content {
+  transition-duration: 0s;
   mask-image: var(--ac-show-more-mask);
   overflow: hidden;
 }
