@@ -297,7 +297,7 @@ function getAfpDetaljerListe(
       { tekst: 'AFP grad', verdi: pre2025OffentligAfpData.afpGrad },
       {
         tekst: 'Sluttpoengtall',
-        verdi: pre2025OffentligAfpData.sluttpoengtall,
+        verdi: formatDecimalWithComma(pre2025OffentligAfpData.sluttpoengtall),
       },
       {
         tekst: 'Poengår',
