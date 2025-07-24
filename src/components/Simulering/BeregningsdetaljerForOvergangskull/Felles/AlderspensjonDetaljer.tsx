@@ -18,6 +18,27 @@ const titles: Record<string, string> = {
   opptjeningKap20: 'beregning.detaljer.OpptjeningDetaljer.kap20.table.title',
 }
 
+const formatDetaljVerdi = (
+  detalj: { tekst: string; verdi: string },
+  isBold: boolean
+): React.ReactNode => {
+  let formattertVerdi
+
+  switch (detalj.tekst) {
+    case 'Poengår':
+    case 'Trygdetid':
+      formattertVerdi = `${detalj.verdi} år`
+      break
+    case 'AFP Grad':
+      formattertVerdi = `${detalj.verdi} %`
+      break
+    default:
+      formattertVerdi = detalj.verdi
+  }
+
+  return isBold ? <strong>{formattertVerdi}</strong> : formattertVerdi
+}
+
 export const AlderspensjonDetaljer: React.FC<AlderspensjonDetaljerProps> = ({
   alderspensjonDetaljForValgtUttak,
 }) => {
@@ -66,6 +87,8 @@ function renderDetaljer(
           </div>
           {row.map((detalj: { tekst: string; verdi: string }, index) => {
             const isBold = index === row.length - 1 && key === 'alderspensjon'
+            const formattertVerdi = formatDetaljVerdi(detalj, isBold)
+
             return (
               <React.Fragment key={index}>
                 <HStack justify="space-between" className={styles.hstackRow}>
@@ -76,9 +99,7 @@ function renderDetaljer(
                       `${detalj.tekst}:`
                     )}
                   </dt>
-                  <dd>
-                    {isBold ? <strong>{detalj.verdi}</strong> : detalj.verdi}
-                  </dd>
+                  <dd>{formattertVerdi}</dd>
                 </HStack>
               </React.Fragment>
             )

@@ -18,6 +18,27 @@ export interface AfpDetaljerProps {
   opptjeningPre2025OffentligAfpListe?: DetaljRad[]
 }
 
+const formatDetaljVerdi = (
+  detalj: DetaljRad,
+  isBold: boolean
+): React.ReactNode => {
+  let formattertVerdi
+
+  switch (detalj.tekst) {
+    case 'Poengår':
+    case 'Trygdetid':
+      formattertVerdi = `${detalj.verdi} år`
+      break
+    case 'AFP Grad':
+      formattertVerdi = `${detalj.verdi} %`
+      break
+    default:
+      formattertVerdi = detalj.verdi
+  }
+
+  return isBold ? <strong>{formattertVerdi}</strong> : formattertVerdi
+}
+
 export const AfpDetaljer: React.FC<AfpDetaljerProps> = ({
   afpPrivatDetaljerListe,
   afpOffentligDetaljerListe,
@@ -74,29 +95,28 @@ export const AfpDetaljer: React.FC<AfpDetaljerProps> = ({
                       <FormattedMessage id="beregning.detaljer.OpptjeningDetaljer.afpPrivat.table.title" />
                     </strong>
                   </div>
-                  {afpPrivatAtUttaksalder.map((detalj, index) => (
-                    <Fragment key={index}>
-                      <HStack
-                        justify="space-between"
-                        className={styles.hstackRow}
-                      >
-                        <dt>
-                          {index === afpPrivatAtUttaksalder.length - 1 ? (
-                            <strong>{detalj.tekst}:</strong>
-                          ) : (
-                            `${detalj.tekst}:`
-                          )}
-                        </dt>
-                        <dd>
-                          {index === afpPrivatAtUttaksalder.length - 1 ? (
-                            <strong>{detalj.verdi}</strong>
-                          ) : (
-                            detalj.verdi
-                          )}
-                        </dd>
-                      </HStack>
-                    </Fragment>
-                  ))}
+                  {afpPrivatAtUttaksalder.map((detalj, index) => {
+                    const isBold = index === afpPrivatAtUttaksalder.length - 1
+                    const formattertVerdi = formatDetaljVerdi(detalj, isBold)
+
+                    return (
+                      <Fragment key={index}>
+                        <HStack
+                          justify="space-between"
+                          className={styles.hstackRow}
+                        >
+                          <dt>
+                            {isBold ? (
+                              <strong>{detalj.tekst}:</strong>
+                            ) : (
+                              `${detalj.tekst}:`
+                            )}
+                          </dt>
+                          <dd>{formattertVerdi}</dd>
+                        </HStack>
+                      </Fragment>
+                    )
+                  })}
                 </dl>
               </div>
             )}
