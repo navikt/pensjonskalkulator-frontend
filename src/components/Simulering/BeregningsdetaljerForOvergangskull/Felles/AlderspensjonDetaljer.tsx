@@ -22,21 +22,21 @@ const formatDetaljVerdi = (
   detalj: { tekst: string; verdi: string },
   isBold: boolean
 ): React.ReactNode => {
-  let formattertVerdi
+  let formatertVerdi
 
   switch (detalj.tekst) {
     case 'Poengår':
     case 'Trygdetid':
-      formattertVerdi = `${detalj.verdi} år`
+      formatertVerdi = `${detalj.verdi} år`
       break
-    case 'AFP Grad':
-      formattertVerdi = `${detalj.verdi} %`
+    case 'AFP grad':
+      formatertVerdi = `${detalj.verdi} %`
       break
     default:
-      formattertVerdi = detalj.verdi
+      formatertVerdi = detalj.verdi
   }
 
-  return isBold ? <strong>{formattertVerdi}</strong> : formattertVerdi
+  return isBold ? <strong>{formatertVerdi}</strong> : formatertVerdi
 }
 
 export const AlderspensjonDetaljer: React.FC<AlderspensjonDetaljerProps> = ({
@@ -87,7 +87,7 @@ function renderDetaljer(
           </div>
           {row.map((detalj: { tekst: string; verdi: string }, index) => {
             const isBold = index === row.length - 1 && key === 'alderspensjon'
-            const formattertVerdi = formatDetaljVerdi(detalj, isBold)
+            const formatertVerdi = formatDetaljVerdi(detalj, isBold)
 
             return (
               <React.Fragment key={index}>
@@ -99,7 +99,7 @@ function renderDetaljer(
                       `${detalj.tekst}:`
                     )}
                   </dt>
-                  <dd>{formattertVerdi}</dd>
+                  <dd>{formatertVerdi}</dd>
                 </HStack>
               </React.Fragment>
             )
