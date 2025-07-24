@@ -81,7 +81,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
   const mockPre2025OffentligAfpData: DetaljRad[] = [
     { tekst: 'AFP grad', verdi: '100 %' },
-    { tekst: 'Sluttpoengtall', verdi: '6.5' },
+    { tekst: 'Sluttpoengtall', verdi: 6.5 },
     { tekst: 'Poengår', verdi: '35 år' },
     { tekst: 'Trygdetid', verdi: '40 år' },
   ]
