@@ -51,14 +51,7 @@ export default [
       },
       // Needed for typed linting
       parserOptions: {
-        projectService: {
-          allowDefaultProject: [
-            'schemaTypes/*',
-            'schemaTypes/common/*',
-            'schemaTypes/components/*',
-            'sanity.config.ts',
-          ],
-        },
+        projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
     },

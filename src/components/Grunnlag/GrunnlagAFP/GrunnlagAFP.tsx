@@ -29,6 +29,8 @@ import { getFormatMessageValues } from '@/utils/translations'
 
 import { useFormatertAfpHeader } from './hooks'
 
+import styles from '../Grunnlag.module.scss'
+
 export const GrunnlagAFP: React.FC = () => {
   const afp = useAppSelector(selectAfp) ?? 'vet_ikke' // Vi har fallback for å unngå "missing translation" error ved flush() i GoToStart
   const afpUtregningValg = useAppSelector(selectAfpUtregningValg)
@@ -46,12 +48,33 @@ export const GrunnlagAFP: React.FC = () => {
   const formatertAfpHeader = useFormatertAfpHeader()
 
   const formatertAfpIngress = React.useMemo(() => {
+    if (
+      (erApoteker || isFoedtFoer1963(foedselsdato!)) &&
+      loependeVedtak.fremtidigAlderspensjon &&
+      !loependeVedtak.alderspensjon
+    ) {
+      return 'grunnlag.afp.ingress.overgangskull.ufoeretrygd_eller_ap'
+    }
+    if (afp === 'nei') {
+      return 'grunnlag.afp.ingress.nei'
+    }
+
     if (isEndring && loependeVedtak.afpPrivat) {
       return 'grunnlag.afp.ingress.ja_privat.endring'
     }
 
     if (afpUtregningValg === 'KUN_ALDERSPENSJON') {
       return 'grunnlag.afp.ingress.nei'
+    }
+
+    if (
+      afp === 'ja_privat' &&
+      loependeVedtak &&
+      loependeVedtak.alderspensjon &&
+      foedselsdato &&
+      isFoedtFoer1963(foedselsdato)
+    ) {
+      return 'grunnlag.afp.ingress.ja_privat'
     }
 
     if (
@@ -94,20 +117,6 @@ export const GrunnlagAFP: React.FC = () => {
       return 'grunnlag.afp.ingress.overgangskull.ufoeretrygd_eller_ap'
     }
 
-    if (afp === 'nei') {
-      return 'grunnlag.afp.ingress.nei'
-    }
-
-    if (
-      afp === 'ja_privat' &&
-      loependeVedtak &&
-      loependeVedtak.alderspensjon &&
-      foedselsdato &&
-      isFoedtFoer1963(foedselsdato)
-    ) {
-      return 'grunnlag.afp.ingress.ja_privat'
-    }
-
     if (
       loependeVedtak &&
       loependeVedtak.alderspensjon &&
@@ -140,7 +149,10 @@ export const GrunnlagAFP: React.FC = () => {
         <FormattedMessage id="grunnlag.afp.title" />:{' '}
         <span style={{ fontWeight: 'normal' }}>{formatertAfpHeader}</span>
       </Heading>
-      <BodyLong data-testid={formatertAfpIngress}>
+      <BodyLong
+        data-testid={formatertAfpIngress}
+        className={styles.alderspensjonDetaljer}
+      >
         <FormattedMessage
           id={formatertAfpIngress}
           values={{

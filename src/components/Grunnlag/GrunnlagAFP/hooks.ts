@@ -42,7 +42,19 @@ export const useFormatertAfpHeader = () => {
   const formatertAfpHeader = React.useMemo(() => {
     const afpString = formatAfp(intl, afp ?? 'vet_ikke')
 
+    if (
+      (erApoteker || isFoedtFoer1963(foedselsdato!)) &&
+      loependeVedtak.fremtidigAlderspensjon &&
+      !loependeVedtak.alderspensjon
+    ) {
+      return formatAfp(intl, 'nei')
+    }
+
     if (afpUtregningValg === 'KUN_ALDERSPENSJON') {
+      return formatAfp(intl, 'nei')
+    }
+
+    if (afp === 'nei') {
       return formatAfp(intl, 'nei')
     }
 
@@ -53,6 +65,16 @@ export const useFormatertAfpHeader = () => {
       (isFoedtFoer1963(foedselsdato) || erApoteker)
     ) {
       return formatAfp(intl, 'ja_offentlig')
+    }
+
+    if (
+      afp === 'ja_privat' &&
+      loependeVedtak &&
+      loependeVedtak.alderspensjon &&
+      foedselsdato &&
+      isFoedtFoer1963(foedselsdato)
+    ) {
+      return formatAfp(intl, 'ja_privat')
     }
 
     if (isEndring && loependeVedtak.afpPrivat) {

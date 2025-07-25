@@ -10,7 +10,13 @@
       type="font/woff2"
       crossorigin
     />
-    <link href="%VITE_DECORATOR_URL%/css/client.css" rel="stylesheet" />
+    <link rel="preconnect" href="%VITE_DECORATOR_URL%" />
+    <link
+      rel="preconnect"
+      href="%VITE_DECORATOR_URL%/css/client.css"
+      rel="stylesheet"
+      crossorigin
+    />
     <title>Pensjonskalkulator - Pensjon</title>
     <style>
       #root {
@@ -30,14 +36,14 @@
     ></div>
     <script
       type="text/javascript"
-      async="async"
       src="%VITE_DECORATOR_URL%/client.js"
+      async
     ></script>
-    <script type="module" src="/src/main.tsx"></script>
+    <script type="module" src="/src/main.tsx" defer></script>
     <script
       type="module"
       src="%VITE_REPRESENTASJON_BANNER%/banner.js"
-      async
+      defer
     ></script>
   </body>
 </html>

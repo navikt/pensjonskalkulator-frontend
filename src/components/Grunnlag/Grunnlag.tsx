@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useNavigate } from 'react-router'
@@ -32,7 +33,6 @@ import { AlderspensjonDetaljerGrunnlag } from '../Simulering/BeregningsdetaljerF
 import { useBeregningsdetaljer } from '../Simulering/BeregningsdetaljerForOvergangskull/hooks'
 import { Pensjonsgivendeinntekt } from '../Simulering/Pensjonsgivendeinntekt'
 import { GrunnlagAFP } from './GrunnlagAFP'
-import { useFormatertAfpHeader } from './GrunnlagAFP/hooks'
 import { GrunnlagSection } from './GrunnlagSection'
 import { GrunnlagUtenlandsopphold } from './GrunnlagUtenlandsopphold'
 
@@ -85,19 +85,9 @@ export const Grunnlag: React.FC<Props> = ({
     [sivilstand]
   )
 
-  const formatertAfpHeader = useFormatertAfpHeader()
-
-  const afpNei = intl.formatMessage({ id: 'afp.nei' })
-  const afpVetIkke = intl.formatMessage({ id: 'afp.vet_ikke' })
-
-  const shouldShowAfpReadMore =
-    formatertAfpHeader !== afpNei && formatertAfpHeader !== afpVetIkke
-
   const {
     alderspensjonDetaljerListe,
     pre2025OffentligAfpDetaljerListe,
-    opptjeningKap19Liste,
-    opptjeningKap20Liste,
     afpPrivatDetaljerListe,
     afpOffentligDetaljerListe,
     opptjeningPre2025OffentligAfpListe,
@@ -107,6 +97,12 @@ export const Grunnlag: React.FC<Props> = ({
     afpOffentligListe,
     pre2025OffentligAfp
   )
+
+  // Når det ikke er noen detaljer for AFP, så er "Les mer" lenken skjult.
+  const shouldHideAfpReadMore =
+    !afpOffentligDetaljerListe.length &&
+    !afpPrivatDetaljerListe.length &&
+    !pre2025OffentligAfpDetaljerListe.length
 
   return (
     <section className={styles.section}>
@@ -133,7 +129,7 @@ export const Grunnlag: React.FC<Props> = ({
 
         <GrunnlagItem color="purple">
           <GrunnlagAFP />
-          {shouldShowAfpReadMore && (
+          {!shouldHideAfpReadMore && (
             <ReadMore
               name="Listekomponenter for AFP"
               open={isAFPDokumentasjonVisible}
@@ -158,7 +154,10 @@ export const Grunnlag: React.FC<Props> = ({
                       }
                     )
               }
-              className={`${styles.visListekomponenter} ${styles.wideDetailedView}`}
+              className={clsx(
+                styles.visListekomponenter,
+                styles.wideDetailedView
+              )}
               onOpenChange={setIsAFPDokumentasjonVisible}
             >
               <AfpDetaljerGrunnlag
@@ -182,15 +181,19 @@ export const Grunnlag: React.FC<Props> = ({
                 )}
               {/* TODO: hvis pre2025OffentligAfp.afpAvkortetTil70Prosent eller
               prosent afp redusert, så rendre linken  */}
+              {/* TODO: Flyttes inn i samme text som grunnlag.afp.avkortet.til.70.prosent hvis den er kun brukt her */}
               {pre2025OffentligAfp &&
                 pre2025OffentligAfp.afpAvkortetTil70Prosent && (
-                  <Link
-                    href="https://www.nav.no/afp-offentlig#beregning"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FormattedMessage id="grunnlag.afp.link.text" />
-                  </Link>
+                  <span>
+                    &nbsp;
+                    <Link
+                      href="https://www.nav.no/afp-offentlig#beregning"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <FormattedMessage id="grunnlag.afp.link.text" />
+                    </Link>
+                  </span>
                 )}
             </ReadMore>
           )}
@@ -201,7 +204,7 @@ export const Grunnlag: React.FC<Props> = ({
             <Heading level="3" size="small">
               <FormattedMessage id="beregning.highcharts.serie.alderspensjon.name" />
             </Heading>
-            <BodyLong>
+            <BodyLong className={styles.alderspensjonDetaljer}>
               {loependeVedtak.alderspensjon || visning === 'avansert' ? (
                 <FormattedMessage
                   id="grunnlag.alderspensjon.endring.ingress"
@@ -222,50 +225,51 @@ export const Grunnlag: React.FC<Props> = ({
                   }}
                 />
               )}
-              <ReadMore
-                name="Listekomponenter for alderspensjon"
-                open={isAlderspensjonDetaljerVisible}
-                header={
-                  isAlderspensjonDetaljerVisible
-                    ? intl.formatMessage(
-                        {
-                          id: 'beregning.detaljer.lukk',
-                        },
-                        {
-                          ...getFormatMessageValues(),
-                          ytelse: 'alderspensjon',
-                        }
-                      )
-                    : intl.formatMessage(
-                        {
-                          id: 'beregning.detaljer.vis',
-                        },
-                        {
-                          ...getFormatMessageValues(),
-                          ytelse: 'alderspensjon',
-                        }
-                      )
-                }
-                className={`${styles.visListekomponenter} ${styles.wideDetailedView}`}
-                onOpenChange={setIsAlderspensjonDetaljerVisible}
-              >
-                <AlderspensjonDetaljerGrunnlag
-                  alderspensjonDetaljerListe={alderspensjonDetaljerListe}
-                  opptjeningKap19Liste={opptjeningKap19Liste}
-                  opptjeningKap20Liste={opptjeningKap20Liste}
-                  hasPre2025OffentligAfpUttaksalder={Boolean(
-                    opptjeningPre2025OffentligAfpListe?.length
-                  )}
-                />
-                <FormattedMessage
-                  id="grunnlag.alderspensjon.ingress.link"
-                  values={{
-                    ...getFormatMessageValues(),
-                  }}
-                />
-              </ReadMore>
             </BodyLong>
           </VStack>
+          <ReadMore
+            name="Listekomponenter for alderspensjon"
+            open={isAlderspensjonDetaljerVisible}
+            header={
+              isAlderspensjonDetaljerVisible
+                ? intl.formatMessage(
+                    {
+                      id: 'beregning.detaljer.lukk',
+                    },
+                    {
+                      ...getFormatMessageValues(),
+                      ytelse: 'alderspensjon',
+                    }
+                  )
+                : intl.formatMessage(
+                    {
+                      id: 'beregning.detaljer.vis',
+                    },
+                    {
+                      ...getFormatMessageValues(),
+                      ytelse: 'alderspensjon',
+                    }
+                  )
+            }
+            className={clsx(
+              styles.visListekomponenter,
+              styles.wideDetailedView
+            )}
+            onOpenChange={setIsAlderspensjonDetaljerVisible}
+          >
+            <AlderspensjonDetaljerGrunnlag
+              alderspensjonDetaljerListe={alderspensjonDetaljerListe}
+              hasPre2025OffentligAfpUttaksalder={Boolean(
+                opptjeningPre2025OffentligAfpListe?.length
+              )}
+            />
+            <FormattedMessage
+              id="grunnlag.alderspensjon.ingress.link"
+              values={{
+                ...getFormatMessageValues(),
+              }}
+            />
+          </ReadMore>
         </GrunnlagItem>
       </HStack>
 
