@@ -179,7 +179,7 @@ function getAlderspensjonDetaljerListe(
       },
       {
         tekst: 'Trygdetid',
-        verdi: ap.trygdetidKap20 ? `${ap.trygdetidKap20} år` : 0,
+        verdi: ap.trygdetidKap20 ? `${ap.trygdetidKap20} år` : '0 år',
       },
       {
         tekst: 'Pensjonsbeholdning',
