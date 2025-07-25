@@ -283,7 +283,7 @@ describe('useBeregningsdetaljer', () => {
           result.current.alderspensjonDetaljerListe[0].opptjeningKap19
         ).toEqual(
           expect.arrayContaining([
-            expect.objectContaining({ tekst: 'Poengår', verdi: 0 }),
+            expect.objectContaining({ tekst: 'Poengår', verdi: '0 år' }),
           ])
         )
       })
@@ -302,7 +302,7 @@ describe('useBeregningsdetaljer', () => {
           result.current.alderspensjonDetaljerListe[0].opptjeningKap19
         ).toEqual(
           expect.arrayContaining([
-            expect.objectContaining({ tekst: 'Trygdetid', verdi: 0 }),
+            expect.objectContaining({ tekst: 'Trygdetid', verdi: '0 år' }),
           ])
         )
       })
@@ -397,7 +397,7 @@ describe('useBeregningsdetaljer', () => {
           result.current.alderspensjonDetaljerListe[0].opptjeningKap20
         ).toEqual(
           expect.arrayContaining([
-            expect.objectContaining({ tekst: 'Trygdetid', verdi: 0 }),
+            expect.objectContaining({ tekst: 'Trygdetid', verdi: '0 år' }),
           ])
         )
       })
@@ -513,7 +513,7 @@ describe('useBeregningsdetaljer', () => {
         )
         expect(result.current.opptjeningPre2025OffentligAfpListe).toEqual(
           expect.arrayContaining([
-            expect.objectContaining({ tekst: 'Poengår', verdi: 0 }),
+            expect.objectContaining({ tekst: 'Poengår', verdi: '0 år' }),
           ])
         )
       })

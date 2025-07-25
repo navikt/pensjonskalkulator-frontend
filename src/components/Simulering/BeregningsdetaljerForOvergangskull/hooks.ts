@@ -148,11 +148,13 @@ function getAlderspensjonDetaljerListe(
       },
       {
         tekst: 'Sluttpoengtall',
-        verdi: formatDecimalWithComma(ap.sluttpoengtall),
+        verdi: ap.sluttpoengtall
+          ? formatDecimalWithComma(ap.sluttpoengtall)
+          : 0,
       },
       {
         tekst: 'Poengår',
-        verdi: sumPoengaar ? `${sumPoengaar} år` : 0,
+        verdi: `${sumPoengaar} år`,
       },
       {
         tekst: 'Trygdetid',
@@ -160,10 +162,9 @@ function getAlderspensjonDetaljerListe(
       },
     ].filter(
       (rad) =>
-        rad.verdi !== undefined &&
-        (rad.tekst === 'Poengår' ||
-          rad.tekst === 'Trygdetid' ||
-          (rad.verdi !== 0 && rad.verdi !== '10/10'))
+        rad.tekst === 'Poengår' ||
+        rad.tekst === 'Trygdetid' ||
+        (rad.verdi !== 0 && rad.verdi !== '10/10')
     )
   }
 
@@ -183,14 +184,13 @@ function getAlderspensjonDetaljerListe(
       },
       {
         tekst: 'Pensjonsbeholdning',
-        verdi: `${formatInntekt(ap.pensjonBeholdningFoerUttakBeloep)} kr`,
+        verdi: `${formatInntekt(ap.pensjonBeholdningFoerUttakBeloep ?? 0)} kr`,
       },
     ].filter(
       (rad) =>
-        rad.verdi !== undefined &&
-        (rad.tekst === 'Trygdetid' ||
-          rad.tekst === 'Pensjonsbeholdning' ||
-          (rad.verdi !== 0 && rad.verdi !== '10/10'))
+        rad.tekst === 'Trygdetid' ||
+        rad.tekst === 'Pensjonsbeholdning' ||
+        (rad.verdi !== 0 && rad.verdi !== '10/10')
     )
   }
 
@@ -310,21 +310,27 @@ export function useBeregningsdetaljer(
         return [
           {
             tekst: 'Kompensasjonstillegg',
-            verdi: `${formatInntekt(afp.kompensasjonstillegg)} kr`,
+            verdi: afp.kompensasjonstillegg
+              ? `${formatInntekt(afp.kompensasjonstillegg)} kr`
+              : 0,
           },
           {
             tekst: 'Kronetillegg',
-            verdi: `${formatInntekt(afp.kronetillegg)} kr`,
+            verdi: afp.kronetillegg
+              ? `${formatInntekt(afp.kronetillegg)} kr`
+              : 0,
           },
           {
             tekst: 'Livsvarig del',
-            verdi: `${formatInntekt(afp.livsvarig)} kr`,
+            verdi: afp.livsvarig ? `${formatInntekt(afp.livsvarig)} kr` : 0,
           },
           {
             tekst: 'Sum AFP',
-            verdi: `${formatInntekt(afp.maanedligBeloep)} kr`,
+            verdi: afp.maanedligBeloep
+              ? `${formatInntekt(afp.maanedligBeloep)} kr`
+              : 0,
           },
-        ].filter((rad) => rad.verdi !== '0 kr')
+        ].filter((rad) => rad.verdi !== 0)
       })
     })()
 
@@ -361,16 +367,21 @@ export function useBeregningsdetaljer(
         (pre2025OffentligAfp.poengaarFom1992 ?? 0)
 
       return [
-        { tekst: 'AFP grad', verdi: `${pre2025OffentligAfp.afpGrad} %` },
+        {
+          tekst: 'AFP grad',
+          verdi: pre2025OffentligAfp.afpGrad
+            ? `${pre2025OffentligAfp.afpGrad} %`
+            : 0,
+        },
         {
           tekst: 'Sluttpoengtall',
-          verdi: formatDecimalWithComma(pre2025OffentligAfp.sluttpoengtall),
+          verdi: pre2025OffentligAfp.sluttpoengtall
+            ? formatDecimalWithComma(pre2025OffentligAfp.sluttpoengtall)
+            : 0,
         },
         {
           tekst: 'Poengår',
-          verdi: sumPoengaarPre2025OffentligAfp
-            ? `${sumPoengaarPre2025OffentligAfp} år`
-            : 0,
+          verdi: `${sumPoengaarPre2025OffentligAfp} år`,
         },
         {
           tekst: 'Trygdetid',
@@ -380,10 +391,9 @@ export function useBeregningsdetaljer(
         },
       ].filter(
         (rad) =>
-          rad.verdi !== undefined &&
-          (rad.tekst === 'Poengår' ||
-            rad.tekst === 'Trygdetid' ||
-            rad.verdi !== 0)
+          rad.tekst === 'Poengår' ||
+          rad.tekst === 'Trygdetid' ||
+          rad.verdi !== 0
       )
     })()
 
