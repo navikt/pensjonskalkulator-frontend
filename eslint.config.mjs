@@ -56,6 +56,7 @@ export default [
             'schemaTypes/*',
             'schemaTypes/common/*',
             'schemaTypes/components/*',
+            'sanity.config.ts',
           ],
         },
         tsconfigRootDir: import.meta.dirname,
