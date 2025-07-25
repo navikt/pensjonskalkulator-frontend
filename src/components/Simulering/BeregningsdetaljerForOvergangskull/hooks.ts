@@ -156,7 +156,7 @@ function getAlderspensjonDetaljerListe(
       },
       {
         tekst: 'Trygdetid',
-        verdi: ap.trygdetidKap19 ? `${ap.trygdetidKap19} år` : 0,
+        verdi: ap.trygdetidKap19 ? `${ap.trygdetidKap19} år` : '0 år',
       },
     ].filter(
       (rad) =>
