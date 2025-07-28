@@ -61,8 +61,7 @@ function getAlderspensjonDetaljerListe(
 
   const getAlderspensjonDetails = (
     ap: AlderspensjonPensjonsberegning,
-    hasKap19: boolean,
-    hasKap20: boolean
+    shouldShowParentheses: boolean
   ) => {
     const grunnpensjon =
       ap.grunnpensjon && ap.grunnpensjon > 0
@@ -96,31 +95,45 @@ function getAlderspensjonDetaljerListe(
 
     return [
       {
-        tekst: hasKap19 ? 'Grunnpensjon (kap. 19)' : 'Grunnpensjon',
+        tekst: shouldShowParentheses
+          ? 'Grunnpensjon (kap. 19)'
+          : 'Grunnpensjon',
         verdi: `${formatInntekt(grunnpensjon)} kr`,
       },
       {
-        tekst: hasKap19 ? 'Tilleggspensjon (kap. 19)' : 'Tilleggspensjon',
+        tekst: shouldShowParentheses
+          ? 'Tilleggspensjon (kap. 19)'
+          : 'Tilleggspensjon',
         verdi: `${formatInntekt(tilleggspensjon)} kr`,
       },
       {
-        tekst: hasKap19 ? 'Skjermingstillegg (kap. 19)' : 'Skjermingstillegg',
+        tekst: shouldShowParentheses
+          ? 'Skjermingstillegg (kap. 19)'
+          : 'Skjermingstillegg',
         verdi: `${formatInntekt(skjermingstillegg)} kr`,
       },
       {
-        tekst: hasKap19 ? 'Pensjonstillegg (kap. 19)' : 'Pensjonstillegg',
+        tekst: shouldShowParentheses
+          ? 'Pensjonstillegg (kap. 19)'
+          : 'Pensjonstillegg',
         verdi: `${formatInntekt(pensjonstillegg)} kr`,
       },
       {
-        tekst: hasKap19 ? 'Gjenlevendetillegg (kap. 19)' : 'Gjenlevendetillegg',
+        tekst: shouldShowParentheses
+          ? 'Gjenlevendetillegg (kap. 19)'
+          : 'Gjenlevendetillegg',
         verdi: `${formatInntekt(gjenlevendetillegg)} kr`,
       },
       {
-        tekst: hasKap20 ? 'Inntektspensjon (kap. 20)' : 'Inntektspensjon',
+        tekst: shouldShowParentheses
+          ? 'Inntektspensjon (kap. 20)'
+          : 'Inntektspensjon',
         verdi: `${formatInntekt(inntektspensjonBeloep)} kr`,
       },
       {
-        tekst: hasKap20 ? 'Garantipensjon (kap. 20)' : 'Garantipensjon',
+        tekst: shouldShowParentheses
+          ? 'Garantipensjon (kap. 20)'
+          : 'Garantipensjon',
         verdi: `${formatInntekt(garantipensjonBeloep)} kr`,
       },
       {
@@ -205,7 +218,7 @@ function getAlderspensjonDetaljerListe(
     const hasKap20 = opptjeningKap20.length > 0
 
     const obj = {
-      alderspensjon: getAlderspensjonDetails(ap, hasKap19, hasKap20),
+      alderspensjon: getAlderspensjonDetails(ap, hasKap19 && hasKap20),
       opptjeningKap19,
       opptjeningKap20,
     }
