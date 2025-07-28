@@ -211,13 +211,13 @@ describe('Gitt at AfpDetaljer rendres', () => {
     )
 
     expect(screen.getAllByText('AFP grad:')[0]).toBeVisible()
-    expect(screen.getAllByText('100')[0]).toBeVisible()
+    expect(screen.getAllByText('100 %')[0]).toBeVisible()
     expect(screen.getAllByText('Sluttpoengtall:')[0]).toBeVisible()
     expect(screen.getAllByText('6.5')[0]).toBeVisible()
     expect(screen.getAllByText('Poengår:')[0]).toBeVisible()
-    expect(screen.getAllByText('35')[0]).toBeVisible()
+    expect(screen.getAllByText('35 år')[0]).toBeVisible()
     expect(screen.getAllByText('Trygdetid:')[0]).toBeVisible()
-    expect(screen.getAllByText('40')[0]).toBeVisible()
+    expect(screen.getAllByText('40 år')[0]).toBeVisible()
   })
 
   it('rendrer både AFP privat og pre-2025 offentlig AFP samtidig', () => {
@@ -806,7 +806,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
       // Pre-2025 offentlig AFP
       expect(screen.getAllByText('AFP grad:')[0]).toBeVisible()
-      expect(screen.getAllByText('100')[0]).toBeVisible()
+      expect(screen.getAllByText('100 %')[0]).toBeVisible()
 
       // Totalt skal det være minst 3 forskjellige seksjoner med AFP data (hver har desktop + mobile)
       const definitionLists = container.querySelectorAll('dl')
@@ -892,13 +892,13 @@ describe('Gitt at AfpDetaljer rendres', () => {
       )
 
       expect(screen.getAllByText('AFP grad:')[0]).toBeVisible()
-      expect(screen.getAllByText('100')[0]).toBeVisible()
+      expect(screen.getAllByText('100 %')[0]).toBeVisible()
       expect(screen.getAllByText('Sluttpoengtall:')[0]).toBeVisible()
       expect(screen.getAllByText('6.5')[0]).toBeVisible()
       expect(screen.getAllByText('Poengår:')[0]).toBeVisible()
-      expect(screen.getAllByText('35')[0]).toBeVisible()
+      expect(screen.getAllByText('35 år')[0]).toBeVisible()
       expect(screen.getAllByText('Trygdetid:')[0]).toBeVisible()
-      expect(screen.getAllByText('40')[0]).toBeVisible()
+      expect(screen.getAllByText('40 år')[0]).toBeVisible()
     })
 
     it('rendrer ikke pre-2025 offentlig AFP når data er tom', () => {
@@ -967,7 +967,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
       expect(screen.getAllByText('AFP grad:')[0]).toBeVisible()
       expect(screen.getAllByText('Sluttpoengtall:')[0]).toBeVisible()
       expect(screen.getAllByText('Poengår:')[0]).toBeVisible()
-      expect(screen.getAllByText('35')[0]).toBeVisible()
+      expect(screen.getAllByText('35 år')[0]).toBeVisible()
     })
 
     it('rendrer pre-2025 offentlig AFP sammen med AFP privat', () => {
@@ -1040,7 +1040,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
       // Pre-2025 offentlig AFP
       expect(screen.getAllByText('AFP grad:')[0]).toBeVisible()
-      expect(screen.getAllByText('100')[0]).toBeVisible()
+      expect(screen.getAllByText('100 %')[0]).toBeVisible()
 
       // Skal ha minst 3 definition lists
       const definitionLists = container.querySelectorAll('dl')
