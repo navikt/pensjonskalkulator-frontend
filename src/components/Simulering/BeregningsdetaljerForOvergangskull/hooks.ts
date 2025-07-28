@@ -223,28 +223,36 @@ function getAfpDetaljerListe(
     return [
       {
         tekst: 'Kompensasjonstillegg',
-        verdi: `${formatInntekt(afpPrivat.kompensasjonstillegg)} kr`,
+        verdi: afpPrivat.kompensasjonstillegg
+          ? `${formatInntekt(afpPrivat.kompensasjonstillegg)} kr`
+          : 0,
       },
       {
         tekst: 'Kronetillegg',
-        verdi: `${formatInntekt(afpPrivat.kronetillegg)} kr`,
+        verdi: afpPrivat.kronetillegg
+          ? `${formatInntekt(afpPrivat.kronetillegg)} kr`
+          : 0,
       },
       {
         tekst: 'Livsvarig del',
-        verdi: `${formatInntekt(afpPrivat.livsvarig)} kr`,
+        verdi: afpPrivat.livsvarig
+          ? `${formatInntekt(afpPrivat.livsvarig)} kr`
+          : 0,
       },
       {
         tekst: 'Sum AFP',
-        verdi: `${formatInntekt(afpPrivat.maanedligBeloep)} kr`,
+        verdi: afpPrivat.maanedligBeloep
+          ? `${formatInntekt(afpPrivat.maanedligBeloep)} kr`
+          : 0,
       },
-    ].filter((rad) => rad.verdi !== '0 kr')
+    ].filter((rad) => rad.verdi !== 0)
   }
 
   const getAfpOffentligDetails = (afpOffentlig: AfpPensjonsberegning) => {
     return [
       {
         tekst: 'Månedlig livsvarig avtalefestet pensjon (AFP)',
-        verdi: `${formatInntekt(afpOffentlig.maanedligBeloep)} kr`,
+        verdi: `${formatInntekt(afpOffentlig?.maanedligBeloep ?? 0)} kr`,
       },
     ]
   }
@@ -302,25 +310,36 @@ function getAfpDetaljerListe(
   const getOpptjeningPre2025OffentligAfpDetails = (
     pre2025OffentligAfpData: pre2025OffentligPensjonsberegning
   ) => {
+    const sumPoengaarPre2025OffentligAfp =
+      (pre2025OffentligAfpData.poengaarTom1991 ?? 0) +
+      (pre2025OffentligAfpData.poengaarFom1992 ?? 0)
+
     return [
-      { tekst: 'AFP grad', verdi: pre2025OffentligAfpData.afpGrad },
+      {
+        tekst: 'AFP grad',
+        verdi: pre2025OffentligAfpData.afpGrad
+          ? `${pre2025OffentligAfpData.afpGrad} %`
+          : 0,
+      },
       {
         tekst: 'Sluttpoengtall',
-        verdi: formatDecimalWithComma(pre2025OffentligAfpData.sluttpoengtall),
+        verdi: pre2025OffentligAfpData.sluttpoengtall
+          ? formatDecimalWithComma(pre2025OffentligAfpData.sluttpoengtall)
+          : 0,
       },
       {
         tekst: 'Poengår',
-        verdi:
-          (pre2025OffentligAfpData.poengaarTom1991 ?? 0) +
-          (pre2025OffentligAfpData.poengaarFom1992 ?? 0),
+        verdi: `${sumPoengaarPre2025OffentligAfp} år`,
       },
-      { tekst: 'Trygdetid', verdi: pre2025OffentligAfpData.trygdetid },
+      {
+        tekst: 'Trygdetid',
+        verdi: pre2025OffentligAfpData.trygdetid
+          ? `${pre2025OffentligAfpData.trygdetid} år`
+          : 0,
+      },
     ].filter(
       (rad) =>
-        rad.verdi !== undefined &&
-        (rad.tekst === 'Poengår' ||
-          rad.tekst === 'Trygdetid' ||
-          rad.verdi !== 0)
+        rad.tekst === 'Poengår' || rad.tekst === 'Trygdetid' || rad.verdi !== 0
     )
   }
 
