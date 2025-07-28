@@ -95,10 +95,10 @@ describe('Gitt at AfpDetaljer rendres', () => {
   ]
 
   const mockPre2025OffentligAfpData: DetaljRad[] = [
-    { tekst: 'AFP grad', verdi: 100 },
+    { tekst: 'AFP grad', verdi: '100 %' },
     { tekst: 'Sluttpoengtall', verdi: 6.5 },
-    { tekst: 'Poengår', verdi: 35 },
-    { tekst: 'Trygdetid', verdi: 40 },
+    { tekst: 'Poengår', verdi: '35 år' },
+    { tekst: 'Trygdetid', verdi: '40 år' },
   ]
 
   const mockAfpOffentligData: DetaljRad[] = [
@@ -952,7 +952,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
       const mockDataWithUndefined: DetaljRad[] = [
         { tekst: 'AFP grad', verdi: undefined },
         { tekst: 'Sluttpoengtall' },
-        { tekst: 'Poengår', verdi: 35 },
+        { tekst: 'Poengår', verdi: '35 år' },
       ]
 
       renderWithProviders(

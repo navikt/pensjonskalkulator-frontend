@@ -142,6 +142,9 @@ function getAlderspensjonDetaljerListe(
     if (ap.andelsbroekKap19 === 0) {
       return []
     }
+
+    const sumPoengaar = (ap.poengaarFoer92 ?? 0) + (ap.poengaarEtter91 ?? 0)
+
     return [
       {
         tekst: 'Andelsbrøk',
@@ -149,19 +152,23 @@ function getAlderspensjonDetaljerListe(
       },
       {
         tekst: 'Sluttpoengtall',
-        verdi: formatDecimalWithComma(ap.sluttpoengtall),
+        verdi: ap.sluttpoengtall
+          ? formatDecimalWithComma(ap.sluttpoengtall)
+          : 0,
       },
       {
         tekst: 'Poengår',
-        verdi: (ap.poengaarFoer92 ?? 0) + (ap.poengaarEtter91 ?? 0),
+        verdi: `${sumPoengaar} år`,
       },
-      { tekst: 'Trygdetid', verdi: ap.trygdetidKap19 },
+      {
+        tekst: 'Trygdetid',
+        verdi: ap.trygdetidKap19 ? `${ap.trygdetidKap19} år` : '0 år',
+      },
     ].filter(
       (rad) =>
-        rad.verdi !== undefined &&
-        (rad.tekst === 'Poengår' ||
-          rad.tekst === 'Trygdetid' ||
-          (rad.verdi !== 0 && rad.verdi !== '10/10'))
+        rad.tekst === 'Poengår' ||
+        rad.tekst === 'Trygdetid' ||
+        (rad.verdi !== 0 && rad.verdi !== '10/10')
     )
   }
 
@@ -175,17 +182,19 @@ function getAlderspensjonDetaljerListe(
         tekst: 'Andelsbrøk',
         verdi: ap.andelsbroekKap20 ? `${ap.andelsbroekKap20 * 10}/10` : 0,
       },
-      { tekst: 'Trygdetid', verdi: ap.trygdetidKap20 },
+      {
+        tekst: 'Trygdetid',
+        verdi: ap.trygdetidKap20 ? `${ap.trygdetidKap20} år` : '0 år',
+      },
       {
         tekst: 'Pensjonsbeholdning',
-        verdi: `${formatInntekt(ap.pensjonBeholdningFoerUttakBeloep)} kr`,
+        verdi: `${formatInntekt(ap.pensjonBeholdningFoerUttakBeloep ?? 0)} kr`,
       },
     ].filter(
       (rad) =>
-        rad.verdi !== undefined &&
-        (rad.tekst === 'Trygdetid' ||
-          rad.tekst === 'Pensjonsbeholdning' ||
-          (rad.verdi !== 0 && rad.verdi !== '10/10'))
+        rad.tekst === 'Trygdetid' ||
+        rad.tekst === 'Pensjonsbeholdning' ||
+        (rad.verdi !== 0 && rad.verdi !== '10/10')
     )
   }
 
