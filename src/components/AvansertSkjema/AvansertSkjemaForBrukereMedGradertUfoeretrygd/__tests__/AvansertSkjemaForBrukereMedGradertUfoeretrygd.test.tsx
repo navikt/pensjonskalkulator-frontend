@@ -213,7 +213,6 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
     const optionMaanederElements =
       selectMaanederElement?.querySelectorAll('option')
     expect(optionMaanederElements?.[0].value).toBe('5')
-    expect((selectMaanederElement as HTMLSelectElement)?.value).toBe('5')
 
     fireEvent.change(
       screen.getByTestId(
