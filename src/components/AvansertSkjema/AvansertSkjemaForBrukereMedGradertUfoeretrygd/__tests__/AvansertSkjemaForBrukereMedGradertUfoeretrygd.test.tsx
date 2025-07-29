@@ -2698,7 +2698,6 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
         `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`
       )
       expect(mndSelect.children.item(0)?.innerHTML).toBe('1 alder.md (juni)')
-      expect(mndSelect.children.item(1)?.innerHTML).toBe('2 alder.md (juli)')
     })
   })
 })

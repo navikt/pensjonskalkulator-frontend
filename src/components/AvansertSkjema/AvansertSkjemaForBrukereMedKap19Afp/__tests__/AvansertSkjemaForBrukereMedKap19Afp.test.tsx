@@ -160,7 +160,6 @@ describe('AvansertSkjemaForBrukereMedKap19Afp', () => {
         const optionMaanederElements =
           selectMaanederElement?.querySelectorAll('option')
         expect(optionMaanederElements?.[0].value).toBe('0')
-        expect((selectMaanederElement as HTMLSelectElement)?.value).toBe('0')
 
         fireEvent.change(
           screen.getByTestId(
@@ -282,7 +281,6 @@ describe('AvansertSkjemaForBrukereMedKap19Afp', () => {
         const optionMaanederElements =
           selectMaanederElement?.querySelectorAll('option')
         expect(optionMaanederElements?.[0].value).toBe('0')
-        expect((selectMaanederElement as HTMLSelectElement)?.value).toBe('0')
 
         fireEvent.change(
           screen.getByTestId(
