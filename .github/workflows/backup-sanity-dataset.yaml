@@ -1,4 +1,4 @@
-name: Backup Routine
+name: Sanity Backup
 on:
   workflow_dispatch:
   schedule:
