@@ -161,8 +161,9 @@ describe('AvansertSkjemaForAndreBrukere', () => {
     )
     const optionMaanederElements =
       selectMaanederElement?.querySelectorAll('option')
-    expect(optionMaanederElements?.[0].value).toBe('')
-    expect(optionMaanederElements?.[1].value).toBe('5')
+
+    expect(optionMaanederElements?.[0].value).toBe('5')
+    expect((selectMaanederElement as HTMLSelectElement)?.value).toBe('5')
 
     fireEvent.change(
       screen.getByTestId(
@@ -229,8 +230,7 @@ describe('AvansertSkjemaForAndreBrukere', () => {
     )
     const optionMaanederElements2 =
       selectMaanederElement2?.querySelectorAll('option')
-    expect(optionMaanederElements2?.[0].value).toBe('')
-    expect(optionMaanederElements2?.[1].value).toBe('5')
+    expect(optionMaanederElements2?.[0].value).toBe('5')
 
     const selectAarElement3 = screen.getByTestId(
       `age-picker-${AVANSERT_FORM_NAMES.uttaksalderGradertUttak}-aar`
@@ -253,8 +253,7 @@ describe('AvansertSkjemaForAndreBrukere', () => {
     )
     const optionMaanederElements3 =
       selectMaanederElement3?.querySelectorAll('option')
-    expect(optionMaanederElements3?.[0].value).toBe('')
-    expect(optionMaanederElements3?.[1].value).toBe('5')
+    expect(optionMaanederElements3?.[0].value).toBe('5')
 
     expect(
       screen.queryByTestId(AVANSERT_FORM_NAMES.inntektVsaGradertUttak)

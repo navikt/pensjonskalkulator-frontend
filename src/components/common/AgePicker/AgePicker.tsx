@@ -26,6 +26,7 @@ export interface AgePickerProps {
   minAlder?: Alder
   maxAlder?: Alder
   info?: string
+  autoSelectFirstMonth?: boolean
   onChange?: (alder: Partial<Alder> | undefined) => void
   error?: string | React.JSX.Element
 }
@@ -39,6 +40,7 @@ export const AgePicker = ({
   minAlder = { ...useAppSelector(selectNedreAldersgrense) },
   maxAlder = { ...DEFAULT_SENEST_UTTAKSALDER },
   info,
+  autoSelectFirstMonth = true,
   onChange,
   error,
 }: AgePickerProps) => {
@@ -141,16 +143,46 @@ export const AgePicker = ({
                 valgtAlder?.maaneder !== undefined &&
                 valgtAlder?.maaneder > maxAlder.maaneder)
 
+            // Determine the first valid month for the selected year
+            let firstValidMonth: number | undefined = undefined
+            if (aar !== undefined && autoSelectFirstMonth) {
+              if (minAlder?.aar === maxAlder?.aar && aar === minAlder?.aar) {
+                // Same min and max year
+                firstValidMonth = minAlder?.maaneder
+              } else if (aar === minAlder?.aar) {
+                // Selected year is the minimum year
+                firstValidMonth = minAlder?.maaneder
+              } else if (aar === maxAlder?.aar) {
+                // Selected year is the maximum year
+                firstValidMonth = 0
+              } else if (aar > minAlder?.aar && aar < maxAlder?.aar) {
+                // Selected year is between min and max
+                firstValidMonth = 0
+              }
+            }
+
             setValgtAlder((prevState) => {
               return {
                 aar,
-                maaneder: shouldResetMonth ? undefined : prevState.maaneder,
+                maaneder: shouldResetMonth
+                  ? autoSelectFirstMonth
+                    ? firstValidMonth
+                    : undefined
+                  : autoSelectFirstMonth
+                    ? firstValidMonth
+                    : prevState.maaneder,
               }
             })
             if (onChange) {
               onChange({
                 aar,
-                maaneder: shouldResetMonth ? undefined : valgtAlder.maaneder,
+                maaneder: shouldResetMonth
+                  ? autoSelectFirstMonth
+                    ? firstValidMonth
+                    : undefined
+                  : autoSelectFirstMonth
+                    ? firstValidMonth
+                    : valgtAlder.maaneder,
               })
             }
           }}
@@ -168,6 +200,7 @@ export const AgePicker = ({
             )
           })}
         </Select>
+
         <Select
           data-testid={`age-picker-${name}-maaneder`}
           form={form}
@@ -195,9 +228,12 @@ export const AgePicker = ({
           aria-describedby={hasError.maaneder ? `${name}-error` : undefined}
           aria-invalid={hasError.maaneder}
         >
-          <option disabled value="">
-            {' '}
-          </option>
+          {!autoSelectFirstMonth && (
+            <option disabled value="">
+              {' '}
+            </option>
+          )}
+
           {monthsArray.map((month) => {
             const isYearAboveMinAndBelowMax =
               valgtAlder?.aar &&
