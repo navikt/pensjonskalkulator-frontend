@@ -14,7 +14,6 @@ describe('AgePicker', () => {
         label="My Test Age Picker"
         description="My Description"
         info="My Infobox"
-        autoSelectFirstMonth={false}
       />
     )
 
@@ -29,61 +28,9 @@ describe('AgePicker', () => {
   })
 
   describe('rendrer riktig valg i select', () => {
-    it('med default min og max (autoSelectFirstMonth=false)', async () => {
+    it('med default min og max', async () => {
       const { container } = render(
-        <AgePicker
-          name="unique-name"
-          label="My Test Age Picker"
-          autoSelectFirstMonth={false}
-        />,
-        {
-          preloadedState: {
-            api: {
-              //@ts-ignore
-              queries: {
-                ...fulfilledGetPerson,
-              },
-            },
-            userInput: {
-              ...userInputInitialState,
-            },
-          },
-        }
-      )
-      const selectAarElement = container.querySelector(
-        `[name="unique-name-aar"]`
-      )
-      const optionAarElements = selectAarElement?.querySelectorAll('option')
-      expect(optionAarElements?.length).toBe(15)
-      expect(optionAarElements?.[0].value).toBe('')
-      expect(optionAarElements?.[1].value).toBe('62')
-      expect(optionAarElements?.[14].value).toBe('75')
-      const selectMaanederElement = container.querySelector(
-        `[name="unique-name-maaneder"]`
-      )
-
-      expect(selectMaanederElement?.querySelectorAll('option')?.length).toBe(1)
-
-      fireEvent.change(screen.getByTestId('age-picker-unique-name-aar'), {
-        target: { value: '70' },
-      })
-
-      const optionMaanederElements =
-        selectMaanederElement?.querySelectorAll('option')
-
-      expect(optionMaanederElements?.length).toBe(13)
-      expect(optionMaanederElements?.[0].value).toBe('')
-      expect(optionMaanederElements?.[1].value).toBe('0')
-      expect(optionMaanederElements?.[12].value).toBe('11')
-    })
-
-    it('med default min og max (autoSelectFirstMonth=true)', async () => {
-      const { container } = render(
-        <AgePicker
-          name="unique-name"
-          label="My Test Age Picker"
-          autoSelectFirstMonth={true}
-        />,
+        <AgePicker name="unique-name" label="My Test Age Picker" />,
         {
           preloadedState: {
             api: {
@@ -121,73 +68,20 @@ describe('AgePicker', () => {
       const optionMaanederElements =
         selectMaanederElement?.querySelectorAll('option')
 
-      // Should have 12 options (no empty option when autoSelectFirstMonth=true)
       expect(optionMaanederElements?.length).toBe(12)
       expect(optionMaanederElements?.[0].value).toBe('0')
       expect(optionMaanederElements?.[11].value).toBe('11')
 
-      // Should auto-select the first month (0)
       expect((selectMaanederElement as HTMLSelectElement)?.value).toBe('0')
     })
 
-    it('med custom min og max (autoSelectFirstMonth=false)', async () => {
+    it('med custom min og max', async () => {
       const { container } = render(
         <AgePicker
           name="unique-name"
           label="My Test Age Picker"
           minAlder={{ aar: 70, maaneder: 5 }}
           maxAlder={{ aar: 72, maaneder: 0 }}
-          autoSelectFirstMonth={false}
-        />,
-        {
-          preloadedState: {
-            api: {
-              //@ts-ignore
-              queries: {
-                ...fulfilledGetPerson,
-              },
-            },
-            userInput: {
-              ...userInputInitialState,
-            },
-          },
-        }
-      )
-
-      const selectAarElement = container.querySelector(
-        `[name="unique-name-aar"]`
-      )
-      const optionAarElements = selectAarElement?.querySelectorAll('option')
-      expect(optionAarElements?.length).toBe(4)
-      expect(optionAarElements?.[0].value).toBe('')
-      expect(optionAarElements?.[1].value).toBe('70')
-      expect(optionAarElements?.[3].value).toBe('72')
-      const selectMaanederElement = container.querySelector(
-        `[name="unique-name-maaneder"]`
-      )
-
-      expect(selectMaanederElement?.querySelectorAll('option')?.length).toBe(1)
-
-      fireEvent.change(screen.getByTestId('age-picker-unique-name-aar'), {
-        target: { value: '71' },
-      })
-
-      const optionMaanederElements =
-        selectMaanederElement?.querySelectorAll('option')
-      expect(optionMaanederElements?.length).toBe(13)
-      expect(optionMaanederElements?.[0].value).toBe('')
-      expect(optionMaanederElements?.[1].value).toBe('0')
-      expect(optionMaanederElements?.[12].value).toBe('11')
-    })
-
-    it('med custom min og max (autoSelectFirstMonth=true)', async () => {
-      const { container } = render(
-        <AgePicker
-          name="unique-name"
-          label="My Test Age Picker"
-          minAlder={{ aar: 70, maaneder: 5 }}
-          maxAlder={{ aar: 72, maaneder: 0 }}
-          autoSelectFirstMonth={true}
         />,
         {
           preloadedState: {
@@ -241,54 +135,13 @@ describe('AgePicker', () => {
     })
 
     describe('Når min/maxAlder er oppgitt og år er valgt', () => {
-      it('viser bare månedene som kan velges basert mellom min og max mellom to år (autoSelectFirstMonth=false)', async () => {
+      it('viser bare månedene som kan velges basert mellom min og max mellom to år', async () => {
         const { container } = render(
           <AgePicker
             name="unique-name"
             label="My Test Age Picker"
             minAlder={{ aar: 70, maaneder: 5 }}
             maxAlder={{ aar: 72, maaneder: 10 }}
-            autoSelectFirstMonth={false}
-          />
-        )
-
-        const selectMaanederElement = container.querySelector(
-          `[name="unique-name-maaneder"]`
-        )
-
-        fireEvent.change(screen.getByTestId('age-picker-unique-name-aar'), {
-          target: { value: '70' },
-        })
-
-        expect(selectMaanederElement?.querySelectorAll('option')?.length).toBe(
-          8
-        )
-
-        fireEvent.change(screen.getByTestId('age-picker-unique-name-aar'), {
-          target: { value: '71' },
-        })
-
-        expect(selectMaanederElement?.querySelectorAll('option')?.length).toBe(
-          13
-        )
-
-        fireEvent.change(screen.getByTestId('age-picker-unique-name-aar'), {
-          target: { value: '72' },
-        })
-
-        expect(selectMaanederElement?.querySelectorAll('option')?.length).toBe(
-          12
-        )
-      })
-
-      it('viser bare månedene som kan velges basert mellom min og max mellom to år (autoSelectFirstMonth=true)', async () => {
-        const { container } = render(
-          <AgePicker
-            name="unique-name"
-            label="My Test Age Picker"
-            minAlder={{ aar: 70, maaneder: 5 }}
-            maxAlder={{ aar: 72, maaneder: 10 }}
-            autoSelectFirstMonth={true}
           />
         )
 
@@ -327,38 +180,13 @@ describe('AgePicker', () => {
         expect((selectMaanederElement as HTMLSelectElement)?.value).toBe('0') // Should auto-select month 0
       })
 
-      it('viser bare månedene som kan velges basert mellom min og max innen samme år (autoSelectFirstMonth=false)', async () => {
+      it('viser bare månedene som kan velges basert mellom min og max innen samme år', async () => {
         const { container } = render(
           <AgePicker
             name="unique-name"
             label="My Test Age Picker"
             minAlder={{ aar: 75, maaneder: 0 }}
             maxAlder={{ aar: 75, maaneder: 0 }}
-            autoSelectFirstMonth={false}
-          />
-        )
-
-        const selectMaanederElement = container.querySelector(
-          `[name="unique-name-maaneder"]`
-        )
-
-        fireEvent.change(screen.getByTestId('age-picker-unique-name-aar'), {
-          target: { value: '75' },
-        })
-
-        expect(selectMaanederElement?.querySelectorAll('option')?.length).toBe(
-          2
-        )
-      })
-
-      it('viser bare månedene som kan velges basert mellom min og max innen samme år (autoSelectFirstMonth=true)', async () => {
-        const { container } = render(
-          <AgePicker
-            name="unique-name"
-            label="My Test Age Picker"
-            minAlder={{ aar: 75, maaneder: 0 }}
-            maxAlder={{ aar: 75, maaneder: 0 }}
-            autoSelectFirstMonth={true}
           />
         )
 
@@ -385,7 +213,6 @@ describe('AgePicker', () => {
         name="unique-name"
         label="My Test Age Picker"
         error="My Error"
-        autoSelectFirstMonth={false}
       />
     )
     expect(screen.getByText('My Error')).toBeVisible()
@@ -402,12 +229,11 @@ describe('AgePicker', () => {
   })
 
   it('viser aria-invalid attribut på riktig felt når error er fylt ut', () => {
-    render(
+    const { container } = render(
       <AgePicker
         name="unique-name"
         label="My Test Age Picker"
         error="My Error"
-        autoSelectFirstMonth={false}
       />,
       {
         preloadedState: {
@@ -434,6 +260,7 @@ describe('AgePicker', () => {
     fireEvent.change(screen.getByTestId('age-picker-unique-name-aar'), {
       target: { value: '72' },
     })
+
     expect(
       screen
         .getByTestId('age-picker-unique-name-aar')
@@ -473,56 +300,13 @@ describe('AgePicker', () => {
     // Når bare måned er fylt ut kan ikke testes fordi monthArray er tom så lenge år ikke er valgt
   })
 
-  it('kaller onChange når option velges i år eller måneder, og Select for måneder enables når år er valgt (autoSelectFirstMonth=false)', async () => {
+  it('kaller onChange når option velges i år eller måneder, og Select for måneder enables når år er valgt', async () => {
     const onChangeMock = vi.fn()
     const { container } = render(
       <AgePicker
         name="unique-name"
         label="My Test Age Picker"
         onChange={onChangeMock}
-        autoSelectFirstMonth={false}
-      />,
-      {
-        preloadedState: {
-          api: {
-            //@ts-ignore
-            queries: {
-              ...fulfilledGetPerson,
-            },
-          },
-          userInput: {
-            ...userInputInitialState,
-          },
-        },
-      }
-    )
-
-    expect(
-      container.querySelector(`[name="unique-name-maaneder"]`)
-    ).toBeDisabled()
-
-    fireEvent.change(screen.getByTestId('age-picker-unique-name-aar'), {
-      target: { value: '72' },
-    })
-    expect(onChangeMock).toHaveBeenCalledTimes(1)
-    expect(
-      container.querySelector(`[name="unique-name-maaneder"]`)
-    ).not.toBeDisabled()
-
-    fireEvent.change(screen.getByTestId('age-picker-unique-name-maaneder'), {
-      target: { value: '5' },
-    })
-    expect(onChangeMock).toHaveBeenCalledTimes(2)
-  })
-
-  it('kaller onChange når option velges i år eller måneder, og Select for måneder enables når år er valgt (autoSelectFirstMonth=true)', async () => {
-    const onChangeMock = vi.fn()
-    const { container } = render(
-      <AgePicker
-        name="unique-name"
-        label="My Test Age Picker"
-        onChange={onChangeMock}
-        autoSelectFirstMonth={true}
       />,
       {
         preloadedState: {
