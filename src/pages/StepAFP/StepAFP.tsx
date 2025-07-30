@@ -21,8 +21,6 @@ import { isAlderOver67, isFoedtFoer1963, isOvergangskull } from '@/utils/alder'
 import { isLoependeVedtakEndring } from '@/utils/loependeVedtak'
 
 export function StepAFP() {
-  throw new Error('Intentional error for debugging error boundary')
-
   const intl = useIntl()
   const dispatch = useAppDispatch()
   const { person, loependeVedtak, erApoteker } =
