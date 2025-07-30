@@ -27,7 +27,7 @@ jobs:
         run: |
           curl -H "Authorization: Bearer ${{ secrets.SANITY_AUTH_TOKEN }}" \
              -o backups/${{ env.FILE_NAME }} \
-             "https://${{ secrets.SANITY_PROJECT_ID }}.api.sanity.io/v2021-06-07/data/export/production"
+             "https://${{ secrets.SANITY_PROJECT_ID }}.api.sanity.io/v2025-07-02/data/export/production"
 
       - name: Authenticate to Google Cloud (WIF)
         uses: google-github-actions/auth@v2
