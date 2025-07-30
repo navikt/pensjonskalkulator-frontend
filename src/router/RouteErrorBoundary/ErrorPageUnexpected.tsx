@@ -23,7 +23,7 @@ export const ErrorPageUnexpected: React.FC<ErrorPageUnexpectedProps> = ({
       if (isRouteErrorResponse(error)) {
         errorData = `Route Error ${error.status}: ${error.statusText || 'Unknown route error'}`
       } else if (error instanceof Error) {
-        errorData = `Unexpected Error: ${error.message}`
+        errorData = `Unexpected Error: ${error.message}${error.stack ? `\nStack: ${error.stack}` : ''}`
       } else {
         try {
           errorData = `Unknown Error: ${JSON.stringify(error)}`
