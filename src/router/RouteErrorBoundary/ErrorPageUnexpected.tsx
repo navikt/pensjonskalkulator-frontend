@@ -21,14 +21,14 @@ export const ErrorPageUnexpected: React.FC<ErrorPageUnexpectedProps> = ({
 
     if (error) {
       if (isRouteErrorResponse(error)) {
-        errorData = `Route Error ${error.status}: ${error.statusText || 'Unknown route error'} fra RouteErrorBoundary`
+        errorData = `fra RouteErrorBoundary. Route Error ${error.status}: ${error.statusText || 'Unknown route error'} `
       } else if (error instanceof Error) {
-        errorData = `Unexpected Error: ${error.message}${error.stack ? `\nStack: ${error.stack}` : ''} fra RouteErrorBoundary`
+        errorData = `fra RouteErrorBoundary. Unexpected Error: ${error.message}${error.stack ? `\nStack: ${error.stack}` : ''} `
       } else {
         try {
-          errorData = `Unknown Error: ${JSON.stringify(error)} fra RouteErrorBoundary`
+          errorData = `fra RouteErrorBoundary. Unknown Error: ${JSON.stringify(error)} `
         } catch {
-          errorData = `Unknown Error: ${typeof error} fra RouteErrorBoundary`
+          errorData = `fra RouteErrorBoundary. Unknown Error: ${typeof error} `
         }
       }
     }
