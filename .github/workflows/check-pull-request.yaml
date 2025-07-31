@@ -183,7 +183,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
       - name: Run Playwright tests
-        run: npx playwright test
+        run: npm run pw:test
 
       - name: Archive Playwright artifacts
         uses: actions/upload-artifact@v4

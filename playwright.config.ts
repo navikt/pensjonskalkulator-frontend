@@ -20,7 +20,7 @@ export default defineConfig({
     timeout: 5000,
   },
   use: {
-    baseURL: 'http://localhost:5173',
+    baseURL: 'http://localhost:4173',
     trace: 'on',
     screenshot: 'on',
     video: 'on',
@@ -64,11 +64,4 @@ export default defineConfig({
       },
     },
   ],
-
-  webServer: {
-    command: 'npm run start',
-    port: 5173,
-    reuseExistingServer: !process.env.CI,
-    timeout: 60000,
-  },
 })
