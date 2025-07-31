@@ -12,6 +12,7 @@ interface Props {
   afpPrivatListe?: AfpPensjonsberegning[]
   afpOffentligListe?: AfpPensjonsberegning[]
   alderspensjonMaanedligVedEndring?: AlderspensjonMaanedligVedEndring
+  pre2025OffentligAfp?: AfpEtterfulgtAvAlderspensjon
   pensjonsavtaler?: Pensjonsavtale[]
   simulertTjenestepensjon?: SimulertTjenestepensjon
 }
@@ -40,6 +41,7 @@ export const MaanedsbeloepAvansertBeregning: React.FC<Props> = (props) => {
           pensjonsdata={pensjonsdata}
           summerYtelser={summerYtelser}
           hentUttaksmaanedOgAar={hentUttaksmaanedOgAar}
+          harGradering={harGradering}
         />
       </div>
 

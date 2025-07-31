@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useNavigate } from 'react-router'
@@ -5,23 +6,33 @@ import { useNavigate } from 'react-router'
 import {
   Accordion,
   BodyLong,
+  HStack,
   Heading,
   HeadingProps,
   Link,
+  ReadMore,
+  VStack,
 } from '@navikt/ds-react'
 
 import { AccordionItem } from '@/components/common/AccordionItem'
 import { paths } from '@/router/constants'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
-import { selectSivilstand } from '@/state/userInput/selectors'
+import {
+  selectLoependeVedtak,
+  selectSivilstand,
+} from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
 import { BeregningVisning } from '@/types/common-types'
-import { formatInntekt } from '@/utils/inntekt'
 import { formatSivilstand } from '@/utils/sivilstand'
 import { getFormatMessageValues } from '@/utils/translations'
 
+import { GrunnlagItem } from '../GrunnlagItem'
+import { Pensjonsavtaler } from '../Pensjonsavtaler/Pensjonsavtaler'
+import { AfpDetaljerGrunnlag } from '../Simulering/BeregningsdetaljerForOvergangskull/AfpDetaljerGrunnlag'
+import { AlderspensjonDetaljerGrunnlag } from '../Simulering/BeregningsdetaljerForOvergangskull/AlderspensjonDetaljerGrunnlag'
+import { useBeregningsdetaljer } from '../Simulering/BeregningsdetaljerForOvergangskull/hooks'
+import { Pensjonsgivendeinntekt } from '../Simulering/Pensjonsgivendeinntekt'
 import { GrunnlagAFP } from './GrunnlagAFP'
-import { GrunnlagInntekt } from './GrunnlagInntekt'
 import { GrunnlagSection } from './GrunnlagSection'
 import { GrunnlagUtenlandsopphold } from './GrunnlagUtenlandsopphold'
 
@@ -32,8 +43,11 @@ interface Props {
   headingLevel: HeadingProps['level']
   harForLiteTrygdetid?: boolean
   trygdetid?: number
-  pensjonsbeholdning?: number
   isEndring: boolean
+  alderspensjonListe?: AlderspensjonPensjonsberegning[]
+  afpPrivatListe?: AfpPrivatPensjonsberegning[]
+  afpOffentligListe?: AfpPensjonsberegning[]
+  pre2025OffentligAfp?: pre2025OffentligPensjonsberegning
 }
 
 export const Grunnlag: React.FC<Props> = ({
@@ -41,8 +55,11 @@ export const Grunnlag: React.FC<Props> = ({
   headingLevel,
   harForLiteTrygdetid,
   trygdetid,
-  pensjonsbeholdning,
   isEndring,
+  alderspensjonListe,
+  afpPrivatListe,
+  afpOffentligListe,
+  pre2025OffentligAfp,
 }) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
@@ -54,48 +71,216 @@ export const Grunnlag: React.FC<Props> = ({
   }
 
   const intl = useIntl()
-
+  const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const sivilstand = useAppSelector(selectSivilstand)
+
+  const [isAFPDokumentasjonVisible, setIsAFPDokumentasjonVisible] =
+    React.useState<boolean>(false)
+
+  const [isAlderspensjonDetaljerVisible, setIsAlderspensjonDetaljerVisible] =
+    React.useState<boolean>(false)
 
   const formatertSivilstand = React.useMemo(
     () => formatSivilstand(intl, sivilstand!),
     [sivilstand]
   )
 
+  const {
+    alderspensjonDetaljerListe,
+    pre2025OffentligAfpDetaljerListe,
+    afpPrivatDetaljerListe,
+    afpOffentligDetaljerListe,
+    opptjeningPre2025OffentligAfpListe,
+  } = useBeregningsdetaljer(
+    alderspensjonListe,
+    afpPrivatListe,
+    afpOffentligListe,
+    pre2025OffentligAfp
+  )
+
+  // Når det ikke er noen detaljer for AFP, så er "Les mer" lenken skjult.
+  const shouldHideAfpReadMore =
+    !afpOffentligDetaljerListe.length &&
+    !afpPrivatDetaljerListe.length &&
+    !pre2025OffentligAfpDetaljerListe.length
+
   return (
     <section className={styles.section}>
       <Heading level={headingLevel} size="medium">
-        <FormattedMessage id="grunnlag.title" />
+        {isEndring || visning === 'avansert' ? (
+          <FormattedMessage id="grunnlag.endring.title" />
+        ) : (
+          <FormattedMessage id="grunnlag.title" />
+        )}
       </Heading>
 
-      <Accordion>
-        {visning === 'enkel' && (
-          <AccordionItem name="Grunnlag: Uttaksgrad">
-            <GrunnlagSection
-              headerTitle={intl.formatMessage({
-                id: 'grunnlag.uttaksgrad.title',
-              })}
-              headerValue="100 %"
+      <HStack gap="8" marginBlock="6 0">
+        {visning === 'enkel' && !isEndring && (
+          <GrunnlagItem color="gray">
+            <Pensjonsgivendeinntekt goToAvansert={goToAvansert} />
+          </GrunnlagItem>
+        )}
+
+        {!isEndring && (
+          <GrunnlagItem color="green">
+            <Pensjonsavtaler headingLevel="3" />
+          </GrunnlagItem>
+        )}
+
+        <GrunnlagItem color="purple">
+          <GrunnlagAFP />
+          {!shouldHideAfpReadMore && (
+            <ReadMore
+              name="Listekomponenter for AFP"
+              open={isAFPDokumentasjonVisible}
+              header={
+                isAFPDokumentasjonVisible
+                  ? intl.formatMessage(
+                      {
+                        id: 'beregning.detaljer.lukk',
+                      },
+                      {
+                        ...getFormatMessageValues(),
+                        ytelse: 'AFP',
+                      }
+                    )
+                  : intl.formatMessage(
+                      {
+                        id: 'beregning.detaljer.vis',
+                      },
+                      {
+                        ...getFormatMessageValues(),
+                        ytelse: 'AFP',
+                      }
+                    )
+              }
+              className={clsx(
+                styles.visListekomponenter,
+                styles.wideDetailedView
+              )}
+              onOpenChange={setIsAFPDokumentasjonVisible}
             >
-              <BodyLong>
+              <AfpDetaljerGrunnlag
+                afpPrivatDetaljerListe={afpPrivatDetaljerListe}
+                afpOffentligDetaljerListe={afpOffentligDetaljerListe}
+                pre2025OffentligAfpDetaljerListe={
+                  pre2025OffentligAfpDetaljerListe
+                }
+                opptjeningPre2025OffentligAfpListe={
+                  opptjeningPre2025OffentligAfpListe
+                }
+              />
+              {pre2025OffentligAfp &&
+                pre2025OffentligAfp.afpAvkortetTil70Prosent && (
+                  <FormattedMessage
+                    id="grunnlag.afp.avkortet.til.70.prosent"
+                    values={{
+                      ...getFormatMessageValues(),
+                    }}
+                  />
+                )}
+              {/* TODO: hvis pre2025OffentligAfp.afpAvkortetTil70Prosent eller
+              prosent afp redusert, så rendre linken  */}
+              {/* TODO: Flyttes inn i samme text som grunnlag.afp.avkortet.til.70.prosent hvis den er kun brukt her */}
+              {pre2025OffentligAfp &&
+                pre2025OffentligAfp.afpAvkortetTil70Prosent && (
+                  <span>
+                    &nbsp;
+                    <Link
+                      href="https://www.nav.no/afp-offentlig#beregning"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <FormattedMessage id="grunnlag.afp.link.text" />
+                    </Link>
+                  </span>
+                )}
+            </ReadMore>
+          )}
+        </GrunnlagItem>
+
+        <GrunnlagItem color="blue">
+          <VStack gap="3">
+            <Heading level="3" size="small">
+              <FormattedMessage id="beregning.highcharts.serie.alderspensjon.name" />
+            </Heading>
+            <BodyLong className={styles.alderspensjonDetaljer}>
+              {loependeVedtak.alderspensjon || visning === 'avansert' ? (
                 <FormattedMessage
-                  id="grunnlag.uttaksgrad.ingress"
+                  id="grunnlag.alderspensjon.endring.ingress"
                   values={{
                     ...getFormatMessageValues(),
                   }}
                 />
-                <br />
-                <br />
-                <Link href="#" onClick={goToAvansert}>
-                  <FormattedMessage id="grunnlag.uttaksgrad.avansert_link" />
-                </Link>
-              </BodyLong>
-            </GrunnlagSection>
-          </AccordionItem>
-        )}
+              ) : (
+                <FormattedMessage
+                  id="grunnlag.alderspensjon.ingress"
+                  values={{
+                    ...getFormatMessageValues(),
+                    avansert: (
+                      <Link href="#" onClick={goToAvansert}>
+                        avansert kalkulator
+                      </Link>
+                    ),
+                  }}
+                />
+              )}
+            </BodyLong>
+          </VStack>
+          <ReadMore
+            name="Listekomponenter for alderspensjon"
+            open={isAlderspensjonDetaljerVisible}
+            header={
+              isAlderspensjonDetaljerVisible
+                ? intl.formatMessage(
+                    {
+                      id: 'beregning.detaljer.lukk',
+                    },
+                    {
+                      ...getFormatMessageValues(),
+                      ytelse: 'alderspensjon',
+                    }
+                  )
+                : intl.formatMessage(
+                    {
+                      id: 'beregning.detaljer.vis',
+                    },
+                    {
+                      ...getFormatMessageValues(),
+                      ytelse: 'alderspensjon',
+                    }
+                  )
+            }
+            className={clsx(
+              styles.visListekomponenter,
+              styles.wideDetailedView
+            )}
+            onOpenChange={setIsAlderspensjonDetaljerVisible}
+          >
+            <AlderspensjonDetaljerGrunnlag
+              alderspensjonDetaljerListe={alderspensjonDetaljerListe}
+              hasPre2025OffentligAfpUttaksalder={Boolean(
+                opptjeningPre2025OffentligAfpListe?.length
+              )}
+            />
+            <FormattedMessage
+              id="grunnlag.alderspensjon.ingress.link"
+              values={{
+                ...getFormatMessageValues(),
+              }}
+            />
+          </ReadMore>
+        </GrunnlagItem>
+      </HStack>
 
-        {visning === 'enkel' && <GrunnlagInntekt goToAvansert={goToAvansert} />}
+      {/* TODO: Fjern style når Accordion fjernes */}
+      <VStack marginBlock="12 0" style={{ marginBottom: '16px' }}>
+        <Heading level={headingLevel} size="medium">
+          <FormattedMessage id="om_deg.title" />
+        </Heading>
+      </VStack>
 
+      <Accordion>
         <AccordionItem name="Gunnlag: Sivilstand">
           <GrunnlagSection
             headerTitle={intl.formatMessage({
@@ -118,43 +303,6 @@ export const Grunnlag: React.FC<Props> = ({
           harForLiteTrygdetid={harForLiteTrygdetid}
           trygdetid={trygdetid}
         />
-
-        <AccordionItem name="Grunnlag: Alderspensjon (NAV)">
-          <GrunnlagSection
-            headerTitle={intl.formatMessage({
-              id: 'grunnlag.alderspensjon.title',
-            })}
-            headerValue={intl.formatMessage({
-              id: 'grunnlag.alderspensjon.value',
-            })}
-          >
-            <BodyLong>
-              <FormattedMessage
-                id="grunnlag.alderspensjon.ingress"
-                values={{
-                  ...getFormatMessageValues(),
-                }}
-              />
-              {!isEndring && pensjonsbeholdning && pensjonsbeholdning >= 0 && (
-                <FormattedMessage
-                  id="grunnlag.alderspensjon.ingress.pensjonsbeholdning"
-                  values={{
-                    ...getFormatMessageValues(),
-                    sum: formatInntekt(pensjonsbeholdning),
-                  }}
-                />
-              )}
-              <FormattedMessage
-                id="grunnlag.alderspensjon.ingress.link"
-                values={{
-                  ...getFormatMessageValues(),
-                }}
-              />
-            </BodyLong>
-          </GrunnlagSection>
-        </AccordionItem>
-
-        <GrunnlagAFP />
       </Accordion>
     </section>
   )

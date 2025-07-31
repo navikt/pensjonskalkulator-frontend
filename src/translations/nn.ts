@@ -44,10 +44,11 @@ export default {
   'error.virker_ikke.ingress': 'MANGLER_TEKST',
   'error.virker_ikke.link': 'MANGLER_TEKST',
   'error.virker_ikke.button': 'MANGLER_TEKST',
+  'error.apoteker_warning': 'MANGELR_TEKST',
+  'landingsside.for.deg.som.kan.logge.inn': 'MANGLER_TEKST',
   'landingsside.for.deg.foedt.foer.1963': 'For deg født før 1963',
   'landingsside.du.maa.bruke.detaljert':
     'Du må bruke vår detaljerte kalkulator. Der får du rekna ut alderspensjonen frå folketrygda (Nav), avtalefesta pensjon (AFP) og pensjonsavtalar (arbeidsgjevarar og sparing)',
-  'landingsside.for.deg.foedt.etter.1963': 'For deg født i 1963 eller seinare',
   'landingsside.velge_mellom_detaljert_og_enkel':
     'Du kan velgje mellom enkel eller detaljert kalkulator. Enkel kalkulator passar for deg som vil ha eit rask oversyn. Detaljert pensjonskalkulator passar for deg som vil ha ei meir spesifisert utrekning.',
   'landingsside.velge_mellom_detaljert_og_enkel_2': 'MANGLER_TEKST',
@@ -316,6 +317,23 @@ export default {
   'beregning.tabell.lukk': 'Lukk tabell av utrekninga',
   'beregning.tabell.vis': 'Vis tabell av utrekninga',
   'beregning.tabell.sum': 'Sum',
+  'beregning.detaljer.lukk': 'MANGLER_TEKST',
+  'beregning.detaljer.vis': 'MANGLER_TEKST',
+  'beregning.detaljer.grunnpensjon.heltUttak.title': 'MANGLER_TEKST',
+  'beregning.detaljer.grunnpensjon.gradertUttak.title': 'MANGLER_TEKST',
+  'beregning.detaljer.grunnpensjon.afp.table.title': 'MANGLER_TEKST',
+  'beregning.detaljer.grunnpensjon.table.title': 'MANGLER_TEKST',
+  'beregning.detaljer.grunnpensjon.pre2025OffentligAfp.title': 'MANGLER_TEKST',
+  'beregning.detaljer.afpPrivat.heltUttak.title': 'MANGLER_TEKST',
+  'beregning.detaljer.afpPrivat.gradertUttak.title': 'MANGLER_TEKST',
+  'beregning.detaljer.afpOffentlig.uttak.title': 'MANGLER_TEKST',
+  'beregning.detaljer.OpptjeningDetaljer.table.title': 'MANGLER_TEKST',
+  'beregning.detaljer.OpptjeningDetaljer.kap19.table.title': 'MANGLER_TEKST',
+  'beregning.detaljer.OpptjeningDetaljer.kap20.table.title': 'MANGLER_TEKST',
+  'beregning.detaljer.OpptjeningDetaljer.afpPrivat.table.title':
+    'MANGLER_TEKST',
+  'beregning.detaljer.OpptjeningDetaljer.pre2025OffentligAfp.table.title':
+    'MANGLER_TEKST',
   'beregning.avansert.link.endre_valgene_dine': 'MANGLER_TEKST',
   'beregning.avansert.link.endre_avanserte_valg': 'MANGLER_TEKST',
   'beregning.avansert.link.om_vilkaar_for_afp': 'MANGLER_TEKST',
@@ -414,6 +432,7 @@ export default {
   'beregning.vilkaarsproeving.alternativer.medAFP.ikkeNokOpptjening':
     'MANGLER_TEKST',
   'grunnlag.title': 'Grunnlaget for utrekninga',
+  'grunnlag.endring.title': 'MANGLER_TEKST',
   'maanedsbeloep.title': 'MANGLER_TEKST',
   'grunnlag.uttaksgrad.title': 'Uttaksgrad',
   'grunnlag.uttaksgrad.avansert_link': 'MANGLER_TEKST',
@@ -421,6 +440,8 @@ export default {
     'Denne utrekninga syner 100 % uttak av alderspensjon. I avansert kalkulator får du rekna ut alderspensjon med andre uttaksgrader (20 %, 40 %, 50 %, 60 % og 80 %). Du kan jobbe så mykje du vil ved sida av pensjon sjølv om du har teke ut 100 %.',
   'grunnlag.inntekt.title': 'Inntekt',
   'grunnlag.inntekt.ingress':
+    'Beløpet er di siste pensjonsgjevande årsinntekt (frå {aarsinntekt}) frå Skatteetaten. Inntekta vert brukt som di framtidige inntekt fram til du startar uttak av pensjon. Ynskjer du å endre framtidig inntekt, må du bruke <detaljertKalkulatorLink>detaljert pensjonskalkulator</detaljertKalkulatorLink>. Du kan òg legge inntekta i tillegg til pensjonsbehaldninga di i',
+  'grunnlag.inntekt.ingress.endring':
     'Beløpet er di siste pensjonsgjevande årsinntekt (frå {aarsinntekt}) frå Skatteetaten. Inntekta vert brukt som di framtidige inntekt fram til du startar uttak av pensjon. Ynskjer du å endre framtidig inntekt, må du bruke <detaljertKalkulatorLink>detaljert pensjonskalkulator</detaljertKalkulatorLink>',
   'grunnlag.inntekt.info_om_inntekt': 'Kva er pensjonsgjevande inntekt?',
   'grunnlag.inntekt.info_om_inntekt.lukk': 'Lukk',
@@ -448,9 +469,10 @@ export default {
   'grunnlag.opphold.avbryt_modal.avbryt': 'MANGLER_TEKST',
   'grunnlag.alderspensjon.title': 'Alderspensjon',
   'grunnlag.alderspensjon.value': 'Folketrygden (Nav)',
-  'grunnlag.alderspensjon.ingress':
+  'grunnlag.alderspensjon.ingress': 'MANGLER_TEKST',
+  'grunnlag.alderspensjon.endring.ingress':
     'Alderspensjon vert rekna ut frå pensjonsbehaldninga di i folketrygda. Viss du fortset å ha inntekt samstundes med at du tek ut pensjon, vil alderspensjonen din auke.',
-  'grunnlag.alderspensjon.ingress.pensjonsbeholdning':
+  'grunnlag.alderspensjon.endring.ingress.pensjonsbeholdning':
     '{br}{br}MANGLER_TEKST: {sum} kr',
   'grunnlag.alderspensjon.ingress.link':
     '{br}{br}<dinPensjonBeholdningLink>Di pensjonsopptening</dinPensjonBeholdningLink> {br}{br}<alderspensjonsreglerLink>Om reglane for alderspensjon</alderspensjonsreglerLink>',
@@ -459,7 +481,7 @@ export default {
   'grunnlag.afp.endring': 'MANGLER_TEKST',
   'grunnlag.afp.ingress.null': '-',
   'grunnlag.afp.ingress.overgangskull': 'MANGLER_TEKST',
-  'grunnlag.afp.ingress.overgangskull.ufoeretrygd': 'MANGLER_TEKST',
+  'grunnlag.afp.ingress.overgangskull.ufoeretrygd_eller_ap': 'MANGLER_TEKST',
   'grunnlag.afp.ingress.ja_offentlig': 'MANGLER_TEKST',
   'grunnlag.afp.ingress.ja_offentlig.endring': 'MANGLER_TEKST',
   'grunnlag.afp.ingress.ja_offentlig.ufoeretrygd': 'MANGLER_TEKST',
@@ -474,6 +496,9 @@ export default {
   'grunnlag.afp.ingress.nei':
     'Har du starta i jobb hos en arbeidsgjevar som har avtale om AFP, tilrår vi at du gjer ei <goToStart>ny utrekning</goToStart>.',
   'grunnlag.afp.ingress.ufoeretrygd': 'MANGLER_TEKST',
+  'grunnlag.afp.70prosentregel': 'MANGLER_TEKST',
+  'grunnlag.afp.avkortet.til.70.prosent': 'MANGLER_TEKST',
+  'grunnlag.afp.link.text': 'MANGLER_TEKST',
   'grunnlag.forbehold.ingress_1':
     'Pensjonen er rekna ut med opplysningane vi har om deg og opplysningane du har lagt inn. Utrekninga er gjort med gjeldande regelverk. Dette er ei førebels utrekning av kva du kan vente å få i pensjon. ',
   'grunnlag.forbehold.link': 'Alle atterhald',
@@ -481,8 +506,7 @@ export default {
   'savnerdunoe.title': 'MANGLER_TEKST',
   'savnerdunoe.title.endring': 'MANGLER_TEKST',
   'savnerdunoe.ingress': 'MANGLER_TEKST',
-  'savnerdunoe.button': 'MANGLER_TEKST',
-  'savnerdunoe.body.endring': 'MANGLER_TEKST',
+  'savnerdunoe.ingress.endring': 'MANGLER_TEKST',
   'inntekt.endre_inntekt_modal.open.button': 'MANGLER_TEKST',
   'inntekt.endre_inntekt_modal.textfield.label': 'MANGLER_TEKST',
   'inntekt.endre_inntekt_modal.title': 'MANGLER_TEKST',
