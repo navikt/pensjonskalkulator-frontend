@@ -1,13 +1,7 @@
-import { Page, expect, test } from '@playwright/test';
-import fs from 'fs/promises';
+import { Page, expect, test } from '@playwright/test'
+import fs from 'fs/promises'
 
-
-
-import { userInputActions } from '../src/state/userInput/userInputSlice';
-
-
-
-
+import { userInputActions } from '../src/state/userInput/userInputSlice'
 
 declare global {
   interface Window {
@@ -241,9 +235,7 @@ export async function setupInterceptions(
   }
 }
 
-export async function login(
-  page: Page
-) {
+export async function login(page: Page) {
   await page.goto('/pensjon/kalkulator/', { waitUntil: 'load' })
   const btn = page.getByTestId('landingside-enkel-kalkulator-button')
   await btn.waitFor({ state: 'visible' })
@@ -272,9 +264,7 @@ export async function login(
   ])
 }
 
-export async function loginWithApiAlterations(
-  page: Page,
-) {
+export async function loginWithApiAlterations(page: Page) {
   await page.goto('/pensjon/kalkulator/', { waitUntil: 'load' })
   const btn = page.getByTestId('landingside-enkel-kalkulator-button')
   await btn.waitFor({ state: 'visible' })
