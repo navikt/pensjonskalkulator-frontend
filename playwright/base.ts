@@ -156,7 +156,7 @@ export async function setupInterceptions(
       },
     },
     {
-      url: /api\.uxsignals\.com\/v2\/study\/id\/.*\/active/,
+      url: /^api\.uxsignals\.com\/v2\/study\/id\/.*\/active/,
       jsonResponse: { active: false },
     },
   ]
