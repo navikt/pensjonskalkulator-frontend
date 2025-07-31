@@ -1,7 +1,13 @@
-import { Page, expect, test } from '@playwright/test'
-import fs from 'fs/promises'
+import { Page, expect, test } from '@playwright/test';
+import fs from 'fs/promises';
 
-import { userInputActions } from '../src/state/userInput/userInputSlice'
+
+
+import { userInputActions } from '../src/state/userInput/userInputSlice';
+
+
+
+
 
 declare global {
   interface Window {
@@ -236,14 +242,13 @@ export async function setupInterceptions(
 }
 
 export async function login(
-  page: Page,
-  options?: { skipInitialClick?: boolean }
+  page: Page
 ) {
   await page.goto('/pensjon/kalkulator/', { waitUntil: 'load' })
-  if (options?.skipInitialClick) return
   const btn = page.getByTestId('landingside-enkel-kalkulator-button')
   await btn.waitFor({ state: 'visible' })
   await btn.click()
+  // På start steget kjøres automatisk kall til  /person, /ekskludert, /inntekt, /loepende-omstillingsstoenad-eller-gjenlevendeytelse
   await Promise.all([
     page.waitForResponse((r) =>
       r.url().includes('/pensjon/kalkulator/api/v4/person')
@@ -269,40 +274,11 @@ export async function login(
 
 export async function loginWithApiAlterations(
   page: Page,
-  options?: { skipInitialClick?: boolean }
 ) {
   await page.goto('/pensjon/kalkulator/', { waitUntil: 'load' })
-  if (options?.skipInitialClick) return
   const btn = page.getByTestId('landingside-enkel-kalkulator-button')
   await btn.waitFor({ state: 'visible' })
   await btn.click()
-}
-
-export async function goToStart(page: Page) {
-  const btn = page.getByTestId('landingside-enkel-kalkulator-button')
-  await btn.waitFor({ state: 'visible' })
-  await btn.click()
-  await Promise.all([
-    page.waitForResponse((r) =>
-      r.url().includes('/pensjon/kalkulator/api/v4/person')
-    ),
-    page.waitForResponse((r) =>
-      r.url().includes('/pensjon/kalkulator/api/v2/ekskludert')
-    ),
-    page.waitForResponse((r) =>
-      r.url().includes('/pensjon/kalkulator/api/inntekt')
-    ),
-    page.waitForResponse((r) =>
-      r
-        .url()
-        .includes(
-          '/pensjon/kalkulator/api/v1/loepende-omstillingsstoenad-eller-gjenlevendeytelse'
-        )
-    ),
-    page.waitForResponse((r) =>
-      r.url().includes('/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak')
-    ),
-  ])
 }
 
 export async function fillOutStegvisning(
