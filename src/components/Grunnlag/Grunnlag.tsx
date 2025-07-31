@@ -129,6 +129,7 @@ export const Grunnlag: React.FC<Props> = ({
 
         <GrunnlagItem color="purple">
           <GrunnlagAFP />
+
           {!shouldHideAfpReadMore && (
             <ReadMore
               name="Listekomponenter for AFP"
@@ -200,10 +201,11 @@ export const Grunnlag: React.FC<Props> = ({
         </GrunnlagItem>
 
         <GrunnlagItem color="blue">
-          <VStack gap="3">
+          <VStack gap="1">
             <Heading level="3" size="small">
               <FormattedMessage id="beregning.highcharts.serie.alderspensjon.name" />
             </Heading>
+
             <BodyLong className={styles.alderspensjonDetaljer}>
               {loependeVedtak.alderspensjon || visning === 'avansert' ? (
                 <FormattedMessage
@@ -227,6 +229,7 @@ export const Grunnlag: React.FC<Props> = ({
               )}
             </BodyLong>
           </VStack>
+
           <ReadMore
             name="Listekomponenter for alderspensjon"
             open={isAlderspensjonDetaljerVisible}
