@@ -29,7 +29,7 @@
     "cy:open": "cypress open",
     "cy:test": "start-server-and-test preview http://localhost:4173/pensjon/kalkulator 'ELECTRON_EXTRA_LAUNCH_ARGS=\"--force-prefers-reduced-motion\" cypress run --headed'",
     "cy:test:production": "start-server-and-test preview http://localhost:4173/pensjon/kalkulator 'ELECTRON_EXTRA_LAUNCH_ARGS=\"--force-prefers-reduced-motion\" cypress run --env DECORATOR_URL=https://www.nav.no/dekoratoren'",
-    "pw:test": "start-server-and-test preview http://localhost:4173/pensjon/kalkulator 'npx playwright test'",
+    "pw:test": "playwright test",
     "eslint:check": "eslint ./src",
     "eslint:fix": "eslint ./src --fix",
     "stylelint:check": "stylelint 'src/**/*.{css,scss}'",
