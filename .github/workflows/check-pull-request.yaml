@@ -145,7 +145,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     container:
-      image: mcr.microsoft.com/playwright:v1.53.2-noble
+      image: mcr.microsoft.com/playwright:v1.54.1-noble
       options: --user 1001
     strategy:
       fail-fast: true
