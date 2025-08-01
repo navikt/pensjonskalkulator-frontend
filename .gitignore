@@ -36,7 +36,7 @@ vite.config.ts.*
 .zed
 
 # Playwright
-/test-results/
-/playwright-report/
+/playwright/test-results/
+/playwright/report/
 /blob-report/
 /playwright/.cache/

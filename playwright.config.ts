@@ -10,20 +10,23 @@ const workers = process.env.CI
 
 export default defineConfig({
   testDir: './playwright/e2e/pensjon/kalkulator',
+  outputDir: './playwright/test-results',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
+  retries: process.env.CI ? 2 : 1,
   workers,
-  reporter: process.env.CI ? 'line' : 'html',
+  reporter: process.env.CI
+    ? [['line']]
+    : [['html', { outputFolder: './playwright/report' }]],
   timeout: 30000,
   expect: {
     timeout: 5000,
   },
   use: {
     baseURL: 'http://localhost:4173',
-    trace: 'on',
-    screenshot: 'on',
-    video: 'on',
+    trace: 'retry-with-trace',
+    screenshot: 'off',
+    video: 'retry-with-video',
     navigationTimeout: 15000,
     actionTimeout: 10000,
     ignoreHTTPSErrors: true,
