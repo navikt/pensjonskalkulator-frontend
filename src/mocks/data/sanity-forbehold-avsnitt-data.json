@@ -50,25 +50,6 @@
     {
       "innhold": [
         {
-          "_key": "7d036b7c12c6",
-          "_type": "block",
-          "children": [
-            {
-              "_key": "5c11c80c3e28",
-              "_type": "span",
-              "marks": [],
-              "text": "I beregningen benytter vi din siste registrerte pensjonsgivende årsinntekt som Nav har mottatt fra Skatteetaten. Den blir brukt som din fremtidige inntekt frem til du starter uttak av alderspensjon, med mindre du selv endrer inntekten i kalkulatoren."
-            }
-          ],
-          "markDefs": [],
-          "style": "normal"
-        }
-      ],
-      "overskrift": "Inntekt"
-    },
-    {
-      "innhold": [
-        {
           "_key": "ce427b87eb59",
           "_type": "block",
           "children": [
@@ -304,67 +285,6 @@
     {
       "innhold": [
         {
-          "_key": "5ddb51665b1b",
-          "_type": "block",
-          "children": [
-            {
-              "_key": "f3e36bf1873f",
-              "_type": "span",
-              "marks": [],
-              "text": "AFP i offentlig sektor beregnes etter lov om avtalefestet pensjon for medlemmer i Statens pensjonskasse."
-            }
-          ],
-          "markDefs": [],
-          "style": "normal"
-        },
-        {
-          "_key": "4c90d4807747",
-          "_type": "block",
-          "children": [
-            {
-              "_key": "d7ba850ee496",
-              "_type": "span",
-              "marks": [],
-              "text": "Hvis du har vedtak om AFP i offentlig sektor, kan ny beregning av AFP og alderspensjon bli feil, hvis vi ikke har opplysninger om vedtak om AFP fra din tjenestepensjonsordning."
-            }
-          ],
-          "markDefs": [],
-          "style": "normal"
-        },
-        {
-          "_key": "97310a242808",
-          "_type": "block",
-          "children": [
-            {
-              "_key": "bda537d58e63",
-              "_type": "span",
-              "marks": [],
-              "text": "Hvis du er født før 1963 viser kalkulatoren kun folketrygdberegnet AFP. Kalkulatoren tar ikke høyde for bestevurdering av folketrygdberegnet AFP og tjenestepensjonsberegnet AFP. Dette gjøres av tjenestepensjonsordningen din fra fylte 65 år."
-            }
-          ],
-          "markDefs": [],
-          "style": "normal"
-        },
-        {
-          "_key": "26230a701228",
-          "_type": "block",
-          "children": [
-            {
-              "_key": "1c8188e44e93",
-              "_type": "span",
-              "marks": [],
-              "text": "Hvis du er født i 1963 eller senere vil den endelige beregningen av livsvarig AFP bli gjort av tjenestepensjonsordningen din når du søker om AFP."
-            }
-          ],
-          "markDefs": [],
-          "style": "normal"
-        }
-      ],
-      "overskrift": "AFP i offentlig sektor"
-    },
-    {
-      "innhold": [
-        {
           "_key": "cad9708b47f6",
           "_type": "block",
           "children": [
@@ -534,25 +454,6 @@
     {
       "innhold": [
         {
-          "_key": "c8ea8dd1f062",
-          "_type": "block",
-          "children": [
-            {
-              "_key": "c796e8e93b5e",
-              "_type": "span",
-              "marks": [],
-              "text": "Hvis du er født før 1963 og har mottatt uførepensjon fra en offentlig tjenestepensjonsordning kan du få for lavt resultat ved beregning av AFP i kalkulatoren. Dette gjelder hvis du har mottatt uførepensjon i løpet av de siste 5 årene forut for året før du tar ut AFP i offentlig sektor, uten at du samtidig mottok uføretrygd fra folketrygden."
-            }
-          ],
-          "markDefs": [],
-          "style": "normal"
-        }
-      ],
-      "overskrift": "Uførepensjon fra tjenestepensjonsordninger"
-    },
-    {
-      "innhold": [
-        {
           "_key": "c07e110c9b7c",
           "_type": "block",
           "children": [
@@ -568,25 +469,6 @@
         }
       ],
       "overskrift": "Gjenlevendepensjon og omstillingsstønad"
-    },
-    {
-      "innhold": [
-        {
-          "_key": "59b4ae1af628",
-          "_type": "block",
-          "children": [
-            {
-              "_key": "80d7f72e3e0d",
-              "_type": "span",
-              "marks": [],
-              "text": "Hvis du er født før 1963 og har gjenlevenderettigheter, kan alderspensjonen din bli høyere hvis du har rett til gjenlevendetillegg. Kalkulatoren tar ikke høyde dette."
-            }
-          ],
-          "markDefs": [],
-          "style": "normal"
-        }
-      ],
-      "overskrift": "Gjenlevendetillegg i alderspensjon"
     },
     {
       "innhold": [

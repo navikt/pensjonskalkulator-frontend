@@ -23,26 +23,6 @@
     {
       "innhold": [
         {
-          "_key": "3801468594a9",
-          "_type": "block",
-          "children": [
-            {
-              "_key": "94b2a4521c4d",
-              "_type": "span",
-              "marks": [],
-              "text": "Uttaksgrad angir hvor stor del av månedlig alderspensjon du ønsker å ta ut. Grad av uføretrygd og alderspensjon kan til sammen ikke overstige 100 %. Fra 67 år kan du fritt velge gradert uttak (20, 40, 50, 60 eller 80 %), eller hel alderspensjon (100 %)."
-            }
-          ],
-          "markDefs": [],
-          "style": "normal"
-        }
-      ],
-      "name": "om_uttaksgrad_UT_gradert",
-      "overskrift": "Om uttaksgrad og uføretrygd"
-    },
-    {
-      "innhold": [
-        {
           "_key": "ed152e56c6d3",
           "_type": "block",
           "children": [
@@ -369,40 +349,6 @@
     {
       "innhold": [
         {
-          "_key": "31612230b38d",
-          "_type": "block",
-          "children": [
-            {
-              "_key": "1609a69d6b43",
-              "_type": "span",
-              "marks": [],
-              "text": "Uttaksgrad angir hvor stor del av månedlig alderspensjon du ønsker å ta ut. Grad av uføretrygd og alderspensjon kan til sammen ikke overstige 100 %. Fra 67 år kan du fritt velge gradert uttak (20, 40, 50, 60 eller 80 %), eller hel alderspensjon (100 %)."
-            }
-          ],
-          "markDefs": [],
-          "style": "normal"
-        },
-        {
-          "_key": "ac044ae74c9b",
-          "_type": "block",
-          "children": [
-            {
-              "_key": "6088107895c7",
-              "_type": "span",
-              "marks": [],
-              "text": "Hvis du vil endre gradering må det ha gått minimum 12 måneder siden du startet uttak av alderspensjon eller endret uttaksgrad. Du kan likevel endre til 0 % når du vil."
-            }
-          ],
-          "markDefs": [],
-          "style": "normal"
-        }
-      ],
-      "name": "om_uttaksgrad_UT_gradert_endring",
-      "overskrift": "Om uttaksgrad og uføretrygd"
-    },
-    {
-      "innhold": [
-        {
           "_key": "4e9d3d083f82",
           "_type": "block",
           "children": [
@@ -433,117 +379,6 @@
       ],
       "name": "om_TMU_endring",
       "overskrift": "Om tidspunktet for tidligst uttak"
-    },
-    {
-      "innhold": [
-        {
-          "_key": "2277f64df99f",
-          "_type": "block",
-          "children": [
-            {
-              "_key": "b8abd9e7d7ad",
-              "_type": "span",
-              "marks": [],
-              "text": "AFP i privat sektor:"
-            }
-          ],
-          "markDefs": [],
-          "style": "normal"
-        },
-        {
-          "_key": "3971b0125024",
-          "_type": "block",
-          "children": [
-            {
-              "_key": "c741cc419b1a",
-              "_type": "span",
-              "marks": [],
-              "text": "er en livsvarig pensjon"
-            }
-          ],
-          "level": 1,
-          "listItem": "bullet",
-          "markDefs": [],
-          "style": "normal"
-        },
-        {
-          "_key": "83b5229f0a49",
-          "_type": "block",
-          "children": [
-            {
-              "_key": "7e43e421aebd",
-              "_type": "span",
-              "marks": [],
-              "text": "kan tas ut sammen med arbeid"
-            }
-          ],
-          "level": 1,
-          "listItem": "bullet",
-          "markDefs": [],
-          "style": "normal"
-        },
-        {
-          "_key": "70a20f8a934f",
-          "_type": "block",
-          "children": [
-            {
-              "_key": "1b0d92d56015",
-              "_type": "span",
-              "marks": [],
-              "text": "må tas ut sammen med alderspensjon fra folketrygden (Nav)"
-            }
-          ],
-          "level": 1,
-          "listItem": "bullet",
-          "markDefs": [],
-          "style": "normal"
-        },
-        {
-          "_key": "79a37aac90d9",
-          "_type": "block",
-          "children": [
-            {
-              "_key": "137b490842b4",
-              "_type": "span",
-              "marks": [],
-              "text": "kan tas ut sammen med tjenestepensjon"
-            }
-          ],
-          "level": 1,
-          "listItem": "bullet",
-          "markDefs": [],
-          "style": "normal"
-        },
-        {
-          "_key": "a41f6c2836f7",
-          "_type": "block",
-          "children": [
-            {
-              "_key": "7317db18fbeb",
-              "_type": "span",
-              "marks": [],
-              "text": "Enkelte arbeidsgivere i privat sektor kan ha avtaler i offentlig sektor. Sjekk hos arbeidsgiveren din hva som gjelder for deg. Les om vilkårene til "
-            },
-            {
-              "_key": "9ad0d4999165",
-              "_type": "span",
-              "marks": ["f12954f94a2b"],
-              "text": "AFP i privat sektor på afp.no"
-            }
-          ],
-          "markDefs": [
-            {
-              "_key": "f12954f94a2b",
-              "_type": "link",
-              "blank": true,
-              "href": "https://www.afp.no/"
-            }
-          ],
-          "style": "normal"
-        }
-      ],
-      "name": "om_livsvarig_AFP_i_privat_sektor",
-      "overskrift": "Om AFP i privat sektor"
     },
     {
       "innhold": [
@@ -967,74 +802,6 @@
     {
       "innhold": [
         {
-          "_key": "4e2235b1e409",
-          "_type": "block",
-          "children": [
-            {
-              "_key": "d8562ec848b0",
-              "_type": "span",
-              "marks": [],
-              "text": "Hvis du samtykker, henter vi beregning av pensjonsavtaler i privat sektor fra Norsk Pensjon:"
-            }
-          ],
-          "markDefs": [],
-          "style": "normal"
-        },
-        {
-          "_key": "50f5987db039",
-          "_type": "block",
-          "children": [
-            {
-              "_key": "85a209c85e51",
-              "_type": "span",
-              "marks": [],
-              "text": "tjenestepensjon fra arbeidsgiver (innskudds-, ytelses- eller hybridpensjon)"
-            }
-          ],
-          "level": 1,
-          "listItem": "bullet",
-          "markDefs": [],
-          "style": "normal"
-        },
-        {
-          "_key": "8479a289bc25",
-          "_type": "block",
-          "children": [
-            {
-              "_key": "100ed5d0709d",
-              "_type": "span",
-              "marks": [],
-              "text": "fripoliser"
-            }
-          ],
-          "level": 1,
-          "listItem": "bullet",
-          "markDefs": [],
-          "style": "normal"
-        },
-        {
-          "_key": "270494d7b331",
-          "_type": "block",
-          "children": [
-            {
-              "_key": "d88bd0dbb433",
-              "_type": "span",
-              "marks": [],
-              "text": "enkelte pensjonssparingsavtaler som du har tegnet selv"
-            }
-          ],
-          "level": 1,
-          "listItem": "bullet",
-          "markDefs": [],
-          "style": "normal"
-        }
-      ],
-      "name": "dette_henter_vi_NP",
-      "overskrift": "Dette henter vi fra Norsk Pensjon om pensjonsavtaler fra privat sektor"
-    },
-    {
-      "innhold": [
-        {
           "_key": "aea2db60c0d3",
           "_type": "block",
           "children": [
@@ -1051,26 +818,6 @@
       ],
       "name": "dette_sjekker_vi_OFTP",
       "overskrift": "Vi sjekker om du kan ha rett til offentlig tjenestepensjon"
-    },
-    {
-      "innhold": [
-        {
-          "_key": "de0b51b43753",
-          "_type": "block",
-          "children": [
-            {
-              "_key": "c73cf31a69cc",
-              "_type": "span",
-              "marks": [],
-              "text": "100 % uføretrygd kan ikke kombineres med alderspensjon. Det er derfor ikke mulig å beregne alderspensjon før 67 år i kalkulatoren. Ved 67 år går 100 % uføretrygd automatisk over til 100 % alderspensjon. Har du spørsmål, kan du kontakte oss på telefon 55 55 33 34."
-            }
-          ],
-          "markDefs": [],
-          "style": "normal"
-        }
-      ],
-      "name": "om_pensjonsalder_UT_hel",
-      "overskrift": "Om pensjonsalder og uføretrygd"
     },
     {
       "innhold": [
@@ -1314,26 +1061,6 @@
     {
       "innhold": [
         {
-          "_key": "f767843337a7",
-          "_type": "block",
-          "children": [
-            {
-              "_key": "1b2e41500e5f",
-              "_type": "span",
-              "marks": [],
-              "text": "Uttaksgrad angir hvor stor del av månedlig alderspensjon du ønsker å ta ut. Hvis du vil endre gradering til 20, 40, 50, 60 eller 80 % må det ha gått minimum 12 måneder siden du startet uttak av alderspensjon eller endret uttaksgrad. Du kan endre til 0 % og 100 % så ofte du vil."
-            }
-          ],
-          "markDefs": [],
-          "style": "normal"
-        }
-      ],
-      "name": "om_uttaksgrad_endring",
-      "overskrift": "Om uttaksgrad"
-    },
-    {
-      "innhold": [
-        {
           "_key": "34356a7ade1a",
           "_type": "block",
           "children": [
@@ -1350,26 +1077,6 @@
       ],
       "name": "om_pensjonsalder_UT_hel",
       "overskrift": "Om pensjonsalder og uføretrygd"
-    },
-    {
-      "innhold": [
-        {
-          "_key": "0b8ba37e78bb",
-          "_type": "block",
-          "children": [
-            {
-              "_key": "b69a5c5d6a8a",
-              "_type": "span",
-              "marks": [],
-              "text": "Uttaksgrad angir hvor stor del av månedlig alderspensjon du ønsker å ta ut. Du kan velge gradert uttak (20, 40, 50, 60 eller 80 %), eller hel alderspensjon (100 %)."
-            }
-          ],
-          "markDefs": [],
-          "style": "normal"
-        }
-      ],
-      "name": "om_uttaksgrad",
-      "overskrift": "Om uttaksgrad"
     },
     {
       "innhold": [
@@ -1403,26 +1110,6 @@
         }
       ],
       "name": "om_pensjonsalder_UT_gradert_avansert",
-      "overskrift": "Om pensjonsalder og uføretrygd"
-    },
-    {
-      "innhold": [
-        {
-          "_key": "8d997fc97b71",
-          "_type": "block",
-          "children": [
-            {
-              "_key": "4e940a6ccc1e",
-              "_type": "span",
-              "marks": [],
-              "text": "Det er mulig å kombinere gradert uføretrygd og gradert alderspensjon fra 62 år, så lenge du har høy nok opptjening til å ta ut alderspensjon. Graden av uføretrygd og alderspensjon kan ikke overstige 100 %. Har du spørsmål, kan du kontakte oss på telefon 55 55 33 34."
-            }
-          ],
-          "markDefs": [],
-          "style": "normal"
-        }
-      ],
-      "name": "om_pensjonsalder_UT_gradert_enkel",
       "overskrift": "Om pensjonsalder og uføretrygd"
     },
     {
