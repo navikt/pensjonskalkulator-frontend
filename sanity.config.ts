@@ -5,6 +5,7 @@ import { createAuthStore, defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
 
 import { schemaTypes } from './schemaTypes'
+import { webhookPlugin } from './schemaTypes/components/WebhookPlugin'
 import { supportedLanguages } from './schemaTypes/supportedLanguages'
 
 export const projectId = 'g2by7q6m'
@@ -17,7 +18,9 @@ const pluginsArray = [
     schemaTypes: ['readmore', 'forbeholdAvsnitt', 'guidepanel'],
     languageField: 'language',
   }),
+  webhookPlugin(),
 ]
+
 export default defineConfig([
   {
     projectId,
