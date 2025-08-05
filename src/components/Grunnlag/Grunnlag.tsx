@@ -114,11 +114,19 @@ export const Grunnlag: React.FC<Props> = ({
   }) => {
     const name = `Grunnlag: Vis detaljer for ${ytelse}`
     if (isOpen) {
-      logger('show more lukket', { tekst: name })
-      setIsAFPDokumentasjonVisible(false)
-    } else {
       logger('show more åpnet', { tekst: name })
-      setIsAFPDokumentasjonVisible(true)
+      if (ytelse === 'AFP') {
+        setIsAFPDokumentasjonVisible(true)
+      } else {
+        setIsAlderspensjonDetaljerVisible(true)
+      }
+    } else {
+      logger('show more lukket', { tekst: name })
+      if (ytelse === 'AFP') {
+        setIsAFPDokumentasjonVisible(false)
+      } else {
+        setIsAlderspensjonDetaljerVisible(false)
+      }
     }
   }
 

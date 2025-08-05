@@ -153,11 +153,6 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
             : { ...prevState?.aarligInntektVsaPensjon },
       }
     })
-    // TODO: Når vil du ta ut AFP
-    logger('valg av uttaksalder for gradert alderspensjon', {
-      tekst: 'Aldersvelger valgt',
-      valg: alder,
-    })
   }
 
   const handleAfpInntektMaanedFoerUttakRadioChange = (s: BooleanRadio) => {
@@ -168,7 +163,12 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
       }
     })
     setLocalHarAfpInntektMaanedFoerUttakRadio?.(s === 'ja')
-    //TODO: Logg valg av AFP inntekt måned før uttak
+    if (s === 'nei') {
+      logger('alert vist', {
+        tekst: 'Beregning AFP: Ikke høy nok opptjening for å beregne AFP',
+        variant: 'warning',
+      })
+    }
   }
 
   const handleInntektVsaGradertUttakRadioChange = (s: BooleanRadio) => {

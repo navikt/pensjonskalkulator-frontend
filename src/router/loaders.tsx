@@ -226,6 +226,10 @@ export const stepSivilstandAccessGuard = async ({
     .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
     .unwrap()
 
+  logger('info', {
+    tekst: 'Løpende vedtak',
+    data: loependeVedtak ? 'Ja' : 'Nei',
+  })
   const erApoteker = await store
     .dispatch(apiSlice.endpoints.getErApoteker.initiate())
     .unwrap()
