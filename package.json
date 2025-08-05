@@ -35,7 +35,6 @@
     "stylelint:fix": "stylelint 'src/**/*.{css,scss}' --fix",
     "prettier:check": "prettier --check '**/*.{cjs,js,jsx,ts,tsx,json}'",
     "prettier:fix": "prettier --write '**/*.{cjs,js,jsx,ts,tsx,json}'",
-    "postinstall": "uname -m | grep -q arm64 && npm install sass-embedded-darwin-arm64 --no-save || true",
     "prepare": "husky"
   },
   "dependencies": {
@@ -124,6 +123,11 @@
     "vite-plugin-stylelint": "^6.0.2",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "3.2.4"
+  },
+  "optionalDependencies": {
+    "sass-embedded-linux-x64": "^1.89.2",
+    "sass-embedded-darwin-arm64": "^1.89.2",
+    "sass-embedded-win32-x64": "^1.89.2"
   },
   "msw": {
     "workerDirectory": "public"
