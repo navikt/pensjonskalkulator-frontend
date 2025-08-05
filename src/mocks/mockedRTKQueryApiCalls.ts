@@ -11,6 +11,10 @@ export const personMock: Person = {
       aar: 62,
       maaneder: 0,
     },
+    oevreAldersgrense: {
+      aar: 75,
+      maaneder: 0,
+    },
   },
 }
 export const fulfilledGetPerson = {
