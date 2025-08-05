@@ -83,6 +83,8 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
   )
   const { harAvansertSkjemaUnsavedChanges } = React.useContext(BeregningContext)
 
+  const maxOpptjeningsalder = useAppSelector(selectMaxOpptjeningsalder)
+
   const gaaTilResultat = () => {
     setAvansertSkjemaModus('resultat')
     window.scrollTo(0, 0)
@@ -878,7 +880,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                       })}
                       value={localHeltUttak.aarligInntektVsaPensjon?.sluttAlder}
                       minAlder={minAlderInntektSluttAlder}
-                      maxAlder={useAppSelector(selectMaxOpptjeningsalder)}
+                      maxAlder={maxOpptjeningsalder}
                       onChange={handleInntektVsaHeltUttakSluttAlderChange}
                       error={
                         validationErrors[

@@ -56,6 +56,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
   const inntektVsaGradertUttakInputRef = React.useRef<HTMLInputElement>(null)
   const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const nedreAldersgrense = useAppSelector(selectNedreAldersgrense)
+  const maxOpptjeningsalder = useAppSelector(selectMaxOpptjeningsalder)
   const { uttaksalder, gradertUttaksperiode, aarligInntektVsaHelPensjon } =
     useAppSelector(selectCurrentSimulation)
   const aarligInntektFoerUttakBeloepFraBrukerInput = useAppSelector(
@@ -787,7 +788,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
                   })}
                   value={localHeltUttak?.aarligInntektVsaPensjon?.sluttAlder}
                   minAlder={minAlderInntektSluttAlder}
-                  maxAlder={useAppSelector(selectMaxOpptjeningsalder)}
+                  maxAlder={maxOpptjeningsalder}
                   onChange={handleInntektVsaHeltUttakSluttAlderChange}
                   error={
                     validationErrors[

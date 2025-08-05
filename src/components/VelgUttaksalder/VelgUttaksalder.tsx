@@ -31,11 +31,10 @@ export const VelgUttaksalder: React.FC<Props> = ({
 
   const { uttaksalder } = useAppSelector(selectCurrentSimulation)
 
+  const oevreAldersgrense = useAppSelector(selectOevreAldersgrense)
+
   const formaterteAldere = React.useMemo(
-    () =>
-      getFormaterteAldere(intl, tidligstMuligUttak, {
-        ...useAppSelector(selectOevreAldersgrense),
-      }),
+    () => getFormaterteAldere(intl, tidligstMuligUttak, oevreAldersgrense),
     [tidligstMuligUttak]
   )
 

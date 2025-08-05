@@ -36,7 +36,7 @@ declare global {
   type Sivilstand =
     components['schemas']['AlderspensjonDetaljerV4']['sivilstand']
   type pensjoneringAldre =
-    components['schemas']['PersonResultV4']['pensjoneringAldre']
+    components['schemas']['PersonResultV5']['pensjoneringAldre']
 
   // /inntekt
   export type GetInntektQuery = TypedUseQueryStateResult<
