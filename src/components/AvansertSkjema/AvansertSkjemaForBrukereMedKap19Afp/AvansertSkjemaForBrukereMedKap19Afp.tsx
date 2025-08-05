@@ -37,6 +37,7 @@ import {
   formatInntekt,
   updateAndFormatInntektFromInputField,
 } from '@/utils/inntekt'
+import { logger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
 
 import {
@@ -152,6 +153,11 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
             : { ...prevState?.aarligInntektVsaPensjon },
       }
     })
+    // TODO: Når vil du ta ut AFP
+    logger('valg av uttaksalder for gradert alderspensjon', {
+      tekst: 'Aldersvelger valgt',
+      valg: alder,
+    })
   }
 
   const handleAfpInntektMaanedFoerUttakRadioChange = (s: BooleanRadio) => {
@@ -162,6 +168,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
       }
     })
     setLocalHarAfpInntektMaanedFoerUttakRadio?.(s === 'ja')
+    //TODO: Logg valg av AFP inntekt måned før uttak
   }
 
   const handleInntektVsaGradertUttakRadioChange = (s: BooleanRadio) => {

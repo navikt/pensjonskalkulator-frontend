@@ -48,6 +48,7 @@ export function AFP({ previousAfp, onCancel, onPrevious, onNext }: Props) {
         tekst: errorMessage,
       })
     } else {
+      //TODO: Show here or in handler? Or we are probably logging it already?
       logger('radiogroup valgt', {
         tekst: 'Rett til AFP',
         valg: afpInput,
@@ -62,11 +63,42 @@ export function AFP({ previousAfp, onCancel, onPrevious, onNext }: Props) {
   const handleRadioChange = (value: AfpRadio): void => {
     setValidationError('')
     setShowVetIkkeAlert(value === 'vet_ikke')
-    if (value === 'vet_ikke') {
-      logger('alert vist', {
-        tekst: 'Rett til AFP: Vet ikke',
-        variant: 'info',
-      })
+
+    switch (value) {
+      case 'ja_offentlig':
+        logger('radiogroup valgt', {
+          tekst: 'Rett til AFP: Ja, offentlig sektor',
+          variant: 'info',
+        })
+        break
+      case 'ja_privat':
+        logger('radiogroup valgt', {
+          tekst: 'Rett til AFP: Ja, privat sektor',
+          variant: 'info',
+        })
+        break
+      case 'nei':
+        logger('radiogroup valgt', {
+          tekst: 'Rett til AFP: Nei',
+          variant: 'info',
+        })
+        break
+      case 'vet_ikke':
+        logger('radiogroup valgt', {
+          tekst: 'Rett til AFP: Vet ikke',
+          variant: 'info',
+        })
+        logger('alert vist', {
+          tekst: 'Rett til AFP: Vet ikke',
+          variant: 'info',
+        })
+        break
+      default:
+        logger('info', {
+          tekst: 'Ukjent verdi for AFP',
+          data: value,
+        })
+        break
     }
   }
 

@@ -11,7 +11,8 @@ import { paths } from '@/router/constants'
 import { stepStartAccessGuard } from '@/router/loaders'
 import { useAppSelector } from '@/state/hooks'
 import { selectIsVeileder } from '@/state/userInput/selectors'
-import { isAlderOver75Plus1Maaned } from '@/utils/alder'
+import { isAlderOver75Plus1Maaned, isFoedtFoer1964 } from '@/utils/alder'
+import { logger } from '@/utils/logging'
 
 export function StepStart() {
   const intl = useIntl()
@@ -20,6 +21,15 @@ export function StepStart() {
   const { person, loependeVedtak } =
     useLoaderData<typeof stepStartAccessGuard>()
 
+  logger('info', {
+    tekst: 'Født før 1963',
+    data: isFoedtFoer1964(person.foedselsdato) ? 'Ja' : 'Nei',
+  })
+
+  logger('info', {
+    tekst: 'Løpende vedtak',
+    data: loependeVedtak ? 'Ja' : 'Nei',
+  })
   const [{ onStegvisningNext, onStegvisningCancel }] = useStegvisningNavigation(
     paths.start
   )
