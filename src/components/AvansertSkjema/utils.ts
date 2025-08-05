@@ -263,11 +263,6 @@ export const validateAvansertBeregningSkjema = (
       })
     }
 
-    logger('radiogroup valgt', {
-      tekst: 'Forventer du å ha inntekt vsa. AFP før uttak',
-      valg: afpInntektMaanedFoerUttakRadioFormData ? 'ja' : 'nei',
-    })
-
     // * Sjekker at radio for InntektVsaAfp er fylt ut
     if (inntektVsaAfpRadioFormData === 'ja') {
       if (
@@ -702,7 +697,7 @@ export const onAvansertBeregningSubmit = (
 
     logger('radiogroup valgt', {
       tekst: 'Forventer du å ha inntekt vsa. AFP før uttak',
-      valg: afpInntektMaanedFoerUttakRadioFormData ? 'ja' : 'nei',
+      valg: !afpInntektMaanedFoerUttak ? 'ja' : 'nei',
     })
 
     if (inntektVsaAfpRadioFormData === 'ja') {
