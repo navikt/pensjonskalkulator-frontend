@@ -19,12 +19,12 @@ import {
   selectFoedselsdato,
   selectIsEndring,
   selectLoependeVedtak,
+  selectMaxOpptjeningsalder,
   selectNedreAldersgrense,
   selectNormertPensjonsalder,
   selectSamtykkeOffentligAFP,
 } from '@/state/userInput/selectors'
 import {
-  DEFAULT_MAX_OPPTJENINGSALDER,
   formatUttaksalder,
   getAlderPlus1Maaned,
   getBrukerensAlderISluttenAvMaaneden,
@@ -878,7 +878,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                       })}
                       value={localHeltUttak.aarligInntektVsaPensjon?.sluttAlder}
                       minAlder={minAlderInntektSluttAlder}
-                      maxAlder={DEFAULT_MAX_OPPTJENINGSALDER}
+                      maxAlder={useAppSelector(selectMaxOpptjeningsalder)}
                       onChange={handleInntektVsaHeltUttakSluttAlderChange}
                       error={
                         validationErrors[
