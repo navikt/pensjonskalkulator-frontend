@@ -1,0 +1,19 @@
+.pdf-mode {
+  .download-pdf-button,
+  nav,
+  footer,
+  .interactive-stuff,
+  .react-select,
+  .some-tabbed-content {
+    display: none !important;
+  }
+
+  // Optional: normalize fonts/layout
+  font-family: Arial, sans-serif;
+
+  h1,
+  h2,
+  h3 {
+    color: black;
+  }
+}

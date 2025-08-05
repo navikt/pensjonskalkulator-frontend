@@ -7,6 +7,7 @@ import { Button, Modal, ToggleGroup } from '@navikt/ds-react'
 
 import { InfoOmFremtidigVedtak } from '@/components/InfoOmFremtidigVedtak'
 import { LightBlueFooter } from '@/components/LightBlueFooter'
+import { DownloadPDF } from '@/components/common/DownloadPDF/DownloadPDF'
 import { ShowMoreRef } from '@/components/common/ShowMore/ShowMore'
 import { paths } from '@/router/constants'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
@@ -222,6 +223,7 @@ export const Beregning: React.FC<Props> = ({ visning }) => {
           </div>
         )}
 
+        <DownloadPDF />
         {visning === 'enkel' && <BeregningEnkel />}
 
         {visning === 'avansert' && <BeregningAvansert />}
