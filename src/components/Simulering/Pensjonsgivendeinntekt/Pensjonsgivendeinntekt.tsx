@@ -31,7 +31,7 @@ export const Pensjonsgivendeinntekt: React.FC<Props> = ({ goToAvansert }) => {
   )
 
   return (
-    <VStack gap="3">
+    <VStack gap="1">
       <Heading level="3" size="small">
         <FormattedMessage id="grunnlag2.endre_inntekt.title" />
       </Heading>
