@@ -387,7 +387,7 @@ export const BeregningEnkel = () => {
         alderspensjon &&
         alderspensjon?.vilkaarsproeving.vilkaarErOppfylt && (
           <>
-            <div className={styles.container}>
+            <div id="savner-du-noe" className={styles.container}>
               <SavnerDuNoe isEndring={isEndring} />
             </div>
 

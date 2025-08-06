@@ -223,12 +223,16 @@ export const Beregning: React.FC<Props> = ({ visning }) => {
           </div>
         )}
 
-        <DownloadPDF />
+        <DownloadPDF view={visning} />
+
         {visning === 'enkel' && <BeregningEnkel />}
 
         {visning === 'avansert' && <BeregningAvansert />}
 
-        <div className={clsx(styles.background, styles.background__lightblue)}>
+        <div
+          id="back-to-start"
+          className={clsx(styles.background, styles.background__lightblue)}
+        >
           <div className={styles.container}>
             <LightBlueFooter />
           </div>

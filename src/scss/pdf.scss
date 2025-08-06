@@ -1,19 +1,16 @@
 .pdf-mode {
+  .Beregning--toggle,
   .download-pdf-button,
-  nav,
-  footer,
-  .interactive-stuff,
-  .react-select,
-  .some-tabbed-content {
+  .Pensjonsgivendeinntekt--endreInntektButton,
+  .navds-modal,
+  .BeregningAvansert--link,
+  .Simulering--infoClick,
+  #savner-du-noe,
+  #panel-qc608mkm1s,
+  #back-to-start,
+  #decorator-header,
+  #decorator-footer,
+  #decorator-env {
     display: none !important;
-  }
-
-  // Optional: normalize fonts/layout
-  font-family: Arial, sans-serif;
-
-  h1,
-  h2,
-  h3 {
-    color: black;
   }
 }
