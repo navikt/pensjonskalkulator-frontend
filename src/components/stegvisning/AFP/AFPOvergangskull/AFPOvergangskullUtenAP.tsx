@@ -93,7 +93,7 @@ export function AFPOvergangskullUtenAP({
         onNext(afpInput, null)
       } else {
         logger('radiogroup valgt', {
-          tekst: 'Vil du beregne AFP?',
+          tekst: 'Hva vil du beregne',
           valg: simuleringstypeInput ?? '',
         })
         onNext(afpInput, simuleringstypeInput)
@@ -166,6 +166,7 @@ export function AFPOvergangskullUtenAP({
             }
             name="skalBeregneAfp"
             defaultValue={previousAfpUtregningValg}
+            onChange={() => setValidationError({ afp: '', skalBeregneAfp: '' })}
             error={validationError.skalBeregneAfp}
           >
             <Radio value="AFP_ETTERFULGT_AV_ALDERSPENSJON">
