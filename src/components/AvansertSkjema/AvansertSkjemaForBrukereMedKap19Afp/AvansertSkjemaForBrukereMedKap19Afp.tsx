@@ -165,7 +165,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
     setLocalHarAfpInntektMaanedFoerUttakRadio?.(s === 'ja')
     if (s === 'nei') {
       logger('alert vist', {
-        tekst: 'Beregning AFP: Ikke høy nok opptjening for å beregne AFP',
+        tekst: 'Beregning AFP: Ikke høy nok inntekt siste måned',
         variant: 'warning',
       })
     }

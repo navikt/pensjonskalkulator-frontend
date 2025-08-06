@@ -192,7 +192,6 @@ export const stepStartAccessGuard = async () => {
   }
 
   if (getLoependeVedtakRes.data.pre2025OffentligAfp) {
-    // TODO: Add født før 1963 check
     logger('info', {
       tekst: 'Vedtak om offentlig AFP pre 2025',
     })

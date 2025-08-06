@@ -5,7 +5,6 @@ import { ExternalLinkIcon } from '@navikt/aksel-icons'
 import { BodyLong, Heading, HeadingProps, Link } from '@navikt/ds-react'
 
 import { paths } from '@/router/constants'
-import { logOpenLink } from '@/utils/logging'
 
 import styles from './GrunnlagForbehold.module.scss'
 
@@ -25,7 +24,6 @@ export const GrunnlagForbehold = ({ headingLevel }: Props) => {
       <BodyLong className={styles.text}>
         <FormattedMessage id="grunnlag.forbehold.ingress_1" />
         <Link
-          onClick={logOpenLink}
           as={ReactRouterLink}
           to={paths.forbehold}
           target="_blank"

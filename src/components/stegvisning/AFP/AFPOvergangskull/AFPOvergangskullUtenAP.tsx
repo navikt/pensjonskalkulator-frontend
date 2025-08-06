@@ -94,7 +94,10 @@ export function AFPOvergangskullUtenAP({
       } else {
         logger('radiogroup valgt', {
           tekst: 'Hva vil du beregne',
-          valg: simuleringstypeInput ?? '',
+          valg:
+            simuleringstypeInput && simuleringstypeInput === 'KUN_ALDERSPENSJON'
+              ? 'Kun Alderspensjon'
+              : 'AFP Etterfulgt av Alderspensjon',
         })
         onNext(afpInput, simuleringstypeInput)
       }
