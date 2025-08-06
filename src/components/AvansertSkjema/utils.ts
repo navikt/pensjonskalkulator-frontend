@@ -700,8 +700,6 @@ export const onAvansertBeregningSubmit = (
       valg: afpInntektMaanedFoerUttak ? 'ja' : 'nei',
     })
 
-    console.log('inntektVsaAfpRadioFormData', inntektVsaAfpRadioFormData)
-
     logger('radiogroup valgt', {
       tekst: 'Forventer inntekt samtidig når AFP er tatt ut',
       valg: inntektVsaAfpRadioFormData === 'ja' ? 'ja' : 'nei',
