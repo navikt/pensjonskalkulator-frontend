@@ -97,7 +97,7 @@ export function AFPOvergangskullUtenAP({
           valg:
             simuleringstypeInput && simuleringstypeInput === 'KUN_ALDERSPENSJON'
               ? 'Kun Alderspensjon'
-              : 'AFP Etterfulgt av Alderspensjon',
+              : 'AFP etterfulgt av Alderspensjon',
         })
         onNext(afpInput, simuleringstypeInput)
       }

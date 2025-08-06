@@ -166,7 +166,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
     if (s === 'nei') {
       logger('alert vist', {
         tekst: 'Beregning AFP: Ikke høy nok inntekt siste måned',
-        variant: 'warning',
+        variant: 'info',
       })
     }
   }

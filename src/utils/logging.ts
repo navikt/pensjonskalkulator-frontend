@@ -73,6 +73,7 @@ export const wrapLogger =
 export const logOpenLink: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
   if (isAnchorTag(e.target)) {
     e.preventDefault()
+    e.stopPropagation() // This prevents event from bubbling up to parent element which might be NAV's link handler
     const { href, target } = e.target
     logger('link åpnet', { href, target })
     window.open(href, target)
