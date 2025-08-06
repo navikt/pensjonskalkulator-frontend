@@ -697,7 +697,7 @@ export const onAvansertBeregningSubmit = (
 
     logger('radiogroup valgt', {
       tekst: 'Forventer du å ha inntekt vsa. AFP før uttak',
-      valg: !afpInntektMaanedFoerUttak ? 'ja' : 'nei',
+      valg: afpInntektMaanedFoerUttak ? 'ja' : 'nei',
     })
 
     if (inntektVsaAfpRadioFormData === 'ja') {
