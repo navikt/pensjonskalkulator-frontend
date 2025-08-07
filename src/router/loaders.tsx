@@ -6,6 +6,7 @@ import { getStepArrays } from '@/components/stegvisning/utils'
 import { HOST_BASEURL } from '@/paths'
 import { paths } from '@/router/constants'
 import { apiSlice } from '@/state/api/apiSlice'
+import { sessionActions } from '@/state/session/sessionSlice'
 import { store } from '@/state/store'
 import {
   selectAfp,
@@ -47,18 +48,9 @@ const getErrorData = (
   if (!error) return undefined
   if ('data' in error) return error.data as ErrorData
 }
-
-export interface LoginContext {
-  isLoggedIn: boolean
-}
-
-export interface AuthenticationGuardData {
-  authResponse: Response
-}
-
 export const authenticationGuard = async () => {
-  const authResponse = await fetch(`${HOST_BASEURL}/oauth2/session`)
-  return { authResponse }
+  const response = await fetch(`${HOST_BASEURL}/oauth2/session`)
+  store.dispatch(sessionActions.setLoggedIn(response.ok))
 }
 
 export const directAccessGuard = (): Response | undefined => {
@@ -101,6 +93,8 @@ export const stepStartAccessGuard = async () => {
   store.dispatch(apiSlice.endpoints.getGrunnbeloep.initiate())
   store.dispatch(apiSlice.endpoints.getErApoteker.initiate())
 
+  const isLoggedIn = store.getState().session.isLoggedIn
+
   const [vedlikeholdsmodusFeatureToggle, getLoependeVedtakRes, getPersonRes] =
     await Promise.all([
       vedlikeholdsmodusFeatureToggleQuery,
@@ -112,99 +106,89 @@ export const stepStartAccessGuard = async () => {
     return redirect(paths.kalkulatorVirkerIkke)
   }
 
-  if (!getPersonRes.isSuccess) {
-    if (getErrorStatus(getPersonRes.error) === 403) {
-      if (
-        getErrorData(getPersonRes.error)?.reason === 'INVALID_REPRESENTASJON'
-      ) {
-        return redirect(paths.ingenTilgang)
+  if (isLoggedIn) {
+    if (!getPersonRes.isSuccess) {
+      if (getErrorStatus(getPersonRes.error) === 403) {
+        if (
+          getErrorData(getPersonRes.error)?.reason === 'INVALID_REPRESENTASJON'
+        ) {
+          return redirect(paths.ingenTilgang)
+        }
+        if (
+          getErrorData(getPersonRes.error)?.reason ===
+          'INSUFFICIENT_LEVEL_OF_ASSURANCE'
+        ) {
+          return redirect(paths.lavtSikkerhetsnivaa)
+        }
       }
-      if (
-        getErrorData(getPersonRes.error)?.reason ===
-        'INSUFFICIENT_LEVEL_OF_ASSURANCE'
-      ) {
-        return redirect(paths.lavtSikkerhetsnivaa)
-      }
+
+      logger('info', {
+        tekst: 'Redirect til /uventet-feil',
+        data: `fra Step Start Loader pga. feil med getPerson med status: ${getErrorStatus(getPersonRes.error)}`,
+      })
+      return redirect(paths.uventetFeil)
     }
 
-    // * For login redirect we need to handle 401 specifically
-    if (getErrorStatus(getPersonRes.error) === 401) {
-      window.location.reload()
-      return
-    }
-
-    logger('info', {
-      tekst: 'Redirect til /uventet-feil',
-      data: `fra Step Start Loader pga. feil med getPerson med status: ${getErrorStatus(getPersonRes.error)}`,
-    })
-    return redirect(paths.uventetFeil)
-  }
-
-  if (!getLoependeVedtakRes.isSuccess) {
-    if (getErrorStatus(getLoependeVedtakRes.error) === 403) {
-      if (
-        getErrorData(getLoependeVedtakRes.error)?.reason ===
-        'INVALID_REPRESENTASJON'
-      ) {
-        return redirect(paths.ingenTilgang)
+    if (!getLoependeVedtakRes.isSuccess) {
+      if (getErrorStatus(getLoependeVedtakRes.error) === 403) {
+        if (
+          getErrorData(getLoependeVedtakRes.error)?.reason ===
+          'INVALID_REPRESENTASJON'
+        ) {
+          return redirect(paths.ingenTilgang)
+        }
+        if (
+          getErrorData(getLoependeVedtakRes.error)?.reason ===
+          'INSUFFICIENT_LEVEL_OF_ASSURANCE'
+        ) {
+          return redirect(paths.lavtSikkerhetsnivaa)
+        }
       }
-      if (
-        getErrorData(getLoependeVedtakRes.error)?.reason ===
-        'INSUFFICIENT_LEVEL_OF_ASSURANCE'
-      ) {
-        return redirect(paths.lavtSikkerhetsnivaa)
-      }
-    }
 
-    // * For login redirect we need to handle 401 specifically
-    if (getErrorStatus(getLoependeVedtakRes.error) === 401) {
-      window.location.reload()
-      return
+      logger('info', {
+        tekst: 'Redirect til /uventet-feil',
+        data: `fra Step Start Loader pga. feil med getLoependeVedtak med status: ${getErrorStatus(getLoependeVedtakRes.error)}`,
+      })
+      return redirect(paths.uventetFeil)
     }
 
     logger('info', {
-      tekst: 'Redirect til /uventet-feil',
-      data: `fra Step Start Loader pga. feil med getLoependeVedtak med status: ${getErrorStatus(getLoependeVedtakRes.error)}`,
+      tekst: 'hent uføregrad',
+      data:
+        getLoependeVedtakRes.data.ufoeretrygd.grad === 0
+          ? 'Ingen uføretrygd'
+          : getLoependeVedtakRes.data.ufoeretrygd.grad === 100
+            ? 'Hel uføretrygd'
+            : `Gradert uføretrygd`,
     })
-    return redirect(paths.uventetFeil)
   }
 
-  logger('info', {
-    tekst: 'hent uføregrad',
-    data:
-      getLoependeVedtakRes.data.ufoeretrygd.grad === 0
-        ? 'Ingen uføretrygd'
-        : getLoependeVedtakRes.data.ufoeretrygd.grad === 100
-          ? 'Hel uføretrygd'
-          : `Gradert uføretrygd`,
-  })
-
-  if (getLoependeVedtakRes.data.alderspensjon) {
+  if (getLoependeVedtakRes?.data?.alderspensjon) {
     logger('info', {
       tekst: 'Vedtak alderspensjon',
       data: getLoependeVedtakRes.data.alderspensjon.grad,
     })
   }
 
-  if (getLoependeVedtakRes.data.afpPrivat) {
+  if (getLoependeVedtakRes?.data?.afpPrivat) {
     logger('info', {
       tekst: 'Vedtak AFP Privat',
     })
   }
 
-  if (getLoependeVedtakRes.data.afpOffentlig) {
+  if (getLoependeVedtakRes?.data?.afpOffentlig) {
     logger('info', {
       tekst: 'Vedtak AFP Offentlig',
     })
   }
 
-  if (getLoependeVedtakRes.data.fremtidigAlderspensjon) {
+  if (getLoependeVedtakRes?.data?.fremtidigAlderspensjon) {
     logger('info', {
       tekst: 'Fremtidig vedtak',
     })
   }
 
-  if (getLoependeVedtakRes.data.pre2025OffentligAfp) {
+  if (getLoependeVedtakRes?.data?.pre2025OffentligAfp) {
     logger('info', {
       tekst: 'Vedtak om offentlig AFP pre 2025',
     })

@@ -41,13 +41,17 @@ export function StepStart() {
   const onNext = () => {
     // * Hvis du har løpende vedtak om gammel offentlig AFP, men tidligere har hatt vedtak om alderspensjon så skal man bli redirigert til avansert beregning.
     if (
-      loependeVedtak.pre2025OffentligAfp &&
-      loependeVedtak.alderspensjon?.grad === 0
+      loependeVedtak?.pre2025OffentligAfp &&
+      loependeVedtak?.alderspensjon?.grad === 0
     ) {
       navigate(paths.beregningAvansert)
     } else if (onStegvisningNext) {
       onStegvisningNext()
     }
+  }
+
+  if (!person || !loependeVedtak) {
+    return null
   }
 
   if (isAlderOver75Plus1Maaned(person.foedselsdato)) {

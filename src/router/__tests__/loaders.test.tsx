@@ -123,8 +123,8 @@ describe('Loaders', () => {
         throw new Error('person not in returnedFromLoader')
       }
 
-      expect(returnedFromLoader.person.foedselsdato).toBe('1964-04-30')
-      expect(returnedFromLoader.loependeVedtak.ufoeretrygd.grad).toBe(0)
+      expect(returnedFromLoader?.person?.foedselsdato).toBe('1964-04-30')
+      expect(returnedFromLoader?.loependeVedtak?.ufoeretrygd.grad).toBe(0)
     })
 
     it('Når /vedtak/loepende-vedtak kall feiler redirigeres bruker til uventet-feil side', async () => {
