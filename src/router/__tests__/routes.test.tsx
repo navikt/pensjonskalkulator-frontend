@@ -56,7 +56,7 @@ describe('routes', () => {
         })
         render(<RouterProvider router={router} />, { hasRouter: false })
         expect(
-          await screen.findByText('landingsside.for.deg.foedt.foer.1963')
+          await screen.findByText('landingsside.for.deg.som.kan.logge.inn')
         ).toBeVisible()
       })
     })
@@ -74,7 +74,7 @@ describe('routes', () => {
           hasRouter: false,
         })
         expect(
-          await screen.findByText('landingsside.for.deg.foedt.foer.1963')
+          await screen.findByText('landingsside.for.deg.som.kan.logge.inn')
         ).toBeVisible()
       })
 
@@ -87,15 +87,12 @@ describe('routes', () => {
           hasRouter: false,
         })
         expect(
-          await screen.findByText('landingsside.for.deg.foedt.etter.1963')
-        ).toBeVisible()
-        expect(
           screen.queryByText('landingsside.for.deg.foedt.foer.1963')
         ).not.toBeInTheDocument()
       })
 
       it('Når brukeren er pålogget og kall til /person feiler, viser pålogget landingssiden', async () => {
-        mockErrorResponse('/v4/person')
+        mockErrorResponse('/v5/person')
         const router = createMemoryRouter(routes, {
           basename: BASE_PATH,
           initialEntries: [`${BASE_PATH}${paths.login}`],
@@ -103,9 +100,6 @@ describe('routes', () => {
         render(<RouterProvider router={router} />, {
           hasRouter: false,
         })
-        expect(
-          await screen.findByText('landingsside.for.deg.foedt.etter.1963')
-        ).toBeVisible()
         expect(
           screen.queryByText('landingsside.for.deg.foedt.foer.1963')
         ).not.toBeInTheDocument()

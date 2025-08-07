@@ -90,8 +90,8 @@ describe('StepUtenlandsopphold', () => {
     expect(navigateMock).toHaveBeenCalledWith(paths.afp)
   })
 
-  it('nullstiller input fra brukeren og navigerer tilbake til /sivilstand når brukeren klikker på Tilbake', async () => {
-    mockResponse('/v4/person', {
+  it('nullstiller input fra brukeren og navigerer når brukeren klikker på Tilbake', async () => {
+    mockResponse('/v5/person', {
       status: 200,
       json: {
         navn: 'Ola',
@@ -104,6 +104,10 @@ describe('StepUtenlandsopphold', () => {
           },
           nedreAldersgrense: {
             aar: 62,
+            maaneder: 0,
+          },
+          oevreAldersgrense: {
+            aar: 75,
             maaneder: 0,
           },
         },
@@ -123,6 +127,10 @@ describe('StepUtenlandsopphold', () => {
     expect(radioButtons[0]).toBeChecked()
     await user.click(await screen.findByText('stegvisning.tilbake'))
     expect(store.getState().userInput.harUtenlandsopphold).toBeNull()
-    expect(navigateMock).toHaveBeenCalledWith(paths.sivilstand)
+    expect(navigateMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        search: expect.stringContaining('back=true') as string,
+      })
+    )
   })
 })

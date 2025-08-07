@@ -8,10 +8,6 @@ import { ReadMore } from '@/components/common/ReadMore'
 import { SanityReadmore } from '@/components/common/SanityReadmore'
 import { paths } from '@/router/constants'
 import { logger } from '@/utils/logging'
-import {
-  convertBooleanRadioToBoolean,
-  convertBooleanToBooleanRadio,
-} from '@/utils/radio'
 
 import Navigation from '../../Navigation/Navigation'
 import { STEGVISNING_FORM_NAMES } from '../../utils'
@@ -21,15 +17,15 @@ import styles from '../AFP.module.scss'
 
 interface Props {
   previousAfp: AfpRadio | null
-  previousSkalBeregneAfp: boolean | null
+  previousAfpUtregningValg: AfpUtregningValg
   onCancel?: () => void
   onPrevious: () => void
-  onNext: (afpInput: AfpRadio, skalBeregneAfp?: boolean | null) => void
+  onNext: (afpInput: AfpRadio, afpUtregningValg?: AfpUtregningValg) => void
 }
 
 export function AFPOvergangskullUtenAP({
   previousAfp,
-  previousSkalBeregneAfp,
+  previousAfpUtregningValg,
   onCancel,
   onPrevious,
   onNext,
@@ -54,7 +50,7 @@ export function AFPOvergangskullUtenAP({
     const afpInput = formData.get('afp') as AfpRadio | null
     const simuleringstypeInput = formData.get(
       'skalBeregneAfp'
-    ) as BooleanRadio | null
+    ) as AfpUtregningValg
 
     if (!afpInput) {
       const errorMessage = intl.formatMessage({
@@ -72,7 +68,10 @@ export function AFPOvergangskullUtenAP({
       const errorMessage = intl.formatMessage({
         id: 'stegvisning.afpOverganskull.validation_error',
       })
-      setValidationError((prev) => ({ ...prev, skalBeregneAfp: errorMessage }))
+      setValidationError((prev) => ({
+        ...prev,
+        skalBeregneAfp: errorMessage,
+      }))
       logger('skjema validering feilet', {
         skjemanavn: STEGVISNING_FORM_NAMES.afp,
         data: intl.formatMessage({
@@ -89,12 +88,19 @@ export function AFPOvergangskullUtenAP({
         tekst: `Neste fra ${paths.afp}`,
       })
 
-      onNext(
-        afpInput,
-        simuleringstypeInput
-          ? convertBooleanRadioToBoolean(simuleringstypeInput)
-          : null
-      )
+      if (!jaAFPOffentlig) {
+        // If the user does not select AFPOffentlig then send only afpInput
+        onNext(afpInput, null)
+      } else {
+        logger('radiogroup valgt', {
+          tekst: 'Hva vil du beregne',
+          valg:
+            simuleringstypeInput && simuleringstypeInput === 'KUN_ALDERSPENSJON'
+              ? 'Kun Alderspensjon'
+              : 'AFP etterfulgt av Alderspensjon',
+        })
+        onNext(afpInput, simuleringstypeInput)
+      }
     }
   }
 
@@ -116,9 +122,11 @@ export function AFPOvergangskullUtenAP({
         <Heading level="2" size="medium" spacing>
           <FormattedMessage id="stegvisning.afp.title" />
         </Heading>
+
         <BodyLong size="large">
           <FormattedMessage id="stegvisning.afp.ingress" />
         </BodyLong>
+
         <ReadMore
           name="Avtalefestet pensjon i offentlig sektor"
           className={styles.readmoreOffentlig}
@@ -140,16 +148,19 @@ export function AFPOvergangskullUtenAP({
           </ul>
           <FormattedMessage id="stegvisning.afpOvergangskull.readmore_offentlig_ingress" />
         </ReadMore>
+
         <SanityReadmore
           id="om_livsvarig_AFP_i_privat_sektor"
           className={styles.readmorePrivat}
         />
+
         <AFPRadioGroup
           afp={previousAfp}
           handleRadioChange={handleRadioChange}
           validationError={validationError.afp}
           showVetIkkeAlert={showVetIkkeAlert}
         />
+
         {jaAFPOffentlig && (
           <RadioGroup
             className={styles.radiogroup}
@@ -157,14 +168,14 @@ export function AFPOvergangskullUtenAP({
               <FormattedMessage id="stegvisning.afp.overgangskullUtenAP.radio_label" />
             }
             name="skalBeregneAfp"
-            defaultValue={convertBooleanToBooleanRadio(previousSkalBeregneAfp)}
+            defaultValue={previousAfpUtregningValg}
             onChange={() => setValidationError({ afp: '', skalBeregneAfp: '' })}
             error={validationError.skalBeregneAfp}
           >
-            <Radio value="ja">
+            <Radio value="AFP_ETTERFULGT_AV_ALDERSPENSJON">
               <FormattedMessage id="stegvisning.afp.overgangskullUtenAP.radio_ja" />
             </Radio>
-            <Radio value="nei">
+            <Radio value="KUN_ALDERSPENSJON">
               <FormattedMessage id="stegvisning.afp.overgangskullUtenAP.radio_nei" />
             </Radio>
           </RadioGroup>

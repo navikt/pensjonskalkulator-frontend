@@ -84,7 +84,7 @@ describe('StepAFP', () => {
   })
 
   it('rendrer AFPPrivat når personen enten er født før 1963 og har vedtak om alderspensjon, eller når personen er født før 1963 og fylt 67 år', async () => {
-    mockResponse('/v4/person', {
+    mockResponse('/v5/person', {
       status: 200,
       json: {
         navn: 'Ola',
@@ -97,6 +97,10 @@ describe('StepAFP', () => {
           },
           nedreAldersgrense: {
             aar: 62,
+            maaneder: 0,
+          },
+          oevreAldersgrense: {
+            aar: 75,
             maaneder: 0,
           },
         },
@@ -130,7 +134,7 @@ describe('StepAFP', () => {
   })
 
   it('rendrer AFPOvergangskullUtenAP når personen er født mellom 1954-1962 (overgangskull) og ikke har vedtak alderspensjon', async () => {
-    mockResponse('/v4/person', {
+    mockResponse('/v5/person', {
       status: 200,
       json: {
         navn: 'Ola',
@@ -143,6 +147,10 @@ describe('StepAFP', () => {
           },
           nedreAldersgrense: {
             aar: 62,
+            maaneder: 0,
+          },
+          oevreAldersgrense: {
+            aar: 75,
             maaneder: 0,
           },
         },
@@ -163,7 +171,7 @@ describe('StepAFP', () => {
   })
 
   it('rendrer AFP når personen er født etter 1963 med og uten vedtak om alderspensjon', async () => {
-    mockResponse('/v4/person', {
+    mockResponse('/v5/person', {
       status: 200,
       json: {
         navn: 'Ola',
@@ -176,6 +184,10 @@ describe('StepAFP', () => {
           },
           nedreAldersgrense: {
             aar: 62,
+            maaneder: 0,
+          },
+          oevreAldersgrense: {
+            aar: 75,
             maaneder: 0,
           },
         },
@@ -195,8 +207,53 @@ describe('StepAFP', () => {
     })
   })
 
-  it('Når brukeren som er i overgangskullet uten vedtak om alderspensjon velger afp og klikker på Neste, registrerer afp og skalBeregneAfp, og navigerer videre til neste steg', async () => {
-    mockResponse('/v4/person', {
+  it('render AFPOvergangskullUtenAP for apotekere født etter 1963', async () => {
+    mockResponse('/v5/person', {
+      status: 200,
+      json: {
+        navn: 'Ola',
+        sivilstand: 'GIFT',
+        foedselsdato: '1967-04-30',
+        pensjoneringAldre: {
+          normertPensjoneringsalder: {
+            aar: 67,
+            maaneder: 0,
+          },
+          nedreAldersgrense: {
+            aar: 62,
+            maaneder: 0,
+          },
+          oevreAldersgrense: {
+            aar: 75,
+            maaneder: 0,
+          },
+        },
+      },
+    })
+
+    mockResponse('/v2/ekskludert', {
+      status: 200,
+      json: {
+        aarsak: 'ER_APOTEKER',
+        ekskludert: true,
+      },
+    })
+
+    const router = createMemoryRouter(routes, {
+      basename: BASE_PATH,
+      initialEntries: [`${BASE_PATH}${paths.afp}`],
+    })
+    render(<RouterProvider router={router} />, {
+      hasRouter: false,
+    })
+
+    await waitFor(() => {
+      expect(screen.getByTestId('afp-overganskull')).toBeInTheDocument()
+    })
+  })
+
+  it('Når brukeren som er i overgangskullet uten vedtak om alderspensjon velger afp og klikker på Neste, registrerer afp og skalBeregneAfpKap19, og navigerer videre til neste steg', async () => {
+    mockResponse('/v5/person', {
       status: 200,
       json: {
         navn: 'Ola',
@@ -211,6 +268,10 @@ describe('StepAFP', () => {
             aar: 62,
             maaneder: 0,
           },
+          oevreAldersgrense: {
+            aar: 75,
+            maaneder: 0,
+          },
         },
       },
     })
@@ -219,9 +280,9 @@ describe('StepAFP', () => {
       userInputReducerUtils.userInputActions,
       'setAfp'
     )
-    const setSkalBeregneAfpMock = vi.spyOn(
+    const setSkalBeregneAfpKap19Mock = vi.spyOn(
       userInputReducerUtils.userInputActions,
-      'setSkalBeregneAfp'
+      'setAfpUtregningValg'
     )
     const user = userEvent.setup()
 
@@ -243,17 +304,19 @@ describe('StepAFP', () => {
 
     const radioButtonsAfp = await screen.findAllByRole('radio')
     await user.click(radioButtonsAfp[0])
-    const radioButtonsSkalBeregneAfp = await screen.findAllByRole('radio')
-    await user.click(radioButtonsSkalBeregneAfp[4])
+    const radioButtonsSkalBeregneAfpKap19 = await screen.findAllByRole('radio')
+    await user.click(radioButtonsSkalBeregneAfpKap19[4])
     await user.click(screen.getByText('stegvisning.neste'))
 
     expect(setAfpMock).toHaveBeenCalledWith('ja_offentlig')
-    expect(setSkalBeregneAfpMock).toHaveBeenCalledWith(true)
+    expect(setSkalBeregneAfpKap19Mock).toHaveBeenCalledWith(
+      'AFP_ETTERFULGT_AV_ALDERSPENSJON'
+    )
     expect(navigateMock).toHaveBeenCalledWith(paths.ufoeretrygdAFP)
   })
 
   it('Når brukeren født etter 1963 velger afp og klikker på Neste, registrerer afp og navigerer videre til neste steg', async () => {
-    mockResponse('/v4/person', {
+    mockResponse('/v5/person', {
       status: 200,
       json: {
         navn: 'Ola',
@@ -266,6 +329,10 @@ describe('StepAFP', () => {
           },
           nedreAldersgrense: {
             aar: 62,
+            maaneder: 0,
+          },
+          oevreAldersgrense: {
+            aar: 75,
             maaneder: 0,
           },
         },
@@ -306,7 +373,11 @@ describe('StepAFP', () => {
     await waitFor(async () => {
       await user.click(await screen.findByText('stegvisning.tilbake'))
     })
-    expect(navigateMock).toHaveBeenCalledWith(paths.utenlandsopphold)
+    expect(navigateMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        search: expect.stringContaining('back=true') as string,
+      })
+    )
   })
 
   describe('Gitt at brukeren er logget på som veileder', async () => {

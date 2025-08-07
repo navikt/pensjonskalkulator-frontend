@@ -18,11 +18,12 @@ import {
   selectFoedselsdato,
   selectIsEndring,
   selectLoependeVedtak,
+  selectMaxOpptjeningsalder,
   selectNedreAldersgrense,
   selectNormertPensjonsalder,
 } from '@/state/userInput/selectors'
 import {
-  DEFAULT_MAX_OPPTJENINGSALDER,
+  UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP,
   formatUttaksalder,
   getBrukerensAlderISluttenAvMaaneden,
 } from '@/utils/alder'
@@ -55,6 +56,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
   const inntektVsaGradertUttakInputRef = React.useRef<HTMLInputElement>(null)
   const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const nedreAldersgrense = useAppSelector(selectNedreAldersgrense)
+  const maxOpptjeningsalder = useAppSelector(selectMaxOpptjeningsalder)
   const { uttaksalder, gradertUttaksperiode, aarligInntektVsaHelPensjon } =
     useAppSelector(selectCurrentSimulation)
   const aarligInntektFoerUttakBeloepFraBrukerInput = useAppSelector(
@@ -81,19 +83,17 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
     ? normertPensjonsalder
     : getBrukerensAlderISluttenAvMaaneden(foedselsdato, nedreAldersgrense)
 
-  const TIDLIGST_UTTAKSALDER_FOR_PRE2025_OFFENTLIG_AFP = 67
-
   // Når bruker velger "Endre avansert valg" og hadde uttaks alder satt til mindre enn 67 år som er tidligst uttaks alder for bruker med pre2025 offentlig AFP, da kan alert være stående.
   const [showPre2025OffentligAfpAlert, setShowPre2025OffentligAfpAlert] =
     React.useState<boolean>(
       Boolean(
         uttaksalder &&
-          uttaksalder?.aar < TIDLIGST_UTTAKSALDER_FOR_PRE2025_OFFENTLIG_AFP &&
+          uttaksalder?.aar < UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP.aar &&
           loependeVedtak.pre2025OffentligAfp
       )
     )
 
-  const [
+  const {
     localInntektFremTilUttak,
     localHeltUttak,
     localHarInntektVsaHeltUttakRadio,
@@ -101,14 +101,14 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
     localHarInntektVsaGradertUttakRadio,
     minAlderInntektSluttAlder,
     muligeUttaksgrad,
-    {
+    handlers: {
       setLocalInntektFremTilUttak,
       setLocalHeltUttak,
       setLocalGradertUttak,
       setLocalHarInntektVsaHeltUttakRadio,
       setLocalHarInntektVsaGradertUttakRadio,
     },
-  ] = useFormLocalState({
+  } = useFormLocalState({
     isEndring,
     ufoeregrad: loependeVedtak.ufoeretrygd.grad,
     aarligInntektFoerUttakBeloepFraBrukerSkattBeloep:
@@ -117,23 +117,25 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
     uttaksalder,
     aarligInntektVsaHelPensjon,
     gradertUttaksperiode,
+    afpInntektMaanedFoerUttak: null,
     normertPensjonsalder,
     beregningsvalg: null,
   })
 
-  const [
+  const {
     validationErrors,
     gradertUttakAgePickerError,
     heltUttakAgePickerError,
-    {
+    handlers: {
       setValidationErrors,
+      setValidationErrorUttaksalderGradertUttak,
       setValidationErrorUttaksalderHeltUttak,
       setValidationErrorInntektVsaHeltUttak,
       setValidationErrorInntektVsaHeltUttakSluttAlder,
       setValidationErrorInntektVsaGradertUttak,
       resetValidationErrors,
     },
-  ] = useFormValidationErrors({
+  } = useFormValidationErrors({
     grad: localGradertUttak?.grad,
   })
 
@@ -143,7 +145,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
         Boolean(
           alder &&
             alder.aar !== undefined &&
-            alder.aar < TIDLIGST_UTTAKSALDER_FOR_PRE2025_OFFENTLIG_AFP &&
+            alder.aar < UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP.aar &&
             loependeVedtak.pre2025OffentligAfp
         )
       )
@@ -177,10 +179,18 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
       Boolean(
         alder &&
           alder.aar !== undefined &&
-          alder.aar < TIDLIGST_UTTAKSALDER_FOR_PRE2025_OFFENTLIG_AFP &&
+          alder.aar < UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP.aar &&
           loependeVedtak.pre2025OffentligAfp
       )
     )
+    setValidationErrors((prevState) => {
+      return {
+        ...prevState,
+        [AVANSERT_FORM_NAMES.inntektVsaGradertUttakRadio]: '',
+        [AVANSERT_FORM_NAMES.uttaksalderHeltUttak]: '',
+      }
+    })
+    setValidationErrorUttaksalderGradertUttak('')
     setLocalGradertUttak((previous) => ({
       ...previous,
       uttaksalder: alder,
@@ -191,10 +201,11 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
     setValidationErrors((prevState) => {
       return {
         ...prevState,
+        [AVANSERT_FORM_NAMES.inntektVsaGradertUttakRadio]: '',
+        [AVANSERT_FORM_NAMES.inntektVsaHeltUttakRadio]: '',
         [AVANSERT_FORM_NAMES.uttaksgrad]: '',
         [AVANSERT_FORM_NAMES.uttaksalderGradertUttak]: '',
-        [AVANSERT_FORM_NAMES.inntektVsaGradertUttakRadio]: '',
-        [AVANSERT_FORM_NAMES.inntektVsaGradertUttak]: '',
+        [AVANSERT_FORM_NAMES.uttaksalderHeltUttak]: '',
       }
     })
     const avansertBeregningFormatertUttaksgradAsNumber = parseInt(
@@ -777,7 +788,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
                   })}
                   value={localHeltUttak?.aarligInntektVsaPensjon?.sluttAlder}
                   minAlder={minAlderInntektSluttAlder}
-                  maxAlder={DEFAULT_MAX_OPPTJENINGSALDER}
+                  maxAlder={maxOpptjeningsalder}
                   onChange={handleInntektVsaHeltUttakSluttAlderChange}
                   error={
                     validationErrors[

@@ -73,7 +73,7 @@ describe('Endring av alderspensjon', () => {
           cy.contains('button', 'Kom i gang').click()
         })
         it('forventer jeg at neste steg er AFP.', () => {
-          cy.contains('AFP (avtalefestet pensjon)')
+          cy.contains('AFP')
         })
       })
 
@@ -114,15 +114,14 @@ describe('Endring av alderspensjon', () => {
 
         it('forventer jeg tilpasset informasjon i grunnlag: at opphold utenfor Norge er hentet fra vedtak og at Livsvarig AFP (offentlig) er med.', () => {
           cy.contains('Beregning').should('exist')
-          cy.contains('Øvrig grunnlag for beregningen').should('exist')
+          cy.contains('Om pensjonen din').should('exist')
           cy.contains('Sivilstand:').click({ force: true })
           cy.contains('Opphold utenfor Norge:').click({ force: true })
           cy.contains('Fra vedtak').should('exist')
           cy.contains(
             'Beregningen bruker trygdetiden du har i Norge fra vedtaket ditt om alderspensjon.'
           ).should('exist')
-          cy.contains('AFP:').click({ force: true })
-          cy.contains('Offentlig').should('exist')
+          cy.contains('AFP: Offentlig').should('exist')
         })
       })
 
@@ -147,7 +146,7 @@ describe('Endring av alderspensjon', () => {
         it('forventer jeg å se resultatet for alderspensjon i graf og tabell med AFP privat.', () => {
           cy.contains('Beregning').should('exist')
           cy.contains('Pensjonsgivende inntekt').should('exist')
-          cy.contains('AFP (avtalefestet pensjon)').should('exist')
+          cy.contains('AFP').should('exist')
           cy.contains('Pensjonsavtaler (arbeidsgivere m.m.)').should(
             'not.exist'
           )
@@ -159,15 +158,14 @@ describe('Endring av alderspensjon', () => {
 
         it('forventer jeg tilpasset informasjon i grunnlag: at opphold utenfor Norge er hentet fra vedtak og at AFP Privat er med.', () => {
           cy.contains('Beregning').should('exist')
-          cy.contains('Øvrig grunnlag for beregningen').should('exist')
+          cy.contains('Om pensjonen din').should('exist')
           cy.contains('Sivilstand:').click({ force: true })
           cy.contains('Opphold utenfor Norge:').click({ force: true })
           cy.contains('Fra vedtak').should('exist')
           cy.contains(
             'Beregningen bruker trygdetiden du har i Norge fra vedtaket ditt om alderspensjon.'
           ).should('exist')
-          cy.contains('AFP:').click({ force: true })
-          cy.contains('Privat').should('exist')
+          cy.contains('AFP: Privat').should('exist')
         })
       })
 
@@ -192,7 +190,7 @@ describe('Endring av alderspensjon', () => {
         it('forventer jeg å se resultatet for alderspensjon i graf og tabell uten AFP.', () => {
           cy.contains('Beregning').should('exist')
           cy.contains('Pensjonsgivende inntekt').should('exist')
-          cy.contains('AFP (avtalefestet pensjon)').should('not.be.visible')
+          cy.contains('AFP').should('exist')
           cy.contains('Pensjonsavtaler (arbeidsgivere m.m.)').should(
             'not.exist'
           )
@@ -204,16 +202,14 @@ describe('Endring av alderspensjon', () => {
 
         it('forventer jeg tilpasset informasjon i grunnlag: at opphold utenfor Norge er hentet fra vedtak og at AFP vises iht. mitt valg.', () => {
           cy.contains('Beregning').should('exist')
-          cy.contains('Øvrig grunnlag for beregningen').should('exist')
+          cy.contains('Om pensjonen din').should('exist')
           cy.contains('Sivilstand:').click({ force: true })
           cy.contains('Opphold utenfor Norge:').click({ force: true })
           cy.contains('Fra vedtak').should('exist')
           cy.contains(
             'Beregningen bruker trygdetiden du har i Norge fra vedtaket ditt om alderspensjon.'
           ).should('exist')
-          cy.contains('AFP:').click({ force: true })
-          cy.contains('AFP:').should('exist')
-          cy.contains('Vet ikke').should('exist')
+          cy.contains('AFP: Vet ikke').should('exist')
         })
       })
 
@@ -406,7 +402,7 @@ describe('Endring av alderspensjon', () => {
             })
 
             it('forventer jeg informasjon om hva siste månedlige utbetaling var og hva månedlig alderspensjon vil bli de månedene jeg har valgt å endre fra.', () => {
-              cy.contains('Alderspensjon før skatt når du er')
+              cy.contains('Alderspensjon når du er')
               cy.contains('65 år og 4 md. (40 %): 12 342 kr/md.')
               cy.contains('67 år (100 %): 28 513 kr/md.')
             })
@@ -418,7 +414,7 @@ describe('Endring av alderspensjon', () => {
             it('forventer jeg å se resultatet for alderspensjon i graf og tabell uten AFP.', () => {
               cy.contains('Beregning').should('exist')
               cy.contains('Pensjonsgivende inntekt').should('exist')
-              cy.contains('AFP (avtalefestet pensjon)').should('not.be.visible')
+              cy.contains('AFP').should('exist')
               cy.contains('Pensjonsavtaler (arbeidsgivere m.m.)').should(
                 'not.exist'
               )
@@ -436,15 +432,14 @@ describe('Endring av alderspensjon', () => {
 
             it('forventer jeg tilpasset informasjon i grunnlag: at opphold utenfor Norge er hentet fra vedtak og at AFP vises ut fra hva jeg har svart. ', () => {
               cy.contains('Beregning').should('exist')
-              cy.contains('Øvrig grunnlag for beregningen').should('exist')
+              cy.contains('Om pensjonen din').should('exist')
               cy.contains('Sivilstand:').click({ force: true })
               cy.contains('Opphold utenfor Norge:').click({ force: true })
               cy.contains('Fra vedtak').should('exist')
               cy.contains(
                 'Beregningen bruker trygdetiden du har i Norge fra vedtaket ditt om alderspensjon.'
               ).should('exist')
-              cy.contains('AFP:').click({ force: true })
-              cy.contains('Nei').should('exist')
+              cy.contains('AFP: Nei').should('exist')
             })
 
             it('forventer jeg lenke til søknad om endring av alderspensjon.', () => {
@@ -716,7 +711,7 @@ describe('Endring av alderspensjon', () => {
           })
 
           it('forventer jeg informasjon om hva siste månedlige utbetaling var og hva månedlig alderspensjon vil bli de månedene jeg har valgt å endre fra.', () => {
-            cy.contains('Alderspensjon før skatt når du er')
+            cy.contains('Alderspensjon når du er')
             cy.contains('65 år og 4 md. (40 %): 12 342 kr/md.')
             cy.contains('67 år (100 %): 28 513 kr/md.')
           })
@@ -728,7 +723,7 @@ describe('Endring av alderspensjon', () => {
           it('forventer jeg å se resultatet for alderspensjon i graf og tabell med AFP Privat.', () => {
             cy.contains('Beregning').should('exist')
             cy.contains('Pensjonsgivende inntekt').should('exist')
-            cy.contains('AFP (avtalefestet pensjon)').should('exist')
+            cy.contains('AFP)').should('exist')
             cy.contains('Pensjonsavtaler (arbeidsgivere m.m.)').should(
               'not.exist'
             )
@@ -746,15 +741,14 @@ describe('Endring av alderspensjon', () => {
 
           it('forventer jeg tilpasset informasjon i grunnlag: at opphold utenfor Norge er hentet fra vedtak og at AFP Privat er uendret ', () => {
             cy.contains('Beregning').should('exist')
-            cy.contains('Øvrig grunnlag for beregningen').should('exist')
+            cy.contains('Om pensjonen din').should('exist')
             cy.contains('Sivilstand:').click({ force: true })
             cy.contains('Opphold utenfor Norge:').click({ force: true })
             cy.contains('Fra vedtak').should('exist')
             cy.contains(
               'Beregningen bruker trygdetiden du har i Norge fra vedtaket ditt om alderspensjon.'
             ).should('exist')
-            cy.contains('AFP:').click({ force: true })
-            cy.contains('Privat (uendret)').should('exist')
+            cy.contains('AFP: Privat (uendret)').should('exist')
           })
 
           it('forventer jeg lenke til søknad om endring av alderspensjon.', () => {
@@ -1023,7 +1017,7 @@ describe('Endring av alderspensjon', () => {
           })
 
           it('forventer jeg informasjon om hva siste månedlige utbetaling var og hva månedlig alderspensjon vil bli de månedene jeg har valgt å endre fra.', () => {
-            cy.contains('Alderspensjon før skatt når du er')
+            cy.contains('Alderspensjon når du er')
             cy.contains('65 år og 4 md. (40 %): 12 342 kr/md.')
             cy.contains('67 år (100 %): 28 513 kr/md.')
           })
@@ -1054,15 +1048,14 @@ describe('Endring av alderspensjon', () => {
 
           it('forventer jeg tilpasset informasjon i grunnlag: at opphold utenfor Norge er hentet fra vedtak og at AFP Offentlig er uendret.', () => {
             cy.contains('Beregning').should('exist')
-            cy.contains('Øvrig grunnlag for beregningen').should('exist')
+            cy.contains('Om pensjonen din').should('exist')
             cy.contains('Sivilstand:').click({ force: true })
             cy.contains('Opphold utenfor Norge:').click({ force: true })
             cy.contains('Fra vedtak').should('exist')
             cy.contains(
               'Beregningen bruker trygdetiden du har i Norge fra vedtaket ditt om alderspensjon.'
             ).should('exist')
-            cy.contains('AFP:').click({ force: true })
-            cy.contains('Offentlig (uendret)').should('exist')
+            cy.contains('AFP: Offentlig (uendret)').should('exist')
           })
 
           it('forventer jeg lenke til søknad om endring av alderspensjon.', () => {
@@ -1309,7 +1302,7 @@ describe('Endring av alderspensjon', () => {
           })
 
           it('forventer jeg informasjon om hva siste månedlige utbetaling var og hva månedlig alderspensjon vil bli de månedene jeg har valgt å endre fra.', () => {
-            cy.contains('Alderspensjon før skatt når du er')
+            cy.contains('Alderspensjon når du er')
             cy.contains('65 år og 4 md. (40 %): 12 342 kr/md.')
             cy.contains('67 år (100 %): 28 513 kr/md.')
           })
@@ -1321,7 +1314,7 @@ describe('Endring av alderspensjon', () => {
           it('forventer jeg å se resultatet for alderspensjon i graf og tabell.', () => {
             cy.contains('Beregning').should('exist')
             cy.contains('Pensjonsgivende inntekt').should('exist')
-            cy.contains('AFP (avtalefestet pensjon)').should('not.exist')
+            cy.contains('AFP').should('exist')
             cy.contains('Pensjonsavtaler (arbeidsgivere m.m.)').should(
               'not.exist'
             )
@@ -1339,7 +1332,7 @@ describe('Endring av alderspensjon', () => {
 
           it('forventer jeg tilpasset informasjon i grunnlag: at opphold utenfor Norge er hentet fra vedtak', () => {
             cy.contains('Beregning').should('exist')
-            cy.contains('Øvrig grunnlag for beregningen').should('exist')
+            cy.contains('Om pensjonen din').should('exist')
             cy.contains('Sivilstand:').click({ force: true })
             cy.contains('Opphold utenfor Norge:').click({ force: true })
             cy.contains('Fra vedtak').should('exist')
@@ -1615,7 +1608,7 @@ describe('Endring av alderspensjon', () => {
           })
 
           it('forventer jeg informasjon om hva siste månedlige utbetaling var og hva månedlig alderspensjon vil bli de månedene jeg har valgt å endre fra.', () => {
-            cy.contains('Alderspensjon før skatt når du er')
+            cy.contains('Alderspensjon når du er')
             cy.contains('67 år og 4 md. (40 %): 12 342 kr/md.')
             cy.contains('70 år (100 %): 28 513 kr/md.')
           })
@@ -1627,7 +1620,7 @@ describe('Endring av alderspensjon', () => {
           it('forventer jeg å se resultatet for alderspensjon i graf og tabell.', () => {
             cy.contains('Beregning').should('exist')
             cy.contains('Pensjonsgivende inntekt').should('exist')
-            cy.contains('AFP (avtalefestet pensjon)').should('not.exist')
+            cy.contains('AFP').should('exist')
             cy.contains('Pensjonsavtaler (arbeidsgivere m.m.)').should(
               'not.exist'
             )
@@ -1645,7 +1638,7 @@ describe('Endring av alderspensjon', () => {
 
           it('forventer jeg tilpasset informasjon i grunnlag: at opphold utenfor Norge er hentet fra vedtak og at AFP: Nei vises', () => {
             cy.contains('Beregning').should('exist')
-            cy.contains('Øvrig grunnlag for beregningen').should('exist')
+            cy.contains('Om pensjonen din').should('exist')
             cy.contains('Sivilstand:').click({ force: true })
             cy.contains('Opphold utenfor Norge:').click({ force: true })
             cy.contains('Fra vedtak').should('exist')

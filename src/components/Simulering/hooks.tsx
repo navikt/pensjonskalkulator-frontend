@@ -8,6 +8,8 @@ import HighchartsReact from 'highcharts-react-official'
 import React from 'react'
 import { useIntl } from 'react-intl'
 
+import { useAppDispatch, useAppSelector } from '@/state/hooks'
+import { userInputActions } from '@/state/userInput/userInputSlice'
 import {
   getAlderMinus1Maaned,
   transformFoedselsdatoToAlder,
@@ -22,6 +24,8 @@ import {
   processInntektArray,
   processPensjonsavtalerArray,
   processPensjonsberegningArray,
+  processPensjonsberegningArrayForKap19,
+  processPre2025OffentligAfpPensjonsberegningArray,
 } from './utils'
 import { getChartOptions, onPointUnclick } from './utils-highcharts'
 
@@ -38,6 +42,7 @@ export const useSimuleringChartLocalState = (initialValues: {
   aarligInntektVsaHelPensjon?: AarligInntektVsaPensjon
   isLoading: boolean
   alderspensjonListe?: AlderspensjonPensjonsberegning[]
+  pre2025OffentligAfp?: AfpEtterfulgtAvAlderspensjon
   afpPrivatListe?: AfpPensjonsberegning[]
   afpOffentligListe?: AfpPensjonsberegning[]
   pensjonsavtaler: {
@@ -52,6 +57,8 @@ export const useSimuleringChartLocalState = (initialValues: {
     data?: OffentligTp
   }
 }) => {
+  const dispatch = useAppDispatch()
+  const xAxis = useAppSelector((state) => state.userInput.xAxis)
   const {
     styles,
     chartRef,
@@ -63,6 +70,7 @@ export const useSimuleringChartLocalState = (initialValues: {
     aarligInntektVsaHelPensjon,
     isLoading,
     alderspensjonListe,
+    pre2025OffentligAfp,
     afpPrivatListe,
     afpOffentligListe,
     pensjonsavtaler,
@@ -76,13 +84,27 @@ export const useSimuleringChartLocalState = (initialValues: {
     offentligTpData?.simulertTjenestepensjon?.simuleringsresultat
       .utbetalingsperioder
   const intl = useIntl()
-  const [xAxis, setXAxis] = React.useState<string[]>([])
+
   const [showVisFlereAarButton, setShowVisFlereAarButton] =
     React.useState<boolean>(false)
   const [showVisFaerreAarButton, setShowVisFaerreAarButton] =
     React.useState<boolean>(false)
   const [isPensjonsavtaleFlagVisible, setIsPensjonsavtaleFlagVisible] =
     React.useState<boolean>(false)
+
+  const pre2025OffentligAfpListe: AfpPensjonsberegning[] = pre2025OffentligAfp
+    ? Array.from(
+        Array(67 - pre2025OffentligAfp.alderAar).keys(),
+        (_, index) => ({
+          alder: pre2025OffentligAfp.alderAar + index,
+          beloep:
+            index === 0
+              ? pre2025OffentligAfp.totaltAfpBeloep *
+                (12 - (uttaksalder?.maaneder ?? 0))
+              : pre2025OffentligAfp.totaltAfpBeloep * 12,
+        })
+      )
+    : []
 
   const [chartOptions, setChartOptions] = React.useState<Highcharts.Options>(
     getChartOptions(
@@ -115,7 +137,7 @@ export const useSimuleringChartLocalState = (initialValues: {
     }
   }, [isLoading, isPensjonsavtalerLoading, isOffentligTpLoading])
 
-  // Calculates the length of the x-axis, once at first and every time uttakalder or pensjonsavtaler is updated
+  // Update the useEffect that calculates x-axis length
   React.useEffect(() => {
     const startAar =
       isEndring && foedselsdato
@@ -127,32 +149,29 @@ export const useSimuleringChartLocalState = (initialValues: {
     if (startAar) {
       // recalculates temporary without pensjonsavtaler when alderspensjon is ready but not pensjonsavtaler or offentligTp
       if (!isLoading && (isPensjonsavtalerLoading || isOffentligTpLoading)) {
-        setXAxis(
-          generateXAxis(
-            startAar,
-            isEndring,
-            [],
-            offentligTpUtbetalingsperioder
-              ? [...offentligTpUtbetalingsperioder]
-              : [],
-
-            setIsPensjonsavtaleFlagVisible
-          )
+        const newXAxis = generateXAxis(
+          startAar,
+          isEndring,
+          [],
+          offentligTpUtbetalingsperioder
+            ? [...offentligTpUtbetalingsperioder]
+            : [],
+          setIsPensjonsavtaleFlagVisible
         )
+        dispatch(userInputActions.setXAxis(newXAxis))
       }
-      // recalculates correclty when alderspensjon AND pensjonsavtaler AND offentligTp are done loading
+      // recalculates correctly when alderspensjon AND pensjonsavtaler AND offentligTp are done loading
       if (!isLoading && !isPensjonsavtalerLoading && !isOffentligTpLoading) {
-        setXAxis(
-          generateXAxis(
-            startAar,
-            isEndring,
-            pensjonsavtalerData?.avtaler ?? [],
-            offentligTpUtbetalingsperioder
-              ? [...offentligTpUtbetalingsperioder]
-              : [],
-            setIsPensjonsavtaleFlagVisible
-          )
+        const newXAxis = generateXAxis(
+          startAar,
+          isEndring,
+          pensjonsavtalerData?.avtaler ?? [],
+          offentligTpUtbetalingsperioder
+            ? [...offentligTpUtbetalingsperioder]
+            : [],
+          setIsPensjonsavtaleFlagVisible
         )
+        dispatch(userInputActions.setXAxis(newXAxis))
       }
     }
   }, [
@@ -162,6 +181,15 @@ export const useSimuleringChartLocalState = (initialValues: {
     offentligTpUtbetalingsperioder,
     isOffentligTpLoading,
   ])
+
+  // Maintain x-axis values during loading states
+  React.useEffect(() => {
+    if (isLoading || isPensjonsavtalerLoading || isOffentligTpLoading) {
+      if (xAxis.length > 0) {
+        dispatch(userInputActions.setXAxis(xAxis))
+      }
+    }
+  }, [isLoading, isPensjonsavtalerLoading, isOffentligTpLoading])
 
   // Redraws the graph when the x-axis has changed
   React.useEffect(() => {
@@ -199,7 +227,12 @@ export const useSimuleringChartLocalState = (initialValues: {
                       gradertUttaksperiode && uttaksalder
                         ? {
                             fra: gradertUttaksperiode?.uttaksalder,
-                            til: getAlderMinus1Maaned(uttaksalder),
+                            til:
+                              // Vis inntekt ved siden av pre2025 offentlig AFP frem til 67
+                              pre2025OffentligAfp &&
+                              gradertUttaksperiode.aarligInntektVsaPensjonBeloep
+                                ? getAlderMinus1Maaned({ aar: 67, maaneder: 0 })
+                                : getAlderMinus1Maaned(uttaksalder),
                             beloep: formatInntektToNumber(
                               gradertUttaksperiode?.aarligInntektVsaPensjonBeloep
                             ),
@@ -220,6 +253,23 @@ export const useSimuleringChartLocalState = (initialValues: {
                       : undefined,
                     xAxisLength: xAxis.length,
                   }),
+                } as SeriesOptionsType,
+              ]
+            : []),
+
+          ...(pre2025OffentligAfp
+            ? [
+                {
+                  ...SERIES_DEFAULT.SERIE_AFP,
+                  name: intl.formatMessage({
+                    id: SERIES_DEFAULT.SERIE_AFP.name,
+                  }),
+                  /* c8 ignore next 1 */
+                  data: processPre2025OffentligAfpPensjonsberegningArray(
+                    pre2025OffentligAfpListe.length - 1,
+                    pre2025OffentligAfpListe,
+                    isEndring
+                  ),
                 } as SeriesOptionsType,
               ]
             : []),
@@ -285,11 +335,18 @@ export const useSimuleringChartLocalState = (initialValues: {
             name: intl.formatMessage({
               id: SERIES_DEFAULT.SERIE_ALDERSPENSJON.name,
             }),
-            data: processPensjonsberegningArray(
-              alderspensjonListe,
-              isEndring,
-              xAxis.length
-            ),
+            data: pre2025OffentligAfpListe
+              ? processPensjonsberegningArrayForKap19(
+                  alderspensjonListe,
+                  isEndring,
+                  xAxis.length,
+                  startAar
+                )
+              : processPensjonsberegningArray(
+                  alderspensjonListe,
+                  isEndring,
+                  xAxis.length
+                ),
           } as SeriesOptionsType,
         ],
       })

@@ -1,23 +1,29 @@
 import { SerializedError } from '@reduxjs/toolkit'
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
-import { redirect } from 'react-router'
+import { LoaderFunctionArgs, redirect } from 'react-router'
 
+import { getStepArrays } from '@/components/stegvisning/utils'
 import { HOST_BASEURL } from '@/paths'
-import {
-  henvisningUrlParams,
-  paths,
-  stegvisningOrder,
-  stegvisningOrderEndring,
-} from '@/router/constants'
+import { paths } from '@/router/constants'
 import { apiSlice } from '@/state/api/apiSlice'
 import { store } from '@/state/store'
-import { selectAfp, selectIsVeileder } from '@/state/userInput/selectors'
+import {
+  selectAfp,
+  selectIsVeileder,
+  selectSkalBeregneAfpKap19,
+} from '@/state/userInput/selectors'
 import {
   AFP_UFOERE_OPPSIGELSESALDER,
   isFoedselsdatoOverAlder,
+  isFoedtFoer1963,
 } from '@/utils/alder'
 import { isLoependeVedtakEndring } from '@/utils/loependeVedtak'
 import { logger } from '@/utils/logging'
+import { skip } from '@/utils/navigation'
+
+export type SafeLoaderFunction<T> = (
+  args: LoaderFunctionArgs
+) => Promise<T | Response>
 
 export type Reason =
   | 'INSUFFICIENT_LEVEL_OF_ASSURANCE'
@@ -46,12 +52,16 @@ export interface LoginContext {
   isLoggedIn: boolean
 }
 
-export async function authenticationGuard() {
+export interface AuthenticationGuardData {
+  authResponse: Response
+}
+
+export const authenticationGuard = async () => {
   const authResponse = await fetch(`${HOST_BASEURL}/oauth2/session`)
   return { authResponse }
 }
 
-export const directAccessGuard = () => {
+export const directAccessGuard = (): Response | undefined => {
   const state = store.getState()
   // Dersom ingen kall er registrert i store betyr det at brukeren prøver å aksessere en url direkte
   if (
@@ -60,6 +70,7 @@ export const directAccessGuard = () => {
   ) {
     return redirect(paths.start)
   }
+  return undefined
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -78,9 +89,6 @@ export const stepStartAccessGuard = async () => {
     apiSlice.endpoints.getVedlikeholdsmodusFeatureToggle.initiate()
   )
   const getPersonQuery = store.dispatch(apiSlice.endpoints.getPerson.initiate())
-  const getEkskludertStatusQuery = store.dispatch(
-    apiSlice.endpoints.getEkskludertStatus.initiate()
-  )
   const getLoependeVedtakQuery = store.dispatch(
     apiSlice.endpoints.getLoependeVedtak.initiate()
   )
@@ -90,29 +98,18 @@ export const stepStartAccessGuard = async () => {
   store.dispatch(
     apiSlice.endpoints.getOmstillingsstoenadOgGjenlevende.initiate()
   )
-  store.dispatch(apiSlice.endpoints.getGrunnbelop.initiate())
+  store.dispatch(apiSlice.endpoints.getGrunnbeloep.initiate())
+  store.dispatch(apiSlice.endpoints.getErApoteker.initiate())
 
-  const [
-    vedlikeholdsmodusFeatureToggle,
-    getLoependeVedtakRes,
-    getPersonRes,
-    getEkskludertStatusRes,
-  ] = await Promise.all([
-    vedlikeholdsmodusFeatureToggleQuery,
-    getLoependeVedtakQuery,
-    getPersonQuery,
-    getEkskludertStatusQuery,
-  ])
+  const [vedlikeholdsmodusFeatureToggle, getLoependeVedtakRes, getPersonRes] =
+    await Promise.all([
+      vedlikeholdsmodusFeatureToggleQuery,
+      getLoependeVedtakQuery,
+      getPersonQuery,
+    ])
 
   if (vedlikeholdsmodusFeatureToggle.data?.enabled) {
     return redirect(paths.kalkulatorVirkerIkke)
-  }
-
-  if (
-    getEkskludertStatusRes.data?.ekskludert &&
-    getEkskludertStatusRes.data?.aarsak === 'ER_APOTEKER'
-  ) {
-    return redirect(`${paths.henvisning}/${henvisningUrlParams.apotekerne}`)
   }
 
   if (!getPersonRes.isSuccess) {
@@ -208,7 +205,9 @@ export const stepStartAccessGuard = async () => {
 
 ////////////////////////////////////////////////////////////////////////
 
-export const stepSivilstandAccessGuard = async () => {
+export const stepSivilstandAccessGuard = async ({
+  request,
+}: LoaderFunctionArgs) => {
   if (directAccessGuard()) {
     return redirect(paths.start)
   }
@@ -216,30 +215,84 @@ export const stepSivilstandAccessGuard = async () => {
     .dispatch(apiSlice.endpoints.getPerson.initiate())
     .unwrap()
 
-  const getGrunnbelopQuery = store
-    .dispatch(apiSlice.endpoints.getGrunnbelop.initiate())
+  const getGrunnbeloepQuery = store
+    .dispatch(apiSlice.endpoints.getGrunnbeloep.initiate())
     .unwrap()
-    .then((grunnbelopRes) => grunnbelopRes)
+    .then((grunnbeloepRes) => grunnbeloepRes)
     .catch(() => undefined)
-
-  const [person, grunnbelop] = await Promise.all([
-    getPersonQuery,
-    getGrunnbelopQuery,
-  ])
-
-  return { person, grunnbelop }
-}
-
-////////////////////////////////////////////////////////////////////////
-
-export const stepAFPAccessGuard = async () => {
-  if (directAccessGuard()) {
-    return redirect(paths.start)
-  }
 
   const loependeVedtak = await store
     .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
     .unwrap()
+
+  const erApoteker = await store
+    .dispatch(apiSlice.endpoints.getErApoteker.initiate())
+    .unwrap()
+
+  logger('info', {
+    tekst: 'Er apoteker',
+    data: erApoteker ? 'Ja' : 'Nei',
+  })
+
+  const [person, grunnbeloep] = await Promise.all([
+    getPersonQuery,
+    getGrunnbeloepQuery,
+  ])
+
+  const isEndring = isLoependeVedtakEndring(loependeVedtak)
+  const isKap19 = isFoedtFoer1963(person.foedselsdato)
+
+  logger('info', {
+    tekst: 'Født før 1963',
+    data: isKap19 ? 'Ja' : 'Nei',
+  })
+
+  const stepArrays = getStepArrays(isEndring, isKap19 || erApoteker)
+
+  if (isEndring && (isKap19 || erApoteker)) {
+    return skip(stepArrays, paths.sivilstand, request)
+  }
+
+  return { person, grunnbeloep }
+}
+
+////////////////////////////////////////////////////////////////////////
+
+export const stepUtenlandsoppholdAccessGuard = async ({
+  request,
+}: LoaderFunctionArgs) => {
+  if (directAccessGuard()) {
+    return redirect(paths.start)
+  }
+
+  const person = await store
+    .dispatch(apiSlice.endpoints.getPerson.initiate())
+    .unwrap()
+
+  const loependeVedtak = await store
+    .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
+    .unwrap()
+
+  const erApoteker = await store
+    .dispatch(apiSlice.endpoints.getErApoteker.initiate())
+    .unwrap()
+
+  const isEndring = isLoependeVedtakEndring(loependeVedtak)
+  const isKap19 = isFoedtFoer1963(person.foedselsdato)
+
+  const stepArrays = getStepArrays(isEndring, isKap19 || erApoteker)
+
+  if (isEndring && (isKap19 || erApoteker)) {
+    return skip(stepArrays, paths.utenlandsopphold, request)
+  }
+}
+
+////////////////////////////////////////////////////////////////////////
+
+export const stepAFPAccessGuard = async ({ request }: LoaderFunctionArgs) => {
+  if (directAccessGuard()) {
+    return redirect(paths.start)
+  }
 
   // TODO: Flytte disse til der inntekt og omstillingstønad brukes
   await store.dispatch(apiSlice.endpoints.getInntekt.initiate()).unwrap()
@@ -247,25 +300,22 @@ export const stepAFPAccessGuard = async () => {
     .dispatch(apiSlice.endpoints.getOmstillingsstoenadOgGjenlevende.initiate())
     .unwrap()
 
-  const ekskludertStatus = await store
-    .dispatch(apiSlice.endpoints.getEkskludertStatus.initiate())
-    .unwrap()
-
-  if (
-    // TODO: Hva skjer om man _bare_ er eksludert, men ikke apoteker
-    ekskludertStatus.ekskludert &&
-    ekskludertStatus.aarsak === 'ER_APOTEKER'
-  ) {
-    return redirect(`${paths.henvisning}/${henvisningUrlParams.apotekerne}`)
-  }
-
   const person = await store
     .dispatch(apiSlice.endpoints.getPerson.initiate())
     .unwrap()
 
-  const stepArrays = isLoependeVedtakEndring(loependeVedtak)
-    ? stegvisningOrderEndring
-    : stegvisningOrder
+  const loependeVedtak = await store
+    .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
+    .unwrap()
+
+  const erApoteker = await store
+    .dispatch(apiSlice.endpoints.getErApoteker.initiate())
+    .unwrap()
+
+  const isEndring = isLoependeVedtakEndring(loependeVedtak)
+  const isKap19 = isFoedtFoer1963(person.foedselsdato)
+
+  const stepArrays = getStepArrays(isEndring, isKap19 || erApoteker)
 
   // Hvis brukeren mottar AFP skal hen ikke se AFP-steget
   // Hvis brukeren har 100% uføretrygd skal hen ikke se AFP-steget
@@ -275,22 +325,34 @@ export const stepAFPAccessGuard = async () => {
     loependeVedtak.afpOffentlig ||
     loependeVedtak.ufoeretrygd.grad === 100 ||
     loependeVedtak.pre2025OffentligAfp ||
+    (loependeVedtak.ufoeretrygd.grad > 0 && erApoteker) ||
     (loependeVedtak.ufoeretrygd.grad &&
       person.foedselsdato &&
       isFoedselsdatoOverAlder(person.foedselsdato, AFP_UFOERE_OPPSIGELSESALDER))
   ) {
-    return redirect(stepArrays[stepArrays.indexOf(paths.afp) + 1])
+    return skip(stepArrays, paths.afp, request)
+  } else if (
+    (erApoteker || isKap19) &&
+    loependeVedtak.fremtidigAlderspensjon &&
+    !loependeVedtak.alderspensjon
+  ) {
+    return skip(stepArrays, paths.afp, request)
+  } else if (erApoteker && isEndring) {
+    return skip(stepArrays, paths.afp, request)
   } else {
     return {
       person,
       loependeVedtak,
+      erApoteker,
     }
   }
 }
 
 ///////////////////////////////////////////////////////////////////////////
 
-export const stepUfoeretrygdAFPAccessGuard = async () => {
+export const stepUfoeretrygdAFPAccessGuard = async ({
+  request,
+}: LoaderFunctionArgs) => {
   if (directAccessGuard()) {
     return redirect(paths.start)
   }
@@ -302,26 +364,29 @@ export const stepUfoeretrygdAFPAccessGuard = async () => {
     .unwrap()
   const showStep = loependeVedtak.ufoeretrygd.grad && afp && afp !== 'nei'
 
-  const stepArrays = isLoependeVedtakEndring(loependeVedtak)
-    ? stegvisningOrderEndring
-    : stegvisningOrder
+  const isEndring = isLoependeVedtakEndring(loependeVedtak)
+
+  //Gjelder ikke for kap19
+  const stepArrays = getStepArrays(isEndring, false)
 
   // Brukere med uføretrygd som har svart ja eller vet_ikke til AFP kan se steget
   if (showStep) {
     return
   }
-  return redirect(stepArrays[stepArrays.indexOf(paths.ufoeretrygdAFP) + 1])
+  return skip(stepArrays, paths.ufoeretrygdAFP, request)
 }
 
 ////////////////////////////////////////////////////////////////////////
 
-export const stepSamtykkeOffentligAFPAccessGuard = async () => {
+export const stepSamtykkeOffentligAFPAccessGuard = async ({
+  request,
+}: LoaderFunctionArgs) => {
   if (directAccessGuard()) {
     return redirect(paths.start)
   }
 
-  const state = store.getState()
-  const afp = selectAfp(state)
+  const appState = store.getState()
+  const afp = selectAfp(appState)
   const loependeVedtak = await store
     .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
     .unwrap()
@@ -332,18 +397,19 @@ export const stepSamtykkeOffentligAFPAccessGuard = async () => {
     return
   }
 
-  const stepArrays = isLoependeVedtakEndring(loependeVedtak)
-    ? stegvisningOrderEndring
-    : stegvisningOrder
+  const isEndring = isLoependeVedtakEndring(loependeVedtak)
 
-  return redirect(
-    stepArrays[stepArrays.indexOf(paths.samtykkeOffentligAFP) + 1]
-  )
+  //Gjelder ikke for kap19
+  const stepArrays = getStepArrays(isEndring, false)
+
+  return skip(stepArrays, paths.samtykkeOffentligAFP, request)
 }
 
 ////////////////////////////////////////////////////////////////////////
 
-export const stepSamtykkePensjonsavtaler = async () => {
+export const stepSamtykkePensjonsavtaler = async ({
+  request,
+}: LoaderFunctionArgs) => {
   if (directAccessGuard()) {
     return redirect(paths.start)
   }
@@ -352,11 +418,40 @@ export const stepSamtykkePensjonsavtaler = async () => {
     .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
     .unwrap()
 
-  const stepArrays = isLoependeVedtakEndring(loependeVedtak)
-    ? stegvisningOrderEndring
-    : stegvisningOrder
+  const person = await store
+    .dispatch(apiSlice.endpoints.getPerson.initiate())
+    .unwrap()
 
-  if (loependeVedtak.pre2025OffentligAfp && stepArrays === stegvisningOrder) {
-    return redirect(stepArrays[stepArrays.indexOf(paths.samtykke) + 1])
+  const erApoteker = await store
+    .dispatch(apiSlice.endpoints.getErApoteker.initiate())
+    .unwrap()
+
+  const isEndring = isLoependeVedtakEndring(loependeVedtak)
+  const isKap19 = isFoedtFoer1963(person.foedselsdato)
+
+  const stepArrays = getStepArrays(isEndring, isKap19 || erApoteker)
+
+  if (isEndring && (isKap19 || erApoteker)) {
+    return skip(stepArrays, paths.samtykke, request)
+  }
+
+  return {
+    erApoteker,
+    isKap19,
+  }
+}
+
+export const beregningEnkelAccessGuard = async () => {
+  if (directAccessGuard()) {
+    return redirect(paths.start)
+  }
+  const state = store.getState()
+  const skalBeregneAfpKap19 = selectSkalBeregneAfpKap19(state)
+  const loependeVedtak = await store
+    .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
+    .unwrap()
+
+  if (skalBeregneAfpKap19 || loependeVedtak.alderspensjon) {
+    return redirect(paths.beregningAvansert)
   }
 }

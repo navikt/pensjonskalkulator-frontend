@@ -204,6 +204,26 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/api/v5/person': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Hent personinformasjon
+     * @description Henter informasjon om personen hvis person-ID er angitt enten i bearer-tokenet eller som fnr-header.
+     */
+    get: operations['personV5']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/api/v4/vedtak/loepende-vedtak': {
     parameters: {
       query?: never
@@ -636,6 +656,20 @@ export interface components {
       /** Format: int32 */
       maanedligBeloep?: number
     }
+    PersonligSimuleringAfpPrivatResultV8: {
+      /** Format: int32 */
+      alder: number
+      /** Format: int32 */
+      beloep: number
+      /** Format: int32 */
+      kompensasjonstillegg: number
+      /** Format: int32 */
+      kronetillegg: number
+      /** Format: int32 */
+      livsvarig: number
+      /** Format: int32 */
+      maanedligBeloep?: number
+    }
     PersonligSimuleringAlderResultV8: {
       /** Format: int32 */
       aar: number
@@ -679,6 +713,8 @@ export interface components {
       pensjonstillegg?: number
       /** Format: int32 */
       skjermingstillegg?: number
+      /** Format: int32 */
+      kapittel19Gjenlevendetillegg?: number
     }
     PersonligSimuleringAlternativResultV8: {
       gradertUttaksalder?: components['schemas']['PersonligSimuleringAlderResultV8']
@@ -725,7 +761,7 @@ export interface components {
       alderspensjon: components['schemas']['PersonligSimuleringAlderspensjonResultV8'][]
       alderspensjonMaanedligVedEndring?: components['schemas']['PersonligSimuleringMaanedligPensjonResultV8']
       pre2025OffentligAfp?: components['schemas']['PersonligSimuleringPre2025OffentligAfpResultV8']
-      afpPrivat?: components['schemas']['PersonligSimuleringAarligPensjonResultV8'][]
+      afpPrivat?: components['schemas']['PersonligSimuleringAfpPrivatResultV8'][]
       afpOffentlig?: components['schemas']['PersonligSimuleringAarligPensjonResultV8'][]
       vilkaarsproeving: components['schemas']['PersonligSimuleringVilkaarsproevingResultV8']
       harForLiteTrygdetid?: boolean
@@ -880,6 +916,7 @@ export interface components {
       epsHarPensjon: boolean
       epsHarInntektOver2G: boolean
       brukerBaOmAfp: boolean
+      erApoteker?: boolean
     }
     SimuleringOffentligTjenestepensjonAlderV2: {
       /** Format: int32 */
@@ -1190,6 +1227,36 @@ export interface components {
       aar: number
       /** Format: int32 */
       maaneder: number
+    }
+    PersonAlderV5: {
+      /** Format: int32 */
+      aar: number
+      /** Format: int32 */
+      maaneder: number
+    }
+    PersonPensjoneringAldreV5: {
+      normertPensjoneringsalder: components['schemas']['PersonAlderV5']
+      nedreAldersgrense: components['schemas']['PersonAlderV5']
+      oevreAldersgrense: components['schemas']['PersonAlderV5']
+    }
+    PersonResultV5: {
+      navn: string
+      /** Format: date */
+      foedselsdato: string
+      /** @enum {string} */
+      sivilstand:
+        | 'UNKNOWN'
+        | 'UOPPGITT'
+        | 'UGIFT'
+        | 'GIFT'
+        | 'ENKE_ELLER_ENKEMANN'
+        | 'SKILT'
+        | 'SEPARERT'
+        | 'REGISTRERT_PARTNER'
+        | 'SEPARERT_PARTNER'
+        | 'SKILT_PARTNER'
+        | 'GJENLEVENDE_PARTNER'
+      pensjoneringAldre: components['schemas']['PersonPensjoneringAldreV5']
     }
     AlderspensjonDetaljerV4: {
       /** Format: int32 */
@@ -1753,6 +1820,51 @@ export interface operations {
         }
       }
       /** @description Henting av aldersgrenser kunne ikke utføres av tekniske årsaker. */
+      503: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          /** @example {
+           *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+           *       "status": 503,
+           *       "error": "Service Unavailable",
+           *       "message": "En feil inntraff",
+           *       "path": "/api/ressurs"
+           *     } */
+          '*/*': unknown
+        }
+      }
+    }
+  }
+  personV5: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Henting av personinformasjon utført. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          '*/*': components['schemas']['PersonResultV5']
+        }
+      }
+      /** @description Personen ble ikke funnet. */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          '*/*': components['schemas']['PersonResultV5']
+        }
+      }
+      /** @description Henting av personinformasjon kunne ikke utføres av tekniske årsaker. */
       503: {
         headers: {
           [name: string]: unknown

@@ -16,6 +16,177 @@ import '@sanity/client'
  */
 
 // Source: schema.json
+export type LocaleString = {
+  _type: 'localeString'
+  nb?: string
+  nn?: string
+  en?: string
+}
+
+export type TranslationMetadata = {
+  _id: string
+  _type: 'translation.metadata'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  translations?: Array<
+    {
+      _key: string
+    } & InternationalizedArrayReferenceValue
+  >
+  schemaTypes?: Array<string>
+}
+
+export type InternationalizedArrayReferenceValue = {
+  _type: 'internationalizedArrayReferenceValue'
+  value?:
+    | {
+        _ref: string
+        _type: 'reference'
+        _weak?: boolean
+        [internalGroqTypeReferenceTo]?: 'readmore'
+      }
+    | {
+        _ref: string
+        _type: 'reference'
+        _weak?: boolean
+        [internalGroqTypeReferenceTo]?: 'forbeholdAvsnitt'
+      }
+    | {
+        _ref: string
+        _type: 'reference'
+        _weak?: boolean
+        [internalGroqTypeReferenceTo]?: 'guidepanel'
+      }
+}
+
+export type Guidepanel = {
+  _id: string
+  _type: 'guidepanel'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  language?: string
+  name: string
+  overskrift?: string
+  innhold: Array<{
+    children?: Array<{
+      marks?: Array<string>
+      text?: string
+      _type: 'span'
+      _key: string
+    }>
+    style?:
+      | 'normal'
+      | 'listTitle'
+      | 'h1'
+      | 'h2'
+      | 'h3'
+      | 'h4'
+      | 'h5'
+      | 'h6'
+      | 'blockquote'
+    listItem?: 'bullet' | 'number'
+    markDefs?: Array<{
+      href?: string
+      blank?: boolean
+      className?: '' | 'nowrap'
+      _type: 'link'
+      _key: string
+    }>
+    level?: number
+    _type: 'block'
+    _key: string
+  }>
+}
+
+export type ForbeholdAvsnitt = {
+  _id: string
+  _type: 'forbeholdAvsnitt'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  language?: string
+  name: string
+  overskrift?: string
+  order?: number
+  innhold: Array<{
+    children?: Array<{
+      marks?: Array<string>
+      text?: string
+      _type: 'span'
+      _key: string
+    }>
+    style?:
+      | 'normal'
+      | 'listTitle'
+      | 'h1'
+      | 'h2'
+      | 'h3'
+      | 'h4'
+      | 'h5'
+      | 'h6'
+      | 'blockquote'
+    listItem?: 'bullet' | 'number'
+    markDefs?: Array<{
+      href?: string
+      blank?: boolean
+      className?: '' | 'nowrap'
+      _type: 'link'
+      _key: string
+    }>
+    level?: number
+    _type: 'block'
+    _key: string
+  }>
+}
+
+export type Readmore = {
+  _id: string
+  _type: 'readmore'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  language?: string
+  name: string
+  overskrift?: string
+  innhold: Array<{
+    children?: Array<{
+      marks?: Array<string>
+      text?: string
+      _type: 'span'
+      _key: string
+    }>
+    style?:
+      | 'normal'
+      | 'listTitle'
+      | 'h1'
+      | 'h2'
+      | 'h3'
+      | 'h4'
+      | 'h5'
+      | 'h6'
+      | 'blockquote'
+    listItem?: 'bullet' | 'number'
+    markDefs?: Array<{
+      href?: string
+      blank?: boolean
+      className?: '' | 'nowrap'
+      _type: 'link'
+      _key: string
+    }>
+    level?: number
+    _type: 'block'
+    _key: string
+  }>
+}
+
+export type InternationalizedArrayReference = Array<
+  {
+    _key: string
+  } & InternationalizedArrayReferenceValue
+>
+
 export type SanityImagePaletteSwatch = {
   _type: 'sanity.imagePaletteSwatch'
   background?: string
@@ -134,148 +305,14 @@ export type SanityAssetSourceData = {
   url?: string
 }
 
-export type LocaleString = {
-  _type: 'localeString'
-  nb?: string
-  nn?: string
-  en?: string
-}
-
-export type TranslationMetadata = {
-  _id: string
-  _type: 'translation.metadata'
-  _createdAt: string
-  _updatedAt: string
-  _rev: string
-  translations?: Array<
-    {
-      _key: string
-    } & InternationalizedArrayReferenceValue
-  >
-  schemaTypes?: Array<string>
-}
-
-export type InternationalizedArrayReferenceValue = {
-  _type: 'internationalizedArrayReferenceValue'
-  value?:
-    | {
-        _ref: string
-        _type: 'reference'
-        _weak?: boolean
-        [internalGroqTypeReferenceTo]?: 'readmore'
-      }
-    | {
-        _ref: string
-        _type: 'reference'
-        _weak?: boolean
-        [internalGroqTypeReferenceTo]?: 'forbeholdAvsnitt'
-      }
-    | {
-        _ref: string
-        _type: 'reference'
-        _weak?: boolean
-        [internalGroqTypeReferenceTo]?: 'guidepanel'
-      }
-}
-
-export type Guidepanel = {
-  _id: string
-  _type: 'guidepanel'
-  _createdAt: string
-  _updatedAt: string
-  _rev: string
-  language?: string
-  name: string
-  overskrift?: string
-  innhold: Array<{
-    children?: Array<{
-      marks?: Array<string>
-      text?: string
-      _type: 'span'
-      _key: string
-    }>
-    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
-    listItem?: 'bullet' | 'number'
-    markDefs?: Array<{
-      href?: string
-      blank?: boolean
-      _type: 'link'
-      _key: string
-    }>
-    level?: number
-    _type: 'block'
-    _key: string
-  }>
-}
-
-export type ForbeholdAvsnitt = {
-  _id: string
-  _type: 'forbeholdAvsnitt'
-  _createdAt: string
-  _updatedAt: string
-  _rev: string
-  language?: string
-  name: string
-  overskrift?: string
-  order?: number
-  innhold: Array<{
-    children?: Array<{
-      marks?: Array<string>
-      text?: string
-      _type: 'span'
-      _key: string
-    }>
-    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
-    listItem?: 'bullet' | 'number'
-    markDefs?: Array<{
-      href?: string
-      blank?: boolean
-      _type: 'link'
-      _key: string
-    }>
-    level?: number
-    _type: 'block'
-    _key: string
-  }>
-}
-
-export type Readmore = {
-  _id: string
-  _type: 'readmore'
-  _createdAt: string
-  _updatedAt: string
-  _rev: string
-  language?: string
-  name: string
-  overskrift?: string
-  innhold: Array<{
-    children?: Array<{
-      marks?: Array<string>
-      text?: string
-      _type: 'span'
-      _key: string
-    }>
-    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
-    listItem?: 'bullet' | 'number'
-    markDefs?: Array<{
-      href?: string
-      blank?: boolean
-      _type: 'link'
-      _key: string
-    }>
-    level?: number
-    _type: 'block'
-    _key: string
-  }>
-}
-
-export type InternationalizedArrayReference = Array<
-  {
-    _key: string
-  } & InternationalizedArrayReferenceValue
->
-
 export type AllSanitySchemaTypes =
+  | LocaleString
+  | TranslationMetadata
+  | InternationalizedArrayReferenceValue
+  | Guidepanel
+  | ForbeholdAvsnitt
+  | Readmore
+  | InternationalizedArrayReference
   | SanityImagePaletteSwatch
   | SanityImagePalette
   | SanityImageDimensions
@@ -287,13 +324,6 @@ export type AllSanitySchemaTypes =
   | Geopoint
   | Slug
   | SanityAssetSourceData
-  | LocaleString
-  | TranslationMetadata
-  | InternationalizedArrayReferenceValue
-  | Guidepanel
-  | ForbeholdAvsnitt
-  | Readmore
-  | InternationalizedArrayReference
 export declare const internalGroqTypeReferenceTo: unique symbol
 // Source: ./src/context/LanguageProvider/LanguageProvider.tsx
 // Variable: forbeholdAvsnittQuery
@@ -307,11 +337,21 @@ export type ForbeholdAvsnittQueryResult = Array<{
       _type: 'span'
       _key: string
     }>
-    style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
+    style?:
+      | 'blockquote'
+      | 'h1'
+      | 'h2'
+      | 'h3'
+      | 'h4'
+      | 'h5'
+      | 'h6'
+      | 'listTitle'
+      | 'normal'
     listItem?: 'bullet' | 'number'
     markDefs?: Array<{
       href?: string
       blank?: boolean
+      className?: '' | 'nowrap'
       _type: 'link'
       _key: string
     }>
@@ -332,11 +372,21 @@ export type GuidePanelQueryResult = Array<{
       _type: 'span'
       _key: string
     }>
-    style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
+    style?:
+      | 'blockquote'
+      | 'h1'
+      | 'h2'
+      | 'h3'
+      | 'h4'
+      | 'h5'
+      | 'h6'
+      | 'listTitle'
+      | 'normal'
     listItem?: 'bullet' | 'number'
     markDefs?: Array<{
       href?: string
       blank?: boolean
+      className?: '' | 'nowrap'
       _type: 'link'
       _key: string
     }>
@@ -357,11 +407,21 @@ export type ReadMoreQueryResult = Array<{
       _type: 'span'
       _key: string
     }>
-    style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
+    style?:
+      | 'blockquote'
+      | 'h1'
+      | 'h2'
+      | 'h3'
+      | 'h4'
+      | 'h5'
+      | 'h6'
+      | 'listTitle'
+      | 'normal'
     listItem?: 'bullet' | 'number'
     markDefs?: Array<{
       href?: string
       blank?: boolean
+      className?: '' | 'nowrap'
       _type: 'link'
       _key: string
     }>

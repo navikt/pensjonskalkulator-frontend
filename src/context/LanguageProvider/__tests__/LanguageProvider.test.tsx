@@ -1,7 +1,9 @@
+import { RawQuerylessQueryResponse } from '@sanity/client'
 import { render, screen, waitFor } from '@testing-library/react'
 import React from 'react'
 import { useIntl } from 'react-intl'
 import { Provider } from 'react-redux'
+import { vi } from 'vitest'
 
 import { SanityContext } from '@/context/SanityContext'
 import { mockErrorResponse } from '@/mocks/server'
@@ -32,12 +34,25 @@ function TestComponent() {
 }
 
 describe('LanguageProvider', () => {
+  let defaultFetchSpy: ReturnType<typeof vi.spyOn>
+
+  beforeAll(() => {
+    defaultFetchSpy = vi
+      .spyOn(sanityClient, 'fetch')
+      .mockResolvedValue([] as unknown as RawQuerylessQueryResponse<unknown>)
+  })
+
   afterEach(() => {
+    // Clear cookies
     document.cookie.split(';').forEach(function (c) {
       document.cookie = c
         .replace(/^ +/, '')
         .replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/')
     })
+  })
+
+  afterAll(() => {
+    defaultFetchSpy.mockRestore()
   })
 
   it('gir tilgang til react-intl translations', async () => {

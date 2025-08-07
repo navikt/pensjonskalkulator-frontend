@@ -363,9 +363,10 @@ describe('BeregningEnkel', () => {
       await store.dispatch(
         apiSliceUtils.apiSlice.endpoints.getLoependeVedtak.initiate()
       )
-      await user.click(await screen.findByText('68 alder.aar'))
-      const buttons = await screen.findAllByRole('button', { pressed: true })
-      expect(buttons[0]).toHaveTextContent('68 alder.aar')
+      const button = await screen.findByRole('button', {
+        name: '68 alder.aar',
+      })
+      await user.click(button)
 
       await waitFor(async () => {
         expect(
@@ -455,9 +456,11 @@ describe('BeregningEnkel', () => {
       await store.dispatch(
         apiSliceUtils.apiSlice.endpoints.getLoependeVedtak.initiate()
       )
-      await user.click(await screen.findByText('68 alder.aar'))
-      const buttons = await screen.findAllByRole('button', { pressed: true })
-      expect(buttons[0]).toHaveTextContent('68 alder.aar')
+
+      const button = await screen.findByRole('button', {
+        name: '68 alder.aar',
+      })
+      await user.click(button)
 
       await waitFor(async () => {
         expect(
@@ -639,9 +642,11 @@ describe('BeregningEnkel', () => {
       await store.dispatch(
         apiSliceUtils.apiSlice.endpoints.getLoependeVedtak.initiate()
       )
-      await user.click(await screen.findByText('68 alder.aar'))
-      const buttons = await screen.findAllByRole('button', { pressed: true })
-      expect(buttons[0]).toHaveTextContent('68 alder.aar')
+
+      const button = await screen.findByRole('button', {
+        name: '68 alder.aar',
+      })
+      await user.click(button)
 
       await waitFor(async () => {
         expect(
@@ -938,7 +943,9 @@ describe('BeregningEnkel', () => {
       expect(
         await screen.findByText('beregning.tabell.vis')
       ).toBeInTheDocument()
-      expect(await screen.findByText('grunnlag.title')).toBeInTheDocument()
+      expect(
+        await screen.findByText('grunnlag.endring.title')
+      ).toBeInTheDocument()
       expect(
         await screen.findByText('grunnlag.forbehold.title')
       ).toBeInTheDocument()
@@ -980,9 +987,11 @@ describe('BeregningEnkel', () => {
       await store.dispatch(
         apiSliceUtils.apiSlice.endpoints.getLoependeVedtak.initiate()
       )
-      await user.click(await screen.findByText('68 alder.aar'))
-      const buttons = await screen.findAllByRole('button', { pressed: true })
-      expect(buttons[0]).toHaveTextContent('68 alder.aar')
+
+      const button = await screen.findByRole('button', {
+        name: '68 alder.aar',
+      })
+      await user.click(button)
 
       await waitFor(async () => {
         expect(

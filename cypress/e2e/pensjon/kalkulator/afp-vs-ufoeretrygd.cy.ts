@@ -13,7 +13,7 @@ describe('AFP vs uføretrygd', () => {
   describe('Som bruker som har logget inn i kalkulatoren, har gradert uføretrygd og er mindre enn 62 år,', () => {
     beforeEach(() => {
       cy.intercept(
-        { method: 'GET', url: '/pensjon/kalkulator/api/v4/person' },
+        { method: 'GET', url: '/pensjon/kalkulator/api/v5/person' },
         {
           ...personMock,
           foedselsdato: fødselsdatoYngreEnn62,
@@ -481,7 +481,7 @@ describe('AFP vs uføretrygd', () => {
         })
 
         it('forventer jeg informasjon i grunnlag om hvilken AFP som er beregnet.', () => {
-          cy.contains('Øvrig grunnlag for beregningen').should('be.visible')
+          cy.contains('Om pensjonen din').should('be.visible')
           cy.contains('AFP: Privat').should('be.visible')
         })
 
@@ -526,8 +526,8 @@ describe('AFP vs uføretrygd', () => {
           ).then((selectElements) => {
             const options = selectElements.find('option')
             expect(options.length).equal(13)
-            expect(options.eq(1).text()).equal('0 md. (mai)')
-            expect(options.eq(12).text()).equal('11 md. (apr.)')
+            expect(options.eq(1).text()).to.contain('0 md.')
+            expect(options.eq(12).text()).to.contain('11 md.')
           })
           cy.get(
             '[data-testid="age-picker-uttaksalder-helt-uttak-maaneder"]'
@@ -554,8 +554,8 @@ describe('AFP vs uføretrygd', () => {
           ).then((selectElements) => {
             const options = selectElements.find('option')
             expect(options.length).equal(13)
-            expect(options.eq(1).text()).equal('0 md. (mai)')
-            expect(options.eq(12).text()).equal('11 md. (apr.)')
+            expect(options.eq(1).text()).to.contain('0 md.')
+            expect(options.eq(12).text()).to.contain('11 md.')
           })
           cy.get(
             '[data-testid="age-picker-uttaksalder-helt-uttak-maaneder"]'

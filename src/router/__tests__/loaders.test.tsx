@@ -1,12 +1,14 @@
 import { add, endOfDay, format } from 'date-fns'
+import { LoaderFunctionArgs } from 'react-router'
 import { describe, it, vi } from 'vitest'
 
 import {
   fulfilledGetLoependeVedtak0Ufoeregrad,
   fulfilledGetPerson,
+  fulfilledPre1963GetPerson,
 } from '@/mocks/mockedRTKQueryApiCalls'
 import { mockErrorResponse, mockResponse } from '@/mocks/server'
-import { henvisningUrlParams, paths } from '@/router/constants'
+import { paths } from '@/router/constants'
 import type { Reason } from '@/router/loaders'
 import * as apiSliceUtils from '@/state/api/apiSlice'
 import { store } from '@/state/store'
@@ -18,18 +20,21 @@ import { DATE_BACKEND_FORMAT } from '@/utils/dates'
 
 import {
   authenticationGuard,
+  beregningEnkelAccessGuard,
   directAccessGuard,
   landingPageAccessGuard,
   stepAFPAccessGuard,
   stepSamtykkeOffentligAFPAccessGuard,
+  stepSamtykkePensjonsavtaler,
   stepSivilstandAccessGuard,
   stepStartAccessGuard,
   stepUfoeretrygdAFPAccessGuard,
+  stepUtenlandsoppholdAccessGuard,
 } from '../loaders'
 
 function expectRedirectResponse(
   returnedFromLoader: Response | object | undefined,
-  expectedLocation: string
+  expectedLocation?: string
 ) {
   expect(returnedFromLoader).toBeDefined()
   if (!returnedFromLoader) {
@@ -42,7 +47,19 @@ function expectRedirectResponse(
   }
 
   expect(returnedFromLoader.status).toBe(302)
-  expect(returnedFromLoader.headers.get('location')).toBe(expectedLocation)
+  if (expectedLocation) {
+    expect(returnedFromLoader.headers.get('location')).toBe(expectedLocation)
+  }
+}
+
+export function createMockRequest(
+  url = 'https://example.com'
+): LoaderFunctionArgs {
+  return {
+    request: new Request(url),
+    params: {},
+    context: {},
+  }
 }
 
 describe('Loaders', () => {
@@ -121,7 +138,7 @@ describe('Loaders', () => {
     })
 
     it('Når /person kall feiler med 403 status og reason er INVALID_REPRESENTASJON, redirigeres bruker til ingen-tilgang', async () => {
-      mockErrorResponse('/v4/person', {
+      mockErrorResponse('/v5/person', {
         status: 403,
         json: {
           reason: 'INVALID_REPRESENTASJON' as Reason,
@@ -136,7 +153,7 @@ describe('Loaders', () => {
     })
 
     it('Når /person kall feiler med 403 status og reason er INSUFFICIENT_LEVEL_OF_ASSURANCE, redirigeres bruker til uventet-feil', async () => {
-      mockErrorResponse('/v4/person', {
+      mockErrorResponse('/v5/person', {
         status: 403,
         json: {
           reason: 'INSUFFICIENT_LEVEL_OF_ASSURANCE' as Reason,
@@ -154,7 +171,7 @@ describe('Loaders', () => {
     })
 
     it('Når /person kall feiler med annen status redirigeres bruker til uventet-feil side', async () => {
-      mockErrorResponse('/v4/person', {
+      mockErrorResponse('/v5/person', {
         status: 503,
       })
 
@@ -163,24 +180,6 @@ describe('Loaders', () => {
       }))
 
       expectRedirectResponse(await stepStartAccessGuard(), paths.uventetFeil)
-    })
-
-    it('Når brukeren har medlemskap til Apoterkerne, redirigeres brukeren til riktig URL', async () => {
-      mockResponse('/v2/ekskludert', {
-        json: {
-          ekskludert: true,
-          aarsak: 'ER_APOTEKER',
-        },
-      })
-
-      store.getState = vi.fn().mockImplementation(() => ({
-        userInput: { ...userInputInitialState },
-      }))
-
-      expectRedirectResponse(
-        await stepStartAccessGuard(),
-        `${paths.henvisning}/${henvisningUrlParams.apotekerne}`
-      )
     })
 
     it('Når vedlikeholdsmodus er aktivert blir man redirigert', async () => {
@@ -206,26 +205,30 @@ describe('Loaders', () => {
         userInput: { ...userInputInitialState, samtykke: null },
       }))
 
-      expectRedirectResponse(await stepSivilstandAccessGuard(), '/start')
+      expectRedirectResponse(
+        await stepSivilstandAccessGuard(createMockRequest()),
+        '/start'
+      )
     })
 
-    it('returnerer person og grunnbelop', async () => {
+    it('returnerer person og grunnbeloep', async () => {
       store.getState = vi.fn().mockImplementation(() => ({
         api: { queries: { mock: 'mock' } },
         userInput: { ...userInputInitialState },
       }))
 
-      const returnedFromLoader = await stepSivilstandAccessGuard()
+      const returnedFromLoader =
+        await stepSivilstandAccessGuard(createMockRequest())
       expect(returnedFromLoader).toHaveProperty('person')
       if (!('person' in returnedFromLoader)) {
         throw new Error('person not in returnedFromLoader')
       }
 
       expect(returnedFromLoader.person.sivilstand).toBe('UGIFT')
-      expect(returnedFromLoader.grunnbelop).toBe(100000)
+      expect(returnedFromLoader.grunnbeloep).toBe(100000)
     })
 
-    it('returner undefined som grunnbelop dersom g.nav.no feiler', async () => {
+    it('returner undefined som grunnbeloep dersom g.nav.no feiler', async () => {
       mockErrorResponse('/api/v1/grunnbel%C3%B8p', {
         baseUrl: 'https://g.nav.no',
       })
@@ -234,12 +237,108 @@ describe('Loaders', () => {
         userInput: { ...userInputInitialState },
       }))
 
-      const returnedFromLoader = await stepSivilstandAccessGuard()
-      expect(returnedFromLoader).toHaveProperty('grunnbelop')
-      if (!('grunnbelop' in returnedFromLoader)) {
-        throw new Error('grunnbelop not in returnedFromLoader')
+      const returnedFromLoader =
+        await stepSivilstandAccessGuard(createMockRequest())
+      expect(returnedFromLoader).toHaveProperty('grunnbeloep')
+      if (!('grunnbeloep' in returnedFromLoader)) {
+        throw new Error('grunnbeloep not in returnedFromLoader')
       }
-      expect(returnedFromLoader.grunnbelop).toBeUndefined()
+      expect(returnedFromLoader.grunnbeloep).toBeUndefined()
+    })
+
+    it('redirigerer brukere født før 1963 med vedtak om alderspensjon', async () => {
+      mockResponse('/v5/person', {
+        json: {
+          navn: 'Test Person',
+          sivilstand: 'UGIFT',
+          foedselsdato: '1960-04-30',
+          pensjoneringAldre: {
+            normertPensjoneringsalder: { aar: 67, maaneder: 0 },
+            nedreAldersgrense: { aar: 62, maaneder: 0 },
+            oevreAldersgrense: { aar: 75, maaneder: 0 },
+          },
+        },
+      })
+      mockResponse('/v4/vedtak/loepende-vedtak', {
+        json: {
+          harLoependeVedtak: true,
+          ufoeretrygd: { grad: 0 },
+          alderspensjon: {
+            grad: 100,
+            fom: '2020-10-02',
+            sivilstand: 'UGIFT',
+          },
+        },
+      })
+      const mockedState = {
+        api: {
+          queries: {
+            ...fulfilledPre1963GetPerson,
+          },
+        },
+        userInput: { ...userInputInitialState, samtykke: null },
+      }
+
+      store.getState = vi.fn().mockImplementation(() => mockedState)
+
+      expectRedirectResponse(
+        await stepSivilstandAccessGuard(createMockRequest()),
+        '/utenlandsopphold'
+      )
+    })
+  })
+
+  describe('stepUtenlandsoppholdAccessGuard', () => {
+    it('kaller redirect til /start når ingen API-kall er registrert', async () => {
+      store.getState = vi.fn().mockImplementation(() => ({
+        api: { queries: {} },
+        userInput: { ...userInputInitialState, samtykke: null },
+      }))
+
+      expectRedirectResponse(
+        await stepUtenlandsoppholdAccessGuard(createMockRequest()),
+        '/start'
+      )
+    })
+    it('redirigerer brukere født før 1963 med vedtak om alderspensjon', async () => {
+      mockResponse('/v5/person', {
+        json: {
+          navn: 'Test Person',
+          sivilstand: 'UGIFT',
+          foedselsdato: '1960-04-30',
+          pensjoneringAldre: {
+            normertPensjoneringsalder: { aar: 67, maaneder: 0 },
+            nedreAldersgrense: { aar: 62, maaneder: 0 },
+            oevreAldersgrense: { aar: 75, maaneder: 0 },
+          },
+        },
+      })
+      mockResponse('/v4/vedtak/loepende-vedtak', {
+        json: {
+          harLoependeVedtak: true,
+          ufoeretrygd: { grad: 0 },
+          alderspensjon: {
+            grad: 100,
+            fom: '2020-10-02',
+            sivilstand: 'UGIFT',
+          },
+        },
+      })
+      const mockedState = {
+        api: {
+          queries: {
+            ...fulfilledPre1963GetPerson,
+          },
+        },
+        userInput: { ...userInputInitialState, samtykke: null },
+      }
+
+      store.getState = vi.fn().mockImplementation(() => mockedState)
+
+      expectRedirectResponse(
+        await stepUtenlandsoppholdAccessGuard(createMockRequest()),
+        '/afp'
+      )
     })
   })
 
@@ -277,7 +376,10 @@ describe('Loaders', () => {
         userInput: { ...userInputInitialState, samtykke: null },
       }))
 
-      expectRedirectResponse(await stepAFPAccessGuard(), '/start')
+      expectRedirectResponse(
+        await stepAFPAccessGuard(createMockRequest()),
+        '/start'
+      )
     })
 
     describe('Gitt at alle kallene er vellykket, ', () => {
@@ -288,7 +390,7 @@ describe('Loaders', () => {
         }
         store.getState = vi.fn().mockImplementation(() => mockedState)
 
-        const returnedFromLoader = stepAFPAccessGuard()
+        const returnedFromLoader = stepAFPAccessGuard(createMockRequest())
         await expect(returnedFromLoader).resolves.toMatchObject({
           loependeVedtak: { ufoeretrygd: { grad: 0 } },
         })
@@ -303,11 +405,11 @@ describe('Loaders', () => {
 
         mockResponse('/v4/vedtak/loepende-vedtak', {
           json: {
-            harLoependeVedtak: true,
             ufoeretrygd: { grad: 75 },
+            harLoependeVedtak: true,
           } satisfies LoependeVedtak,
         })
-        mockResponse('/v4/person', {
+        mockResponse('/v5/person', {
           json: {
             navn: 'Aprikos',
             sivilstand: 'UGIFT',
@@ -321,6 +423,10 @@ describe('Loaders', () => {
                 aar: 62,
                 maaneder: 0,
               },
+              oevreAldersgrense: {
+                aar: 75,
+                maaneder: 0,
+              },
             },
           } satisfies Person,
         })
@@ -331,7 +437,7 @@ describe('Loaders', () => {
         }
         store.getState = vi.fn().mockImplementation(() => mockedState)
 
-        const returnedFromLoader = stepAFPAccessGuard()
+        const returnedFromLoader = stepAFPAccessGuard(createMockRequest())
         await expect(returnedFromLoader).resolves.toMatchObject({
           person: { foedselsdato },
           loependeVedtak: { ufoeretrygd: { grad: 75 } },
@@ -347,11 +453,11 @@ describe('Loaders', () => {
 
         mockResponse('/v4/vedtak/loepende-vedtak', {
           json: {
-            harLoependeVedtak: true,
             ufoeretrygd: { grad: 75 },
+            harLoependeVedtak: true,
           } satisfies LoependeVedtak,
         })
-        mockResponse('/v4/person', {
+        mockResponse('/v5/person', {
           json: {
             navn: 'Aprikos',
             sivilstand: 'UGIFT',
@@ -365,6 +471,10 @@ describe('Loaders', () => {
                 aar: 62,
                 maaneder: 0,
               },
+              oevreAldersgrense: {
+                aar: 75,
+                maaneder: 0,
+              },
             },
           } satisfies Person,
         })
@@ -375,7 +485,10 @@ describe('Loaders', () => {
         }
         store.getState = vi.fn().mockImplementation(() => mockedState)
 
-        expectRedirectResponse(await stepAFPAccessGuard(), paths.ufoeretrygdAFP)
+        expectRedirectResponse(
+          await stepAFPAccessGuard(createMockRequest()),
+          paths.ufoeretrygdAFP
+        )
       })
 
       it('brukere med vedtak om afp-offentlig, er redirigert', async () => {
@@ -396,7 +509,10 @@ describe('Loaders', () => {
         }
         store.getState = vi.fn().mockImplementation(() => mockedState)
 
-        expectRedirectResponse(await stepAFPAccessGuard(), paths.ufoeretrygdAFP)
+        expectRedirectResponse(
+          await stepAFPAccessGuard(createMockRequest()),
+          paths.ufoeretrygdAFP
+        )
       })
 
       it('brukere med vedtak om afp-privat, er redirigert', async () => {
@@ -422,7 +538,10 @@ describe('Loaders', () => {
         }
         store.getState = vi.fn().mockImplementation(() => mockedState)
 
-        expectRedirectResponse(await stepAFPAccessGuard(), paths.ufoeretrygdAFP)
+        expectRedirectResponse(
+          await stepAFPAccessGuard(createMockRequest()),
+          paths.ufoeretrygdAFP
+        )
       })
 
       it('brukere med 100 % uføretrygd er redirigert', async () => {
@@ -448,7 +567,10 @@ describe('Loaders', () => {
         }
         store.getState = vi.fn().mockImplementation(() => mockedState)
 
-        expectRedirectResponse(await stepAFPAccessGuard(), paths.ufoeretrygdAFP)
+        expectRedirectResponse(
+          await stepAFPAccessGuard(createMockRequest()),
+          paths.ufoeretrygdAFP
+        )
       })
     })
 
@@ -483,7 +605,7 @@ describe('Loaders', () => {
       }
       store.getState = vi.fn().mockImplementation(() => mockedState)
 
-      const returnedFromLoader = stepAFPAccessGuard()
+      const returnedFromLoader = stepAFPAccessGuard(createMockRequest())
       await expect(returnedFromLoader).resolves.not.toThrow()
       await expect(returnedFromLoader).resolves.toMatchObject({
         person: {
@@ -516,7 +638,7 @@ describe('Loaders', () => {
       }
       store.getState = vi.fn().mockImplementation(() => mockedState)
 
-      const returnedFromLoader = stepAFPAccessGuard()
+      const returnedFromLoader = stepAFPAccessGuard(createMockRequest())
       // Når denne kaster så blir den fanget opp av ErrorBoundary som viser uventet feil
       await expect(returnedFromLoader).rejects.toThrow()
     })
@@ -551,7 +673,7 @@ describe('Loaders', () => {
       }
       store.getState = vi.fn().mockImplementation(() => mockedState)
 
-      const returnedFromLoader = stepAFPAccessGuard()
+      const returnedFromLoader = stepAFPAccessGuard(createMockRequest())
       await expect(returnedFromLoader).resolves.not.toThrow()
     })
 
@@ -581,11 +703,11 @@ describe('Loaders', () => {
       }
       store.getState = vi.fn().mockImplementation(() => mockedState)
 
-      const returnedFromLoader = stepAFPAccessGuard()
+      const returnedFromLoader = stepAFPAccessGuard(createMockRequest())
       await expect(returnedFromLoader).rejects.toThrow()
     })
 
-    it('Gitt at getEkskludertStatus har tidligere feilet kalles den på nytt. Når den er vellykket og viser at brukeren er apoteker, er brukeren redirigert', async () => {
+    it('Gitt at bruker er apoteker settes `erApoteker`', async () => {
       mockResponse('/v2/ekskludert', {
         status: 200,
         json: {
@@ -599,27 +721,19 @@ describe('Loaders', () => {
           queries: {
             ...mockedVellykketQueries,
             ...fulfilledGetLoependeVedtak0Ufoeregrad,
-            ['getEkskludertStatus(undefined)']: {
-              status: 'rejected',
-              endpointName: 'getEkskludertStatus',
-              requestId: 't1wLPiRKrfe_vchftk8s8',
-              error: {
-                status: 'FETCH_ERROR',
-                error: 'TypeError: Failed to fetch',
-              },
-              startedTimeStamp: 1714725797072,
-              fulfilledTimeStamp: 1714725797669,
-            },
           },
         },
         userInput: { ...userInputInitialState },
       }
       store.getState = vi.fn().mockImplementation(() => mockedState)
 
-      expectRedirectResponse(
-        await stepAFPAccessGuard(),
-        `${paths.henvisning}/${henvisningUrlParams.apotekerne}`
-      )
+      const returnedFromLoader = await stepAFPAccessGuard(createMockRequest())
+      expect(returnedFromLoader).toHaveProperty('erApoteker')
+      if (!('erApoteker' in returnedFromLoader)) {
+        throw new Error('erApoteker not in returnedFromLoader')
+      }
+
+      expect(returnedFromLoader.erApoteker).toBe(true)
     })
 
     it('Gitt at getEkskludertStatus har tidligere feilet kalles den på nytt. Når den er vellykket i tillegg til de to andre kallene kastes ikke feil', async () => {
@@ -653,7 +767,7 @@ describe('Loaders', () => {
       }
       store.getState = vi.fn().mockImplementation(() => mockedState)
 
-      const returnedFromLoader = stepAFPAccessGuard()
+      const returnedFromLoader = stepAFPAccessGuard(createMockRequest())
       await expect(returnedFromLoader).resolves.not.toThrow()
     })
 
@@ -681,9 +795,142 @@ describe('Loaders', () => {
       }
       store.getState = vi.fn().mockImplementation(() => mockedState)
 
-      const returnedFromLoader = stepAFPAccessGuard()
+      const returnedFromLoader = stepAFPAccessGuard(createMockRequest())
       await expect(returnedFromLoader).rejects.toThrow()
     })
+  })
+
+  it('Apotekere med uføretrygd skal ikke få AFP steg', async () => {
+    mockResponse('/v2/ekskludert', {
+      status: 200,
+      json: {
+        ekskludert: true,
+        aarsak: 'ER_APOTEKER',
+      },
+    })
+    mockResponse('/v4/vedtak/loepende-vedtak', {
+      json: {
+        harLoependeVedtak: true,
+        ufoeretrygd: { grad: 75 },
+      } satisfies LoependeVedtak,
+    })
+    const mockedState = {
+      api: { queries: { mock: 'mock' } },
+    }
+    store.getState = vi.fn().mockImplementation(() => mockedState)
+
+    const returnedFromLoader = await stepAFPAccessGuard(createMockRequest())
+
+    expectRedirectResponse(returnedFromLoader)
+  })
+
+  describe('Brukere med fremtidig vedtak uten gjeldene vedtak og AP', () => {
+    beforeEach(() => {
+      mockResponse('/v4/vedtak/loepende-vedtak', {
+        json: {
+          harLoependeVedtak: true,
+          fremtidigAlderspensjon: {
+            grad: 75,
+            fom: '2025-01-01',
+          },
+          ufoeretrygd: { grad: 0 },
+        } satisfies LoependeVedtak,
+      })
+    })
+    const mockedState = {
+      api: { queries: { mock: 'mock' } },
+    }
+    it('Apotekere skal hoppe over AFP steg', async () => {
+      mockResponse('/v2/ekskludert', {
+        status: 200,
+        json: {
+          ekskludert: true,
+          aarsak: 'ER_APOTEKER',
+        },
+      })
+      store.getState = vi.fn().mockImplementation(() => mockedState)
+
+      const returnedFromLoader = await stepAFPAccessGuard(createMockRequest())
+
+      expectRedirectResponse(returnedFromLoader)
+    })
+
+    it('Født før 1963 skal hoppe over AFP steg', async () => {
+      mockResponse('/v2/ekskludert', {
+        status: 200,
+        json: {
+          ekskludert: true,
+          aarsak: 'ER_APOTEKER',
+        },
+      })
+      store.getState = vi.fn().mockImplementation(() => mockedState)
+
+      const returnedFromLoader = await stepAFPAccessGuard(createMockRequest())
+
+      expectRedirectResponse(returnedFromLoader)
+    })
+
+    it('Født etter 1963 skal vise AFP steg', async () => {
+      mockResponse('/v5/person', {
+        status: 200,
+        json: {
+          foedselsdato: '1965-01-01',
+          navn: 'Test Person',
+          sivilstand: 'GIFT',
+          pensjoneringAldre: {
+            normertPensjoneringsalder: { aar: 67, maaneder: 0 },
+            nedreAldersgrense: { aar: 62, maaneder: 0 },
+            oevreAldersgrense: { aar: 75, maaneder: 0 },
+          },
+        } satisfies Person,
+      })
+      mockResponse('/v2/ekskludert', {
+        status: 200,
+        json: {
+          ekskludert: false,
+          aarsak: 'NONE',
+        },
+      })
+      store.getState = vi.fn().mockImplementation(() => mockedState)
+
+      const returnedFromLoader = await stepAFPAccessGuard(createMockRequest())
+
+      expect(returnedFromLoader instanceof Response).toBe(false)
+      if (!(returnedFromLoader instanceof Response) && returnedFromLoader) {
+        expect(returnedFromLoader.erApoteker).toBe(false)
+      }
+    })
+  })
+
+  it('Apotekere med vedtak om alderspensjon skal ikke få AFP steg', async () => {
+    mockResponse('/v2/ekskludert', {
+      status: 200,
+      json: {
+        ekskludert: true,
+        aarsak: 'ER_APOTEKER',
+      },
+    })
+    mockResponse('/v4/vedtak/loepende-vedtak', {
+      json: {
+        harLoependeVedtak: true,
+        alderspensjon: {
+          grad: 75,
+          fom: '2020-01-01',
+          sivilstand: 'UGIFT',
+        },
+        ufoeretrygd: {
+          grad: 0,
+        },
+      } satisfies LoependeVedtak,
+    })
+    const mockedState = {
+      api: { queries: { mock: 'mock' } },
+    }
+    store.getState = vi.fn().mockImplementation(() => mockedState)
+
+    const returnedFromLoader = await stepAFPAccessGuard(createMockRequest())
+
+    expectRedirectResponse(returnedFromLoader)
   })
 
   describe('stepUfoeretrygdAFPAccessGuard', () => {
@@ -694,7 +941,10 @@ describe('Loaders', () => {
       }
       store.getState = vi.fn().mockImplementation(() => mockedState)
 
-      expectRedirectResponse(await stepUfoeretrygdAFPAccessGuard(), paths.start)
+      expectRedirectResponse(
+        await stepUfoeretrygdAFPAccessGuard(createMockRequest()),
+        paths.start
+      )
     })
 
     it('Når brukeren ikke har uføretrygd, er hen redirigert', async () => {
@@ -705,7 +955,7 @@ describe('Loaders', () => {
       store.getState = vi.fn().mockImplementation(() => mockedState)
 
       expectRedirectResponse(
-        await stepUfoeretrygdAFPAccessGuard(),
+        await stepUfoeretrygdAFPAccessGuard(createMockRequest()),
         paths.samtykkeOffentligAFP
       )
     })
@@ -725,7 +975,8 @@ describe('Loaders', () => {
         }
         store.getState = vi.fn().mockImplementation(() => mockedState)
 
-        const returnedFromLoader = await stepUfoeretrygdAFPAccessGuard()
+        const returnedFromLoader =
+          await stepUfoeretrygdAFPAccessGuard(createMockRequest())
         expect(returnedFromLoader).toBeUndefined()
       })
 
@@ -746,7 +997,7 @@ describe('Loaders', () => {
         })
 
         expectRedirectResponse(
-          await stepUfoeretrygdAFPAccessGuard(),
+          await stepUfoeretrygdAFPAccessGuard(createMockRequest()),
           paths.samtykkeOffentligAFP
         )
       })
@@ -766,7 +1017,7 @@ describe('Loaders', () => {
         store.getState = vi.fn().mockImplementation(() => mockedState)
 
         expectRedirectResponse(
-          await stepUfoeretrygdAFPAccessGuard(),
+          await stepUfoeretrygdAFPAccessGuard(createMockRequest()),
           paths.samtykkeOffentligAFP
         )
       })
@@ -782,7 +1033,7 @@ describe('Loaders', () => {
       store.getState = vi.fn().mockImplementation(() => mockedState)
 
       expectRedirectResponse(
-        await stepSamtykkeOffentligAFPAccessGuard(),
+        await stepSamtykkeOffentligAFPAccessGuard(createMockRequest()),
         paths.start
       )
     })
@@ -797,7 +1048,8 @@ describe('Loaders', () => {
       }
       store.getState = vi.fn().mockImplementation(() => mockedState)
 
-      const returnedFromLoader = await stepSamtykkeOffentligAFPAccessGuard()
+      const returnedFromLoader =
+        await stepSamtykkeOffentligAFPAccessGuard(createMockRequest())
       expect(returnedFromLoader).toBeUndefined()
     })
 
@@ -818,7 +1070,8 @@ describe('Loaders', () => {
       }
       store.getState = vi.fn().mockImplementation(() => mockedState)
 
-      const returnedFromLoader = await stepSamtykkeOffentligAFPAccessGuard()
+      const returnedFromLoader =
+        await stepSamtykkeOffentligAFPAccessGuard(createMockRequest())
       expect(returnedFromLoader).toBeUndefined()
     })
 
@@ -833,9 +1086,146 @@ describe('Loaders', () => {
       store.getState = vi.fn().mockImplementation(() => mockedState)
 
       expectRedirectResponse(
-        await stepSamtykkeOffentligAFPAccessGuard(),
+        await stepSamtykkeOffentligAFPAccessGuard(createMockRequest()),
         paths.samtykke
       )
     })
+  })
+  describe('stepSamtykkePensjonsavtaler', () => {
+    it('Når bruker som ikke er kap19 er i endringsløp blir bruker ikke redirigert', async () => {
+      mockResponse('/v5/person', {
+        status: 200,
+        json: {
+          foedselsdato: '1965-01-01',
+          navn: 'Test Person',
+          sivilstand: 'GIFT',
+          pensjoneringAldre: {
+            normertPensjoneringsalder: { aar: 67, maaneder: 0 },
+            nedreAldersgrense: { aar: 62, maaneder: 0 },
+            oevreAldersgrense: { aar: 75, maaneder: 0 },
+          },
+        } satisfies Person,
+      })
+
+      mockResponse('/v4/vedtak/loepende-vedtak', {
+        status: 200,
+        json: {
+          harLoependeVedtak: true,
+          ufoeretrygd: { grad: 0 },
+          alderspensjon: {
+            grad: 100,
+            fom: '2023-01-01',
+            sivilstand: 'GIFT',
+          },
+        } satisfies LoependeVedtak,
+      })
+      const returnedFromLoader =
+        await stepSamtykkePensjonsavtaler(createMockRequest())
+      expect(returnedFromLoader).toEqual({ erApoteker: false, isKap19: false })
+    })
+
+    it('Hopper over steg dersom bruker er kap19 og har alderspensjon vedtak', async () => {
+      mockResponse('/v5/person', {
+        status: 200,
+        json: {
+          foedselsdato: '1962-01-01',
+          navn: 'Test Person',
+          sivilstand: 'GIFT',
+          pensjoneringAldre: {
+            normertPensjoneringsalder: { aar: 67, maaneder: 0 },
+            nedreAldersgrense: { aar: 62, maaneder: 0 },
+            oevreAldersgrense: { aar: 75, maaneder: 0 },
+          },
+        } satisfies Person,
+      })
+
+      mockResponse('/v4/vedtak/loepende-vedtak', {
+        status: 200,
+        json: {
+          harLoependeVedtak: true,
+          ufoeretrygd: { grad: 0 },
+          alderspensjon: {
+            grad: 100,
+            fom: '2023-01-01',
+            sivilstand: 'GIFT',
+          },
+        } satisfies LoependeVedtak,
+      })
+      const returnedFromLoader =
+        await stepSamtykkePensjonsavtaler(createMockRequest())
+
+      expectRedirectResponse(returnedFromLoader)
+    })
+
+    it('Hopper over steg dersom bruker er apoteker og har alderspensjon vedtak', async () => {
+      mockResponse('/v2/ekskludert', {
+        status: 200,
+        json: {
+          ekskludert: true,
+          aarsak: 'ER_APOTEKER',
+        },
+      })
+      mockResponse('/v5/person', {
+        status: 200,
+        json: {
+          foedselsdato: '1967-01-01',
+          navn: 'Test Person',
+          sivilstand: 'GIFT',
+          pensjoneringAldre: {
+            normertPensjoneringsalder: { aar: 67, maaneder: 0 },
+            nedreAldersgrense: { aar: 62, maaneder: 0 },
+            oevreAldersgrense: { aar: 75, maaneder: 0 },
+          },
+        } satisfies Person,
+      })
+
+      mockResponse('/v4/vedtak/loepende-vedtak', {
+        status: 200,
+        json: {
+          harLoependeVedtak: true,
+          ufoeretrygd: { grad: 0 },
+          alderspensjon: {
+            grad: 100,
+            fom: '2023-01-01',
+            sivilstand: 'GIFT',
+          },
+        } satisfies LoependeVedtak,
+      })
+      const returnedFromLoader =
+        await stepSamtykkePensjonsavtaler(createMockRequest())
+
+      expectRedirectResponse(returnedFromLoader)
+    })
+  })
+
+  describe('beregningEnkelAccessGuard', () => {
+    it('should redirect hvis bruker har løpende vedtak', async () => {
+      mockResponse('/v4/vedtak/loepende-vedtak', {
+        status: 200,
+        json: {
+          harLoependeVedtak: true,
+          ufoeretrygd: { grad: 0 },
+          alderspensjon: {
+            grad: 100,
+            fom: '2023-01-01',
+            sivilstand: 'GIFT',
+          },
+        } satisfies LoependeVedtak,
+      })
+      const returnedFromLoader = await beregningEnkelAccessGuard()
+      expectRedirectResponse(returnedFromLoader, paths.beregningAvansert)
+    })
+  })
+  it('should redirect hvis bruker har er kap. 19', async () => {
+    const mockedState = {
+      api: { queries: { mock: 'mock' } },
+      userInput: {
+        ...userInputInitialState,
+        afpUtregningValg: 'AFP_ETTERFULGT_AV_ALDERSPENSJON',
+      },
+    }
+    store.getState = vi.fn().mockImplementation(() => mockedState)
+    const returnedFromLoader = await beregningEnkelAccessGuard()
+    expectRedirectResponse(returnedFromLoader, paths.beregningAvansert)
   })
 })

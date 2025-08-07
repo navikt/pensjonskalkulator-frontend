@@ -10,7 +10,6 @@ import { BodyLong, Heading, Link, VStack } from '@navikt/ds-react'
 import { Grunnlag } from '@/components/Grunnlag'
 import { GrunnlagForbehold } from '@/components/GrunnlagForbehold'
 import { InfoOmLoependeVedtak } from '@/components/InfoOmLoependeVedtak'
-import { Pensjonsavtaler } from '@/components/Pensjonsavtaler'
 import { RedigerAvansertBeregning } from '@/components/RedigerAvansertBeregning'
 import { SavnerDuNoe } from '@/components/SavnerDuNoe'
 import { Simulering } from '@/components/Simulering'
@@ -28,6 +27,7 @@ import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
   selectAarligInntektFoerUttakBeloep,
   selectAfp,
+  selectAfpInntektMaanedFoerUttak,
   selectCurrentSimulation,
   selectEpsHarInntektOver2G,
   selectEpsHarPensjon,
@@ -36,6 +36,7 @@ import {
   selectNormertPensjonsalder,
   selectSamtykkeOffentligAFP,
   selectSivilstand,
+  selectSkalBeregneAfpKap19,
   selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
 import { formatUttaksalder } from '@/utils/alder'
@@ -54,6 +55,7 @@ export const BeregningAvansert = () => {
 
   const harSamtykketOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
   const afp = useAppSelector(selectAfp)
+  const skalBeregneAfpKap19 = useAppSelector(selectSkalBeregneAfpKap19)
   const isEndring = useAppSelector(selectIsEndring)
   const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const aarligInntektFoerUttakBeloep = useAppSelector(
@@ -64,6 +66,9 @@ export const BeregningAvansert = () => {
   const epsHarInntektOver2G = useAppSelector(selectEpsHarInntektOver2G)
   const sivilstand = useAppSelector(selectSivilstand)
   const { data: person } = useGetPersonQuery()
+  const afpInntektMaanedFoerUttak = useAppSelector(
+    selectAfpInntektMaanedFoerUttak
+  )
 
   const normertPensjonsalder = useAppSelector(selectNormertPensjonsalder)
   const utenlandsperioder = useAppSelector(selectUtenlandsperioder)
@@ -84,6 +89,7 @@ export const BeregningAvansert = () => {
         return generateAlderspensjonRequestBody({
           loependeVedtak,
           afp: afp === 'ja_offentlig' && !harSamtykketOffentligAFP ? null : afp,
+          skalBeregneAfpKap19: skalBeregneAfpKap19,
           sivilstand: sivilstand,
           epsHarPensjon: epsHarPensjon,
           epsHarInntektOver2G: epsHarInntektOver2G,
@@ -96,6 +102,7 @@ export const BeregningAvansert = () => {
           },
           utenlandsperioder,
           beregningsvalg,
+          afpInntektMaanedFoerUttak: afpInntektMaanedFoerUttak,
         })
       }
     }, [
@@ -123,8 +130,11 @@ export const BeregningAvansert = () => {
   useEffect(() => {
     if (uttaksalder) {
       if (alderspensjon && !alderspensjon?.vilkaarsproeving.vilkaarErOppfylt) {
+        const tekst = skalBeregneAfpKap19
+          ? 'Beregning AFP: Oppfyller ikke vilkår for AFP'
+          : 'Beregning avansert: Ikke høy nok opptjening'
         logger('alert vist', {
-          tekst: 'Beregning avansert: Ikke høy nok opptjening',
+          tekst,
           variant: 'warning',
         })
       } else if (isError) {
@@ -293,6 +303,7 @@ export const BeregningAvansert = () => {
               headingLevel="3"
               aarligInntektFoerUttakBeloep={aarligInntektFoerUttakBeloep ?? '0'}
               alderspensjonListe={alderspensjon?.alderspensjon}
+              pre2025OffentligAfp={alderspensjon?.pre2025OffentligAfp}
               afpPrivatListe={
                 (afp === 'ja_privat' || loependeVedtak.afpPrivat) &&
                 alderspensjon?.afpPrivat
@@ -332,21 +343,16 @@ export const BeregningAvansert = () => {
               />
             )}
 
-            {!isEndring && <Pensjonsavtaler headingLevel="2" />}
-
             <Grunnlag
               visning="avansert"
               headingLevel="2"
               harForLiteTrygdetid={alderspensjon?.harForLiteTrygdetid}
               trygdetid={alderspensjon?.trygdetid}
-              pensjonsbeholdning={
-                alderspensjon?.alderspensjon &&
-                alderspensjon?.alderspensjon.length > 0
-                  ? alderspensjon?.alderspensjon[0]
-                      .pensjonBeholdningFoerUttakBeloep
-                  : undefined
-              }
               isEndring={isEndring}
+              alderspensjonListe={alderspensjon?.alderspensjon}
+              afpPrivatListe={alderspensjon?.afpPrivat}
+              afpOffentligListe={alderspensjon?.afpOffentlig}
+              pre2025OffentligAfp={alderspensjon?.pre2025OffentligAfp}
             />
           </>
         )}
@@ -355,20 +361,12 @@ export const BeregningAvansert = () => {
       {!isError && (
         <>
           {isEndring && (
-            <div
-              className={clsx(styles.background, styles.background__lightblue)}
-            >
-              <div className={styles.container}>
-                <SavnerDuNoe headingLevel="3" isEndring={isEndring} />
-              </div>
+            <div className={styles.container}>
+              <SavnerDuNoe isEndring={isEndring} />
             </div>
           )}
 
-          <div
-            className={clsx(styles.container, {
-              [styles.container__endring]: !isEndring,
-            })}
-          >
+          <div className={styles.container}>
             <GrunnlagForbehold headingLevel="3" />
           </div>
         </>

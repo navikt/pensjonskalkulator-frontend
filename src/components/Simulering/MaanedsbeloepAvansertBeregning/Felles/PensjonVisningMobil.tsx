@@ -3,7 +3,10 @@ import { useIntl } from 'react-intl'
 
 import { Box, ReadMore, VStack } from '@navikt/ds-react'
 
-import { formatUttaksalder } from '@/utils/alder'
+import {
+  UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP,
+  formatUttaksalder,
+} from '@/utils/alder'
 
 import { Pensjonsdata } from '../hooks'
 import { PensjonDataVisning } from './PensjonDataVisning'
@@ -37,36 +40,44 @@ export const PensjonVisningMobil: React.FC<Props> = ({
   }
 
   return (
-    <Box
-      marginBlock="2 0"
-      borderRadius="medium"
-      padding="3"
-      background="bg-subtle"
-    >
+    <Box marginBlock="2 0" borderRadius="medium">
       <VStack gap="2">
-        {pensjonsdata.map((data, index) => (
-          <ReadMore
-            key={`mobile-${index}`}
-            defaultOpen={index === 0}
-            header={
-              intl.formatMessage({
-                id: 'beregning.avansert.maanedsbeloep.box_title',
-              }) +
-              formatUttaksalder(intl, data.alder) +
-              ((data.alderspensjon &&
-                !data.afp &&
-                !data.pensjonsavtale &&
-                ` (${hentUttaksmaanedOgAar(data.alder)})`) ||
-                '')
-            }
-          >
-            <PensjonDataVisning
-              pensjonsdata={data}
-              summerYtelser={summerYtelser}
-              hentUttaksMaanedOgAar={hentUttaksmaanedOgAar}
-            />
-          </ReadMore>
-        ))}
+        {pensjonsdata.map((data, index) => {
+          const formattedUttaksalder =
+            data.alderspensjon && data.pre2025OffentligAfp
+              ? `${UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP.aar} år`
+              : formatUttaksalder(intl, data.alder)
+          // Vis kalender maaned når det er bare en ytelse
+          const showKalenderMaaned =
+            [
+              data.alderspensjon,
+              data.afp,
+              data.pensjonsavtale,
+              data.pre2025OffentligAfp,
+            ].filter(Boolean).length === 1
+
+          return (
+            <ReadMore
+              key={`mobile-${index}`}
+              defaultOpen={index === 0}
+              header={
+                intl.formatMessage({
+                  id: 'beregning.avansert.maanedsbeloep.box_title',
+                }) +
+                formattedUttaksalder +
+                (showKalenderMaaned
+                  ? ` (${hentUttaksmaanedOgAar(data.alder)})`
+                  : '')
+              }
+            >
+              <PensjonDataVisning
+                pensjonsdata={data}
+                summerYtelser={summerYtelser}
+                hentUttaksMaanedOgAar={hentUttaksmaanedOgAar}
+              />
+            </ReadMore>
+          )
+        })}
       </VStack>
     </Box>
   )

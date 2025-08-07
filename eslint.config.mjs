@@ -51,9 +51,7 @@ export default [
       },
       // Needed for typed linting
       parserOptions: {
-        projectService: {
-          allowDefaultProject: ['schemaTypes/*', 'schemaTypes/common/*'],
-        },
+        projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
     },

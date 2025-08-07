@@ -155,6 +155,84 @@ describe('TidligstMuligUttaksalder', () => {
       ).not.toBeInTheDocument()
     })
 
+    it('når brukeren har loependeVedtakPre2025OffentligAfp vises riktig ingress.', async () => {
+      render(
+        <TidligstMuligUttaksalder
+          tidligstMuligUttak={{ aar: 62, maaneder: 9 }}
+          ufoeregrad={0}
+          show1963Text={false}
+          loependeVedtakPre2025OffentligAfp={true}
+        />,
+        {
+          preloadedState: {
+            api: {
+              //@ts-ignore
+              queries: {
+                ...fulfilledGetPerson,
+              },
+            },
+            userInput: {
+              ...userInputInitialState,
+            },
+          },
+        }
+      )
+      expect(
+        await screen.findByTestId(
+          'tidligstmuliguttak.pre2025OffentligAfp.ingress'
+        )
+      ).toBeInTheDocument()
+    })
+
+    it('når brukeren er over 75 år, vises riktig ingress.', async () => {
+      render(
+        <TidligstMuligUttaksalder
+          tidligstMuligUttak={{ aar: 62, maaneder: 9 }}
+          ufoeregrad={0}
+          show1963Text={true}
+          isOver75AndNoLoependeVedtak={true}
+        />,
+        {
+          preloadedState: {
+            api: {
+              //@ts-ignore
+              queries: {
+                ...fulfilledGetPerson,
+              },
+            },
+            userInput: {
+              ...userInputInitialState,
+            },
+          },
+        }
+      )
+      await waitFor(() => {
+        expect(screen.getByTestId('om_TMU')).toBeInTheDocument()
+        expect(
+          screen.getByText('Beregningen din viser at du kan ta ut', {
+            exact: false,
+          })
+        ).toBeInTheDocument()
+        expect(
+          screen.getByText('62 alder.aar string.og 9 alder.maaneder', {
+            exact: false,
+          })
+        ).toBeInTheDocument()
+
+        expect(
+          screen.queryByText('tidligstmuliguttak.1963.ingress_2')
+        ).not.toBeInTheDocument()
+        expect(
+          screen.queryByText('tidligstmuliguttak.1964.ingress_2')
+        ).not.toBeInTheDocument()
+      })
+      expect(
+        screen.queryByText(
+          'tidligstmuliguttak.info_omstillingsstoenad_og_gjenlevende'
+        )
+      ).not.toBeInTheDocument()
+    })
+
     it('når brukeren mottar omstillingsstønad eller gjenlevendepensjon, vises riktig alertboks.', async () => {
       render(
         <TidligstMuligUttaksalder

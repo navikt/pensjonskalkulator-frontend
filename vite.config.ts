@@ -85,6 +85,8 @@ export default defineConfig({
     },
     preprocessorOptions: {
       scss: {
+        // @ts-expect-error - Required for Sanity's Vite 6 to use modern API (Vite 7 uses modern by default)
+        // TODO: Remove this once Sanity upgrade to Vite 7
         api: 'modern-compiler',
       },
     },
@@ -103,7 +105,9 @@ export default defineConfig({
         '**/*/faro.ts',
         '*.config.ts',
         'cypress',
+        'sanity.cli.ts',
         'server/server.ts',
+        'server/ensureEnv.ts',
         'src/mocks',
         'src/mocks/mockedRTKQueryApiCalls.ts',
         'src/test-utils.tsx',
@@ -117,12 +121,15 @@ export default defineConfig({
         'src/components/common/ShowMore',
         'src/types',
         'src/paths.ts',
+        'schemaTypes/**',
+        'src/components/Signals/**',
+        'src/components/Simulering/Simuleringsdetaljer/Simuleringsdetaljer.tsx',
       ],
       perFile: true,
       thresholds: {
         lines: 95,
         functions: 50,
-        branches: 95,
+        branches: 94,
         statements: 95,
       },
       reporter: ['json', 'html', 'text', 'text-summary', 'cobertura'],

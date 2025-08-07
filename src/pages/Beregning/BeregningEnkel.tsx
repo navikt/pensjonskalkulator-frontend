@@ -8,7 +8,6 @@ import { Alert, Heading } from '@navikt/ds-react'
 
 import { Grunnlag } from '@/components/Grunnlag'
 import { GrunnlagForbehold } from '@/components/GrunnlagForbehold'
-import { Pensjonsavtaler } from '@/components/Pensjonsavtaler'
 import { SavnerDuNoe } from '@/components/SavnerDuNoe'
 import { Signals } from '@/components/Signals'
 import { Simulering } from '@/components/Simulering'
@@ -46,6 +45,7 @@ import {
 } from '@/state/userInput/selectors'
 import {
   getBrukerensAlderISluttenAvMaaneden,
+  isAlder75MaanedenFylt,
   isFoedtFoer1964,
 } from '@/utils/alder'
 import { logger } from '@/utils/logging'
@@ -239,6 +239,11 @@ export const BeregningEnkel = () => {
     maaneder: 0,
   }
 
+  const isOver75AndNoLoependeVedtak =
+    !loependeVedtak.harLoependeVedtak &&
+    !!person?.foedselsdato &&
+    isAlder75MaanedenFylt(person.foedselsdato)
+
   return (
     <>
       {showInntektAlert && (
@@ -270,6 +275,7 @@ export const BeregningEnkel = () => {
             loependeVedtakPre2025OffentligAfp={Boolean(
               loependeVedtak.pre2025OffentligAfp
             )}
+            isOver75AndNoLoependeVedtak={isOver75AndNoLoependeVedtak}
           />
         </div>
       </div>
@@ -332,6 +338,7 @@ export const BeregningEnkel = () => {
                   aarligInntektFoerUttakBeloep ?? '0'
                 }
                 alderspensjonListe={alderspensjon?.alderspensjon}
+                pre2025OffentligAfp={alderspensjon?.pre2025OffentligAfp}
                 afpPrivatListe={
                   !ufoeregrad &&
                   (afp === 'ja_privat' || loependeVedtak.afpPrivat)
@@ -360,21 +367,16 @@ export const BeregningEnkel = () => {
                 }
               />
 
-              {!isEndring && <Pensjonsavtaler headingLevel="3" />}
-
               <Grunnlag
                 visning="enkel"
-                headingLevel="3"
+                headingLevel="2"
                 harForLiteTrygdetid={alderspensjon?.harForLiteTrygdetid}
                 trygdetid={alderspensjon?.trygdetid}
-                pensjonsbeholdning={
-                  alderspensjon?.alderspensjon &&
-                  alderspensjon?.alderspensjon.length > 0
-                    ? alderspensjon?.alderspensjon[0]
-                        .pensjonBeholdningFoerUttakBeloep
-                    : undefined
-                }
                 isEndring={isEndring}
+                alderspensjonListe={alderspensjon?.alderspensjon}
+                afpPrivatListe={alderspensjon?.afpPrivat}
+                afpOffentligListe={alderspensjon?.afpOffentlig}
+                pre2025OffentligAfp={alderspensjon?.pre2025OffentligAfp}
               />
             </>
           )}
@@ -385,16 +387,8 @@ export const BeregningEnkel = () => {
         alderspensjon &&
         alderspensjon?.vilkaarsproeving.vilkaarErOppfylt && (
           <>
-            <div
-              className={clsx(styles.background, styles.background__lightblue)}
-            >
-              <div className={styles.container}>
-                <SavnerDuNoe
-                  headingLevel="3"
-                  isEndring={isEndring}
-                  showAvansert
-                />
-              </div>
+            <div className={styles.container}>
+              <SavnerDuNoe isEndring={isEndring} />
             </div>
 
             <div className={styles.container}>

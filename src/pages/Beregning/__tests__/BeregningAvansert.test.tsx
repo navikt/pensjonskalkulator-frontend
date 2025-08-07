@@ -162,6 +162,7 @@ describe('BeregningAvansert', () => {
         expect(initiateMock).toHaveBeenCalledWith(
           {
             aarligInntektFoerUttakBeloep: 521338,
+            afpInntektMaanedFoerUttak: undefined,
             epsHarInntektOver2G: false,
             epsHarPensjon: false,
             foedselsdato: '1963-04-30',
@@ -249,6 +250,7 @@ describe('BeregningAvansert', () => {
         expect(initiateMock).toHaveBeenCalledWith(
           {
             aarligInntektFoerUttakBeloep: 521338,
+            afpInntektMaanedFoerUttak: undefined,
             epsHarInntektOver2G: false,
             epsHarPensjon: false,
             foedselsdato: '1963-04-30',
@@ -341,6 +343,7 @@ describe('BeregningAvansert', () => {
         expect(initiateMock).toHaveBeenCalledWith(
           {
             aarligInntektFoerUttakBeloep: 521338,
+            afpInntektMaanedFoerUttak: undefined,
             epsHarInntektOver2G: false,
             epsHarPensjon: false,
             foedselsdato: '1963-04-30',
@@ -433,6 +436,7 @@ describe('BeregningAvansert', () => {
         expect(initiateMock).toHaveBeenCalledWith(
           {
             aarligInntektFoerUttakBeloep: 521338,
+            afpInntektMaanedFoerUttak: undefined,
             epsHarInntektOver2G: false,
             epsHarPensjon: false,
             foedselsdato: '1963-04-30',
@@ -515,7 +519,9 @@ describe('BeregningAvansert', () => {
           await screen.findByTestId('highcharts-done-drawing')
         ).toBeVisible()
 
-        expect(await screen.findByText('grunnlag.title')).toBeInTheDocument()
+        expect(
+          await screen.findByText('grunnlag.endring.title')
+        ).toBeInTheDocument()
         expect(
           await screen.findByText('grunnlag.forbehold.title')
         ).toBeInTheDocument()
@@ -752,7 +758,9 @@ describe('BeregningAvansert', () => {
       })
       expect(await screen.findByTestId('highcharts-done-drawing')).toBeVisible()
 
-      expect(await screen.findByText('grunnlag.title')).toBeInTheDocument()
+      expect(
+        await screen.findByText('grunnlag.endring.title')
+      ).toBeInTheDocument()
       expect(
         await screen.findByText('grunnlag.forbehold.title')
       ).toBeInTheDocument()
@@ -822,6 +830,7 @@ describe('BeregningAvansert', () => {
       expect(initiateMock).toHaveBeenCalledWith(
         {
           aarligInntektFoerUttakBeloep: 521338,
+          afpInntektMaanedFoerUttak: undefined,
           epsHarInntektOver2G: false,
           epsHarPensjon: false,
           foedselsdato: '1963-04-30',

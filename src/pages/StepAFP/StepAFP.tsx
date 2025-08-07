@@ -13,8 +13,8 @@ import { stepAFPAccessGuard } from '@/router/loaders'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
   selectAfp,
+  selectAfpUtregningValg,
   selectIsVeileder,
-  selectSkalBeregneAfp,
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
 import { isAlderOver67, isFoedtFoer1963, isOvergangskull } from '@/utils/alder'
@@ -23,9 +23,10 @@ import { isLoependeVedtakEndring } from '@/utils/loependeVedtak'
 export function StepAFP() {
   const intl = useIntl()
   const dispatch = useAppDispatch()
-  const { person, loependeVedtak } = useLoaderData<typeof stepAFPAccessGuard>()
+  const { person, loependeVedtak, erApoteker } =
+    useLoaderData<typeof stepAFPAccessGuard>()
   const previousAfp = useAppSelector(selectAfp)
-  const previousSkalBeregneAfp = useAppSelector(selectSkalBeregneAfp)
+  const previousAfpUtregningValg = useAppSelector(selectAfpUtregningValg)
   const isVeileder = useAppSelector(selectIsVeileder)
 
   const [{ onStegvisningNext, onStegvisningPrevious, onStegvisningCancel }] =
@@ -37,10 +38,10 @@ export function StepAFP() {
     })
   }, [])
 
-  const onNext = (afp: AfpRadio, skalBeregneAfp?: boolean | null): void => {
+  const onNext = (afp: AfpRadio, afpUtregningValg?: AfpUtregningValg) => {
     dispatch(userInputActions.setAfp(afp))
-    if (skalBeregneAfp && skalBeregneAfp !== null) {
-      dispatch(userInputActions.setSkalBeregneAfp(skalBeregneAfp))
+    if (afpUtregningValg || afpUtregningValg === null) {
+      dispatch(userInputActions.setAfpUtregningValg(afpUtregningValg))
     }
 
     if (onStegvisningNext) {
@@ -64,13 +65,13 @@ export function StepAFP() {
   }
 
   if (
-    isOvergangskull(person.foedselsdato) &&
+    (isOvergangskull(person.foedselsdato) || erApoteker) &&
     !isLoependeVedtakEndring(loependeVedtak)
   ) {
     return (
       <AFPOvergangskullUtenAP
         previousAfp={previousAfp}
-        previousSkalBeregneAfp={previousSkalBeregneAfp}
+        previousAfpUtregningValg={previousAfpUtregningValg}
         onCancel={isVeileder ? undefined : onStegvisningCancel}
         onPrevious={onStegvisningPrevious}
         onNext={onNext}

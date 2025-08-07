@@ -42,7 +42,7 @@ export const apiSlice = createApi({
       },
     }),
     getPerson: builder.query<Person, void>({
-      query: () => '/v4/person',
+      query: () => '/v5/person',
       providesTags: ['Person'],
       transformResponse: (response) => {
         if (!isPerson(response)) {
@@ -54,9 +54,9 @@ export const apiSlice = createApi({
         }
       },
     }),
-    getGrunnbelop: builder.query<number, void, { grunnbeløp: number }>({
+    getGrunnbeloep: builder.query<number, void>({
       query: () => 'https://g.nav.no/api/v1/grunnbel%C3%B8p',
-      transformResponse: (response) => {
+      transformResponse: (response: { grunnbeløp: number }) => {
         if (!response.grunnbeløp) {
           throw new Error(
             `Mottok ugyldig grunnbeløp: ${JSON.stringify(response)}`
@@ -65,7 +65,7 @@ export const apiSlice = createApi({
         return response.grunnbeløp
       },
     }),
-    getEkskludertStatus: builder.query<EkskludertStatus, void>({
+    getErApoteker: builder.query<boolean, void>({
       query: () => '/v2/ekskludert',
       transformResponse: (response) => {
         if (!isEkskludertStatus(response)) {
@@ -74,7 +74,7 @@ export const apiSlice = createApi({
             response as ErrorOptions
           )
         }
-        return response
+        return response.ekskludert && response.aarsak === 'ER_APOTEKER'
       },
     }),
     getOmstillingsstoenadOgGjenlevende: builder.query<
@@ -200,15 +200,6 @@ export const apiSlice = createApi({
         return response
       },
     }),
-    getSanityFeatureToggle: builder.query<UnleashToggle, void>({
-      query: () => '/feature/pensjonskalkulator.hent-tekster-fra-sanity',
-      transformResponse: (response: UnleashToggle) => {
-        if (!isUnleashToggle(response)) {
-          throw new Error(`Mottok ugyldig unleash response:`, response)
-        }
-        return response
-      },
-    }),
     getUtvidetSimuleringsresultatFeatureToggle: builder.query<
       UnleashToggle,
       void
@@ -240,8 +231,8 @@ export const {
   useGetAnsattIdQuery,
   useGetInntektQuery,
   useGetPersonQuery,
-  useGetGrunnbelopQuery,
-  useGetEkskludertStatusQuery,
+  useGetGrunnbeloepQuery,
+  useGetErApotekerQuery,
   useGetOmstillingsstoenadOgGjenlevendeQuery,
   useGetLoependeVedtakQuery,
   useOffentligTpQuery,
@@ -249,7 +240,6 @@ export const {
   useAlderspensjonQuery,
   usePensjonsavtalerQuery,
   useGetSpraakvelgerFeatureToggleQuery,
-  useGetSanityFeatureToggleQuery,
   useGetVedlikeholdsmodusFeatureToggleQuery,
   useGetUtvidetSimuleringsresultatFeatureToggleQuery,
 } = apiSlice
