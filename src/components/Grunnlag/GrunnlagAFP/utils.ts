@@ -160,7 +160,7 @@ export const generateAfpContent =
           }
 
           case 'ja_privat': {
-            if (beregningsvalg === 'uten_afp') {
+            if (beregningsvalg === 'uten_afp' || beregningsvalg === null) {
               return content.afpPrivatIkkeBeregnet_5
             }
             return content.afpPrivat_4
