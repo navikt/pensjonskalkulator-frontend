@@ -104,8 +104,12 @@ export const generateAfpContent =
     const hasLoependeVedtak = loependeVedtak?.harLoependeVedtak === true
     const isKap19 = isFoedtFoer1963(foedselsdato)
     const hasAfpPrivat = loependeVedtak?.afpPrivat !== undefined
-    const hasAfpOffentlig = loependeVedtak?.afpOffentlig !== undefined
+    const hasAfpOffentlig =
+      loependeVedtak?.afpOffentlig !== undefined ||
+      loependeVedtak?.pre2025OffentligAfp !== undefined
     const hasAlderspensjon = loependeVedtak?.alderspensjon !== undefined
+    const hasFremtidigAlderspensjon =
+      loependeVedtak?.fremtidigAlderspensjon !== undefined
     const isAfpValgMissing = afpValg === null || afpValg === undefined
 
     // Personer født før 1963 eller apotekere behandles likt for AFP-formål
@@ -126,10 +130,12 @@ export const generateAfpContent =
         return content.afpIkkeSvart_6
       }
 
-      // Manglende afpValg med vedtak om alderspensjon eller uføretrygd
+      // Manglende afpValg med vedtak om alderspensjon, fremtidig alderspensjon eller uføretrygd
       if (
         afpValg === null &&
-        (hasAlderspensjon || hasUfoeregradGreaterThanZero)
+        (hasAlderspensjon ||
+          hasFremtidigAlderspensjon ||
+          hasUfoeregradGreaterThanZero)
       ) {
         return content.afpUforetrygd_9
       }
