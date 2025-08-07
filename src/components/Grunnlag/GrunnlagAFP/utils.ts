@@ -8,7 +8,6 @@
 import { IntlShape } from 'react-intl'
 
 import { isFoedtFoer1963 } from '@/utils/alder'
-import { getFormatMessageValues } from '@/utils/translations'
 
 interface IAfpGrunnlagInput {
   /** Dersom bruker er kap19/apoteker kan man velge å beregne offentlig AFP sammen med aldersensjon */
@@ -107,6 +106,7 @@ export const generateAfpContent =
     const hasAfpPrivat = loependeVedtak?.afpPrivat !== undefined
     const hasAfpOffentlig = loependeVedtak?.afpOffentlig !== undefined
     const hasAlderspensjon = loependeVedtak?.alderspensjon !== undefined
+    const isAfpValgMissing = afpValg === null || afpValg === undefined
 
     // Personer født før 1963 eller apotekere behandles likt for AFP-formål
     const isKap19OrApoteker = isKap19 || erApoteker
@@ -138,54 +138,62 @@ export const generateAfpContent =
     // Prioritet 3: Håndter tilfeller med uføretrygd
     if (hasUfoeregradGreaterThanZero) {
       // Tilfelle 3.1: Født før 1963 eller apoteker med manglende AFP-valg
-      if (isKap19OrApoteker && (afpValg === null || afpValg === undefined)) {
+      if (isKap19OrApoteker && isAfpValgMissing) {
         return content.afpUforetrygd_9
       }
 
       // Tilfelle 3.2: Personer som verken er født før 1963 eller er apoteker, med uføretrygd
       if (!isKap19OrApoteker) {
-        // Tilfelle 3.2.1: Privat AFP uten AFP-beregning
-        if (afpValg === 'ja_privat' && beregningsvalg === 'uten_afp') {
-          return content.afpPrivatIkkeBeregnet_5
-        }
+        // Håndter ulike AFP-valg med uføretrygd
+        switch (afpValg) {
+          case 'ja_offentlig': {
+            // Manglende samtykke til AFP-beregning (prioriteres høyest)
+            if (samtykkeOffentligAFP === false) {
+              return content.offentligIkkeBeregnet_1
+            }
 
-        // Tilfelle 3.2.2: Offentlig AFP uten AFP-beregning
-        if (afpValg === 'ja_offentlig' && beregningsvalg === 'uten_afp') {
-          return content.offentligAfpOgUforeKanIkkeBeregnes_3
-        }
+            if (beregningsvalg === 'uten_afp' || beregningsvalg === null) {
+              return content.offentligAfpOgUforeKanIkkeBeregnes_3
+            }
 
-        // Tilfelle 3.2.3: Ingen AFP-valg med uføretrygd
-        if (afpValg === 'nei' || afpValg === null || afpValg === undefined) {
-          // Spesialtilfelle for gradert vedtak uten 100% uføregrad
-          if (!has100PercentUfoeretrygd && !isKap19 && afpValg === 'nei') {
-            return content.afpIkkeSvart_6
+            return content.afpOffentligOppgitt_2
           }
 
-          // Spesialtilfeller for løpende ytelser
-          if (!isKap19OrApoteker && (hasLoependeVedtak || hasAlderspensjon)) {
+          case 'ja_privat': {
+            if (beregningsvalg === 'uten_afp') {
+              return content.afpPrivatIkkeBeregnet_5
+            }
+            return content.afpPrivat_4
+          }
+
+          case 'nei': {
+            // Spesialtilfelle for gradert vedtak uten 100% uføregrad
+            if (!has100PercentUfoeretrygd && !isKap19) {
+              return content.afpIkkeSvart_6
+            }
             return content.afpUforetrygdNei_10
           }
 
-          return content.afpUforetrygdNei_10
-        }
+          case 'vet_ikke': {
+            return content.afpVetIkkeUforetrygd_8
+          }
 
-        // Tilfelle 3.2.4: "Vet ikke" med uføretrygd
-        if (afpValg === 'vet_ikke') {
-          return content.afpVetIkkeUforetrygd_8
+          default: {
+            // Tilfelle for null/undefined
+            if (!isKap19OrApoteker && (hasLoependeVedtak || hasAlderspensjon)) {
+              return content.afpUforetrygdNei_10
+            }
+            return content.afpUforetrygdNei_10
+          }
         }
       }
     }
 
-    // Prioritet 4: Håndter AFP-valg basert på forskjellige betingelser
+    // Prioritet 4: Håndter AFP-valg basert på forskjellige betingelser (for tilfeller uten uføretrygd)
     switch (afpValg) {
       case 'ja_offentlig': {
         // Tilfelle 4.1: Født 1963 eller senere (og ikke apoteker) med offentlig AFP
         if (!isKap19OrApoteker) {
-          // Uføretrygd uten AFP-beregning
-          if (hasUfoeregradGreaterThanZero && beregningsvalg === 'uten_afp') {
-            return content.offentligAfpOgUforeKanIkkeBeregnes_3
-          }
-
           // Manglende samtykke til AFP-beregning
           if (samtykkeOffentligAFP === false) {
             return content.offentligIkkeBeregnet_1
@@ -213,21 +221,13 @@ export const generateAfpContent =
       }
 
       case 'nei': {
-        // Tilfelle 4.4: Ingen AFP med mulig uføretrygd
-        if (hasUfoeregradGreaterThanZero) {
-          return content.afpUforetrygdNei_10
-        }
-
+        // Tilfelle 4.4: Ingen AFP
         return content.afpIkkeSvart_6
       }
 
       case 'vet_ikke':
       default: {
-        // Tilfelle 4.5: "Vet ikke" med mulig uføretrygd
-        if (hasUfoeregradGreaterThanZero) {
-          return content.afpVetIkkeUforetrygd_8
-        }
-
+        // Tilfelle 4.5: "Vet ikke"
         return content.afpVetIkke_7
       }
     }
