@@ -385,7 +385,7 @@ describe('afpContent', () => {
           )
         })
 
-        it('AFP Valg: Ja, offentlig sektor, har samtykket, skal IKKE beregne AFP (er null)', () => {
+        it('AFP Valg: Ja, offentlig sektor, har samtykket, skal IKKE beregne AFP (beregningsvalg === null)', () => {
           const actual = generateAfpContent(intl)({
             erApoteker: false,
             afpValg: 'ja_offentlig',
@@ -410,6 +410,20 @@ describe('afpContent', () => {
             loependeVedtak,
             samtykkeOffentligAFP: null,
             beregningsvalg: 'uten_afp',
+          })
+
+          expect(actual).toStrictEqual(afpOutput.afpPrivatIkkeBeregnet_5)
+        })
+
+        it('AFP Valg: Ja, privat sektor, skal IKKE beregne AFP (afpUtregning === null)', () => {
+          const actual = generateAfpContent(intl)({
+            erApoteker: false,
+            afpValg: 'ja_privat',
+            afpUtregning: null,
+            foedselsdato,
+            loependeVedtak,
+            samtykkeOffentligAFP: null,
+            beregningsvalg: null,
           })
 
           expect(actual).toStrictEqual(afpOutput.afpPrivatIkkeBeregnet_5)
