@@ -115,14 +115,6 @@ beforeEach(() => {
   cy.intercept(
     {
       method: 'GET',
-      url: '/pensjon/kalkulator/api/feature/pensjonskalkulator.enable-redirect-1963',
-    },
-    { fixture: 'toggle-enable-redirect-1963.json' }
-  ).as('getFeatureToggleRedirect1963')
-
-  cy.intercept(
-    {
-      method: 'GET',
       url: '/pensjon/kalkulator/api/feature/pensjonskalkulator.vedlikeholdsmodus',
     },
     { enabled: false }
