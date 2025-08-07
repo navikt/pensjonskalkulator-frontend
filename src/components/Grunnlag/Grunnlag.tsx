@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useNavigate } from 'react-router'
@@ -22,6 +23,7 @@ import {
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
 import { BeregningVisning } from '@/types/common-types'
+import { logger } from '@/utils/logging'
 import { formatSivilstand } from '@/utils/sivilstand'
 import { getFormatMessageValues } from '@/utils/translations'
 
@@ -103,6 +105,23 @@ export const Grunnlag: React.FC<Props> = ({
     !afpPrivatDetaljerListe.length &&
     !pre2025OffentligAfpDetaljerListe.length
 
+  const handleReadMoreChange = ({
+    isOpen,
+    ytelse,
+  }: {
+    isOpen: boolean
+    ytelse: string
+  }) => {
+    if (ytelse === 'AFP') {
+      setIsAFPDokumentasjonVisible(isOpen)
+    } else {
+      setIsAlderspensjonDetaljerVisible(isOpen)
+    }
+
+    const name = `Grunnlag: Vis detaljer for ${ytelse}`
+    logger(isOpen ? 'show more åpnet' : 'show more lukket', { tekst: name })
+  }
+
   return (
     <section className={styles.section}>
       <Heading level={headingLevel} size="medium">
@@ -153,8 +172,13 @@ export const Grunnlag: React.FC<Props> = ({
                       }
                     )
               }
-              className={`${styles.visListekomponenter} ${styles.wideDetailedView}`}
-              onOpenChange={setIsAFPDokumentasjonVisible}
+              className={clsx(
+                styles.visListekomponenter,
+                styles.wideDetailedView
+              )}
+              onOpenChange={(open) =>
+                handleReadMoreChange({ isOpen: open, ytelse: 'AFP' })
+              }
             >
               <AfpDetaljerGrunnlag
                 afpPrivatDetaljerListe={afpPrivatDetaljerListe}
@@ -222,48 +246,52 @@ export const Grunnlag: React.FC<Props> = ({
                 />
               )}
             </BodyLong>
-
-            <ReadMore
-              name="Listekomponenter for alderspensjon"
-              open={isAlderspensjonDetaljerVisible}
-              header={
-                isAlderspensjonDetaljerVisible
-                  ? intl.formatMessage(
-                      {
-                        id: 'beregning.detaljer.lukk',
-                      },
-                      {
-                        ...getFormatMessageValues(),
-                        ytelse: 'alderspensjon',
-                      }
-                    )
-                  : intl.formatMessage(
-                      {
-                        id: 'beregning.detaljer.vis',
-                      },
-                      {
-                        ...getFormatMessageValues(),
-                        ytelse: 'alderspensjon',
-                      }
-                    )
-              }
-              className={`${styles.visListekomponenter} ${styles.wideDetailedView}`}
-              onOpenChange={setIsAlderspensjonDetaljerVisible}
-            >
-              <AlderspensjonDetaljerGrunnlag
-                alderspensjonDetaljerListe={alderspensjonDetaljerListe}
-                hasPre2025OffentligAfpUttaksalder={Boolean(
-                  opptjeningPre2025OffentligAfpListe?.length
-                )}
-              />
-              <FormattedMessage
-                id="grunnlag.alderspensjon.ingress.link"
-                values={{
-                  ...getFormatMessageValues(),
-                }}
-              />
-            </ReadMore>
           </VStack>
+          <ReadMore
+            name="Listekomponenter for alderspensjon"
+            open={isAlderspensjonDetaljerVisible}
+            header={
+              isAlderspensjonDetaljerVisible
+                ? intl.formatMessage(
+                    {
+                      id: 'beregning.detaljer.lukk',
+                    },
+                    {
+                      ...getFormatMessageValues(),
+                      ytelse: 'alderspensjon',
+                    }
+                  )
+                : intl.formatMessage(
+                    {
+                      id: 'beregning.detaljer.vis',
+                    },
+                    {
+                      ...getFormatMessageValues(),
+                      ytelse: 'alderspensjon',
+                    }
+                  )
+            }
+            className={clsx(
+              styles.visListekomponenter,
+              styles.wideDetailedView
+            )}
+            onOpenChange={(open) =>
+              handleReadMoreChange({ isOpen: open, ytelse: 'AP' })
+            }
+          >
+            <AlderspensjonDetaljerGrunnlag
+              alderspensjonDetaljerListe={alderspensjonDetaljerListe}
+              hasPre2025OffentligAfpUttaksalder={Boolean(
+                opptjeningPre2025OffentligAfpListe?.length
+              )}
+            />
+            <FormattedMessage
+              id="grunnlag.alderspensjon.ingress.link"
+              values={{
+                ...getFormatMessageValues(),
+              }}
+            />
+          </ReadMore>
         </GrunnlagItem>
       </HStack>
 

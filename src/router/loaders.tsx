@@ -242,6 +242,11 @@ export const stepSivilstandAccessGuard = async ({
     .dispatch(apiSlice.endpoints.getErApoteker.initiate())
     .unwrap()
 
+  logger('info', {
+    tekst: 'Er apoteker',
+    data: erApoteker ? 'Ja' : 'Nei',
+  })
+
   const [person, grunnbeloep] = await Promise.all([
     getPersonQuery,
     getGrunnbeloepQuery,
@@ -249,6 +254,11 @@ export const stepSivilstandAccessGuard = async ({
 
   const isEndring = isLoependeVedtakEndring(loependeVedtak)
   const isKap19 = isFoedtFoer1963(person.foedselsdato)
+
+  logger('info', {
+    tekst: 'Født før 1963',
+    data: isKap19 ? 'Ja' : 'Nei',
+  })
 
   const stepArrays = getStepArrays(isEndring, isKap19 || erApoteker)
 
@@ -332,6 +342,12 @@ export const stepAFPAccessGuard = async ({ request }: LoaderFunctionArgs) => {
     (loependeVedtak.ufoeretrygd.grad &&
       person.foedselsdato &&
       isFoedselsdatoOverAlder(person.foedselsdato, AFP_UFOERE_OPPSIGELSESALDER))
+  ) {
+    return skip(stepArrays, paths.afp, request)
+  } else if (
+    (erApoteker || isKap19) &&
+    loependeVedtak.fremtidigAlderspensjon &&
+    !loependeVedtak.alderspensjon
   ) {
     return skip(stepArrays, paths.afp, request)
   } else if (erApoteker && isEndring) {
