@@ -1,10 +1,11 @@
 import React from 'react'
 import { useIntl } from 'react-intl'
-import { useLoaderData, useLocation, useNavigation } from 'react-router'
+import { useSelector } from 'react-redux'
+import { useLocation, useNavigation } from 'react-router'
 
 import { Loader } from '@/components/common/Loader'
 import { HOST_BASEURL } from '@/paths'
-import { LoginContext, authenticationGuard } from '@/router/loaders'
+import { RootState } from '@/state/store'
 
 import { CheckLoginOnFocus } from './CheckLoginOnFocus'
 import { FrameComponent } from './FrameComponent'
@@ -37,7 +38,9 @@ export const PageFramework: React.FC<{
   const intl = useIntl()
   const { pathname } = useLocation()
   const { state } = useNavigation()
-  const { authResponse } = useLoaderData<typeof authenticationGuard>()
+  const isLoggedIn = useSelector(
+    (rootState: RootState) => rootState.session.isLoggedIn
+  )
 
   React.useEffect(() => {
     window.scrollTo(0, 0)
@@ -55,36 +58,15 @@ export const PageFramework: React.FC<{
     )
   }
 
-  // * Når det oppstår en feil ved fetch: Hvis det er påkrevd å være pålogget rediriger til login,
-  // * hvis ikke "fail silently", vis siden som vanlig og sett isLoggedIn til false.
-  if (!authResponse.ok) {
-    if (shouldRedirectNonAuthenticated) {
-      return <RedirectElement />
-    }
-    return (
-      <FrameComponent {...rest}>
-        {children &&
-          React.cloneElement(children, {
-            context: {
-              isLoggedIn: false,
-            } satisfies LoginContext,
-          })}
-      </FrameComponent>
-    )
+  if (!isLoggedIn && shouldRedirectNonAuthenticated) {
+    return <RedirectElement />
   }
 
   return (
     <CheckLoginOnFocus
       shouldRedirectNonAuthenticated={shouldRedirectNonAuthenticated}
     >
-      <FrameComponent {...rest}>
-        {children &&
-          React.cloneElement(children, {
-            context: {
-              isLoggedIn: authResponse.ok,
-            } satisfies LoginContext,
-          })}
-      </FrameComponent>
+      <FrameComponent {...rest}>{children}</FrameComponent>
     </CheckLoginOnFocus>
   )
 }
