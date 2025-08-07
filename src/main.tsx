@@ -9,6 +9,7 @@ import { BASE_PATH } from '@/router/constants'
 import { routes } from '@/router/routes'
 
 import { store } from './state/store'
+import { applyGoogleTranslateFix } from './utils/googleTranslateWorkaround'
 
 import './scss/designsystem.scss'
 import '@/utils/logging'
@@ -37,6 +38,7 @@ if (process.env.NODE_ENV === 'development') {
   console.log('[MSW] Ready - external scripts can now load')
 }
 
+applyGoogleTranslateFix()
 const root = document.getElementById('root')
 
 if (!root) {

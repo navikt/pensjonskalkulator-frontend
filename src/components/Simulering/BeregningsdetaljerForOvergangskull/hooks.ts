@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { useAppSelector } from '@/state/hooks'
 import { selectCurrentSimulation } from '@/state/userInput/selectors'
-import { formatInntekt } from '@/utils/inntekt'
+import { formatDecimalWithComma, formatInntekt } from '@/utils/inntekt'
 
 export interface DetaljRad {
   tekst: string
@@ -59,7 +59,10 @@ function getAlderspensjonDetaljerListe(
 ) {
   const alderspensjonDetaljerListe: AlderspensjonDetaljerListe[] = []
 
-  const getAlderspensjonDetails = (ap: AlderspensjonPensjonsberegning) => {
+  const getAlderspensjonDetails = (
+    ap: AlderspensjonPensjonsberegning,
+    shouldShowParentheses: boolean
+  ) => {
     const grunnpensjon =
       ap.grunnpensjon && ap.grunnpensjon > 0
         ? Math.round(ap.grunnpensjon / 12)
@@ -92,31 +95,45 @@ function getAlderspensjonDetaljerListe(
 
     return [
       {
-        tekst: 'Grunnpensjon (kap. 19)',
+        tekst: shouldShowParentheses
+          ? 'Grunnpensjon (kap. 19)'
+          : 'Grunnpensjon',
         verdi: `${formatInntekt(grunnpensjon)} kr`,
       },
       {
-        tekst: 'Tilleggspensjon (kap. 19)',
+        tekst: shouldShowParentheses
+          ? 'Tilleggspensjon (kap. 19)'
+          : 'Tilleggspensjon',
         verdi: `${formatInntekt(tilleggspensjon)} kr`,
       },
       {
-        tekst: 'Skjermingstillegg (kap. 19)',
+        tekst: shouldShowParentheses
+          ? 'Skjermingstillegg (kap. 19)'
+          : 'Skjermingstillegg',
         verdi: `${formatInntekt(skjermingstillegg)} kr`,
       },
       {
-        tekst: 'Pensjonstillegg (kap. 19)',
+        tekst: shouldShowParentheses
+          ? 'Pensjonstillegg (kap. 19)'
+          : 'Pensjonstillegg',
         verdi: `${formatInntekt(pensjonstillegg)} kr`,
       },
       {
-        tekst: 'Gjenlevendetillegg (kap. 19)',
+        tekst: shouldShowParentheses
+          ? 'Gjenlevendetillegg (kap. 19)'
+          : 'Gjenlevendetillegg',
         verdi: `${formatInntekt(gjenlevendetillegg)} kr`,
       },
       {
-        tekst: 'Inntektspensjon (kap. 20)',
+        tekst: shouldShowParentheses
+          ? 'Inntektspensjon (kap. 20)'
+          : 'Inntektspensjon',
         verdi: `${formatInntekt(inntektspensjonBeloep)} kr`,
       },
       {
-        tekst: 'Garantipensjon (kap. 20)',
+        tekst: shouldShowParentheses
+          ? 'Garantipensjon (kap. 20)'
+          : 'Garantipensjon',
         verdi: `${formatInntekt(garantipensjonBeloep)} kr`,
       },
       {
@@ -138,23 +155,33 @@ function getAlderspensjonDetaljerListe(
     if (ap.andelsbroekKap19 === 0) {
       return []
     }
+
+    const sumPoengaar = (ap.poengaarFoer92 ?? 0) + (ap.poengaarEtter91 ?? 0)
+
     return [
       {
         tekst: 'Andelsbrøk',
         verdi: ap.andelsbroekKap19 ? `${ap.andelsbroekKap19 * 10}/10` : 0,
       },
-      { tekst: 'Sluttpoengtall', verdi: ap.sluttpoengtall },
+      {
+        tekst: 'Sluttpoengtall',
+        verdi: ap.sluttpoengtall
+          ? formatDecimalWithComma(ap.sluttpoengtall)
+          : 0,
+      },
       {
         tekst: 'Poengår',
-        verdi: (ap.poengaarFoer92 ?? 0) + (ap.poengaarEtter91 ?? 0),
+        verdi: `${sumPoengaar} år`,
       },
-      { tekst: 'Trygdetid', verdi: ap.trygdetidKap19 },
+      {
+        tekst: 'Trygdetid',
+        verdi: ap.trygdetidKap19 ? `${ap.trygdetidKap19} år` : '0 år',
+      },
     ].filter(
       (rad) =>
-        rad.verdi !== undefined &&
-        (rad.tekst === 'Poengår' ||
-          rad.tekst === 'Trygdetid' ||
-          (rad.verdi !== 0 && rad.verdi !== '10/10'))
+        rad.tekst === 'Poengår' ||
+        rad.tekst === 'Trygdetid' ||
+        (rad.verdi !== 0 && rad.verdi !== '10/10')
     )
   }
 
@@ -168,25 +195,32 @@ function getAlderspensjonDetaljerListe(
         tekst: 'Andelsbrøk',
         verdi: ap.andelsbroekKap20 ? `${ap.andelsbroekKap20 * 10}/10` : 0,
       },
-      { tekst: 'Trygdetid', verdi: ap.trygdetidKap20 },
+      {
+        tekst: 'Trygdetid',
+        verdi: ap.trygdetidKap20 ? `${ap.trygdetidKap20} år` : '0 år',
+      },
       {
         tekst: 'Pensjonsbeholdning',
-        verdi: `${formatInntekt(ap.pensjonBeholdningFoerUttakBeloep)} kr`,
+        verdi: `${formatInntekt(ap.pensjonBeholdningFoerUttakBeloep ?? 0)} kr`,
       },
     ].filter(
       (rad) =>
-        rad.verdi !== undefined &&
-        (rad.tekst === 'Trygdetid' ||
-          rad.tekst === 'Pensjonsbeholdning' ||
-          (rad.verdi !== 0 && rad.verdi !== '10/10'))
+        rad.tekst === 'Trygdetid' ||
+        rad.tekst === 'Pensjonsbeholdning' ||
+        (rad.verdi !== 0 && rad.verdi !== '10/10')
     )
   }
 
   alderspensjonListeForValgtUttaksalder.forEach((ap) => {
+    const opptjeningKap19 = getOpptjeningKap19Details(ap)
+    const opptjeningKap20 = getOpptjeningKap20Details(ap)
+    const hasKap19 = opptjeningKap19.length > 0
+    const hasKap20 = opptjeningKap20.length > 0
+
     const obj = {
-      alderspensjon: getAlderspensjonDetails(ap),
-      opptjeningKap19: getOpptjeningKap19Details(ap),
-      opptjeningKap20: getOpptjeningKap20Details(ap),
+      alderspensjon: getAlderspensjonDetails(ap, hasKap19 && hasKap20),
+      opptjeningKap19,
+      opptjeningKap20,
     }
     alderspensjonDetaljerListe.push(obj)
   })
@@ -298,21 +332,27 @@ export function useBeregningsdetaljer(
         return [
           {
             tekst: 'Kompensasjonstillegg',
-            verdi: `${formatInntekt(afp.kompensasjonstillegg)} kr`,
+            verdi: afp.kompensasjonstillegg
+              ? `${formatInntekt(afp.kompensasjonstillegg)} kr`
+              : 0,
           },
           {
             tekst: 'Kronetillegg',
-            verdi: `${formatInntekt(afp.kronetillegg)} kr`,
+            verdi: afp.kronetillegg
+              ? `${formatInntekt(afp.kronetillegg)} kr`
+              : 0,
           },
           {
             tekst: 'Livsvarig del',
-            verdi: `${formatInntekt(afp.livsvarig)} kr`,
+            verdi: afp.livsvarig ? `${formatInntekt(afp.livsvarig)} kr` : 0,
           },
           {
             tekst: 'Sum AFP',
-            verdi: `${formatInntekt(afp.maanedligBeloep)} kr`,
+            verdi: afp.maanedligBeloep
+              ? `${formatInntekt(afp.maanedligBeloep)} kr`
+              : 0,
           },
-        ].filter((rad) => rad.verdi !== '0 kr')
+        ].filter((rad) => rad.verdi !== 0)
       })
     })()
 
@@ -340,28 +380,44 @@ export function useBeregningsdetaljer(
       ]
     })()
 
-    const opptjeningPre2025OffentligAfpListe: DetaljRad[] = pre2025OffentligAfp
-      ? [
-          { tekst: 'AFP grad', verdi: pre2025OffentligAfp.afpGrad },
-          {
-            tekst: 'Sluttpoengtall',
-            verdi: pre2025OffentligAfp.sluttpoengtall,
-          },
-          {
-            tekst: 'Poengår',
-            verdi:
-              (pre2025OffentligAfp.poengaarTom1991 ?? 0) +
-              (pre2025OffentligAfp.poengaarFom1992 ?? 0),
-          },
-          { tekst: 'Trygdetid', verdi: pre2025OffentligAfp.trygdetid },
-        ].filter(
-          (rad) =>
-            rad.verdi !== undefined &&
-            (rad.tekst === 'Poengår' ||
-              rad.tekst === 'Trygdetid' ||
-              rad.verdi !== 0)
-        )
-      : []
+    const opptjeningPre2025OffentligAfpListe: DetaljRad[] = (() => {
+      if (!pre2025OffentligAfp) {
+        return []
+      }
+      const sumPoengaarPre2025OffentligAfp =
+        (pre2025OffentligAfp.poengaarTom1991 ?? 0) +
+        (pre2025OffentligAfp.poengaarFom1992 ?? 0)
+
+      return [
+        {
+          tekst: 'AFP grad',
+          verdi: pre2025OffentligAfp.afpGrad
+            ? `${pre2025OffentligAfp.afpGrad} %`
+            : 0,
+        },
+        {
+          tekst: 'Sluttpoengtall',
+          verdi: pre2025OffentligAfp.sluttpoengtall
+            ? formatDecimalWithComma(pre2025OffentligAfp.sluttpoengtall)
+            : 0,
+        },
+        {
+          tekst: 'Poengår',
+          verdi: `${sumPoengaarPre2025OffentligAfp} år`,
+        },
+        {
+          tekst: 'Trygdetid',
+          verdi: pre2025OffentligAfp.trygdetid
+            ? `${pre2025OffentligAfp.trygdetid} år`
+            : 0,
+        },
+      ].filter(
+        (rad) =>
+          rad.tekst === 'Poengår' ||
+          rad.tekst === 'Trygdetid' ||
+          rad.verdi !== 0
+      )
+    })()
 
     return {
       alderspensjonDetaljerListe,
