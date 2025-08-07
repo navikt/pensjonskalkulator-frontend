@@ -690,13 +690,13 @@ describe('afpContent', () => {
 
           expect(actual).toStrictEqual(afpOutput.afpPrivatUendret_11)
         })
-        it('vedtak om gammel AFP offentlig', () => {
+        it('vedtak om gammel AFP offentlig, ikke samtykket', () => {
           const loependeVedtak: LoependeVedtak = {
             harLoependeVedtak: true,
             ufoeretrygd: {
               grad: 0,
             },
-            afpOffentlig: {
+            pre2025OffentligAfp: {
               fom: '2022-01-01',
             },
           }
@@ -983,6 +983,31 @@ describe('afpContent', () => {
           })
 
           expect(actual).toStrictEqual(afpOutput.harAfpOffentlig_12)
+        })
+
+        it('med fremtidig vedtak', () => {
+          const loependeVedtak: LoependeVedtak = {
+            harLoependeVedtak: false,
+            ufoeretrygd: {
+              grad: 0,
+            },
+            fremtidigAlderspensjon: {
+              fom: '2027-01-01',
+              grad: 100,
+            },
+          }
+
+          const actual = generateAfpContent(intl)({
+            erApoteker: erApoteker,
+            afpValg: null,
+            afpUtregning: null,
+            foedselsdato,
+            loependeVedtak,
+            samtykkeOffentligAFP: true,
+            beregningsvalg: null,
+          })
+
+          expect(actual).toStrictEqual(afpOutput.afpUforetrygd_9)
         })
       })
     })
