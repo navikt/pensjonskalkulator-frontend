@@ -146,7 +146,7 @@ function getAlderspensjonDetaljerListe(
             inntektspensjonBeloep +
             garantipensjonBeloep +
             gjenlevendetillegg
-        )} kr`,
+        )} kr`,
       },
     ].filter((rad) => rad.verdi !== '0 kr')
   }
@@ -392,7 +392,7 @@ export function useBeregningsdetaljer(
         {
           tekst: 'AFP grad',
           verdi: pre2025OffentligAfp.afpGrad
-            ? `${pre2025OffentligAfp.afpGrad} %`
+            ? `${pre2025OffentligAfp.afpGrad} %`
             : 0,
         },
         {
