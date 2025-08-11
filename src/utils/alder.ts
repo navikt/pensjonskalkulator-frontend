@@ -305,21 +305,20 @@ export function getMaanedString(
   return ''
 }
 
-export const formaterSluttAlderString = (
+export const getSluttAlderStringParts = (
   intl: IntlShape,
   startAlder: Alder,
   sluttAlder: Alder
-) => {
-  return `${capitalize(
+): [string, string] => {
+  const firstPart = `${capitalize(
     intl.formatMessage({
       id: 'string.fra',
     })
   )} ${startAlder.aar} ${intl.formatMessage({
     id: 'alder.aar',
-  })}${getMaanedString(
-    intl.formatMessage,
-    startAlder.maaneder
-  )} ${intl.formatMessage({
+  })}${getMaanedString(intl.formatMessage, startAlder.maaneder)}`
+
+  const secondPart = `${intl.formatMessage({
     id: 'string.til',
   })} ${sluttAlder.aar} ${intl.formatMessage({
     id: 'alder.aar',
@@ -328,6 +327,21 @@ export const formaterSluttAlderString = (
       ? getMaanedString(intl.formatMessage, sluttAlder.maaneder)
       : ''
   }`
+
+  return [firstPart, secondPart]
+}
+
+export const formaterSluttAlderString = (
+  intl: IntlShape,
+  startAlder: Alder,
+  sluttAlder: Alder
+): string => {
+  const [firstPart, secondPart] = getSluttAlderStringParts(
+    intl,
+    startAlder,
+    sluttAlder
+  )
+  return `${firstPart} ${secondPart}`
 }
 
 export const formaterLivsvarigString = (intl: IntlShape, startAlder: Alder) => {
