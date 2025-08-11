@@ -93,7 +93,7 @@ export const stepStartAccessGuard = async () => {
   store.dispatch(apiSlice.endpoints.getGrunnbeloep.initiate())
   store.dispatch(apiSlice.endpoints.getErApoteker.initiate())
 
-  const isLoggedIn = store.getState().session.isLoggedIn
+  const isLoggedIn = Boolean(store.getState()?.session?.isLoggedIn)
 
   const [vedlikeholdsmodusFeatureToggle, getLoependeVedtakRes, getPersonRes] =
     await Promise.all([

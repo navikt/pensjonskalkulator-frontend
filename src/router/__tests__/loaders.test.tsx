@@ -131,6 +131,7 @@ describe('Loaders', () => {
       mockErrorResponse('/v4/vedtak/loepende-vedtak')
 
       store.getState = vi.fn().mockImplementation(() => ({
+        session: { isLoggedIn: true },
         userInput: { ...userInputInitialState },
       }))
 
@@ -146,6 +147,7 @@ describe('Loaders', () => {
       })
 
       store.getState = vi.fn().mockImplementation(() => ({
+        session: { isLoggedIn: true },
         userInput: { ...userInputInitialState },
       }))
 
@@ -161,6 +163,7 @@ describe('Loaders', () => {
       })
 
       store.getState = vi.fn().mockImplementation(() => ({
+        session: { isLoggedIn: true },
         userInput: { ...userInputInitialState },
       }))
 
@@ -176,6 +179,7 @@ describe('Loaders', () => {
       })
 
       store.getState = vi.fn().mockImplementation(() => ({
+        session: { isLoggedIn: true },
         userInput: { ...userInputInitialState },
       }))
 
@@ -188,6 +192,7 @@ describe('Loaders', () => {
       })
 
       store.getState = vi.fn().mockImplementation(() => ({
+        session: { isLoggedIn: true },
         userInput: { ...userInputInitialState },
       }))
 

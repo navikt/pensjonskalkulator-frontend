@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useIntl } from 'react-intl'
 import { useSelector } from 'react-redux'
 import { useLocation, useNavigation } from 'react-router'
@@ -11,7 +11,7 @@ import { CheckLoginOnFocus } from './CheckLoginOnFocus'
 import { FrameComponent } from './FrameComponent'
 
 function RedirectElement() {
-  React.useEffect(() => {
+  useEffect(() => {
     window.open(
       `${HOST_BASEURL}/oauth2/login?redirect=${encodeURIComponent(window.location.pathname)}`,
       '_self'
@@ -42,9 +42,13 @@ export const PageFramework: React.FC<{
     (rootState: RootState) => rootState.session.isLoggedIn
   )
 
-  React.useEffect(() => {
+  useEffect(() => {
     window.scrollTo(0, 0)
   }, [pathname])
+
+  if (!isLoggedIn && shouldRedirectNonAuthenticated) {
+    return <RedirectElement />
+  }
 
   if (state === 'loading' && showLoader) {
     return (
@@ -56,10 +60,6 @@ export const PageFramework: React.FC<{
         />
       </FrameComponent>
     )
-  }
-
-  if (!isLoggedIn && shouldRedirectNonAuthenticated) {
-    return <RedirectElement />
   }
 
   return (
