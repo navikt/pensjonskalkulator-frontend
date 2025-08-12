@@ -679,6 +679,7 @@ export const onAvansertBeregningSubmit = (
 
   if (uttaksgradFormData === '100 %') {
     dispatch(userInputActions.setCurrentSimulationGradertUttaksperiode(null))
+
     logger('radiogroup valgt', {
       tekst: 'Inntekt vsa. helt uttak',
       valg: inntektVsaHeltUttakRadioFormData === 'ja' ? 'ja' : 'nei',
@@ -735,6 +736,11 @@ export const onAvansertBeregningSubmit = (
 
     logger('valg av uttaksalder for gradert alderspensjon', {
       tekst: `${gradertUttakAarFormData} år og ${gradertUttakMaanederFormData} md.`, // eslint-disable-line @typescript-eslint/no-base-to-string, @typescript-eslint/restrict-template-expressions
+    })
+
+    logger('radiogroup valgt', {
+      tekst: 'Inntekt vsa. gradert uttak',
+      valg: inntektVsaGradertUttakRadioFormData === 'ja' ? 'ja' : 'nei',
     })
 
     if (inntektVsaGradertUttakFormData) {
