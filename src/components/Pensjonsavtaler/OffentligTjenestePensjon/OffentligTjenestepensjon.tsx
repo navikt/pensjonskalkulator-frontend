@@ -174,7 +174,7 @@ export const OffentligTjenestepensjon = (props: {
                         </th>
                         <td align="right">
                           {formatInntekt(utbetalingsperiode.aarligUtbetaling)}{' '}
-                          <FormattedMessage id="pensjonsavtaler.kr_pr_aar" />
+                          <FormattedMessage id="pensjonsavtaler_mobil.kr_pr_aar" />
                         </td>
                       </tr>
                     )
