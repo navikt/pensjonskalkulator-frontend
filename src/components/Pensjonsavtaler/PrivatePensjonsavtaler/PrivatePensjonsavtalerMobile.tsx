@@ -44,60 +44,46 @@ const AvtaleGruppe: React.FC<AvtaleGruppeProps> = ({
           <Heading level={subHeadingLevel} size="xsmall">
             {pensjonsavtale.produktbetegnelse}
           </Heading>
-          <Divider smallMargin />
           <table className={styles.table}>
             <tbody>
               {pensjonsavtale.utbetalingsperioder.map(
                 (utbetalingsperiode, utbetalingsperiodeIndex) => (
-                  <React.Fragment
-                    key={`utbetalingsperiode-${utbetalingsperiodeIndex}`}
-                  >
-                    <tr>
-                      <th
-                        style={{
-                          fontWeight: 'normal',
-                          maxWidth: '2rem',
-                        }}
-                        scope="row"
-                        align="left"
-                      >
-                        <BodyShort>
-                          {utbetalingsperiode.sluttAlder
-                            ? getSluttAlderStringParts(
-                                intl,
-                                utbetalingsperiode.startAlder,
-                                utbetalingsperiode.sluttAlder
-                              ).map((part, partIndex) => (
-                                <React.Fragment key={`part-${partIndex}`}>
-                                  {partIndex > 0 && <br />}
-                                  {part}
-                                </React.Fragment>
-                              ))
-                            : formaterLivsvarigString(
-                                intl,
-                                utbetalingsperiode.startAlder
-                              )}
-                        </BodyShort>
-                      </th>
-                      <td align="right">
-                        {formatInntekt(utbetalingsperiode.aarligUtbetaling)}{' '}
-                        <FormattedMessage id="pensjonsavtaler_mobil.kr_pr_aar" />
-                      </td>
-                    </tr>
-                    {utbetalingsperiodeIndex <
-                      pensjonsavtale.utbetalingsperioder.length - 1 && (
-                      <tr>
-                        <td colSpan={2}>
-                          <Divider xsmallMargin />
-                        </td>
-                      </tr>
-                    )}
-                  </React.Fragment>
+                  <tr key={`utbetalingsperiode-${utbetalingsperiodeIndex}`}>
+                    <th
+                      style={{
+                        fontWeight: 'normal',
+                      }}
+                      scope="row"
+                      align="left"
+                    >
+                      <BodyShort>
+                        {utbetalingsperiode.sluttAlder
+                          ? getSluttAlderStringParts(
+                              intl,
+                              utbetalingsperiode.startAlder,
+                              utbetalingsperiode.sluttAlder
+                            ).map((part, partIndex) => (
+                              <>
+                                {partIndex > 0 && <br />}
+                                {part}
+                              </>
+                            ))
+                          : formaterLivsvarigString(
+                              intl,
+                              utbetalingsperiode.startAlder
+                            )}
+                      </BodyShort>
+                    </th>
+                    <td align="right">
+                      {formatInntekt(utbetalingsperiode.aarligUtbetaling)}{' '}
+                      <FormattedMessage id="pensjonsavtaler_mobil.kr_pr_aar" />
+                    </td>
+                  </tr>
                 )
               )}
             </tbody>
           </table>
-          <Divider smallMargin />
+          <Divider xsmallMargin />
         </div>
       ))}
     </VStack>

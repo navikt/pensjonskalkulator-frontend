@@ -18,6 +18,7 @@ import { selectAfp } from '@/state/userInput/selectors'
 import {
   formaterLivsvarigString,
   formaterSluttAlderString,
+  getSluttAlderStringParts,
 } from '@/utils/alder'
 import { formatInntekt } from '@/utils/inntekt'
 import { getFormatMessageValues } from '@/utils/translations'
@@ -156,16 +157,20 @@ export const OffentligTjenestepensjon = (props: {
                           align="left"
                         >
                           {utbetalingsperiode.sluttAlder
-                            ? formaterSluttAlderString(
+                            ? getSluttAlderStringParts(
                                 intl,
                                 utbetalingsperiode.startAlder,
                                 utbetalingsperiode.sluttAlder
-                              )
+                              ).map((part, partIndex) => (
+                                <>
+                                  {partIndex > 0 && <br />}
+                                  {part}
+                                </>
+                              ))
                             : formaterLivsvarigString(
                                 intl,
                                 utbetalingsperiode.startAlder
                               )}
-                          :
                         </th>
                         <td align="right">
                           {formatInntekt(utbetalingsperiode.aarligUtbetaling)}{' '}
@@ -176,6 +181,7 @@ export const OffentligTjenestepensjon = (props: {
                   )}
                 </tbody>
               </table>
+              <Divider noMargin />
             </>
           ) : (
             <Table data-testid="offentlig-tjenestepensjon-desktop">
