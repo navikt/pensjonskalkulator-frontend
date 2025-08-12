@@ -677,12 +677,18 @@ export const onAvansertBeregningSubmit = (
     tekst: `${heltUttakAarFormData} år og ${heltUttakMaanederFormData} md.`, // eslint-disable-line @typescript-eslint/no-base-to-string, @typescript-eslint/restrict-template-expressions
   })
 
+  logger('radiogroup valgt', {
+    tekst: 'Inntekt vsa. helt uttak',
+    valg: inntektVsaHeltUttakRadioFormData === 'ja' ? 'ja' : 'nei',
+  })
+
+  logger('radiogroup valgt', {
+    tekst: 'Inntekt vsa. gradert uttak',
+    valg: inntektVsaGradertUttakRadioFormData === 'ja' ? 'ja' : 'nei',
+  })
+
   if (uttaksgradFormData === '100 %') {
     dispatch(userInputActions.setCurrentSimulationGradertUttaksperiode(null))
-    logger('radiogroup valgt', {
-      tekst: 'Inntekt vsa. helt uttak',
-      valg: inntektVsaHeltUttakRadioFormData ? 'ja' : 'nei',
-    })
   } else if (afpInntektMaanedFoerUttakRadioFormData) {
     // * AFP etterfulgt av AP
     const afpInntektMaanedFoerUttak =
@@ -736,10 +742,6 @@ export const onAvansertBeregningSubmit = (
       tekst: `${gradertUttakAarFormData} år og ${gradertUttakMaanederFormData} md.`, // eslint-disable-line @typescript-eslint/no-base-to-string, @typescript-eslint/restrict-template-expressions
     })
     if (inntektVsaGradertUttakFormData) {
-      logger('radiogroup valgt', {
-        tekst: 'Inntekt vsa. gradert uttak',
-        valg: inntektVsaGradertUttakRadioFormData ? 'ja' : 'nei',
-      })
       logger('valg av inntekt vsa. gradert pensjon (antall sifre)', {
         tekst: `${(inntektVsaGradertUttakFormData as string).replace(/ /g, '').length}`,
       })
