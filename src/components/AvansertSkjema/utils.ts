@@ -764,6 +764,11 @@ export const onAvansertBeregningSubmit = (
     )
   }
 
+  logger('radiogroup valgt', {
+    tekst: 'Inntekt vsa. helt uttak',
+    valg: inntektVsaHeltUttakRadioFormData === 'ja' ? 'ja' : 'nei',
+  })
+
   if (inntektVsaHeltUttakFormData !== null) {
     logger('valg av inntekt vsa. 100 % pensjon (antall sifre)', {
       tekst: `${(inntektVsaHeltUttakFormData as string).replace(/ /g, '').length}`,
