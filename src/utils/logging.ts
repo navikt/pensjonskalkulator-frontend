@@ -1,68 +1,49 @@
 import {
-  AmplitudeEvent,
-  getAmplitudeInstance,
+  AnalyticsEvent,
+  getAnalyticsInstance,
 } from '@navikt/nav-dekoratoren-moduler'
 
 import { isAnchorTag } from '@/state/api/typeguards'
 
-type IExtendedAmpltitudeEvents =
-  | AmplitudeEvent<'readmore åpnet', { tekst: string }>
-  | AmplitudeEvent<'readmore lukket', { tekst: string }>
-  | AmplitudeEvent<'accordion åpnet', { tekst: string }>
-  | AmplitudeEvent<'accordion lukket', { tekst: string }>
-  | AmplitudeEvent<'expansion card åpnet', { tekst: string }>
-  | AmplitudeEvent<'expansion card lukket', { tekst: string }>
-  | AmplitudeEvent<'modal åpnet', { tekst: string }>
-  | AmplitudeEvent<'modal lukket', { tekst: string }>
-  | AmplitudeEvent<'radiogroup valgt', { tekst: string; valg: string }>
-  | AmplitudeEvent<'button klikk', { tekst: string }>
-  | AmplitudeEvent<'chip valgt', { tekst: string; data: string }>
-  | AmplitudeEvent<'chip avvalgt', { tekst: string; data: string }>
-  | AmplitudeEvent<
+type IExtendedAnalyticsEvents =
+  | AnalyticsEvent<'readmore åpnet', { tekst: string }>
+  | AnalyticsEvent<'readmore lukket', { tekst: string }>
+  | AnalyticsEvent<'radiogroup valgt', { tekst: string; valg: string }>
+  | AnalyticsEvent<'button klikk', { tekst: string }>
+  | AnalyticsEvent<'chip valgt', { tekst: string; data: string }>
+  | AnalyticsEvent<'chip avvalgt', { tekst: string; data: string }>
+  | AnalyticsEvent<
       'grunnlag for beregningen',
       { tekst: string; data: string | number }
     >
-  | AmplitudeEvent<
+  | AnalyticsEvent<
       'valg av uttaksalder for 100 % alderspensjon',
       { tekst: string; data: string }
     >
-  | AmplitudeEvent<
+  | AnalyticsEvent<
       'valg av uttaksalder for gradert alderspensjon',
       { tekst: string; data: string }
     >
-  | AmplitudeEvent<'valg av uttaksgrad', { tekst: string; data: string }>
-  | AmplitudeEvent<
-      'valg av inntekt vsa. gradert pensjon (antall sifre)',
-      { tekst: string; data: string }
-    >
-  | AmplitudeEvent<
-      'valg av inntekt vsa. 100 % pensjon (antall sifre)',
-      { tekst: string }
-    >
-  | AmplitudeEvent<'graf tooltip åpnet', { data: string }>
-  | AmplitudeEvent<'table expand åpnet', { tekst: string; data: string }>
-  | AmplitudeEvent<'table expand lukket', { tekst: string; data: string }>
-  | AmplitudeEvent<'help text åpnet', { tekst: string }>
-  | AmplitudeEvent<'help text lukket', { tekst: string }>
-  | AmplitudeEvent<'alert vist', { tekst: string; variant: string }>
-  | AmplitudeEvent<
-      'skjema validering feilet',
-      { skjemanavn: string; data: string; tekst: string }
-    >
-  | AmplitudeEvent<'feilside', { tekst: string }>
-  | AmplitudeEvent<'link åpnet', { href?: string; target?: string }>
-  | AmplitudeEvent<'info', { tekst: string; data: string | number }>
-  | AmplitudeEvent<'show more åpnet', { tekst: string }>
-  | AmplitudeEvent<'show more lukket', { tekst: string }>
-  | AmplitudeEvent<'resultat vist', { tekst: string }>
+  | AnalyticsEvent<'valg av uttaksgrad', { tekst: string; data: string }>
+  | AnalyticsEvent<'graf tooltip åpnet', { data: string }>
+  | AnalyticsEvent<'table expand åpnet', { tekst: string; data: string }>
+  | AnalyticsEvent<'table expand lukket', { tekst: string; data: string }>
+  | AnalyticsEvent<'help text åpnet', { tekst: string }>
+  | AnalyticsEvent<'help text lukket', { tekst: string }>
+  | AnalyticsEvent<'feilside', { tekst: string }>
+  | AnalyticsEvent<'link åpnet', { href?: string; target?: string }>
+  | AnalyticsEvent<'info', { tekst: string; data: string | number }>
+  | AnalyticsEvent<'show more åpnet', { tekst: string }>
+  | AnalyticsEvent<'show more lukket', { tekst: string }>
+  | AnalyticsEvent<'resultat vist', { tekst: string }>
 
 export const logger =
-  getAmplitudeInstance<IExtendedAmpltitudeEvents>('dekoratoren')
+  getAnalyticsInstance<IExtendedAnalyticsEvents>('dekoratoren')
 
 export const wrapLogger =
   (
-    name: IExtendedAmpltitudeEvents['name'],
-    properties: IExtendedAmpltitudeEvents['properties']
+    name: IExtendedAnalyticsEvents['name'],
+    properties: IExtendedAnalyticsEvents['properties']
   ) =>
   (func: () => void) =>
   () => {

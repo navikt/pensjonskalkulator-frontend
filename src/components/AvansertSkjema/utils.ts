@@ -743,12 +743,6 @@ export const onAvansertBeregningSubmit = (
       valg: inntektVsaGradertUttakRadioFormData === 'ja' ? 'ja' : 'nei',
     })
 
-    if (inntektVsaGradertUttakFormData) {
-      logger('valg av inntekt vsa. gradert pensjon (antall sifre)', {
-        tekst: `${(inntektVsaGradertUttakFormData as string).replace(/ /g, '').length}`,
-      })
-    }
-
     dispatch(
       userInputActions.setCurrentSimulationGradertUttaksperiode({
         uttaksalder: {
@@ -766,12 +760,6 @@ export const onAvansertBeregningSubmit = (
     logger('radiogroup valgt', {
       tekst: 'Inntekt vsa. helt uttak',
       valg: inntektVsaHeltUttakRadioFormData === 'ja' ? 'ja' : 'nei',
-    })
-  }
-
-  if (inntektVsaHeltUttakFormData !== null) {
-    logger('valg av inntekt vsa. 100 % pensjon (antall sifre)', {
-      tekst: `${(inntektVsaHeltUttakFormData as string).replace(/ /g, '').length}`,
     })
   }
 
