@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
 import { useIntl } from 'react-intl'
-import { useSelector } from 'react-redux'
 import { useLocation, useNavigation } from 'react-router'
 
 import { Loader } from '@/components/common/Loader'
 import { HOST_BASEURL } from '@/paths'
-import { RootState } from '@/state/store'
+import { useAppSelector } from '@/state/hooks'
+import { selectIsLoggedIn } from '@/state/session/selectors'
 
 import { CheckLoginOnFocus } from './CheckLoginOnFocus'
 import { FrameComponent } from './FrameComponent'
@@ -36,11 +36,9 @@ export const PageFramework: React.FC<{
   ...rest
 }) => {
   const intl = useIntl()
+  const isLoggedIn = useAppSelector(selectIsLoggedIn)
   const { pathname } = useLocation()
   const { state } = useNavigation()
-  const isLoggedIn = useSelector(
-    (rootState: RootState) => rootState.session.isLoggedIn
-  )
 
   useEffect(() => {
     window.scrollTo(0, 0)

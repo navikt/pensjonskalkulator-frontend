@@ -1,7 +1,6 @@
 import clsx from 'clsx'
 import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 
 import { ExternalLinkIcon } from '@navikt/aksel-icons'
@@ -15,15 +14,15 @@ import {
 } from '@navikt/ds-react'
 
 import { externalUrls, paths } from '@/router/constants'
-import { RootState } from '@/state/store'
+import { useAppSelector } from '@/state/hooks'
+import { selectIsLoggedIn } from '@/state/session/selectors'
 import { logOpenLink, wrapLogger } from '@/utils/logging'
 
 import styles from './LandingPage.module.scss'
 
 export const LandingPage = () => {
   const intl = useIntl()
-  const isLoggedIn = useSelector((state: RootState) => state.session.isLoggedIn)
-
+  const isLoggedIn = useAppSelector(selectIsLoggedIn)
   const navigate = useNavigate()
 
   React.useEffect(() => {
