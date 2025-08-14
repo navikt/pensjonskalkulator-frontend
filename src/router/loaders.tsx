@@ -6,6 +6,7 @@ import { getStepArrays } from '@/components/stegvisning/utils'
 import { HOST_BASEURL } from '@/paths'
 import { paths } from '@/router/constants'
 import { apiSlice } from '@/state/api/apiSlice'
+import { selectIsLoggedIn } from '@/state/session/selectors'
 import { sessionActions } from '@/state/session/sessionSlice'
 import { store } from '@/state/store'
 import {
@@ -48,6 +49,7 @@ const getErrorData = (
   if (!error) return undefined
   if ('data' in error) return error.data as ErrorData
 }
+
 export const authenticationGuard = async () => {
   const response = await fetch(`${HOST_BASEURL}/oauth2/session`)
   store.dispatch(sessionActions.setLoggedIn(response.ok))
@@ -95,7 +97,8 @@ export const stepStartAccessGuard = async () => {
     apiSlice.endpoints.getErApoteker.initiate()
   )
 
-  const isLoggedIn = Boolean(store.getState()?.session?.isLoggedIn)
+  const state = store.getState()
+  const isLoggedIn = selectIsLoggedIn(state)
 
   const [
     vedlikeholdsmodusFeatureToggle,
@@ -159,6 +162,20 @@ export const stepStartAccessGuard = async () => {
       return redirect(paths.uventetFeil)
     }
 
+    const isKap19 = isFoedtFoer1963(getPersonRes.data.foedselsdato)
+
+    logger('info', {
+      tekst: 'Født før 1963',
+      data: isKap19 ? 'Ja' : 'Nei',
+    })
+
+    if (getErApotekerRes.isSuccess) {
+      logger('info', {
+        tekst: 'Er apoteker',
+        data: getErApotekerRes.data ? 'Ja' : 'Nei',
+      })
+    }
+
     logger('info', {
       tekst: 'hent uføregrad',
       data:
@@ -168,61 +185,37 @@ export const stepStartAccessGuard = async () => {
             ? 'Hel uføretrygd'
             : `Gradert uføretrygd`,
     })
-  }
 
-  const isKap19 = isFoedtFoer1963(getPersonRes.data.foedselsdato)
+    if (getLoependeVedtakRes.data.alderspensjon) {
+      logger('info', {
+        tekst: 'Vedtak alderspensjon',
+        data: getLoependeVedtakRes.data.alderspensjon.grad,
+      })
+    }
 
-  logger('info', {
-    tekst: 'Født før 1963',
-    data: isKap19 ? 'Ja' : 'Nei',
-  })
+    if (getLoependeVedtakRes.data.afpPrivat) {
+      logger('info', {
+        tekst: 'Vedtak AFP Privat',
+      })
+    }
 
-  if (getErApotekerRes.isSuccess) {
-    logger('info', {
-      tekst: 'Er apoteker',
-      data: getErApotekerRes.data ? 'Ja' : 'Nei',
-    })
-  }
+    if (getLoependeVedtakRes.data.afpOffentlig) {
+      logger('info', {
+        tekst: 'Vedtak AFP Offentlig',
+      })
+    }
 
-  logger('info', {
-    tekst: 'hent uføregrad',
-    data:
-      getLoependeVedtakRes.data.ufoeretrygd.grad === 0
-        ? 'Ingen uføretrygd'
-        : getLoependeVedtakRes.data.ufoeretrygd.grad === 100
-          ? 'Hel uføretrygd'
-          : `Gradert uføretrygd`,
-  })
+    if (getLoependeVedtakRes.data.fremtidigAlderspensjon) {
+      logger('info', {
+        tekst: 'Fremtidig vedtak',
+      })
+    }
 
-  if (getLoependeVedtakRes?.data?.alderspensjon) {
-    logger('info', {
-      tekst: 'Vedtak alderspensjon',
-      data: getLoependeVedtakRes.data.alderspensjon.grad,
-    })
-  }
-
-  if (getLoependeVedtakRes?.data?.afpPrivat) {
-    logger('info', {
-      tekst: 'Vedtak AFP Privat',
-    })
-  }
-
-  if (getLoependeVedtakRes?.data?.afpOffentlig) {
-    logger('info', {
-      tekst: 'Vedtak AFP Offentlig',
-    })
-  }
-
-  if (getLoependeVedtakRes?.data?.fremtidigAlderspensjon) {
-    logger('info', {
-      tekst: 'Fremtidig vedtak',
-    })
-  }
-
-  if (getLoependeVedtakRes?.data?.pre2025OffentligAfp) {
-    logger('info', {
-      tekst: 'Vedtak om offentlig AFP pre 2025',
-    })
+    if (getLoependeVedtakRes.data.pre2025OffentligAfp) {
+      logger('info', {
+        tekst: 'Vedtak om offentlig AFP pre 2025',
+      })
+    }
   }
 
   return {
