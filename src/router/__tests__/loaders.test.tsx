@@ -115,6 +115,7 @@ describe('Loaders', () => {
     it('returnerer person og loependeVedtak', async () => {
       store.getState = vi.fn().mockImplementation(() => ({
         userInput: { ...userInputInitialState },
+        session: { isLoggedIn: false },
       }))
 
       const returnedFromLoader = await stepStartAccessGuard()
