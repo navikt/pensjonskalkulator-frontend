@@ -229,7 +229,7 @@ describe('AgePicker', () => {
   })
 
   it('viser aria-invalid attribut på riktig felt når error er fylt ut', () => {
-    const { container } = render(
+    render(
       <AgePicker
         name="unique-name"
         label="My Test Age Picker"
