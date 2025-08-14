@@ -36,7 +36,7 @@ export const Pensjonsgivendeinntekt: React.FC<Props> = ({ goToAvansert }) => {
         <FormattedMessage id="grunnlag2.endre_inntekt.title" />
       </Heading>
 
-      <BodyLong>
+      <BodyLong className={styles.ingress}>
         <FormattedMessage
           id="grunnlag.inntekt.ingress"
           values={{
