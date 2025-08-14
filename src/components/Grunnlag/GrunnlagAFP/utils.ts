@@ -1,28 +1,14 @@
-// Input:
-// AFPValg
-// isKap19
-// erApoteker
-// loependeVedtak
-// uforegrad
-// intl - interasjonalisering
 import { IntlShape } from 'react-intl'
 
 import { isFoedtFoer1963 } from '@/utils/alder'
 
 interface IAfpGrunnlagInput {
-  /** Dersom bruker er kap19/apoteker kan man velge å beregne offentlig AFP sammen med aldersensjon */
   afpUtregning: AfpUtregningValg
-  /** Valg av hvilken AFP utregning bruker har valgt */
   afpValg: AfpRadio | null
-  /** Valg for beregning av pensjon */
   beregningsvalg: Beregningsvalg | null
-  /** Indikerer om brukeren er apoteker */
   erApoteker: boolean
-  /** Brukerens fødselsdato */
   foedselsdato: string
-  /** Informasjon om løpende vedtak */
   loependeVedtak: LoependeVedtak
-  /** Samtykke til beregning av offentlig AFP */
   samtykkeOffentligAFP: boolean | null
 }
 
