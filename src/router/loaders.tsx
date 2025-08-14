@@ -99,14 +99,21 @@ export const stepStartAccessGuard = async () => {
     apiSlice.endpoints.getOmstillingsstoenadOgGjenlevende.initiate()
   )
   store.dispatch(apiSlice.endpoints.getGrunnbeloep.initiate())
-  store.dispatch(apiSlice.endpoints.getErApoteker.initiate())
+  const getErApotekerQuery = store.dispatch(
+    apiSlice.endpoints.getErApoteker.initiate()
+  )
 
-  const [vedlikeholdsmodusFeatureToggle, getLoependeVedtakRes, getPersonRes] =
-    await Promise.all([
-      vedlikeholdsmodusFeatureToggleQuery,
-      getLoependeVedtakQuery,
-      getPersonQuery,
-    ])
+  const [
+    vedlikeholdsmodusFeatureToggle,
+    getLoependeVedtakRes,
+    getPersonRes,
+    getErApotekerRes,
+  ] = await Promise.all([
+    vedlikeholdsmodusFeatureToggleQuery,
+    getLoependeVedtakQuery,
+    getPersonQuery,
+    getErApotekerQuery,
+  ])
 
   if (vedlikeholdsmodusFeatureToggle.data?.enabled) {
     return redirect(paths.kalkulatorVirkerIkke)
@@ -154,6 +161,20 @@ export const stepStartAccessGuard = async () => {
       data: `fra Step Start Loader pga. feil med getLoependeVedtak med status: ${getErrorStatus(getLoependeVedtakRes.error)}`,
     })
     return redirect(paths.uventetFeil)
+  }
+
+  const isKap19 = isFoedtFoer1963(getPersonRes.data.foedselsdato)
+
+  logger('info', {
+    tekst: 'Født før 1963',
+    data: isKap19 ? 'Ja' : 'Nei',
+  })
+
+  if (getErApotekerRes.isSuccess) {
+    logger('info', {
+      tekst: 'Er apoteker',
+      data: getErApotekerRes.data ? 'Ja' : 'Nei',
+    })
   }
 
   logger('info', {
