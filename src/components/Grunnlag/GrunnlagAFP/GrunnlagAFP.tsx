@@ -13,21 +13,14 @@ import {
   selectCurrentSimulation,
   selectErApoteker,
   selectFoedselsdato,
-  selectIsEndring,
   selectLoependeVedtak,
   selectSamtykkeOffentligAFP,
   selectUfoeregrad,
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
-import {
-  AFP_UFOERE_OPPSIGELSESALDER,
-  isFoedselsdatoOverAlder,
-  isFoedtFoer1963,
-} from '@/utils/alder'
 import { logger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
 
-import { useFormatertAfpHeader } from './hooks'
 import { generateAfpContent } from './utils'
 
 import styles from '../Grunnlag.module.scss'
@@ -39,15 +32,9 @@ export const GrunnlagAFP: React.FC = () => {
   const erApoteker = useAppSelector(selectErApoteker)
   const foedselsdato = useAppSelector(selectFoedselsdato)
   const samtykkeOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
-  const isEndring = useAppSelector(selectIsEndring)
   const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const ufoeregrad = useAppSelector(selectUfoeregrad)
   const { beregningsvalg } = useAppSelector(selectCurrentSimulation)
-
-  const hasOffentligAFP = afp === 'ja_offentlig'
-  const isUfoerAndDontWantAfp = !!ufoeregrad && beregningsvalg !== 'med_afp'
-
-  const formatertAfpHeader = useFormatertAfpHeader()
 
   const { title, content } = React.useMemo(() => {
     return generateAfpContent(intl)({
@@ -70,129 +57,16 @@ export const GrunnlagAFP: React.FC = () => {
     foedselsdato,
   ])
 
-  const formatertAfpIngress = React.useMemo(() => {
-    if (
-      (erApoteker || isFoedtFoer1963(foedselsdato!)) &&
-      loependeVedtak.fremtidigAlderspensjon &&
-      !loependeVedtak.alderspensjon
-    ) {
-      return 'grunnlag.afp.ingress.overgangskull.ufoeretrygd_eller_ap'
-    }
-    if (afp === 'nei') {
-      return 'grunnlag.afp.ingress.nei'
-    }
-
-    if (isEndring && loependeVedtak.afpPrivat) {
-      return 'grunnlag.afp.ingress.ja_privat.endring'
-    }
-
-    if (afpUtregningValg === 'KUN_ALDERSPENSJON') {
-      return 'grunnlag.afp.ingress.nei'
-    }
-
-    if (
-      afp === 'ja_privat' &&
-      loependeVedtak &&
-      loependeVedtak.alderspensjon &&
-      foedselsdato &&
-      isFoedtFoer1963(foedselsdato)
-    ) {
-      return 'grunnlag.afp.ingress.ja_privat'
-    }
-
-    if (
-      loependeVedtak &&
-      loependeVedtak.pre2025OffentligAfp &&
-      foedselsdato &&
-      (isFoedtFoer1963(foedselsdato) || erApoteker)
-    ) {
-      return 'grunnlag.afp.ingress.overgangskull'
-    }
-
-    if (loependeVedtak && loependeVedtak.afpOffentlig) {
-      return 'grunnlag.afp.ingress.ja_offentlig.endring'
-    }
-
-    if (
-      ufoeregrad === 100 &&
-      foedselsdato &&
-      !isFoedtFoer1963(foedselsdato) &&
-      !erApoteker
-    ) {
-      return 'grunnlag.afp.ingress.ufoeretrygd'
-    }
-
-    if (
-      ufoeregrad > 0 &&
-      foedselsdato &&
-      !isFoedtFoer1963(foedselsdato) &&
-      isFoedselsdatoOverAlder(foedselsdato, AFP_UFOERE_OPPSIGELSESALDER) &&
-      !erApoteker
-    ) {
-      return 'grunnlag.afp.ingress.ufoeretrygd'
-    }
-
-    if (
-      (ufoeregrad > 0 || isEndring) &&
-      foedselsdato &&
-      (isFoedtFoer1963(foedselsdato) || erApoteker)
-    ) {
-      return 'grunnlag.afp.ingress.overgangskull.ufoeretrygd_eller_ap'
-    }
-
-    if (
-      loependeVedtak &&
-      loependeVedtak.alderspensjon &&
-      foedselsdato &&
-      isFoedtFoer1963(foedselsdato)
-    ) {
-      return 'grunnlag.afp.ingress.nei'
-    }
-
-    if (hasOffentligAFP && samtykkeOffentligAFP === false) {
-      return 'grunnlag.afp.ingress.ja_offentlig_utilgjengelig'
-    }
-
-    const ufoeregradString = isUfoerAndDontWantAfp ? '.ufoeretrygd' : ''
-
-    return `grunnlag.afp.ingress.${afp}${ufoeregradString}`
-  }, [
-    afp,
-    hasOffentligAFP,
-    samtykkeOffentligAFP,
-    isEndring,
-    isUfoerAndDontWantAfp,
-    loependeVedtak,
-    ufoeregrad,
-  ])
-
   return (
     <VStack gap="3">
-      Gammel AFP Beregning visning:
-      <Heading level="3" size="small">
-        <FormattedMessage id="grunnlag.afp.title" />:{' '}
-        <span style={{ fontWeight: 'normal' }}>{formatertAfpHeader}</span>
-      </Heading>
-      <BodyLong
-        data-testid={formatertAfpIngress}
-        className={styles.alderspensjonDetaljer}
-      >
-        <FormattedMessage
-          id={formatertAfpIngress}
-          values={{
-            ...getFormatMessageValues(),
-            goToAFP: GoToAFP,
-            goToAvansert: GoToAvansert,
-            goToStart: GoToStart,
-          }}
-        />
-      </BodyLong>
-      Ny AFP Beregning visning:
-      <Heading level="3" size="small">
+      <Heading level="3" size="small" data-testid="grunnlag.afp.title">
         <FormattedMessage id="grunnlag.afp.title" />:{' '}
         <span style={{ fontWeight: 'normal' }}>{title}</span>
       </Heading>
-      <BodyLong data-testid={content} className={styles.alderspensjonDetaljer}>
+      <BodyLong
+        data-testid="grunnlag.afp.content"
+        className={styles.alderspensjonDetaljer}
+      >
         <FormattedMessage
           id={content}
           values={{
