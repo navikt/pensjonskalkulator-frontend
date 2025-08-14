@@ -48,7 +48,7 @@ export const afpContentIntl = (intl: IntlShape) => ({
   },
 
   afpPrivatIkkeBeregnet_5: {
-    title: `${intl.formatMessage({ id: 'afp.nei' })} (${intl.formatMessage({ id: 'grunnlag.afp.ikke_beregnet' })})`,
+    title: `${intl.formatMessage({ id: 'afp.privat' })} (${intl.formatMessage({ id: 'grunnlag.afp.ikke_beregnet' })})`,
     content: 'grunnlag.afp.ingress.ja_privat.ufoeretrygd',
   },
 
