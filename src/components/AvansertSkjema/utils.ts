@@ -293,7 +293,6 @@ export const validateAvansertBeregningSkjema = (
         isValid = false
       }
     }
-
     return isValid
   }
 
@@ -574,7 +573,7 @@ export const onAvansertBeregningSubmit = (
     hasVilkaarIkkeOppfylt: boolean | undefined
     harAvansertSkjemaUnsavedChanges: boolean
   },
-  validerKap19Afp: boolean = false
+  isKap19Afp: boolean = false
 ): void => {
   const {
     foedselsdato,
@@ -650,7 +649,7 @@ export const onAvansertBeregningSubmit = (
       normertPensjonsalder,
       loependeVedtak,
       setValidationErrors,
-      validerKap19Afp
+      isKap19Afp
     )
   ) {
     return
@@ -670,15 +669,20 @@ export const onAvansertBeregningSubmit = (
     })
   }
 
-  logger('valg av uttaksalder for 100 % alderspensjon', {
+  const uttaksAlderEventName = isKap19Afp
+    ? 'valg av uttaksalder for AFP'
+    : 'valg av uttaksalder for 100 % alderspensjon'
+
+  logger(uttaksAlderEventName, {
     tekst: `${heltUttakAarFormData} år og ${heltUttakMaanederFormData} md.`, // eslint-disable-line @typescript-eslint/no-base-to-string, @typescript-eslint/restrict-template-expressions
   })
 
   if (uttaksgradFormData === '100 %') {
     dispatch(userInputActions.setCurrentSimulationGradertUttaksperiode(null))
+
     logger('radiogroup valgt', {
       tekst: 'Inntekt vsa. helt uttak',
-      valg: inntektVsaHeltUttakRadioFormData ? 'ja' : 'nei',
+      valg: inntektVsaHeltUttakRadioFormData === 'ja' ? 'ja' : 'nei',
     })
   } else if (afpInntektMaanedFoerUttakRadioFormData) {
     // * AFP etterfulgt av AP
@@ -691,6 +695,17 @@ export const onAvansertBeregningSubmit = (
     dispatch(
       userInputActions.setAfpInntektMaanedFoerUttak(afpInntektMaanedFoerUttak)
     )
+
+    logger('radiogroup valgt', {
+      tekst: 'Forventer inntekt den siste måneden før AFP er tatt ut',
+      valg: afpInntektMaanedFoerUttak ? 'ja' : 'nei',
+    })
+
+    logger('radiogroup valgt', {
+      tekst: 'Forventer inntekt samtidig når AFP er tatt ut',
+      valg: inntektVsaAfpRadioFormData === 'ja' ? 'ja' : 'nei',
+    })
+
     if (inntektVsaAfpRadioFormData === 'ja') {
       dispatch(
         userInputActions.setCurrentSimulationGradertUttaksperiode({
@@ -718,18 +733,22 @@ export const onAvansertBeregningSubmit = (
     logger('valg av uttaksgrad', {
       tekst: `${uttaksgradFormData}`, // eslint-disable-line @typescript-eslint/no-base-to-string, @typescript-eslint/restrict-template-expressions
     })
+
     logger('valg av uttaksalder for gradert alderspensjon', {
       tekst: `${gradertUttakAarFormData} år og ${gradertUttakMaanederFormData} md.`, // eslint-disable-line @typescript-eslint/no-base-to-string, @typescript-eslint/restrict-template-expressions
     })
+
+    logger('radiogroup valgt', {
+      tekst: 'Inntekt vsa. gradert uttak',
+      valg: inntektVsaGradertUttakRadioFormData === 'ja' ? 'ja' : 'nei',
+    })
+
     if (inntektVsaGradertUttakFormData) {
-      logger('radiogroup valgt', {
-        tekst: 'Inntekt vsa. gradert uttak',
-        valg: inntektVsaGradertUttakRadioFormData ? 'ja' : 'nei',
-      })
       logger('valg av inntekt vsa. gradert pensjon (antall sifre)', {
         tekst: `${(inntektVsaGradertUttakFormData as string).replace(/ /g, '').length}`,
       })
     }
+
     dispatch(
       userInputActions.setCurrentSimulationGradertUttaksperiode({
         uttaksalder: {
@@ -743,6 +762,11 @@ export const onAvansertBeregningSubmit = (
         aarligInntektVsaPensjonBeloep: inntektVsaGradertUttakFormData as string,
       })
     )
+
+    logger('radiogroup valgt', {
+      tekst: 'Inntekt vsa. helt uttak',
+      valg: inntektVsaHeltUttakRadioFormData === 'ja' ? 'ja' : 'nei',
+    })
   }
 
   if (inntektVsaHeltUttakFormData !== null) {

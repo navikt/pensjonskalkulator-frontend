@@ -63,7 +63,10 @@ function getAlderspensjonDetaljerListe(
 ) {
   const alderspensjonDetaljerListe: AlderspensjonDetaljerListe[] = []
 
-  const getAlderspensjonDetails = (ap: AlderspensjonPensjonsberegning) => {
+  const getAlderspensjonDetails = (
+    ap: AlderspensjonPensjonsberegning,
+    shouldShowParentheses: boolean
+  ) => {
     const grunnpensjon =
       ap.grunnpensjon && ap.grunnpensjon > 0
         ? Math.round(ap.grunnpensjon / 12)
@@ -96,32 +99,46 @@ function getAlderspensjonDetaljerListe(
 
     return [
       {
-        tekst: 'Grunnpensjon (kap. 19)',
-        verdi: `${formatInntekt(grunnpensjon)} kr`,
+        tekst: shouldShowParentheses
+          ? 'Grunnpensjon (kap. 19)'
+          : 'Grunnpensjon',
+        verdi: `${formatInntekt(grunnpensjon)} kr`,
       },
       {
-        tekst: 'Tilleggspensjon (kap. 19)',
-        verdi: `${formatInntekt(tilleggspensjon)} kr`,
+        tekst: shouldShowParentheses
+          ? 'Tilleggspensjon (kap. 19)'
+          : 'Tilleggspensjon',
+        verdi: `${formatInntekt(tilleggspensjon)} kr`,
       },
       {
-        tekst: 'Skjermingstillegg (kap. 19)',
-        verdi: `${formatInntekt(skjermingstillegg)} kr`,
+        tekst: shouldShowParentheses
+          ? 'Skjermingstillegg (kap. 19)'
+          : 'Skjermingstillegg',
+        verdi: `${formatInntekt(skjermingstillegg)} kr`,
       },
       {
-        tekst: 'Pensjonstillegg (kap. 19)',
-        verdi: `${formatInntekt(pensjonstillegg)} kr`,
+        tekst: shouldShowParentheses
+          ? 'Pensjonstillegg (kap. 19)'
+          : 'Pensjonstillegg',
+        verdi: `${formatInntekt(pensjonstillegg)} kr`,
       },
       {
-        tekst: 'Gjenlevendetillegg (kap. 19)',
-        verdi: `${formatInntekt(gjenlevendetillegg)} kr`,
+        tekst: shouldShowParentheses
+          ? 'Gjenlevendetillegg (kap. 19)'
+          : 'Gjenlevendetillegg',
+        verdi: `${formatInntekt(gjenlevendetillegg)} kr`,
       },
       {
-        tekst: 'Inntektspensjon (kap. 20)',
-        verdi: `${formatInntekt(inntektspensjonBeloep)} kr`,
+        tekst: shouldShowParentheses
+          ? 'Inntektspensjon (kap. 20)'
+          : 'Inntektspensjon',
+        verdi: `${formatInntekt(inntektspensjonBeloep)} kr`,
       },
       {
-        tekst: 'Garantipensjon (kap. 20)',
-        verdi: `${formatInntekt(garantipensjonBeloep)} kr`,
+        tekst: shouldShowParentheses
+          ? 'Garantipensjon (kap. 20)'
+          : 'Garantipensjon',
+        verdi: `${formatInntekt(garantipensjonBeloep)} kr`,
       },
       {
         tekst: 'Sum alderspensjon',
@@ -133,9 +150,9 @@ function getAlderspensjonDetaljerListe(
             inntektspensjonBeloep +
             garantipensjonBeloep +
             gjenlevendetillegg
-        )} kr`,
+        )} kr`,
       },
-    ].filter((rad) => rad.verdi !== '0 kr')
+    ].filter((rad) => rad.verdi !== '0 kr')
   }
 
   const getOpptjeningKap19Details = (ap: AlderspensjonPensjonsberegning) => {
@@ -158,11 +175,11 @@ function getAlderspensjonDetaljerListe(
       },
       {
         tekst: 'Poengår',
-        verdi: `${sumPoengaar} år`,
+        verdi: `${sumPoengaar} år`,
       },
       {
         tekst: 'Trygdetid',
-        verdi: ap.trygdetidKap19 ? `${ap.trygdetidKap19} år` : '0 år',
+        verdi: ap.trygdetidKap19 ? `${ap.trygdetidKap19} år` : '0 år',
       },
     ].filter(
       (rad) =>
@@ -184,11 +201,11 @@ function getAlderspensjonDetaljerListe(
       },
       {
         tekst: 'Trygdetid',
-        verdi: ap.trygdetidKap20 ? `${ap.trygdetidKap20} år` : '0 år',
+        verdi: ap.trygdetidKap20 ? `${ap.trygdetidKap20} år` : '0 år',
       },
       {
         tekst: 'Pensjonsbeholdning',
-        verdi: `${formatInntekt(ap.pensjonBeholdningFoerUttakBeloep ?? 0)} kr`,
+        verdi: `${formatInntekt(ap.pensjonBeholdningFoerUttakBeloep ?? 0)} kr`,
       },
     ].filter(
       (rad) =>
@@ -199,10 +216,15 @@ function getAlderspensjonDetaljerListe(
   }
 
   alderspensjonListeForValgtUttaksalder.forEach((ap) => {
+    const opptjeningKap19 = getOpptjeningKap19Details(ap)
+    const opptjeningKap20 = getOpptjeningKap20Details(ap)
+    const hasKap19 = opptjeningKap19.length > 0
+    const hasKap20 = opptjeningKap20.length > 0
+
     const obj = {
-      alderspensjon: getAlderspensjonDetails(ap),
-      opptjeningKap19: getOpptjeningKap19Details(ap),
-      opptjeningKap20: getOpptjeningKap20Details(ap),
+      alderspensjon: getAlderspensjonDetails(ap, hasKap19 && hasKap20),
+      opptjeningKap19,
+      opptjeningKap20,
     }
     alderspensjonDetaljerListe.push(obj)
   })
@@ -447,9 +469,11 @@ export function useBeregningsdetaljer(
         gradertUttaksperiode,
         alderspensjonListe
       )
+
     const alderspensjonDetaljerListe = getAlderspensjonDetaljerListe(
       alderspensjonListeForValgtUttaksalder
     )
+
     const afpDetaljerListe = getAfpDetaljerListe(
       afpPrivatListe,
       afpOffentligListe,
