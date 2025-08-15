@@ -278,6 +278,16 @@ app.use(
   })
 )
 
+// Brukes ved opphenting av land-liste
+app.use(
+  '/pensjon/kalkulator/v1/land-liste',
+  createProxyMiddleware({
+    target: `${PENSJONSKALKULATOR_BACKEND}/api/v1/land-liste`,
+    changeOrigin: true,
+    logger: logger,
+  })
+)
+
 // For alle andre endepunkt svar med /veileder/veileder.html (siden vi bruker react-router)
 app.get(
   '/pensjon/kalkulator/veileder{/*splat}',
