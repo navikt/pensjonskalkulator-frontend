@@ -31,22 +31,15 @@ const renderAfpHeading = ({ messageId, age, months }: HeadingProps) => (
 
 interface Props {
   afpDetaljerListe: AfpDetaljerListe[]
-  alderspensjonColumnsCount: number
 }
 
-export const AfpDetaljerGrunnlag: React.FC<Props> = ({
-  afpDetaljerListe,
-  alderspensjonColumnsCount,
-}) => {
+export const AfpDetaljerGrunnlag: React.FC<Props> = ({ afpDetaljerListe }) => {
   const { uttaksalder, gradertUttaksperiode } = useAppSelector(
     selectCurrentSimulation
   )
 
   const renderDetaljer = (afpDetaljForValgtUttak: AfpDetaljerListe) => (
-    <AfpDetaljer
-      afpDetaljForValgtUttak={afpDetaljForValgtUttak}
-      alderspensjonColumnsCount={alderspensjonColumnsCount}
-    />
+    <AfpDetaljer afpDetaljForValgtUttak={afpDetaljForValgtUttak} />
   )
 
   return (

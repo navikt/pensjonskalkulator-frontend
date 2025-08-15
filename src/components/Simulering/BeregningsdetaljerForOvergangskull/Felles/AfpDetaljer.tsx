@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { FormattedMessage } from 'react-intl'
 
-import { Box, HGrid, HStack, VStack } from '@navikt/ds-react'
+import { Box, HStack, VStack } from '@navikt/ds-react'
 
 import { AfpDetaljerListe, DetaljRad } from '../hooks'
 
@@ -10,28 +10,29 @@ import styles from './Pensjonsdetaljer.module.scss'
 
 export interface AfpDetaljerProps {
   afpDetaljForValgtUttak: AfpDetaljerListe
-  alderspensjonColumnsCount: number
 }
 
 export const AfpDetaljer: React.FC<AfpDetaljerProps> = ({
   afpDetaljForValgtUttak,
-  alderspensjonColumnsCount,
 }) => {
+  const hasAfpOffentlig = afpDetaljForValgtUttak?.afpOffentlig?.length > 0
+  const maxWidthStyle = hasAfpOffentlig ? { maxWidth: '512px' } : undefined
+
   return (
     <Box data-testid="beregningsdetaljer-for-overgangskull">
       <div
         className={
           beregningsdetaljerStyles.beregningsdetaljerForOvergangskullDesktopOnly
         }
+        style={maxWidthStyle}
       >
-        <HGrid gap="12" columns={alderspensjonColumnsCount}>
-          {renderAfpDetaljer(afpDetaljForValgtUttak)}
-        </HGrid>
+        <HStack gap="12">{renderAfpDetaljer(afpDetaljForValgtUttak)}</HStack>
       </div>
       <div
         className={
           beregningsdetaljerStyles.beregningsdetaljerForOvergangskullMobileOnly
         }
+        style={maxWidthStyle}
       >
         <VStack gap="4 8" width="100%" marginBlock="2 0">
           {renderAfpDetaljer(afpDetaljForValgtUttak)}
