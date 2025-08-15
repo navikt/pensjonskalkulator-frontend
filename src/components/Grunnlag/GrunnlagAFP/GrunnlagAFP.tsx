@@ -58,7 +58,7 @@ export const GrunnlagAFP: React.FC = () => {
   ])
 
   return (
-    <VStack gap="3">
+    <VStack gap="1">
       <Heading level="3" size="small" data-testid="grunnlag.afp.title">
         <FormattedMessage id="grunnlag.afp.title" />:{' '}
         <span style={{ fontWeight: 'normal' }}>{title}</span>
