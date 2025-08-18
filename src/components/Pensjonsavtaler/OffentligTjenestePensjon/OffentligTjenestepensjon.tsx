@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import clsx from 'clsx'
 import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
@@ -18,7 +19,6 @@ import { selectAfp } from '@/state/userInput/selectors'
 import {
   formaterLivsvarigString,
   formaterSluttAlderString,
-  getSluttAlderStringParts,
 } from '@/utils/alder'
 import { formatInntekt } from '@/utils/inntekt'
 import { getFormatMessageValues } from '@/utils/translations'
@@ -157,22 +157,17 @@ export const OffentligTjenestepensjon = (props: {
                           align="left"
                         >
                           {utbetalingsperiode.sluttAlder
-                            ? getSluttAlderStringParts(
+                            ? formaterSluttAlderString(
                                 intl,
                                 utbetalingsperiode.startAlder,
                                 utbetalingsperiode.sluttAlder
-                              ).map((part, partIndex) => (
-                                <>
-                                  {partIndex > 0 && <br />}
-                                  {part}
-                                </>
-                              ))
+                              )
                             : formaterLivsvarigString(
                                 intl,
                                 utbetalingsperiode.startAlder
                               )}
                         </th>
-                        <td align="right">
+                        <td align="right" className={styles.valueCell}>
                           {formatInntekt(utbetalingsperiode.aarligUtbetaling)}{' '}
                           <FormattedMessage id="pensjonsavtaler_mobil.kr_pr_aar" />
                         </td>
@@ -181,7 +176,6 @@ export const OffentligTjenestepensjon = (props: {
                   )}
                 </tbody>
               </table>
-              <Divider noMargin />
             </>
           ) : (
             <Table data-testid="offentlig-tjenestepensjon-desktop">

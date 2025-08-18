@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 
@@ -6,7 +7,7 @@ import { BodyShort, Heading, HeadingProps, VStack } from '@navikt/ds-react'
 import { Divider } from '@/components/common/Divider'
 import {
   formaterLivsvarigString,
-  getSluttAlderStringParts,
+  formaterSluttAlderString,
 } from '@/utils/alder'
 import { formatInntekt } from '@/utils/inntekt'
 import { capitalize } from '@/utils/string'
@@ -58,23 +59,18 @@ const AvtaleGruppe: React.FC<AvtaleGruppeProps> = ({
                     >
                       <BodyShort>
                         {utbetalingsperiode.sluttAlder
-                          ? getSluttAlderStringParts(
+                          ? formaterSluttAlderString(
                               intl,
                               utbetalingsperiode.startAlder,
                               utbetalingsperiode.sluttAlder
-                            ).map((part, partIndex) => (
-                              <>
-                                {partIndex > 0 && <br />}
-                                {part}
-                              </>
-                            ))
+                            )
                           : formaterLivsvarigString(
                               intl,
                               utbetalingsperiode.startAlder
                             )}
                       </BodyShort>
                     </th>
-                    <td align="right">
+                    <td align="right" className={styles.valueCell}>
                       {formatInntekt(utbetalingsperiode.aarligUtbetaling)}{' '}
                       <FormattedMessage id="pensjonsavtaler_mobil.kr_pr_aar" />
                     </td>

@@ -19,6 +19,10 @@
   th,
   td {
     padding-block: var(--a-spacing-2);
+
+    &.valueCell {
+      white-space: nowrap;
+    }
   }
 
   tr:first-child th,
