@@ -26,7 +26,9 @@ export const AfpDetaljer: React.FC<AfpDetaljerProps> = ({
         }
         style={maxWidthStyle}
       >
-        <HStack gap="12">{renderAfpDetaljer(afpDetaljForValgtUttak)}</HStack>
+        <HStack gap="12" width="100%" justify="space-between">
+          {renderAfpDetaljer(afpDetaljForValgtUttak)}
+        </HStack>
       </div>
       <div
         className={
@@ -90,7 +92,7 @@ function renderAfpSection({
   noBorderBottom,
 }: AfpSectionConfig) {
   return (
-    <dl key={key}>
+    <dl key={key} style={{ flex: 1, minWidth: 0 }}>
       {titleId && (
         <div className={styles.hstackRow}>
           <strong>
