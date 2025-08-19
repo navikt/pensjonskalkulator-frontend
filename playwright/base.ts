@@ -191,45 +191,56 @@ export async function setupInterceptions(
     return overwrite || route
   })
 
-  // Add any new routes from overwrites that don't match existing routes
   const newRoutes = overwrites.filter(
     (overwriteRoute) =>
       !routes.some((route) => routesMatch(route, overwriteRoute))
   )
   finalRoutes.push(...newRoutes)
 
+  page.on('pageerror', handlePageError)
+
   for (const {
     url,
+    method,
     fixtureName,
     jsonResponse,
     status = 200,
     isHTML,
   } of finalRoutes) {
     await page.route(url, async (route) => {
+      const reqMethod = route.request().method()
+      const expectedMethod = method || 'GET'
+
+      if (reqMethod !== expectedMethod) {
+        return route.fallback()
+      }
+
       if (fixtureName) {
         if (isHTML) {
           const body = await loadHTMLFixture(fixtureName)
           return route.fulfill({
-            status: 200,
+            status,
             body,
-            headers: { 'Content-Type': 'text/html' },
+            headers: { 'Content-Type': 'text/html; charset=utf-8' },
           })
         } else {
           const data = await loadJSONFixture(fixtureName)
           return route.fulfill({
-            status: 200,
+            status,
             body: JSON.stringify(data),
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json; charset=utf-8' },
           })
         }
       }
+
       if (jsonResponse) {
         return route.fulfill({
-          status: 200,
+          status,
           body: JSON.stringify(jsonResponse),
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json; charset=utf-8' },
         })
       }
+
       return route.fulfill({ status, headers: {} })
     })
   }
@@ -239,36 +250,44 @@ export async function login(page: Page) {
   await page.goto('/pensjon/kalkulator/', { waitUntil: 'load' })
   const btn = page.getByTestId('landingside-enkel-kalkulator-button')
   await btn.waitFor({ state: 'visible' })
-  await btn.click()
-  // På start steget kjøres automatisk kall til  /person, /ekskludert, /inntekt, /loepende-omstillingsstoenad-eller-gjenlevendeytelse
-  await Promise.all([
-    page.waitForResponse((r) =>
-      r.url().includes('/pensjon/kalkulator/api/v4/person')
-    ),
-    page.waitForResponse((r) =>
-      r.url().includes('/pensjon/kalkulator/api/v2/ekskludert')
-    ),
-    page.waitForResponse((r) =>
-      r.url().includes('/pensjon/kalkulator/api/inntekt')
-    ),
-    page.waitForResponse((r) =>
-      r
-        .url()
-        .includes(
-          '/pensjon/kalkulator/api/v1/loepende-omstillingsstoenad-eller-gjenlevendeytelse'
-        )
-    ),
-    page.waitForResponse((r) =>
-      r.url().includes('/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak')
-    ),
-  ])
-}
 
-export async function loginWithApiAlterations(page: Page) {
-  await page.goto('/pensjon/kalkulator/', { waitUntil: 'load' })
-  const btn = page.getByTestId('landingside-enkel-kalkulator-button')
-  await btn.waitFor({ state: 'visible' })
-  await btn.click()
+  await Promise.all([
+    page.waitForResponse(
+      (r) =>
+        r.request().method() === 'GET' &&
+        r.url().includes('/pensjon/kalkulator/api/v4/person') &&
+        r.ok()
+    ),
+    page.waitForResponse(
+      (r) =>
+        r.request().method() === 'GET' &&
+        r.url().includes('/pensjon/kalkulator/api/v2/ekskludert') &&
+        r.ok()
+    ),
+    page.waitForResponse(
+      (r) =>
+        r.request().method() === 'GET' &&
+        r.url().includes('/pensjon/kalkulator/api/inntekt') &&
+        r.ok()
+    ),
+    page.waitForResponse(
+      (r) =>
+        r.request().method() === 'GET' &&
+        r
+          .url()
+          .includes(
+            '/pensjon/kalkulator/api/v1/loepende-omstillingsstoenad-eller-gjenlevendeytelse'
+          ) &&
+        r.ok()
+    ),
+    page.waitForResponse(
+      (r) =>
+        r.request().method() === 'GET' &&
+        r.url().includes('/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak') &&
+        r.ok()
+    ),
+    btn.click(),
+  ])
 }
 
 export async function fillOutStegvisning(

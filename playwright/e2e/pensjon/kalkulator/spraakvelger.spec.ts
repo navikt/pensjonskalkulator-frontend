@@ -1,7 +1,7 @@
 import {
   expect,
   handlePageError,
-  loginWithApiAlterations,
+  login,
   setupInterceptions,
   test,
 } from '../../../base'
@@ -15,7 +15,7 @@ test.describe('Språkvelger', () => {
   test('setter Norsk Bokmål som default språk i løsningen for innhold styrt av react-intl og Sanity', async ({
     page,
   }) => {
-    await loginWithApiAlterations(page)
+    await login(page)
 
     await page.click('button:has-text("Kom i gang")')
 
