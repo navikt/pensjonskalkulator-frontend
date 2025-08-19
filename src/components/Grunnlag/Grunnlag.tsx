@@ -23,6 +23,7 @@ import {
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
 import { BeregningVisning } from '@/types/common-types'
+import { logger } from '@/utils/logging'
 import { formatSivilstand } from '@/utils/sivilstand'
 import { getFormatMessageValues } from '@/utils/translations'
 
@@ -104,6 +105,23 @@ export const Grunnlag: React.FC<Props> = ({
     !afpPrivatDetaljerListe.length &&
     !pre2025OffentligAfpDetaljerListe.length
 
+  const handleReadMoreChange = ({
+    isOpen,
+    ytelse,
+  }: {
+    isOpen: boolean
+    ytelse: string
+  }) => {
+    if (ytelse === 'AFP') {
+      setIsAFPDokumentasjonVisible(isOpen)
+    } else {
+      setIsAlderspensjonDetaljerVisible(isOpen)
+    }
+
+    const name = `Grunnlag: Vis detaljer for ${ytelse}`
+    logger(isOpen ? 'show more åpnet' : 'show more lukket', { tekst: name })
+  }
+
   return (
     <section className={styles.section}>
       <Heading level={headingLevel} size="medium">
@@ -129,6 +147,7 @@ export const Grunnlag: React.FC<Props> = ({
 
         <GrunnlagItem color="purple">
           <GrunnlagAFP />
+
           {!shouldHideAfpReadMore && (
             <ReadMore
               name="Listekomponenter for AFP"
@@ -158,7 +177,9 @@ export const Grunnlag: React.FC<Props> = ({
                 styles.visListekomponenter,
                 styles.wideDetailedView
               )}
-              onOpenChange={setIsAFPDokumentasjonVisible}
+              onOpenChange={(open) =>
+                handleReadMoreChange({ isOpen: open, ytelse: 'AFP' })
+              }
             >
               <AfpDetaljerGrunnlag
                 afpPrivatDetaljerListe={afpPrivatDetaljerListe}
@@ -200,10 +221,11 @@ export const Grunnlag: React.FC<Props> = ({
         </GrunnlagItem>
 
         <GrunnlagItem color="blue">
-          <VStack gap="3">
+          <VStack gap="1">
             <Heading level="3" size="small">
               <FormattedMessage id="beregning.highcharts.serie.alderspensjon.name" />
             </Heading>
+
             <BodyLong className={styles.alderspensjonDetaljer}>
               {loependeVedtak.alderspensjon || visning === 'avansert' ? (
                 <FormattedMessage
@@ -227,6 +249,7 @@ export const Grunnlag: React.FC<Props> = ({
               )}
             </BodyLong>
           </VStack>
+
           <ReadMore
             name="Listekomponenter for alderspensjon"
             open={isAlderspensjonDetaljerVisible}
@@ -255,7 +278,9 @@ export const Grunnlag: React.FC<Props> = ({
               styles.visListekomponenter,
               styles.wideDetailedView
             )}
-            onOpenChange={setIsAlderspensjonDetaljerVisible}
+            onOpenChange={(open) =>
+              handleReadMoreChange({ isOpen: open, ytelse: 'AP' })
+            }
           >
             <AlderspensjonDetaljerGrunnlag
               alderspensjonDetaljerListe={alderspensjonDetaljerListe}
