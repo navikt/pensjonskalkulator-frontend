@@ -96,10 +96,6 @@ export async function setupInterceptions(
       fixtureName: 'toggle-disable-spraakvelger.json',
     },
     {
-      url: /\/pensjon\/kalkulator\/api\/feature\/pensjonskalkulator\.enable-redirect-1963/,
-      fixtureName: 'toggle-enable-redirect-1963.json',
-    },
-    {
       url: /\/pensjon\/kalkulator\/api\/feature\/pensjonskalkulator\.vedlikeholdsmodus/,
       jsonResponse: { enabled: false },
     },
@@ -120,7 +116,7 @@ export async function setupInterceptions(
       fixtureName: 'loepende-vedtak.json',
     },
     {
-      url: /\/pensjon\/kalkulator\/api\/v4\/person/,
+      url: /\/pensjon\/kalkulator\/api\/v5\/person/,
       fixtureName: 'person.json',
     },
     { url: /\/pensjon\/kalkulator\/api\/inntekt/, fixtureName: 'inntekt.json' },
@@ -156,7 +152,7 @@ export async function setupInterceptions(
       },
     },
     {
-      url: /^api\.uxsignals\.com\/v2\/study\/id\/.*\/active/,
+      url: /https?:\/\/api\.uxsignals\.com\/v2\/study\/id\/.*\/active/,
       jsonResponse: { active: false },
     },
   ]
@@ -255,7 +251,7 @@ export async function login(page: Page) {
     page.waitForResponse(
       (r) =>
         r.request().method() === 'GET' &&
-        r.url().includes('/pensjon/kalkulator/api/v4/person') &&
+        r.url().includes('/pensjon/kalkulator/api/v5/person') &&
         r.ok()
     ),
     page.waitForResponse(
