@@ -1,8 +1,6 @@
 import { Page, expect, test } from '@playwright/test'
 import fs from 'fs/promises'
 
-import { userInputActions } from '../src/state/userInput/userInputSlice'
-
 declare global {
   interface Window {
     store: { dispatch: (...args: unknown[]) => void }
@@ -41,6 +39,9 @@ export async function setupInterceptions(
       value: true,
       writable: false,
     })
+
+    const w = window as unknown as { Playwright: boolean }
+    w.Playwright = true
   })
 
   await page.context().addCookies([
@@ -307,39 +308,41 @@ export async function fillOutStegvisning(
   } = args
 
   await page.evaluate(
-    ({ samtykke: samtykkeValue }) =>
-      window.store.dispatch(userInputActions.setSamtykke(samtykkeValue)),
+    ({ samtykke: v }) =>
+      window.store.dispatch({ type: 'userInputSlice/setSamtykke', payload: v }),
     { samtykke }
   )
+
   if (afp === 'ja_offentlig') {
     await page.evaluate(
-      ({ samtykkeAfpOffentlig: samtykkeAfpOffentligParam }) =>
-        window.store.dispatch(
-          userInputActions.setSamtykkeOffentligAFP(samtykkeAfpOffentligParam)
-        ),
-      { samtykkeAfpOffentlig }
+      ({ v }) =>
+        window.store.dispatch({
+          type: 'userInputSlice/setSamtykkeOffentligAFP',
+          payload: v,
+        }),
+      { v: samtykkeAfpOffentlig }
     )
   }
+
   await page.evaluate(
-    ({ afp: afpValue }) =>
-      window.store.dispatch(userInputActions.setAfp(afpValue)),
-    { afp }
+    ({ v }) =>
+      window.store.dispatch({ type: 'userInputSlice/setAfp', payload: v }),
+    { v: afp }
   )
+
   await page.evaluate(
-    ({
-      sivilstand: sivilstandParam,
-      epsHarPensjon: epsHarPensjonParam,
-      epsHarInntektOver2G: epsHarInntektOver2GParam,
-    }) =>
-      window.store.dispatch(
-        userInputActions.setSivilstand({
-          sivilstand: sivilstandParam,
-          epsHarPensjon: epsHarPensjonParam,
-          epsHarInntektOver2G: epsHarInntektOver2GParam,
-        })
-      ),
+    ({ sivilstand: s, epsHarPensjon: epp, epsHarInntektOver2G: epi2g }) =>
+      window.store.dispatch({
+        type: 'userInputSlice/setSivilstand',
+        payload: {
+          sivilstand: s,
+          epsHarPensjon: epp,
+          epsHarInntektOver2G: epi2g,
+        },
+      }),
     { sivilstand, epsHarPensjon, epsHarInntektOver2G }
   )
+
   await page.evaluate(() => window.router.navigate('/beregning'))
 }
 
