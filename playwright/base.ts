@@ -153,7 +153,7 @@ export async function setupInterceptions(
       },
     },
     {
-      url: /https?:\/\/api\.uxsignals\.com\/v2\/study\/id\/.*\/active/,
+      url: /^https?:\/\/api\.uxsignals\.com\/v2\/study\/id\/.*\/active/,
       jsonResponse: { active: false },
     },
   ]
