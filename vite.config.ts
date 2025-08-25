@@ -62,7 +62,20 @@ export default defineConfig({
         brotliSize: true,
         filename: 'analice.html',
       }),
-  ],
+
+    // Custom plugin to set Service-Worker-Allowed header for MSW in development
+    process.env.NODE_ENV !== 'test' && {
+      name: 'msw-service-worker-allowed',
+      configureServer(server) {
+        server.middlewares.use((req, res, next) => {
+          if (req.url === '/pensjon/kalkulator/mockServiceWorker.js') {
+            res.setHeader('Service-Worker-Allowed', '/')
+          }
+          next()
+        })
+      },
+    },
+  ].filter(Boolean),
   server: {
     proxy: {
       '/pensjon/kalkulator/api': {
@@ -84,9 +97,7 @@ export default defineConfig({
       },
     },
     preprocessorOptions: {
-      scss: {
-        api: 'modern-compiler',
-      },
+      scss: {},
     },
   },
   test: {
