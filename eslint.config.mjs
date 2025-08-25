@@ -98,6 +98,7 @@ export default [
       'sonarjs/prefer-while': 'warn',
     },
   },
+  // Test files configuration
   {
     files: ['**/*.test.ts', '**/*.test.tsx'],
     rules: {
@@ -118,7 +119,17 @@ export default [
       // Relax SonarJS rules for test files
       'sonarjs/no-duplicate-string': 'off',
       'sonarjs/cognitive-complexity': 'off',
-      'sonarjs/no-identical-functions': 'warn',
+      'sonarjs/no-identical-functions': 'off',
+    },
+  },
+  // Mock files configuration
+  {
+    files: ['**/mocks/**/*.ts', '**/mocks/**/*.tsx'],
+    rules: {
+      // Relax SonarJS rules for mock files
+      'sonarjs/no-duplicate-string': 'off',
+      'sonarjs/cognitive-complexity': 'off',
+      'sonarjs/no-identical-functions': 'off',
     },
   },
 ]
