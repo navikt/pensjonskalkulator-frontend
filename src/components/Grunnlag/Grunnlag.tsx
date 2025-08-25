@@ -86,24 +86,33 @@ export const Grunnlag: React.FC<Props> = ({
     [sivilstand]
   )
 
-  const {
-    alderspensjonDetaljerListe,
-    pre2025OffentligAfpDetaljerListe,
-    afpPrivatDetaljerListe,
-    afpOffentligDetaljerListe,
-    opptjeningPre2025OffentligAfpListe,
-  } = useBeregningsdetaljer(
-    alderspensjonListe,
-    afpPrivatListe,
-    afpOffentligListe,
-    pre2025OffentligAfp
-  )
+  const { alderspensjonDetaljerListe, afpDetaljerListe } =
+    useBeregningsdetaljer(
+      alderspensjonListe,
+      afpPrivatListe,
+      afpOffentligListe,
+      pre2025OffentligAfp
+    )
+
+  // Antall kolonner for AP detaljer som bestemmer hvor mange kolonner AFP detaljer skal ha.
+  const alderspensjonColumnsCount =
+    alderspensjonDetaljerListe.length === 0
+      ? 0
+      : [
+          alderspensjonDetaljerListe[0].alderspensjon,
+          alderspensjonDetaljerListe[0].opptjeningKap19,
+          alderspensjonDetaljerListe[0].opptjeningKap20,
+        ].filter((arr) => arr.length > 0).length
 
   // Når det ikke er noen detaljer for AFP, så er "Les mer" lenken skjult.
   const shouldHideAfpReadMore =
-    !afpOffentligDetaljerListe.length &&
-    !afpPrivatDetaljerListe.length &&
-    !pre2025OffentligAfpDetaljerListe.length
+    afpDetaljerListe.length === 0 ||
+    afpDetaljerListe.every(
+      (afpDetaljer) =>
+        afpDetaljer.afpPrivat.length === 0 &&
+        afpDetaljer.afpOffentlig.length === 0 &&
+        afpDetaljer.pre2025OffentligAfp.length === 0
+    )
 
   const handleReadMoreChange = ({
     isOpen,
@@ -147,6 +156,7 @@ export const Grunnlag: React.FC<Props> = ({
 
         <GrunnlagItem color="purple">
           <GrunnlagAFP />
+
           {!shouldHideAfpReadMore && (
             <ReadMore
               name="Listekomponenter for AFP"
@@ -181,14 +191,8 @@ export const Grunnlag: React.FC<Props> = ({
               }
             >
               <AfpDetaljerGrunnlag
-                afpPrivatDetaljerListe={afpPrivatDetaljerListe}
-                afpOffentligDetaljerListe={afpOffentligDetaljerListe}
-                pre2025OffentligAfpDetaljerListe={
-                  pre2025OffentligAfpDetaljerListe
-                }
-                opptjeningPre2025OffentligAfpListe={
-                  opptjeningPre2025OffentligAfpListe
-                }
+                afpDetaljerListe={afpDetaljerListe}
+                alderspensjonColumnsCount={alderspensjonColumnsCount}
               />
               {pre2025OffentligAfp &&
                 pre2025OffentligAfp.afpAvkortetTil70Prosent && (
@@ -210,6 +214,12 @@ export const Grunnlag: React.FC<Props> = ({
                       href="https://www.nav.no/afp-offentlig#beregning"
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() => {
+                        logger('link åpnet', {
+                          href: `/pensjon/kalkulator${paths.forbehold}`,
+                          target: '_blank',
+                        })
+                      }}
                     >
                       <FormattedMessage id="grunnlag.afp.link.text" />
                     </Link>
@@ -220,10 +230,11 @@ export const Grunnlag: React.FC<Props> = ({
         </GrunnlagItem>
 
         <GrunnlagItem color="blue">
-          <VStack gap="3">
+          <VStack gap="1">
             <Heading level="3" size="small">
               <FormattedMessage id="beregning.highcharts.serie.alderspensjon.name" />
             </Heading>
+
             <BodyLong className={styles.alderspensjonDetaljer}>
               {loependeVedtak.alderspensjon || visning === 'avansert' ? (
                 <FormattedMessage
@@ -247,6 +258,7 @@ export const Grunnlag: React.FC<Props> = ({
               )}
             </BodyLong>
           </VStack>
+
           <ReadMore
             name="Listekomponenter for alderspensjon"
             open={isAlderspensjonDetaljerVisible}
@@ -281,9 +293,7 @@ export const Grunnlag: React.FC<Props> = ({
           >
             <AlderspensjonDetaljerGrunnlag
               alderspensjonDetaljerListe={alderspensjonDetaljerListe}
-              hasPre2025OffentligAfpUttaksalder={Boolean(
-                opptjeningPre2025OffentligAfpListe?.length
-              )}
+              hasPre2025OffentligAfpUttaksalder={Boolean(pre2025OffentligAfp)}
             />
             <FormattedMessage
               id="grunnlag.alderspensjon.ingress.link"
