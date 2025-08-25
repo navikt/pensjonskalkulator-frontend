@@ -10,6 +10,17 @@ import { logger } from '@/utils/logging'
 
 import styles from './SimuleringPensjonsavtalerAlert.module.scss'
 
+// Constants for repeated strings and variants
+const ALERT_VARIANTS = {
+  INFO: 'info',
+  WARNING: 'warning',
+  INLINE_INFO: 'inline-info',
+} as const
+
+const ALERT_LOGGER_EVENT = 'alert vist'
+
+type AlertVariant = (typeof ALERT_VARIANTS)[keyof typeof ALERT_VARIANTS]
+
 interface Props {
   pensjonsavtaler: {
     isLoading: boolean
@@ -44,15 +55,15 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
   const { isError: isOffentligTpError, data: offentligTpData } = offentligTp
 
   const alertsList: Array<{
-    variant: 'info' | 'warning' | 'inline-info'
+    variant: AlertVariant
     text: string
   }> = []
 
   // Varselet om at avtaler starter tidligere enn uttakstidspunkt skal være øverst av varslene
   if (!isPensjonsavtalerLoading && isPensjonsavtaleFlagVisible) {
     const text = 'beregning.pensjonsavtaler.alert.avtaler_foer_alder'
-    const variant = 'inline-info'
-    logger('alert vist', {
+    const variant = ALERT_VARIANTS.INLINE_INFO
+    logger(ALERT_LOGGER_EVENT, {
       tekst: `Pensjonsavtaler: ${intl.formatMessage({ id: text })}`,
       variant,
     })
@@ -63,7 +74,7 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
   }
 
   const pensjonsavtaleAlert = React.useMemo(():
-    | { variant: 'info' | 'warning' | 'inline-info'; text: string }
+    | { variant: AlertVariant; text: string }
     | undefined => {
     const isPartialWith0Avtaler =
       pensjonsavtalerData?.partialResponse &&
@@ -82,8 +93,8 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
 
     if (isEndring) {
       const text = 'beregning.pensjonsavtaler.alert.endring'
-      const variant = 'inline-info'
-      logger('alert vist', {
+      const variant = ALERT_VARIANTS.INLINE_INFO
+      logger(ALERT_LOGGER_EVENT, {
         tekst: `Pensjonsavtaler: ${intl.formatMessage({ id: text })}`,
         variant,
       })
@@ -96,8 +107,8 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
     // Offentlig-TP OK + Private pensjonsavtaler FEIL/UKOMPLETT
     if (isOffentligTpOK && (isPensjonsavtalerError || isPartialWith0Avtaler)) {
       const text = 'beregning.pensjonsavtaler.alert.privat.error'
-      const variant = 'warning'
-      logger('alert vist', {
+      const variant = ALERT_VARIANTS.WARNING
+      logger(ALERT_LOGGER_EVENT, {
         tekst: `Pensjonsavtaler: ${intl.formatMessage({ id: text })}`,
         variant,
       })
@@ -116,8 +127,8 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
       (isPensjonsavtalerError || isPartialWith0Avtaler)
     ) {
       const text = 'beregning.pensjonsavtaler.alert.privat_og_offentlig.error'
-      const variant = 'warning'
-      logger('alert vist', {
+      const variant = ALERT_VARIANTS.WARNING
+      logger(ALERT_LOGGER_EVENT, {
         tekst: `Pensjonsavtaler: ${intl.formatMessage({ id: text })}`,
         variant,
       })
@@ -133,8 +144,8 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
       isPensjonsavtalerSuccess
     ) {
       const text = 'beregning.pensjonsavtaler.alert.offentlig.error'
-      const variant = 'warning'
-      logger('alert vist', {
+      const variant = ALERT_VARIANTS.WARNING
+      logger(ALERT_LOGGER_EVENT, {
         tekst: `Pensjonsavtaler: ${intl.formatMessage({ id: text })}`,
         variant,
       })
@@ -150,8 +161,8 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
       offentligTpData.simuleringsresultatStatus === 'TP_ORDNING_STOETTES_IKKE'
     ) {
       const text = 'beregning.pensjonsavtaler.alert.stoettes_ikke'
-      const variant = 'info'
-      logger('alert vist', {
+      const variant = ALERT_VARIANTS.INFO
+      logger(ALERT_LOGGER_EVENT, {
         tekst: `Pensjonsavtaler: ${intl.formatMessage({ id: text })}`,
         variant,
       })
@@ -201,11 +212,15 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
       {alertsList.map((alert, index) => (
         <Alert
           key={`${alert.text}-${alert.variant}-${index}`}
-          variant={alert.variant === 'inline-info' ? 'info' : alert.variant}
+          variant={
+            alert.variant === ALERT_VARIANTS.INLINE_INFO
+              ? ALERT_VARIANTS.INFO
+              : alert.variant
+          }
           data-testid="pensjonsavtaler-alert"
           className={styles.alert}
           {...(index === 1 && { style: { margin: '16px 0' } })}
-          inline={alert.variant === 'inline-info'}
+          inline={alert.variant === ALERT_VARIANTS.INLINE_INFO}
         >
           <FormattedMessage
             id={alert.text}
