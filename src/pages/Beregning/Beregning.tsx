@@ -35,6 +35,8 @@ export const Beregning: React.FC<Props> = ({ visning }) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
+  const APPLICATION_TITLE_BEREGNING = 'application.title.beregning'
+
   const { uttaksalder } = useAppSelector(selectCurrentSimulation)
   const avbrytModalRef = React.useRef<HTMLDialogElement>(null)
 
@@ -49,7 +51,7 @@ export const Beregning: React.FC<Props> = ({ visning }) => {
 
   React.useEffect(() => {
     document.title = intl.formatMessage({
-      id: 'application.title.beregning',
+      id: APPLICATION_TITLE_BEREGNING,
     })
   }, [])
 
@@ -75,7 +77,7 @@ export const Beregning: React.FC<Props> = ({ visning }) => {
         window.history.pushState(
           null,
           intl.formatMessage({
-            id: 'application.title.beregning',
+            id: APPLICATION_TITLE_BEREGNING,
           }),
           window.location.href
         )
@@ -152,7 +154,7 @@ export const Beregning: React.FC<Props> = ({ visning }) => {
             window.history.pushState(
               null,
               intl.formatMessage({
-                id: 'application.title.beregning',
+                id: APPLICATION_TITLE_BEREGNING,
               }),
               window.location.href
             )
