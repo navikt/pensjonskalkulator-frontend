@@ -18,14 +18,13 @@ import {
   selectUfoeregrad,
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
+import { BUTTON_KLIKK } from '@/utils/loggerConstants'
 import { logger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
 
 import { generateAfpContent } from './utils'
 
 import styles from '../Grunnlag.module.scss'
-
-const BUTTON_KLIKK = 'button klikk'
 
 export const GrunnlagAFP: React.FC = () => {
   const intl = useIntl()

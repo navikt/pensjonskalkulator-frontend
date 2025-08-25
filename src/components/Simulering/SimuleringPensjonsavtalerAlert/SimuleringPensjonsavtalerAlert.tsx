@@ -6,18 +6,16 @@ import { Alert, Link } from '@navikt/ds-react'
 import { BeregningContext } from '@/pages/Beregning/context'
 import { useAppSelector } from '@/state/hooks'
 import { selectIsEndring } from '@/state/userInput/selectors'
+import { ALERT_VIST } from '@/utils/loggerConstants'
 import { logger } from '@/utils/logging'
 
 import styles from './SimuleringPensjonsavtalerAlert.module.scss'
 
-// Constants for repeated strings and variants
 const ALERT_VARIANTS = {
   INFO: 'info',
   WARNING: 'warning',
   INLINE_INFO: 'inline-info',
 } as const
-
-const ALERT_LOGGER_EVENT = 'alert vist'
 
 type AlertVariant = (typeof ALERT_VARIANTS)[keyof typeof ALERT_VARIANTS]
 
@@ -63,7 +61,7 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
   if (!isPensjonsavtalerLoading && isPensjonsavtaleFlagVisible) {
     const text = 'beregning.pensjonsavtaler.alert.avtaler_foer_alder'
     const variant = ALERT_VARIANTS.INLINE_INFO
-    logger(ALERT_LOGGER_EVENT, {
+    logger(ALERT_VIST, {
       tekst: `Pensjonsavtaler: ${intl.formatMessage({ id: text })}`,
       variant,
     })
@@ -94,7 +92,7 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
     if (isEndring) {
       const text = 'beregning.pensjonsavtaler.alert.endring'
       const variant = ALERT_VARIANTS.INLINE_INFO
-      logger(ALERT_LOGGER_EVENT, {
+      logger(ALERT_VIST, {
         tekst: `Pensjonsavtaler: ${intl.formatMessage({ id: text })}`,
         variant,
       })
@@ -108,7 +106,7 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
     if (isOffentligTpOK && (isPensjonsavtalerError || isPartialWith0Avtaler)) {
       const text = 'beregning.pensjonsavtaler.alert.privat.error'
       const variant = ALERT_VARIANTS.WARNING
-      logger(ALERT_LOGGER_EVENT, {
+      logger(ALERT_VIST, {
         tekst: `Pensjonsavtaler: ${intl.formatMessage({ id: text })}`,
         variant,
       })
@@ -128,7 +126,7 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
     ) {
       const text = 'beregning.pensjonsavtaler.alert.privat_og_offentlig.error'
       const variant = ALERT_VARIANTS.WARNING
-      logger(ALERT_LOGGER_EVENT, {
+      logger(ALERT_VIST, {
         tekst: `Pensjonsavtaler: ${intl.formatMessage({ id: text })}`,
         variant,
       })
@@ -145,7 +143,7 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
     ) {
       const text = 'beregning.pensjonsavtaler.alert.offentlig.error'
       const variant = ALERT_VARIANTS.WARNING
-      logger(ALERT_LOGGER_EVENT, {
+      logger(ALERT_VIST, {
         tekst: `Pensjonsavtaler: ${intl.formatMessage({ id: text })}`,
         variant,
       })
@@ -162,7 +160,7 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
     ) {
       const text = 'beregning.pensjonsavtaler.alert.stoettes_ikke'
       const variant = ALERT_VARIANTS.INFO
-      logger(ALERT_LOGGER_EVENT, {
+      logger(ALERT_VIST, {
         tekst: `Pensjonsavtaler: ${intl.formatMessage({ id: text })}`,
         variant,
       })

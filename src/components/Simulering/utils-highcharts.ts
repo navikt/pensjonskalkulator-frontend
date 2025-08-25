@@ -12,6 +12,7 @@ import { IntlShape } from 'react-intl'
 
 import { cleanAndAddEventListener } from '@/utils/events'
 import { formatInntekt } from '@/utils/inntekt'
+import { GRAF_TOOLTIP_AAPNET } from '@/utils/loggerConstants'
 import { logger } from '@/utils/logging'
 
 import {
@@ -71,7 +72,7 @@ export function labelFormatterMobile(this: AxisLabelsFormatterContextObject) {
 }
 
 export function onPointClick(this: Point): void {
-  logger('graf tooltip åpnet', {
+  logger(GRAF_TOOLTIP_AAPNET, {
     data: this.category as string,
   })
   this.series.chart.tooltip.update({

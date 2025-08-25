@@ -11,17 +11,21 @@ import {
 import { DATE_BACKEND_FORMAT, DATE_ENDUSER_FORMAT } from '@/utils/dates'
 import { validateInntekt } from '@/utils/inntekt'
 import { isLoependeVedtakEndring } from '@/utils/loependeVedtak'
+import {
+  RADIOGROUP_VALGT,
+  SKJEMA_VALIDERING_FEILET,
+  VALG_AV_UTTAKSALDER_GRADERT,
+  VALG_AV_UTTAKSGRAD,
+} from '@/utils/loggerConstants'
 import { logger } from '@/utils/logging'
 import { ALLE_UTTAKSGRAD_AS_NUMBER } from '@/utils/uttaksgrad'
 
-const SKJEMA_VALIDERING_FEILET = 'skjema validering feilet'
 const AGEPICKER_VALIDATION_ERROR =
   'beregning.avansert.rediger.agepicker.validation_error.maxAlder'
 const UTTAKSGRAD_VALIDATION_ERROR =
   'beregning.avansert.rediger.uttaksgrad.validation_error'
 const AVANSERT_UTTAKSALDER_GRADERT_DATA =
   'Avansert - Uttaksalder for gradert uttak'
-const RADIOGROUP_VALGT = 'radiogroup valgt'
 
 export type AvansertFormNames =
   (typeof AVANSERT_FORM_NAMES)[keyof typeof AVANSERT_FORM_NAMES]
@@ -733,11 +737,11 @@ export const onAvansertBeregningSubmit = (
       )
     }
   } else {
-    logger('valg av uttaksgrad', {
+    logger(VALG_AV_UTTAKSGRAD, {
       tekst: `${uttaksgradFormData}`, // eslint-disable-line @typescript-eslint/no-base-to-string, @typescript-eslint/restrict-template-expressions
     })
 
-    logger('valg av uttaksalder for gradert alderspensjon', {
+    logger(VALG_AV_UTTAKSALDER_GRADERT, {
       tekst: `${gradertUttakAarFormData} år og ${gradertUttakMaanederFormData} md.`, // eslint-disable-line @typescript-eslint/no-base-to-string, @typescript-eslint/restrict-template-expressions
     })
 

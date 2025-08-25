@@ -18,6 +18,7 @@ import {
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
 import { BeregningVisning } from '@/types/common-types'
+import { BUTTON_KLIKK, MODAL_AAPNET } from '@/utils/loggerConstants'
 import { logger } from '@/utils/logging'
 
 import { BeregningAvansert } from './BeregningAvansert'
@@ -66,7 +67,7 @@ export const Beregning: React.FC<Props> = ({ visning }) => {
   React.useEffect(() => {
     let isEventAdded
     const onPopState = () => {
-      logger('modal åpnet', {
+      logger(MODAL_AAPNET, {
         tekst: 'Modal: Er du sikker på at du vil avslutte avansert beregning?',
       })
       avbrytModalRef.current?.showModal()
@@ -108,7 +109,7 @@ export const Beregning: React.FC<Props> = ({ visning }) => {
   }
 
   const onToggleChange = (v: string) => {
-    logger('button klikk', {
+    logger(BUTTON_KLIKK, {
       tekst: `Toggle viser fane ${v}`,
     })
     if (
@@ -118,7 +119,7 @@ export const Beregning: React.FC<Props> = ({ visning }) => {
         avansertSkjemaModus === 'resultat' ||
         (avansertSkjemaModus === 'redigering' && uttaksalder))
     ) {
-      logger('modal åpnet', {
+      logger(MODAL_AAPNET, {
         tekst: 'Modal: Er du sikker på at du vil avslutte avansert beregning?',
       })
       avbrytModalRef.current?.showModal()

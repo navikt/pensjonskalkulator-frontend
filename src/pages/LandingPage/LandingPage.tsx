@@ -16,6 +16,7 @@ import {
 import { externalUrls, paths } from '@/router/constants'
 import { useAppSelector } from '@/state/hooks'
 import { selectIsLoggedIn } from '@/state/session/selectors'
+import { BUTTON_KLIKK } from '@/utils/loggerConstants'
 import { logOpenLink, wrapLogger } from '@/utils/logging'
 
 import styles from './LandingPage.module.scss'
@@ -24,8 +25,6 @@ export const LandingPage = () => {
   const intl = useIntl()
   const isLoggedIn = useAppSelector(selectIsLoggedIn)
   const navigate = useNavigate()
-  
-  const BUTTON_CLICK_EVENT = 'button klikk'
 
   React.useEffect(() => {
     document.title = intl.formatMessage({
@@ -123,7 +122,7 @@ export const LandingPage = () => {
             <Button
               data-testid="landingside-enkel-kalkulator-button"
               variant="primary"
-              onClick={wrapLogger(BUTTON_CLICK_EVENT, {
+              onClick={wrapLogger(BUTTON_KLIKK, {
                 tekst: 'Enkel kalkulator',
               })(gaaTilEnkelKalkulator)}
             >
@@ -161,7 +160,7 @@ export const LandingPage = () => {
               <Button
                 data-testid="landingside-detaljert-kalkulator-button"
                 variant="secondary"
-                onClick={wrapLogger(BUTTON_CLICK_EVENT, {
+                onClick={wrapLogger(BUTTON_KLIKK, {
                   tekst: 'Detaljert pensjonskalkulator',
                 })(gaaTilDetaljertKalkulator)}
               >
@@ -203,7 +202,7 @@ export const LandingPage = () => {
                 className={styles.button}
                 data-testid="landingside-uinnlogget-kalkulator-button"
                 variant="secondary"
-                onClick={wrapLogger(BUTTON_CLICK_EVENT, {
+                onClick={wrapLogger(BUTTON_KLIKK, {
                   tekst: 'Uinnlogget kalkulator',
                 })(gaaTilUinnloggetKalkulator)}
               >
