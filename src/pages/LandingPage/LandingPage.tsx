@@ -24,6 +24,8 @@ export const LandingPage = () => {
   const intl = useIntl()
   const isLoggedIn = useAppSelector(selectIsLoggedIn)
   const navigate = useNavigate()
+  
+  const BUTTON_CLICK_EVENT = 'button klikk'
 
   React.useEffect(() => {
     document.title = intl.formatMessage({
@@ -121,7 +123,7 @@ export const LandingPage = () => {
             <Button
               data-testid="landingside-enkel-kalkulator-button"
               variant="primary"
-              onClick={wrapLogger('button klikk', {
+              onClick={wrapLogger(BUTTON_CLICK_EVENT, {
                 tekst: 'Enkel kalkulator',
               })(gaaTilEnkelKalkulator)}
             >
@@ -159,7 +161,7 @@ export const LandingPage = () => {
               <Button
                 data-testid="landingside-detaljert-kalkulator-button"
                 variant="secondary"
-                onClick={wrapLogger('button klikk', {
+                onClick={wrapLogger(BUTTON_CLICK_EVENT, {
                   tekst: 'Detaljert pensjonskalkulator',
                 })(gaaTilDetaljertKalkulator)}
               >
@@ -201,7 +203,7 @@ export const LandingPage = () => {
                 className={styles.button}
                 data-testid="landingside-uinnlogget-kalkulator-button"
                 variant="secondary"
-                onClick={wrapLogger('button klikk', {
+                onClick={wrapLogger(BUTTON_CLICK_EVENT, {
                   tekst: 'Uinnlogget kalkulator',
                 })(gaaTilUinnloggetKalkulator)}
               >
