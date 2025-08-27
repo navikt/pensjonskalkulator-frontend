@@ -11,9 +11,9 @@ import {
   getTranslatedLandFromLandkode,
   harKravOmArbeidFromLandkode,
 } from '@/utils/land'
+import { SKJEMA_VALIDERING_FEILET } from '@/utils/loggerConstants'
 import { logger } from '@/utils/logging'
 
-const SKJEMA_VALIDERING_FEILET = 'skjema validering feilet'
 const UTENLANDSOPPHOLD_PREFIX = 'Utenlandsopphold - '
 const DATO_VALIDATION_ERROR_FORMAT =
   'utenlandsopphold.om_oppholdet_ditt_modal.dato.validation_error.format'
