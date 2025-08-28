@@ -104,7 +104,7 @@ const translations = {
   'stegvisning.start.endring.ingress.pre2025_offentlig_afp':
     'Du har nå <strong>{grad} % alderspensjon</strong> og <strong>AFP i offentlig sektor</strong>. Her kan du sjekke hva du kan få i alderspensjon.{br}{br}',
   'stegvisning.start.endring.ingress.pre2025_offentlig_afp_fremtidig':
-    'Du har nå 0% alderspensjon. Du har endret til <strong>{grad} % alderspensjon fra {fom}</strong>. Du kan ikke gjøre en ny beregning her før denne datoen.',
+    'Du har nå <strong>0 % alderspensjon</strong>. Du har endret til <strong>{grad} % alderspensjon fra {fom}</strong>. Du kan ikke gjøre en ny beregning her før denne datoen.',
   'stegvisning.start.ingress':
     'Velkommen til pensjonskalkulatoren som kan vise deg:',
   'stegvisning.start.list_item1': 'alderspensjon (Nav)',
