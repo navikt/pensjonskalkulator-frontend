@@ -18,27 +18,29 @@ export const StartIngressPre2025OffentligAfp: React.FC<
   const fremtidigAlderspensjon = loependeVedtak.fremtidigAlderspensjon
   if (loependeVedtak.alderspensjon?.grad === 0 && fremtidigAlderspensjon) {
     return (
-      <div>
-        <span data-testid="stegvisning-start-ingress-pre2025-offentlig-afp">
-          <FormattedMessage
-            id="stegvisning.start.endring.ingress.pre2025_offentlig_afp_fremtidig"
-            values={{
-              ...getFormatMessageValues(),
-              grad: fremtidigAlderspensjon.grad,
-              fom: format(
-                parseISO(fremtidigAlderspensjon.fom),
-                DATE_ENDUSER_FORMAT
-              ),
-              link: <TelefonLink />,
-            }}
-          />
-        </span>
-      </div>
+      <BodyLong
+        size="large"
+        data-testid="stegvisning-start-ingress-pre2025-offentlig-afp"
+      >
+        <FormattedMessage
+          id="stegvisning.start.endring.ingress.pre2025_offentlig_afp_fremtidig"
+          values={{
+            ...getFormatMessageValues(),
+            grad: fremtidigAlderspensjon.grad,
+            fom: format(
+              parseISO(fremtidigAlderspensjon.fom),
+              DATE_ENDUSER_FORMAT
+            ),
+            link: <TelefonLink />,
+          }}
+        />
+      </BodyLong>
     )
   }
+
   return (
     <div>
-      <span data-testid="stegvisning-start-ingress-pre2025-offentlig-afp">
+      <BodyLong data-testid="stegvisning-start-ingress-pre2025-offentlig-afp">
         {loependeVedtak.alderspensjon?.grad === 0 ? (
           <FormattedMessage
             id="stegvisning.start.endring.ingress.pre2025_offentlig_afp"
@@ -53,7 +55,7 @@ export const StartIngressPre2025OffentligAfp: React.FC<
             values={{ ...getFormatMessageValues() }}
           />
         )}
-      </span>
+      </BodyLong>
       <BodyLong size="medium">
         <FormattedMessage id="stegvisning.start.ingress_2" />
       </BodyLong>
