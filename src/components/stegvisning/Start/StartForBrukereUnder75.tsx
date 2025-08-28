@@ -1,7 +1,7 @@
 import { FormattedMessage, useIntl } from 'react-intl'
 
 import { ExternalLinkIcon } from '@navikt/aksel-icons'
-import { Button, Heading, Link } from '@navikt/ds-react'
+import { BodyLong, Button, Heading, Link } from '@navikt/ds-react'
 
 import { InfoOmFremtidigVedtak } from '@/components/InfoOmFremtidigVedtak'
 import { Card } from '@/components/common/Card'
@@ -97,6 +97,15 @@ export function StartForBrukereUnder75({
             height="1.25rem"
           />
         </Link>
+        <div className={styles.alert}>
+          <Heading size="xsmall" level="4">
+            <FormattedMessage id="stegvisning.start.alert.title" />
+          </Heading>
+
+          <BodyLong size="medium">
+            <FormattedMessage id="stegvisning.start.alert.description" />
+          </BodyLong>
+        </div>
       </Card>
     </>
   )

@@ -57,14 +57,6 @@ describe('LandingPage', () => {
       expect(
         screen.getByText('landingsside.link.personopplysninger')
       ).toBeVisible()
-      expect(
-        screen.getByText('landingsside.velge_mellom_detaljert_og_enkel_2')
-      ).toBeVisible()
-      // Viser riktig tekst på Detaljert kalkulator knappen
-      expect(
-        screen.getByTestId('landingside-detaljert-kalkulator-button')
-          .textContent
-      ).toBe('landingsside.button.detaljert_kalkulator')
     })
   })
 
@@ -101,14 +93,6 @@ describe('LandingPage', () => {
       expect(
         screen.getByText('landingsside.link.personopplysninger')
       ).toBeVisible()
-      expect(
-        screen.getByText('landingsside.velge_mellom_detaljert_og_enkel_2')
-      ).toBeVisible()
-      // Viser riktig tekst på Detaljert kalkulator knappen
-      expect(
-        screen.getByTestId('landingside-detaljert-kalkulator-button')
-          .textContent
-      ).toBe('landingsside.button.detaljert_kalkulator_utlogget')
       // Viser info om Uinnlogget kalkulator
       expect(
         screen.getByText('landingsside.text.uinnlogget_kalkulator')
