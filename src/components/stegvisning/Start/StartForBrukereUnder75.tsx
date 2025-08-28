@@ -97,7 +97,7 @@ export function StartForBrukereUnder75({
             height="1.25rem"
           />
         </Link>
-        <div className={styles.alert}>
+        <div className={styles.alert} data-testid="stegvisning-start-alert">
           <Heading size="xsmall" level="4">
             <FormattedMessage id="stegvisning.start.alert.title" />
           </Heading>

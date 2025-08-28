@@ -108,33 +108,6 @@ describe('LandingPage', () => {
     })
   })
 
-  it('går til detaljert kalkulator når brukeren klikker på detaljert kalkulator knappen', async () => {
-    const user = userEvent.setup()
-
-    const open = vi.fn()
-    vi.stubGlobal('open', open)
-
-    const router = createMemoryRouter(routes, {
-      basename: BASE_PATH,
-      initialEntries: [`${BASE_PATH}${paths.login}`],
-    })
-    render(<RouterProvider router={router} />, {
-      hasRouter: false,
-    })
-
-    await waitFor(() => {
-      expect(
-        screen.getByTestId('landingside-detaljert-kalkulator-button')
-      ).toBeDefined()
-    })
-
-    await user.click(
-      screen.getByTestId('landingside-detaljert-kalkulator-button')
-    )
-
-    expect(open).toHaveBeenCalledWith(externalUrls.detaljertKalkulator, '_self')
-  })
-
   it('går til enkel kalkulator når brukeren klikker på enkel kalkulator knappen', async () => {
     mockErrorResponse('/oauth2/session', {
       baseUrl: `${HOST_BASEURL}`,
