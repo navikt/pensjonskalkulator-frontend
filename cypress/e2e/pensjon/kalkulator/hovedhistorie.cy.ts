@@ -29,6 +29,11 @@ describe('Hovedhistorie', () => {
     describe('Hvis jeg ikke er i målgruppen for ny kalkulator eller ikke bør bruke kalkulatoren,', () => {
       // 2
       it('forventer jeg tilgang til uinnlogget kalkulator.', () => {
+        cy.origin('https://www.nav.no', () => {
+          cy.on('uncaught:exception', () => {
+            return false
+          })
+        })
         cy.contains('button', 'Logg inn i pensjonskalkulator').should('exist')
 
         cy.visit('/pensjon/kalkulator/')
