@@ -58,9 +58,6 @@ export default {
     'You must use our detailed calculator. It provides an estimate of',
   'landingsside.velge_mellom_detaljert_og_enkel':
     'In the pension calculator, you can get an estimate of',
-  'landingsside.button.detaljert_kalkulator_utlogget':
-    'Log in to the detailed pension calculator',
-  'landingsside.button.detaljert_kalkulator': 'Detailed Pension Calculator',
   'landingsside.button.enkel_kalkulator_utlogget':
     'Log in to the pension calculator',
   'landingsside.button.enkel_kalkulator': 'Pension Calculator',

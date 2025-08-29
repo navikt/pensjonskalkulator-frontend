@@ -61,9 +61,6 @@ const translations = {
     'Du må bruke vår detaljerte kalkulator. Den gir deg et estimat på',
   'landingsside.velge_mellom_detaljert_og_enkel':
     'I pensjonskalkulatoren kan du få et estimat på ',
-  'landingsside.button.detaljert_kalkulator_utlogget':
-    'Logg inn i detaljert pensjonskalkulator',
-  'landingsside.button.detaljert_kalkulator': 'Detaljert pensjonskalkulator',
   'landingsside.button.enkel_kalkulator_utlogget':
     'Logg inn i pensjonskalkulator',
   'landingsside.button.enkel_kalkulator': 'Pensjonskalkulator',
