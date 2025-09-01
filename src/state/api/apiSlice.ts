@@ -65,7 +65,7 @@ export const apiSlice = createApi({
         return response.grunnbeløp
       },
     }),
-    getErApoteker: builder.query<boolean, void>({
+    /* getErApoteker: builder.query<boolean, void>({
       query: () => '/v2/ekskludert',
       transformResponse: (response) => {
         if (!isEkskludertStatus(response)) {
@@ -74,6 +74,19 @@ export const apiSlice = createApi({
             response as ErrorOptions
           )
         }
+        return response.ekskludert && response.aarsak === 'ER_APOTEKER'
+      },
+    }), */
+    getErApoteker: builder.query<boolean, void>({
+      query: () => '/v1/er-apoteker',
+      transformResponse: (response) => {
+        if (!isEkskludertStatus(response)) {
+          throw new Error(
+            `Mottok ugyldig ekskludert response:`,
+            response as ErrorOptions
+          )
+        }
+        //TODO: Endre til response.apoteker nar backend er klar
         return response.ekskludert && response.aarsak === 'ER_APOTEKER'
       },
     }),
