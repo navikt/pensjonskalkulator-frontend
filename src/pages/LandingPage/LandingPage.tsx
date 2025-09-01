@@ -16,6 +16,7 @@ import {
 import { externalUrls, paths } from '@/router/constants'
 import { useAppSelector } from '@/state/hooks'
 import { selectIsLoggedIn } from '@/state/session/selectors'
+import { BUTTON_KLIKK } from '@/utils/loggerConstants'
 import { logOpenLink, wrapLogger } from '@/utils/logging'
 
 import styles from './LandingPage.module.scss'
@@ -31,10 +32,6 @@ export const LandingPage = () => {
     })
   }, [])
 
-  const gaaTilDetaljertKalkulator = () => {
-    window.open(externalUrls.detaljertKalkulator, '_self')
-  }
-
   const gaaTilEnkelKalkulator = () => {
     navigate(paths.start)
   }
@@ -42,14 +39,6 @@ export const LandingPage = () => {
   const gaaTilUinnloggetKalkulator = () => {
     window.open(externalUrls.uinnloggetKalkulator, '_self')
   }
-
-  const detaljertKalkulatorButtonText = isLoggedIn
-    ? intl.formatMessage({
-        id: 'landingsside.button.detaljert_kalkulator',
-      })
-    : intl.formatMessage({
-        id: 'landingsside.button.detaljert_kalkulator_utlogget',
-      })
 
   const enkelKalkulatorButtonText = isLoggedIn
     ? intl.formatMessage({
@@ -121,7 +110,7 @@ export const LandingPage = () => {
             <Button
               data-testid="landingside-enkel-kalkulator-button"
               variant="primary"
-              onClick={wrapLogger('button klikk', {
+              onClick={wrapLogger(BUTTON_KLIKK, {
                 tekst: 'Enkel kalkulator',
               })(gaaTilEnkelKalkulator)}
             >
@@ -145,28 +134,6 @@ export const LandingPage = () => {
               height="1.25rem"
             />
           </Link>
-
-          <div>
-            <BodyLong>
-              {intl.formatMessage({
-                id: 'landingsside.velge_mellom_detaljert_og_enkel_2',
-              })}
-            </BodyLong>
-          </div>
-
-          <div>
-            <HStack gap="4">
-              <Button
-                data-testid="landingside-detaljert-kalkulator-button"
-                variant="secondary"
-                onClick={wrapLogger('button klikk', {
-                  tekst: 'Detaljert pensjonskalkulator',
-                })(gaaTilDetaljertKalkulator)}
-              >
-                {detaljertKalkulatorButtonText}
-              </Button>
-            </HStack>
-          </div>
         </VStack>
       </section>
     )
@@ -201,7 +168,7 @@ export const LandingPage = () => {
                 className={styles.button}
                 data-testid="landingside-uinnlogget-kalkulator-button"
                 variant="secondary"
-                onClick={wrapLogger('button klikk', {
+                onClick={wrapLogger(BUTTON_KLIKK, {
                   tekst: 'Uinnlogget kalkulator',
                 })(gaaTilUinnloggetKalkulator)}
               >

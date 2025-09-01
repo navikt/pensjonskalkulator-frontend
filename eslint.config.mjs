@@ -85,21 +85,26 @@ export default [
       'import/no-extraneous-dependencies': 'error',
       'import/no-duplicates': 'error',
       // SonarJS rules
-      //TODO: Gå gjennom og fiks warninger (PEK-1435)
-      'sonarjs/no-duplicate-string': 'warn',
-      'sonarjs/no-identical-functions': 'warn',
+      'sonarjs/no-duplicate-string': 'error',
+      'sonarjs/no-identical-functions': 'error',
       'sonarjs/no-redundant-boolean': 'warn',
-      'sonarjs/no-unused-collection': 'warn',
+      'sonarjs/no-unused-collection': 'error',
       'sonarjs/no-useless-catch': 'warn',
       'sonarjs/prefer-immediate-return': 'warn',
-      'sonarjs/no-collapsible-if': 'warn',
-      'sonarjs/no-gratuitous-expressions': 'warn',
+      'sonarjs/no-collapsible-if': 'error',
+      'sonarjs/no-gratuitous-expressions': 'error',
       'sonarjs/no-inverted-boolean-check': 'warn',
       'sonarjs/prefer-while': 'warn',
     },
   },
+  // Test files configuration
   {
-    files: ['**/*.test.ts', '**/*.test.tsx'],
+    files: [
+      '**/*.test.ts',
+      '**/*.test.tsx',
+      '**/__tests__/**/*.ts',
+      '**/__tests__/**/*.tsx',
+    ],
     rules: {
       '@typescript-eslint/ban-ts-comment': 'off', // Fjern når @ts-ignore ikke lenger er i bruk i testkode
       '@typescript-eslint/require-await': 'off',
@@ -118,7 +123,19 @@ export default [
       // Relax SonarJS rules for test files
       'sonarjs/no-duplicate-string': 'off',
       'sonarjs/cognitive-complexity': 'off',
-      'sonarjs/no-identical-functions': 'warn',
+      'sonarjs/no-identical-functions': 'off',
+      'sonarjs/prefer-immediate-return': 'off',
+    },
+  },
+  // Mock files configuration
+  {
+    files: ['**/mocks/**/*.ts', '**/mocks/**/*.tsx'],
+    rules: {
+      // Relax SonarJS rules for mock files
+      'sonarjs/no-duplicate-string': 'off',
+      'sonarjs/cognitive-complexity': 'off',
+      'sonarjs/no-identical-functions': 'off',
+      'sonarjs/prefer-immediate-return': 'off',
     },
   },
 ]
