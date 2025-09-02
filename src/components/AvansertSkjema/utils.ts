@@ -709,7 +709,7 @@ export const onAvansertBeregningSubmit = (
     })
 
     logger(RADIOGROUP_VALGT, {
-      tekst: 'Forventer inntekt samtidig når AFP er tatt ut',
+      tekst: 'Inntekt vsa. AFP',
       valg: inntektVsaAfpRadioFormData === 'ja' ? 'ja' : 'nei',
     })
 
@@ -750,12 +750,6 @@ export const onAvansertBeregningSubmit = (
       valg: inntektVsaGradertUttakRadioFormData === 'ja' ? 'ja' : 'nei',
     })
 
-    if (inntektVsaGradertUttakFormData) {
-      logger('valg av inntekt vsa. gradert pensjon (antall sifre)', {
-        tekst: `${(inntektVsaGradertUttakFormData as string).replace(/ /g, '').length}`,
-      })
-    }
-
     dispatch(
       userInputActions.setCurrentSimulationGradertUttaksperiode({
         uttaksalder: {
@@ -773,12 +767,6 @@ export const onAvansertBeregningSubmit = (
     logger(RADIOGROUP_VALGT, {
       tekst: 'Inntekt vsa. helt uttak',
       valg: inntektVsaHeltUttakRadioFormData === 'ja' ? 'ja' : 'nei',
-    })
-  }
-
-  if (inntektVsaHeltUttakFormData !== null) {
-    logger('valg av inntekt vsa. 100 % pensjon (antall sifre)', {
-      tekst: `${(inntektVsaHeltUttakFormData as string).replace(/ /g, '').length}`,
     })
   }
 
@@ -818,7 +806,7 @@ export const onAvansertBeregningSubmit = (
     !hasVilkaarIkkeOppfylt ||
     (hasVilkaarIkkeOppfylt && harAvansertSkjemaUnsavedChanges)
   ) {
-    logger('button klikk', {
+    logger('knapp klikket', {
       tekst: harAvansertSkjemaUnsavedChanges
         ? 'Oppdater avansert pensjon'
         : 'Beregn avansert pensjon',

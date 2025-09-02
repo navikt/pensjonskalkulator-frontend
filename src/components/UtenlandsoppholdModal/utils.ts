@@ -489,7 +489,7 @@ export const onUtenlandsoppholdSubmit = (
       })
     )
 
-    logger('button klikk', {
+    logger('knapp klikket', {
       tekst: utenlandsperiodeId
         ? `endrer utenlandsopphold`
         : `legger til utenlandsopphold`,
