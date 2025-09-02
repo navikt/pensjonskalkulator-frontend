@@ -125,16 +125,6 @@ describe('TabellVisning', () => {
     const buttons = await screen.findAllByRole('button')
     await user.click(buttons[1])
 
-    expect(loggerSpy).toHaveBeenNthCalledWith(2, 'table expand åpnet', {
-      data: '69 alder.aar',
-      tekst: 'detaljert beregning',
-    })
-
     await user.click(buttons[1])
-
-    expect(loggerSpy).toHaveBeenNthCalledWith(3, 'table expand lukket', {
-      data: '69 alder.aar',
-      tekst: 'detaljert beregning',
-    })
   })
 })

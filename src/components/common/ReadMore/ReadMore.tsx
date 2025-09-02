@@ -10,9 +10,9 @@ interface IProps extends ReadMoreProps {
 
 const logIsOpen = (name: string, isOpen: boolean) => {
   if (isOpen) {
-    logger('readmore åpnet', { tekst: name })
+    logger('les mer åpnet', { tittel: name })
   } else {
-    logger('readmore lukket', { tekst: name })
+    logger('les mer lukket', { tittel: name })
   }
 }
 

@@ -22,7 +22,7 @@ interface Props {
 export function Ufoere({ onCancel, onPrevious, onNext }: Props) {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
-    logger('button klikk', {
+    logger('knapp klikket', {
       tekst: `Neste fra ${paths.ufoeretrygdAFP}`,
     })
     if (onNext) {

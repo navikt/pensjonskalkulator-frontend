@@ -709,7 +709,7 @@ export const onAvansertBeregningSubmit = (
     })
 
     logger(RADIOGROUP_VALGT, {
-      tekst: 'Forventer inntekt samtidig når AFP er tatt ut',
+      tekst: 'Inntekt vsa. AFP',
       valg: inntektVsaAfpRadioFormData === 'ja' ? 'ja' : 'nei',
     })
 
@@ -806,7 +806,7 @@ export const onAvansertBeregningSubmit = (
     !hasVilkaarIkkeOppfylt ||
     (hasVilkaarIkkeOppfylt && harAvansertSkjemaUnsavedChanges)
   ) {
-    logger('button klikk', {
+    logger('knapp klikket', {
       tekst: harAvansertSkjemaUnsavedChanges
         ? 'Oppdater avansert pensjon'
         : 'Beregn avansert pensjon',
