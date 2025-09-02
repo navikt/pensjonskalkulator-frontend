@@ -604,7 +604,7 @@ describe('UtenlandsoppholdModal-utils', () => {
 
         expect(onSubmitCallbackMock).toHaveBeenCalled()
         expect(closeMock).toHaveBeenCalled()
-        expect(loggerMock).toHaveBeenCalledWith('button klikk', {
+        expect(loggerMock).toHaveBeenCalledWith('knapp klikket', {
           tekst: 'legger til utenlandsopphold',
         })
         expect(setValidationErrorsMock).not.toHaveBeenCalled()
@@ -673,7 +673,7 @@ describe('UtenlandsoppholdModal-utils', () => {
 
         expect(onSubmitCallbackMock).toHaveBeenCalled()
         expect(closeMock).toHaveBeenCalled()
-        expect(loggerMock).toHaveBeenCalledWith('button klikk', {
+        expect(loggerMock).toHaveBeenCalledWith('knapp klikket', {
           tekst: 'endrer utenlandsopphold',
         })
         expect(setValidationErrorsMock).not.toHaveBeenCalled()

@@ -2,7 +2,6 @@ import { SeriesColumnOptions } from 'highcharts'
 import { describe, it } from 'vitest'
 
 import { render, screen, userEvent } from '@/test-utils'
-import * as loggerUtils from '@/utils/logging'
 
 import { TabellVisning } from '../TabellVisning'
 
@@ -108,7 +107,6 @@ describe('TabellVisning', () => {
 
   it('logger når en rad i tabellen åpnes og lukkes', async () => {
     const user = userEvent.setup()
-    const loggerSpy = vi.spyOn(loggerUtils, 'logger')
     render(
       <TabellVisning
         series={[
