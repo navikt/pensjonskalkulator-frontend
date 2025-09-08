@@ -145,25 +145,11 @@ app.get(
 app.get(
   '/pensjon/kalkulator/api/feature/:toggle',
   async (req: Request, res: Response) => {
-    try {
-      const toggle = req.params.toggle
-      const response = await fetch(
-        `${PENSJONSKALKULATOR_BACKEND}/api/feature/${toggle}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'x_correlation-id': req.headers['x_correlation-id'] as string,
-          },
-        }
-      )
+    const toggle = req.params.toggle
 
-      const data = await response.json()
-      res.send(data)
-    } catch (error) {
-      console.error('Error fetching feature toggle:', error)
-      res.status(500).send({ error: 'Internal Server Error' })
-    }
+    res.send({
+      enabled: unleash.isEnabled(toggle),
+    })
   }
 )
 
