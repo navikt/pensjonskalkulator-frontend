@@ -110,6 +110,9 @@ export const stepStartAccessGuard = async () => {
   // Håndterer getErApotekerQuery separat for å forhindre at det blokkerer flyten hvis det feiler
   const getErApotekerRes = await getErApotekerQuery
 
+  // Setter error state hvis getErApoteker feiler
+  store.dispatch(sessionActions.setErApotekerError(!getErApotekerRes.isSuccess))
+
   if (vedlikeholdsmodusFeatureToggle.data?.enabled) {
     return redirect(paths.kalkulatorVirkerIkke)
   }
