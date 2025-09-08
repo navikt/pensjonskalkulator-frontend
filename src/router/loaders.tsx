@@ -100,17 +100,15 @@ export const stepStartAccessGuard = async () => {
   const state = store.getState()
   const isLoggedIn = selectIsLoggedIn(state)
 
-  const [
-    vedlikeholdsmodusFeatureToggle,
-    getLoependeVedtakRes,
-    getPersonRes,
-    getErApotekerRes,
-  ] = await Promise.all([
-    vedlikeholdsmodusFeatureToggleQuery,
-    getLoependeVedtakQuery,
-    getPersonQuery,
-    getErApotekerQuery,
-  ])
+  const [vedlikeholdsmodusFeatureToggle, getLoependeVedtakRes, getPersonRes] =
+    await Promise.all([
+      vedlikeholdsmodusFeatureToggleQuery,
+      getLoependeVedtakQuery,
+      getPersonQuery,
+    ])
+
+  // Håndterer getErApotekerQuery separat for å forhindre at det blokkerer flyten hvis det feiler
+  const getErApotekerRes = await getErApotekerQuery
 
   if (vedlikeholdsmodusFeatureToggle.data?.enabled) {
     return redirect(paths.kalkulatorVirkerIkke)
@@ -246,9 +244,9 @@ export const stepSivilstandAccessGuard = async ({
     .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
     .unwrap()
 
-  const erApoteker = await store
-    .dispatch(apiSlice.endpoints.getErApoteker.initiate())
-    .unwrap()
+  const erApoteker = await store.dispatch(
+    apiSlice.endpoints.getErApoteker.initiate()
+  )
 
   const [person, grunnbeloep] = await Promise.all([
     getPersonQuery,
@@ -258,9 +256,15 @@ export const stepSivilstandAccessGuard = async ({
   const isEndring = isLoependeVedtakEndring(loependeVedtak)
   const isKap19 = isFoedtFoer1963(person.foedselsdato)
 
-  const stepArrays = getStepArrays(isEndring, isKap19 || erApoteker)
+  const stepArrays = getStepArrays(
+    isEndring,
+    isKap19 || (erApoteker.isSuccess ? erApoteker.data : false)
+  )
 
-  if (isEndring && (isKap19 || erApoteker)) {
+  if (
+    isEndring &&
+    (isKap19 || (erApoteker.isSuccess ? erApoteker.data : false))
+  ) {
     return skip(stepArrays, paths.sivilstand, request)
   }
 
@@ -284,16 +288,22 @@ export const stepUtenlandsoppholdAccessGuard = async ({
     .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
     .unwrap()
 
-  const erApoteker = await store
-    .dispatch(apiSlice.endpoints.getErApoteker.initiate())
-    .unwrap()
+  const erApoteker = await store.dispatch(
+    apiSlice.endpoints.getErApoteker.initiate()
+  )
 
   const isEndring = isLoependeVedtakEndring(loependeVedtak)
   const isKap19 = isFoedtFoer1963(person.foedselsdato)
 
-  const stepArrays = getStepArrays(isEndring, isKap19 || erApoteker)
+  const stepArrays = getStepArrays(
+    isEndring,
+    isKap19 || (erApoteker.isSuccess ? erApoteker.data : false)
+  )
 
-  if (isEndring && (isKap19 || erApoteker)) {
+  if (
+    isEndring &&
+    (isKap19 || (erApoteker.isSuccess ? erApoteker.data : false))
+  ) {
     return skip(stepArrays, paths.utenlandsopphold, request)
   }
 }
@@ -319,14 +329,17 @@ export const stepAFPAccessGuard = async ({ request }: LoaderFunctionArgs) => {
     .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
     .unwrap()
 
-  const erApoteker = await store
-    .dispatch(apiSlice.endpoints.getErApoteker.initiate())
-    .unwrap()
+  const erApoteker = await store.dispatch(
+    apiSlice.endpoints.getErApoteker.initiate()
+  )
 
   const isEndring = isLoependeVedtakEndring(loependeVedtak)
   const isKap19 = isFoedtFoer1963(person.foedselsdato)
 
-  const stepArrays = getStepArrays(isEndring, isKap19 || erApoteker)
+  const stepArrays = getStepArrays(
+    isEndring,
+    isKap19 || (erApoteker.isSuccess ? erApoteker.data : false)
+  )
 
   // Hvis brukeren mottar AFP skal hen ikke se AFP-steget
   // Hvis brukeren har 100% uføretrygd skal hen ikke se AFP-steget
@@ -336,25 +349,27 @@ export const stepAFPAccessGuard = async ({ request }: LoaderFunctionArgs) => {
     loependeVedtak.afpOffentlig ||
     loependeVedtak.ufoeretrygd.grad === 100 ||
     loependeVedtak.pre2025OffentligAfp ||
-    (loependeVedtak.ufoeretrygd.grad > 0 && erApoteker) ||
+    (loependeVedtak.ufoeretrygd.grad > 0 &&
+      erApoteker.isSuccess &&
+      erApoteker.data) ||
     (loependeVedtak.ufoeretrygd.grad &&
       person.foedselsdato &&
       isFoedselsdatoOverAlder(person.foedselsdato, AFP_UFOERE_OPPSIGELSESALDER))
   ) {
     return skip(stepArrays, paths.afp, request)
   } else if (
-    (erApoteker || isKap19) &&
+    ((erApoteker.isSuccess && erApoteker.data) || isKap19) &&
     loependeVedtak.fremtidigAlderspensjon &&
     !loependeVedtak.alderspensjon
   ) {
     return skip(stepArrays, paths.afp, request)
-  } else if (erApoteker && isEndring) {
+  } else if (erApoteker.isSuccess && erApoteker.data && isEndring) {
     return skip(stepArrays, paths.afp, request)
   } else {
     return {
       person,
       loependeVedtak,
-      erApoteker,
+      erApoteker: erApoteker.isSuccess ? erApoteker.data : false,
     }
   }
 }
@@ -433,21 +448,27 @@ export const stepSamtykkePensjonsavtaler = async ({
     .dispatch(apiSlice.endpoints.getPerson.initiate())
     .unwrap()
 
-  const erApoteker = await store
-    .dispatch(apiSlice.endpoints.getErApoteker.initiate())
-    .unwrap()
+  const erApoteker = await store.dispatch(
+    apiSlice.endpoints.getErApoteker.initiate()
+  )
 
   const isEndring = isLoependeVedtakEndring(loependeVedtak)
   const isKap19 = isFoedtFoer1963(person.foedselsdato)
 
-  const stepArrays = getStepArrays(isEndring, isKap19 || erApoteker)
+  const stepArrays = getStepArrays(
+    isEndring,
+    isKap19 || (erApoteker.isSuccess ? erApoteker.data : false)
+  )
 
-  if (isEndring && (isKap19 || erApoteker)) {
+  if (
+    isEndring &&
+    (isKap19 || (erApoteker.isSuccess ? erApoteker.data : false))
+  ) {
     return skip(stepArrays, paths.samtykke, request)
   }
 
   return {
-    erApoteker,
+    erApoteker: erApoteker.isSuccess ? erApoteker.data : false,
     isKap19,
   }
 }
