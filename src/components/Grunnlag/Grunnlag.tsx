@@ -25,6 +25,7 @@ import { userInputActions } from '@/state/userInput/userInputSlice'
 import { BeregningVisning } from '@/types/common-types'
 import {
   LINK_AAPNET,
+  LINK_AAPNET_OLD,
   SHOW_MORE_AAPNET,
   SHOW_MORE_LUKKET,
 } from '@/utils/loggerConstants'
@@ -221,6 +222,10 @@ export const Grunnlag: React.FC<Props> = ({
                       rel="noopener noreferrer"
                       onClick={() => {
                         logger(LINK_AAPNET, {
+                          href: `/pensjon/kalkulator${paths.forbehold}`,
+                          target: '_blank',
+                        })
+                        logger(LINK_AAPNET_OLD, {
                           href: `/pensjon/kalkulator${paths.forbehold}`,
                           target: '_blank',
                         })

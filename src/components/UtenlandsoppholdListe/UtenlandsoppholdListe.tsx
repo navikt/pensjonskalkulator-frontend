@@ -24,6 +24,7 @@ import {
   harKravOmArbeidFromLandkode,
 } from '@/utils/land'
 import {
+  BUTTON_KLIKK,
   GRUNNLAG_FOR_BEREGNINGEN,
   KNAPP_KLIKKET,
   MODAL_AAPNET,
@@ -122,6 +123,9 @@ export function UtenlandsoppholdListe({
                 userInputActions.deleteUtenlandsperiode(valgtUtenlandsperiodeId)
               )
               logger(KNAPP_KLIKKET, {
+                tekst: `sletter utenlandsopphold`,
+              })
+              logger(BUTTON_KLIKK, {
                 tekst: `sletter utenlandsopphold`,
               })
               avbrytModalRef.current?.close()

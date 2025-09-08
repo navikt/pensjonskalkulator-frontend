@@ -18,7 +18,11 @@ import {
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
 import { BeregningVisning } from '@/types/common-types'
-import { KNAPP_KLIKKET, MODAL_AAPNET } from '@/utils/loggerConstants'
+import {
+  BUTTON_KLIKK,
+  KNAPP_KLIKKET,
+  MODAL_AAPNET,
+} from '@/utils/loggerConstants'
 import { logger } from '@/utils/logging'
 
 import { BeregningAvansert } from './BeregningAvansert'
@@ -111,6 +115,9 @@ export const Beregning: React.FC<Props> = ({ visning }) => {
 
   const onToggleChange = (v: string) => {
     logger(KNAPP_KLIKKET, {
+      tekst: `Toggle viser fane ${v}`,
+    })
+    logger(BUTTON_KLIKK, {
       tekst: `Toggle viser fane ${v}`,
     })
     if (

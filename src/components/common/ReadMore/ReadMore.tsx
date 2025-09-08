@@ -11,8 +11,12 @@ interface IProps extends ReadMoreProps {
 const logIsOpen = (name: string, isOpen: boolean) => {
   if (isOpen) {
     logger('les mer åpnet', { tittel: name })
+    // TODO: fjern når amplitude er ikke i bruk lenger
+    logger('readmore åpnet', { tittel: name })
   } else {
     logger('les mer lukket', { tittel: name })
+    // TODO: fjern når amplitude er ikke i bruk lenger
+    logger('readmore lukket', { tittel: name })
   }
 }
 
