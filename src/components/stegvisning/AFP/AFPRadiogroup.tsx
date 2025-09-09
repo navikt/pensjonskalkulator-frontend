@@ -4,17 +4,13 @@ import { FormattedMessage } from 'react-intl'
 
 import { Alert, Radio, RadioGroup } from '@navikt/ds-react'
 
-import { useAppSelector } from '@/state/hooks'
-import { selectHasErApotekerError } from '@/state/session/selectors'
-import { selectFoedselsdato } from '@/state/userInput/selectors'
-import { isFoedtEtter1963 } from '@/utils/alder'
-
 import styles from './AFP.module.scss'
 
 interface AFPRadioGroupProps {
   afp: string | null
   handleRadioChange: (value: AfpRadio) => void
   validationError: string | undefined
+  showApotekerAlert: boolean
   showVetIkkeAlert: boolean
 }
 
@@ -22,12 +18,9 @@ const AFPRadioGroup: React.FC<AFPRadioGroupProps> = ({
   afp,
   handleRadioChange,
   validationError,
+  showApotekerAlert,
   showVetIkkeAlert,
 }) => {
-  const foedselsdato = useAppSelector(selectFoedselsdato)
-  const foedtEtter1963 = isFoedtEtter1963(foedselsdato)
-  const hasErApotekerError = useAppSelector(selectHasErApotekerError)
-
   return (
     <RadioGroup
       className={styles.radiogroup}
@@ -39,9 +32,9 @@ const AFPRadioGroup: React.FC<AFPRadioGroupProps> = ({
     >
       <Radio value="ja_offentlig">
         <FormattedMessage id="stegvisning.afp.radio_ja_offentlig" />
-        {hasErApotekerError && foedtEtter1963 && (
+        {showApotekerAlert && (
           <Alert className={styles.alert} variant="warning" aria-live="polite">
-            <FormattedMessage id="stegvisning.afp.alert_erkjenner_feil" />
+            <FormattedMessage id="error.apoteker_warning" />
           </Alert>
         )}
       </Radio>
