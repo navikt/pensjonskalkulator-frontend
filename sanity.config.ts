@@ -5,7 +5,6 @@ import { createAuthStore, defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
 
 import { schemaTypes } from './schemaTypes'
-import { webhookPlugin } from './schemaTypes/components/WebhookPlugin'
 import auditTimelinePlugin from './schemaTypes/components/audit-timeline'
 import { supportedLanguages } from './schemaTypes/supportedLanguages'
 
@@ -46,7 +45,6 @@ const pluginsArray = [
     schemaTypes: ['readmore', 'forbeholdAvsnitt', 'guidepanel'],
     languageField: 'language',
   }),
-  webhookPlugin(),
   auditTimelinePlugin(),
 ]
 
