@@ -1,23 +1,26 @@
 import clsx from 'clsx'
 import React from 'react'
-import { useIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { useNavigate } from 'react-router'
 
-import { Button, Modal, ToggleGroup } from '@navikt/ds-react'
+import { Alert, Button, Modal, ToggleGroup } from '@navikt/ds-react'
 
 import { InfoOmFremtidigVedtak } from '@/components/InfoOmFremtidigVedtak'
 import { LightBlueFooter } from '@/components/LightBlueFooter'
 import { ShowMoreRef } from '@/components/common/ShowMore/ShowMore'
 import { paths } from '@/router/constants'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
+import { selectHasErApotekerError } from '@/state/session/selectors'
 import {
   selectCurrentSimulation,
+  selectFoedselsdato,
   selectIsEndring,
   selectLoependeVedtak,
   selectSkalBeregneAfpKap19,
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
 import { BeregningVisning } from '@/types/common-types'
+import { isFoedtEtter1963 } from '@/utils/alder'
 import { BUTTON_KLIKK, MODAL_AAPNET } from '@/utils/loggerConstants'
 import { logger } from '@/utils/logging'
 
@@ -49,6 +52,9 @@ export const Beregning: React.FC<Props> = ({ visning }) => {
   const isEndring = useAppSelector(selectIsEndring)
   const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const skalBeregneAfpKap19 = useAppSelector(selectSkalBeregneAfpKap19)
+  const foedselsdato = useAppSelector(selectFoedselsdato)
+  const foedtEtter1963 = isFoedtEtter1963(foedselsdato)
+  const hasErApotekerError = useAppSelector(selectHasErApotekerError)
 
   React.useEffect(() => {
     document.title = intl.formatMessage({
@@ -200,6 +206,18 @@ export const Beregning: React.FC<Props> = ({ visning }) => {
         <div className={styles.container}>
           <InfoOmFremtidigVedtak loependeVedtak={loependeVedtak} />
         </div>
+
+        {hasErApotekerError && foedtEtter1963 && (
+          <div className={styles.container}>
+            <Alert
+              className={styles.alert}
+              variant="warning"
+              aria-live="polite"
+            >
+              <FormattedMessage id="error.apoteker_warning" />
+            </Alert>
+          </div>
+        )}
 
         {!isEndring && !skalBeregneAfpKap19 && (
           <div className={styles.toggle}>

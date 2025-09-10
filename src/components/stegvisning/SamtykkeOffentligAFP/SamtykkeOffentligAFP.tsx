@@ -1,10 +1,14 @@
 import { FormEvent, useState } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 
-import { BodyLong, Heading, Radio, RadioGroup } from '@navikt/ds-react'
+import { Alert, BodyLong, Heading, Radio, RadioGroup } from '@navikt/ds-react'
 
 import { Card } from '@/components/common/Card'
 import { paths } from '@/router/constants'
+import { useAppSelector } from '@/state/hooks'
+import { selectHasErApotekerError } from '@/state/session/selectors'
+import { selectFoedselsdato } from '@/state/userInput/selectors'
+import { isFoedtEtter1963 } from '@/utils/alder'
 import { logger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
 
@@ -27,6 +31,9 @@ export function SamtykkeOffentligAFP({
   onNext,
 }: Props) {
   const intl = useIntl()
+  const foedselsdato = useAppSelector(selectFoedselsdato)
+  const foedtEtter1963 = isFoedtEtter1963(foedselsdato)
+  const hasErApotekerError = useAppSelector(selectHasErApotekerError)
   const [validationError, setValidationError] = useState<string>('')
 
   const onSubmit = (e: FormEvent<HTMLFormElement>): void => {
@@ -67,6 +74,15 @@ export function SamtykkeOffentligAFP({
 
   return (
     <Card hasLargePadding hasMargin>
+      {hasErApotekerError && foedtEtter1963 && (
+        <Alert
+          style={{ marginBottom: 'var(--a-spacing-6)' }}
+          variant="warning"
+          aria-live="polite"
+        >
+          <FormattedMessage id="error.apoteker_warning" />
+        </Alert>
+      )}
       <form onSubmit={onSubmit}>
         <Heading level="2" size="medium" spacing>
           <FormattedMessage id="stegvisning.samtykke_offentlig_afp.title" />
