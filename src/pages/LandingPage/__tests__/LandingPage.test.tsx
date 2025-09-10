@@ -57,14 +57,6 @@ describe('LandingPage', () => {
       expect(
         screen.getByText('landingsside.link.personopplysninger')
       ).toBeVisible()
-      expect(
-        screen.getByText('landingsside.velge_mellom_detaljert_og_enkel_2')
-      ).toBeVisible()
-      // Viser riktig tekst på Detaljert kalkulator knappen
-      expect(
-        screen.getByTestId('landingside-detaljert-kalkulator-button')
-          .textContent
-      ).toBe('landingsside.button.detaljert_kalkulator')
     })
   })
 
@@ -80,6 +72,9 @@ describe('LandingPage', () => {
 
     render(<RouterProvider router={router} />, {
       hasRouter: false,
+      preloadedState: {
+        session: { isLoggedIn: false },
+      },
     })
 
     await waitFor(() => {
@@ -98,14 +93,6 @@ describe('LandingPage', () => {
       expect(
         screen.getByText('landingsside.link.personopplysninger')
       ).toBeVisible()
-      expect(
-        screen.getByText('landingsside.velge_mellom_detaljert_og_enkel_2')
-      ).toBeVisible()
-      // Viser riktig tekst på Detaljert kalkulator knappen
-      expect(
-        screen.getByTestId('landingside-detaljert-kalkulator-button')
-          .textContent
-      ).toBe('landingsside.button.detaljert_kalkulator_utlogget')
       // Viser info om Uinnlogget kalkulator
       expect(
         screen.getByText('landingsside.text.uinnlogget_kalkulator')
@@ -119,33 +106,6 @@ describe('LandingPage', () => {
           .textContent
       ).toBe('landingsside.button.uinnlogget_kalkulator')
     })
-  })
-
-  it('går til detaljert kalkulator når brukeren klikker på detaljert kalkulator knappen', async () => {
-    const user = userEvent.setup()
-
-    const open = vi.fn()
-    vi.stubGlobal('open', open)
-
-    const router = createMemoryRouter(routes, {
-      basename: BASE_PATH,
-      initialEntries: [`${BASE_PATH}${paths.login}`],
-    })
-    render(<RouterProvider router={router} />, {
-      hasRouter: false,
-    })
-
-    await waitFor(() => {
-      expect(
-        screen.getByTestId('landingside-detaljert-kalkulator-button')
-      ).toBeDefined()
-    })
-
-    await user.click(
-      screen.getByTestId('landingside-detaljert-kalkulator-button')
-    )
-
-    expect(open).toHaveBeenCalledWith(externalUrls.detaljertKalkulator, '_self')
   })
 
   it('går til enkel kalkulator når brukeren klikker på enkel kalkulator knappen', async () => {
@@ -164,6 +124,9 @@ describe('LandingPage', () => {
     })
     render(<RouterProvider router={router} />, {
       hasRouter: false,
+      preloadedState: {
+        session: { isLoggedIn: false },
+      },
     })
 
     await waitFor(async () => {
@@ -191,6 +154,9 @@ describe('LandingPage', () => {
     })
     render(<RouterProvider router={router} />, {
       hasRouter: false,
+      preloadedState: {
+        session: { isLoggedIn: false },
+      },
     })
 
     await waitFor(() => {

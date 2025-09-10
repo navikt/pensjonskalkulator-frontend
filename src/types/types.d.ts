@@ -32,11 +32,11 @@ declare global {
   type Ansatt = components['schemas']['AnsattV1']
 
   // /person
-  type Person = components['schemas']['PersonResultV4']
+  type Person = components['schemas']['PersonResultV5']
   type Sivilstand =
     components['schemas']['AlderspensjonDetaljerV4']['sivilstand']
   type pensjoneringAldre =
-    components['schemas']['PersonResultV4']['pensjoneringAldre']
+    components['schemas']['PersonResultV5']['pensjoneringAldre']
 
   // /inntekt
   export type GetInntektQuery = TypedUseQueryStateResult<
@@ -53,6 +53,7 @@ declare global {
     BaseQueryFn<Record<string, unknown>, Person>
   >
   type EkskludertStatus = components['schemas']['EkskluderingStatusV1']
+  type ApotekerStatusV1 = components['schemas']['ApotekerStatusV1']
 
   // /loepende-omstillingsstoenad-eller-gjenlevendeytelse
   type OmstillingsstoenadOgGjenlevende =
@@ -131,9 +132,9 @@ declare global {
     BaseQueryFn<Record<string, unknown>, OffentligTp>
   >
   type OffentligTpRequestBody =
-    components['schemas']['IngressSimuleringOffentligTjenestepensjonSpecV2']
+    components['schemas']['SimuleringOffentligTjenestepensjonSpecV2']
   type OffentligTp =
-    components['schemas']['OffentligTjenestepensjonSimuleringsresultatDtoV2']
+    components['schemas']['OffentligTjenestepensjonSimuleringResultV2']
   type SimulertTjenestepensjon =
     components['schemas']['SimulertTjenestepensjonV2']
 }

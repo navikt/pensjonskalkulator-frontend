@@ -6,7 +6,7 @@ import { RootState } from '@/state/store'
 import {
   isAlder,
   isAlderspensjonSimulering,
-  isEkskludertStatus,
+  isApotekerStatus,
   isInntekt,
   isLoependeVedtak,
   isOffentligTp,
@@ -42,7 +42,7 @@ export const apiSlice = createApi({
       },
     }),
     getPerson: builder.query<Person, void>({
-      query: () => '/v4/person',
+      query: () => '/v5/person',
       providesTags: ['Person'],
       transformResponse: (response) => {
         if (!isPerson(response)) {
@@ -66,15 +66,16 @@ export const apiSlice = createApi({
       },
     }),
     getErApoteker: builder.query<boolean, void>({
-      query: () => '/v2/ekskludert',
+      query: () => '/v1/er-apoteker',
       transformResponse: (response) => {
-        if (!isEkskludertStatus(response)) {
+        if (!isApotekerStatus(response)) {
           throw new Error(
             `Mottok ugyldig ekskludert response:`,
             response as ErrorOptions
           )
         }
-        return response.ekskludert && response.aarsak === 'ER_APOTEKER'
+        //TODO: Endre til response.apoteker nar backend er klar
+        return response.apoteker && response.aarsak === 'ER_APOTEKER'
       },
     }),
     getOmstillingsstoenadOgGjenlevende: builder.query<

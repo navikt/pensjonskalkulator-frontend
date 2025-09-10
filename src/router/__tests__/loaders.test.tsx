@@ -3,6 +3,7 @@ import { LoaderFunctionArgs } from 'react-router'
 import { describe, it, vi } from 'vitest'
 
 import {
+  fulfilledGetGrunnbeloep,
   fulfilledGetLoependeVedtak0Ufoeregrad,
   fulfilledGetPerson,
   fulfilledPre1963GetPerson,
@@ -115,22 +116,24 @@ describe('Loaders', () => {
     it('returnerer person og loependeVedtak', async () => {
       store.getState = vi.fn().mockImplementation(() => ({
         userInput: { ...userInputInitialState },
+        session: { isLoggedIn: false },
       }))
 
       const returnedFromLoader = await stepStartAccessGuard()
       expect(returnedFromLoader).toHaveProperty('person')
-      if (!('person' in returnedFromLoader)) {
+      if (!returnedFromLoader || !('person' in returnedFromLoader)) {
         throw new Error('person not in returnedFromLoader')
       }
 
-      expect(returnedFromLoader.person.foedselsdato).toBe('1964-04-30')
-      expect(returnedFromLoader.loependeVedtak.ufoeretrygd.grad).toBe(0)
+      expect(returnedFromLoader?.person?.foedselsdato).toBe('1964-04-30')
+      expect(returnedFromLoader?.loependeVedtak?.ufoeretrygd.grad).toBe(0)
     })
 
     it('Når /vedtak/loepende-vedtak kall feiler redirigeres bruker til uventet-feil side', async () => {
       mockErrorResponse('/v4/vedtak/loepende-vedtak')
 
       store.getState = vi.fn().mockImplementation(() => ({
+        session: { isLoggedIn: true },
         userInput: { ...userInputInitialState },
       }))
 
@@ -138,7 +141,7 @@ describe('Loaders', () => {
     })
 
     it('Når /person kall feiler med 403 status og reason er INVALID_REPRESENTASJON, redirigeres bruker til ingen-tilgang', async () => {
-      mockErrorResponse('/v4/person', {
+      mockErrorResponse('/v5/person', {
         status: 403,
         json: {
           reason: 'INVALID_REPRESENTASJON' as Reason,
@@ -146,6 +149,7 @@ describe('Loaders', () => {
       })
 
       store.getState = vi.fn().mockImplementation(() => ({
+        session: { isLoggedIn: true },
         userInput: { ...userInputInitialState },
       }))
 
@@ -153,7 +157,7 @@ describe('Loaders', () => {
     })
 
     it('Når /person kall feiler med 403 status og reason er INSUFFICIENT_LEVEL_OF_ASSURANCE, redirigeres bruker til uventet-feil', async () => {
-      mockErrorResponse('/v4/person', {
+      mockErrorResponse('/v5/person', {
         status: 403,
         json: {
           reason: 'INSUFFICIENT_LEVEL_OF_ASSURANCE' as Reason,
@@ -161,6 +165,7 @@ describe('Loaders', () => {
       })
 
       store.getState = vi.fn().mockImplementation(() => ({
+        session: { isLoggedIn: true },
         userInput: { ...userInputInitialState },
       }))
 
@@ -171,11 +176,12 @@ describe('Loaders', () => {
     })
 
     it('Når /person kall feiler med annen status redirigeres bruker til uventet-feil side', async () => {
-      mockErrorResponse('/v4/person', {
+      mockErrorResponse('/v5/person', {
         status: 503,
       })
 
       store.getState = vi.fn().mockImplementation(() => ({
+        session: { isLoggedIn: true },
         userInput: { ...userInputInitialState },
       }))
 
@@ -188,6 +194,7 @@ describe('Loaders', () => {
       })
 
       store.getState = vi.fn().mockImplementation(() => ({
+        session: { isLoggedIn: true },
         userInput: { ...userInputInitialState },
       }))
 
@@ -213,14 +220,19 @@ describe('Loaders', () => {
 
     it('returnerer person og grunnbeloep', async () => {
       store.getState = vi.fn().mockImplementation(() => ({
-        api: { queries: { mock: 'mock' } },
+        api: {
+          queries: {
+            ...fulfilledGetPerson,
+            ...fulfilledGetGrunnbeloep,
+          },
+        },
         userInput: { ...userInputInitialState },
       }))
 
       const returnedFromLoader =
         await stepSivilstandAccessGuard(createMockRequest())
       expect(returnedFromLoader).toHaveProperty('person')
-      if (!('person' in returnedFromLoader)) {
+      if (!returnedFromLoader || !('person' in returnedFromLoader)) {
         throw new Error('person not in returnedFromLoader')
       }
 
@@ -240,14 +252,14 @@ describe('Loaders', () => {
       const returnedFromLoader =
         await stepSivilstandAccessGuard(createMockRequest())
       expect(returnedFromLoader).toHaveProperty('grunnbeloep')
-      if (!('grunnbeloep' in returnedFromLoader)) {
+      if (!returnedFromLoader || !('grunnbeloep' in returnedFromLoader)) {
         throw new Error('grunnbeloep not in returnedFromLoader')
       }
       expect(returnedFromLoader.grunnbeloep).toBeUndefined()
     })
 
     it('redirigerer brukere født før 1963 med vedtak om alderspensjon', async () => {
-      mockResponse('/v4/person', {
+      mockResponse('/v5/person', {
         json: {
           navn: 'Test Person',
           sivilstand: 'UGIFT',
@@ -255,6 +267,7 @@ describe('Loaders', () => {
           pensjoneringAldre: {
             normertPensjoneringsalder: { aar: 67, maaneder: 0 },
             nedreAldersgrense: { aar: 62, maaneder: 0 },
+            oevreAldersgrense: { aar: 75, maaneder: 0 },
           },
         },
       })
@@ -300,7 +313,7 @@ describe('Loaders', () => {
       )
     })
     it('redirigerer brukere født før 1963 med vedtak om alderspensjon', async () => {
-      mockResponse('/v4/person', {
+      mockResponse('/v5/person', {
         json: {
           navn: 'Test Person',
           sivilstand: 'UGIFT',
@@ -308,6 +321,7 @@ describe('Loaders', () => {
           pensjoneringAldre: {
             normertPensjoneringsalder: { aar: 67, maaneder: 0 },
             nedreAldersgrense: { aar: 62, maaneder: 0 },
+            oevreAldersgrense: { aar: 75, maaneder: 0 },
           },
         },
       })
@@ -358,11 +372,11 @@ describe('Loaders', () => {
         startedTimeStamp: 1714725797072,
         fulfilledTimeStamp: 1714725797669,
       },
-      ['getEkskludertStatus(undefined)']: {
+      ['getApotekerStatus(undefined)']: {
         status: 'fulfilled',
-        endpointName: 'getEkskludertStatus',
+        endpointName: 'getApotekerStatus',
         requestId: 't1wLPiRKrfe_vchftk8s8',
-        data: { ekskludert: false, aarsak: 'NONE' },
+        data: { apoteker: false, aarsak: 'NONE' },
         startedTimeStamp: 1714725797072,
         fulfilledTimeStamp: 1714725797669,
       },
@@ -407,7 +421,7 @@ describe('Loaders', () => {
             harLoependeVedtak: true,
           } satisfies LoependeVedtak,
         })
-        mockResponse('/v4/person', {
+        mockResponse('/v5/person', {
           json: {
             navn: 'Aprikos',
             sivilstand: 'UGIFT',
@@ -419,6 +433,10 @@ describe('Loaders', () => {
               },
               nedreAldersgrense: {
                 aar: 62,
+                maaneder: 0,
+              },
+              oevreAldersgrense: {
+                aar: 75,
                 maaneder: 0,
               },
             },
@@ -451,7 +469,7 @@ describe('Loaders', () => {
             harLoependeVedtak: true,
           } satisfies LoependeVedtak,
         })
-        mockResponse('/v4/person', {
+        mockResponse('/v5/person', {
           json: {
             navn: 'Aprikos',
             sivilstand: 'UGIFT',
@@ -463,6 +481,10 @@ describe('Loaders', () => {
               },
               nedreAldersgrense: {
                 aar: 62,
+                maaneder: 0,
+              },
+              oevreAldersgrense: {
+                aar: 75,
                 maaneder: 0,
               },
             },
@@ -698,10 +720,10 @@ describe('Loaders', () => {
     })
 
     it('Gitt at bruker er apoteker settes `erApoteker`', async () => {
-      mockResponse('/v2/ekskludert', {
+      mockResponse('/v1/er-apoteker', {
         status: 200,
         json: {
-          ekskludert: true,
+          apoteker: true,
           aarsak: 'ER_APOTEKER',
         },
       })
@@ -719,18 +741,18 @@ describe('Loaders', () => {
 
       const returnedFromLoader = await stepAFPAccessGuard(createMockRequest())
       expect(returnedFromLoader).toHaveProperty('erApoteker')
-      if (!('erApoteker' in returnedFromLoader)) {
+      if (!returnedFromLoader || !('erApoteker' in returnedFromLoader)) {
         throw new Error('erApoteker not in returnedFromLoader')
       }
 
       expect(returnedFromLoader.erApoteker).toBe(true)
     })
 
-    it('Gitt at getEkskludertStatus har tidligere feilet kalles den på nytt. Når den er vellykket i tillegg til de to andre kallene kastes ikke feil', async () => {
-      mockResponse('/v2/ekskludert', {
+    it('Gitt at getApotekerStatus har tidligere feilet kalles den på nytt. Når den er vellykket i tillegg til de to andre kallene kastes ikke feil', async () => {
+      mockResponse('/v1/er-apoteker', {
         status: 200,
         json: {
-          ekskludert: false,
+          apoteker: false,
           aarsak: 'NONE',
         },
       })
@@ -740,9 +762,9 @@ describe('Loaders', () => {
           queries: {
             ...mockedVellykketQueries,
             ...fulfilledGetLoependeVedtak0Ufoeregrad,
-            ['getEkskludertStatus(undefined)']: {
+            ['getApotekerStatus(undefined)']: {
               status: 'rejected',
-              endpointName: 'getEkskludertStatus',
+              endpointName: 'getApotekerStatus',
               requestId: 't1wLPiRKrfe_vchftk8s8',
               error: {
                 status: 'FETCH_ERROR',
@@ -761,16 +783,16 @@ describe('Loaders', () => {
       await expect(returnedFromLoader).resolves.not.toThrow()
     })
 
-    it('Gitt at getEkskludertStatus har tidligere feilet og at den feiler igjen ved nytt kall, loader kaster feil', async () => {
-      mockErrorResponse('/v2/ekskludert')
+    it('Gitt at getApotekerStatus har tidligere feilet og at den feiler igjen ved nytt kall, loader kaster feil', async () => {
+      mockErrorResponse('/v1/er-apoteker')
 
       const mockedState = {
         api: {
           queries: {
             ...fulfilledGetLoependeVedtak0Ufoeregrad,
-            ['getEkskludertStatus(undefined)']: {
+            ['getApotekerStatus(undefined)']: {
               status: 'rejected',
-              endpointName: 'getEkskludertStatus',
+              endpointName: 'getApotekerStatus',
               requestId: 't1wLPiRKrfe_vchftk8s8',
               error: {
                 status: 'FETCH_ERROR',
@@ -791,10 +813,10 @@ describe('Loaders', () => {
   })
 
   it('Apotekere med uføretrygd skal ikke få AFP steg', async () => {
-    mockResponse('/v2/ekskludert', {
+    mockResponse('/v1/er-apoteker', {
       status: 200,
       json: {
-        ekskludert: true,
+        apoteker: true,
         aarsak: 'ER_APOTEKER',
       },
     })
@@ -831,10 +853,10 @@ describe('Loaders', () => {
       api: { queries: { mock: 'mock' } },
     }
     it('Apotekere skal hoppe over AFP steg', async () => {
-      mockResponse('/v2/ekskludert', {
+      mockResponse('/v1/er-apoteker', {
         status: 200,
         json: {
-          ekskludert: true,
+          apoteker: true,
           aarsak: 'ER_APOTEKER',
         },
       })
@@ -846,10 +868,10 @@ describe('Loaders', () => {
     })
 
     it('Født før 1963 skal hoppe over AFP steg', async () => {
-      mockResponse('/v2/ekskludert', {
+      mockResponse('/v1/er-apoteker', {
         status: 200,
         json: {
-          ekskludert: true,
+          apoteker: true,
           aarsak: 'ER_APOTEKER',
         },
       })
@@ -861,7 +883,7 @@ describe('Loaders', () => {
     })
 
     it('Født etter 1963 skal vise AFP steg', async () => {
-      mockResponse('/v4/person', {
+      mockResponse('/v5/person', {
         status: 200,
         json: {
           foedselsdato: '1965-01-01',
@@ -870,13 +892,14 @@ describe('Loaders', () => {
           pensjoneringAldre: {
             normertPensjoneringsalder: { aar: 67, maaneder: 0 },
             nedreAldersgrense: { aar: 62, maaneder: 0 },
+            oevreAldersgrense: { aar: 75, maaneder: 0 },
           },
         } satisfies Person,
       })
-      mockResponse('/v2/ekskludert', {
+      mockResponse('/v1/er-apoteker', {
         status: 200,
         json: {
-          ekskludert: false,
+          apoteker: false,
           aarsak: 'NONE',
         },
       })
@@ -892,10 +915,10 @@ describe('Loaders', () => {
   })
 
   it('Apotekere med vedtak om alderspensjon skal ikke få AFP steg', async () => {
-    mockResponse('/v2/ekskludert', {
+    mockResponse('/v1/er-apoteker', {
       status: 200,
       json: {
-        ekskludert: true,
+        apoteker: true,
         aarsak: 'ER_APOTEKER',
       },
     })
@@ -1082,7 +1105,7 @@ describe('Loaders', () => {
   })
   describe('stepSamtykkePensjonsavtaler', () => {
     it('Når bruker som ikke er kap19 er i endringsløp blir bruker ikke redirigert', async () => {
-      mockResponse('/v4/person', {
+      mockResponse('/v5/person', {
         status: 200,
         json: {
           foedselsdato: '1965-01-01',
@@ -1091,6 +1114,7 @@ describe('Loaders', () => {
           pensjoneringAldre: {
             normertPensjoneringsalder: { aar: 67, maaneder: 0 },
             nedreAldersgrense: { aar: 62, maaneder: 0 },
+            oevreAldersgrense: { aar: 75, maaneder: 0 },
           },
         } satisfies Person,
       })
@@ -1113,7 +1137,7 @@ describe('Loaders', () => {
     })
 
     it('Hopper over steg dersom bruker er kap19 og har alderspensjon vedtak', async () => {
-      mockResponse('/v4/person', {
+      mockResponse('/v5/person', {
         status: 200,
         json: {
           foedselsdato: '1962-01-01',
@@ -1122,6 +1146,7 @@ describe('Loaders', () => {
           pensjoneringAldre: {
             normertPensjoneringsalder: { aar: 67, maaneder: 0 },
             nedreAldersgrense: { aar: 62, maaneder: 0 },
+            oevreAldersgrense: { aar: 75, maaneder: 0 },
           },
         } satisfies Person,
       })
@@ -1145,14 +1170,14 @@ describe('Loaders', () => {
     })
 
     it('Hopper over steg dersom bruker er apoteker og har alderspensjon vedtak', async () => {
-      mockResponse('/v2/ekskludert', {
+      mockResponse('/v1/er-apoteker', {
         status: 200,
         json: {
-          ekskludert: true,
+          apoteker: true,
           aarsak: 'ER_APOTEKER',
         },
       })
-      mockResponse('/v4/person', {
+      mockResponse('/v5/person', {
         status: 200,
         json: {
           foedselsdato: '1967-01-01',
@@ -1161,6 +1186,7 @@ describe('Loaders', () => {
           pensjoneringAldre: {
             normertPensjoneringsalder: { aar: 67, maaneder: 0 },
             nedreAldersgrense: { aar: 62, maaneder: 0 },
+            oevreAldersgrense: { aar: 75, maaneder: 0 },
           },
         } satisfies Person,
       })

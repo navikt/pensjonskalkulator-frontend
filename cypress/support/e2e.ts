@@ -115,14 +115,6 @@ beforeEach(() => {
   cy.intercept(
     {
       method: 'GET',
-      url: '/pensjon/kalkulator/api/feature/pensjonskalkulator.enable-redirect-1963',
-    },
-    { fixture: 'toggle-enable-redirect-1963.json' }
-  ).as('getFeatureToggleRedirect1963')
-
-  cy.intercept(
-    {
-      method: 'GET',
       url: '/pensjon/kalkulator/api/feature/pensjonskalkulator.vedlikeholdsmodus',
     },
     { enabled: false }
@@ -135,6 +127,14 @@ beforeEach(() => {
     },
     { enabled: false }
   ).as('getFeatureToggleUtvidetSimuleringsresult')
+
+  cy.intercept(
+    {
+      method: 'GET',
+      url: '/pensjon/kalkulator/api/v1/er-apoteker',
+    },
+    { fixture: 'er-apoteker.json' }
+  ).as('getErApoteker')
 
   cy.intercept(
     {
@@ -161,7 +161,7 @@ beforeEach(() => {
   ).as('getLoependeVedtak')
 
   cy.intercept(
-    { method: 'GET', url: '/pensjon/kalkulator/api/v4/person' },
+    { method: 'GET', url: '/pensjon/kalkulator/api/v5/person' },
     { fixture: 'person.json' }
   ).as('getPerson')
 
@@ -220,9 +220,9 @@ Cypress.Commands.add('login', () => {
   // TODO reaktivere når dekoratøren er i produksjon
   // cy.wait('@getDecoratorMainMenu')
   cy.contains('button', 'Pensjonskalkulator').click()
-  // På start steget kjøres automatisk kall til  /person, /ekskludert, /inntekt, /loepende-omstillingsstoenad-eller-gjenlevendeytelse
+  // På start steget kjøres automatisk kall til  /person, /apoteker, /inntekt, /loepende-omstillingsstoenad-eller-gjenlevendeytelse
   cy.wait('@getPerson')
-  cy.wait('@getEkskludertStatus')
+  cy.wait('@getErApoteker')
   cy.wait('@getInntekt')
   cy.wait('@getOmstillingsstoenadOgGjenlevende')
   cy.wait('@getLoependeVedtak')
