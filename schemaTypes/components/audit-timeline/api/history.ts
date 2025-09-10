@@ -313,7 +313,7 @@ const fetchNdjson = async (
     }
     return out
   } catch (error) {
-    console.error(`Failed to fetch NDJSON from ${path}:`, {
+    console.error('Failed to fetch NDJSON from %s:', path, {
       level: 'error',
       error: error instanceof Error ? error.message : String(error),
       dataset,
