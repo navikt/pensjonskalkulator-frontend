@@ -39,7 +39,9 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
           <Text size={1} weight="semibold">
             Details
           </Text>
-          <Badge tone={actionTone(transaction.action)}>{actionLabel(transaction.action)}</Badge>
+          <Badge tone={actionTone(transaction.action)}>
+            {actionLabel(transaction.action)}
+          </Badge>
           <Text size={1} muted>
             {new Date(transaction.timestamp).toLocaleString()}
           </Text>
@@ -53,23 +55,15 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
           ))}
           <Inline space={3}>
             <Text size={1}>
-              <span>ID:</span>{' '}
-              <Code size={1}>{transaction.documentId}</Code>
+              <span>ID:</span> <Code size={1}>{transaction.documentId}</Code>
             </Text>
-            {documentType ? (
-              <Text size={1}>
-                Type: {documentType}
-              </Text>
-            ) : null}
+            {documentType ? <Text size={1}>Type: {documentType}</Text> : null}
             {documentTitle ? (
-              <Text size={1}>
-                Title: {documentTitle}
-              </Text>
+              <Text size={1}>Title: {documentTitle}</Text>
             ) : null}
             {revBefore || revAfter ? (
               <Text size={1}>
-                <span>Rev:</span>{' '}
-                <Code size={1}>{revBefore || '—'}</Code> →{' '}
+                <span>Rev:</span> <Code size={1}>{revBefore || '—'}</Code> →{' '}
                 <Code size={1}>{revAfter || '—'}</Code>
               </Text>
             ) : null}
@@ -89,9 +83,7 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
 
         {!hideRaw && showRaw ? (
           <Stack space={1}>
-            <Label size={0}>
-              Raw
-            </Label>
+            <Label size={0}>Raw</Label>
             <Card padding={2} tone="transparent" style={{ overflowX: 'auto' }}>
               <Code size={1}>{JSON.stringify(transaction, null, 2)}</Code>
             </Card>

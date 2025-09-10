@@ -1,9 +1,12 @@
 import type { SanityClient } from '@sanity/client'
 import { useEffect, useState } from 'react'
 
-import { listTransactionsDatasetPage, listTransactionsForDocument } from '../api/history'
-import type { Action, Transaction } from '../types'
+import {
+  listTransactionsDatasetPage,
+  listTransactionsForDocument,
+} from '../api/history'
 import { DEFAULT_LIMIT, DEFAULT_PER_PAGE } from '../constants'
+import type { Action, Transaction } from '../types'
 import { getAttemptIds, sortDescByTimestamp } from '../utils'
 
 interface FilterParams {
@@ -25,7 +28,7 @@ const paginateDocumentTransactions = async (
   let offset = 0
   let combined: readonly Transaction[] = []
   let hadAny = false
-  
+
   while (true) {
     const rows = await listTransactionsForDocument(
       client,
@@ -37,14 +40,14 @@ const paginateDocumentTransactions = async (
       },
       signal
     )
-    
+
     if (!rows.length) break
     hadAny = true
     combined = [...combined, ...rows]
     if (rows.length < DEFAULT_PER_PAGE) break
     offset += DEFAULT_PER_PAGE
   }
-  
+
   if (!hadAny) throw new Error(`No transactions found for document ${id}`)
   return sortDescByTimestamp(combined)
 }
@@ -62,10 +65,10 @@ export const useTransactions = (
 
   useEffect(() => {
     if (!client) return
-    
+
     const abortController = new AbortController()
     const { signal: abortSignal } = abortController
-    
+
     setLoading(true)
     setItems([])
     setUsedFallback(false)
@@ -81,24 +84,29 @@ export const useTransactions = (
     }
 
     const fetchDatasetPage = async () => {
-      const page = await listTransactionsDatasetPage(
-        client,
-        {
-          filters: {
-            actions: [...params.actions],
-          },
-          limit: DEFAULT_LIMIT,
-          offset: 0,
+      const page = await listTransactionsDatasetPage(client, {
+        filters: {
+          actions: [...params.actions],
         },
-      )
+        limit: DEFAULT_LIMIT,
+        offset: 0,
+      })
       return { items: page.items, usedFallback: page.usedFallback || false }
     }
 
-    const fetchForDocumentIds = async (ids: readonly string[], sig: AbortSignal) => {
+    const fetchForDocumentIds = async (
+      ids: readonly string[],
+      sig: AbortSignal
+    ) => {
       let fallbackUsed = false
       for (const id of ids) {
         try {
-          const rows = await paginateDocumentTransactions(client, id, params, sig)
+          const rows = await paginateDocumentTransactions(
+            client,
+            id,
+            params,
+            sig
+          )
           return { items: rows, usedFallback: fallbackUsed }
         } catch (error) {
           console.warn(
@@ -149,20 +157,14 @@ export const useTransactions = (
     }
 
     void load()
-    
+
     return () => {
       abortController.abort()
       if (signal && externalAbortHandler) {
         signal.removeEventListener('abort', externalAbortHandler)
       }
     }
-  }, [
-    client,
-    documentId,
-    params.actions,
-    refreshKey,
-    signal,
-  ])
+  }, [client, documentId, params.actions, refreshKey, signal])
 
   return { items, loading, usedFallback }
 }

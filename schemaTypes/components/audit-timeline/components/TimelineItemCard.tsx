@@ -82,7 +82,11 @@ export const TimelineItemCard: React.FC<TimelineItemCardProps> = ({
 
   const renderActions = () => (
     <Flex gap={1} style={{ marginLeft: 'auto' }} align="center">
-      <Tooltip content={<Text size={1}>Copy document ID</Text>} portal placement="top">
+      <Tooltip
+        content={<Text size={1}>Copy document ID</Text>}
+        portal
+        placement="top"
+      >
         <Button
           aria-label="Copy document ID"
           mode="bleed"
@@ -95,7 +99,11 @@ export const TimelineItemCard: React.FC<TimelineItemCardProps> = ({
         />
       </Tooltip>
       {href && (
-        <Tooltip content={<Text size={1}>Open document</Text>} portal placement="top">
+        <Tooltip
+          content={<Text size={1}>Open document</Text>}
+          portal
+          placement="top"
+        >
           <Button
             as="a"
             href={href}
@@ -107,7 +115,13 @@ export const TimelineItemCard: React.FC<TimelineItemCardProps> = ({
           />
         </Tooltip>
       )}
-      <Tooltip content={<Text size={1}>{open ? 'Collapse details' : 'Expand details'}</Text>} portal placement="top">
+      <Tooltip
+        content={
+          <Text size={1}>{open ? 'Collapse details' : 'Expand details'}</Text>
+        }
+        portal
+        placement="top"
+      >
         <Button
           aria-label={open ? 'Hide details' : 'Show details'}
           mode="bleed"
@@ -149,7 +163,9 @@ export const TimelineItemCard: React.FC<TimelineItemCardProps> = ({
             title={new Date(transaction.timestamp).toISOString()}
             style={{ fontVariantNumeric: 'tabular-nums' }}
           >
-            {hideActions ? formatDateTime(transaction.timestamp) : formatTime(transaction.timestamp)}
+            {hideActions
+              ? formatDateTime(transaction.timestamp)
+              : formatTime(transaction.timestamp)}
           </Text>
           <Badge tone={tone} fontSize={1} padding={2}>
             {actionText}

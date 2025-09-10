@@ -46,7 +46,9 @@ export const FilterBar: React.FC<FilterBarProps> = ({
           />
         ) : null}
         <Button text="Refresh" onClick={onRefresh} disabled={loading} />
-        <Text muted size={1}>Snapshots and diffs available in details.</Text>
+        <Text muted size={1}>
+          Snapshots and diffs available in details.
+        </Text>
       </Inline>
 
       <Card padding={2} radius={2} tone="transparent" style={{ marginTop: 8 }}>
@@ -77,8 +79,6 @@ export const FilterBar: React.FC<FilterBarProps> = ({
           ) : null}
         </div>
       </Card>
-
-      
     </Box>
   )
 }

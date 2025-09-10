@@ -1,5 +1,5 @@
-import React from 'react'
 import { Card, Stack, Text } from '@sanity/ui'
+import React from 'react'
 
 import type { Transaction } from '../types'
 import { formatDayTitle } from '../utils'
@@ -20,7 +20,7 @@ export const TimelineGroup: React.FC<TimelineGroupProps> = ({
 }) => {
   return (
     <Stack key={dayKey} space={3}>
-      <Card padding={2} radius={2} tone='transparent'>
+      <Card padding={2} radius={2} tone="transparent">
         <Text size={1} muted>
           {formatDayTitle(dayKey)}
         </Text>
@@ -29,7 +29,9 @@ export const TimelineGroup: React.FC<TimelineGroupProps> = ({
         {items.map((transaction) => {
           const meta = resolvedDocumentMeta[transaction.documentId] || {}
           const actorId = transaction.actor?.id
-          const actorName = actorId ? resolvedNames[actorId] || transaction.actor?.name : undefined
+          const actorName = actorId
+            ? resolvedNames[actorId] || transaction.actor?.name
+            : undefined
           return (
             <TimelineItemCard
               key={transaction.id}

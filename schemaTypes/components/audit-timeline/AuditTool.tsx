@@ -61,11 +61,15 @@ export const AuditTool: React.FC = () => {
   const [documentId, setDocumentId] = useState(getDocumentIdFromUrl)
   const [tick, setTick] = useState(0)
   const [actions, setActions] = useState<readonly Action[]>([])
-  
 
   const filterParams = useMemo<FilterParams>(() => ({ actions }), [actions])
 
-  const { items, loading } = useTransactions(client, documentId, filterParams, tick)
+  const { items, loading } = useTransactions(
+    client,
+    documentId,
+    filterParams,
+    tick
+  )
 
   const resolvedNames = useActorNames(client, items)
   const resolvedDocumentMeta = useDocumentMeta(client, items)
@@ -117,10 +121,7 @@ export const AuditTool: React.FC = () => {
                   if (!count) return null
 
                   return (
-                    <Badge
-                      key={action}
-                      tone={ACTION_CONFIG[action].tone}
-                    >
+                    <Badge key={action} tone={ACTION_CONFIG[action].tone}>
                       {action}: {count}
                     </Badge>
                   )
