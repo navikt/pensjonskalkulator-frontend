@@ -6,9 +6,37 @@ import { structureTool } from 'sanity/structure'
 
 import { schemaTypes } from './schemaTypes'
 import { webhookPlugin } from './schemaTypes/components/WebhookPlugin'
+import auditTimelinePlugin from './schemaTypes/components/audit-timeline'
 import { supportedLanguages } from './schemaTypes/supportedLanguages'
 
 export const projectId = 'g2by7q6m'
+
+interface AuthProvider {
+  name: string
+  title: string
+  url: string
+}
+
+interface AuthStoreOptions {
+  projectId: string
+  dataset: string
+  mode?: 'append' | 'replace'
+  redirectOnSingle?: boolean
+  providers: AuthProvider[]
+}
+
+type AuthStore = ReturnType<typeof createAuthStore>
+
+const createTypedAuthStore = (options: AuthStoreOptions): AuthStore =>
+  (createAuthStore as (opts: AuthStoreOptions) => AuthStore)(options)
+
+const samlProviders: AuthProvider[] = [
+  {
+    name: 'saml',
+    title: 'NAV SSO',
+    url: 'https://api.sanity.io/v2021-10-01/auth/saml/login/f3270b37',
+  },
+]
 
 const pluginsArray = [
   structureTool(),
@@ -19,6 +47,7 @@ const pluginsArray = [
     languageField: 'language',
   }),
   webhookPlugin(),
+  auditTimelinePlugin(),
 ]
 
 export default defineConfig([
@@ -34,18 +63,13 @@ export default defineConfig([
     schema: {
       types: schemaTypes,
     },
-    auth: createAuthStore({
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    auth: createTypedAuthStore({
       projectId,
       dataset: 'development',
       mode: 'append',
       redirectOnSingle: true,
-      providers: [
-        {
-          name: 'saml',
-          title: 'NAV SSO',
-          url: 'https://api.sanity.io/v2021-10-01/auth/saml/login/f3270b37',
-        },
-      ],
+      providers: samlProviders,
     }),
   },
   {
@@ -60,18 +84,13 @@ export default defineConfig([
     schema: {
       types: schemaTypes,
     },
-    auth: createAuthStore({
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    auth: createTypedAuthStore({
       projectId,
       dataset: 'production',
       mode: 'append',
       redirectOnSingle: true,
-      providers: [
-        {
-          name: 'saml',
-          title: 'NAV SSO',
-          url: 'https://api.sanity.io/v2021-10-01/auth/saml/login/f3270b37',
-        },
-      ],
+      providers: samlProviders,
     }),
   },
 ])
