@@ -42,7 +42,7 @@ export function Ufoere({ onCancel, onPrevious, onNext }: Props) {
   return (
     <Card hasLargePadding hasMargin>
       <ApotekereWarning
-        showWarning={!!(hasErApotekerError && foedtEtter1963)}
+        showWarning={Boolean(hasErApotekerError && foedtEtter1963)}
       />
 
       <form onSubmit={onSubmit}>

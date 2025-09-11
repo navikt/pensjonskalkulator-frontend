@@ -76,7 +76,7 @@ export function SamtykkeOffentligAFP({
   return (
     <Card hasLargePadding hasMargin>
       <ApotekereWarning
-        showWarning={!!(hasErApotekerError && foedtEtter1963)}
+        showWarning={Boolean(hasErApotekerError && foedtEtter1963)}
       />
       <form onSubmit={onSubmit}>
         <Heading level="2" size="medium" spacing>

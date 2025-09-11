@@ -3,10 +3,11 @@ import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useNavigate } from 'react-router'
 
-import { Alert, Button, Modal, ToggleGroup } from '@navikt/ds-react'
+import { Button, Modal, ToggleGroup } from '@navikt/ds-react'
 
 import { InfoOmFremtidigVedtak } from '@/components/InfoOmFremtidigVedtak'
 import { LightBlueFooter } from '@/components/LightBlueFooter'
+import { ApotekereWarning } from '@/components/common/ApotekereWarning/ApotekereWarning'
 import { ShowMoreRef } from '@/components/common/ShowMore/ShowMore'
 import { paths } from '@/router/constants'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
@@ -207,17 +208,11 @@ export const Beregning: React.FC<Props> = ({ visning }) => {
           <InfoOmFremtidigVedtak loependeVedtak={loependeVedtak} />
         </div>
 
-        {hasErApotekerError && foedtEtter1963 && (
-          <div className={styles.container}>
-            <Alert
-              className={styles.alert}
-              variant="warning"
-              aria-live="polite"
-            >
-              <FormattedMessage id="error.apoteker_warning" />
-            </Alert>
-          </div>
-        )}
+        <div className={styles.container}>
+          <ApotekereWarning
+            showWarning={Boolean(hasErApotekerError && foedtEtter1963)}
+          />
+        </div>
 
         {!isEndring && !skalBeregneAfpKap19 && (
           <div className={styles.toggle}>
