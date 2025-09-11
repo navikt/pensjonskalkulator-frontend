@@ -3,6 +3,7 @@ import { FormattedMessage } from 'react-intl'
 
 import { Alert, BodyLong, Heading } from '@navikt/ds-react'
 
+import { ApotekereWarning } from '@/components/common/ApotekereWarning/ApotekereWarning'
 import { Card } from '@/components/common/Card'
 import { SanityReadmore } from '@/components/common/SanityReadmore/SanityReadmore'
 import { paths } from '@/router/constants'
@@ -40,11 +41,7 @@ export function Ufoere({ onCancel, onPrevious, onNext }: Props) {
 
   return (
     <Card hasLargePadding hasMargin>
-      {hasErApotekerError && foedtEtter1963 && (
-        <Alert className={styles.alert} variant="warning" aria-live="polite">
-          <FormattedMessage id="error.apoteker_warning" />
-        </Alert>
-      )}
+      <ApotekereWarning showWarning={!!(hasErApotekerError && foedtEtter1963)} />
 
       <form onSubmit={onSubmit}>
         <Heading level="2" size="medium" spacing>

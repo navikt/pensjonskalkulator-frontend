@@ -4,6 +4,8 @@ import { FormattedMessage } from 'react-intl'
 
 import { Alert, Radio, RadioGroup } from '@navikt/ds-react'
 
+import { ApotekereWarning } from '@/components/common/ApotekereWarning/ApotekereWarning'
+
 import styles from './AFP.module.scss'
 
 interface AFPRadioGroupProps {
@@ -32,12 +34,8 @@ const AFPRadioGroup: React.FC<AFPRadioGroupProps> = ({
     >
       <Radio value="ja_offentlig">
         <FormattedMessage id="stegvisning.afp.radio_ja_offentlig" />
-        {showApotekerAlert && (
-          <Alert className={styles.alert} variant="warning" aria-live="polite">
-            <FormattedMessage id="error.apoteker_warning" />
-          </Alert>
-        )}
       </Radio>
+      <ApotekereWarning showWarning={showApotekerAlert} />
       <Radio value="ja_privat">
         <FormattedMessage id="stegvisning.afp.radio_ja_privat" />
       </Radio>

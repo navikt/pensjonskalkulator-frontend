@@ -1,8 +1,9 @@
 import { FormEvent, useState } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 
-import { Alert, BodyLong, Heading, Radio, RadioGroup } from '@navikt/ds-react'
+import { BodyLong, Heading, Radio, RadioGroup } from '@navikt/ds-react'
 
+import { ApotekereWarning } from '@/components/common/ApotekereWarning/ApotekereWarning'
 import { Card } from '@/components/common/Card'
 import { paths } from '@/router/constants'
 import { useAppSelector } from '@/state/hooks'
@@ -74,15 +75,7 @@ export function SamtykkeOffentligAFP({
 
   return (
     <Card hasLargePadding hasMargin>
-      {hasErApotekerError && foedtEtter1963 && (
-        <Alert
-          style={{ marginBottom: 'var(--a-spacing-6)' }}
-          variant="warning"
-          aria-live="polite"
-        >
-          <FormattedMessage id="error.apoteker_warning" />
-        </Alert>
-      )}
+      <ApotekereWarning showWarning={!!(hasErApotekerError && foedtEtter1963)} />
       <form onSubmit={onSubmit}>
         <Heading level="2" size="medium" spacing>
           <FormattedMessage id="stegvisning.samtykke_offentlig_afp.title" />
