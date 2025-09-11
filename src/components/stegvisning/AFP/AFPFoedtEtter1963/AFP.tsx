@@ -37,7 +37,9 @@ export function AFP({ previousAfp, onCancel, onPrevious, onNext }: Props) {
     previousAfp === 'vet_ikke'
   )
   const [showApotekerAlert, setShowApotekerAlert] = React.useState<boolean>(
-    previousAfp === 'ja_offentlig'
+    Boolean(
+      previousAfp === 'ja_offentlig' && foedtEtter1963 && hasErApotekerError
+    )
   )
 
   const onSubmit = (e: FormEvent<HTMLFormElement>): void => {
@@ -73,9 +75,13 @@ export function AFP({ previousAfp, onCancel, onPrevious, onNext }: Props) {
   const handleRadioChange = (value: AfpRadio): void => {
     setValidationError('')
     setShowVetIkkeAlert(value === 'vet_ikke')
+
     if (value === 'ja_offentlig' && foedtEtter1963 && hasErApotekerError) {
       setShowApotekerAlert(true)
+    } else {
+      setShowApotekerAlert(false)
     }
+
     if (value === 'vet_ikke') {
       logger('alert vist', {
         tekst: 'Rett til AFP: Vet ikke',
