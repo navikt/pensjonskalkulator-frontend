@@ -80,7 +80,9 @@ export function SamtykkePensjonsavtaler({
 
   return (
     <Card hasLargePadding hasMargin>
-      <ApotekereWarning showWarning={!!(hasErApotekerError && foedtEtter1963)} />
+      <ApotekereWarning
+        showWarning={!!(hasErApotekerError && foedtEtter1963)}
+      />
 
       <form onSubmit={onSubmit}>
         <Heading level="2" size="medium" spacing>
