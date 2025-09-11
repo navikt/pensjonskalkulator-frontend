@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import React from 'react'
-import { FormattedMessage, useIntl } from 'react-intl'
+import { useIntl } from 'react-intl'
 import { useNavigate } from 'react-router'
 
 import { Button, Modal, ToggleGroup } from '@navikt/ds-react'
@@ -13,6 +13,7 @@ import { paths } from '@/router/constants'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import { selectHasErApotekerError } from '@/state/session/selectors'
 import {
+  selectAfp,
   selectCurrentSimulation,
   selectFoedselsdato,
   selectIsEndring,
@@ -53,6 +54,7 @@ export const Beregning: React.FC<Props> = ({ visning }) => {
   const isEndring = useAppSelector(selectIsEndring)
   const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const skalBeregneAfpKap19 = useAppSelector(selectSkalBeregneAfpKap19)
+  const afp = useAppSelector(selectAfp)
   const foedselsdato = useAppSelector(selectFoedselsdato)
   const foedtEtter1963 = isFoedtEtter1963(foedselsdato)
   const hasErApotekerError = useAppSelector(selectHasErApotekerError)
@@ -209,9 +211,13 @@ export const Beregning: React.FC<Props> = ({ visning }) => {
         </div>
 
         <div className={styles.container}>
-          <ApotekereWarning
-            showWarning={Boolean(hasErApotekerError && foedtEtter1963)}
-          />
+          <div className={styles.alert}>
+            <ApotekereWarning
+              showWarning={Boolean(
+                afp === 'ja_offentlig' && hasErApotekerError && foedtEtter1963
+              )}
+            />
+          </div>
         </div>
 
         {!isEndring && !skalBeregneAfpKap19 && (

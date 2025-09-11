@@ -9,7 +9,7 @@ import { SanityReadmore } from '@/components/common/SanityReadmore/SanityReadmor
 import { paths } from '@/router/constants'
 import { useAppSelector } from '@/state/hooks'
 import { selectHasErApotekerError } from '@/state/session/selectors'
-import { selectFoedselsdato } from '@/state/userInput/selectors'
+import { selectAfp, selectFoedselsdato } from '@/state/userInput/selectors'
 import { isFoedtEtter1963 } from '@/utils/alder'
 import { logger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
@@ -28,6 +28,7 @@ export function Ufoere({ onCancel, onPrevious, onNext }: Props) {
   const foedselsdato = useAppSelector(selectFoedselsdato)
   const foedtEtter1963 = isFoedtEtter1963(foedselsdato)
   const hasErApotekerError = useAppSelector(selectHasErApotekerError)
+  const afp = useAppSelector(selectAfp)
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
@@ -42,7 +43,9 @@ export function Ufoere({ onCancel, onPrevious, onNext }: Props) {
   return (
     <Card hasLargePadding hasMargin>
       <ApotekereWarning
-        showWarning={Boolean(hasErApotekerError && foedtEtter1963)}
+        showWarning={Boolean(
+          afp === 'ja_offentlig' && hasErApotekerError && foedtEtter1963
+        )}
       />
 
       <form onSubmit={onSubmit}>
