@@ -42,7 +42,7 @@ export function SamtykkeOffentligAFP({
         id: 'stegvisning.samtykke_offentlig_afp.validation_error',
       })
       setValidationError(tekst)
-      logger('skjema validering feilet', {
+      logger('skjemavalidering feilet', {
         skjemanavn: STEGVISNING_FORM_NAMES.samtykkeOffentligAFP,
         data: intl.formatMessage({
           id: 'stegvisning.samtykke_offentlig_afp.radio_label',
@@ -54,7 +54,7 @@ export function SamtykkeOffentligAFP({
         tekst: 'Samtykke Offentlig AFP',
         valg: samtykkeData,
       })
-      logger('button klikk', {
+      logger('knapp klikket', {
         tekst: `Neste fra ${paths.samtykkeOffentligAFP}`,
       })
       onNext(samtykkeData)

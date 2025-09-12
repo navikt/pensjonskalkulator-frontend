@@ -1,10 +1,10 @@
 // Constants for logger function calls to avoid SonarLint duplicate string warnings
 
 // Button click events
-export const BUTTON_KLIKK = 'button klikk'
+export const KNAPP_KLIKKET = 'knapp klikket'
 
 // Form validation events
-export const SKJEMA_VALIDERING_FEILET = 'skjema validering feilet'
+export const SKJEMA_VALIDERING_FEILET = 'skjemavalidering feilet'
 
 // Radio group selection events
 export const RADIOGROUP_VALGT = 'radiogroup valgt'
@@ -13,7 +13,7 @@ export const RADIOGROUP_VALGT = 'radiogroup valgt'
 export const MODAL_AAPNET = 'modal åpnet'
 
 // Link opening events
-export const LINK_AAPNET = 'link åpnet'
+export const LINK_AAPNET = 'lenke klikket'
 
 // Selection events
 export const VALG_AV_UTTAKSGRAD = 'valg av uttaksgrad'

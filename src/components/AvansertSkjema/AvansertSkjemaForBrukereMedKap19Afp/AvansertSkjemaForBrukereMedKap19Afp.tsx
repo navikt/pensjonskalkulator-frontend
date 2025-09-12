@@ -387,7 +387,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
                                 null
                               )
                             )
-                            logger('button klikk', {
+                            logger('knapp klikket', {
                               tekst: 'Grunnlag AFP: Gå til AFP',
                             })
                             navigate(paths.afp)
