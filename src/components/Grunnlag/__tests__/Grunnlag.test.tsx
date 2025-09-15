@@ -1,7 +1,11 @@
 import { Grunnlag } from '@/components/Grunnlag'
 import {
+  fulfilledGetErApoteker,
   fulfilledGetLoependeVedtak0Ufoeregrad,
+  fulfilledGetLoependeVedtak75Ufoeregrad,
   fulfilledGetLoependeVedtakLoependeAlderspensjon,
+  fulfilledGetPerson,
+  fulfilledPre1963GetPerson,
 } from '@/mocks/mockedRTKQueryApiCalls'
 import { mockErrorResponse, mockResponse } from '@/mocks/server'
 import * as userInputReducerUtils from '@/state/userInput/userInputSlice'
@@ -307,6 +311,131 @@ describe('Grunnlag', () => {
   })
 
   describe('Grunnlag - AFP', () => {
+    it('rendrer GrunnlagAFP når bruker ikke har vedtak om uføretrygd', async () => {
+      render(<Grunnlag headingLevel="2" visning="enkel" isEndring={false} />, {
+        preloadedState: {
+          api: {
+            //@ts-ignore
+            queries: {
+              ...fulfilledGetLoependeVedtak0Ufoeregrad,
+              ...fulfilledGetPerson,
+              ...fulfilledGetErApoteker,
+            },
+          },
+          userInput: {
+            ...userInputInitialState,
+          },
+          session: {
+            isLoggedIn: true,
+            hasErApotekerError: false,
+          },
+        },
+      })
+
+      expect(
+        await screen.findByText('grunnlag.afp.title', { exact: false })
+      ).toBeInTheDocument()
+    })
+
+    it('rendrer GrunnlagAFP når vi ikke har apoteker error', async () => {
+      render(<Grunnlag headingLevel="2" visning="enkel" isEndring={false} />, {
+        preloadedState: {
+          api: {
+            //@ts-ignore
+            queries: {
+              ...fulfilledGetLoependeVedtak75Ufoeregrad,
+              ...fulfilledGetPerson,
+              ...fulfilledGetErApoteker,
+            },
+          },
+          userInput: {
+            ...userInputInitialState,
+          },
+          session: {
+            isLoggedIn: true,
+            hasErApotekerError: false,
+          },
+        },
+      })
+
+      expect(
+        await screen.findByText('grunnlag.afp.title', { exact: false })
+      ).toBeInTheDocument()
+    })
+
+    it('rendrer GrunnlagAFP bruker er født før 1963', async () => {
+      render(<Grunnlag headingLevel="2" visning="enkel" isEndring={false} />, {
+        preloadedState: {
+          api: {
+            //@ts-ignore
+            queries: {
+              ...fulfilledGetLoependeVedtak75Ufoeregrad,
+              ...fulfilledPre1963GetPerson,
+            },
+          },
+          userInput: {
+            ...userInputInitialState,
+          },
+          session: {
+            isLoggedIn: true,
+            hasErApotekerError: true,
+          },
+        },
+      })
+
+      expect(
+        await screen.findByText('grunnlag.afp.title', { exact: false })
+      ).toBeInTheDocument()
+    })
+
+    it('skjuler GrunnlagAFP når alle tre betingelser er oppfylt samtidig - vedtak om uføretrygd, apoteker error og født etter 1963', async () => {
+      render(<Grunnlag headingLevel="2" visning="enkel" isEndring={false} />, {
+        preloadedState: {
+          api: {
+            //@ts-ignore
+            queries: {
+              ...fulfilledGetLoependeVedtak75Ufoeregrad,
+              ...fulfilledGetPerson,
+            },
+          },
+          userInput: {
+            ...userInputInitialState,
+          },
+          session: {
+            isLoggedIn: true,
+            hasErApotekerError: true,
+          },
+        },
+      })
+
+      expect(screen.queryByTestId('grunnlag.afp.title')).not.toBeInTheDocument()
+    })
+
+    it('viser GrunnlagAFP når uføretrygd er 0 selv om andre betingelser er oppfylt', async () => {
+      render(<Grunnlag headingLevel="2" visning="enkel" isEndring={false} />, {
+        preloadedState: {
+          api: {
+            //@ts-ignore
+            queries: {
+              ...fulfilledGetLoependeVedtak0Ufoeregrad,
+              ...fulfilledGetPerson,
+            },
+          },
+          userInput: {
+            ...userInputInitialState,
+          },
+          session: {
+            isLoggedIn: true,
+            hasErApotekerError: true,
+          },
+        },
+      })
+
+      expect(
+        await screen.findByText('grunnlag.afp.title', { exact: false })
+      ).toBeInTheDocument()
+    })
+
     it('Når brukeren har valgt offentlig AFP men uten samtykket, ikke vis Readmore knapp', async () => {
       const user = userEvent.setup()
       renderGrunnlagMedPreloadedState('2', 'avansert', {

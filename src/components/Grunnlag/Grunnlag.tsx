@@ -17,12 +17,15 @@ import {
 import { AccordionItem } from '@/components/common/AccordionItem'
 import { paths } from '@/router/constants'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
+import { selectHasErApotekerError } from '@/state/session/selectors'
 import {
+  selectFoedselsdato,
   selectLoependeVedtak,
   selectSivilstand,
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
 import { BeregningVisning } from '@/types/common-types'
+import { isFoedtEtter1963 } from '@/utils/alder'
 import {
   LINK_AAPNET,
   SHOW_MORE_AAPNET,
@@ -79,6 +82,9 @@ export const Grunnlag: React.FC<Props> = ({
   const intl = useIntl()
   const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const sivilstand = useAppSelector(selectSivilstand)
+  const foedselsdato = useAppSelector(selectFoedselsdato)
+  const foedtEtter1963 = isFoedtEtter1963(foedselsdato)
+  const hasErApotekerError = useAppSelector(selectHasErApotekerError)
 
   const [isAFPDokumentasjonVisible, setIsAFPDokumentasjonVisible] =
     React.useState<boolean>(false)
@@ -160,7 +166,11 @@ export const Grunnlag: React.FC<Props> = ({
         )}
 
         <GrunnlagItem color="purple">
-          <GrunnlagAFP />
+          {!(
+            loependeVedtak.ufoeretrygd.grad > 0 &&
+            hasErApotekerError &&
+            foedtEtter1963
+          ) && <GrunnlagAFP />}
 
           {!shouldHideAfpReadMore && (
             <ReadMore
