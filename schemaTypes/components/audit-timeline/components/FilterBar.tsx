@@ -1,7 +1,6 @@
 import { Box, Button, Card, Inline, Text, TextInput } from '@sanity/ui'
 import React from 'react'
 
-import { ACTIONS } from '../constants'
 import type { Action } from '../types'
 
 export interface FilterBarProps {
@@ -25,6 +24,8 @@ export const FilterBar: React.FC<FilterBarProps> = ({
     const has = actions.includes(a)
     onActionsChange(has ? actions.filter((x) => x !== a) : [...actions, a])
   }
+
+  const VISIBLE_ACTIONS: Action[] = ['create', 'update', 'delete']
 
   return (
     <Box>
@@ -60,7 +61,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             paddingBottom: 4,
           }}
         >
-          {ACTIONS.map((a) => (
+          {VISIBLE_ACTIONS.map((a) => (
             <Button
               key={a}
               mode={actions.includes(a) ? 'default' : 'ghost'}
