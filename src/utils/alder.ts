@@ -100,6 +100,8 @@ export const isAlderOver =
 
 export const isAlderOver67 = isAlderOver(67)
 
+export const isAlderOver62 = isAlderOver(62)
+
 export const isAlder75MaanedenFylt = (foedselsdato: string): boolean => {
   const TODAY = new Date()
   const parsedFoedselsdato = parse(foedselsdato, DATE_BACKEND_FORMAT, TODAY)
