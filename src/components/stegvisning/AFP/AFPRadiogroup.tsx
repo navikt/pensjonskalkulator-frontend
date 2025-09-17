@@ -23,6 +23,7 @@ const AFPRadioGroup: React.FC<AFPRadioGroupProps> = ({
     className={styles.radiogroup}
     legend={<FormattedMessage id="stegvisning.afp.radio_label" />}
     name="afp"
+    data-testid="afp-radio-group"
     defaultValue={afp}
     onChange={handleRadioChange}
     error={validationError}

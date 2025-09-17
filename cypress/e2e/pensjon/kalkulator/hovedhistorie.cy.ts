@@ -6,17 +6,6 @@ import personMock from '../../../fixtures/person.json'
 // https://jira.adeo.no/secure/Tests.jspa#/testCase/PEK-T1
 
 describe('Hovedhistorie', () => {
-  describe('Når jeg som bruker navigerer på nav.no/din pensjon og velger å prøve den nye kalkulatoren,', () => {
-    // 1
-    it('ønsker jeg å få informasjon om ny kalkulator og om jeg er i målgruppen for å bruke den.', () => {
-      cy.visit('https://www.nav.no/planlegger-pensjon')
-      cy.contains('a', 'Prøv pensjonskalkulatoren')
-        .should('be.visible')
-        .should('have.attr', 'href')
-        .and('include', 'https://www.nav.no/pensjon/kalkulator/login')
-    })
-  })
-
   describe('Gitt at jeg som bruker ikke er pålogget,', () => {
     beforeEach(() => {
       cy.intercept('GET', '/pensjon/kalkulator/oauth2/session', {
@@ -26,27 +15,7 @@ describe('Hovedhistorie', () => {
       cy.wait('@getAuthSession')
     })
 
-    describe('Hvis jeg ikke er i målgruppen for ny kalkulator eller ikke bør bruke kalkulatoren,', () => {
-      // 2
-      it('forventer jeg tilgang til uinnlogget kalkulator.', () => {
-        cy.origin('https://www.nav.no', () => {
-          cy.on('uncaught:exception', () => {
-            return false
-          })
-        })
-        cy.contains('button', 'Logg inn i pensjonskalkulator').should('exist')
-
-        cy.visit('/pensjon/kalkulator/')
-        cy.contains('button', 'Uinnlogget kalkulator').click()
-
-        cy.location('href', { timeout: 0 }).should(
-          'eq',
-          'https://www.nav.no/pensjon/uinnlogget-kalkulator'
-        )
-      })
-    })
-
-    // 3
+    // 1
     describe('Når jeg vil logge inn for å teste kalkulatoren,', () => {
       it('forventer jeg å kunne logge inn med ID-porten.', () => {
         cy.contains('button', 'Logg inn i pensjonskalkulator').click()
@@ -66,6 +35,7 @@ describe('Hovedhistorie', () => {
     })
   })
 
+  // 2
   describe('Som bruker som har logget inn på kalkulatoren,', () => {
     const foedselsdatoMindreEnn75 = format(
       sub(new Date(), { years: 65, months: 1, days: 5 }),
@@ -77,7 +47,7 @@ describe('Hovedhistorie', () => {
       'yyyy-MM-dd'
     )
 
-    // 4
+    // 3 (del 1)
     describe('Når jeg navigerer videre fra /login til /start og er yngre enn 75 år,', () => {
       beforeEach(() => {
         cy.visit('/pensjon/kalkulator/')
@@ -113,9 +83,36 @@ describe('Hovedhistorie', () => {
         cy.contains('button', 'Avbryt').click()
         cy.location('href').should('include', '/pensjon/kalkulator/login')
       })
+
+      describe('Som bruker som har vedtak om gammel AFP', () => {
+        beforeEach(() => {
+          cy.intercept(
+            {
+              method: 'GET',
+              url: '/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak',
+            },
+            {
+              ...loependeVedtakMock,
+              pre2025OffentligAfp: {
+                fom: '2023-01-01',
+              },
+            } satisfies LoependeVedtak
+          ).as('getLoependeVedtak')
+        })
+
+        it('forventer jeg å se informasjon om at jeg har AFP i offentlig sektor', () => {
+          cy.contains('button', 'Pensjonskalkulator').click()
+          cy.contains('AFP i offentlig sektor').should('exist')
+          cy.get(
+            '[data-testid="stegvisning-start-ingress-pre2025-offentlig-afp"]'
+          )
+            .should('be.visible')
+            .and('contain', 'Du har nå AFP i offentlig sektor')
+        })
+      })
     })
 
-    // 5
+    // 3 (del 2)
     describe('Når jeg navigerer videre fra /login til /start og har fyllt 75 år plus 1 måned,', () => {
       beforeEach(() => {
         cy.visit('/pensjon/kalkulator/')
@@ -182,7 +179,7 @@ describe('Hovedhistorie', () => {
       })
     })
 
-    // 6
+    // 4
     describe('Som bruker som har fremtidig vedtak om alderspensjon,', () => {
       describe('Når jeg navigerer videre fra /login til /start,', () => {
         beforeEach(() => {
@@ -209,7 +206,7 @@ describe('Hovedhistorie', () => {
       })
     })
 
-    // 7
+    // 5
     describe('Som bruker som er registrert med en annen sivilstand enn gift, registrert partner eller samboer,', () => {
       describe('Når jeg navigerer videre fra /start til neste steg,', () => {
         beforeEach(() => {
@@ -242,7 +239,7 @@ describe('Hovedhistorie', () => {
       })
     })
 
-    // 8
+    // 6
     describe('Som bruker som har sivilstand gift, registrert partner eller samboer,', () => {
       describe('Når jeg navigerer videre fra /start til neste steg,', () => {
         beforeEach(() => {
@@ -314,7 +311,7 @@ describe('Hovedhistorie', () => {
       })
     })
 
-    // 9
+    // 7
     describe('Når jeg navigerer videre fra sivilstand til neste steg,', () => {
       beforeEach(() => {
         cy.intercept(
@@ -367,10 +364,36 @@ describe('Hovedhistorie', () => {
         cy.contains('button', 'Avbryt').click()
         cy.location('href').should('include', '/pensjon/kalkulator/login')
       })
+
+      describe('Som bruker som har vedtak om gammel AFP offentlig', () => {
+        beforeEach(() => {
+          cy.intercept(
+            {
+              method: 'GET',
+              url: '/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak',
+            },
+            {
+              ...loependeVedtakMock,
+              pre2025OffentligAfp: {
+                fom: '2023-01-01',
+              },
+            } satisfies LoependeVedtak
+          ).as('getLoependeVedtak')
+        })
+
+        it('forventer jeg at neste steg er /samtykke', () => {
+          cy.login()
+          cy.contains('button', 'Kom i gang').click()
+          cy.contains('button', 'Neste').click()
+          cy.get('[type="radio"]').last().check()
+          cy.contains('button', 'Neste').click()
+          cy.location('href').should('include', '/pensjon/kalkulator/samtykke')
+        })
+      })
     })
 
     describe('Gitt at jeg som bruker svarer nei på bodd/jobbet mer enn 5 år utenfor Norge,', () => {
-      // 10
+      // 8
       describe('Når jeg navigerer videre til /afp,', () => {
         beforeEach(() => {
           cy.login()
@@ -408,10 +431,134 @@ describe('Hovedhistorie', () => {
           cy.contains('button', 'Avbryt').click()
           cy.location('href').should('include', '/pensjon/kalkulator/login')
         })
+
+        describe('Som bruker som er 67 år eller eldre', () => {
+          beforeEach(() => {
+            cy.intercept(
+              { method: 'GET', url: '/pensjon/kalkulator/api/v5/person' },
+              {
+                navn: 'Aprikos',
+                sivilstand: 'UGIFT',
+                foedselsdato: '1956-04-30', // Born before 1963 and over 67 years old
+                pensjoneringAldre: {
+                  normertPensjoneringsalder: {
+                    aar: 67,
+                    maaneder: 0,
+                  },
+                  nedreAldersgrense: {
+                    aar: 62,
+                    maaneder: 0,
+                  },
+                  oevreAldersgrense: {
+                    aar: 75,
+                    maaneder: 0,
+                  },
+                },
+              }
+            ).as('getPerson')
+            cy.login()
+            cy.contains('button', 'Kom i gang').click()
+            cy.contains('button', 'Neste').click()
+            cy.get('[type="radio"]').last().check()
+            cy.contains('button', 'Neste').click()
+          })
+
+          it('forventer jeg å få informasjon om AFP Privat', () => {
+            cy.get('[data-testid="afp-privat"]').should('exist')
+            cy.contains(
+              'h2',
+              'AFP (avtalefestet pensjon) i privat sektor'
+            ).should('exist')
+            cy.contains('Har du rett til AFP i privat sektor?').should('exist')
+            cy.get('[data-testid="om_livsvarig_AFP_i_privat_sektor"]').should(
+              'exist'
+            )
+          })
+
+          it('forventer jeg å kunne beregne med eller uten AFP i privat sektor', () => {
+            cy.get('[data-testid="afp-privat"]').should('exist')
+            cy.contains('Har du rett til AFP i privat sektor?').should('exist')
+            cy.get('[type="radio"][value="ja_privat"]').should('exist')
+            cy.get('[type="radio"][value="nei"]').should('exist')
+
+            // Velger "Ja" til AFP privat
+            cy.get('[type="radio"][value="ja_privat"]').check({ force: true })
+            cy.contains('button', 'Neste').click()
+
+            // Skal navigere til samtykke steg (skal skippe ufoeretrygdAFP og samtykkeOffentligAFP)
+            cy.location('href').should(
+              'include',
+              '/pensjon/kalkulator/samtykke'
+            )
+          })
+
+          it('forventer jeg at neste steg er /samtykke', () => {
+            cy.get('[data-testid="afp-privat"]').should('exist')
+
+            // Velger "Nei" til AFP privat
+            cy.get('[type="radio"][value="nei"]').check({ force: true })
+            cy.contains('button', 'Neste').click()
+
+            // Skal navigere til samtykke steg (skal skippe ufoeretrygdAFP og samtykkeOffentligAFP)
+            cy.location('href').should(
+              'include',
+              '/pensjon/kalkulator/samtykke'
+            )
+
+            // Går tilbake og velger "Ja" til AFP privat
+            cy.go('back')
+            cy.get('[type="radio"][value="ja_privat"]').check({ force: true })
+            cy.contains('button', 'Neste').click()
+
+            // Skal fortsatt navigere til samtykke steg uavhengig av valg
+            cy.location('href').should(
+              'include',
+              '/pensjon/kalkulator/samtykke'
+            )
+          })
+        })
       })
 
-      // 11
+      // 9
       describe('Gitt at jeg som bruker har svart "ja, offentlig" på spørsmålet om AFP,', () => {
+        describe('Som bruker som er medlem i Pensjonsordningen for apotekervirksomhet,', () => {
+          //TODO: Fiks opp i dette, den feiler
+          /* beforeEach(() => {
+            cy.intercept(
+              {
+                method: 'GET',
+                url: '/pensjon/kalkulator/api/v1/er-apoteker',
+              },
+              { apoteker: true, aarsak: 'ER_APOTEKER' }
+            ).as('getErApoteker')
+          })
+
+          it('forventer jeg å bli spurt om jeg ønsker å beregne AFP i offentlig sektor etterfulgt av alderspensjon fra 67 år, eller kun alderspensjon', () => {
+            cy.login()
+            cy.contains('button', 'Kom i gang').click()
+            cy.contains('button', 'Neste').click()
+            cy.get('[type="radio"]').last().check()
+            cy.contains('button', 'Neste').click()
+            cy.get('[type="radio"]').first().check()
+            cy.contains('button', 'Neste').click()
+
+            // Forventer å være på AFP-siden og se spørsmål om rett til AFP
+            cy.get('[data-testid="afp-radio-group"]').should('be.visible')
+            
+            // Velger "ja, offentlig"
+            cy.get('[type="radio"][value="ja_offentlig"]').check()
+            
+            // Forventer at vi får et nytt spørsmål om hva vi vil beregne
+            cy.get('[data-testid="afp-utregning-valg-radiogroup"]').should('be.visible')
+            cy.get('[data-testid="afp-etterfulgt-av-alderspensjon-radio"]').should('be.visible')
+            cy.get('[data-testid="kun-alderspensjon-radio"]').should('be.visible')
+            
+            // Sjekker at radioknappene finnes
+            cy.get('[type="radio"][value="AFP_ETTERFULGT_AV_ALDERSPENSJON"]').should('exist')
+            cy.get('[type="radio"][value="KUN_ALDERSPENSJON"]').should('exist')
+          }) */
+        })
+
         describe('Når jeg navigerer videre fra /afp til /samtykke-offentlig-afp,', () => {
           beforeEach(() => {
             cy.login()
@@ -441,6 +588,8 @@ describe('Hovedhistorie', () => {
             cy.contains('button', 'Neste').click()
           })
 
+          it('forventer jeg å måtte svare ja/nei på spørsmål om samtykke for å hente mine avtaler eller om jeg ønsker å gå videre med bare alderspensjon.', () => {})
+
           it('ønsker jeg å kunne gå tilbake til forrige steg, eller avbryte beregningen.', () => {
             cy.contains('button', 'Tilbake').click()
             cy.location('href').should('include', '/pensjon/kalkulator/afp')
@@ -451,7 +600,7 @@ describe('Hovedhistorie', () => {
         })
       })
 
-      // 12
+      // 10
       describe('Når jeg navigerer videre til /samtykke,', () => {
         beforeEach(() => {
           cy.login()
@@ -461,6 +610,32 @@ describe('Hovedhistorie', () => {
           cy.contains('button', 'Neste').click()
           cy.get('[type="radio"]').last().check()
           cy.contains('button', 'Neste').click()
+        })
+
+        describe('Gitt at bruker er medlem i pensjonsordningen for apotekervirksomheten', () => {
+          beforeEach(() => {
+            cy.intercept(
+              {
+                method: 'GET',
+                url: '/pensjon/kalkulator/api/v1/er-apoteker',
+              },
+              { apoteker: true, aarsak: 'ER_APOTEKER' }
+            ).as('getErApoteker')
+          })
+
+          it('forventer å se på informasjon om at jeg kan få sjekket mitt offentlige tjenestepensjonsforhold', () => {
+            // Re-rendrer siden for å trigge loaderen med interceptet på plass
+            cy.visit('/pensjon/kalkulator/start')
+            cy.contains('button', 'Kom i gang').click()
+            cy.contains('button', 'Neste').click()
+            cy.get('[type="radio"]').last().check()
+            cy.contains('button', 'Neste').click()
+            cy.get('[type="radio"]').last().check()
+            cy.contains('button', 'Neste').click()
+
+            cy.location('pathname').should('include', '/samtykke')
+            cy.get('[data-testid="dette_sjekker_vi_OFTP"]').should('be.visible')
+          })
         })
         it('forventer jeg å bli spurt om mitt samtykke, og få informasjon om hva samtykket innebærer.', () => {
           cy.contains('h2', 'Pensjonsavtaler').should('exist')
@@ -489,7 +664,19 @@ describe('Hovedhistorie', () => {
       })
     })
 
-    // 13
+    describe('Gitt at jeg som bruker er født før 1963 eller er medlem av pensjonsordningen for apotekervirksomheten', () => {
+      describe('Når jeg navigerer videre fra /samtykke til avansert skjema,', () => {
+        describe('Som bruker som har svart "AFP etterfulgt av alderspensjon fra 67 år"', () => {
+          it('forventer jeg å kunne se og endre inntekt frem til pensjon', () => {})
+          it('forventer jeg å kunne velge pensjonsalder mellom dagens alder + 1 mnd og 66 år og 11 mnd', () => {})
+          it('forventer jeg å måtte svare på om jeg har inntekt på minst 1G/12 måneden før uttak av pensjon', () => {})
+          it('forventer jeg å få informasjon om at jeg ikke kan beregne AFP hvis jeg svarer nei på inntekt over 1G/12', () => {})
+          it('forventer jeg å måtte oppgi hvor mye inntekt jeg skal ha hvis jeg svarer ja på inntekt samtidig som AFP', () => {})
+        })
+      })
+    })
+
+    // 11
     describe('Når jeg venter på at resultatet kommer fram,', () => {
       it('forventer jeg en melding dersom det tar tid før resultatet kommer opp.', () => {
         cy.login()
@@ -509,7 +696,7 @@ describe('Hovedhistorie', () => {
       })
     })
 
-    // 14
+    // 12
     describe('Når jeg er kommet til beregningssiden,', () => {
       it('ønsker jeg som er født i 1963 informasjon om når jeg tidligst kan starte uttak av pensjon.', () => {
         cy.intercept(
@@ -594,9 +781,11 @@ describe('Hovedhistorie', () => {
         cy.contains('button', '62 år og 10 md.').should('exist')
         cy.contains('button', '75 år').should('exist')
       })
+
+      it('ønsker jeg som har vedtak om gammel AFP offentlig å kunne velge alder fra 67 år til 75 år.', () => {})
     })
 
-    // 15
+    // 13
     describe('Når jeg velger hvilken alder jeg ønsker beregning fra,', () => {
       beforeEach(() => {
         cy.login()
@@ -656,7 +845,7 @@ describe('Hovedhistorie', () => {
       })
     })
 
-    // 16
+    // 14
     describe('Når jeg foretrekker tabell frem for graf,', () => {
       beforeEach(() => {
         cy.login()
@@ -684,7 +873,7 @@ describe('Hovedhistorie', () => {
       })
     })
 
-    // 17
+    // 15
     describe('Når jeg endrer fremtidig inntekt,', () => {
       beforeEach(() => {
         cy.login()

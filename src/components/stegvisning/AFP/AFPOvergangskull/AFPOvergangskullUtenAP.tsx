@@ -168,14 +168,21 @@ export function AFPOvergangskullUtenAP({
               <FormattedMessage id="stegvisning.afp.overgangskullUtenAP.radio_label" />
             }
             name="skalBeregneAfp"
+            data-testid="afp-utregning-valg-radiogroup"
             defaultValue={previousAfpUtregningValg}
             onChange={() => setValidationError({ afp: '', skalBeregneAfp: '' })}
             error={validationError.skalBeregneAfp}
           >
-            <Radio value="AFP_ETTERFULGT_AV_ALDERSPENSJON">
+            <Radio
+              value="AFP_ETTERFULGT_AV_ALDERSPENSJON"
+              data-testid="afp-etterfulgt-av-alderspensjon-radio"
+            >
               <FormattedMessage id="stegvisning.afp.overgangskullUtenAP.radio_ja" />
             </Radio>
-            <Radio value="KUN_ALDERSPENSJON">
+            <Radio
+              value="KUN_ALDERSPENSJON"
+              data-testid="kun-alderspensjon-radio"
+            >
               <FormattedMessage id="stegvisning.afp.overgangskullUtenAP.radio_nei" />
             </Radio>
           </RadioGroup>
