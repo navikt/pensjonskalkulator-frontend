@@ -25,6 +25,8 @@ import {
   useGetPersonQuery,
 } from '@/state/api/apiSlice'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
+import { sessionActions } from '@/state/session/sessionSlice'
+import { store } from '@/state/store'
 import {
   selectVeilederBorgerEncryptedFnr,
   selectVeilederBorgerFnr,
@@ -44,6 +46,18 @@ export const VeilederInput = () => {
   const veilederBorgerFnr = useAppSelector(selectVeilederBorgerFnr)
   const veilederBorgerEncryptedFnr = useAppSelector(
     selectVeilederBorgerEncryptedFnr
+  )
+  console.log('Veileder Borger Fnr:', veilederBorgerFnr)
+  console.log('Veileder Borger Encrypted Fnr:', veilederBorgerEncryptedFnr)
+
+  store.dispatch(
+    sessionActions.setVeilederBorgerFnr(Boolean(veilederBorgerFnr))
+  )
+
+  store.dispatch(
+    sessionActions.setVeilederBorgerEncryptedFnr(
+      Boolean(veilederBorgerEncryptedFnr)
+    )
   )
 
   const { data: ansatt } = useGetAnsattIdQuery()
