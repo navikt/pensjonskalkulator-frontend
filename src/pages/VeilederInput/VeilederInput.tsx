@@ -25,8 +25,6 @@ import {
   useGetPersonQuery,
 } from '@/state/api/apiSlice'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
-import { sessionActions } from '@/state/session/sessionSlice'
-import { store } from '@/state/store'
 import {
   selectVeilederBorgerEncryptedFnr,
   selectVeilederBorgerFnr,
@@ -37,9 +35,10 @@ import { VeilederInputRequestError } from './VeilederInputRequestError'
 
 import styles from './VeilederInput.module.scss'
 
-const router = createBrowserRouter(routes, {
-  basename: `${BASE_PATH}/veileder`,
-})
+const router = () =>
+  createBrowserRouter(routes, {
+    basename: `${BASE_PATH}/veileder`,
+  })
 
 export const VeilederInput = () => {
   const dispatch = useAppDispatch()
@@ -49,16 +48,6 @@ export const VeilederInput = () => {
   )
   console.log('Veileder Borger Fnr:', veilederBorgerFnr)
   console.log('Veileder Borger Encrypted Fnr:', veilederBorgerEncryptedFnr)
-
-  store.dispatch(
-    sessionActions.setVeilederBorgerFnr(Boolean(veilederBorgerFnr))
-  )
-
-  store.dispatch(
-    sessionActions.setVeilederBorgerEncryptedFnr(
-      Boolean(veilederBorgerEncryptedFnr)
-    )
-  )
 
   const { data: ansatt } = useGetAnsattIdQuery()
 
@@ -203,12 +192,12 @@ export const VeilederInput = () => {
           <InternalHeader.User name={ansatt?.id ?? ''} />
         </InternalHeader>
         {veilederBorgerFnr && <BorgerInformasjon fnr={veilederBorgerFnr} />}
-        <RouterProvider router={router} />
+        <RouterProvider router={router()} />
       </div>
     )
   }
 }
 
 if (window.Cypress) {
-  window.router = router
+  window.router = router()
 }
