@@ -46,7 +46,7 @@ export function SamtykkePensjonsavtaler({
         id: 'stegvisning.samtykke_pensjonsavtaler.validation_error',
       })
       setValidationError(tekst)
-      logger('skjema validering feilet', {
+      logger('skjemavalidering feilet', {
         skjemanavn: STEGVISNING_FORM_NAMES.samtykkePensjonsavtaler,
         data: intl.formatMessage({
           id: 'stegvisning.samtykke_pensjonsavtaler.radio_label',
@@ -58,7 +58,7 @@ export function SamtykkePensjonsavtaler({
         tekst: 'Samtykke',
         valg: samtykkeData,
       })
-      logger('button klikk', {
+      logger('knapp klikket', {
         tekst: `Neste fra ${paths.samtykke}`,
       })
       onNext(samtykkeData)
