@@ -1,10 +1,11 @@
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Link as ReactRouterLink } from 'react-router'
 
 import { ExternalLinkIcon } from '@navikt/aksel-icons'
 import { BodyLong, Heading, HeadingProps, Link } from '@navikt/ds-react'
 
 import { paths } from '@/router/constants'
+import { LINK_AAPNET } from '@/utils/loggerConstants'
+import { logger } from '@/utils/logging'
 
 import styles from './GrunnlagForbehold.module.scss'
 
@@ -24,10 +25,15 @@ export const GrunnlagForbehold = ({ headingLevel }: Props) => {
       <BodyLong className={styles.text}>
         <FormattedMessage id="grunnlag.forbehold.ingress_1" />
         <Link
-          as={ReactRouterLink}
-          to={paths.forbehold}
+          href={`/pensjon/kalkulator${paths.forbehold}`}
           target="_blank"
           inlineText
+          onClick={() => {
+            logger(LINK_AAPNET, {
+              href: `/pensjon/kalkulator${paths.forbehold}`,
+              target: '_blank',
+            })
+          }}
         >
           <FormattedMessage id="grunnlag.forbehold.link" />
           <ExternalLinkIcon

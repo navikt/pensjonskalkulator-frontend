@@ -1,6 +1,7 @@
 import eslint from '@eslint/js'
 import importPlugin from 'eslint-plugin-import'
 import reactPlugin from 'eslint-plugin-react'
+import sonarjsPlugin from 'eslint-plugin-sonarjs'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
@@ -27,6 +28,7 @@ const ignoredFiles = [
   'public/src/nais.js',
   'scripts/FetchLandListe.js',
   'sanity.cli.ts',
+  'src/translations/**',
 ]
 
 const defaultEslintConfig = tseslint.config(
@@ -61,6 +63,7 @@ export default [
     ignores: [...ignoredFiles],
     plugins: {
       import: importPlugin,
+      sonarjs: sonarjsPlugin,
     },
     rules: {
       'no-debugger': 'warn',
@@ -82,10 +85,27 @@ export default [
       'import/export': 'error',
       'import/no-extraneous-dependencies': 'error',
       'import/no-duplicates': 'error',
+      // SonarJS rules
+      'sonarjs/no-duplicate-string': 'error',
+      'sonarjs/no-identical-functions': 'error',
+      'sonarjs/no-redundant-boolean': 'warn',
+      'sonarjs/no-unused-collection': 'error',
+      'sonarjs/no-useless-catch': 'warn',
+      'sonarjs/prefer-immediate-return': 'warn',
+      'sonarjs/no-collapsible-if': 'error',
+      'sonarjs/no-gratuitous-expressions': 'error',
+      'sonarjs/no-inverted-boolean-check': 'warn',
+      'sonarjs/prefer-while': 'warn',
     },
   },
+  // Test files configuration
   {
-    files: ['**/*.test.ts', '**/*.test.tsx'],
+    files: [
+      '**/*.test.ts',
+      '**/*.test.tsx',
+      '**/__tests__/**/*.ts',
+      '**/__tests__/**/*.tsx',
+    ],
     rules: {
       '@typescript-eslint/ban-ts-comment': 'off', // Fjern når @ts-ignore ikke lenger er i bruk i testkode
       '@typescript-eslint/require-await': 'off',
@@ -101,6 +121,22 @@ export default [
           ],
         },
       ],
+      // Relax SonarJS rules for test files
+      'sonarjs/no-duplicate-string': 'off',
+      'sonarjs/cognitive-complexity': 'off',
+      'sonarjs/no-identical-functions': 'off',
+      'sonarjs/prefer-immediate-return': 'off',
+    },
+  },
+  // Mock files configuration
+  {
+    files: ['**/mocks/**/*.ts', '**/mocks/**/*.tsx'],
+    rules: {
+      // Relax SonarJS rules for mock files
+      'sonarjs/no-duplicate-string': 'off',
+      'sonarjs/cognitive-complexity': 'off',
+      'sonarjs/no-identical-functions': 'off',
+      'sonarjs/prefer-immediate-return': 'off',
     },
   },
 ]

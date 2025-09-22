@@ -23,6 +23,11 @@ import {
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
 import { BeregningVisning } from '@/types/common-types'
+import {
+  LINK_AAPNET,
+  SHOW_MORE_AAPNET,
+  SHOW_MORE_LUKKET,
+} from '@/utils/loggerConstants'
 import { logger } from '@/utils/logging'
 import { formatSivilstand } from '@/utils/sivilstand'
 import { getFormatMessageValues } from '@/utils/translations'
@@ -86,24 +91,33 @@ export const Grunnlag: React.FC<Props> = ({
     [sivilstand]
   )
 
-  const {
-    alderspensjonDetaljerListe,
-    pre2025OffentligAfpDetaljerListe,
-    afpPrivatDetaljerListe,
-    afpOffentligDetaljerListe,
-    opptjeningPre2025OffentligAfpListe,
-  } = useBeregningsdetaljer(
-    alderspensjonListe,
-    afpPrivatListe,
-    afpOffentligListe,
-    pre2025OffentligAfp
-  )
+  const { alderspensjonDetaljerListe, afpDetaljerListe } =
+    useBeregningsdetaljer(
+      alderspensjonListe,
+      afpPrivatListe,
+      afpOffentligListe,
+      pre2025OffentligAfp
+    )
+
+  // Antall kolonner for AP detaljer som bestemmer hvor mange kolonner AFP detaljer skal ha.
+  const alderspensjonColumnsCount =
+    alderspensjonDetaljerListe.length === 0
+      ? 0
+      : [
+          alderspensjonDetaljerListe[0].alderspensjon,
+          alderspensjonDetaljerListe[0].opptjeningKap19,
+          alderspensjonDetaljerListe[0].opptjeningKap20,
+        ].filter((arr) => arr.length > 0).length
 
   // Når det ikke er noen detaljer for AFP, så er "Les mer" lenken skjult.
   const shouldHideAfpReadMore =
-    !afpOffentligDetaljerListe.length &&
-    !afpPrivatDetaljerListe.length &&
-    !pre2025OffentligAfpDetaljerListe.length
+    afpDetaljerListe.length === 0 ||
+    afpDetaljerListe.every(
+      (afpDetaljer) =>
+        afpDetaljer.afpPrivat.length === 0 &&
+        afpDetaljer.afpOffentlig.length === 0 &&
+        afpDetaljer.pre2025OffentligAfp.length === 0
+    )
 
   const handleReadMoreChange = ({
     isOpen,
@@ -119,7 +133,7 @@ export const Grunnlag: React.FC<Props> = ({
     }
 
     const name = `Grunnlag: Vis detaljer for ${ytelse}`
-    logger(isOpen ? 'show more åpnet' : 'show more lukket', { tekst: name })
+    logger(isOpen ? SHOW_MORE_AAPNET : SHOW_MORE_LUKKET, { tekst: name })
   }
 
   return (
@@ -182,14 +196,8 @@ export const Grunnlag: React.FC<Props> = ({
               }
             >
               <AfpDetaljerGrunnlag
-                afpPrivatDetaljerListe={afpPrivatDetaljerListe}
-                afpOffentligDetaljerListe={afpOffentligDetaljerListe}
-                pre2025OffentligAfpDetaljerListe={
-                  pre2025OffentligAfpDetaljerListe
-                }
-                opptjeningPre2025OffentligAfpListe={
-                  opptjeningPre2025OffentligAfpListe
-                }
+                afpDetaljerListe={afpDetaljerListe}
+                alderspensjonColumnsCount={alderspensjonColumnsCount}
               />
               {pre2025OffentligAfp &&
                 pre2025OffentligAfp.afpAvkortetTil70Prosent && (
@@ -211,6 +219,12 @@ export const Grunnlag: React.FC<Props> = ({
                       href="https://www.nav.no/afp-offentlig#beregning"
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() => {
+                        logger(LINK_AAPNET, {
+                          href: `/pensjon/kalkulator${paths.forbehold}`,
+                          target: '_blank',
+                        })
+                      }}
                     >
                       <FormattedMessage id="grunnlag.afp.link.text" />
                     </Link>
@@ -284,9 +298,7 @@ export const Grunnlag: React.FC<Props> = ({
           >
             <AlderspensjonDetaljerGrunnlag
               alderspensjonDetaljerListe={alderspensjonDetaljerListe}
-              hasPre2025OffentligAfpUttaksalder={Boolean(
-                opptjeningPre2025OffentligAfpListe?.length
-              )}
+              hasPre2025OffentligAfpUttaksalder={Boolean(pre2025OffentligAfp)}
             />
             <FormattedMessage
               id="grunnlag.alderspensjon.ingress.link"
