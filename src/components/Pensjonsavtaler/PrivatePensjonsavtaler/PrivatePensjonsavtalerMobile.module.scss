@@ -16,6 +16,11 @@
     }
   }
 
+  th {
+    padding-right: var(--a-spacing-2);
+    text-align: left;
+  }
+
   th,
   td {
     padding-block: var(--a-spacing-2);
