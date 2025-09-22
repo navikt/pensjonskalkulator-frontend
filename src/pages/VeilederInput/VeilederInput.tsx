@@ -46,8 +46,6 @@ export const VeilederInput = () => {
   const veilederBorgerEncryptedFnr = useAppSelector(
     selectVeilederBorgerEncryptedFnr
   )
-  console.log('Veileder Borger Fnr:', veilederBorgerFnr)
-  console.log('Veileder Borger Encrypted Fnr:', veilederBorgerEncryptedFnr)
 
   const { data: ansatt } = useGetAnsattIdQuery()
 
