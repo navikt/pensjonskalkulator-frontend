@@ -1,0 +1,109 @@
+import { ACTION_CONFIG } from '../constants'
+import type { Action, Transaction } from '../types'
+
+const LOCALE = 'no-NO'
+const TIMEZONE = 'Europe/Oslo'
+
+const formatWithLocale = (
+  date: Date,
+  options: Intl.DateTimeFormatOptions
+): string => {
+  try {
+    return date.toLocaleDateString(LOCALE, { ...options, timeZone: TIMEZONE })
+  } catch {
+    return date.toISOString()
+  }
+}
+
+const formatTimeWithLocale = (
+  date: Date,
+  options: Intl.DateTimeFormatOptions
+): string => {
+  try {
+    return date.toLocaleTimeString(LOCALE, { ...options, timeZone: TIMEZONE })
+  } catch {
+    return date.toISOString()
+  }
+}
+
+export const formatDayTitle = (dayKey: string): string => {
+  try {
+    const d = new Date(`${dayKey}T00:00:00.000Z`)
+    return formatWithLocale(d, {
+      year: 'numeric',
+      month: 'short',
+      day: '2-digit',
+      weekday: 'short',
+    })
+  } catch {
+    return dayKey
+  }
+}
+
+export const formatTime = (timestamp: string): string => {
+  try {
+    const d = new Date(timestamp)
+    return formatTimeWithLocale(d, {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    })
+  } catch {
+    return timestamp
+  }
+}
+
+export const formatDateTime = (timestamp: string): string => {
+  try {
+    const d = new Date(timestamp)
+    return d.toLocaleString(LOCALE, {
+      year: 'numeric',
+      month: 'short',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      timeZone: TIMEZONE,
+    })
+  } catch {
+    return timestamp
+  }
+}
+
+export const actionTone = (
+  action: Transaction['action']
+): 'default' | 'primary' | 'positive' | 'caution' | 'critical' =>
+  ACTION_CONFIG[action]?.tone ?? ACTION_CONFIG.system.tone
+
+export const actionLabel = (action: Action): string =>
+  ACTION_CONFIG[action]?.label ?? ACTION_CONFIG.system.label
+
+export const sortDescByTimestamp = <T extends { readonly timestamp: string }>(
+  array: readonly T[]
+): readonly T[] => {
+  return [...array].sort((a, b) => b.timestamp.localeCompare(a.timestamp))
+}
+
+export const groupByDay = (
+  transactions: readonly Transaction[]
+): Map<string, readonly Transaction[]> => {
+  const map = new Map<string, readonly Transaction[]>()
+  const normDay = (timestamp: string): string => timestamp.slice(0, 10)
+
+  for (const transaction of transactions) {
+    const dayKey = normDay(transaction.timestamp)
+    if (!dayKey) continue
+    const existing = map.get(dayKey) || []
+    map.set(dayKey, [...existing, transaction])
+  }
+
+  return map
+}
+
+export const getAttemptIds = (documentId: string): readonly string[] => {
+  const baseId = documentId.replace(/^drafts\./, '')
+  const attemptIds = [documentId]
+  if (baseId !== documentId) attemptIds.push(baseId)
+  if (!documentId.startsWith('drafts.')) attemptIds.push(`drafts.${baseId}`)
+  return attemptIds
+}
