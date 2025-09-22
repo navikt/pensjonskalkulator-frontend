@@ -58,10 +58,6 @@ export default {
     'You must use our detailed calculator. It provides an estimate of',
   'landingsside.velge_mellom_detaljert_og_enkel':
     'In the pension calculator, you can get an estimate of',
-  'landingsside.velge_mellom_detaljert_og_enkel_2': 'MANGLER_TEKST',
-  'landingsside.button.detaljert_kalkulator_utlogget':
-    'Log in to the detailed pension calculator',
-  'landingsside.button.detaljert_kalkulator': 'Detailed Pension Calculator',
   'landingsside.button.enkel_kalkulator_utlogget':
     'Log in to the pension calculator',
   'landingsside.button.enkel_kalkulator': 'Pension Calculator',
@@ -94,6 +90,8 @@ export default {
     'Here you can check what you can receive if you want to change your retirement pension.{br}{br}',
   'stegvisning.start.endring.ingress_1b.med_fremtidig': 'MANGLER_TEKST',
   'stegvisning.start.ingress.pre2025_offentlig_afp': 'MANGLER_TEKST',
+  'stegvisning.start.endring.ingress.pre2025_offentlig_afp_fremtidig':
+    'MANGLER_TEKST',
   'stegvisning.start.ingress':
     'Welcome to the pension calculator which can show you:',
   'stegvisning.start.list_item1': 'retirement pension (Nav)',
@@ -323,7 +321,7 @@ export default {
     'Unfortunately, we could not calculate your pension right now.',
   'beregning.livsvarig': 'lifelong',
   'beregning.lav_opptjening.aar':
-    'You do not have enough accrual to start withdrawing at {startAar} years. Try a higher age.',
+    'You do not have enough accrual to start withdrawing at {startAar} years{startMaaned}. Try a higher age.',
   'beregning.button.faerre_aar': 'Fewer Years',
   'beregning.button.flere_aar': 'More Years',
   'beregning.pensjonsavtaler.alert.endring':
