@@ -105,6 +105,10 @@ export async function setupInterceptions(
       jsonResponse: { enabled: false },
     },
     {
+      url: /\/pensjon\/kalkulator\/api\/v1\/er-apoteker/,
+      fixtureName: 'er-apoteker.json',
+    },
+    {
       url: /\/pensjon\/kalkulator\/api\/v2\/ekskludert/,
       fixtureName: 'ekskludert-status.json',
     },
@@ -244,45 +248,45 @@ export async function setupInterceptions(
 }
 
 export async function login(page: Page) {
+  const personResponsePromise = page.waitForResponse(
+    (r) =>
+      r.request().method() === 'GET' &&
+      r.url().includes('/pensjon/kalkulator/api/v5/person') &&
+      r.ok()
+  )
+  const inntektResponsePromise = page.waitForResponse(
+    (r) =>
+      r.request().method() === 'GET' &&
+      r.url().includes('/pensjon/kalkulator/api/inntekt') &&
+      r.ok()
+  )
+  const omstillingsstoenadResponsePromise = page.waitForResponse(
+    (r) =>
+      r.request().method() === 'GET' &&
+      r
+        .url()
+        .includes(
+          '/pensjon/kalkulator/api/v1/loepende-omstillingsstoenad-eller-gjenlevendeytelse'
+        ) &&
+      r.ok()
+  )
+  const loependeVedtakResponsePromise = page.waitForResponse(
+    (r) =>
+      r.request().method() === 'GET' &&
+      r.url().includes('/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak') &&
+      r.ok()
+  )
+
   await page.goto('/pensjon/kalkulator/', { waitUntil: 'load' })
+
   const btn = page.getByTestId('landingside-enkel-kalkulator-button')
   await btn.waitFor({ state: 'visible' })
 
   await Promise.all([
-    page.waitForResponse(
-      (r) =>
-        r.request().method() === 'GET' &&
-        r.url().includes('/pensjon/kalkulator/api/v5/person') &&
-        r.ok()
-    ),
-    page.waitForResponse(
-      (r) =>
-        r.request().method() === 'GET' &&
-        r.url().includes('/pensjon/kalkulator/api/v2/ekskludert') &&
-        r.ok()
-    ),
-    page.waitForResponse(
-      (r) =>
-        r.request().method() === 'GET' &&
-        r.url().includes('/pensjon/kalkulator/api/inntekt') &&
-        r.ok()
-    ),
-    page.waitForResponse(
-      (r) =>
-        r.request().method() === 'GET' &&
-        r
-          .url()
-          .includes(
-            '/pensjon/kalkulator/api/v1/loepende-omstillingsstoenad-eller-gjenlevendeytelse'
-          ) &&
-        r.ok()
-    ),
-    page.waitForResponse(
-      (r) =>
-        r.request().method() === 'GET' &&
-        r.url().includes('/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak') &&
-        r.ok()
-    ),
+    personResponsePromise,
+    inntektResponsePromise,
+    omstillingsstoenadResponsePromise,
+    loependeVedtakResponsePromise,
     btn.click(),
   ])
 }
