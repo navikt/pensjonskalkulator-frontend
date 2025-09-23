@@ -38,12 +38,7 @@ export function Forbehold() {
               </BodyLong>
             </section>
           ) : (
-            <BodyLong
-              data-testid="forbehold-avsnitt"
-              key={i}
-              spacing
-              as="div"
-            >
+            <BodyLong data-testid="forbehold-avsnitt" key={i} spacing as="div">
               <PortableText
                 value={forbeholdAvsnitt.innhold}
                 components={getSanityPortableTextComponents(intl)}
