@@ -725,49 +725,80 @@ describe('Hovedhistorie', () => {
               { apoteker: true, aarsak: 'ER_APOTEKER' }
             ).as('getErApoteker')
 
-            // Navigate through the form to the avansert skjema
+            // Mock the income API call
+            cy.intercept(
+              {
+                method: 'GET',
+                url: '/pensjon/kalkulator/api/inntekt',
+              },
+              {
+                beloep: 521338,
+                aar: 2021,
+              }
+            ).as('getInntekt')
+
+            // Navigerer til avansert skjema for kap. 19
             cy.login()
             cy.contains('button', 'Kom i gang').click()
-            cy.contains('button', 'Neste').click() // Skip sivilstand
-            cy.get('[type="radio"]').last().check() // Answer no to utenlandsopphold
             cy.contains('button', 'Neste').click()
-            cy.get('[type="radio"][value="ja_offentlig"]').check() // Choose AFP offentlig
+            cy.get('[type="radio"]').last().check()
+            cy.contains('button', 'Neste').click()
+            cy.get('[type="radio"][value="ja_offentlig"]').check()
             cy.contains('button', 'Neste').click()
             cy.get(
               '[type="radio"][value="AFP_ETTERFULGT_AV_ALDERSPENSJON"]'
-            ).check() // Choose AFP etterfulgt av alderspensjon
+            ).check()
             cy.contains('button', 'Neste').click()
-
-            // Handle samtykke offentlig AFP - might be on samtykke-offentlig-afp page
-            cy.get('body').then(($body) => {
-              if ($body.text().includes('Samtykke til at Nav beregner AFP')) {
-                // We're on samtykke-offentlig-afp page
-                cy.get('[type="radio"]').last().check()
-                cy.contains('button', 'Neste').click()
-              }
-            })
-
-            // Handle samtykke pensjonsavtaler
-            cy.get('[type="radio"]').last().check() // Answer samtykke pensjonsavtaler
+            cy.get('[type="radio"]').last().check()
             cy.contains('button', 'Neste').click()
           })
 
           it('forventer jeg å kunne se og endre inntekt frem til pensjon', () => {
-            // Check that we're on the advanced/detailed calculation page
             cy.location('pathname').should('include', '/beregning-detaljert')
 
-            // Just verify we're on a valid page with some content
-            cy.get('body').should('not.be.empty')
+            // Verifiserer at vi kan endre inntekt
+            cy.contains('button', 'Endre inntekt', { timeout: 10000 }).should(
+              'be.visible'
+            )
 
-            // Verify we have some form elements or interactive content
-            cy.get('input, button, select').should('exist')
+            // Tester at vi kan åpne modalen for å endre inntekt
+            cy.contains('button', 'Endre inntekt').click()
+            cy.contains('Pensjonsgivende inntekt').should('be.visible')
+
+            // Verifiserer at modalen har et input-felt for å redigere inntekt
+            cy.get('[data-testid="inntekt-textfield"]')
+              .should('be.visible')
+              .and('not.be.disabled')
           })
 
           it('forventer jeg å kunne velge pensjonsalder mellom dagens alder + 1 mnd og 66 år og 11 mnd', () => {
-            // For now, just verify we have some age-related content or controls
-            cy.get('body').should('contain', 'år')
-            // Look for any interactive elements that might be age selectors
-            cy.get('input, button, select').should('exist')
+            cy.location('pathname').should('include', '/beregning-detaljert')
+
+            // Verifiserer at vi er på det avanserte skjemaet for brukere med Kap19 AFP
+            cy.get(
+              '[data-intl="beregning.avansert.rediger.afp_etterfulgt_av_ap.title"], h2',
+              {
+                timeout: 15000,
+              }
+            ).should('exist')
+
+            // Sjekker for aldersvelgere i det avanserte skjemaet
+            cy.get('[data-testid="agepicker-helt-uttaksalder"]', {
+              timeout: 10000,
+            }).should('exist')
+
+            // Verifiserer at aldersvelgeren har select-elementer for år og måned
+            cy.get(
+              '[data-testid="agepicker-helt-uttaksalder"] select[name*="aar"]'
+            ).should('exist')
+            cy.get(
+              '[data-testid="agepicker-helt-uttaksalder"] select[name*="maaned"]'
+            ).should('exist')
+
+            // Sjekker at det finnes noen år-opsjoner (uten å spesifisere eksakte verdier)
+            cy.get(
+              '[data-testid="agepicker-helt-uttaksalder"] select[name*="aar"] option'
+            ).should('have.length.at.least', 2)
           })
 
           it('forventer jeg å måtte svare på om jeg har inntekt på minst 1G/12 måneden før uttak av pensjon', () => {
