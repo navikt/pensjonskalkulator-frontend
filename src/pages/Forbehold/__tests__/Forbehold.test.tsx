@@ -1,6 +1,8 @@
 import { describe, it } from 'vitest'
-import { render, screen, waitFor, within } from '@/test-utils'
+
 import sanityForbeholdAvsnittDataResponse from '@/mocks/data/sanity-forbehold-avsnitt-data.json'
+import { render, screen, waitFor } from '@/test-utils'
+
 import { Forbehold } from '..'
 
 describe('Forbehold', () => {
