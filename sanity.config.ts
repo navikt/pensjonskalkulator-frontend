@@ -1,3 +1,4 @@
+import { colorInput } from '@sanity/color-input'
 import { documentInternationalization } from '@sanity/document-internationalization'
 import { RobotIcon, RocketIcon } from '@sanity/icons'
 import { visionTool } from '@sanity/vision'
@@ -5,13 +6,17 @@ import { createAuthStore, defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
 
 import { schemaTypes } from './schemaTypes'
+import { deskStructure } from './schemaTypes/components/deskStructure'
 import { supportedLanguages } from './schemaTypes/supportedLanguages'
 
 export const projectId = 'g2by7q6m'
 
 const pluginsArray = [
-  structureTool(),
+  structureTool({
+    structure: deskStructure,
+  }),
   visionTool(),
+  colorInput(),
   documentInternationalization({
     supportedLanguages,
     schemaTypes: ['readmore', 'forbeholdAvsnitt', 'guidepanel'],
@@ -31,6 +36,7 @@ export default defineConfig([
     schema: {
       types: schemaTypes,
     },
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
     auth: createAuthStore({
       projectId,
       dataset: 'development',
@@ -57,6 +63,7 @@ export default defineConfig([
     schema: {
       types: schemaTypes,
     },
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
     auth: createAuthStore({
       projectId,
       dataset: 'production',
