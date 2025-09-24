@@ -28,8 +28,8 @@ interface FilterParams {
 const getDocumentIdFromUrl = (): string => {
   if (typeof window === 'undefined') return ''
   try {
-    const sp = new URLSearchParams(window.location.search)
-    return sp.get('documentId') || ''
+    const searchParams = new URLSearchParams(window.location.search)
+    return searchParams.get('documentId') || ''
   } catch {
     return ''
   }
