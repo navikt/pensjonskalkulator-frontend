@@ -691,15 +691,14 @@ describe('Hovedhistorie', () => {
     describe('Gitt at jeg som bruker er født før 1963 eller er medlem av pensjonsordningen for apotekervirksomheten', () => {
       describe('Når jeg navigerer videre fra /samtykke til avansert skjema,', () => {
         describe('Som bruker som har svart "AFP etterfulgt av alderspensjon fra 67 år"', () => {
-          //TODO: Fiks testene som hører til denne describen
           beforeEach(() => {
-            // Setup for user born before 1963
+            // Bruker født før 1963
             cy.intercept(
               { method: 'GET', url: '/pensjon/kalkulator/api/v5/person' },
               {
                 navn: 'Aprikos',
                 sivilstand: 'UGIFT',
-                foedselsdato: '1962-04-30', // Born before 1963
+                foedselsdato: '1962-04-30',
                 pensjoneringAldre: {
                   normertPensjoneringsalder: {
                     aar: 67,
@@ -725,7 +724,6 @@ describe('Hovedhistorie', () => {
               { apoteker: true, aarsak: 'ER_APOTEKER' }
             ).as('getErApoteker')
 
-            // Mock the income API call
             cy.intercept(
               {
                 method: 'GET',
@@ -757,9 +755,7 @@ describe('Hovedhistorie', () => {
             cy.location('pathname').should('include', '/beregning-detaljert')
 
             // Verifiserer at vi kan endre inntekt
-            cy.contains('button', 'Endre inntekt', { timeout: 10000 }).should(
-              'be.visible'
-            )
+            cy.contains('button', 'Endre inntekt').should('be.visible')
 
             // Tester at vi kan åpne modalen for å endre inntekt
             cy.contains('button', 'Endre inntekt').click()
@@ -776,16 +772,11 @@ describe('Hovedhistorie', () => {
 
             // Verifiserer at vi er på det avanserte skjemaet for brukere med Kap19 AFP
             cy.get(
-              '[data-intl="beregning.avansert.rediger.afp_etterfulgt_av_ap.title"], h2',
-              {
-                timeout: 15000,
-              }
+              '[data-intl="beregning.avansert.rediger.afp_etterfulgt_av_ap.title"], h2'
             ).should('exist')
 
             // Sjekker for aldersvelgere i det avanserte skjemaet
-            cy.get('[data-testid="agepicker-helt-uttaksalder"]', {
-              timeout: 10000,
-            }).should('exist')
+            cy.get('[data-testid="agepicker-helt-uttaksalder"]').should('exist')
 
             // Verifiserer at aldersvelgeren har select-elementer for år og måned
             cy.get(
@@ -795,27 +786,75 @@ describe('Hovedhistorie', () => {
               '[data-testid="agepicker-helt-uttaksalder"] select[name*="maaned"]'
             ).should('exist')
 
-            // Sjekker at det finnes noen år-opsjoner (uten å spesifisere eksakte verdier)
+            // Sjekker at det finnes noen options for år (uten å spesifisere eksakte verdier)
             cy.get(
               '[data-testid="agepicker-helt-uttaksalder"] select[name*="aar"] option'
             ).should('have.length.at.least', 2)
           })
 
           it('forventer jeg å måtte svare på om jeg har inntekt på minst 1G/12 måneden før uttak av pensjon', () => {
-            // Look for any content about income or form elements
-            cy.get('body').should('contain', 'inntekt')
-            // Check for radio buttons or other form controls
-            cy.get('input, button, select').should('exist')
+            cy.location('pathname').should('include', '/beregning-detaljert')
+
+            // Sjekker at spørsmålet om AFP inntekt måneden før uttak eksisterer
+            cy.get(
+              '[data-testid="afp-inntekt-maaned-foer-uttak-radio"]'
+            ).should('exist')
+
+            // Verifiserer at det finnes radioknapper for ja/nei
+            cy.get(
+              '[data-testid="afp-inntekt-maaned-foer-uttak-radio"] input[type="radio"]'
+            ).should('have.length', 2)
+
+            // Sjekker at ja og nei alternativene eksisterer
+            cy.get(
+              '[data-testid="afp-inntekt-maaned-foer-uttak-radio-ja"]'
+            ).should('exist')
+            cy.get(
+              '[data-testid="afp-inntekt-maaned-foer-uttak-radio-nei"]'
+            ).should('exist')
           })
 
           it('forventer jeg å få informasjon om at jeg ikke kan beregne AFP hvis jeg svarer nei på inntekt over 1G/12', () => {
-            // Verify we're on a page with AFP-related content
-            cy.get('body').should('contain', 'AFP')
+            cy.location('pathname').should('include', '/beregning-detaljert')
+
+            // Sjekker at spørsmålet om AFP inntekt måneden før uttak eksisterer
+            cy.get(
+              '[data-testid="afp-inntekt-maaned-foer-uttak-radio"]'
+            ).should('exist')
+
+            // Verifiserer at det finnes radioknapper for ja/nei
+            cy.get(
+              '[data-testid="afp-inntekt-maaned-foer-uttak-radio"] input[type="radio"]'
+            ).should('have.length', 2)
+
+            // klikker på nei-alternativet
+            cy.get('[data-testid="afp-inntekt-maaned-foer-uttak-radio-nei"]')
+              .should('exist')
+              .check()
+
+            cy.get('[data-testid="afp-etterfulgt-ap-informasjon"]').should(
+              'exist'
+            )
           })
 
           it('forventer jeg å måtte oppgi hvor mye inntekt jeg skal ha hvis jeg svarer ja på inntekt samtidig som AFP', () => {
-            // Verify page has income-related content
-            cy.get('body').should('contain', 'inntekt')
+            cy.location('pathname').should('include', '/beregning-detaljert')
+
+            // Sjekker at spørsmålet om inntekt ved siden av AFP eksisterer
+            cy.get('[data-testid="inntekt-vsa-afp-radio"]').should('exist')
+
+            // Verifiserer at det finnes radioknapper for ja/nei
+            cy.get(
+              '[data-testid="inntekt-vsa-afp-radio"] input[type="radio"]'
+            ).should('have.length', 2)
+
+            // klikker på ja-alternativet
+            cy.get('[data-testid="inntekt-vsa-afp-radio-ja"]')
+              .should('exist')
+              .check()
+
+            // Sjekker at input-feltet for å oppgi inntekt vises
+            cy.get('[data-testid="inntekt-vsa-afp"]').should('exist')
           })
         })
       })
@@ -927,7 +966,65 @@ describe('Hovedhistorie', () => {
         cy.contains('button', '75 år').should('exist')
       })
 
-      it('ønsker jeg som har vedtak om gammel AFP offentlig å kunne velge alder fra 67 år til 75 år.', () => {})
+      it('ønsker jeg som har vedtak om gammel AFP offentlig å kunne velge alder fra 67 år til 75 år.', () => {
+        cy.intercept(
+          { method: 'GET', url: '/pensjon/kalkulator/api/v5/person' },
+          {
+            navn: 'Aprikos',
+            sivilstand: 'UGIFT',
+            foedselsdato: '1962-04-30',
+            pensjoneringAldre: {
+              normertPensjoneringsalder: {
+                aar: 67,
+                maaneder: 0,
+              },
+              nedreAldersgrense: {
+                aar: 62,
+                maaneder: 0,
+              },
+              oevreAldersgrense: {
+                aar: 75,
+                maaneder: 0,
+              },
+            },
+          }
+        ).as('getPerson')
+
+        cy.intercept(
+          {
+            method: 'GET',
+            url: '/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak',
+          },
+          {
+            ...loependeVedtakMock,
+            pre2025OffentligAfp: {
+              fom: '2023-01-01',
+            },
+          } satisfies LoependeVedtak
+        ).as('getLoependeVedtak')
+
+        cy.intercept(
+          {
+            method: 'POST',
+            url: '/pensjon/kalkulator/api/v8/alderspensjon/simulering',
+          },
+          { fixture: 'alderspensjon.json' }
+        ).as('getAlderspensjon')
+
+        cy.login()
+        cy.fillOutStegvisning({ samtykke: false })
+
+        // Venter på at siden laster inn og sjekker at aldersknappene starter fra 67 år (ikke 62 år og 10 md.)
+        cy.get('.VelgUttaksalder--wrapper button', { timeout: 10000 }).should(
+          'have.length',
+          9
+        ) // 67 til 75 år = 9 knapper
+        cy.contains('button', '67 år').should('exist')
+        cy.contains('button', '75 år').should('exist')
+
+        // Sjekker at 62 år og 10 md. ikke finnes (dette er for vanlige brukere)
+        cy.contains('button', '62 år og 10 md.').should('not.exist')
+      })
     })
 
     // 13
