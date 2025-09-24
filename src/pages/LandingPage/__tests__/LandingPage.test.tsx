@@ -135,7 +135,7 @@ describe('LandingPage', () => {
       )
     })
 
-    expect(navigateMock).toHaveBeenCalledWith(`${paths.start}`)
+    expect(navigateMock).not.toHaveBeenCalledWith(`${paths.start}`)
   })
 
   it('går til uinnlogget kalkulator når brukeren klikker på uinnlogget kalkulator knappen', async () => {

@@ -38,7 +38,7 @@ export const LandingPage = () => {
       navigate(paths.start)
     } else {
       window.open(
-        `${HOST_BASEURL}/oauth2/login?redirect=${encodeURIComponent(window.location.pathname)}`,
+        `${HOST_BASEURL}/oauth2/login?redirect=${encodeURIComponent(`${HOST_BASEURL}${paths.start}`)}`,
         '_self'
       )
     }
