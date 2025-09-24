@@ -157,20 +157,20 @@ const toActor = (val: unknown): Actor | undefined => {
   if (typeof val === 'string') return { id: val, type: 'user' as const }
   if (typeof val !== 'object' || val === null || Array.isArray(val))
     return undefined
-  const o = val as Record<string, unknown>
+  const obj= val as Record<string, unknown>
   const id =
-    (o.id as string) ||
-    (o._id as string) ||
-    (o.userId as string) ||
-    (o.identity as string)
+    (obj.id as string) ||
+    (obj._id as string) ||
+    (obj.userId as string) ||
+    (obj.identity as string)
   if (!id) return undefined
   const name =
-    (o.name as string) ||
-    (o.displayName as string) ||
-    (o.username as string) ||
-    (o.email as string)
-  const email = o.email as string
-  const type = (o.type as Actor['type']) || 'user'
+    (obj.name as string) ||
+    (obj.displayName as string) ||
+    (obj.username as string) ||
+    (obj.email as string)
+  const email = obj.email as string
+  const type = (obj.type as Actor['type']) || 'user'
   return {
     id,
     name: name || undefined,
@@ -346,11 +346,11 @@ interface NormalizedListOptions {
 }
 const toListOptions = (val: unknown): NormalizedListOptions => {
   if (!val || typeof val !== 'object') return {}
-  const o = val as Record<string, unknown>
-  const limit = typeof o.limit === 'number' ? o.limit : undefined
-  const offset = typeof o.offset === 'number' ? o.offset : undefined
-  const actions = Array.isArray(o.actions)
-    ? o.actions.filter((a): a is Action => typeof a === 'string')
+  const obj= val as Record<string, unknown>
+  const limit = typeof obj.limit === 'number' ? obj.limit : undefined
+  const offset = typeof obj.offset === 'number' ? obj.offset : undefined
+  const actions = Array.isArray(obj.actions)
+    ? obj.actions.filter((action): action is Action => typeof action === 'string')
     : undefined
   return { limit, offset, actions }
 }
