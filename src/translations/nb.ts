@@ -54,7 +54,7 @@ const translations = {
   'error.virker_ikke.link': 'kontakte oss',
   'error.virker_ikke.button': 'Gå til Din pensjon',
   'error.apoteker_warning':
-    'Hvis du er medlem av Pensjonsordningen for apotekvirksomhet (POA) vil beregning av AFP og alderspensjon for øyeblikket bli feil. Prøv igjen senere.',
+    'Hvis du er medlem av Pensjonsordningen for apotekvirksomhet (POA) er beregning med AFP for øyeblikket feil. Prøv igjen senere.',
   'landingsside.for.deg.som.kan.logge.inn': 'For deg som kan logge inn',
   'landingsside.for.deg.foedt.foer.1963': 'For deg født før 1963',
   'landingsside.du.maa.bruke.detaljert':
@@ -112,9 +112,6 @@ const translations = {
   'stegvisning.start.button': 'Kom i gang',
   'stegvisning.start.link':
     'Personopplysninger som brukes i pensjonskalkulator',
-  'stegvisning.start.alert.title': 'Kjenner du deg ikke helt igjen?',
-  'stegvisning.start.alert.description':
-    'Vi har laget ny kalkulator og pensjonert den gamle.',
   'stegvisning.start_brukere_fyllt_75.title':
     'Du kan dessverre ikke beregne alderspensjon i kalkulatoren etter at du har fylt 75 år',
   'stegvisning.start_brukere_fyllt_75.ingress':
@@ -684,6 +681,7 @@ const translations = {
     'hvis du ønsker å få dette i beregningen.',
   'pensjonsavtaler.ingress.ingen': 'Vi fant ingen pensjonsavtaler.',
   'pensjonsavtaler.kr_pr_aar': 'kr per år',
+  'pensjonsavtaler_mobil.kr_pr_aar': 'kr/år',
   'alder.livsvarig': 'Livsvarig fra',
   'pensjonsavtaler.md': 'md.',
   'pensjonsavtaler.tabell.title.left': 'Avtaler',
