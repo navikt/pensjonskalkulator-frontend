@@ -38,7 +38,7 @@ export const useActorNames = (
               entries.push([id, displayName])
             }
           } catch {
-            //ignore
+            console.warn(`Failed to fetch user info for id "${id}"`)
           }
         })
       )
@@ -96,7 +96,7 @@ export const useDocumentMeta = (
         )
         setDocumentMeta((prev) => ({ ...prev, ...Object.fromEntries(entries) }))
       } catch {
-        //ignore
+        console.warn(`Failed to fetch document meta for ids "${idsArray.join(', ')}"`)
       }
     }
 

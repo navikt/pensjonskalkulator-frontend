@@ -61,7 +61,7 @@ export const DocumentPanel: React.FC<DocumentPanelProps> = (props) => {
       })
       return
     } catch {
-      //ignore
+      console.log('Falling back to window.location')
     }
     try {
       const { origin, pathname } = window.location
