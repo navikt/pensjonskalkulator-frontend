@@ -73,10 +73,10 @@ export const formatDateTime = (timestamp: string): string => {
 export const actionTone = (
   action: Transaction['action']
 ): 'default' | 'primary' | 'positive' | 'caution' | 'critical' =>
-  ACTION_CONFIG[action]?.tone ?? ACTION_CONFIG.system.tone
+  ACTION_CONFIG[action]?.tone ?? ACTION_CONFIG.default.tone
 
 export const actionLabel = (action: Action): string =>
-  ACTION_CONFIG[action]?.label ?? ACTION_CONFIG.system.label
+  ACTION_CONFIG[action]?.label ?? ACTION_CONFIG.default.label
 
 export const sortDescByTimestamp = <T extends { readonly timestamp: string }>(
   array: readonly T[]

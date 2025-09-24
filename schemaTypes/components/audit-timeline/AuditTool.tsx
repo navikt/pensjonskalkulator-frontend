@@ -46,7 +46,7 @@ const calculateActionCounts = (
     delete: 0,
     duplicate: 0,
     discard: 0,
-    system: 0,
+    default: 0,
   }
   for (const item of items) {
     acc[item.action] = (acc[item.action] || 0) + 1

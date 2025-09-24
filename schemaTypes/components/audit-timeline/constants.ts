@@ -8,7 +8,7 @@ export const ACTIONS: readonly Action[] = [
   'delete',
   'duplicate',
   'discard',
-  'system',
+  'default',
 ] as const
 
 export const ACTION_CONFIG: Record<
@@ -25,7 +25,7 @@ export const ACTION_CONFIG: Record<
   delete: { tone: 'critical', label: 'Deleted' },
   duplicate: { tone: 'primary', label: 'Duplicated' },
   discard: { tone: 'caution', label: 'Discarded draft' },
-  system: { tone: 'default', label: 'System change' },
+  default: { tone: 'default', label: 'System change' },
 }
 
 export const CACHE_TTL_MS = 24 * 60 * 60 * 1000

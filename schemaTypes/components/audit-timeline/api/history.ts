@@ -143,12 +143,13 @@ const inferActionFromOpOrMutations = (
 
 const inferAction = (entry: TransactionNdjsonRow): Action => {
   const hasPrevious = Boolean(entry.prevRev || entry.beforeRev)
-  const action = inferActionFromOpOrMutations(
-    entry.operation || entry.op || '',
-    entry.mutations || [],
-    hasPrevious
+  return (
+    inferActionFromOpOrMutations(
+      entry.operation || entry.op || '',
+      entry.mutations || [],
+      hasPrevious
+    ) || 'default'
   )
-  return action || 'system'
 }
 
 const toActor = (val: unknown): Actor | undefined => {

@@ -6,7 +6,7 @@ export type Action =
   | 'delete'
   | 'duplicate'
   | 'discard'
-  | 'system'
+  | 'default'
 
 export interface Actor {
   id: string
