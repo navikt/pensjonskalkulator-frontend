@@ -23,11 +23,11 @@ const collectDocumentTransactions = async (
   id: string,
   params: FilterParams,
   signal: AbortSignal,
-  limit?: number
+  limit: number
 ): Promise<readonly Transaction[]> => {
   if (!id.trim()) return []
 
-  if (typeof limit === 'number' && limit > 0) {
+  if (limit > 0) {
     const first = await listTransactionsForDocument(
       client,
       id,
@@ -114,7 +114,7 @@ export const useTransactions = (
             id,
             params,
             sig,
-            limit
+            limit as number
           )
           return { items: rows, usedFallback: fallbackUsed }
         } catch (error) {
