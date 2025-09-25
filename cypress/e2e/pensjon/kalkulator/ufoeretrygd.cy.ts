@@ -153,8 +153,7 @@ describe('Med ufoeretrygd', () => {
       })
 
       describe('Gitt at bruker er født 1963 eller senere, og kall til /er-apoteker feiler', () => {
-        it('forventer jeg informasjon om at beregning med AFP kan bli feil hvis jeg er medlem av Pensjonsordningen for apotekvirksomhet og at jeg må prøve igjen senere', () => {
-          // Intercepts needed for apoteker error scenario
+        beforeEach(() => {
           cy.intercept(
             { method: 'GET', url: '/pensjon/kalkulator/api/v5/person' },
             {
@@ -213,12 +212,22 @@ describe('Med ufoeretrygd', () => {
           cy.get('[type="radio"]').eq(0).check()
           cy.contains('button', 'Neste').click()
           cy.contains('button', '67 år').click()
+        })
 
+        it('forventer jeg informasjon om at beregning med AFP kan bli feil hvis jeg er medlem av Pensjonsordningen for apotekvirksomhet og at jeg må prøve igjen senere', () => {
           // Verifiser at vi er på beregningssiden
           cy.location('pathname').should('include', '/beregning')
 
           // Sjekk for apoteker-warning
           cy.get('[data-testid="apotekere-warning"]').should('exist')
+        })
+
+        it('forventer jeg ingen informasjon om AFP på beregningssiden', () => {
+          // Verifiser at vi er på beregningssiden
+          cy.location('pathname').should('include', '/beregning')
+
+          // Sjekk at det ikke finnes noen AFP-relaterte elementer
+          cy.get('[data-testid="grunnlag-afp"]').should('not.exist')
         })
       })
     })
