@@ -16,9 +16,8 @@ export interface DocumentPanelProps {
 }
 
 export const DocumentPanel: React.FC<DocumentPanelProps> = (props) => {
-  const client = useClient({
-    apiVersion: '2023-10-01',
-  }) as unknown as SanityClient
+const API_VERSION = '2023-10-01'
+const client = useClient({ apiVersion: API_VERSION }) as unknown as SanityClient
   const router = useRouter()
   const documentId: string | undefined =
     props?.documentId || props?.document?._id
