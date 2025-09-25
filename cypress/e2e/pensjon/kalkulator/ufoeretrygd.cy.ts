@@ -151,6 +151,76 @@ describe('Med ufoeretrygd', () => {
           'Du har oppgitt AFP i offentlig sektor, men du har ikke samtykket til at Nav beregner den. Derfor vises ikke AFP i beregningen.'
         ).should('exist')
       })
+
+      describe('Gitt at bruker er født 1963 eller senere, og kall til /er-apoteker feiler', () => {
+        it('forventer jeg informasjon om at beregning med AFP kan bli feil hvis jeg er medlem av Pensjonsordningen for apotekvirksomhet og at jeg må prøve igjen senere', () => {
+          // Intercepts needed for apoteker error scenario
+          cy.intercept(
+            { method: 'GET', url: '/pensjon/kalkulator/api/v5/person' },
+            {
+              navn: 'Aprikos',
+              sivilstand: 'UGIFT',
+              foedselsdato: '1964-04-30',
+              pensjoneringAldre: {
+                normertPensjoneringsalder: {
+                  aar: 67,
+                  maaneder: 0,
+                },
+                nedreAldersgrense: {
+                  aar: 62,
+                  maaneder: 0,
+                },
+                oevreAldersgrense: {
+                  aar: 75,
+                  maaneder: 0,
+                },
+              },
+            }
+          ).as('getPerson')
+
+          // Overskriver default er-apoteker intercept med en som feiler
+          cy.intercept(
+            {
+              method: 'GET',
+              url: '/pensjon/kalkulator/api/v1/er-apoteker',
+            },
+            {
+              statusCode: 500,
+              body: { message: 'Internal Server Error' },
+            }
+          ).as('getErApoteker')
+
+          // Bruk samme mønster som fillOutStegvisning helper for å sette session state
+          cy.window().its('store').invoke('dispatch', {
+            type: 'sessionSlice/setErApotekerError',
+            payload: true,
+          })
+
+          // Verifiser at state er satt riktig
+          cy.window()
+            .its('store')
+            .invoke('getState')
+            .its('session')
+            .should('deep.include', {
+              hasErApotekerError: true,
+            })
+
+          cy.get('[type="radio"]').eq(0).check()
+          cy.contains('button', 'Neste').click()
+          cy.contains('button', 'Neste').click()
+          cy.get('[type="radio"]').eq(1).check()
+          cy.contains('button', 'Neste').click()
+          cy.get('[type="radio"]').eq(0).check()
+          cy.contains('button', 'Neste').click()
+          cy.contains('button', '67 år').click()
+
+          // Verifiser at vi er på beregningssiden
+          cy.location('pathname').should('include', '/beregning')
+
+          // Sjekk for apoteker-warning
+          cy.get('[data-testid="apotekere-warning"]').should('exist')
+        })
+      })
     })
 
     describe('Når jeg svarer "ja, privat" på spørsmål om AFP,', () => {
