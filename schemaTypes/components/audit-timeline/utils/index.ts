@@ -3,6 +3,8 @@ import type { Action, Transaction } from '../types'
 
 const LOCALE = 'no-NO'
 const TIMEZONE = 'Europe/Oslo'
+const DEV = '/development'
+const PROD = '/production'
 
 const formatWithLocale = (
   date: Date,
@@ -82,4 +84,13 @@ export const getAttemptIds = (documentId: string): readonly string[] => {
   if (baseId !== documentId) attemptIds.push(baseId)
   if (!documentId.startsWith('drafts.')) attemptIds.push(`drafts.${baseId}`)
   return attemptIds
+}
+
+export function getBasePath(pathname: string) {
+  const environments = [DEV, PROD]
+  for (const env of environments) {
+    const idx = pathname.indexOf(env)
+    if (idx >= 0) return pathname.slice(0, idx + env.length)
+  }
+  return ''
 }

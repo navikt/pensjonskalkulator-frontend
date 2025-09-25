@@ -9,6 +9,7 @@ import { listTransactionsForDocument } from './api/history'
 import { TimelineItemCard } from './components/TimelineItemCard'
 import { useActorNames, useDocumentMeta } from './hooks/dataHooks'
 import type { TimelineItem } from './types'
+import { getBasePath } from './utils'
 
 export interface DocumentPanelProps {
   documentId?: string
@@ -16,8 +17,10 @@ export interface DocumentPanelProps {
 }
 
 export const DocumentPanel: React.FC<DocumentPanelProps> = (props) => {
-const API_VERSION = '2023-10-01'
-const client = useClient({ apiVersion: API_VERSION }) as unknown as SanityClient
+  const API_VERSION = '2023-10-01'
+  const client = useClient({
+    apiVersion: API_VERSION,
+  }) as unknown as SanityClient
   const router = useRouter()
   const documentId: string | undefined =
     props?.documentId || props?.document?._id
@@ -63,14 +66,8 @@ const client = useClient({ apiVersion: API_VERSION }) as unknown as SanityClient
       console.log('Falling back to window.location')
     }
     try {
-      const { origin, pathname } = window.location
-      const devIndex = pathname.indexOf('/development')
-      const prodIndex = pathname.indexOf('/production')
-      const wsIndex = devIndex >= 0 ? devIndex : prodIndex
-      const envSegmentLength =
-        devIndex >= 0 ? '/development'.length : '/production'.length
-      const base =
-        wsIndex >= 0 ? pathname.slice(0, wsIndex + envSegmentLength) : ''
+      const origin = window.location.origin
+      const base = getBasePath(window.location.pathname)
       window.location.assign(
         `${origin}${base}/audit?documentId=${encodeURIComponent(documentId)}`
       )
