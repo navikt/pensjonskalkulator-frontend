@@ -41,15 +41,13 @@ const extractColor = (value: unknown): string | undefined => {
   return undefined
 }
 
-const stripDraftPrefix = (id: string): string =>
-  typeof id === 'string' && id.startsWith('drafts.')
-    ? id.slice('drafts.'.length)
-    : id
+const stripDraftPrefix = (id: string) =>
+  id.startsWith('drafts.') ? id.slice('drafts.'.length) : id
 
 const ensurePreviewValue = (
   props: PreviewProps
 ): Record<string, unknown> | null => {
-  const value = (props as PreviewProps & { value?: unknown }).value
+  const value = (props as { value?: unknown }).value
   return isRecord(value) ? value : null
 }
 
