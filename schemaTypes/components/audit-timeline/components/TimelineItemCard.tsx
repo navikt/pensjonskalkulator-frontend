@@ -59,18 +59,14 @@ export const TimelineItemCard: React.FC<TimelineItemCardProps> = ({
   const href = useMemo(() => {
     if (!documentType || transaction.documentId === 'unknown') return undefined
     const baseId = transaction.documentId.replace(/^drafts\./, '')
-    try {
-      const { pathname } = window.location
-      const seg1 = pathname.split('/')[1] || ''
-      const base = seg1 ? `/${seg1}` : ''
-      return `${base}/structure/${encodeURIComponent(documentType)};${encodeURIComponent(baseId)}`
-    } catch {
-      return `/structure/${encodeURIComponent(documentType)};${encodeURIComponent(baseId)}`
-    }
+    const { pathname } = window.location
+    const seg1 = pathname.split('/')[1] || ''
+    const base = seg1 ? `/${seg1}` : ''
+    return `${base}/structure/${encodeURIComponent(documentType)};${encodeURIComponent(baseId)}`
   }, [documentType, transaction.documentId])
 
   const copyId = useCallback(() => {
-    navigator.clipboard?.writeText(transaction.documentId).catch(() => {})
+    navigator.clipboard?.writeText(transaction.documentId)
   }, [transaction.documentId])
 
   const actionText = actionLabel(transaction.action)

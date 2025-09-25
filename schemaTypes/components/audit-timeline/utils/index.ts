@@ -7,67 +7,43 @@ const TIMEZONE = 'Europe/Oslo'
 const formatWithLocale = (
   date: Date,
   options: Intl.DateTimeFormatOptions
-): string => {
-  try {
-    return date.toLocaleDateString(LOCALE, { ...options, timeZone: TIMEZONE })
-  } catch {
-    return date.toISOString()
-  }
-}
+): string => date.toLocaleDateString(LOCALE, { ...options, timeZone: TIMEZONE })
 
 const formatTimeWithLocale = (
   date: Date,
   options: Intl.DateTimeFormatOptions
-): string => {
-  try {
-    return date.toLocaleTimeString(LOCALE, { ...options, timeZone: TIMEZONE })
-  } catch {
-    return date.toISOString()
-  }
-}
+): string => date.toLocaleTimeString(LOCALE, { ...options, timeZone: TIMEZONE })
 
 export const formatDayTitle = (dayKey: string): string => {
-  try {
-    const d = new Date(`${dayKey}T00:00:00.000Z`)
-    return formatWithLocale(d, {
-      year: 'numeric',
-      month: 'short',
-      day: '2-digit',
-      weekday: 'short',
-    })
-  } catch {
-    return dayKey
-  }
+  const d = new Date(`${dayKey}T00:00:00.000Z`)
+  return formatWithLocale(d, {
+    year: 'numeric',
+    month: 'short',
+    day: '2-digit',
+    weekday: 'short',
+  })
 }
 
 export const formatTime = (timestamp: string): string => {
-  try {
-    const d = new Date(timestamp)
-    return formatTimeWithLocale(d, {
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-    })
-  } catch {
-    return timestamp
-  }
+  const d = new Date(timestamp)
+  return formatTimeWithLocale(d, {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  })
 }
 
 export const formatDateTime = (timestamp: string): string => {
-  try {
-    const d = new Date(timestamp)
-    return d.toLocaleString(LOCALE, {
-      year: 'numeric',
-      month: 'short',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      timeZone: TIMEZONE,
-    })
-  } catch {
-    return timestamp
-  }
+  const d = new Date(timestamp)
+  return d.toLocaleString(LOCALE, {
+    year: 'numeric',
+    month: 'short',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    timeZone: TIMEZONE,
+  })
 }
 
 export const actionTone = (

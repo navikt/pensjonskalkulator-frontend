@@ -5,7 +5,6 @@ import {
   listTransactionsDatasetPage,
   listTransactionsForDocument,
 } from '../api/history'
-import { INITIAL_VISIBLE_LIMIT } from '../constants'
 import type { Action, Transaction } from '../types'
 import { getAttemptIds, sortDescByTimestamp } from '../utils'
 
@@ -19,74 +18,38 @@ interface UseTransactionsResult {
   usedFallback: boolean
 }
 
-const paginateDocumentTransactions = async (
+const collectDocumentTransactions = async (
   client: SanityClient,
   id: string,
   params: FilterParams,
   signal: AbortSignal,
-  maxItems?: number
+  limit?: number
 ): Promise<readonly Transaction[]> => {
-  let offset = 0
-  let combined: readonly Transaction[] = []
-  let hadAny = false
+  if (!id.trim()) return []
 
-  const requestedTotal: number | undefined =
-    typeof maxItems === 'number' && Number.isFinite(maxItems) && maxItems > 0
-      ? maxItems
-      : undefined
-
-  let perPage: number
-  const parseSafeNumber = (v: unknown, fallback = 1): number => {
-    if (typeof v === 'number') return v
-    if (typeof v === 'string') {
-      const n = Number(v)
-      return Number.isFinite(n) ? n : fallback
-    }
-    return fallback
-  }
-
-  const defaultPerPage = parseSafeNumber(INITIAL_VISIBLE_LIMIT, 1)
-  if (typeof requestedTotal === 'number') {
-    perPage = Math.max(1, Math.min(defaultPerPage, requestedTotal))
-  } else {
-    perPage = defaultPerPage
-  }
-
-  while (true) {
-    if (typeof requestedTotal === 'number' && combined.length >= requestedTotal)
-      break
-    const remaining: number | undefined =
-      typeof requestedTotal === 'number'
-        ? Math.max(0, requestedTotal - combined.length)
-        : undefined
-    const limit =
-      typeof remaining === 'number' ? Math.min(perPage, remaining) : perPage
-    if (limit === 0) break
-
-    const rows = await listTransactionsForDocument(
+  if (typeof limit === 'number' && limit > 0) {
+    const first = await listTransactionsForDocument(
       client,
       id,
-      {
-        limit,
-        offset,
-        actions: [...params.actions],
-      },
+      { limit, offset: 0, actions: [...params.actions] },
       signal
     )
-
-    if (!rows.length) break
-    hadAny = true
-    combined = [...combined, ...rows]
-    if (rows.length < limit) break
-    offset += limit
+    if (!first.length)
+      throw new Error(`No transactions found for document ${id}`)
+    return sortDescByTimestamp(first)
   }
 
-  if (!hadAny) throw new Error(`No transactions found for document ${id}`)
-  const sliced =
-    typeof requestedTotal === 'number'
-      ? combined.slice(0, requestedTotal)
-      : combined
-  return sortDescByTimestamp(sliced)
+  const mod = await import('../api/history')
+  const all = await mod.listAllTransactionsForDocument(
+    client,
+    id,
+    {
+      actions: [...params.actions],
+    },
+    signal
+  )
+  if (!all.length) throw new Error(`No transactions found for document ${id}`)
+  return sortDescByTimestamp(all)
 }
 
 interface UseTransactionsOptions {
@@ -146,7 +109,7 @@ export const useTransactions = (
       let fallbackUsed = false
       for (const id of ids) {
         try {
-          const rows = await paginateDocumentTransactions(
+          const rows = await collectDocumentTransactions(
             client,
             id,
             params,

@@ -157,7 +157,7 @@ const toActor = (val: unknown): Actor | undefined => {
   if (typeof val === 'string') return { id: val, type: 'user' as const }
   if (typeof val !== 'object' || val === null || Array.isArray(val))
     return undefined
-  const obj= val as Record<string, unknown>
+  const obj = val as Record<string, unknown>
   const id =
     (obj.id as string) ||
     (obj._id as string) ||
@@ -200,28 +200,12 @@ const deriveTimestamp = (row: TransactionNdjsonRow): string => {
 }
 
 const deriveDocumentId = (row: TransactionNdjsonRow): string => {
-  const idsArr = row.documentIds
-  let documentId = row.documentId || idsArr?.[0]
-  if (documentId) return documentId
-  const anyRow = row as Record<string, unknown>
-  const ids = anyRow.ids as readonly string[] | undefined
-  if (ids && ids.length > 0) return ids[0]
-  const docIds = anyRow.docIds as readonly string[] | undefined
-  if (docIds && docIds.length > 0) return docIds[0]
-  const documents = anyRow.documents as readonly { id?: string }[] | undefined
-  if (documents) {
-    for (const document of documents) {
-      const id = document.id
-      if (typeof id === 'string') return id
-    }
-  }
-  documentId = anyRow.docId as string | undefined
-  if (documentId) return documentId
-  documentId = anyRow.documentID as string | undefined
-  if (documentId) return documentId
-  documentId = anyRow.docID as string | undefined
-  if (documentId) return documentId
-  return 'unknown'
+  return (
+    row.documentId ||
+    row.documentIds?.[0] ||
+    ((row as Record<string, unknown>).docId as string) ||
+    'unknown'
+  )
 }
 
 const mapNdjsonRowToTransaction = (
@@ -346,11 +330,13 @@ interface NormalizedListOptions {
 }
 const toListOptions = (val: unknown): NormalizedListOptions => {
   if (!val || typeof val !== 'object') return {}
-  const obj= val as Record<string, unknown>
+  const obj = val as Record<string, unknown>
   const limit = typeof obj.limit === 'number' ? obj.limit : undefined
   const offset = typeof obj.offset === 'number' ? obj.offset : undefined
   const actions = Array.isArray(obj.actions)
-    ? obj.actions.filter((action): action is Action => typeof action === 'string')
+    ? obj.actions.filter(
+        (action): action is Action => typeof action === 'string'
+      )
     : undefined
   return { limit, offset, actions }
 }

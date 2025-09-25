@@ -26,13 +26,8 @@ interface FilterParams {
 }
 
 const getDocumentIdFromUrl = (): string => {
-  if (typeof window === 'undefined') return ''
-  try {
-    const searchParams = new URLSearchParams(window.location.search)
-    return searchParams.get('documentId') || ''
-  } catch {
-    return ''
-  }
+  const searchParams = new URLSearchParams(window.location.search)
+  return searchParams.get('documentId') || ''
 }
 
 const calculateActionCounts = (

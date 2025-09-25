@@ -22,26 +22,26 @@ export const useActorNames = (
       if (idsArray.length === 0) return
 
       const entries: Array<readonly [string, string]> = []
-      await Promise.all(
+      const results = await Promise.allSettled(
         idsArray.map(async (id) => {
-          try {
-            const user = await client.request<{
-              displayName?: string
-              name?: string
-            } | null>({
-              uri: `/users/${encodeURIComponent(id)}`,
-              method: 'GET',
-              tag: 'audit.user',
-            })
-            const displayName = user?.displayName || user?.name
-            if (displayName) {
-              entries.push([id, displayName])
-            }
-          } catch {
-            console.warn(`Failed to fetch user info for id "${id}"`)
-          }
+          const user = await client.request<{
+            displayName?: string
+            name?: string
+          } | null>({
+            uri: `/users/${encodeURIComponent(id)}`,
+            method: 'GET',
+            tag: 'audit.user',
+          })
+          const displayName = user?.displayName || user?.name
+          return displayName ? ([id, displayName] as const) : null
         })
       )
+
+      results.forEach((result) => {
+        if (result.status === 'fulfilled' && result.value) {
+          entries.push(result.value)
+        }
+      })
       setActorNames((prev) => ({ ...prev, ...Object.fromEntries(entries) }))
     }
 
@@ -96,7 +96,7 @@ export const useDocumentMeta = (
         )
         setDocumentMeta((prev) => ({ ...prev, ...Object.fromEntries(entries) }))
       } catch {
-        console.warn(`Failed to fetch document meta for ids "${idsArray.join(', ')}"`)
+        // Silently fail - document meta is not critical
       }
     }
 
