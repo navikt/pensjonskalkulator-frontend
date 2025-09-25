@@ -21,6 +21,8 @@ import {
   formaterSluttAlderString,
 } from '@/utils/alder'
 import { formatInntekt } from '@/utils/inntekt'
+import { ALERT_VIST } from '@/utils/loggerConstants'
+import { logger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
 import { useIsMobile } from '@/utils/useIsMobile'
 
@@ -62,6 +64,41 @@ export const OffentligTjenestepensjon = (props: {
 
   const showResults =
     offentligTp?.simuleringsresultatStatus === 'OK' && tpNummer !== undefined
+
+  if (isError) {
+    logger(ALERT_VIST, {
+      tekst: 'Klarte ikke å sjekke offentlig pensjonsavtaler',
+      variant: 'warning',
+    })
+  }
+
+  switch (offentligTp?.simuleringsresultatStatus) {
+    case 'BRUKER_ER_IKKE_MEDLEM_AV_TP_ORDNING':
+      logger('alert vist', {
+        tekst: 'Bruker er ikke medlem av tjenestepensjonsordning',
+        variant: 'info',
+      })
+      break
+    case 'TP_ORDNING_STOETTES_IKKE':
+      logger(ALERT_VIST, {
+        tekst: 'Bruker er medlem av en annen tjenestepensjonsordning',
+        variant: 'warning',
+      })
+      break
+    case 'TEKNISK_FEIL':
+      logger(ALERT_VIST, {
+        tekst: 'Klarte ikke å hente dine offentlige tjenestepensjon',
+        variant: 'warning',
+      })
+      break
+    case 'TOM_SIMULERING_FRA_TP_ORDNING':
+      logger(ALERT_VIST, {
+        tekst:
+          'Fikk ikke svar fra brukerens offentlige tjenestepensjonsordning',
+        variant: 'warning',
+      })
+      break
+  }
 
   return (
     <VStack gap="3">
