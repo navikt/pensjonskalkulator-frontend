@@ -1,9 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
-import { PreviewProps, useClient } from 'sanity';
-
-
-
-
+import { useEffect, useMemo, useState } from 'react'
+import { PreviewProps, useClient } from 'sanity'
 
 type ColorValue = {
   hex: string

@@ -14,7 +14,7 @@ type DocumentListParams = {
   tagId: string
 }
 
-const stripDraftPrefix = (documentId: string):string =>
+const stripDraftPrefix = (documentId: string): string =>
   documentId.startsWith('drafts.')
     ? documentId.slice('drafts.'.length)
     : documentId
