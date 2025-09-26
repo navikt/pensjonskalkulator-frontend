@@ -1,18 +1,22 @@
 import { useEffect, useMemo, useState } from 'react'
 import { PreviewProps, useClient } from 'sanity'
 
+type ColorValue = {
+  hex: string
+}
+
 type TagReferenceValue = {
   _ref?: string
   _id?: string
   title?: string
-  color?: unknown
+  color?: ColorValue
 }
 
 type TagDocument = {
   _id: string
   overskrift?: string
   name?: string
-  color?: unknown
+  color?: ColorValue
 }
 
 type ResolvedTag = {
@@ -34,12 +38,6 @@ const DEFAULT_TEXT_COLOR = '#1a1a1a'
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null
-
-const extractColor = (value: unknown): string | undefined => {
-  if (typeof value === 'string') return value
-  if (isRecord(value) && typeof value.hex === 'string') return value.hex
-  return undefined
-}
 
 const stripDraftPrefix = (id: string) =>
   id.startsWith('drafts.') ? id.slice('drafts.'.length) : id
@@ -70,7 +68,7 @@ const toTagReference = (
     normalizedId: stripDraftPrefix(rawId),
     fallbackTitle:
       typeof candidate.title === 'string' ? candidate.title : undefined,
-    fallbackColor: extractColor(candidate.color),
+    fallbackColor: candidate.color?.hex,
   }
 }
 
@@ -133,7 +131,7 @@ const mapToResolvedTag = (
     document?.overskrift ??
     document?.name ??
     DEFAULT_TAG_TITLE,
-  color: reference.fallbackColor ?? extractColor(document?.color),
+  color: reference.fallbackColor ?? document?.color?.hex,
 })
 
 const useResolvedTags = (

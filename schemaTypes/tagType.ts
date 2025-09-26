@@ -8,12 +8,9 @@ import {
   overskriftField,
 } from './common/commonSchemaTypes'
 
-const extractColor = (value: unknown): string | undefined => {
-  if (typeof value === 'string') return value
-  if (!value || typeof value !== 'object') return undefined
-
-  const hexValue = (value as { hex?: unknown }).hex
-  return typeof hexValue === 'string' ? hexValue : undefined
+interface ColorValue {
+  _type: 'color'
+  hex: string
 }
 
 export const tagType = defineType({
@@ -32,9 +29,9 @@ export const tagType = defineType({
       title?: string
       subtitle?: string
       language?: string
-      color?: unknown
+      color?: ColorValue
     }) {
-      const colorHex = extractColor(selection.color)
+      const colorHex = selection.color?.hex ? selection.color.hex : undefined
 
       return {
         title: selection.title || selection.subtitle || 'Tag',
