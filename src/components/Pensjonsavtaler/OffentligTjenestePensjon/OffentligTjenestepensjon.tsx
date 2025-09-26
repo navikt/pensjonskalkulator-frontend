@@ -55,7 +55,7 @@ export const OffentligTjenestepensjon = (props: {
     switch (status) {
       case 'BRUKER_ER_IKKE_MEDLEM_AV_TP_ORDNING':
         logger(ALERT_VIST, {
-          tekst: 'Bruker er ikke medlem av tjenestepensjonsordning',
+          tekst: 'Fant ingen pensjonsavtaler',
           variant: 'info',
         })
         break
@@ -67,14 +67,13 @@ export const OffentligTjenestepensjon = (props: {
         break
       case 'TEKNISK_FEIL':
         logger(ALERT_VIST, {
-          tekst: 'Klarte ikke å hente dine offentlige tjenestepensjon',
+          tekst: 'Kan ikke hente offentlige pensjonsavtaler',
           variant: 'warning',
         })
         break
       case 'TOM_SIMULERING_FRA_TP_ORDNING':
         logger(ALERT_VIST, {
-          tekst:
-            'Fikk ikke svar fra brukerens offentlige tjenestepensjonsordning',
+          tekst: 'Fikk ikke svar fra offentlig tjenestepensjonsordning',
           variant: 'warning',
         })
         break
@@ -84,7 +83,7 @@ export const OffentligTjenestepensjon = (props: {
 
   if (isError && !isErrorLogRef.current) {
     logger(ALERT_VIST, {
-      tekst: 'Klarte ikke å sjekke offentlig pensjonsavtaler',
+      tekst: 'Klarte ikke å sjekke offentlige pensjonsavtaler',
       variant: 'warning',
     })
     isErrorLogRef.current = true

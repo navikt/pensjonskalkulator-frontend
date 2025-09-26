@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect } from 'react'
 import { FormattedMessage } from 'react-intl'
 
 import { Alert, BodyLong, Heading, HeadingProps } from '@navikt/ds-react'
@@ -34,17 +34,16 @@ export const PrivatePensjonsavtaler: React.FC<PrivatePensjonsavtalerProps> = ({
   const noPrivatePensjonsavtaler =
     isSuccess && !isPartialResponse && privatePensjonsavtaler?.length === 0
 
-  const alertVistRef = useRef(false)
   const partialPrivatePensjonsavtaler =
     isSuccess &&
     isPartialResponse &&
     privatePensjonsavtaler &&
     privatePensjonsavtaler?.length > 0
 
-  if (!alertVistRef.current) {
+  useEffect(() => {
     if (errorOrNoPrivatePensjonsavtaler) {
       logger(ALERT_VIST, {
-        tekst: 'Klarte ikke å hente brukers private pensjonsavtaler',
+        tekst: 'Klarte ikke å hente private pensjonsavtaler',
         variant: 'warning',
       })
     }
@@ -58,12 +57,15 @@ export const PrivatePensjonsavtaler: React.FC<PrivatePensjonsavtalerProps> = ({
 
     if (noPrivatePensjonsavtaler) {
       logger(ALERT_VIST, {
-        tekst: 'Bruker har ingen private pensjonsavtaler',
+        tekst: 'Fant ingen pensjonsavtaler',
         variant: 'info',
       })
     }
-    alertVistRef.current = true
-  }
+  }, [
+    errorOrNoPrivatePensjonsavtaler,
+    noPrivatePensjonsavtaler,
+    partialPrivatePensjonsavtaler,
+  ])
 
   // TODO PEK-812 Bør vi ha en håndtering av loading?
   return (
