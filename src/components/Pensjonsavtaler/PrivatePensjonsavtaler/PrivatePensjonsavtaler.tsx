@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { FormattedMessage } from 'react-intl'
 
 import { Alert, BodyLong, Heading, HeadingProps } from '@navikt/ds-react'
@@ -31,34 +31,38 @@ export const PrivatePensjonsavtaler: React.FC<PrivatePensjonsavtalerProps> = ({
   const errorOrNoPrivatePensjonsavtaler =
     isError || (isPartialResponse && privatePensjonsavtaler?.length === 0)
 
+  const noPrivatePensjonsavtaler =
+    isSuccess && !isPartialResponse && privatePensjonsavtaler?.length === 0
+
+  const alertVistRef = useRef(false)
   const partialPrivatePensjonsavtaler =
     isSuccess &&
     isPartialResponse &&
     privatePensjonsavtaler &&
     privatePensjonsavtaler?.length > 0
 
-  if (errorOrNoPrivatePensjonsavtaler) {
-    logger(ALERT_VIST, {
-      tekst: 'Klarte ikke å hente brukers private pensjonsavtaler',
-      variant: 'warning',
-    })
-  }
+  if (!alertVistRef.current) {
+    if (errorOrNoPrivatePensjonsavtaler) {
+      logger(ALERT_VIST, {
+        tekst: 'Klarte ikke å hente brukers private pensjonsavtaler',
+        variant: 'warning',
+      })
+    }
 
-  if (partialPrivatePensjonsavtaler) {
-    logger(ALERT_VIST, {
-      tekst: 'Klarte ikke å hente alle private pensjonsavtaler',
-      variant: 'warning',
-    })
-  }
+    if (partialPrivatePensjonsavtaler) {
+      logger(ALERT_VIST, {
+        tekst: 'Klarte ikke å hente alle private pensjonsavtaler',
+        variant: 'warning',
+      })
+    }
 
-  const noPrivatePensjonsavtaler =
-    isSuccess && !isPartialResponse && privatePensjonsavtaler?.length === 0
-
-  if (noPrivatePensjonsavtaler) {
-    logger(ALERT_VIST, {
-      tekst: 'Bruker har ingen private pensjonsavtaler',
-      variant: 'info',
-    })
+    if (noPrivatePensjonsavtaler) {
+      logger(ALERT_VIST, {
+        tekst: 'Bruker har ingen private pensjonsavtaler',
+        variant: 'info',
+      })
+    }
+    alertVistRef.current = true
   }
 
   // TODO PEK-812 Bør vi ha en håndtering av loading?

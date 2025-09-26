@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import clsx from 'clsx'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 import {
@@ -45,6 +45,50 @@ export const OffentligTjenestepensjon = (props: {
   const intl = useIntl()
   const isMobile = useIsMobile()
   const afp = useAppSelector(selectAfp)
+  const loggedStatusesRef = React.useRef<Set<string>>(new Set())
+  const isErrorLogRef = React.useRef(false)
+
+  useEffect(() => {
+    const status = offentligTp?.simuleringsresultatStatus
+    if (!status || loggedStatusesRef.current.has(status)) return
+
+    switch (status) {
+      case 'BRUKER_ER_IKKE_MEDLEM_AV_TP_ORDNING':
+        logger(ALERT_VIST, {
+          tekst: 'Bruker er ikke medlem av tjenestepensjonsordning',
+          variant: 'info',
+        })
+        break
+      case 'TP_ORDNING_STOETTES_IKKE':
+        logger(ALERT_VIST, {
+          tekst: 'Bruker er medlem av en annen tjenestepensjonsordning',
+          variant: 'warning',
+        })
+        break
+      case 'TEKNISK_FEIL':
+        logger(ALERT_VIST, {
+          tekst: 'Klarte ikke å hente dine offentlige tjenestepensjon',
+          variant: 'warning',
+        })
+        break
+      case 'TOM_SIMULERING_FRA_TP_ORDNING':
+        logger(ALERT_VIST, {
+          tekst:
+            'Fikk ikke svar fra brukerens offentlige tjenestepensjonsordning',
+          variant: 'warning',
+        })
+        break
+    }
+    loggedStatusesRef.current.add(status)
+  }, [offentligTp?.simuleringsresultatStatus])
+
+  if (isError && !isErrorLogRef.current) {
+    logger(ALERT_VIST, {
+      tekst: 'Klarte ikke å sjekke offentlig pensjonsavtaler',
+      variant: 'warning',
+    })
+    isErrorLogRef.current = true
+  }
 
   const subHeadingLevel = React.useMemo(() => {
     return (parseInt(headingLevel, 10) + 1).toString() as HeadingProps['level']
@@ -64,41 +108,6 @@ export const OffentligTjenestepensjon = (props: {
 
   const showResults =
     offentligTp?.simuleringsresultatStatus === 'OK' && tpNummer !== undefined
-
-  if (isError) {
-    logger(ALERT_VIST, {
-      tekst: 'Klarte ikke å sjekke offentlig pensjonsavtaler',
-      variant: 'warning',
-    })
-  }
-
-  switch (offentligTp?.simuleringsresultatStatus) {
-    case 'BRUKER_ER_IKKE_MEDLEM_AV_TP_ORDNING':
-      logger('alert vist', {
-        tekst: 'Bruker er ikke medlem av tjenestepensjonsordning',
-        variant: 'info',
-      })
-      break
-    case 'TP_ORDNING_STOETTES_IKKE':
-      logger(ALERT_VIST, {
-        tekst: 'Bruker er medlem av en annen tjenestepensjonsordning',
-        variant: 'warning',
-      })
-      break
-    case 'TEKNISK_FEIL':
-      logger(ALERT_VIST, {
-        tekst: 'Klarte ikke å hente dine offentlige tjenestepensjon',
-        variant: 'warning',
-      })
-      break
-    case 'TOM_SIMULERING_FRA_TP_ORDNING':
-      logger(ALERT_VIST, {
-        tekst:
-          'Fikk ikke svar fra brukerens offentlige tjenestepensjonsordning',
-        variant: 'warning',
-      })
-      break
-  }
 
   return (
     <VStack gap="3">
