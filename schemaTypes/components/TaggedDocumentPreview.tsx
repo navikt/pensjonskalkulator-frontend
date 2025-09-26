@@ -1,5 +1,9 @@
-import { useEffect, useMemo, useState } from 'react'
-import { PreviewProps, useClient } from 'sanity'
+import { useEffect, useMemo, useState } from 'react';
+import { PreviewProps, useClient } from 'sanity';
+
+
+
+
 
 type ColorValue = {
   hex: string
@@ -49,19 +53,19 @@ const ensurePreviewValue = (
   return isRecord(value) ? value : null
 }
 
-const toTagReference = (
-  candidate: TagReferenceValue | undefined
-): TagReference | null => {
-  if (!candidate || !isRecord(candidate)) return null
+const getTagReference = (
+  candidate: TagReferenceValue
+): TagReference | undefined => {
+  if (!isRecord(candidate)) return
 
-  let rawId: string | null = null
-  if (typeof candidate._ref === 'string') {
-    rawId = candidate._ref
-  } else if (typeof candidate._id === 'string') {
-    rawId = candidate._id
-  }
+  const rawId =
+    typeof candidate._ref === 'string'
+      ? candidate._ref
+      : typeof candidate._id === 'string'
+        ? candidate._id
+        : undefined
 
-  if (!rawId) return null
+  if (!rawId) return
 
   return {
     rawId,
@@ -73,10 +77,11 @@ const toTagReference = (
 }
 
 const toTagReferences = (value: unknown): TagReference[] => {
-  if (!Array.isArray(value)) return []
-  return value
-    .map((item) => toTagReference(item as TagReferenceValue | undefined))
-    .filter((item): item is TagReference => Boolean(item))
+  return Array.isArray(value)
+    ? value
+        .map((item) => getTagReference(item as TagReferenceValue))
+        .filter((item): item is TagReference => item !== undefined)
+    : []
 }
 
 const hexToRgb = (hex: string): [number, number, number] | null => {
@@ -213,46 +218,54 @@ export const TaggedDocumentPreview = (props: PreviewProps) => {
   const client = useClient({ apiVersion })
   const { resolvedTags, isLoading } = useResolvedTags(client, tagReferences)
 
+  const hasTagsToShow = isLoading || resolvedTags.length > 0
+
+  const renderTagsSection = () => {
+    if (!hasTagsToShow) return null
+
+    return (
+      <div
+        style={{
+          display: 'flex',
+          gap: '0.4rem',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+        }}
+      >
+        {isLoading && (
+          <span style={{ fontSize: '0.75rem', color: '#6b7280' }}>
+            Laster tags …
+          </span>
+        )}
+        {resolvedTags.map((tag) => {
+          const backgroundColor = tag.color ?? '#e5e7eb'
+          const textColor = getTextColorForBackground(backgroundColor)
+
+          return (
+            <span
+              key={tag.id}
+              style={{
+                background: backgroundColor,
+                color: textColor,
+                padding: '2px 8px',
+                borderRadius: '999px',
+                fontSize: '0.75rem',
+                lineHeight: 1.2,
+                fontWeight: 500,
+              }}
+            >
+              {tag.title}
+            </span>
+          )
+        })}
+      </div>
+    )
+  }
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
       {props.renderDefault(props)}
-      {(isLoading || resolvedTags.length > 0) && (
-        <div
-          style={{
-            display: 'flex',
-            gap: '0.4rem',
-            flexWrap: 'wrap',
-            alignItems: 'center',
-          }}
-        >
-          {isLoading && (
-            <span style={{ fontSize: '0.75rem', color: '#6b7280' }}>
-              Laster tags …
-            </span>
-          )}
-          {resolvedTags.map((tag) => {
-            const backgroundColor = tag.color ?? '#e5e7eb'
-            const textColor = getTextColorForBackground(backgroundColor)
-
-            return (
-              <span
-                key={tag.id}
-                style={{
-                  background: backgroundColor,
-                  color: textColor,
-                  padding: '2px 8px',
-                  borderRadius: '999px',
-                  fontSize: '0.75rem',
-                  lineHeight: 1.2,
-                  fontWeight: 500,
-                }}
-              >
-                {tag.title}
-              </span>
-            )
-          })}
-        </div>
-      )}
+      {renderTagsSection()}
     </div>
   )
 }
