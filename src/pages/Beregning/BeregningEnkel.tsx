@@ -245,6 +245,14 @@ export const BeregningEnkel = () => {
     !!person?.foedselsdato &&
     isAlder75MaanedenFylt(person.foedselsdato)
 
+  if (showInntektAlert) {
+    logger(ALERT_VIST, {
+      tekst:
+        'Fordi du har endret inntekten din, endres pensjonsopptjeningen din.',
+      variant: 'info',
+    })
+  }
+
   return (
     <>
       {showInntektAlert && (
