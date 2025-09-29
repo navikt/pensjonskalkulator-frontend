@@ -888,7 +888,7 @@ describe('Hovedhistorie', () => {
           cy.setupApotekerError()
 
           cy.login()
-          
+
           // Set Redux state after login
           cy.setApotekerErrorState()
 

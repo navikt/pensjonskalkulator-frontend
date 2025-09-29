@@ -101,7 +101,7 @@ describe('Endring av alderspensjon', () => {
 
             cy.clock(new Date(2029, 7, 1, 12, 0, 0), ['Date'])
             cy.login()
-            
+
             // Set Redux state after login
             cy.setApotekerErrorState()
 
