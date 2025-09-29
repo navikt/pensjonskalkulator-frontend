@@ -96,49 +96,14 @@ describe('Endring av alderspensjon', () => {
               },
               { fixture: 'alderspensjon_endring.json' }
             ).as('fetchAlderspensjon')
-            cy.intercept(
-              { method: 'GET', url: '/pensjon/kalkulator/api/v5/person' },
-              {
-                navn: 'Aprikos',
-                sivilstand: 'UGIFT',
-                foedselsdato: '1964-04-30',
-                pensjoneringAldre: {
-                  normertPensjoneringsalder: {
-                    aar: 67,
-                    maaneder: 0,
-                  },
-                  nedreAldersgrense: {
-                    aar: 62,
-                    maaneder: 0,
-                  },
-                  oevreAldersgrense: {
-                    aar: 75,
-                    maaneder: 0,
-                  },
-                },
-              }
-            ).as('getPerson')
-
-            // Overskriver default er-apoteker intercept med en som feiler
-            cy.intercept(
-              {
-                method: 'GET',
-                url: '/pensjon/kalkulator/api/v1/er-apoteker',
-              },
-              {
-                statusCode: 500,
-                body: { message: 'Internal Server Error' },
-              }
-            ).as('getErApoteker')
+            // Setup apoteker error scenario
+            cy.setupApotekerError()
 
             cy.clock(new Date(2029, 7, 1, 12, 0, 0), ['Date'])
             cy.login()
-
-            // Bruk samme mønster som fillOutStegvisning helper for å sette session state
-            cy.window().its('store').invoke('dispatch', {
-              type: 'sessionSlice/setErApotekerError',
-              payload: true,
-            })
+            
+            // Set Redux state after login
+            cy.setApotekerErrorState()
 
             // Verifiser at state er satt riktig
             cy.window()
@@ -157,7 +122,7 @@ describe('Endring av alderspensjon', () => {
             cy.contains('button', 'Neste').click()
 
             // Huker av "ja" på samtykke steget
-            cy.get('[type="radio"]').eq(0).check()
+            cy.get('[type="radio"]').first().check()
             cy.contains('button', 'Neste').click()
 
             // Fyll ut uttak detaljer og beregn

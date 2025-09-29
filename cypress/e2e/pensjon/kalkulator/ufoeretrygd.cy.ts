@@ -154,46 +154,25 @@ describe('Med ufoeretrygd', () => {
 
       describe('Gitt at bruker er født 1963 eller senere, og kall til /er-apoteker feiler', () => {
         beforeEach(() => {
-          cy.intercept(
-            { method: 'GET', url: '/pensjon/kalkulator/api/v5/person' },
-            {
-              navn: 'Aprikos',
-              sivilstand: 'UGIFT',
-              foedselsdato: '1964-04-30',
-              pensjoneringAldre: {
-                normertPensjoneringsalder: {
-                  aar: 67,
-                  maaneder: 0,
-                },
-                nedreAldersgrense: {
-                  aar: 62,
-                  maaneder: 0,
-                },
-                oevreAldersgrense: {
-                  aar: 75,
-                  maaneder: 0,
-                },
-              },
-            }
-          ).as('getPerson')
+          // Setup intercepts before login
+          cy.setupApotekerError()
 
-          // Overskriver default er-apoteker intercept med en som feiler
           cy.intercept(
             {
               method: 'GET',
-              url: '/pensjon/kalkulator/api/v1/er-apoteker',
+              url: '/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak',
             },
             {
-              statusCode: 500,
-              body: { message: 'Internal Server Error' },
-            }
-          ).as('getErApoteker')
+              ...loependeVedtakMock,
+              harLoependeVedtak: true,
+              ufoeretrygd: { grad: 90 },
+            } satisfies LoependeVedtak
+          ).as('getLoependeVedtak')
 
-          // Bruk samme mønster som fillOutStegvisning helper for å sette session state
-          cy.window().its('store').invoke('dispatch', {
-            type: 'sessionSlice/setErApotekerError',
-            payload: true,
-          })
+          cy.login()
+
+          // Set Redux state after login
+          cy.setApotekerErrorState()
 
           // Verifiser at state er satt riktig
           cy.window()
@@ -204,12 +183,17 @@ describe('Med ufoeretrygd', () => {
               hasErApotekerError: true,
             })
 
-          cy.get('[type="radio"]').eq(0).check()
+          cy.contains('button', 'Kom i gang').click()
+          cy.contains('button', 'Neste').click()
+          cy.get('[type="radio"]').last().check() // Sivilstand
+          cy.contains('button', 'Neste').click()
+          cy.contains('button', 'Neste').click() // Utenlandsopphold
+          cy.get('[type="radio"]').eq(0).check() // AFP Offentlig
           cy.contains('button', 'Neste').click()
           cy.contains('button', 'Neste').click()
-          cy.get('[type="radio"]').eq(1).check()
+          cy.get('[type="radio"]').last().check() // Pensjonsavtaler
           cy.contains('button', 'Neste').click()
-          cy.get('[type="radio"]').eq(0).check()
+          cy.get('[type="radio"]').first().check() // Samtykke
           cy.contains('button', 'Neste').click()
           cy.contains('button', '67 år').click()
         })

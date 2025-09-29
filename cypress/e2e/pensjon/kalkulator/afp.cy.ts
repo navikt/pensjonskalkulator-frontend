@@ -265,47 +265,21 @@ describe('AFP', () => {
 
     describe('Når jeg svarer "ja, offentlig" på spørsmål om AFP, er født 1963 eller senere, og kall til /er-apoteker feiler', () => {
       beforeEach(() => {
-        // Setup intercepts before any radio button selections
-        cy.intercept(
-          { method: 'GET', url: '/pensjon/kalkulator/api/v5/person' },
-          {
-            navn: 'Aprikos',
-            sivilstand: 'UGIFT',
-            foedselsdato: '1964-04-30',
-            pensjoneringAldre: {
-              normertPensjoneringsalder: {
-                aar: 67,
-                maaneder: 0,
-              },
-              nedreAldersgrense: {
-                aar: 62,
-                maaneder: 0,
-              },
-              oevreAldersgrense: {
-                aar: 75,
-                maaneder: 0,
-              },
-            },
-          }
-        ).as('getPerson')
+        // Setup intercepts before login
+        cy.setupApotekerError()
 
-        cy.intercept(
-          {
-            method: 'GET',
-            url: '/pensjon/kalkulator/api/v1/er-apoteker',
-          },
-          {
-            statusCode: 500,
-            body: { message: 'Internal Server Error' },
-          }
-        ).as('getErApoteker')
+        // Navigate through the flow
+        cy.login()
 
-        // Set Redux state
-        cy.window().its('store').invoke('dispatch', {
-          type: 'sessionSlice/setErApotekerError',
-          payload: true,
-        })
+        // Set Redux state after login
+        cy.setApotekerErrorState()
 
+        cy.contains('button', 'Kom i gang').click()
+        cy.contains('button', 'Neste').click()
+        cy.get('[type="radio"]').last().check()
+        cy.contains('button', 'Neste').click()
+
+        // Select "Ja, offentlig"
         cy.get('[type="radio"]').eq(0).check()
       })
 

@@ -884,49 +884,13 @@ describe('Hovedhistorie', () => {
     describe('Når jeg er kommet til beregningssiden,', () => {
       describe("Gitt at jeg er født 1963 eller senere, har svart 'Ja, i offentlig' på spørsmål om AFP og kall til /er-apoteker feiler", () => {
         beforeEach(() => {
-          // Setter opp intercepter før login - må overskrive de som er satt opp i beforeEach
-          cy.intercept(
-            { method: 'GET', url: '/pensjon/kalkulator/api/v5/person' },
-            {
-              navn: 'Aprikos',
-              sivilstand: 'UGIFT',
-              foedselsdato: '1964-04-30',
-              pensjoneringAldre: {
-                normertPensjoneringsalder: {
-                  aar: 67,
-                  maaneder: 0,
-                },
-                nedreAldersgrense: {
-                  aar: 62,
-                  maaneder: 0,
-                },
-                oevreAldersgrense: {
-                  aar: 75,
-                  maaneder: 0,
-                },
-              },
-            }
-          ).as('getPerson')
-
-          // Overskriver default er-apoteker intercept med en som feiler
-          cy.intercept(
-            {
-              method: 'GET',
-              url: '/pensjon/kalkulator/api/v1/er-apoteker',
-            },
-            {
-              statusCode: 500,
-              body: { message: 'Internal Server Error' },
-            }
-          ).as('getErApoteker')
+          // Setup apoteker error scenario
+          cy.setupApotekerError()
 
           cy.login()
-
-          // Bruk samme mønster som fillOutStegvisning helper for å sette session state
-          cy.window().its('store').invoke('dispatch', {
-            type: 'sessionSlice/setErApotekerError',
-            payload: true,
-          })
+          
+          // Set Redux state after login
+          cy.setApotekerErrorState()
 
           // Verifiser at state er satt riktig
           cy.window()
