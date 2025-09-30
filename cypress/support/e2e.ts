@@ -267,8 +267,8 @@ Cypress.Commands.add('fillOutStegvisning', (args) => {
 })
 
 Cypress.on('uncaught:exception', (err) => {
-  if (err.message.includes('Umami')) {
-    // prevents Umami errors to fail tests
+  if (err.message.includes('Analytics')) {
+    // prevents Analytics errors to fail tests
     return false
   } else if (
     err.stack?.includes(
