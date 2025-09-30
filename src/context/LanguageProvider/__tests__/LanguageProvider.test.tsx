@@ -11,6 +11,7 @@ import { sanityClient } from '@/utils/sanity'
 
 import { setupStore } from '../../../state/store'
 import { LanguageProvider } from '../LanguageProvider'
+import * as languageProviderUtils from '../utils'
 
 type ControllablePromise<T> = {
   promise: Promise<T>
@@ -260,9 +261,13 @@ describe('LanguageProvider', () => {
     expect(screen.getByTestId('sanity-loading')).toHaveTextContent('false')
   })
 
-  it('deaktiverer isSanityLoading etter 10 sekunder dersom Sanity ikke svarer', async () => {
+  it('navigerer til error-siden etter 10 sekunder dersom Sanity ikke svarer', async () => {
     vi.useFakeTimers()
     setTimeoutSpy = vi.spyOn(window, 'setTimeout')
+
+    const redirectSpy = vi
+      .spyOn(languageProviderUtils, 'redirectToSanityTimeout')
+      .mockImplementation(() => undefined)
 
     Array.from({ length: 3 }).forEach(() => {
       defaultFetchSpy.mockImplementationOnce(
@@ -296,6 +301,8 @@ describe('LanguageProvider', () => {
       await Promise.resolve()
     })
 
-    expect(screen.getByTestId('sanity-loading')).toHaveTextContent('false')
+    expect(redirectSpy).toHaveBeenCalledOnce()
+
+    redirectSpy.mockRestore()
   })
 })

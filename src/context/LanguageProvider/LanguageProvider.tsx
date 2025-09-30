@@ -25,7 +25,14 @@ import {
   ReadMoreQueryResult,
 } from '@/types/sanity.types'
 
-import { getCookie, getTranslations, setCookie, updateLanguage } from './utils'
+import {
+  getCookie,
+  getTranslations,
+  isOnSanityTimeoutRoute,
+  redirectToSanityTimeout,
+  setCookie,
+  updateLanguage,
+} from './utils'
 
 const akselLocales: Record<Locales, typeof nb> = { nb, nn, en }
 const SANITY_FETCH_TIMEOUT_MS = 10_000
@@ -49,6 +56,7 @@ export function LanguageProvider({ children }: Props) {
   const [languageCookie, setLanguageCookie] = useState<Locales>('nb')
 
   const [isSanityLoading, setIsSanityLoading] = useState(true)
+  const [sanityTimeoutTriggered, setSanityTimeoutTriggered] = useState(false)
   const [sanityForbeholdAvsnittData, setSanityForbeholdAvsnittData] =
     useState<ForbeholdAvsnittQueryResult>([])
   const [sanityGuidePanelData, setSanityGuidePanelData] = useState<
@@ -67,6 +75,10 @@ export function LanguageProvider({ children }: Props) {
     locale: Locales,
     shouldBlockInitialLoad: boolean
   ) => {
+    if (sanityTimeoutTriggered) {
+      return
+    }
+
     const logTekst = 'Feil ved henting av innhold fra Sanity'
     const logData = `Språk: ${locale}`
 
@@ -152,11 +164,12 @@ export function LanguageProvider({ children }: Props) {
           }),
         ])
 
-        if (raceResult === 'fetched' && timeoutId) {
-          window.clearTimeout(timeoutId)
+        if (raceResult === 'timeout') {
+          setSanityTimeoutTriggered(true)
+          return
         }
       } finally {
-        if (timeoutId) {
+        if (timeoutId !== undefined) {
           window.clearTimeout(timeoutId)
         }
         setIsSanityLoading(false)
@@ -173,6 +186,16 @@ export function LanguageProvider({ children }: Props) {
   })
 
   useEffect(() => {
+    if (isOnSanityTimeoutRoute()) {
+      setIsSanityLoading(false)
+      return
+    }
+
+    if (sanityTimeoutTriggered) {
+      redirectToSanityTimeout()
+      return
+    }
+
     const shouldBlockInitialLoad = !hasInitializedSanityRef.current
 
     if (shouldBlockInitialLoad) {
@@ -180,7 +203,7 @@ export function LanguageProvider({ children }: Props) {
     }
 
     void fetchSanityData(languageCookie, shouldBlockInitialLoad)
-  }, [languageCookie])
+  }, [languageCookie, sanityTimeoutTriggered])
 
   useEffect(() => {
     if (isSuccess && !disableSpraakvelgerFeatureToggle.enabled) {

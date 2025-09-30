@@ -1068,10 +1068,29 @@
               "_key": "58da3b7cf588",
               "_type": "span",
               "marks": [],
-              "text": "100 % uføretrygd kan ikke kombineres med alderspensjon. Det er derfor ikke mulig å beregne alderspensjon før 67 år i kalkulatoren. Ved 67 år går 100 % uføretrygd automatisk over til 100 % alderspensjon. Har du spørsmål, kan du kontakte oss på telefon 55 55 33 34."
+              "text": "100 % uføretrygd kan ikke kombineres med alderspensjon. Det er derfor ikke mulig å beregne alderspensjon før 67 år i kalkulatoren. Ved 67 år går 100 % uføretrygd automatisk over til 100 % alderspensjon. Har du spørsmål, kan du kontakte oss på telefon "
+            },
+            {
+              "_key": "fc9456d88c89",
+              "_type": "span",
+              "marks": ["026423a264a2"],
+              "text": "55 55 33 34"
+            },
+            {
+              "_key": "3c894e7c468a",
+              "_type": "span",
+              "marks": [],
+              "text": "."
             }
           ],
-          "markDefs": [],
+          "markDefs": [
+            {
+              "_key": "026423a264a2",
+              "_type": "link",
+              "className": "nowrap",
+              "href": "tel:55553334"
+            }
+          ],
           "style": "normal"
         }
       ],
