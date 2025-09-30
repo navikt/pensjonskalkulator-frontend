@@ -73,7 +73,7 @@ describe('LandingPage', () => {
     render(<RouterProvider router={router} />, {
       hasRouter: false,
       preloadedState: {
-        session: { isLoggedIn: false },
+        session: { isLoggedIn: false, hasErApotekerError: false },
       },
     })
 
@@ -125,7 +125,7 @@ describe('LandingPage', () => {
     render(<RouterProvider router={router} />, {
       hasRouter: false,
       preloadedState: {
-        session: { isLoggedIn: false },
+        session: { isLoggedIn: false, hasErApotekerError: false },
       },
     })
 
@@ -135,7 +135,8 @@ describe('LandingPage', () => {
       )
     })
 
-    expect(navigateMock).toHaveBeenCalledWith(`${paths.start}`)
+    const expectedRedirect = `${HOST_BASEURL}/oauth2/login?redirect=${encodeURIComponent(`${HOST_BASEURL}${paths.start}`)}`
+    expect(open).toHaveBeenCalledWith(expectedRedirect, '_self')
   })
 
   it('går til uinnlogget kalkulator når brukeren klikker på uinnlogget kalkulator knappen', async () => {
@@ -155,7 +156,7 @@ describe('LandingPage', () => {
     render(<RouterProvider router={router} />, {
       hasRouter: false,
       preloadedState: {
-        session: { isLoggedIn: false },
+        session: { isLoggedIn: false, hasErApotekerError: false },
       },
     })
 
