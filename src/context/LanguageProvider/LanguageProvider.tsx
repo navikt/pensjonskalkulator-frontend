@@ -1,5 +1,5 @@
 import { defineQuery } from 'groq'
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useEffect, useRef, useState } from 'react'
 import { IntlProvider } from 'react-intl'
 
 import { Provider as AkselProvider } from '@navikt/ds-react'
@@ -28,6 +28,7 @@ import {
 import { getCookie, getTranslations, setCookie, updateLanguage } from './utils'
 
 const akselLocales: Record<Locales, typeof nb> = { nb, nn, en }
+const SANITY_FETCH_TIMEOUT_MS = 10_000
 
 // Kjør `npm run sanity-typegen` for å generere typer for Sanity-data
 const forbeholdAvsnittQuery = defineQuery(
@@ -47,6 +48,7 @@ interface Props {
 export function LanguageProvider({ children }: Props) {
   const [languageCookie, setLanguageCookie] = useState<Locales>('nb')
 
+  const [isSanityLoading, setIsSanityLoading] = useState(true)
   const [sanityForbeholdAvsnittData, setSanityForbeholdAvsnittData] =
     useState<ForbeholdAvsnittQueryResult>([])
   const [sanityGuidePanelData, setSanityGuidePanelData] = useState<
@@ -56,60 +58,112 @@ export function LanguageProvider({ children }: Props) {
     Record<string, ReadMoreQueryResult[number]>
   >({})
 
+  const hasInitializedSanityRef = useRef(false)
+
   const { data: disableSpraakvelgerFeatureToggle, isSuccess } =
     useGetSpraakvelgerFeatureToggleQuery()
 
-  const fetchSanityData = (locale: Locales) => {
+  const fetchSanityData = async (
+    locale: Locales,
+    shouldBlockInitialLoad: boolean
+  ) => {
     const logTekst = 'Feil ved henting av innhold fra Sanity'
     const logData = `Språk: ${locale}`
 
-    sanityClient
+    const handleForbeholdAvsnittFetch = sanityClient
       .fetch(forbeholdAvsnittQuery, { locale })
       .then((sanityForbeholdAvsnittResponse) => {
-        setSanityForbeholdAvsnittData(sanityForbeholdAvsnittResponse || [])
+        const data = sanityForbeholdAvsnittResponse || []
+        setSanityForbeholdAvsnittData(data)
+        return data
       })
       .catch(() => {
         logger('info', {
           tekst: logTekst,
           data: logData,
         })
+        setSanityForbeholdAvsnittData([])
+        return []
       })
-    sanityClient
+
+    const handleGuidePanelFetch = sanityClient
       .fetch(guidePanelQuery, { locale })
       .then((sanityGuidePanelResponse) => {
-        setSanityGuidePanelData(
-          Object.fromEntries(
-            (sanityGuidePanelResponse || []).map((guidepanel) => [
-              guidepanel.name,
-              guidepanel,
-            ])
-          )
+        const data = Object.fromEntries(
+          (sanityGuidePanelResponse || []).map((guidepanel) => [
+            guidepanel.name,
+            guidepanel,
+          ])
         )
+        setSanityGuidePanelData(data)
+        return data
       })
       .catch(() => {
         logger('info', {
           tekst: logTekst,
           data: logData,
         })
+        setSanityGuidePanelData({})
+        return {}
       })
-    sanityClient
+
+    const handleReadMoreFetch = sanityClient
       .fetch(readMoreQuery, { locale })
       .then((sanityReadMoreResponse) => {
-        setSanityReadMoreData(
-          Object.fromEntries(
-            (sanityReadMoreResponse || []).map((readmore) => [
-              readmore.name,
-              readmore,
-            ])
-          )
+        const data = Object.fromEntries(
+          (sanityReadMoreResponse || []).map((readmore) => [
+            readmore.name,
+            readmore,
+          ])
         )
+        setSanityReadMoreData(data)
+        return data
       })
       .catch(() => {
         logger('info', {
           tekst: logTekst,
           data: logData,
         })
+        setSanityReadMoreData({})
+        return {}
       })
+
+    const fetchPromise = Promise.all([
+      handleForbeholdAvsnittFetch,
+      handleGuidePanelFetch,
+      handleReadMoreFetch,
+    ])
+
+    if (shouldBlockInitialLoad) {
+      let timeoutId: number | undefined
+
+      try {
+        setIsSanityLoading(true)
+        const raceResult = await Promise.race([
+          fetchPromise.then(() => 'fetched' as const),
+          new Promise<'timeout'>((resolve) => {
+            timeoutId = window.setTimeout(() => {
+              logger('info', {
+                tekst: 'Timeout ved henting av innhold fra Sanity',
+                data: logData,
+              })
+              resolve('timeout')
+            }, SANITY_FETCH_TIMEOUT_MS)
+          }),
+        ])
+
+        if (raceResult === 'fetched' && timeoutId) {
+          window.clearTimeout(timeoutId)
+        }
+      } finally {
+        if (timeoutId) {
+          window.clearTimeout(timeoutId)
+        }
+        setIsSanityLoading(false)
+      }
+    }
+
+    await fetchPromise
   }
 
   /* c8 ignore next 4 */
@@ -119,7 +173,13 @@ export function LanguageProvider({ children }: Props) {
   })
 
   useEffect(() => {
-    fetchSanityData(languageCookie)
+    const shouldBlockInitialLoad = !hasInitializedSanityRef.current
+
+    if (shouldBlockInitialLoad) {
+      hasInitializedSanityRef.current = true
+    }
+
+    void fetchSanityData(languageCookie, shouldBlockInitialLoad)
   }, [languageCookie])
 
   useEffect(() => {
@@ -158,6 +218,7 @@ export function LanguageProvider({ children }: Props) {
             forbeholdAvsnittData: sanityForbeholdAvsnittData,
             guidePanelData: sanityGuidePanelData,
             readMoreData: sanityReadMoreData,
+            isSanityLoading,
           }}
         >
           {children}
