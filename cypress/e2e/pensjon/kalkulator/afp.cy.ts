@@ -210,9 +210,9 @@ describe('AFP', () => {
         cy.contains('button', '70').click()
         cy.contains('Om inntekten og pensjonen din').should('exist')
         cy.contains('AFP: Offentlig').should('exist')
-        cy.contains(
-          'Du har oppgitt AFP i offentlig sektor. Nav har ikke vurdert om du fyller alle vilkårene for AFP, men forutsetter at du gjør det. For mer informasjon om vilkårene, sjekk tjenestepensjonsordningen din.'
-        ).should('exist')
+        cy.get('[data-intl="grunnlag.afp.ingress.ja_offentlig"]').should(
+          'exist'
+        )
       })
     })
 
@@ -370,7 +370,7 @@ describe('AFP', () => {
 
         // Verifiserer at vi er på avansert skjema for brukere med kap.19 AFP
         cy.get(
-          '[data-intl="beregning.avansert.rediger.afp_etterfulgt_av_ap.title"], h2'
+          '[data-intl="beregning.avansert.rediger.afp_etterfulgt_av_ap.title"]'
         ).should('exist')
       })
 
@@ -404,9 +404,10 @@ describe('AFP', () => {
 
         // Should show AFP information
         cy.contains('AFP: Offentlig').should('exist')
-        cy.contains(
-          'Du har oppgitt AFP i offentlig sektor. Nav har ikke vurdert om du fyller alle vilkårene for AFP, men forutsetter at du gjør det. For mer informasjon om vilkårene, sjekk tjenestepensjonsordningen din.'
-        ).should('exist')
+
+        cy.get('[data-intl="grunnlag.afp.ingress.ja_offentlig"]').should(
+          'exist'
+        )
       })
     })
 

@@ -710,7 +710,7 @@ describe('Hovedhistorie', () => {
 
             // Verifiserer at vi er på det avanserte skjemaet for brukere med Kap19 AFP
             cy.get(
-              '[data-intl="beregning.avansert.rediger.afp_etterfulgt_av_ap.title"], h2'
+              '[data-intl="beregning.avansert.rediger.afp_etterfulgt_av_ap.title"]'
             ).should('exist')
 
             // Sjekker for aldersvelgere i det avanserte skjemaet
