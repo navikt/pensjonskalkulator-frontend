@@ -58,7 +58,7 @@ export function AFPOvergangskullUtenAP({
         id: 'stegvisning.afp.validation_error',
       })
       setValidationError((prev) => ({ ...prev, afp: errorMessage }))
-      logger('skjema validering feilet', {
+      logger('skjemavalidering feilet', {
         skjemanavn: STEGVISNING_FORM_NAMES.afp,
         data: intl.formatMessage({
           id: 'stegvisning.afp.radio_label',
@@ -73,7 +73,7 @@ export function AFPOvergangskullUtenAP({
         ...prev,
         skalBeregneAfp: errorMessage,
       }))
-      logger('skjema validering feilet', {
+      logger('skjemavalidering feilet', {
         skjemanavn: STEGVISNING_FORM_NAMES.afp,
         data: intl.formatMessage({
           id: 'stegvisning.afp.radio_label',
@@ -85,7 +85,7 @@ export function AFPOvergangskullUtenAP({
         tekst: 'Rett til AFP',
         valg: afpInput,
       })
-      logger('button klikk', {
+      logger('knapp klikket', {
         tekst: `Neste fra ${paths.afp}`,
       })
 
