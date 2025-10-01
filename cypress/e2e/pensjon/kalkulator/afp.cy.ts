@@ -265,15 +265,11 @@ describe('AFP', () => {
 
     describe('Når jeg svarer "ja, offentlig" på spørsmål om AFP, er født 1963 eller senere, og kall til /er-apoteker feiler', () => {
       beforeEach(() => {
-        // Setup person born after 1963 explicitly
         cy.setupPersonFoedtEtter1963()
-
-        // Setup apoteker error
         cy.setupApotekerError()
 
         cy.login()
 
-        // Set Redux state after login
         cy.setApotekerErrorState()
 
         cy.contains('button', 'Kom i gang').click()
@@ -286,30 +282,22 @@ describe('AFP', () => {
       })
 
       it('forventer jeg apoteker-warning på AFP-steget', () => {
-        // Sjekk for apoteker-warning på AFP steget
         cy.get('[data-testid="apotekere-warning"]').should('exist')
       })
 
       it('forventer jeg apoteker-warning på samtykke AFP offentlig steget', () => {
-        // Naviger til samtykke steget
         cy.contains('button', 'Neste').click()
-
-        // Sjekk for apoteker-warning på samtykke steget
         cy.get('[data-testid="apotekere-warning"]').should('exist')
       })
 
       it('forventer jeg apoteker-warning på pensjonsavtaler steget', () => {
-        // Naviger til pensjonsavtaler steget
         cy.contains('button', 'Neste').click()
         cy.get('[type="radio"]').eq(0).check() // Samtykke til AFP beregning
         cy.contains('button', 'Neste').click()
-
-        // Sjekk for apoteker-warning på pensjonsavtaler steget
         cy.get('[data-testid="apotekere-warning"]').should('exist')
       })
 
       it('forventer jeg informasjon om at beregning med AFP kan bli feil hvis jeg er medlem av Pensjonsordningen for apotekvirksomhet og at jeg må prøve igjen senere', () => {
-        // Naviger gjennom hele flowet til beregning
         cy.contains('button', 'Neste').click()
         cy.get('[type="radio"]').eq(0).check() // Samtykke til AFP beregning
         cy.contains('button', 'Neste').click()
@@ -319,12 +307,10 @@ describe('AFP', () => {
 
         cy.location('pathname').should('include', '/beregning')
 
-        // Sjekk for apoteker-warning på beregningssiden
         cy.get('[data-testid="apotekere-warning"]').should('exist')
       })
 
       it('forventer jeg ingen informasjon om AFP på beregningssiden', () => {
-        // Naviger gjennom hele flowet til beregning
         cy.contains('button', 'Neste').click()
         cy.get('[type="radio"]').eq(0).check() // Samtykke til AFP beregning
         cy.contains('button', 'Neste').click()
@@ -341,7 +327,6 @@ describe('AFP', () => {
 
     describe('Når jeg svarer "ja, offentlig" på spørsmål om AFP, er født før 1963, og velger "AFP etterfulgt av alderspensjon fra 67 år"', () => {
       beforeEach(() => {
-        // Setup person born before 1963
         cy.setupPersonFoedtFoer1963()
 
         cy.login()
@@ -375,7 +360,6 @@ describe('AFP', () => {
       })
 
       it('forventer jeg å få informasjon i grunnlaget om at Nav ikke har vurdert om jeg fyller alle vilkår for AFP', () => {
-        // Verify we're on the advanced form page
         cy.location('pathname').should('include', '/beregning-detaljert')
 
         // Velger år og måned
@@ -399,10 +383,7 @@ describe('AFP', () => {
           .should('exist')
           .check()
 
-        // Klikker "Beregn pensjon"
-        cy.contains('button', 'Beregn pensjon').click()
-
-        // Should show AFP information
+        cy.get('[data-testid="beregn-pensjon"]').click()
         cy.contains('AFP: Offentlig').should('exist')
 
         cy.get('[data-intl="grunnlag.afp.ingress.ja_offentlig"]').should(
@@ -413,7 +394,6 @@ describe('AFP', () => {
 
     describe('Når jeg svarer "ja, offentlig" på spørsmål om AFP, er født før 1963, og velger "Kun alderspensjon"', () => {
       beforeEach(() => {
-        // Setup person born before 1963
         cy.setupPersonFoedtFoer1963()
 
         cy.login()
@@ -442,7 +422,6 @@ describe('AFP', () => {
       it('forventer jeg å få informasjon i grunnlaget om at jeg har svart at jeg ikke har rett til AFP og at AFP derfor ikke vises i beregningen', () => {
         cy.location('pathname').should('include', '/beregning')
 
-        // Velger alder
         cy.contains('button', '70').click()
 
         cy.contains('AFP: Nei').should('exist')
