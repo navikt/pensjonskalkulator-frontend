@@ -57,7 +57,7 @@ export const PrivatePensjonsavtaler: React.FC<PrivatePensjonsavtalerProps> = ({
 
     if (noPrivatePensjonsavtaler) {
       logger(ALERT_VIST, {
-        tekst: 'Fant ingen pensjonsavtaler',
+        tekst: 'Fant ingen private pensjonsavtaler',
         variant: 'info',
       })
     }

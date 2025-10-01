@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import clsx from 'clsx'
 import React, { useEffect } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
@@ -55,7 +54,7 @@ export const OffentligTjenestepensjon = (props: {
     switch (status) {
       case 'BRUKER_ER_IKKE_MEDLEM_AV_TP_ORDNING':
         logger(ALERT_VIST, {
-          tekst: 'Fant ingen pensjonsavtaler',
+          tekst: 'Fant ingen offentlige pensjonsavtaler',
           variant: 'info',
         })
         break

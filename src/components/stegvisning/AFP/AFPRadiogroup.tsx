@@ -32,13 +32,6 @@ const AFPRadioGroup: React.FC<AFPRadioGroupProps> = ({
     })
   }
 
-  if (showVetIkkeAlert) {
-    logger(ALERT_VIST, {
-      tekst: 'Vet ikke om hen har AFP',
-      variant: 'info',
-    })
-  }
-
   return (
     <RadioGroup
       className={styles.radiogroup}
