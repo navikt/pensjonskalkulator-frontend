@@ -1,23 +1,24 @@
 import { describe, expect, it } from 'vitest'
 
+import { pensjonsavtalerKategoriMapObj } from '@/utils/pensjonsavtaler'
+
 import {
-  isInntekt,
-  isPensjonsavtale,
-  isPensjonsberegningArray,
-  isVilkaarsproeving,
+  isAlder,
   isAlderspensjonMaanedligVedEndring,
   isAlderspensjonSimulering,
-  isPerson,
   isEkskludertStatus,
-  isOmstillingsstoenadOgGjenlevende,
+  isInntekt,
   isLoependeVedtak,
   isOffentligTp,
-  isUtbetalingsperiode,
-  isUnleashToggle,
-  isAlder,
+  isOmstillingsstoenadOgGjenlevende,
+  isPensjonsavtale,
+  isPensjonsberegningArray,
+  isPerson,
   isSomeEnumKey,
+  isUnleashToggle,
+  isUtbetalingsperiode,
+  isVilkaarsproeving,
 } from '../typeguards'
-import { pensjonsavtalerKategoriMapObj } from '@/utils/pensjonsavtaler'
 
 describe('Typeguards', () => {
   describe('isInntekt', () => {
@@ -271,7 +272,7 @@ describe('Typeguards', () => {
         ])
       ).toBeTruthy()
     })
-    it('returnerer false når typen er undefined eller at AfpPrivatPensjonsberegning inneholder noe annet enn number', () => {
+    it('returnerer false når typen er undefined eller at AfpPensjonsberegning inneholder noe annet enn number', () => {
       expect(isPensjonsberegningArray(undefined)).toBeFalsy()
 
       expect(
@@ -604,6 +605,7 @@ describe('Typeguards', () => {
       pensjoneringAldre: {
         normertPensjoneringsalder: { aar: 67, maaneder: 0 },
         nedreAldersgrense: { aar: 67, maaneder: 0 },
+        oevreAldersgrense: { aar: 75, maaneder: 0 },
       },
     }
 
@@ -699,6 +701,15 @@ describe('Typeguards', () => {
               },
             })
           ).toEqual(false)
+
+          expect(
+            isPerson({
+              ...validPerson,
+              pensjoneringAldre: {
+                oevreAldersgrense: { aar: 75, maaneder: 0 },
+              },
+            })
+          ).toEqual(false)
         })
 
         it('returnerer false når alder-objekter mangler maaneder', () => {
@@ -708,6 +719,7 @@ describe('Typeguards', () => {
               pensjoneringAldre: {
                 normertPensjoneringsalder: { aar: 67 },
                 nedreAldersgrense: { aar: 67 },
+                oevreAldersgrense: { aar: 75 },
               },
             })
           ).toEqual(false)
@@ -804,6 +816,7 @@ describe('Typeguards', () => {
 
   describe('isLoependeVedtak', () => {
     const correctResponse: LoependeVedtak = {
+      harLoependeVedtak: true,
       alderspensjon: {
         grad: 0,
         fom: '2020-10-02',

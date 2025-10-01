@@ -31,9 +31,9 @@ export const AccordionContext = React.createContext<AccordionContextType>({
 
 const logIsOpen = (name: string, isOpen: boolean) => {
   if (isOpen) {
-    logger('accordion åpnet', { tekst: name })
+    logger('accordion åpnet', { tittel: name })
   } else {
-    logger('accordion lukket', { tekst: name })
+    logger('accordion lukket', { tittel: name })
   }
 }
 
@@ -61,7 +61,7 @@ export const AccordionItem: React.FC<IProps> = ({
 
   const wrappedOnClick = React.useCallback(() => {
     // Inversert da det er en antagelse at onClick endrer state
-    logIsOpen(name, !isOpenFromProps as boolean)
+    logIsOpen(name, !isOpenFromProps)
     if (onClick) {
       onClick()
     }

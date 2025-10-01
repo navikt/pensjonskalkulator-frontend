@@ -40,7 +40,7 @@ describe('AFP', () => {
         cy.contains('button', '62 år og 10 md.').click()
         cy.contains('Beregning').should('exist')
         cy.contains('Pensjonsgivende inntekt').should('exist')
-        cy.contains('AFP (avtalefestet pensjon)').should('not.exist')
+        cy.contains('AFP (avtalefestet pensjon)').should('exist')
         cy.contains('Pensjonsavtaler (arbeidsgivere m.m.)').should('exist')
         cy.contains('Alderspensjon (Nav)').should('exist')
         cy.contains('Tusen kroner').should('exist')
@@ -54,9 +54,8 @@ describe('AFP', () => {
         cy.contains('button', 'Neste').click()
 
         cy.contains('button', '70').click()
-        cy.contains('Øvrig grunnlag for beregningen').should('exist')
-        cy.contains('AFP:').click()
-        cy.contains('Vet ikke').should('exist')
+        cy.contains('Om inntekten og pensjonen din').should('exist')
+        cy.contains('AFP: Vet ikke').should('exist')
         cy.contains(
           'Hvis du er usikker på om du har AFP bør du spørre arbeidsgiveren din. AFP kan påvirke når du kan ta ut alderspensjon.'
         ).should('exist')
@@ -88,7 +87,7 @@ describe('AFP', () => {
         cy.contains('button', '62 år og 10 md.').click()
         cy.contains('Beregning').should('exist')
         cy.contains('Pensjonsgivende inntekt').should('exist')
-        cy.contains('AFP (avtalefestet pensjon)').should('not.exist')
+        cy.contains('AFP').should('exist')
         cy.contains('Pensjonsavtaler (arbeidsgivere m.m.)').should('exist')
         cy.contains('Alderspensjon (Nav)').should('exist')
         cy.contains('Tusen kroner').should('exist')
@@ -96,20 +95,19 @@ describe('AFP', () => {
         cy.contains('87+').should('exist')
       })
 
-      it('forventer jeg å få informasjon i grunnlaget om at jeg bør gjøre ny beregning hvis jeg starter i jobb hos arbeidsgiver med AFP.', () => {
+      it('forventer jeg å få informasjon i grunnlaget om at jeg ikke har rett til AFP og kan endre valgene mine for AFP', () => {
         cy.contains('button', 'Neste').click()
         cy.get('[type="radio"]').first().check()
         cy.contains('button', 'Neste').click()
 
         cy.contains('button', '70').click()
-        cy.contains('Øvrig grunnlag for beregningen').should('exist')
-        cy.contains('AFP:').click()
-        cy.contains('Nei').should('exist')
+        cy.contains('Om inntekten og pensjonen din').should('exist')
+        cy.contains('AFP: Nei').should('exist')
         cy.contains(
-          'Hvis du starter i jobb hos en arbeidsgiver som har avtale om AFP, anbefaler vi at du gjør en ny beregning.'
+          'Du har svart at du ikke har rett til AFP. Derfor vises ikke AFP i beregningen. Du kan endre valgene dine for AFP ved å gå tilbake til AFP (avtalefestet pensjon).'
         ).should('exist')
-        cy.contains('a', 'ny beregning').click()
-        cy.location('href').should('include', '/pensjon/kalkulator/start')
+        cy.contains('a', 'AFP (avtalefestet pensjon)').click()
+        cy.location('href').should('include', '/pensjon/kalkulator/afp')
       })
     })
 
@@ -152,9 +150,8 @@ describe('AFP', () => {
         cy.contains('button', 'Neste').click()
 
         cy.contains('button', '70').click()
-        cy.contains('Øvrig grunnlag for beregningen').should('exist')
-        cy.contains('AFP:').click()
-        cy.contains('Privat').should('exist')
+        cy.contains('Om inntekten og pensjonen din').should('exist')
+        cy.contains('AFP: Privat').should('exist')
         cy.contains(
           'Du har oppgitt AFP i privat sektor. Nav har ikke vurdert om du fyller vilkårene for AFP, men forutsetter at du gjør det.'
         ).should('exist')
@@ -211,11 +208,10 @@ describe('AFP', () => {
         cy.contains('button', 'Neste').click()
 
         cy.contains('button', '70').click()
-        cy.contains('Øvrig grunnlag for beregningen').should('exist')
-        cy.contains('AFP:').click()
-        cy.contains('Offentlig').should('exist')
+        cy.contains('Om inntekten og pensjonen din').should('exist')
+        cy.contains('AFP: Offentlig').should('exist')
         cy.contains(
-          'Du har oppgitt AFP i offentlig sektor. Nav har ikke vurdert om du fyller vilkårene for AFP, men forutsetter at du gjør det. For mer informasjon om vilkårene, sjekk tjenestepensjonsordningen din.'
+          'Du har oppgitt AFP i offentlig sektor. Nav har ikke vurdert om du fyller alle vilkårene for AFP, men forutsetter at du gjør det. For mer informasjon om vilkårene, sjekk tjenestepensjonsordningen din.'
         ).should('exist')
       })
     })
@@ -243,7 +239,7 @@ describe('AFP', () => {
         cy.contains('button', '62 år og 10 md.').click()
         cy.contains('Beregning').should('exist')
         cy.contains('Pensjonsgivende inntekt').should('exist')
-        cy.contains('AFP (avtalefestet pensjon)').should('not.exist')
+        cy.contains('AFP').should('exist')
         cy.contains('Pensjonsavtaler (arbeidsgivere m.m.)').should('exist')
         cy.contains('Alderspensjon (Nav)').should('exist')
         cy.contains('Tusen kroner').should('exist')
@@ -259,12 +255,89 @@ describe('AFP', () => {
         cy.contains('button', 'Neste').click()
 
         cy.contains('button', '70').click()
-        cy.contains('Øvrig grunnlag for beregningen').should('exist')
-        cy.contains('AFP:').click()
-        cy.contains('Offentlig').should('exist')
+        cy.contains('Om inntekten og pensjonen din').should('exist')
+        cy.contains('AFP: Offentlig').should('exist')
         cy.contains(
           'Du har oppgitt AFP i offentlig sektor, men du har ikke samtykket til at Nav beregner den. Derfor vises ikke AFP i beregningen.'
         ).should('exist')
+      })
+    })
+
+    describe('Når jeg svarer "ja, offentlig" på spørsmål om AFP, er født 1963 eller senere, og kall til /er-apoteker feiler', () => {
+      beforeEach(() => {
+        // Setup intercepts before login
+        cy.setupApotekerError()
+
+        // Navigate through the flow
+        cy.login()
+
+        // Set Redux state after login
+        cy.setApotekerErrorState()
+
+        cy.contains('button', 'Kom i gang').click()
+        cy.contains('button', 'Neste').click()
+        cy.get('[type="radio"]').last().check()
+        cy.contains('button', 'Neste').click()
+
+        // Select "Ja, offentlig"
+        cy.get('[type="radio"]').eq(0).check()
+      })
+
+      it('forventer jeg apoteker-warning på AFP-steget', () => {
+        // Sjekk for apoteker-warning på AFP steget
+        cy.get('[data-testid="apotekere-warning"]').should('exist')
+      })
+
+      it('forventer jeg apoteker-warning på samtykke AFP offentlig steget', () => {
+        // Naviger til samtykke steget
+        cy.contains('button', 'Neste').click()
+
+        // Sjekk for apoteker-warning på samtykke steget
+        cy.get('[data-testid="apotekere-warning"]').should('exist')
+      })
+
+      it('forventer jeg apoteker-warning på pensjonsavtaler steget', () => {
+        // Naviger til pensjonsavtaler steget
+        cy.contains('button', 'Neste').click()
+        cy.get('[type="radio"]').eq(0).check() // Samtykke til AFP beregning
+        cy.contains('button', 'Neste').click()
+
+        // Sjekk for apoteker-warning på pensjonsavtaler steget
+        cy.get('[data-testid="apotekere-warning"]').should('exist')
+      })
+
+      it('forventer jeg informasjon om at beregning med AFP kan bli feil hvis jeg er medlem av Pensjonsordningen for apotekvirksomhet og at jeg må prøve igjen senere', () => {
+        // Naviger gjennom hele flowet til beregning
+        cy.contains('button', 'Neste').click()
+        cy.get('[type="radio"]').eq(0).check() // Samtykke til AFP beregning
+        cy.contains('button', 'Neste').click()
+        cy.get('[type="radio"]').first().check() // Pensjonsavtaler
+        cy.contains('button', 'Neste').click()
+
+        cy.contains('button', '70').click()
+
+        // Verifiser at vi er på beregningssiden
+        cy.location('pathname').should('include', '/beregning')
+
+        // Sjekk for apoteker-warning på beregningssiden
+        cy.get('[data-testid="apotekere-warning"]').should('exist')
+      })
+
+      it('forventer jeg ingen informasjon om AFP på beregningssiden', () => {
+        // Naviger gjennom hele flowet til beregning
+        cy.contains('button', 'Neste').click()
+        cy.get('[type="radio"]').eq(0).check() // Samtykke til AFP beregning
+        cy.contains('button', 'Neste').click()
+        cy.get('[type="radio"]').first().check() // Pensjonsavtaler
+        cy.contains('button', 'Neste').click()
+
+        cy.contains('button', '70').click()
+
+        // Verifiser at vi er på beregningssiden
+        cy.location('pathname').should('include', '/beregning')
+
+        // Sjekk at AFP-delen er skjult når apoteker error oppstår
+        cy.get('[data-testid="grunnlag-afp"]').should('not.exist')
       })
     })
   })

@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
 
@@ -6,10 +7,10 @@ import {
   ChevronRightCircleIcon,
 } from '@navikt/aksel-icons'
 import { Button } from '@navikt/ds-react'
-import clsx from 'clsx'
+
+import { wrapLogger } from '@/utils/logging'
 
 import { onVisFaerreAarClick, onVisFlereAarClick } from '../utils'
-import { wrapLogger } from '@/utils/logging'
 
 import styles from './SimuleringGrafNavigation.module.scss'
 
@@ -36,7 +37,7 @@ export const SimuleringGrafNavigation: React.FC<Props> = ({
             iconPosition="left"
             size="xsmall"
             variant="tertiary"
-            onClick={wrapLogger('button klikk', { tekst: 'Vis færre år' })(
+            onClick={wrapLogger('knapp klikket', { tekst: 'Vis færre år' })(
               onVisFaerreAarClick
             )}
           >
@@ -45,7 +46,10 @@ export const SimuleringGrafNavigation: React.FC<Props> = ({
         )}
       </div>
       <div
-        className={`${styles.grafNavigationElement} ${styles.grafNavigationElement__Right}`}
+        className={clsx(
+          styles.grafNavigationElement,
+          styles.grafNavigationElement__Right
+        )}
       >
         {showVisFlereAarButton && (
           <Button
@@ -53,7 +57,7 @@ export const SimuleringGrafNavigation: React.FC<Props> = ({
             iconPosition="right"
             size="xsmall"
             variant="tertiary"
-            onClick={wrapLogger('button klikk', { tekst: 'Vis flere år' })(
+            onClick={wrapLogger('knapp klikket', { tekst: 'Vis flere år' })(
               onVisFlereAarClick
             )}
           >

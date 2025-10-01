@@ -1,14 +1,15 @@
 import { IntlShape } from 'react-intl'
 
-import { STEGVISNING_FORM_NAMES } from '../utils'
 import { paths } from '@/router/constants'
 import { logger } from '@/utils/logging'
+
+import { STEGVISNING_FORM_NAMES } from '../utils'
 
 export const onSubmit = (
   data: FormDataEntryValue | null,
   intl: IntlShape,
   setValidationErrors: React.Dispatch<
-    React.SetStateAction<Record<string, string>>
+    React.SetStateAction<{ top: string; bottom: string }>
   >,
   utenlandsperioderLength: number,
   onNext: (utenlandsoppholdData: BooleanRadio) => void
@@ -23,7 +24,7 @@ export const onSubmit = (
         top: tekst,
       }
     })
-    logger('skjema validering feilet', {
+    logger('skjemavalidering feilet', {
       skjemanavn: STEGVISNING_FORM_NAMES.utenlandsopphold,
       data: intl.formatMessage({
         id: 'stegvisning.utenlandsopphold.radio_label',
@@ -43,7 +44,7 @@ export const onSubmit = (
           bottom: tekst,
         }
       })
-      logger('skjema validering feilet', {
+      logger('skjemavalidering feilet', {
         skjemanavn: STEGVISNING_FORM_NAMES.utenlandsopphold,
         data: intl.formatMessage({
           id: 'stegvisning.utenlandsopphold.radio_label',
@@ -55,7 +56,7 @@ export const onSubmit = (
         tekst: 'Utenlandsopphold',
         valg: utenlandsoppholdData,
       })
-      logger('button klikk', {
+      logger('knapp klikket', {
         tekst: `Neste fra ${paths.utenlandsopphold}`,
       })
       onNext(utenlandsoppholdData)

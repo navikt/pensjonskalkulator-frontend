@@ -1,6 +1,5 @@
 import { describe, it, vi } from 'vitest'
 
-import { ErrorPage404 } from '../ErrorPage404'
 import { externalUrls, paths } from '@/router/constants'
 import { render, screen, userEvent } from '@/test-utils'
 import {
@@ -9,14 +8,15 @@ import {
   loggerTeardown,
 } from '@/utils/__tests__/logging-stub'
 
+import { ErrorPage404 } from '../ErrorPage404'
+
 describe('ErrorPage404', () => {
   afterEach(() => {
     loggerTeardown()
   })
   it('rendrer med riktig tekst og knapper', () => {
-    const { asFragment } = render(<ErrorPage404 />)
+    render(<ErrorPage404 />)
     expect(screen.getAllByRole('link')).toHaveLength(2)
-    expect(asFragment()).toMatchSnapshot()
   })
 
   it('sender brukeren til landingside når brukeren klikker på første lenke', async () => {
@@ -42,12 +42,15 @@ describe('ErrorPage404', () => {
   })
 
   it('logger når bruker går til Din pensjon', async () => {
-    const windowSpy = vi.spyOn(window, 'open')
+    const windowOpenMock = vi.fn()
+    vi.stubGlobal('open', windowOpenMock)
+
     render(<ErrorPage404 />)
     const user = userEvent.setup()
-    const dinPensjonLink = await screen.getByText('error.404.button.link_2')
+    const dinPensjonLink = screen.getByText('error.404.button.link_2')
     await user.click(dinPensjonLink)
+
     expect(logOpenLinkSpy).toHaveBeenCalledTimes(1)
-    expect(windowSpy).toHaveBeenCalledTimes(1)
+    expect(windowOpenMock).toHaveBeenCalledTimes(1)
   })
 })

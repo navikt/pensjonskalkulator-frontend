@@ -3,7 +3,6 @@ import { FormattedMessage, useIntl } from 'react-intl'
 
 import {
   BodyLong,
-  Button,
   Heading,
   Radio,
   RadioGroup,
@@ -11,27 +10,29 @@ import {
   VStack,
 } from '@navikt/ds-react'
 
-import { STEGVISNING_FORM_NAMES } from '../utils'
 import { Card } from '@/components/common/Card'
 import { paths } from '@/router/constants'
 import { formatInntekt } from '@/utils/inntekt'
-import { logger, wrapLogger } from '@/utils/logging'
+import { logger } from '@/utils/logging'
 import {
   convertBooleanRadioToBoolean,
   convertBooleanToBooleanRadio,
 } from '@/utils/radio'
 import {
-  sivilstandOptions,
   formatSivilstand,
   getSivilstandTekst,
   isSivilstandUkjent,
+  sivilstandOptions,
 } from '@/utils/sivilstand'
+
+import Navigation from '../Navigation/Navigation'
+import { STEGVISNING_FORM_NAMES } from '../utils'
 
 import styles from './Sivilstand.module.scss'
 
 interface Props {
   sivilstandFolkeregister: Sivilstand
-  grunnbelop?: number
+  grunnbeloep?: number
   sivilstand: Sivilstand
   epsHarInntektOver2G: boolean | null
   epsHarPensjon: boolean | null
@@ -46,7 +47,7 @@ interface Props {
 
 export function Sivilstand({
   sivilstandFolkeregister,
-  grunnbelop,
+  grunnbeloep,
   sivilstand,
   epsHarInntektOver2G,
   epsHarPensjon,
@@ -66,7 +67,7 @@ export function Sivilstand({
   })
 
   const [sivilstandInput, setSivilstandInput] = useState(sivilstand)
-  const [epsHarPensjonInput, setEpsharPensjonInput] = useState(
+  const [epsHarPensjonInput, setEpsHarPensjonInput] = useState(
     convertBooleanToBooleanRadio(epsHarPensjon)
   )
   const [epsHarInntektOver2GInput, setEpsHarInntektOver2GInput] = useState(
@@ -149,7 +150,7 @@ export function Sivilstand({
       }
       setValidationError(validationErrorText)
       if (validationErrorText.epsHarPensjon) {
-        logger('skjema validering feilet', {
+        logger('skjemavalidering feilet', {
           skjemanavn: STEGVISNING_FORM_NAMES.sivilstand,
           data: intl.formatMessage({
             id: 'stegvisning.sivilstand.radio_epsHarPensjon_label',
@@ -158,7 +159,7 @@ export function Sivilstand({
         })
       }
       if (validationErrorText.epsHarInntektOver2G) {
-        logger('skjema validering feilet', {
+        logger('skjemavalidering feilet', {
           skjemanavn: STEGVISNING_FORM_NAMES.sivilstand,
           data: intl.formatMessage({
             id: 'stegvisning.sivilstand.radio_epsHarInntektOver2G_label',
@@ -169,7 +170,7 @@ export function Sivilstand({
       return
     }
 
-    logger('button klikk', {
+    logger('knapp klikket', {
       tekst: `Neste fra ${paths.sivilstand}`,
     })
 
@@ -227,7 +228,7 @@ export function Sivilstand({
             error={validationError.sivilstand}
           >
             {isSivilstandUkjent(sivilstandInput) && (
-              <option disabled selected value="">
+              <option disabled value="">
                 {' '}
               </option>
             )}
@@ -250,10 +251,8 @@ export function Sivilstand({
               })}
               name="epsHarPensjon"
               value={epsHarPensjonInput}
-              onChange={(value) => setEpsharPensjonInput(value)}
+              onChange={setEpsHarPensjonInput}
               error={validationError.epsHarPensjon}
-              role="radiogroup"
-              aria-required="true"
             >
               <Radio value="ja">
                 <FormattedMessage id="stegvisning.sivilstand.radio_ja" />
@@ -271,8 +270,8 @@ export function Sivilstand({
                 },
                 {
                   sivilstand: getSivilstandTekst(intl, sivilstandInput),
-                  grunnbelop: grunnbelop
-                    ? ` (${formatInntekt(grunnbelop * 2)} kr)`
+                  grunnbeloep: grunnbeloep
+                    ? ` (${formatInntekt(grunnbeloep * 2)} kr)`
                     : '',
                 }
               )}
@@ -280,11 +279,11 @@ export function Sivilstand({
                 id: 'stegvisning.sivilstand.radio_epsHarInntektOver2G_description',
               })}
               value={epsHarInntektOver2GInput}
-              onChange={(value) => setEpsHarInntektOver2GInput(value)}
+              onChange={(value: 'ja' | 'nei') =>
+                setEpsHarInntektOver2GInput(value)
+              }
               name="epsHarInntektOver2G"
               error={validationError.epsHarInntektOver2G}
-              role="radiogroup"
-              aria-required="true"
             >
               <Radio value="ja">
                 <FormattedMessage id="stegvisning.sivilstand.radio_ja" />
@@ -295,29 +294,12 @@ export function Sivilstand({
             </RadioGroup>
           )}
         </VStack>
-        <Button type="submit" className={styles.button}>
-          <FormattedMessage id="stegvisning.neste" />
-        </Button>
-        <Button
-          type="button"
-          className={styles.button}
-          variant="secondary"
-          onClick={wrapLogger('button klikk', {
-            tekst: `Tilbake fra ${paths.sivilstand}`,
-          })(onPrevious)}
-        >
-          <FormattedMessage id="stegvisning.tilbake" />
-        </Button>
-        {onCancel && (
-          <Button
-            type="button"
-            className={styles.button}
-            variant="tertiary"
-            onClick={wrapLogger('button klikk', { tekst: 'Avbryt' })(onCancel)}
-          >
-            <FormattedMessage id="stegvisning.avbryt" />
-          </Button>
-        )}
+
+        <Navigation
+          onPrevious={onPrevious}
+          onCancel={onCancel}
+          className={styles.navigation}
+        />
       </form>
     </Card>
   )

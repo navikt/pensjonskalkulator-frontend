@@ -1,52 +1,45 @@
-import React from 'react'
-import { useIntl, FormattedMessage } from 'react-intl'
-
-import {
-  Alert,
-  BodyLong,
-  Radio,
-  RadioGroup,
-  Select,
-  TextField,
-} from '@navikt/ds-react'
 import clsx from 'clsx'
+import React from 'react'
+import { FormattedMessage, useIntl } from 'react-intl'
 
-import {
-  AvansertSkjemaIntroEndring,
-  AvansertSkjemaInntekt,
-  FormButtonRow,
-  ReadMoreOmPensjonsalder,
-} from '../Felles'
-import { useFormLocalState, useFormValidationErrors } from '../hooks'
-import { AVANSERT_FORM_NAMES, onAvansertBeregningSubmit } from '../utils'
+import { Alert, Radio, RadioGroup, Select, TextField } from '@navikt/ds-react'
+
+import { VilkaarsproevingAlert } from '@/components/VilkaarsproevingAlert'
 import { AgePicker } from '@/components/common/AgePicker'
 import { Divider } from '@/components/common/Divider'
-import { ReadMore } from '@/components/common/ReadMore'
-import { VilkaarsproevingAlert } from '@/components/VilkaarsproevingAlert'
+import { SanityReadmore } from '@/components/common/SanityReadmore'
 import { BeregningContext } from '@/pages/Beregning/context'
-import { useGetGradertUfoereAfpFeatureToggleQuery } from '@/state/api/apiSlice'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
-  selectFoedselsdato,
-  selectLoependeVedtak,
-  selectCurrentSimulation,
-  selectIsEndring,
   selectAarligInntektFoerUttakBeloep,
-  selectAarligInntektFoerUttakBeloepFraSkatt,
   selectAarligInntektFoerUttakBeloepFraBrukerInput,
+  selectAarligInntektFoerUttakBeloepFraSkatt,
+  selectAfp,
+  selectCurrentSimulation,
+  selectFoedselsdato,
+  selectIsEndring,
+  selectLoependeVedtak,
+  selectMaxOpptjeningsalder,
   selectNedreAldersgrense,
   selectNormertPensjonsalder,
-  selectAfp,
   selectSamtykkeOffentligAFP,
 } from '@/state/userInput/selectors'
 import {
-  DEFAULT_MAX_OPPTJENINGSALDER,
   formatUttaksalder,
+  getAlderPlus1Maaned,
   getBrukerensAlderISluttenAvMaaneden,
 } from '@/utils/alder'
 import { updateAndFormatInntektFromInputField } from '@/utils/inntekt'
 import { getFormatMessageValues } from '@/utils/translations'
 
+import {
+  AvansertSkjemaInntekt,
+  AvansertSkjemaIntroEndring,
+  FormButtonRow,
+  ReadMoreOmPensjonsalder,
+} from '../Felles'
+import { useFormLocalState, useFormValidationErrors } from '../hooks'
+import { AVANSERT_FORM_NAMES, onAvansertBeregningSubmit } from '../utils'
 import { Beregningsvalg } from './Beregningsvalg'
 import { IntroAFP } from './IntroAFP'
 
@@ -59,12 +52,6 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
   const dispatch = useAppDispatch()
 
   const { setAvansertSkjemaModus } = React.useContext(BeregningContext)
-
-  const { data: getGradertUfoereAfpFeatureToggle } =
-    useGetGradertUfoereAfpFeatureToggleQuery()
-
-  const isGradertUfoereAfpToggleEnabled =
-    getGradertUfoereAfpFeatureToggle?.enabled
 
   const valgtAFP = useAppSelector(selectAfp)
   const isSamtykkeOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
@@ -96,6 +83,8 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
   )
   const { harAvansertSkjemaUnsavedChanges } = React.useContext(BeregningContext)
 
+  const maxOpptjeningsalder = useAppSelector(selectMaxOpptjeningsalder)
+
   const gaaTilResultat = () => {
     setAvansertSkjemaModus('resultat')
     window.scrollTo(0, 0)
@@ -106,7 +95,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
     nedreAldersgrense
   )
 
-  const [
+  const {
     localInntektFremTilUttak,
     localHeltUttak,
     localHarInntektVsaHeltUttakRadio,
@@ -114,9 +103,16 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
     localHarInntektVsaGradertUttakRadio,
     minAlderInntektSluttAlder,
     muligeUttaksgrad,
-    handlers,
     localBeregningsTypeRadio,
-  ] = useFormLocalState({
+    handlers: {
+      setLocalInntektFremTilUttak,
+      setLocalHeltUttak,
+      setLocalGradertUttak,
+      setLocalHarInntektVsaHeltUttakRadio,
+      setLocalHarInntektVsaGradertUttakRadio,
+      setLocalBeregningsTypeRadio,
+    },
+  } = useFormLocalState({
     isEndring,
     ufoeregrad: loependeVedtak.ufoeretrygd.grad,
     aarligInntektFoerUttakBeloepFraBrukerSkattBeloep:
@@ -125,24 +121,16 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
     uttaksalder,
     aarligInntektVsaHelPensjon,
     gradertUttaksperiode,
+    afpInntektMaanedFoerUttak: null,
     normertPensjonsalder,
     beregningsvalg,
   })
 
   const {
-    setLocalInntektFremTilUttak,
-    setLocalHeltUttak,
-    setLocalGradertUttak,
-    setLocalHarInntektVsaHeltUttakRadio,
-    setLocalHarInntektVsaGradertUttakRadio,
-    setLocalBeregningsTypeRadio,
-  } = handlers
-
-  const [
     validationErrors,
     gradertUttakAgePickerError,
     heltUttakAgePickerError,
-    {
+    handlers: {
       setValidationErrors,
       setValidationErrorUttaksalderHeltUttak,
       setValidationErrorUttaksalderGradertUttak,
@@ -151,11 +139,17 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
       setValidationErrorInntektVsaGradertUttak,
       resetValidationErrors,
     },
-  ] = useFormValidationErrors({
+  } = useFormValidationErrors({
     grad: localGradertUttak?.grad,
   })
 
   const handleHeltUttaksalderChange = (alder: Partial<Alder> | undefined) => {
+    setValidationErrors((prevState) => {
+      return {
+        ...prevState,
+        [AVANSERT_FORM_NAMES.uttaksgrad]: '',
+      }
+    })
     setValidationErrorUttaksalderHeltUttak('')
     setLocalHeltUttak((prevState) => {
       const sluttAlderAntallMaaneder =
@@ -163,16 +157,17 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
           ? prevState?.aarligInntektVsaPensjon?.sluttAlder.aar * 12 +
             (prevState?.aarligInntektVsaPensjon?.sluttAlder.maaneder ?? 0)
           : 0
-      const shouldDeleteInntektVsaPensjon =
+      const shouldClearInntektSluttAlder =
         alder?.aar &&
         alder?.aar * 12 + (alder?.maaneder ?? 0) >= sluttAlderAntallMaaneder
       return {
-        ...prevState,
         uttaksalder: alder,
-        aarligInntektVsaPensjon:
-          shouldDeleteInntektVsaPensjon || !prevState?.aarligInntektVsaPensjon
+        aarligInntektVsaPensjon: {
+          ...prevState?.aarligInntektVsaPensjon,
+          sluttAlder: shouldClearInntektSluttAlder
             ? undefined
-            : { ...prevState?.aarligInntektVsaPensjon },
+            : { ...prevState?.aarligInntektVsaPensjon?.sluttAlder },
+        },
       }
     })
   }
@@ -180,24 +175,35 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
   const handleGradertUttaksalderChange = (
     alder: Partial<Alder> | undefined
   ) => {
-    // Dersom brukeren endrer alderen til en alder som tillater flere graderinger, skal gradert uttak nullstilles
+    setValidationErrors((prevState) => {
+      return {
+        ...prevState,
+        [AVANSERT_FORM_NAMES.inntektVsaGradertUttakRadio]: '',
+        [AVANSERT_FORM_NAMES.uttaksgrad]: '',
+        [AVANSERT_FORM_NAMES.uttaksalderHeltUttak]: '',
+      }
+    })
+    setValidationErrorUttaksalderGradertUttak('')
+
+    // * Dersom brukeren endrer alderen til en alder som tillater flere graderinger, skal alle påfølgende felter nullstilles
     const shouldResetGradertUttak =
       alder?.aar &&
       alder?.maaneder !== undefined &&
       alder?.aar >= normertPensjonsalder.aar
-    setValidationErrorUttaksalderGradertUttak('')
+
     if (shouldResetGradertUttak) {
-      // Overførter verdien tilbake til helt uttak
-      setLocalHeltUttak((previous) => ({
-        ...previous,
+      // * Overfører verdien tilbake til helt uttak
+      setLocalHeltUttak({
         uttaksalder: alder,
-      }))
+        aarligInntektVsaPensjon: undefined,
+      })
+      setLocalHarInntektVsaHeltUttakRadio(null)
       setLocalHarInntektVsaGradertUttakRadio(null)
-      setLocalGradertUttak(() => ({
+      setLocalGradertUttak({
         uttaksalder: undefined,
         grad: undefined,
         aarligInntektVsaPensjonBeloep: undefined,
-      }))
+      })
     } else {
       setLocalGradertUttak((previous) => ({
         ...previous,
@@ -210,10 +216,12 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
     setValidationErrors((prevState) => {
       return {
         ...prevState,
+        [AVANSERT_FORM_NAMES.inntektVsaGradertUttak]: '',
+        [AVANSERT_FORM_NAMES.inntektVsaGradertUttakRadio]: '',
+        [AVANSERT_FORM_NAMES.inntektVsaHeltUttakRadio]: '',
         [AVANSERT_FORM_NAMES.uttaksgrad]: '',
         [AVANSERT_FORM_NAMES.uttaksalderGradertUttak]: '',
-        [AVANSERT_FORM_NAMES.inntektVsaGradertUttakRadio]: '',
-        [AVANSERT_FORM_NAMES.inntektVsaGradertUttak]: '',
+        [AVANSERT_FORM_NAMES.uttaksalderHeltUttak]: '',
       }
     })
     const avansertBeregningFormatertUttaksgradAsNumber = parseInt(
@@ -268,8 +276,8 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
   const handleInntektVsaHeltUttakRadioChange = (s: BooleanRadio) => {
     setLocalHarInntektVsaHeltUttakRadio(s === 'ja')
     setValidationErrors({
-      [AVANSERT_FORM_NAMES.inntektVsaHeltUttakRadio]: '',
       [AVANSERT_FORM_NAMES.inntektVsaHeltUttak]: '',
+      [AVANSERT_FORM_NAMES.inntektVsaHeltUttakRadio]: '',
       [AVANSERT_FORM_NAMES.inntektVsaHeltUttakSluttAlder]: '',
     })
     if (s === 'nei') {
@@ -285,8 +293,8 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
   const handleInntektVsaGradertUttakRadioChange = (s: BooleanRadio) => {
     setLocalHarInntektVsaGradertUttakRadio(s === 'ja')
     setValidationErrors({
-      [AVANSERT_FORM_NAMES.inntektVsaGradertUttakRadio]: '',
       [AVANSERT_FORM_NAMES.inntektVsaGradertUttak]: '',
+      [AVANSERT_FORM_NAMES.inntektVsaGradertUttakRadio]: '',
     })
     if (s === 'nei') {
       setLocalGradertUttak((previous) => {
@@ -346,6 +354,17 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
     )
   }
 
+  const handleBeregningsvalgChange = (newBeregningsvalg: Beregningsvalg) => {
+    resetForm()
+    if (newBeregningsvalg === 'med_afp') {
+      setLocalHeltUttak((prevState) => ({
+        ...prevState,
+        uttaksalder: { ...nedreAldersgrense },
+      }))
+    }
+    setLocalBeregningsTypeRadio(newBeregningsvalg)
+  }
+
   const resetForm = (): void => {
     resetValidationErrors()
     setLocalBeregningsTypeRadio(null)
@@ -364,14 +383,13 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
     (valgtAFP === 'ja_offentlig' && isSamtykkeOffentligAFP) ||
     valgtAFP === 'ja_privat'
 
-  const showFormFields =
-    hasSelectedBeregning || !hasSelectedAFP || !isGradertUfoereAfpToggleEnabled
+  const showFormFields = hasSelectedBeregning || !hasSelectedAFP
 
   return (
     <>
       <form
         id={AVANSERT_FORM_NAMES.form}
-        data-testid={'AVANSERT_SKJEMA_FOR_BRUKERE_MED_GRADERT_UFOERETRYGD'}
+        data-testid="AVANSERT_SKJEMA_FOR_BRUKERE_MED_GRADERT_UFOERETRYGD"
         method="dialog"
         onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
           e.preventDefault()
@@ -385,7 +403,6 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
               foedselsdato: foedselsdato as string,
               normertPensjonsalder,
               loependeVedtak,
-              localBeregningsTypeRadio,
               localInntektFremTilUttak,
               hasVilkaarIkkeOppfylt:
                 vilkaarsproeving?.vilkaarErOppfylt === false,
@@ -393,20 +410,20 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
             }
           )
         }}
-      ></form>
+      />
       <div
         className={clsx(styles.container, styles.container__hasMobilePadding)}
       >
         <div className={styles.form}>
           {isEndring && <AvansertSkjemaIntroEndring />}
 
-          {isGradertUfoereAfpToggleEnabled && hasSelectedAFP && (
+          {hasSelectedAFP && (
             <>
               <IntroAFP />
 
               <Beregningsvalg
                 localBeregningsTypeRadio={localBeregningsTypeRadio}
-                setLocalBeregningsTypeRadio={setLocalBeregningsTypeRadio}
+                onChange={handleBeregningsvalgChange}
               />
             </>
           )}
@@ -443,62 +460,99 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
 
               <div className={styles.alertWrapper} aria-live="polite">
                 {vilkaarsproeving &&
-                  !vilkaarsproeving?.vilkaarErOppfylt &&
-                  uttaksalder && (
+                  !vilkaarsproeving.vilkaarErOppfylt &&
+                  uttaksalder &&
+                  localBeregningsTypeRadio === beregningsvalg && (
                     <VilkaarsproevingAlert
-                      vilkaarsproeving={vilkaarsproeving}
+                      alternativ={vilkaarsproeving?.alternativ}
                       uttaksalder={uttaksalder}
+                      withAFP={localBeregningsTypeRadio === 'med_afp'}
                     />
                   )}
               </div>
 
-              <div>
-                {localGradertUttak?.grad !== undefined &&
-                localGradertUttak?.grad !== 100 ? (
-                  <AgePicker
-                    form={AVANSERT_FORM_NAMES.form}
-                    name={AVANSERT_FORM_NAMES.uttaksalderGradertUttak}
-                    label={
-                      <FormattedMessage
-                        id={
-                          isEndring
-                            ? 'velguttaksalder.endring.title'
-                            : 'velguttaksalder.title'
-                        }
-                      />
-                    }
-                    value={localGradertUttak?.uttaksalder}
-                    onChange={handleGradertUttaksalderChange}
-                    error={gradertUttakAgePickerError}
-                    minAlder={brukerensAlderPlus1Maaned}
-                  />
+              {localBeregningsTypeRadio === 'med_afp' ? (
+                localGradertUttak?.grad !== undefined &&
+                localGradertUttak.grad !== 100 ? (
+                  <>
+                    <input
+                      type="hidden"
+                      form={AVANSERT_FORM_NAMES.form}
+                      name={`${AVANSERT_FORM_NAMES.uttaksalderGradertUttak}-aar`}
+                      value={localGradertUttak.uttaksalder?.aar}
+                    />
+                    <input
+                      type="hidden"
+                      form={AVANSERT_FORM_NAMES.form}
+                      name={`${AVANSERT_FORM_NAMES.uttaksalderGradertUttak}-maaneder`}
+                      value={localGradertUttak.uttaksalder?.maaneder}
+                    />
+                  </>
                 ) : (
-                  <AgePicker
-                    form={AVANSERT_FORM_NAMES.form}
-                    name={AVANSERT_FORM_NAMES.uttaksalderHeltUttak}
-                    label={
-                      <FormattedMessage
-                        id={
-                          isEndring
-                            ? 'velguttaksalder.endring.title'
-                            : 'velguttaksalder.title'
-                        }
-                      />
-                    }
-                    value={localHeltUttak?.uttaksalder}
-                    onChange={handleHeltUttaksalderChange}
-                    error={heltUttakAgePickerError}
-                    minAlder={brukerensAlderPlus1Maaned}
+                  <>
+                    <input
+                      type="hidden"
+                      form={AVANSERT_FORM_NAMES.form}
+                      name={`${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`}
+                      value={localHeltUttak?.uttaksalder?.aar}
+                    />
+                    <input
+                      type="hidden"
+                      form={AVANSERT_FORM_NAMES.form}
+                      name={`${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`}
+                      value={localHeltUttak?.uttaksalder?.maaneder}
+                    />
+                  </>
+                )
+              ) : (
+                <div>
+                  {localGradertUttak?.grad !== undefined &&
+                  localGradertUttak.grad !== 100 ? (
+                    <AgePicker
+                      form={AVANSERT_FORM_NAMES.form}
+                      name={AVANSERT_FORM_NAMES.uttaksalderGradertUttak}
+                      label={
+                        <FormattedMessage
+                          id={
+                            isEndring
+                              ? 'velguttaksalder.endring.title'
+                              : 'velguttaksalder.title'
+                          }
+                        />
+                      }
+                      value={localGradertUttak.uttaksalder}
+                      onChange={handleGradertUttaksalderChange}
+                      error={gradertUttakAgePickerError}
+                      minAlder={brukerensAlderPlus1Maaned}
+                    />
+                  ) : (
+                    <AgePicker
+                      form={AVANSERT_FORM_NAMES.form}
+                      name={AVANSERT_FORM_NAMES.uttaksalderHeltUttak}
+                      label={
+                        <FormattedMessage
+                          id={
+                            isEndring
+                              ? 'velguttaksalder.endring.title'
+                              : 'velguttaksalder.title'
+                          }
+                        />
+                      }
+                      value={localHeltUttak?.uttaksalder}
+                      onChange={handleHeltUttaksalderChange}
+                      error={heltUttakAgePickerError}
+                      minAlder={brukerensAlderPlus1Maaned}
+                    />
+                  )}
+
+                  <div className={styles.spacer__small} />
+
+                  <ReadMoreOmPensjonsalder
+                    ufoeregrad={loependeVedtak.ufoeretrygd.grad}
+                    isEndring={isEndring}
                   />
-                )}
-
-                <div className={styles.spacer__small} />
-
-                <ReadMoreOmPensjonsalder
-                  ufoeregrad={loependeVedtak.ufoeretrygd.grad}
-                  isEndring={isEndring}
-                />
-              </div>
+                </div>
+              )}
 
               <div>
                 <Select
@@ -535,7 +589,6 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                         )
                       : ''
                   }
-                  aria-required="true"
                 >
                   <option disabled value="">
                     {' '}
@@ -549,26 +602,17 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
 
                 <div className={styles.spacer__small} />
 
-                <ReadMore
-                  name="Om uttaksgrad"
-                  header={intl.formatMessage({
-                    id: 'beregning.avansert.rediger.read_more.uttaksgrad.gradert_ufoeretrygd.label',
-                  })}
-                >
-                  <BodyLong data-testid="om-uttaksgrad">
-                    <FormattedMessage
-                      id={
-                        isEndring
-                          ? 'omufoeretrygd.readmore.endring.ingress'
-                          : 'beregning.avansert.rediger.read_more.uttaksgrad.gradert_ufoeretrygd.body'
-                      }
-                      values={{
-                        ...getFormatMessageValues(),
-                        normertPensjonsalder: formatertNormertPensjonsalder,
-                      }}
-                    />
-                  </BodyLong>
-                </ReadMore>
+                {localBeregningsTypeRadio === 'med_afp' ? (
+                  <SanityReadmore id="om_uttaksgrad" />
+                ) : (
+                  <SanityReadmore
+                    id={
+                      isEndring
+                        ? 'om_uttaksgrad_UT_gradert_endring'
+                        : 'om_uttaksgrad_UT_gradert'
+                    }
+                  />
+                )}
               </div>
 
               {localGradertUttak?.uttaksalder?.aar &&
@@ -590,8 +634,9 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                         description={
                           <FormattedMessage
                             id={
+                              localBeregningsTypeRadio !== 'med_afp' &&
                               localGradertUttak.uttaksalder.aar <
-                              normertPensjonsalder.aar
+                                normertPensjonsalder.aar
                                 ? 'beregning.avansert.rediger.radio.inntekt_vsa_gradert_uttak.ufoeretrygd.description'
                                 : 'beregning.avansert.rediger.radio.inntekt_vsa_gradert_uttak.description'
                             }
@@ -627,8 +672,6 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                               )
                             : ''
                         }
-                        role="radiogroup"
-                        aria-required="true"
                       >
                         <Radio
                           form={AVANSERT_FORM_NAMES.form}
@@ -652,235 +695,206 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                         </Radio>
                       </RadioGroup>
 
-                      {localGradertUttak.uttaksalder.aar <
-                      normertPensjonsalder.aar ? (
-                        <ReadMore
-                          name="Om inntekt og uføretrygd"
-                          header={intl.formatMessage({
-                            id: 'inntekt.info_om_inntekt.ufoeretrygd.read_more.label',
-                          })}
-                        >
-                          <BodyLong>
-                            <FormattedMessage
-                              id="inntekt.info_om_inntekt.ufoeretrygd.read_more.body"
-                              values={{
-                                ...getFormatMessageValues(),
-                              }}
-                            />
-                          </BodyLong>
-                        </ReadMore>
-                      ) : null}
+                      {localBeregningsTypeRadio !== 'med_afp' &&
+                        localGradertUttak.uttaksalder.aar <
+                          normertPensjonsalder.aar && (
+                          <SanityReadmore id="om_alderspensjon_inntektsgrense_UT" />
+                        )}
                     </div>
 
                     {localHarInntektVsaGradertUttakRadio && (
-                      <div>
-                        <TextField
-                          ref={inntektVsaGradertUttakInputRef}
-                          form={AVANSERT_FORM_NAMES.form}
-                          name={AVANSERT_FORM_NAMES.inntektVsaGradertUttak}
-                          data-testid={
+                      <TextField
+                        ref={inntektVsaGradertUttakInputRef}
+                        form={AVANSERT_FORM_NAMES.form}
+                        name={AVANSERT_FORM_NAMES.inntektVsaGradertUttak}
+                        data-testid={AVANSERT_FORM_NAMES.inntektVsaGradertUttak}
+                        type="text"
+                        inputMode="numeric"
+                        className={styles.textfield}
+                        label={
+                          <FormattedMessage
+                            id="beregning.avansert.rediger.inntekt_vsa_gradert_uttak.label"
+                            values={{
+                              ...getFormatMessageValues(),
+                              grad: localGradertUttak.grad,
+                            }}
+                          />
+                        }
+                        description={intl.formatMessage({
+                          id: 'beregning.avansert.rediger.inntekt_vsa_gradert_uttak.description',
+                        })}
+                        error={
+                          validationErrors[
                             AVANSERT_FORM_NAMES.inntektVsaGradertUttak
-                          }
-                          type="text"
-                          inputMode="numeric"
-                          className={styles.textfield}
-                          label={
-                            <FormattedMessage
-                              id="beregning.avansert.rediger.inntekt_vsa_gradert_uttak.label"
-                              values={{
-                                ...getFormatMessageValues(),
-                                grad: localGradertUttak.grad,
-                              }}
-                            />
-                          }
-                          description={intl.formatMessage({
-                            id: 'beregning.avansert.rediger.inntekt_vsa_gradert_uttak.description',
-                          })}
-                          error={
-                            validationErrors[
-                              AVANSERT_FORM_NAMES.inntektVsaGradertUttak
-                            ]
-                              ? intl.formatMessage(
-                                  {
-                                    id: validationErrors[
-                                      AVANSERT_FORM_NAMES.inntektVsaGradertUttak
-                                    ],
-                                  },
-                                  {
-                                    ...getFormatMessageValues(),
-                                    grad: localGradertUttak.grad,
-                                  }
-                                )
-                              : ''
-                          }
-                          onChange={handleInntektVsaGradertUttakChange}
-                          value={
-                            localGradertUttak?.aarligInntektVsaPensjonBeloep
-                          }
-                          max={5}
-                          aria-required="true"
-                        />
-                      </div>
+                          ]
+                            ? intl.formatMessage(
+                                {
+                                  id: validationErrors[
+                                    AVANSERT_FORM_NAMES.inntektVsaGradertUttak
+                                  ],
+                                },
+                                {
+                                  ...getFormatMessageValues(),
+                                  grad: localGradertUttak.grad,
+                                }
+                              )
+                            : ''
+                        }
+                        onChange={handleInntektVsaGradertUttakChange}
+                        value={
+                          localGradertUttak.aarligInntektVsaPensjonBeloep ?? ''
+                        }
+                      />
                     )}
 
                     <Divider noMargin />
 
-                    <div>
-                      <AgePicker
-                        form={AVANSERT_FORM_NAMES.form}
-                        name={AVANSERT_FORM_NAMES.uttaksalderHeltUttak}
-                        label={
-                          <FormattedMessage
-                            id="beregning.avansert.rediger.heltuttak.agepicker.label"
-                            values={{
-                              ...getFormatMessageValues(),
-                            }}
-                          />
-                        }
-                        value={localHeltUttak?.uttaksalder}
-                        onChange={handleHeltUttaksalderChange}
-                        error={heltUttakAgePickerError}
-                        minAlder={normertPensjonsalder}
-                      />
-                    </div>
+                    <AgePicker
+                      form={AVANSERT_FORM_NAMES.form}
+                      name={AVANSERT_FORM_NAMES.uttaksalderHeltUttak}
+                      label={
+                        <FormattedMessage
+                          id="beregning.avansert.rediger.heltuttak.agepicker.label"
+                          values={getFormatMessageValues()}
+                        />
+                      }
+                      value={localHeltUttak?.uttaksalder}
+                      onChange={handleHeltUttaksalderChange}
+                      error={heltUttakAgePickerError}
+                      minAlder={
+                        localBeregningsTypeRadio === 'med_afp'
+                          ? getAlderPlus1Maaned(nedreAldersgrense)
+                          : normertPensjonsalder
+                      }
+                    />
                   </>
                 )}
 
               {localHeltUttak?.uttaksalder?.aar &&
                 localHeltUttak?.uttaksalder?.maaneder !== undefined &&
                 localGradertUttak?.grad !== undefined && (
-                  <div>
-                    <RadioGroup
-                      legend={
+                  <RadioGroup
+                    legend={
+                      <FormattedMessage
+                        id="beregning.avansert.rediger.radio.inntekt_vsa_helt_uttak"
+                        values={getFormatMessageValues()}
+                      />
+                    }
+                    description={
+                      <FormattedMessage id="beregning.avansert.rediger.radio.inntekt_vsa_helt_uttak.description" />
+                    }
+                    name={AVANSERT_FORM_NAMES.inntektVsaHeltUttakRadio}
+                    data-testid={AVANSERT_FORM_NAMES.inntektVsaHeltUttakRadio}
+                    value={
+                      localHarInntektVsaHeltUttakRadio === null
+                        ? null
+                        : localHarInntektVsaHeltUttakRadio
+                          ? 'ja'
+                          : 'nei'
+                    }
+                    onChange={handleInntektVsaHeltUttakRadioChange}
+                    error={
+                      validationErrors[
+                        AVANSERT_FORM_NAMES.inntektVsaHeltUttakRadio
+                      ]
+                        ? intl.formatMessage(
+                            {
+                              id: validationErrors[
+                                AVANSERT_FORM_NAMES.inntektVsaHeltUttakRadio
+                              ],
+                            },
+                            { ...getFormatMessageValues() }
+                          )
+                        : ''
+                    }
+                  >
+                    <Radio
+                      form={AVANSERT_FORM_NAMES.form}
+                      data-testid={`${AVANSERT_FORM_NAMES.inntektVsaHeltUttakRadio}-ja`}
+                      value="ja"
+                      aria-invalid={
+                        !!validationErrors[
+                          AVANSERT_FORM_NAMES.inntektVsaHeltUttakRadio
+                        ]
+                      }
+                    >
+                      <FormattedMessage id="stegvisning.radio_ja" />
+                    </Radio>
+
+                    <Radio
+                      form={AVANSERT_FORM_NAMES.form}
+                      data-testid={`${AVANSERT_FORM_NAMES.inntektVsaHeltUttakRadio}-nei`}
+                      value="nei"
+                    >
+                      <FormattedMessage id="stegvisning.radio_nei" />
+                    </Radio>
+                  </RadioGroup>
+                )}
+
+              {localHeltUttak?.uttaksalder?.aar &&
+                localHeltUttak.uttaksalder.maaneder !== undefined &&
+                localHarInntektVsaHeltUttakRadio && (
+                  <>
+                    <TextField
+                      ref={inntektVsaHeltUttakInputRef}
+                      form={AVANSERT_FORM_NAMES.form}
+                      name={AVANSERT_FORM_NAMES.inntektVsaHeltUttak}
+                      data-testid={AVANSERT_FORM_NAMES.inntektVsaHeltUttak}
+                      type="text"
+                      inputMode="numeric"
+                      className={styles.textfield}
+                      label={
                         <FormattedMessage
-                          id="beregning.avansert.rediger.radio.inntekt_vsa_helt_uttak"
-                          values={{ ...getFormatMessageValues() }}
+                          id="inntekt.endre_inntekt_vsa_pensjon_modal.textfield.label"
+                          values={getFormatMessageValues()}
                         />
                       }
-                      description={
-                        <FormattedMessage id="beregning.avansert.rediger.radio.inntekt_vsa_helt_uttak.description" />
-                      }
-                      name={AVANSERT_FORM_NAMES.inntektVsaHeltUttakRadio}
-                      data-testid={AVANSERT_FORM_NAMES.inntektVsaHeltUttakRadio}
-                      value={
-                        localHarInntektVsaHeltUttakRadio === null
-                          ? null
-                          : localHarInntektVsaHeltUttakRadio
-                            ? 'ja'
-                            : 'nei'
-                      }
-                      onChange={handleInntektVsaHeltUttakRadioChange}
+                      description={intl.formatMessage({
+                        id: 'inntekt.endre_inntekt_vsa_pensjon_modal.textfield.description',
+                      })}
                       error={
                         validationErrors[
-                          AVANSERT_FORM_NAMES.inntektVsaHeltUttakRadio
+                          AVANSERT_FORM_NAMES.inntektVsaHeltUttak
                         ]
                           ? intl.formatMessage(
                               {
                                 id: validationErrors[
-                                  AVANSERT_FORM_NAMES.inntektVsaHeltUttakRadio
+                                  AVANSERT_FORM_NAMES.inntektVsaHeltUttak
                                 ],
                               },
                               { ...getFormatMessageValues() }
                             )
+                          : undefined
+                      }
+                      onChange={handleInntektVsaHeltUttakChange}
+                      value={
+                        localHeltUttak.aarligInntektVsaPensjon?.beloep ?? ''
+                      }
+                    />
+
+                    <AgePicker
+                      form={AVANSERT_FORM_NAMES.form}
+                      name={AVANSERT_FORM_NAMES.inntektVsaHeltUttakSluttAlder}
+                      label={intl.formatMessage({
+                        id: 'inntekt.endre_inntekt_vsa_pensjon_modal.agepicker.label',
+                      })}
+                      value={localHeltUttak.aarligInntektVsaPensjon?.sluttAlder}
+                      minAlder={minAlderInntektSluttAlder}
+                      maxAlder={maxOpptjeningsalder}
+                      onChange={handleInntektVsaHeltUttakSluttAlderChange}
+                      error={
+                        validationErrors[
+                          AVANSERT_FORM_NAMES.inntektVsaHeltUttakSluttAlder
+                        ]
+                          ? `${intl.formatMessage({
+                              id: validationErrors[
+                                AVANSERT_FORM_NAMES
+                                  .inntektVsaHeltUttakSluttAlder
+                              ],
+                            })}.`
                           : ''
                       }
-                      role="radiogroup"
-                      aria-required="true"
-                    >
-                      <Radio
-                        form={AVANSERT_FORM_NAMES.form}
-                        data-testid={`${AVANSERT_FORM_NAMES.inntektVsaHeltUttakRadio}-ja`}
-                        value="ja"
-                        aria-invalid={
-                          !!validationErrors[
-                            AVANSERT_FORM_NAMES.inntektVsaHeltUttakRadio
-                          ]
-                        }
-                      >
-                        <FormattedMessage id="stegvisning.radio_ja" />
-                      </Radio>
-
-                      <Radio
-                        form={AVANSERT_FORM_NAMES.form}
-                        data-testid={`${AVANSERT_FORM_NAMES.inntektVsaHeltUttakRadio}-nei`}
-                        value="nei"
-                      >
-                        <FormattedMessage id="stegvisning.radio_nei" />
-                      </Radio>
-                    </RadioGroup>
-                  </div>
-                )}
-
-              {localHeltUttak?.uttaksalder?.aar &&
-                localHeltUttak?.uttaksalder?.maaneder !== undefined &&
-                localHarInntektVsaHeltUttakRadio && (
-                  <>
-                    <div>
-                      <TextField
-                        ref={inntektVsaHeltUttakInputRef}
-                        form={AVANSERT_FORM_NAMES.form}
-                        name={AVANSERT_FORM_NAMES.inntektVsaHeltUttak}
-                        data-testid={AVANSERT_FORM_NAMES.inntektVsaHeltUttak}
-                        type="text"
-                        inputMode="numeric"
-                        className={styles.textfield}
-                        label={
-                          <FormattedMessage
-                            id="inntekt.endre_inntekt_vsa_pensjon_modal.textfield.label"
-                            values={{ ...getFormatMessageValues() }}
-                          />
-                        }
-                        description={intl.formatMessage({
-                          id: 'inntekt.endre_inntekt_vsa_pensjon_modal.textfield.description',
-                        })}
-                        error={
-                          validationErrors[
-                            AVANSERT_FORM_NAMES.inntektVsaHeltUttak
-                          ]
-                            ? intl.formatMessage(
-                                {
-                                  id: validationErrors[
-                                    AVANSERT_FORM_NAMES.inntektVsaHeltUttak
-                                  ],
-                                },
-                                { ...getFormatMessageValues() }
-                              )
-                            : undefined
-                        }
-                        onChange={handleInntektVsaHeltUttakChange}
-                        value={localHeltUttak?.aarligInntektVsaPensjon?.beloep}
-                        max={5}
-                        aria-required="true"
-                      />
-                    </div>
-
-                    <div>
-                      <AgePicker
-                        form={AVANSERT_FORM_NAMES.form}
-                        name={AVANSERT_FORM_NAMES.inntektVsaHeltUttakSluttAlder}
-                        label={intl.formatMessage({
-                          id: 'inntekt.endre_inntekt_vsa_pensjon_modal.agepicker.label',
-                        })}
-                        value={
-                          localHeltUttak?.aarligInntektVsaPensjon?.sluttAlder
-                        }
-                        minAlder={minAlderInntektSluttAlder}
-                        maxAlder={DEFAULT_MAX_OPPTJENINGSALDER}
-                        onChange={handleInntektVsaHeltUttakSluttAlderChange}
-                        error={
-                          validationErrors[
-                            AVANSERT_FORM_NAMES.inntektVsaHeltUttakSluttAlder
-                          ]
-                            ? `${intl.formatMessage({
-                                id: validationErrors[
-                                  AVANSERT_FORM_NAMES
-                                    .inntektVsaHeltUttakSluttAlder
-                                ],
-                              })}.`
-                            : ''
-                        }
-                      />
-                    </div>
+                    />
                   </>
                 )}
 

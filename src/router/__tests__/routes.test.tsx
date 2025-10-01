@@ -1,34 +1,25 @@
-import { createMemoryRouter, RouterProvider } from 'react-router'
-
+import { RouterProvider, createMemoryRouter } from 'react-router'
 import { describe, vi } from 'vitest'
 
 import {
-  BASE_PATH,
-  externalUrls,
-  henvisningUrlParams,
-  paths,
-} from '../constants'
-import { routes } from '../routes'
-import {
-  fulfilledGetPerson,
+  fulfilledGetErApoteker,
   fulfilledGetInntekt,
-  fulfilledGetEkskludertStatus,
   fulfilledGetLoependeVedtak0Ufoeregrad,
-  fulfilledGetLoependeVedtak75Ufoeregrad,
   fulfilledGetOmstillingsstoenadOgGjenlevendeUtenSak,
-  fulfilledGetGrunnbelop,
+  fulfilledGetPerson,
 } from '@/mocks/mockedRTKQueryApiCalls'
 import { mockErrorResponse, mockResponse } from '@/mocks/server'
 import { HOST_BASEURL } from '@/paths'
 import { apiSlice } from '@/state/api/apiSlice'
 import { store } from '@/state/store'
 import {
-  userInputInitialState,
   UserInputState,
+  userInputInitialState,
 } from '@/state/userInput/userInputSlice'
 import { render, screen, waitFor } from '@/test-utils'
 
-const initialGetState = store.getState
+import { BASE_PATH, henvisningUrlParams, paths } from '../constants'
+import { routes } from '../routes'
 
 const fakeApiCalls = {
   queries: {
@@ -51,7 +42,6 @@ describe('routes', () => {
     vi.clearAllMocks()
     vi.resetAllMocks()
     vi.resetModules()
-    store.getState = initialGetState
   })
 
   describe(`Gitt at siden er åpen uten pålogging`, () => {
@@ -64,9 +54,14 @@ describe('routes', () => {
           basename: BASE_PATH,
           initialEntries: [`${BASE_PATH}${paths.root}`],
         })
-        render(<RouterProvider router={router} />, { hasRouter: false })
+        render(<RouterProvider router={router} />, {
+          hasRouter: false,
+          preloadedState: {
+            session: { isLoggedIn: false, hasErApotekerError: false },
+          },
+        })
         expect(
-          await screen.findByText('landingsside.for.deg.foedt.foer.1963')
+          await screen.findByText('landingsside.for.deg.som.kan.logge.inn')
         ).toBeVisible()
       })
     })
@@ -82,9 +77,12 @@ describe('routes', () => {
         })
         render(<RouterProvider router={router} />, {
           hasRouter: false,
+          preloadedState: {
+            session: { isLoggedIn: false, hasErApotekerError: false },
+          },
         })
         expect(
-          await screen.findByText('landingsside.for.deg.foedt.foer.1963')
+          await screen.findByText('landingsside.for.deg.som.kan.logge.inn')
         ).toBeVisible()
       })
 
@@ -97,15 +95,12 @@ describe('routes', () => {
           hasRouter: false,
         })
         expect(
-          await screen.findByText('landingsside.for.deg.foedt.etter.1963')
-        ).toBeVisible()
-        expect(
           screen.queryByText('landingsside.for.deg.foedt.foer.1963')
         ).not.toBeInTheDocument()
       })
 
       it('Når brukeren er pålogget og kall til /person feiler, viser pålogget landingssiden', async () => {
-        mockErrorResponse('/v4/person')
+        mockErrorResponse('/v5/person')
         const router = createMemoryRouter(routes, {
           basename: BASE_PATH,
           initialEntries: [`${BASE_PATH}${paths.login}`],
@@ -113,48 +108,9 @@ describe('routes', () => {
         render(<RouterProvider router={router} />, {
           hasRouter: false,
         })
-        expect(
-          await screen.findByText('landingsside.for.deg.foedt.etter.1963')
-        ).toBeVisible()
         expect(
           screen.queryByText('landingsside.for.deg.foedt.foer.1963')
         ).not.toBeInTheDocument()
-      })
-
-      it('Når brukeren er pålogget og født før 1963, redirigerer brukeren til detaljert kalkulator', async () => {
-        const open = vi.fn()
-        vi.stubGlobal('open', open)
-        mockResponse('/v4/person', {
-          status: 200,
-          json: {
-            navn: 'Ola',
-            sivilstand: 'GIFT',
-            foedselsdato: '1961-04-30',
-            pensjoneringAldre: {
-              normertPensjoneringsalder: {
-                aar: 67,
-                maaneder: 0,
-              },
-              nedreAldersgrense: {
-                aar: 62,
-                maaneder: 0,
-              },
-            },
-          },
-        })
-        const router = createMemoryRouter(routes, {
-          basename: BASE_PATH,
-          initialEntries: [`${BASE_PATH}${paths.login}`],
-        })
-        render(<RouterProvider router={router} />, {
-          hasRouter: false,
-        })
-        await waitFor(() => {
-          expect(open).toHaveBeenCalledWith(
-            externalUrls.detaljertKalkulator,
-            '_self'
-          )
-        })
       })
     })
   })
@@ -173,46 +129,13 @@ describe('routes', () => {
         })
         render(<RouterProvider router={router} />, {
           hasRouter: false,
+          preloadedState: {
+            session: { isLoggedIn: false, hasErApotekerError: false },
+          },
         })
         await waitFor(() => {
           expect(open).toHaveBeenCalledWith(
             'http://localhost:8088/pensjon/kalkulator/oauth2/login?redirect=%2F',
-            '_self'
-          )
-        })
-      })
-
-      it('redirigerer brukeren til detaljert kalkulator, hvis brukeren er pålogget og født før 1963', async () => {
-        const open = vi.fn()
-        vi.stubGlobal('open', open)
-        mockResponse('/v4/person', {
-          status: 200,
-          json: {
-            navn: 'Ola',
-            sivilstand: 'GIFT',
-            foedselsdato: '1961-04-30',
-            pensjoneringAldre: {
-              normertPensjoneringsalder: {
-                aar: 67,
-                maaneder: 0,
-              },
-              nedreAldersgrense: {
-                aar: 62,
-                maaneder: 0,
-              },
-            },
-          },
-        })
-        const router = createMemoryRouter(routes, {
-          basename: BASE_PATH,
-          initialEntries: [`${BASE_PATH}${paths.start}`],
-        })
-        render(<RouterProvider router={router} />, {
-          hasRouter: false,
-        })
-        await waitFor(() => {
-          expect(open).toHaveBeenCalledWith(
-            externalUrls.detaljertKalkulator,
             '_self'
           )
         })
@@ -250,6 +173,9 @@ describe('routes', () => {
         })
         render(<RouterProvider router={router} />, {
           hasRouter: false,
+          preloadedState: {
+            session: { isLoggedIn: false, hasErApotekerError: false },
+          },
         })
         await waitFor(() => {
           expect(open).toHaveBeenCalledWith(
@@ -289,6 +215,9 @@ describe('routes', () => {
         })
         render(<RouterProvider router={router} />, {
           hasRouter: false,
+          preloadedState: {
+            session: { isLoggedIn: false, hasErApotekerError: false },
+          },
         })
         await waitFor(() => {
           expect(open).toHaveBeenCalledWith(
@@ -303,17 +232,6 @@ describe('routes', () => {
           initialEntries: [`${BASE_PATH}${paths.forbehold}`],
         })
         render(<RouterProvider router={router} />, {
-          preloadedState: {
-            api: {
-              //@ts-ignore
-              queries: {
-                ...fulfilledGetPerson,
-              },
-            },
-            userInput: {
-              ...userInputInitialState,
-            },
-          },
           hasRouter: false,
         })
         expect(await screen.findByText('forbehold.title')).toBeInTheDocument()
@@ -333,6 +251,9 @@ describe('routes', () => {
         })
         render(<RouterProvider router={router} />, {
           hasRouter: false,
+          preloadedState: {
+            session: { isLoggedIn: false, hasErApotekerError: false },
+          },
         })
         await waitFor(() => {
           expect(open).toHaveBeenCalledWith(
@@ -342,8 +263,10 @@ describe('routes', () => {
         })
       })
       it('redirigerer til /start når brukeren prøver å aksessere steget med direkte url', async () => {
-        store.getState = vi.fn().mockImplementation(() => ({
+        vi.spyOn(store, 'getState').mockImplementation(() => ({
+          // @ts-ignore
           api: {},
+          session: { isLoggedIn: true, hasErApotekerError: false },
           userInput: { ...userInputInitialState },
         }))
         const router = createMemoryRouter(routes, {
@@ -358,12 +281,12 @@ describe('routes', () => {
         ).toBeInTheDocument()
       })
       it('Gitt at brukeren ikke har noe samboer, når hen kommer fra stegvisningen, viser sivilstand steg', async () => {
-        store.getState = vi.fn().mockImplementation(() => ({
+        vi.spyOn(store, 'getState').mockImplementation(() => ({
           api: {
-            queries: {
-              ...fulfilledGetPerson,
-            },
+            // @ts-ignore
+            queries: { ...fulfilledGetPerson },
           },
+          session: { isLoggedIn: true, hasErApotekerError: false },
           userInput: { ...userInputInitialState },
         }))
         const router = createMemoryRouter(routes, {
@@ -371,16 +294,6 @@ describe('routes', () => {
           initialEntries: [`${BASE_PATH}${paths.sivilstand}`],
         })
         render(<RouterProvider router={router} />, {
-          preloadedState: {
-            api: {
-              // @ts-ignore
-              queries: {
-                ...fulfilledGetPerson,
-                ...fulfilledGetGrunnbelop,
-              },
-            },
-            userInput: { ...userInputInitialState },
-          },
           hasRouter: false,
         })
         expect(
@@ -402,6 +315,9 @@ describe('routes', () => {
         })
         render(<RouterProvider router={router} />, {
           hasRouter: false,
+          preloadedState: {
+            session: { isLoggedIn: false, hasErApotekerError: false },
+          },
         })
         await waitFor(() => {
           expect(open).toHaveBeenCalledWith(
@@ -411,8 +327,10 @@ describe('routes', () => {
         })
       })
       it('redirigerer til /start når brukeren prøver å aksessere steget med direkte url', async () => {
-        store.getState = vi.fn().mockImplementation(() => ({
+        vi.spyOn(store, 'getState').mockImplementation(() => ({
+          // @ts-ignore
           api: {},
+          session: { isLoggedIn: true, hasErApotekerError: false },
           userInput: { ...userInputInitialState },
         }))
         const router = createMemoryRouter(routes, {
@@ -427,12 +345,10 @@ describe('routes', () => {
         ).toBeInTheDocument()
       })
       it('viser utenlandsopphold når brukeren kommer til steget gjennom stegvisningen', async () => {
-        store.getState = vi.fn().mockImplementation(() => ({
-          api: {
-            queries: {
-              ...fakeApiCalls,
-            },
-          },
+        vi.spyOn(store, 'getState').mockImplementation(() => ({
+          // @ts-ignore
+          api: { ...fakeApiCalls },
+          session: { isLoggedIn: true, hasErApotekerError: false },
           userInput: { ...userInputInitialState },
         }))
         const router = createMemoryRouter(routes, {
@@ -461,6 +377,9 @@ describe('routes', () => {
         })
         render(<RouterProvider router={router} />, {
           hasRouter: false,
+          preloadedState: {
+            session: { isLoggedIn: false, hasErApotekerError: false },
+          },
         })
         await waitFor(() => {
           expect(open).toHaveBeenCalledWith(
@@ -470,8 +389,10 @@ describe('routes', () => {
         })
       })
       it('redirigerer til /start når brukeren prøver å aksessere steget med direkte url', async () => {
-        store.getState = vi.fn().mockImplementation(() => ({
+        vi.spyOn(store, 'getState').mockImplementation(() => ({
+          // @ts-ignore
           api: {},
+          session: { isLoggedIn: true, hasErApotekerError: false },
           userInput: { ...userInputInitialState },
         }))
         const router = createMemoryRouter(routes, {
@@ -485,22 +406,21 @@ describe('routes', () => {
           await screen.findByText('stegvisning.start.ingress')
         ).toBeInTheDocument()
       })
-      it('viser afp steget når brukeren kommer til steget gjennom stegvisningen og at /person, /loepende-vedtak, /inntekt og /ekskludert ikke har feilet', async () => {
-        const mockedState = {
+      it('viser afp steget når brukeren kommer til steget gjennom stegvisningen og at /person, /loepende-vedtak, /inntekt og /apoteker ikke har feilet', async () => {
+        vi.spyOn(store, 'getState').mockImplementation(() => ({
           api: {
+            // @ts-ignore
             queries: {
               ...fulfilledGetPerson,
               ...fulfilledGetInntekt,
-              ...fulfilledGetEkskludertStatus,
+              ...fulfilledGetErApoteker,
               ...fulfilledGetLoependeVedtak0Ufoeregrad,
               ...fulfilledGetOmstillingsstoenadOgGjenlevendeUtenSak,
             },
           },
+          session: { isLoggedIn: true, hasErApotekerError: false },
           userInput: { ...userInputInitialState, samtykke: null },
-        }
-        store.getState = vi.fn().mockImplementation(() => {
-          return mockedState
-        })
+        }))
         const router = createMemoryRouter(routes, {
           basename: BASE_PATH,
           initialEntries: [`${BASE_PATH}${paths.afp}`],
@@ -527,6 +447,9 @@ describe('routes', () => {
         })
         render(<RouterProvider router={router} />, {
           hasRouter: false,
+          preloadedState: {
+            session: { isLoggedIn: false, hasErApotekerError: false },
+          },
         })
         await waitFor(() => {
           expect(open).toHaveBeenCalledWith(
@@ -536,8 +459,10 @@ describe('routes', () => {
         })
       })
       it('redirigerer til /start når brukeren prøver å aksessere steget med direkte url', async () => {
-        store.getState = vi.fn().mockImplementation(() => ({
+        vi.spyOn(store, 'getState').mockImplementation(() => ({
+          // @ts-ignore
           api: {},
+          session: { isLoggedIn: true, hasErApotekerError: false },
           userInput: { ...userInputInitialState },
         }))
         const router = createMemoryRouter(routes, {
@@ -552,13 +477,16 @@ describe('routes', () => {
         ).toBeInTheDocument()
       })
       it('Gitt at brukeren mottar uføretrygd og har valgt afp, når hen kommer fra stegvisningen, vises steget', async () => {
-        store.getState = vi.fn().mockImplementation(() => ({
-          api: {
-            queries: {
-              ...fulfilledGetPerson,
-              ...fulfilledGetLoependeVedtak75Ufoeregrad,
-            },
-          },
+        mockResponse('/v4/vedtak/loepende-vedtak', {
+          json: {
+            harLoependeVedtak: true,
+            ufoeretrygd: { grad: 75 },
+          } satisfies LoependeVedtak,
+        })
+        vi.spyOn(store, 'getState').mockImplementation(() => ({
+          // @ts-ignore
+          api: { queries: { mock: 'mock' } },
+          session: { isLoggedIn: true, hasErApotekerError: false },
           userInput: { ...userInputInitialState, afp: 'ja_offentlig' },
         }))
         const router = createMemoryRouter(routes, {
@@ -587,6 +515,9 @@ describe('routes', () => {
         })
         render(<RouterProvider router={router} />, {
           hasRouter: false,
+          preloadedState: {
+            session: { isLoggedIn: false, hasErApotekerError: false },
+          },
         })
         await waitFor(() => {
           expect(open).toHaveBeenCalledWith(
@@ -597,8 +528,10 @@ describe('routes', () => {
       })
 
       it('redirigerer til /start når brukeren prøver å aksessere steget med direkte url', async () => {
-        store.getState = vi.fn().mockImplementation(() => ({
+        vi.spyOn(store, 'getState').mockImplementation(() => ({
+          // @ts-ignore
           api: {},
+          session: { isLoggedIn: true, hasErApotekerError: false },
           userInput: { ...userInputInitialState },
         }))
         const router = createMemoryRouter(routes, {
@@ -614,21 +547,12 @@ describe('routes', () => {
       })
 
       it('Gitt at brukeren ikke mottar uføretrygd og har valgt AFP offentlig, når hen kommer fra stegvisningen, vises steget', async () => {
-        store.getState = vi.fn().mockImplementation(() => ({
+        vi.spyOn(store, 'getState').mockImplementation(() => ({
           api: {
-            queries: {
-              ['getLoependeVedtak(undefined)']: {
-                status: 'fulfilled',
-                endpointName: 'getLoependeVedtak',
-                requestId: 't1wLPiRKrfe_vchftk8s8',
-                data: {
-                  ufoeretrygd: { grad: 0 },
-                } satisfies LoependeVedtak,
-                startedTimeStamp: 1714725797072,
-                fulfilledTimeStamp: 1714725797669,
-              },
-            },
+            // @ts-ignore
+            queries: { ...fulfilledGetLoependeVedtak0Ufoeregrad },
           },
+          session: { isLoggedIn: true, hasErApotekerError: false },
           userInput: {
             ...userInputInitialState,
             afp: 'ja_offentlig',
@@ -660,6 +584,9 @@ describe('routes', () => {
         })
         render(<RouterProvider router={router} />, {
           hasRouter: false,
+          preloadedState: {
+            session: { isLoggedIn: false, hasErApotekerError: false },
+          },
         })
         await waitFor(() => {
           expect(open).toHaveBeenCalledWith(
@@ -682,10 +609,10 @@ describe('routes', () => {
       })
 
       it('viser steget når brukeren kommer til steget gjennom stegvisningen', async () => {
-        store.getState = vi.fn().mockImplementation(() => ({
-          api: {
-            ...fakeApiCalls,
-          },
+        vi.spyOn(store, 'getState').mockImplementation(() => ({
+          // @ts-ignore
+          api: { ...fakeApiCalls },
+          session: { isLoggedIn: true, hasErApotekerError: false },
           userInput: { ...userInputInitialState },
         }))
         const router = createMemoryRouter(routes, {
@@ -714,6 +641,9 @@ describe('routes', () => {
         })
         render(<RouterProvider router={router} />, {
           hasRouter: false,
+          preloadedState: {
+            session: { isLoggedIn: false, hasErApotekerError: false },
+          },
         })
         await waitFor(() => {
           expect(open).toHaveBeenCalledWith(
@@ -723,8 +653,10 @@ describe('routes', () => {
         })
       })
       it('redirigerer til /start når brukeren prøver å aksessere steget med direkte url', async () => {
-        store.getState = vi.fn().mockImplementation(() => ({
+        vi.spyOn(store, 'getState').mockImplementation(() => ({
+          // @ts-ignore
           api: {},
+          session: { isLoggedIn: true, hasErApotekerError: false },
           userInput: { ...userInputInitialState },
         }))
         const router = createMemoryRouter(routes, {
@@ -739,12 +671,10 @@ describe('routes', () => {
         ).toBeInTheDocument()
       })
       it('viser uventet feil når brukeren kommer til steget gjennom stegvisningen', async () => {
-        store.getState = vi.fn().mockImplementation(() => ({
-          api: {
-            queries: {
-              ...fakeApiCalls,
-            },
-          },
+        vi.spyOn(store, 'getState').mockImplementation(() => ({
+          // @ts-ignore
+          api: { ...fakeApiCalls },
+          session: { isLoggedIn: true, hasErApotekerError: false },
           userInput: { ...userInputInitialState },
         }))
         const router = createMemoryRouter(routes, {
@@ -773,6 +703,9 @@ describe('routes', () => {
         })
         render(<RouterProvider router={router} />, {
           hasRouter: false,
+          preloadedState: {
+            session: { isLoggedIn: false, hasErApotekerError: false },
+          },
         })
         await waitFor(() => {
           expect(open).toHaveBeenCalledWith(
@@ -782,8 +715,10 @@ describe('routes', () => {
         })
       })
       it('redirigerer til /start når brukeren prøver å aksessere steget med direkte url', async () => {
-        store.getState = vi.fn().mockImplementation(() => ({
+        vi.spyOn(store, 'getState').mockImplementation(() => ({
+          // @ts-ignore
           api: {},
+          session: { isLoggedIn: true, hasErApotekerError: false },
           userInput: { ...userInputInitialState },
         }))
         const router = createMemoryRouter(routes, {
@@ -799,15 +734,21 @@ describe('routes', () => {
       })
 
       it('viser beregningen når brukeren kommer til steget gjennom stegvisningen', async () => {
-        store.getState = vi.fn().mockImplementation(() => ({
+        vi.spyOn(store, 'getState').mockImplementation(() => ({
           api: {
+            // @ts-ignore
             queries: {
-              ...fakeApiCalls,
               ...fulfilledGetPerson,
               ...fulfilledGetLoependeVedtak0Ufoeregrad,
             },
           },
-          userInput: { ...userInputInitialState },
+          session: { isLoggedIn: true, hasErApotekerError: false },
+          userInput: {
+            ...userInputInitialState,
+            currentSimulation: {
+              ...userInputInitialState.currentSimulation,
+            },
+          },
         }))
         const router = createMemoryRouter(routes, {
           basename: BASE_PATH,
@@ -819,11 +760,11 @@ describe('routes', () => {
             api: {
               // @ts-ignore
               queries: {
-                ...fakeApiCalls,
                 ...fulfilledGetPerson,
                 ...fulfilledGetLoependeVedtak0Ufoeregrad,
               },
             },
+            session: { isLoggedIn: true, hasErApotekerError: false },
             userInput: {
               ...userInputInitialState,
               currentSimulation: {
@@ -833,14 +774,12 @@ describe('routes', () => {
           },
         })
 
-        await waitFor(async () => {
-          expect(
-            screen.queryByTestId('uttaksalder-loader')
-          ).not.toBeInTheDocument()
-          expect(
-            await screen.findByText('velguttaksalder.title')
-          ).toBeInTheDocument()
-        })
+        expect(
+          await screen.findByText('velguttaksalder.title')
+        ).toBeInTheDocument()
+        expect(
+          screen.queryByTestId('uttaksalder-loader')
+        ).not.toBeInTheDocument()
       })
     })
 
@@ -857,6 +796,9 @@ describe('routes', () => {
         })
         render(<RouterProvider router={router} />, {
           hasRouter: false,
+          preloadedState: {
+            session: { isLoggedIn: false, hasErApotekerError: false },
+          },
         })
         await waitFor(() => {
           expect(open).toHaveBeenCalledWith(
@@ -866,8 +808,10 @@ describe('routes', () => {
         })
       })
       it('redirigerer til /start når brukeren prøver å aksessere steget med direkte url', async () => {
-        store.getState = vi.fn().mockImplementation(() => ({
+        vi.spyOn(store, 'getState').mockImplementation(() => ({
+          // @ts-ignore
           api: {},
+          session: { isLoggedIn: true, hasErApotekerError: false },
           userInput: { ...userInputInitialState },
         }))
         const router = createMemoryRouter(routes, {
@@ -883,15 +827,23 @@ describe('routes', () => {
       })
 
       it('viser beregningen når brukeren kommer til steget gjennom stegvisningen', async () => {
-        store.getState = vi.fn().mockImplementation(() => ({
+        vi.spyOn(store, 'getState').mockImplementation(() => ({
           api: {
+            // @ts-ignore
             queries: {
-              ...fakeApiCalls,
               ...fulfilledGetPerson,
               ...fulfilledGetLoependeVedtak0Ufoeregrad,
             },
           },
-          userInput: { ...userInputInitialState },
+          session: { isLoggedIn: true, hasErApotekerError: false },
+          userInput: {
+            ...userInputInitialState,
+            samtykke: true,
+            afp: 'ja_privat',
+            currentSimulation: {
+              ...userInputInitialState.currentSimulation,
+            },
+          },
         }))
         const router = createMemoryRouter(routes, {
           basename: BASE_PATH,
@@ -903,11 +855,11 @@ describe('routes', () => {
             api: {
               // @ts-ignore
               queries: {
-                ...fakeApiCalls,
                 ...fulfilledGetPerson,
                 ...fulfilledGetLoependeVedtak0Ufoeregrad,
               },
             },
+            session: { isLoggedIn: true, hasErApotekerError: false },
             userInput: {
               ...userInputInitialState,
               samtykke: true,

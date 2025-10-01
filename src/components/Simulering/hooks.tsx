@@ -1,6 +1,3 @@
-import React from 'react'
-import { useIntl } from 'react-intl'
-
 import Highcharts, {
   Chart,
   Point,
@@ -8,19 +5,27 @@ import Highcharts, {
   SeriesOptionsType,
 } from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
+import React from 'react'
+import { useIntl } from 'react-intl'
 
-import { transformFoedselsdatoToAlder } from '@/utils/alder'
-import { getAlderMinus1Maaned } from '@/utils/alder'
+import { useAppDispatch, useAppSelector } from '@/state/hooks'
+import { userInputActions } from '@/state/userInput/userInputSlice'
+import {
+  getAlderMinus1Maaned,
+  transformFoedselsdatoToAlder,
+} from '@/utils/alder'
 import { formatInntektToNumber } from '@/utils/inntekt'
 
 import { SERIES_DEFAULT } from './constants'
 import {
-  getChartDefaults,
   generateXAxis,
-  processInntektArray,
-  processPensjonsberegningArray,
+  getChartDefaults,
   processAfpPensjonsberegningArray,
+  processInntektArray,
   processPensjonsavtalerArray,
+  processPensjonsberegningArray,
+  processPensjonsberegningArrayForKap19,
+  processPre2025OffentligAfpPensjonsberegningArray,
 } from './utils'
 import { getChartOptions, onPointUnclick } from './utils-highcharts'
 
@@ -37,8 +42,9 @@ export const useSimuleringChartLocalState = (initialValues: {
   aarligInntektVsaHelPensjon?: AarligInntektVsaPensjon
   isLoading: boolean
   alderspensjonListe?: AlderspensjonPensjonsberegning[]
-  afpPrivatListe?: AfpPrivatPensjonsberegning[]
-  afpOffentligListe?: AfpPrivatPensjonsberegning[]
+  pre2025OffentligAfp?: AfpEtterfulgtAvAlderspensjon
+  afpPrivatListe?: AfpPensjonsberegning[]
+  afpOffentligListe?: AfpPensjonsberegning[]
   pensjonsavtaler: {
     isLoading: boolean
     data?: {
@@ -51,6 +57,8 @@ export const useSimuleringChartLocalState = (initialValues: {
     data?: OffentligTp
   }
 }) => {
+  const dispatch = useAppDispatch()
+  const xAxis = useAppSelector((state) => state.userInput.xAxis)
   const {
     styles,
     chartRef,
@@ -62,6 +70,7 @@ export const useSimuleringChartLocalState = (initialValues: {
     aarligInntektVsaHelPensjon,
     isLoading,
     alderspensjonListe,
+    pre2025OffentligAfp,
     afpPrivatListe,
     afpOffentligListe,
     pensjonsavtaler,
@@ -75,13 +84,27 @@ export const useSimuleringChartLocalState = (initialValues: {
     offentligTpData?.simulertTjenestepensjon?.simuleringsresultat
       .utbetalingsperioder
   const intl = useIntl()
-  const [XAxis, setXAxis] = React.useState<string[]>([])
+
   const [showVisFlereAarButton, setShowVisFlereAarButton] =
     React.useState<boolean>(false)
   const [showVisFaerreAarButton, setShowVisFaerreAarButton] =
     React.useState<boolean>(false)
   const [isPensjonsavtaleFlagVisible, setIsPensjonsavtaleFlagVisible] =
     React.useState<boolean>(false)
+
+  const pre2025OffentligAfpListe: AfpPensjonsberegning[] = pre2025OffentligAfp
+    ? Array.from(
+        Array(67 - pre2025OffentligAfp.alderAar).keys(),
+        (_, index) => ({
+          alder: pre2025OffentligAfp.alderAar + index,
+          beloep:
+            index === 0
+              ? pre2025OffentligAfp.totaltAfpBeloep *
+                (12 - (uttaksalder?.maaneder ?? 0))
+              : pre2025OffentligAfp.totaltAfpBeloep * 12,
+        })
+      )
+    : []
 
   const [chartOptions, setChartOptions] = React.useState<Highcharts.Options>(
     getChartOptions(
@@ -114,7 +137,7 @@ export const useSimuleringChartLocalState = (initialValues: {
     }
   }, [isLoading, isPensjonsavtalerLoading, isOffentligTpLoading])
 
-  // Calculates the length of the x-axis, once at first and every time uttakalder or pensjonsavtaler is updated
+  // Update the useEffect that calculates x-axis length
   React.useEffect(() => {
     const startAar =
       isEndring && foedselsdato
@@ -126,32 +149,29 @@ export const useSimuleringChartLocalState = (initialValues: {
     if (startAar) {
       // recalculates temporary without pensjonsavtaler when alderspensjon is ready but not pensjonsavtaler or offentligTp
       if (!isLoading && (isPensjonsavtalerLoading || isOffentligTpLoading)) {
-        setXAxis(
-          generateXAxis(
-            startAar,
-            isEndring,
-            [],
-            offentligTpUtbetalingsperioder
-              ? [...offentligTpUtbetalingsperioder]
-              : [],
-
-            setIsPensjonsavtaleFlagVisible
-          )
+        const newXAxis = generateXAxis(
+          startAar,
+          isEndring,
+          [],
+          offentligTpUtbetalingsperioder
+            ? [...offentligTpUtbetalingsperioder]
+            : [],
+          setIsPensjonsavtaleFlagVisible
         )
+        dispatch(userInputActions.setXAxis(newXAxis))
       }
-      // recalculates correclty when alderspensjon AND pensjonsavtaler AND offentligTp are done loading
+      // recalculates correctly when alderspensjon AND pensjonsavtaler AND offentligTp are done loading
       if (!isLoading && !isPensjonsavtalerLoading && !isOffentligTpLoading) {
-        setXAxis(
-          generateXAxis(
-            startAar,
-            isEndring,
-            pensjonsavtalerData?.avtaler ?? [],
-            offentligTpUtbetalingsperioder
-              ? [...offentligTpUtbetalingsperioder]
-              : [],
-            setIsPensjonsavtaleFlagVisible
-          )
+        const newXAxis = generateXAxis(
+          startAar,
+          isEndring,
+          pensjonsavtalerData?.avtaler ?? [],
+          offentligTpUtbetalingsperioder
+            ? [...offentligTpUtbetalingsperioder]
+            : [],
+          setIsPensjonsavtaleFlagVisible
         )
+        dispatch(userInputActions.setXAxis(newXAxis))
       }
     }
   }, [
@@ -161,6 +181,16 @@ export const useSimuleringChartLocalState = (initialValues: {
     offentligTpUtbetalingsperioder,
     isOffentligTpLoading,
   ])
+
+  // Maintain x-axis values during loading states
+  React.useEffect(() => {
+    if (
+      (isLoading || isPensjonsavtalerLoading || isOffentligTpLoading) &&
+      xAxis.length > 0
+    ) {
+      dispatch(userInputActions.setXAxis(xAxis))
+    }
+  }, [isLoading, isPensjonsavtalerLoading, isOffentligTpLoading])
 
   // Redraws the graph when the x-axis has changed
   React.useEffect(() => {
@@ -178,7 +208,7 @@ export const useSimuleringChartLocalState = (initialValues: {
 
     if (startAar && startMaaned !== undefined && alderspensjonListe) {
       setChartOptions({
-        ...getChartDefaults(XAxis),
+        ...getChartDefaults(xAxis),
         series: [
           ...(aarligInntektFoerUttakBeloep != '0' ||
           gradertUttaksperiode?.aarligInntektVsaPensjonBeloep ||
@@ -198,7 +228,12 @@ export const useSimuleringChartLocalState = (initialValues: {
                       gradertUttaksperiode && uttaksalder
                         ? {
                             fra: gradertUttaksperiode?.uttaksalder,
-                            til: getAlderMinus1Maaned(uttaksalder),
+                            til:
+                              // Vis inntekt ved siden av pre2025 offentlig AFP frem til 67
+                              pre2025OffentligAfp &&
+                              gradertUttaksperiode.aarligInntektVsaPensjonBeloep
+                                ? getAlderMinus1Maaned({ aar: 67, maaneder: 0 })
+                                : getAlderMinus1Maaned(uttaksalder),
                             beloep: formatInntektToNumber(
                               gradertUttaksperiode?.aarligInntektVsaPensjonBeloep
                             ),
@@ -217,8 +252,25 @@ export const useSimuleringChartLocalState = (initialValues: {
                           ),
                         }
                       : undefined,
-                    xAxisLength: XAxis.length,
+                    xAxisLength: xAxis.length,
                   }),
+                } as SeriesOptionsType,
+              ]
+            : []),
+
+          ...(pre2025OffentligAfp
+            ? [
+                {
+                  ...SERIES_DEFAULT.SERIE_AFP,
+                  name: intl.formatMessage({
+                    id: SERIES_DEFAULT.SERIE_AFP.name,
+                  }),
+                  /* c8 ignore next 1 */
+                  data: processPre2025OffentligAfpPensjonsberegningArray(
+                    pre2025OffentligAfpListe.length - 1,
+                    pre2025OffentligAfpListe,
+                    isEndring
+                  ),
                 } as SeriesOptionsType,
               ]
             : []),
@@ -232,7 +284,7 @@ export const useSimuleringChartLocalState = (initialValues: {
                   /* c8 ignore next 1 */
                   data: processAfpPensjonsberegningArray(
                     isEndring ? startAar : startAar - 1,
-                    XAxis.length,
+                    xAxis.length,
                     afpPrivatListe,
                     isEndring
                   ),
@@ -249,7 +301,7 @@ export const useSimuleringChartLocalState = (initialValues: {
                   /* c8 ignore next 1 */
                   data: processAfpPensjonsberegningArray(
                     isEndring ? startAar : startAar - 1,
-                    XAxis.length,
+                    xAxis.length,
                     afpOffentligListe,
                     isEndring
                   ),
@@ -271,7 +323,7 @@ export const useSimuleringChartLocalState = (initialValues: {
                   /* c8 ignore next 1 */
                   data: processPensjonsavtalerArray(
                     isEndring ? startAar : startAar - 1,
-                    XAxis.length,
+                    xAxis.length,
                     pensjonsavtalerData?.avtaler ?? [],
                     offentligTpData?.simulertTjenestepensjon
                       ?.simuleringsresultat.utbetalingsperioder ?? []
@@ -284,16 +336,23 @@ export const useSimuleringChartLocalState = (initialValues: {
             name: intl.formatMessage({
               id: SERIES_DEFAULT.SERIE_ALDERSPENSJON.name,
             }),
-            data: processPensjonsberegningArray(
-              alderspensjonListe,
-              isEndring,
-              XAxis.length
-            ),
+            data: pre2025OffentligAfpListe
+              ? processPensjonsberegningArrayForKap19(
+                  alderspensjonListe,
+                  isEndring,
+                  xAxis.length,
+                  startAar
+                )
+              : processPensjonsberegningArray(
+                  alderspensjonListe,
+                  isEndring,
+                  xAxis.length
+                ),
           } as SeriesOptionsType,
         ],
       })
     }
-  }, [XAxis])
+  }, [xAxis])
 
   return [
     chartOptions,
@@ -366,7 +425,7 @@ export const useHighchartsRegressionPlugin = () => {
         column: Column
       }
     }
-    /* eslint-disable @typescript-eslint/ban-ts-comment */
+    /* eslint-disable @typescript-eslint/ban-ts-comment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
     ;(function (H: ExtendedHighchartsType) {
       const { isArray, fireEvent, seriesTypes } = H
 
@@ -414,7 +473,7 @@ export const useHighchartsRegressionPlugin = () => {
                 ? [point.dataLabel]
                 : []
             if (point.graphic) {
-              // @ts-ignore
+              // @ts-expect-error
               point.graphic.element.point = point
             }
             dataLabels.forEach(function (dataLabel) {
@@ -424,10 +483,10 @@ export const useHighchartsRegressionPlugin = () => {
           // Add the event listeners, we need to do this only once
           if (!series._hasTracking) {
             series.trackerGroups.forEach(function (key) {
-              // @ts-ignore
+              // @ts-expect-error
               if (series[key]) {
                 // We don't always have dataLabelsGroup
-                // @ts-ignore
+                // @ts-expect-error
                 series[key]
                   .addClass('highcharts-tracker')
                   .on('mouseover', onMouseOver)
@@ -436,7 +495,7 @@ export const useHighchartsRegressionPlugin = () => {
                   })
                   .on('touchstart', onMouseOver)
                 if (!chart.styledMode && series.options.cursor) {
-                  // @ts-ignore
+                  // @ts-expect-error
                   series[key].css({ cursor: series.options.cursor })
                 }
               }
@@ -447,6 +506,6 @@ export const useHighchartsRegressionPlugin = () => {
         }
       }
     })(Highcharts)
-    /* eslint-enable @typescript-eslint/ban-ts-comment */
+    /* eslint-enable @typescript-eslint/ban-ts-comment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
   }, [])
 }

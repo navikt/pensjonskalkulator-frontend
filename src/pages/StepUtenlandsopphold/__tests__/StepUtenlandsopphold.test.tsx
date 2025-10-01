@@ -1,12 +1,13 @@
 import { describe, it, vi } from 'vitest'
 
-import { StepUtenlandsopphold } from '..'
 import { fulfilledGetLoependeVedtak0Ufoeregrad } from '@/mocks/mockedRTKQueryApiCalls'
 import { mockResponse } from '@/mocks/server'
 import { paths } from '@/router/constants'
 import { apiSlice } from '@/state/api/apiSlice'
 import { userInputInitialState } from '@/state/userInput/userInputSlice'
-import { screen, render, userEvent } from '@/test-utils'
+import { render, screen, userEvent } from '@/test-utils'
+
+import { StepUtenlandsopphold } from '..'
 
 const navigateMock = vi.fn()
 vi.mock(import('react-router'), async (importOriginal) => {
@@ -89,8 +90,8 @@ describe('StepUtenlandsopphold', () => {
     expect(navigateMock).toHaveBeenCalledWith(paths.afp)
   })
 
-  it('nullstiller input fra brukeren og navigerer tilbake til /sivilstand når brukeren klikker på Tilbake', async () => {
-    mockResponse('/v4/person', {
+  it('nullstiller input fra brukeren og navigerer når brukeren klikker på Tilbake', async () => {
+    mockResponse('/v5/person', {
       status: 200,
       json: {
         navn: 'Ola',
@@ -105,6 +106,10 @@ describe('StepUtenlandsopphold', () => {
             aar: 62,
             maaneder: 0,
           },
+          oevreAldersgrense: {
+            aar: 75,
+            maaneder: 0,
+          },
         },
       },
     })
@@ -116,12 +121,16 @@ describe('StepUtenlandsopphold', () => {
         userInput: { ...userInputInitialState, harUtenlandsopphold: null },
       },
     })
-    store.dispatch(apiSlice.endpoints.getPerson.initiate())
+    await store.dispatch(apiSlice.endpoints.getPerson.initiate())
     const radioButtons = await screen.findAllByRole('radio')
     await user.click(radioButtons[0])
     expect(radioButtons[0]).toBeChecked()
     await user.click(await screen.findByText('stegvisning.tilbake'))
     expect(store.getState().userInput.harUtenlandsopphold).toBeNull()
-    expect(navigateMock).toHaveBeenCalledWith(paths.sivilstand)
+    expect(navigateMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        search: expect.stringContaining('back=true') as string,
+      })
+    )
   })
 })

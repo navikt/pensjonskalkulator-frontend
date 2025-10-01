@@ -16,17 +16,17 @@ describe('Avansert', () => {
         )
       })
 
-      it('forventer også å kunne gå til Avansert fra «Uttaksgrad» og «Inntekt frem til uttak» i Grunnlaget.', () => {
+      it('forventer også å kunne gå til Avansert fra «Alderspensjon (Nav)» og «Pensjonsgivende inntekt frem til uttak» i Grunnlaget.', () => {
         cy.contains('button', '70').click()
-        cy.contains('Uttaksgrad:').click({ force: true })
-        cy.contains('Gå til avansert kalkulator').click({ force: true })
+        cy.contains('Alderspensjon (Nav)')
+        cy.contains('avansert kalkulator').click({ force: true })
         cy.contains('Pensjonsgivende årsinntekt frem til pensjon').should(
           'exist'
         )
         cy.contains('Enkel').click()
         cy.contains('button', '70').click()
-        cy.contains('Inntekt frem til uttak:').click({ force: true })
-        cy.contains('Gå til avansert kalkulator').click({ force: true })
+        cy.contains('Pensjonsgivende inntekt frem til uttak')
+        cy.contains('avansert kalkulator').click({ force: true })
         cy.contains('Pensjonsgivende årsinntekt frem til pensjon').should(
           'exist'
         )
@@ -86,9 +86,9 @@ describe('Avansert', () => {
           '[data-testid="age-picker-uttaksalder-helt-uttak-maaneder"]'
         ).then((selectElements) => {
           const options = selectElements.find('option')
-          expect(options.length).equal(13)
-          expect(options.eq(1).text()).equal('0 md. (mai)')
-          expect(options.eq(12).text()).equal('11 md. (apr.)')
+          expect(options.length).equal(12)
+          expect(options.eq(0).text()).equal('0 md. (mai)')
+          expect(options.eq(11).text()).equal('11 md. (apr.)')
         })
         cy.get('[data-testid="age-picker-uttaksalder-helt-uttak-aar"]').select(
           '75'
@@ -97,8 +97,8 @@ describe('Avansert', () => {
           '[data-testid="age-picker-uttaksalder-helt-uttak-maaneder"]'
         ).then((selectElements) => {
           const options = selectElements.find('option')
-          expect(options.length).equal(2)
-          expect(options.eq(1).text()).equal('0 md. (mai)')
+          expect(options.length).equal(1)
+          expect(options.eq(0).text()).equal('0 md. (mai)')
         })
       })
 
@@ -182,7 +182,7 @@ describe('Avansert', () => {
         ).should('not.exist')
       })
 
-      it('forventer jeg kunne forlate siden med tilbakeknappog gå tilbake til Enkel.', () => {
+      it('forventer jeg kunne forlate siden med tilbakeknapp og gå tilbake til Enkel.', () => {
         cy.go('back')
         cy.contains(
           'Beregningen din viser at du kan ta ut 100 % alderspensjon fra du er'
@@ -229,9 +229,9 @@ describe('Avansert', () => {
           '[data-testid="age-picker-inntekt-vsa-helt-uttak-slutt-alder-maaneder"]'
         ).then((selectElements) => {
           const options = selectElements.find('option')
-          expect(options.length).equal(9)
-          expect(options.eq(1).text()).equal('4 md. (sep.)')
-          expect(options.eq(8).text()).equal('11 md. (apr.)')
+          expect(options.length).equal(8)
+          expect(options.eq(0).text()).equal('4 md. (sep.)')
+          expect(options.eq(7).text()).equal('11 md. (apr.)')
         })
         cy.get(
           '[data-testid="age-picker-inntekt-vsa-helt-uttak-slutt-alder-aar"]'
@@ -240,9 +240,9 @@ describe('Avansert', () => {
           '[data-testid="age-picker-inntekt-vsa-helt-uttak-slutt-alder-maaneder"]'
         ).then((selectElements) => {
           const options = selectElements.find('option')
-          expect(options.length).equal(13)
-          expect(options.eq(1).text()).equal('0 md. (mai)')
-          expect(options.eq(12).text()).equal('11 md. (apr.)')
+          expect(options.length).equal(12)
+          expect(options.eq(0).text()).equal('0 md. (mai)')
+          expect(options.eq(11).text()).equal('11 md. (apr.)')
         })
         cy.get(
           '[data-testid="age-picker-inntekt-vsa-helt-uttak-slutt-alder-maaneder"]'
@@ -250,21 +250,12 @@ describe('Avansert', () => {
 
         cy.contains('Beregn pensjon').click()
         cy.contains('Beregning').should('exist')
-        cy.contains('Valgene dine').click({ force: true })
-        cy.contains('65 år og 3 md. (01.08.2028)').should('exist')
-        cy.contains('Alderspensjon: 100 %').should('exist')
-        cy.contains(
-          'Pensjonsgivende årsinntekt t.o.m. 75 år og 3 md.: 100 000 kr før skatt'
-        ).should('exist')
       })
 
       it('forventer jeg å kunne svare nei på spørsmål om inntekt vsa. 100 % alderspensjon og beregne pensjon.', () => {
         cy.get('[data-testid="inntekt-vsa-helt-uttak-radio-nei"]').check()
         cy.contains('Beregn pensjon').click()
         cy.contains('Beregning').should('exist')
-        cy.contains('Valgene dine').click({ force: true })
-        cy.contains('65 år og 3 md. (01.08.2028)').should('exist')
-        cy.contains('Alderspensjon: 100 %').should('exist')
       })
 
       it('forventer jeg å få varsel om at min beregning ikke blir lagret dersom jeg forlater siden med tilbakeknapp etter å ha begynt utfyllingen.', () => {
@@ -314,9 +305,9 @@ describe('Avansert', () => {
           '[data-testid="age-picker-uttaksalder-helt-uttak-maaneder"]'
         ).then((selectElements) => {
           const options = selectElements.find('option')
-          expect(options.length).equal(13)
-          expect(options.eq(1).text()).equal('0 md. (mai)')
-          expect(options.eq(12).text()).equal('11 md. (apr.)')
+          expect(options.length).equal(12)
+          expect(options.eq(0).text()).equal('0 md. (mai)')
+          expect(options.eq(11).text()).equal('11 md. (apr.)')
         })
         cy.get('[data-testid="age-picker-uttaksalder-helt-uttak-aar"]').select(
           '75'
@@ -325,8 +316,8 @@ describe('Avansert', () => {
           '[data-testid="age-picker-uttaksalder-helt-uttak-maaneder"]'
         ).then((selectElements) => {
           const options = selectElements.find('option')
-          expect(options.length).equal(2)
-          expect(options.eq(1).text()).equal('0 md. (mai)')
+          expect(options.length).equal(1)
+          expect(options.eq(0).text()).equal('0 md. (mai)')
         })
       })
 
@@ -599,29 +590,47 @@ describe('Avansert', () => {
         cy.contains('Vis mindre').should('exist')
       })
 
-      it('forventer jeg å få informasjon om øvrig grunnlag for beregningen uten "Uttaksgrad" og "Inntekt".', () => {
+      it('forventer jeg å få informasjon om pensjonen min for beregningen uten "Inntekt".', () => {
         cy.contains('Beregning').should('exist')
-        cy.contains('Øvrig grunnlag for beregningen').should('exist')
-        cy.contains('Uttaksgrad:').should('not.exist')
+        cy.contains('Om pensjonen din').should('exist')
         cy.contains('Inntekt frem til uttak:').should('not.exist')
         cy.contains('Sivilstand:').click({ force: true })
         cy.contains('Opphold utenfor Norge:').click({ force: true })
         cy.contains('AFP:').click({ force: true })
       })
 
-      it('forventer jeg ett resultatkort hvor jeg ser mine valg og kan endre mine valg.', () => {
+      it('forventer jeg en månedlig oversikt over pensjon ved uttaksmåneden', () => {
         cy.contains('Beregning').should('exist')
-        cy.contains('Valgene dine').click({ force: true })
-        cy.contains('62 år og 3 md. (01.08.2025)').should('exist')
-        cy.contains('Alderspensjon: 40 %').should('exist')
-        cy.contains('Pensjonsgivende årsinntekt: 300 000 kr før skatt').should(
+        cy.contains('Månedlig pensjon').should('exist')
+        cy.contains('Ved 62 år og 3 måneder').should('exist')
+        cy.contains('AFP (avtalefestet pensjon)').should('exist')
+        cy.contains('Alderspensjon (Nav) 40 %').should('exist')
+        cy.contains('Sum pensjon').should('exist')
+      })
+
+      it('ved gradert uttak forventer jeg en månedlig oversikt over pensjon både ved gradert uttak og helt uttak', () => {
+        cy.contains('Beregning').should('exist')
+        cy.contains('Månedlig pensjon').should('exist')
+        cy.contains('Ved 67 år').should('exist')
+        cy.contains('AFP (avtalefestet pensjon)').should('exist')
+        cy.contains('Alderspensjon (Nav) 100 %').should('exist')
+        cy.contains('Sum pensjon').should('exist')
+      })
+
+      it('forventer jeg en lenke for å "endre avanserte valg"', () => {
+        cy.contains('Endre avanserte valg').should('exist')
+        cy.contains('Endre avanserte valg').click({ force: true })
+        cy.contains('Pensjonsgivende årsinntekt frem til pensjon').should(
           'exist'
         )
-        cy.contains('67 år (01.05.2030)').should('exist')
-        cy.contains('Alderspensjon: 100 %').should('exist')
-        cy.contains(
-          'Pensjonsgivende årsinntekt til 75 år: 100 000 kr før skatt'
+        cy.get('[data-testid="inntekt-textfield"]').should('exist')
+        cy.get('[data-testid="age-picker-uttaksalder-helt-uttak-aar"]').should(
+          'exist'
+        )
+        cy.get(
+          '[data-testid="age-picker-uttaksalder-helt-uttak-maaneder"]'
         ).should('exist')
+        cy.get('[data-testid="uttaksgrad"]').should('exist')
       })
     })
 
@@ -723,18 +732,6 @@ describe('Avansert', () => {
           '[data-testid="age-picker-inntekt-vsa-helt-uttak-slutt-alder-maaneder"]'
         ).select('6')
         cy.contains('Oppdater pensjon').click()
-
-        cy.contains('Valgene dine').click({ force: true })
-        cy.contains('Pensjonsgivende årsinntekt: 550 000 kr før skatt').should(
-          'exist'
-        )
-        cy.contains('65 år og 5 md. (01.10.2028)').should('exist')
-        cy.contains('Alderspensjon: 20 %').should('exist')
-        cy.contains('68 år og 8 md. (01.01.2032)').should('exist')
-        cy.contains('Alderspensjon: 100 %').should('exist')
-        cy.contains(
-          'Pensjonsgivende årsinntekt t.o.m. 70 år og 6 md.: 150 000 kr før skatt'
-        ).should('exist')
       })
 
       it('forventer jeg å kunne nullstille mine valg.', () => {

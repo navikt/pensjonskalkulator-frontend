@@ -12,18 +12,24 @@
   }
 }
 
-.background {
-  display: inline-block;
-  width: 100%;
-  left: 0;
-  right: 0;
+.intro {
+  margin-bottom: var(--a-spacing-10);
+  max-width: variables.$container-max-width;
 
-  &__lightblue {
-    background-color: var(--a-deepblue-50);
+  &__endring {
+    margin-bottom: var(--a-spacing-3);
+  }
+
+  &Title {
+    margin-bottom: var(--a-spacing-1);
   }
 }
 
 .link {
   margin-top: var(--a-spacing-2);
   margin-bottom: var(--a-spacing-4);
+}
+
+.guidePanel {
+  margin-bottom: var(--a-spacing-8);
 }

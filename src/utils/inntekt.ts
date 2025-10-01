@@ -55,7 +55,7 @@ export const validateInntekt = (
           'inntekt.endre_inntekt_modal.textfield.validation_error.type'
       )
     }
-  } else if (parseInt((input as string).replace(/\D+/g, ''), 10) > 100000000) {
+  } else if (parseInt(input.replace(/\D+/g, ''), 10) > 100000000) {
     isValid = false
     if (updateValidationErrorMessage) {
       updateValidationErrorMessage(
@@ -106,4 +106,16 @@ export const updateAndFormatInntektFromInputField = (
     updateInntekt(inntekt)
     updateValidationErrors('')
   }
+}
+
+export const formatInntektMedKr = (amount?: number): string => {
+  if (amount === undefined || amount === null) {
+    return ''
+  }
+
+  return `${formatInntekt(amount)}\u00A0kr`
+}
+
+export const formatDecimalWithComma = (value: number): string => {
+  return value.toString().replace('.', ',')
 }

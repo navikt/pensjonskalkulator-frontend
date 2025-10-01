@@ -1,11 +1,13 @@
 import { describe, it, vi } from 'vitest'
 
-import { Utenlandsopphold } from '..'
-import { mockErrorResponse } from '@/mocks/server'
 import { RootState } from '@/state/store'
-import { userInputActions } from '@/state/userInput/userInputSlice'
-import { userInputInitialState } from '@/state/userInput/userInputSlice'
-import { screen, render, waitFor, userEvent } from '@/test-utils'
+import {
+  userInputActions,
+  userInputInitialState,
+} from '@/state/userInput/userInputSlice'
+import { render, screen, userEvent, waitFor } from '@/test-utils'
+
+import { Utenlandsopphold } from '..'
 
 describe('stegvisning - Utenlandsopphold', () => {
   const onCancelMock = vi.fn()
@@ -38,43 +40,6 @@ describe('stegvisning - Utenlandsopphold', () => {
       expect(screen.getByTestId('hva_er_opphold_utenfor_norge')).toBeVisible()
       expect(
         screen.getByTestId('betydning_av_opphold_utenfor_norge')
-      ).toBeVisible()
-    })
-
-    expect(
-      screen.queryByText('stegvisning.utenlandsopphold.ingress.bottom')
-    ).not.toBeInTheDocument()
-  })
-
-  it('rendrer slik den skal når tekstene fra sanity ikke skal brukes', async () => {
-    mockErrorResponse('/feature/pensjonskalkulator.hent-tekster-fra-sanity')
-    render(
-      <Utenlandsopphold
-        harUtenlandsopphold={null}
-        onCancel={onCancelMock}
-        onPrevious={onPreviousMock}
-        onNext={onNextMock}
-      />
-    )
-    expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
-      'stegvisning.utenlandsopphold.title'
-    )
-    expect(
-      screen.getByText('stegvisning.utenlandsopphold.ingress')
-    ).toBeVisible()
-
-    const radioButtons = screen.getAllByRole('radio')
-
-    await waitFor(() => {
-      expect(screen.getAllByRole('radio')).toHaveLength(2)
-      expect(radioButtons[0]).not.toBeChecked()
-      expect(radioButtons[1]).not.toBeChecked()
-
-      expect(
-        screen.getByText('stegvisning.utenlandsopphold.readmore_1.title')
-      ).toBeVisible()
-      expect(
-        screen.getByText('stegvisning.utenlandsopphold.readmore_2.title')
       ).toBeVisible()
     })
 
@@ -197,9 +162,7 @@ describe('stegvisning - Utenlandsopphold', () => {
 
       await user.click(screen.getByText('stegvisning.neste'))
 
-      waitFor(() => {
-        expect(onNextMock).toHaveBeenCalled()
-      })
+      expect(onNextMock).toHaveBeenCalled()
     })
 
     it('viser valideringsteksten i bunnen når harUtenlandsopphold er true og at brukeren ikke har registrert utenlandsperioder, og skjuler den når brukeren setter harUtenlandsopphold til false', async () => {
@@ -303,9 +266,7 @@ describe('stegvisning - Utenlandsopphold', () => {
     const radioButtons = screen.getAllByRole('radio')
     expect(radioButtons[1]).toBeChecked()
     await user.click(screen.getByText('stegvisning.tilbake'))
-    waitFor(() => {
-      expect(onPreviousMock).toHaveBeenCalled()
-    })
+    expect(onPreviousMock).toHaveBeenCalled()
   })
 
   it('kaller onCancelMock når brukeren klikker på Avbryt', async () => {
@@ -320,9 +281,7 @@ describe('stegvisning - Utenlandsopphold', () => {
     )
     expect(screen.getByText('stegvisning.avbryt')).toBeInTheDocument()
     await user.click(screen.getByText('stegvisning.avbryt'))
-    waitFor(() => {
-      expect(onCancelMock).toHaveBeenCalled()
-    })
+    expect(onCancelMock).toHaveBeenCalled()
   })
 
   it('viser ikke avbryt knapp når onCancel ikke er definert', async () => {

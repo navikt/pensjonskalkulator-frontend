@@ -1,7 +1,8 @@
 import { IntlShape } from 'react-intl'
 
-import { onSubmit } from '../utils'
 import * as loggerUtils from '@/utils/logging'
+
+import { onSubmit } from '../utils'
 
 describe('Utenlandsopphold-utils', () => {
   describe('onSubmit', () => {
@@ -14,7 +15,7 @@ describe('Utenlandsopphold-utils', () => {
       const onNextMock = vi.fn()
       const setValidationErrorsMock = vi.fn()
       onSubmit(null, intlMock, setValidationErrorsMock, 0, onNextMock)
-      expect(loggerMock).toHaveBeenCalledWith('skjema validering feilet', {
+      expect(loggerMock).toHaveBeenCalledWith('skjemavalidering feilet', {
         skjemanavn: 'stegvisning-utenlandsopphold',
         data: 'stegvisning.utenlandsopphold.radio_label',
         tekst: 'stegvisning.utenlandsopphold.validation_error',
@@ -28,7 +29,7 @@ describe('Utenlandsopphold-utils', () => {
       const onNextMock = vi.fn()
       const setValidationErrorsMock = vi.fn()
       onSubmit('ja', intlMock, setValidationErrorsMock, 0, onNextMock)
-      expect(loggerMock).toHaveBeenCalledWith('skjema validering feilet', {
+      expect(loggerMock).toHaveBeenCalledWith('skjemavalidering feilet', {
         skjemanavn: 'stegvisning-utenlandsopphold',
         data: 'stegvisning.utenlandsopphold.radio_label',
         tekst: 'stegvisning.utenlandsopphold.mangler_opphold.validation_error',

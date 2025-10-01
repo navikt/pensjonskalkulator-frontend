@@ -1,32 +1,35 @@
+/* eslint-disable import/export */
+import { RenderOptions, render } from '@testing-library/react'
 import React, { PropsWithChildren } from 'react'
 import { IntlProvider } from 'react-intl'
 import { Provider } from 'react-redux'
-import { createBrowserRouter, MemoryRouter, RouterProvider } from 'react-router'
-
-import { createListenerMiddleware } from '@reduxjs/toolkit'
-import { render, RenderOptions } from '@testing-library/react'
+import { MemoryRouter, RouterProvider, createBrowserRouter } from 'react-router'
 
 import { SanityContext } from '@/context/SanityContext'
-import {
-  SanityForbeholdAvsnitt,
-  SanityReadMore,
-} from '@/context/SanityContext/SanityTypes'
 import { authenticationGuard } from '@/router/loaders'
-import { getTranslation_test } from '@/utils/__tests__/test-translations'
+import test_translations from '@/utils/__tests__/test-translations'
 
 import sanityForbeholdAvsnittDataResponse from './mocks/data/sanity-forbehold-avsnitt-data.json' with { type: 'json' }
+import sanityGuidePanelDataResponse from './mocks/data/sanity-guidepanel-data.json' with { type: 'json' }
 import sanityReadMoreDataResponse from './mocks/data/sanity-readmore-data.json' with { type: 'json' }
-import { createUttaksalderListener } from './state/listeners/uttaksalderListener'
+import { apiSlice } from './state/api/apiSlice'
+import { AppStore, RootState, setupStore } from './state/store'
+import translations_nb from './translations/nb'
 import {
-  setupStore,
-  RootState,
-  AppStore,
-  AppStartListening,
-} from './state/store'
-import { getTranslation_nb } from './translations/nb'
+  ForbeholdAvsnittQueryResult,
+  GuidePanelQueryResult,
+  ReadMoreQueryResult,
+} from './types/sanity.types'
+
+type QueryKeys = Parameters<typeof apiSlice.util.upsertQueryData>[0]
 
 interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
   preloadedState?: Partial<RootState>
+  preloadedApiState?: {
+    [Key in QueryKeys]?: Parameters<
+      typeof apiSlice.util.upsertQueryData<Key>
+    >[2]
+  }
   store?: AppStore
   hasRouter?: boolean
   hasLogin?: boolean
@@ -47,9 +50,10 @@ export const swallowErrorsAsync = async (testFn: () => Promise<void>) => {
 }
 
 function generateMockedTranslations() {
-  const nbTranslations: Record<string, string> = getTranslation_nb()
-  const testTranslations: Record<string, string> = getTranslation_test()
-  const translationsInput = { ...nbTranslations, ...testTranslations }
+  const translationsInput: Record<string, string> = {
+    ...translations_nb,
+    ...test_translations,
+  }
   const translations: Record<string, string> = {}
 
   for (const key in translationsInput) {
@@ -73,12 +77,33 @@ export function renderWithProviders(
   ui: React.ReactElement,
   {
     preloadedState = {},
-    store = setupStore(preloadedState, true),
+    preloadedApiState = {},
+    store = setupStore(
+      {
+        // Default to logged-in in tests unless explicitly overridden
+        session: { isLoggedIn: true, hasErApotekerError: false },
+        ...preloadedState,
+      },
+      true
+    ),
     hasRouter = true,
     hasLogin = false,
     ...renderOptions
   }: ExtendedRenderOptions = {}
 ) {
+  const preloadedApiStateEntries = Object.entries(preloadedApiState)
+  if (preloadedApiStateEntries.length) {
+    store.dispatch(
+      apiSlice.util.upsertQueryEntries(
+        preloadedApiStateEntries.map(([key, value]) => ({
+          endpointName: key as QueryKeys,
+          arg: undefined,
+          value,
+        }))
+      )
+    )
+  }
+
   function Wrapper({
     children,
   }: PropsWithChildren<unknown>): React.JSX.Element {
@@ -87,6 +112,7 @@ export function renderWithProviders(
         loader: authenticationGuard,
         path: '/',
         element: children,
+        hydrateFallbackElement: <div />, // For å unngå error "No `HydrateFallback` element provided to render during initial hydration"
       },
     ])
 
@@ -102,12 +128,17 @@ export function renderWithProviders(
           <SanityContext.Provider
             value={{
               readMoreData: Object.fromEntries(
+                (sanityReadMoreDataResponse.result as ReadMoreQueryResult).map(
+                  (readmore) => [readmore.name, readmore]
+                )
+              ),
+              guidePanelData: Object.fromEntries(
                 (
-                  sanityReadMoreDataResponse.result as unknown as SanityReadMore[]
-                ).map((readmore) => [readmore.name, readmore])
+                  sanityGuidePanelDataResponse.result as GuidePanelQueryResult
+                ).map((guidepanel) => [guidepanel.name, guidepanel])
               ),
               forbeholdAvsnittData:
-                sanityForbeholdAvsnittDataResponse.result as unknown as SanityForbeholdAvsnitt[],
+                sanityForbeholdAvsnittDataResponse.result as ForbeholdAvsnittQueryResult,
             }}
           >
             {hasRouter ? childrenWithRouter : children}
@@ -116,11 +147,6 @@ export function renderWithProviders(
       </Provider>
     )
   }
-
-  const listenerMiddleware = createListenerMiddleware()
-  createUttaksalderListener(
-    listenerMiddleware.startListening as AppStartListening
-  )
 
   return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) }
 }

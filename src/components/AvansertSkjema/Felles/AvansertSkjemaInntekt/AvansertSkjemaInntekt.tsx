@@ -1,11 +1,10 @@
+import clsx from 'clsx'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 import { Label } from '@navikt/ds-react'
-import clsx from 'clsx'
 
-import { ReadMore } from '@/components/common/ReadMore'
 import { EndreInntekt } from '@/components/EndreInntekt'
-import { InfoOmInntekt } from '@/components/EndreInntekt/InfoOmInntekt'
+import { SanityReadmore } from '@/components/common/SanityReadmore'
 import { useAppSelector } from '@/state/hooks'
 import {
   selectIsEndring,
@@ -75,14 +74,7 @@ export const AvansertSkjemaInntekt = ({
 
       <div className={clsx(styles.spacer, styles.spacer__small)} />
 
-      <ReadMore
-        name="Endring av inntekt i avansert fane"
-        header={intl.formatMessage({
-          id: 'inntekt.info_om_inntekt.read_more.label',
-        })}
-      >
-        <InfoOmInntekt />
-      </ReadMore>
+      <SanityReadmore id="om_pensjonsgivende_inntekt" />
     </div>
   )
 }

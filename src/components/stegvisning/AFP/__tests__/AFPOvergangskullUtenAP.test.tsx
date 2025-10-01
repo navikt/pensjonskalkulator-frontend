@@ -1,7 +1,8 @@
 import { describe, it, vi } from 'vitest'
 
+import { render, screen, userEvent, waitFor } from '@/test-utils'
+
 import { AFPOvergangskullUtenAP } from '..'
-import { screen, render, waitFor, userEvent } from '@/test-utils'
 
 const navigateMock = vi.fn()
 vi.mock(import('react-router'), async (importOriginal) => {
@@ -17,11 +18,11 @@ describe('stegvisning - AFP - født mellom 1954-1962 uten vedtak om alderspensjo
   const onPreviousMock = vi.fn()
   const onNextMock = vi.fn()
 
-  it('rendrer slik den skal når afp og skalBeregneAfp ikke er oppgitt', async () => {
-    const result = render(
+  it('rendrer slik den skal når afp og skalBeregneAfpKap19 ikke er oppgitt', async () => {
+    render(
       <AFPOvergangskullUtenAP
         previousAfp={null}
-        previousSkalBeregneAfp={null}
+        previousAfpUtregningValg={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -32,13 +33,11 @@ describe('stegvisning - AFP - født mellom 1954-1962 uten vedtak om alderspensjo
     )
 
     expect(
-      screen.getByText('stegvisning.afp.readmore_privat_title')
-    ).toBeInTheDocument()
+      screen.queryByTestId('om_livsvarig_AFP_i_privat_sektor')
+    ).toBeVisible()
     expect(
       screen.getByText('stegvisning.afpOvergangskull.readmore_offentlig_title')
-    ).toBeInTheDocument()
-
-    expect(result.asFragment()).toMatchSnapshot()
+    ).toBeVisible()
 
     const radioButtons = await screen.findAllByRole('radio')
     await waitFor(() => {
@@ -47,15 +46,14 @@ describe('stegvisning - AFP - født mellom 1954-1962 uten vedtak om alderspensjo
       expect(radioButtons[1]).not.toBeChecked()
       expect(radioButtons[2]).not.toBeChecked()
       expect(radioButtons[3]).not.toBeChecked()
-      expect(result.asFragment()).toMatchSnapshot()
     })
   })
 
   it('rendrer slik den skal når afp er oppgitt', async () => {
-    const result = render(
+    render(
       <AFPOvergangskullUtenAP
         previousAfp="nei"
-        previousSkalBeregneAfp={null}
+        previousAfpUtregningValg={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -71,16 +69,15 @@ describe('stegvisning - AFP - født mellom 1954-1962 uten vedtak om alderspensjo
       expect(radioButtons[1]).not.toBeChecked()
       expect(radioButtons[2]).toBeChecked()
       expect(radioButtons[3]).not.toBeChecked()
-      expect(result.asFragment()).toMatchSnapshot()
     })
   })
 
-  it('viser riktig infomeldinger når brukeren klikker på de ulike valgene', async () => {
+  it('viser infomelding når brukeren velger "Vet ikke"', async () => {
     const user = userEvent.setup()
     render(
       <AFPOvergangskullUtenAP
         previousAfp={null}
-        previousSkalBeregneAfp={null}
+        previousAfpUtregningValg={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -114,9 +111,7 @@ describe('stegvisning - AFP - født mellom 1954-1962 uten vedtak om alderspensjo
 
     await user.click(radioButtons[3])
 
-    expect(
-      screen.queryByText('stegvisning.afp.alert_vet_ikke')
-    ).toBeInTheDocument()
+    expect(screen.queryByText('stegvisning.afp.alert_vet_ikke')).toBeVisible()
   })
 
   it('validerer, viser feilmelding, fjerner feilmelding og kaller onNext når brukeren klikker på Neste', async () => {
@@ -124,34 +119,45 @@ describe('stegvisning - AFP - født mellom 1954-1962 uten vedtak om alderspensjo
     render(
       <AFPOvergangskullUtenAP
         previousAfp={null}
-        previousSkalBeregneAfp={null}
+        previousAfpUtregningValg={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
       />
     )
-    const radioButtons = screen.getAllByRole('radio')
 
     await user.click(screen.getByText('stegvisning.neste'))
 
-    waitFor(() => {
-      expect(
-        screen.getByText('stegvisning.afp.validation_error')
-      ).toBeInTheDocument()
-      expect(onNextMock).not.toHaveBeenCalled()
-    })
+    expect(screen.getByText('stegvisning.afp.validation_error')).toBeVisible()
+    expect(onNextMock).not.toHaveBeenCalled()
 
-    await user.click(radioButtons[0])
+    await user.click(
+      screen.getByRole('radio', { name: 'stegvisning.afp.radio_ja_offentlig' })
+    )
+
+    expect(
+      screen.queryByText('stegvisning.afp.validation_error')
+    ).not.toBeInTheDocument()
+
+    await user.click(screen.getByText('stegvisning.neste'))
+
+    expect(
+      screen.getByText('stegvisning.afpOverganskull.validation_error')
+    ).toBeVisible()
+    expect(onNextMock).not.toHaveBeenCalled()
+
+    await user.click(
+      screen.getByRole('radio', {
+        name: 'stegvisning.afp.overgangskullUtenAP.radio_ja',
+      })
+    )
 
     expect(
       screen.queryByText('stegvisning.afpOverganskull.validation_error')
     ).not.toBeInTheDocument()
 
     await user.click(screen.getByText('stegvisning.neste'))
-
-    waitFor(() => {
-      expect(onNextMock).toHaveBeenCalled()
-    })
+    expect(onNextMock).toHaveBeenCalled()
   })
 
   it('kaller onNext når brukeren klikker på Neste', async () => {
@@ -159,7 +165,7 @@ describe('stegvisning - AFP - født mellom 1954-1962 uten vedtak om alderspensjo
     render(
       <AFPOvergangskullUtenAP
         previousAfp={null}
-        previousSkalBeregneAfp={null}
+        previousAfpUtregningValg={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -167,10 +173,13 @@ describe('stegvisning - AFP - født mellom 1954-1962 uten vedtak om alderspensjo
     )
     const radioButtons = screen.getAllByRole('radio')
     await user.click(radioButtons[0])
+    await user.click(
+      screen.getByRole('radio', {
+        name: 'stegvisning.afp.overgangskullUtenAP.radio_ja',
+      })
+    )
     await user.click(screen.getByText('stegvisning.neste'))
-    waitFor(() => {
-      expect(onNextMock).toHaveBeenCalled()
-    })
+    expect(onNextMock).toHaveBeenCalled()
   })
 
   it('kaller onPrevious når brukeren klikker på Tilbake', async () => {
@@ -178,7 +187,7 @@ describe('stegvisning - AFP - født mellom 1954-1962 uten vedtak om alderspensjo
     render(
       <AFPOvergangskullUtenAP
         previousAfp="ja_privat"
-        previousSkalBeregneAfp={null}
+        previousAfpUtregningValg={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -193,7 +202,7 @@ describe('stegvisning - AFP - født mellom 1954-1962 uten vedtak om alderspensjo
     render(
       <AFPOvergangskullUtenAP
         previousAfp="ja_privat"
-        previousSkalBeregneAfp={null}
+        previousAfpUtregningValg={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
@@ -204,16 +213,14 @@ describe('stegvisning - AFP - født mellom 1954-1962 uten vedtak om alderspensjo
 
     expect(screen.getByText('stegvisning.avbryt')).toBeInTheDocument()
     await user.click(screen.getByText('stegvisning.avbryt'))
-    waitFor(() => {
-      expect(onCancelMock).toHaveBeenCalled()
-    })
+    expect(onCancelMock).toHaveBeenCalled()
   })
 
   it('viser ikke avbryt knapp når onCancel ikke er definert', async () => {
     render(
       <AFPOvergangskullUtenAP
         previousAfp={null}
-        previousSkalBeregneAfp={null}
+        previousAfpUtregningValg={null}
         onCancel={undefined}
         onPrevious={onPreviousMock}
         onNext={onNextMock}

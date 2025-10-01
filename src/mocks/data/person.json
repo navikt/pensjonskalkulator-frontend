@@ -1,7 +1,7 @@
 {
   "navn": "Aprikos",
   "sivilstand": "UGIFT",
-  "foedselsdato": "1963-04-30",
+  "foedselsdato": "1964-04-30",
   "pensjoneringAldre": {
     "normertPensjoneringsalder": {
       "aar": 67,
@@ -9,6 +9,10 @@
     },
     "nedreAldersgrense": {
       "aar": 62,
+      "maaneder": 0
+    },
+    "oevreAldersgrense": {
+      "aar": 75,
       "maaneder": 0
     }
   }

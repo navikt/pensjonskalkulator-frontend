@@ -70,12 +70,11 @@ describe('Pensjonskalkulator', () => {
     cy.contains('button', '70 år').click()
     cy.injectAxe()
     cy.wait('@fetchAlderspensjon')
-    cy.contains('button', 'Uttaksgrad').click({ force: true })
-    cy.contains('button', 'Inntekt frem til uttak').click({ force: true })
+    cy.contains('Pensjonsgivende inntekt frem til uttak')
+    cy.contains('Alderspensjon')
+    cy.contains('AFP')
     cy.contains('button', 'Sivilstand').click({ force: true })
     cy.contains('button', 'Opphold utenfor Norge').click({ force: true })
-    cy.contains('button', 'Alderspensjon').click({ force: true })
-    cy.contains('button', 'AFP').click({ force: true })
     cy.checkA11y('main')
   })
 
@@ -165,6 +164,27 @@ describe('Pensjonskalkulator', () => {
 
     // Navigate til henvisning-utland
     cy.visit('/pensjon/kalkulator/henvisning-utland')
+    cy.injectAxe()
+    cy.checkA11y('main')
+  })
+
+  it('rendrer informasjonsside når vedlikeholdsmodus er på uten a11y-feil', () => {
+    cy.intercept(
+      {
+        method: 'GET',
+        url: '/pensjon/kalkulator/api/feature/pensjonskalkulator.vedlikeholdsmodus',
+      },
+      {
+        statusCode: 200,
+        body: {
+          enabled: true,
+        },
+      }
+    ).as('fetchVedlikeholdsmodus')
+    cy.visit('/pensjon/kalkulator/')
+    cy.wait('@getAuthSession')
+    cy.contains('button', 'Pensjonskalkulator').click()
+    cy.wait('@fetchVedlikeholdsmodus')
     cy.injectAxe()
     cy.checkA11y('main')
   })

@@ -30,12 +30,12 @@ jobs:
       id-token: 'write'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
-      - name: Use Node.js v22.11.0
+      - name: Use Node.js v22.16.0
         uses: actions/setup-node@v4
         with:
-          node-version: '22.11.0'
+          node-version: '22.16.0'
           registry-url: 'https://npm.pkg.github.com'
 
       - name: Cache node modules
@@ -89,7 +89,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Deploy to staging
         uses: nais/deploy/actions/deploy@v2

@@ -3,15 +3,20 @@ import React from 'react'
 import { ReadMore as ReadMoreAksel, ReadMoreProps } from '@navikt/ds-react'
 
 import { logger } from '@/utils/logging'
+
 interface IProps extends ReadMoreProps {
   name: string
 }
 
 const logIsOpen = (name: string, isOpen: boolean) => {
   if (isOpen) {
-    logger('readmore åpnet', { tekst: name })
+    logger('les mer åpnet', { tittel: name })
+    // TODO: fjern når amplitude er ikke i bruk lenger
+    logger('readmore åpnet', { tittel: name })
   } else {
-    logger('readmore lukket', { tekst: name })
+    logger('les mer lukket', { tittel: name })
+    // TODO: fjern når amplitude er ikke i bruk lenger
+    logger('readmore lukket', { tittel: name })
   }
 }
 

@@ -1,3 +1,4 @@
+import { format } from 'date-fns'
 import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 
@@ -10,9 +11,7 @@ import {
   Select,
   VStack,
 } from '@navikt/ds-react'
-import { format } from 'date-fns'
 
-import landListeData from '../../assets/land-liste.json' with { type: 'json' }
 import { getSelectedLanguage } from '@/context/LanguageProvider/utils'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
@@ -23,10 +22,14 @@ import { DATE_ENDUSER_FORMAT } from '@/utils/dates'
 import { getTranslatedLand, getTranslatedLandFromLandkode } from '@/utils/land'
 import { getFormatMessageValues } from '@/utils/translations'
 
+import landListeData from '../../assets/land-liste.json' with { type: 'json' }
 import { useUtenlandsoppholdLocalState } from './hooks'
 import { UTENLANDSOPPHOLD_FORM_NAMES, onUtenlandsoppholdSubmit } from './utils'
 
 import styles from './UtenlandsoppholdModal.module.scss'
+
+const MODAL_DESCRIPTION =
+  'stegvisning.utenlandsopphold.oppholdene.description.periode.varig_opphold'
 
 interface Props {
   modalRef: React.RefObject<HTMLDialogElement | null>
@@ -138,13 +141,12 @@ export const UtenlandsoppholdModal: React.FC<Props> = ({
                                 .overlappende_periodeslutt
                             ]
                           : intl.formatMessage({
-                              id: 'stegvisning.utenlandsopphold.oppholdene.description.periode.varig_opphold',
+                              id: MODAL_DESCRIPTION,
                             }),
                       }
                     )
                   : ''
               }
-              aria-required="true"
             >
               <option disabled value="">
                 {' '}
@@ -214,14 +216,12 @@ export const UtenlandsoppholdModal: React.FC<Props> = ({
                                       .overlappende_periodeslutt
                                   ]
                                 : intl.formatMessage({
-                                    id: 'stegvisning.utenlandsopphold.oppholdene.description.periode.varig_opphold',
+                                    id: MODAL_DESCRIPTION,
                                   }),
                             }
                           )
                         : ''
                     }
-                    role="radiogroup"
-                    aria-required="true"
                   >
                     <Radio
                       value="ja"
@@ -281,7 +281,7 @@ export const UtenlandsoppholdModal: React.FC<Props> = ({
                                       .overlappende_periodeslutt
                                   ]
                                 : intl.formatMessage({
-                                    id: 'stegvisning.utenlandsopphold.oppholdene.description.periode.varig_opphold',
+                                    id: MODAL_DESCRIPTION,
                                   }),
                             }
                           )

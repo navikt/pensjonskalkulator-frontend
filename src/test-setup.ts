@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom'
-import { useSerialIds } from 'highcharts'
+
 import { vi } from 'vitest'
 
 import { mockResponse, server } from '@/mocks/server'
@@ -35,6 +35,10 @@ Object.defineProperty(window.document, 'cookie', {
 
 window.HTMLElement.prototype.scrollIntoView = vi.fn()
 
+if (!('supports' in window.CSS)) {
+  window.CSS.supports = () => false
+}
+
 vi.mock(
   '@navikt/nav-dekoratoren-moduler',
   async (): Promise<typeof import('@navikt/nav-dekoratoren-moduler')> => {
@@ -44,16 +48,15 @@ vi.mock(
 
     return {
       ...mod.default,
-      getAmplitudeInstance: () => vi.fn(),
+      getAnalyticsInstance: () => vi.fn(),
+      onLanguageSelect: vi.fn(() => vi.fn()),
+      setAvailableLanguages: vi.fn(),
     }
   }
 )
 
-beforeAll(async () => {
+beforeAll(() => {
   server.listen({ onUnhandledRequest: 'error' })
-  if (process.env.NODE_ENV === 'test') {
-    useSerialIds(true)
-  }
 })
 beforeEach(() => {
   mockResponse('/oauth2/session', {

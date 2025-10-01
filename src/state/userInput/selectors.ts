@@ -31,10 +31,20 @@ export const selectIsVeileder = (state: RootState) =>
 export const selectAfp = (state: RootState): AfpRadio | null =>
   state.userInput.afp
 
-export const selectSkalBeregneAfp = (state: RootState): boolean | null =>
-  state.userInput.skalBeregneAfp
+export const selectAfpInntektMaanedFoerUttak = (
+  state: RootState
+): boolean | null => state.userInput.afpInntektMaanedFoerUttak
+
+export const selectAfpUtregningValg = (state: RootState): AfpUtregningValg =>
+  state.userInput.afpUtregningValg
+
+export const selectSkalBeregneAfpKap19 = (state: RootState): boolean | null =>
+  state.userInput.afpUtregningValg === 'AFP_ETTERFULGT_AV_ALDERSPENSJON'
+
 const selectPersonResponse = apiSlice.endpoints.getPerson.select()
+const selectGrunnbeloepResponse = apiSlice.endpoints.getGrunnbeloep.select()
 const selectInntektResponse = apiSlice.endpoints.getInntekt.select()
+const selectErApotekerResponse = apiSlice.endpoints.getErApoteker.select()
 const selectLoependeVedtakResponse =
   apiSlice.endpoints.getLoependeVedtak.select()
 
@@ -43,16 +53,43 @@ export const selectFoedselsdato = createSelector(
   (personResponse) => personResponse.data?.foedselsdato
 )
 
-export const selectNedreAldersgrense = createSelector(
-  selectPersonResponse,
-  (personResponse) =>
-    personResponse.data?.pensjoneringAldre.nedreAldersgrense as Alder
+export const selectErApoteker = createSelector(
+  selectErApotekerResponse,
+  (erApotekerResponse) => erApotekerResponse.data
+)
+
+export const selectGrunnbeloep = createSelector(
+  selectGrunnbeloepResponse,
+  (grunnbeloepResponse) => grunnbeloepResponse.data
 )
 
 export const selectNormertPensjonsalder = createSelector(
   selectPersonResponse,
   (personResponse) =>
     personResponse.data?.pensjoneringAldre.normertPensjoneringsalder as Alder
+)
+
+export const selectNedreAldersgrense = createSelector(
+  selectPersonResponse,
+  (personResponse) =>
+    personResponse.data?.pensjoneringAldre.nedreAldersgrense as Alder
+)
+
+export const selectOevreAldersgrense = createSelector(
+  selectPersonResponse,
+  (personResponse) =>
+    personResponse.data?.pensjoneringAldre.oevreAldersgrense as Alder
+)
+
+export const selectMaxOpptjeningsalder = createSelector(
+  selectPersonResponse,
+  (personResponse) => {
+    const oevre = (
+      personResponse.data?.pensjoneringAldre as { oevreAldersgrense?: Alder }
+    )?.oevreAldersgrense
+    if (!oevre) return undefined
+    return { aar: oevre.aar, maaneder: 11 } as Alder
+  }
 )
 
 export const selectSivilstand = (state: RootState) => {
@@ -103,11 +140,6 @@ export const selectAarligInntektFoerUttakBeloep = (
   }
   return aarligInntektFoerUttakBeloepFraBrukerInput
 }
-
-export const selectFormatertUttaksalderReadOnly = (
-  state: RootState
-): string | null =>
-  state.userInput.currentSimulation.formatertUttaksalderReadOnly
 
 export const selectCurrentSimulation = (state: RootState): Simulation =>
   state.userInput.currentSimulation

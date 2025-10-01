@@ -1,4 +1,4 @@
-import { http, HttpResponse } from 'msw'
+import { HttpResponse, http } from 'msw'
 import { setupServer } from 'msw/node'
 
 import { API_BASEURL } from '@/paths'
@@ -10,7 +10,7 @@ export const server = setupServer(...handlers)
 
 type MockResponseOptions = {
   status?: number
-  json?: ReturnType<typeof JSON.parse>
+  json?: Record<string, unknown>
   text?: string
   method?: 'post' | 'get'
   baseUrl?: string
@@ -25,7 +25,7 @@ export const mockResponse = (
   const status = inputOptions.status ?? 200
 
   server.use(
-    http[method](`${baseUrl}${path}`, async () => {
+    http[method](`${baseUrl}${path}`, () => {
       if (inputOptions.text) {
         return HttpResponse.text(inputOptions.text, { status })
       } else {
@@ -43,11 +43,11 @@ export const mockErrorResponse = (
   const method = inputOptions.method ?? 'get'
   const baseUrl = inputOptions.baseUrl ?? API_BASEURL
   const status = inputOptions.status ?? 500
+  const json = inputOptions.json ?? ''
 
   server.use(
-    http[method](`${baseUrl}${path}`, async () => {
-      // Må sende tom streng slik at ikke rtk-query prøver å parse JSON
-      return HttpResponse.text('', { status })
+    http[method](`${baseUrl}${path}`, () => {
+      return HttpResponse.json(json, { status })
     })
   )
 }

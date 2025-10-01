@@ -1,13 +1,20 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
 
-import { Alert, BodyLong, Button, Heading } from '@navikt/ds-react'
+import { Alert, BodyLong, Heading } from '@navikt/ds-react'
 
+import { ApotekereWarning } from '@/components/common/ApotekereWarning/ApotekereWarning'
 import { Card } from '@/components/common/Card'
 import { SanityReadmore } from '@/components/common/SanityReadmore/SanityReadmore'
 import { paths } from '@/router/constants'
-import { logger, wrapLogger } from '@/utils/logging'
+import { useAppSelector } from '@/state/hooks'
+import { selectHasErApotekerError } from '@/state/session/selectors'
+import { selectAfp, selectFoedselsdato } from '@/state/userInput/selectors'
+import { isFoedtEtter1963 } from '@/utils/alder'
+import { logger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
+
+import Navigation from '../Navigation/Navigation'
 
 import styles from './Ufoere.module.scss'
 
@@ -18,9 +25,14 @@ interface Props {
 }
 
 export function Ufoere({ onCancel, onPrevious, onNext }: Props) {
+  const foedselsdato = useAppSelector(selectFoedselsdato)
+  const foedtEtter1963 = isFoedtEtter1963(foedselsdato)
+  const hasErApotekerError = useAppSelector(selectHasErApotekerError)
+  const afp = useAppSelector(selectAfp)
+
   const onSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
-    logger('button klikk', {
+    logger('knapp klikket', {
       tekst: `Neste fra ${paths.ufoeretrygdAFP}`,
     })
     if (onNext) {
@@ -30,6 +42,12 @@ export function Ufoere({ onCancel, onPrevious, onNext }: Props) {
 
   return (
     <Card hasLargePadding hasMargin>
+      <ApotekereWarning
+        showWarning={Boolean(
+          afp === 'ja_offentlig' && hasErApotekerError && foedtEtter1963
+        )}
+      />
+
       <form onSubmit={onSubmit}>
         <Heading level="2" size="medium" spacing>
           <FormattedMessage id="stegvisning.ufoere.title" />
@@ -47,7 +65,7 @@ export function Ufoere({ onCancel, onPrevious, onNext }: Props) {
           />
         </Alert>
 
-        <SanityReadmore id={'om_UT_AFP'} className={styles.readmore1} />
+        <SanityReadmore id="om_UT_AFP" className={styles.readmore1} />
 
         <BodyLong
           size="large"
@@ -60,29 +78,7 @@ export function Ufoere({ onCancel, onPrevious, onNext }: Props) {
           />
         </BodyLong>
 
-        <Button type="submit" className={styles.button}>
-          <FormattedMessage id="stegvisning.neste" />
-        </Button>
-        <Button
-          type="button"
-          className={styles.button}
-          variant="secondary"
-          onClick={wrapLogger('button klikk', {
-            tekst: `Tilbake fra ${paths.ufoeretrygdAFP}`,
-          })(onPrevious)}
-        >
-          <FormattedMessage id="stegvisning.tilbake" />
-        </Button>
-        {onCancel && (
-          <Button
-            type="button"
-            className={styles.button}
-            variant="tertiary"
-            onClick={wrapLogger('button klikk', { tekst: 'Avbryt' })(onCancel)}
-          >
-            <FormattedMessage id="stegvisning.avbryt" />
-          </Button>
-        )}
+        <Navigation onPrevious={onPrevious} onCancel={onCancel} />
       </form>
     </Card>
   )

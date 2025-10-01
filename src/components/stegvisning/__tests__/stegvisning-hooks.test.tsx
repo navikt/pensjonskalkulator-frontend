@@ -1,29 +1,33 @@
 import { Provider } from 'react-redux'
 
-import { RootState, setupStore } from '../../../state/store'
-import { useStegvisningNavigation } from '../stegvisning-hooks'
 import {
   fulfilledGetLoependeVedtak0Ufoeregrad,
   fulfilledGetLoependeVedtak75Ufoeregrad,
+  fulfilledGetLoependeVedtak100Ufoeregrad,
   fulfilledGetLoependeVedtakLoepende50Alderspensjon,
   fulfilledGetLoependeVedtakLoependeAlderspensjon,
+  fulfilledGetLoependeVedtakLoependeAlderspensjonOg40Ufoeretrygd,
   fulfilledGetPerson,
   fulfilledGetPersonEldreEnnAfpUfoereOppsigelsesalder,
   fulfilledGetPersonYngreEnnAfpUfoereOppsigelsesalder,
-  fulfilledGetLoependeVedtakLoependeAlderspensjonOg40Ufoeretrygd,
-  fulfilledGetLoependeVedtak100Ufoeregrad,
 } from '@/mocks/mockedRTKQueryApiCalls'
 import { paths } from '@/router/constants'
 import { userInputInitialState } from '@/state/userInput/userInputSlice'
 import * as userInputReducerUtils from '@/state/userInput/userInputSlice'
 import { renderHook } from '@/test-utils'
 
+import { RootState, setupStore } from '../../../state/store'
+import { useStegvisningNavigation } from '../stegvisning-hooks'
+
 const navigateMock = vi.fn()
-vi.mock(import('react-router'), async (importOriginal) => {
-  const actual = await importOriginal()
+vi.mock('react-router', async () => {
+  const actual = await vi.importActual('react-router')
   return {
     ...actual,
     useNavigate: () => navigateMock,
+    createSearchParams: () => ({
+      toString: () => 'back=true',
+    }),
   }
 })
 
@@ -68,7 +72,10 @@ describe('stegvisning - hooks', () => {
 
         // onStegvisningPrevious
         result.current[0].onStegvisningPrevious()
-        expect(navigateMock).toHaveBeenCalledWith(paths.login)
+        expect(navigateMock).toHaveBeenCalledWith({
+          pathname: paths.login,
+          search: 'back=true',
+        })
 
         // onStegvisningCancel
         result.current[0].onStegvisningCancel()
@@ -85,7 +92,7 @@ describe('stegvisning - hooks', () => {
           },
         }
 
-        it('Når brukeren navigerer tilbake fra samtykke steget, er hen sendt tilbake til utenlandsopphold steget.', () => {
+        it('Når brukeren navigerer tilbake fra samtykke steget, kalles navigasjonsfunksjonen med riktig format', () => {
           const wrapper = ({ children }: { children: React.ReactNode }) => {
             const storeRef = setupStore(
               {
@@ -106,7 +113,11 @@ describe('stegvisning - hooks', () => {
           })
 
           result.current[0].onStegvisningPrevious()
-          expect(navigateMock).toHaveBeenCalledWith(paths.utenlandsopphold)
+          expect(navigateMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+              search: 'back=true',
+            })
+          )
         })
       })
 
@@ -119,7 +130,7 @@ describe('stegvisning - hooks', () => {
           },
         }
 
-        it('Når brukeren navigerer tilbake fra samtykke steget, er hen sendt tilbake til utenlandsopphold steget.', () => {
+        it('Når brukeren navigerer tilbake fra samtykke steget, kalles navigasjonsfunksjonen med riktig format', () => {
           const wrapper = ({ children }: { children: React.ReactNode }) => {
             const storeRef = setupStore(
               {
@@ -141,7 +152,11 @@ describe('stegvisning - hooks', () => {
 
           // onStegvisningPrevious
           result.current[0].onStegvisningPrevious()
-          expect(navigateMock).toHaveBeenCalledWith(paths.utenlandsopphold)
+          expect(navigateMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+              search: 'back=true',
+            })
+          )
         })
       })
 
@@ -154,7 +169,7 @@ describe('stegvisning - hooks', () => {
           },
         }
 
-        it('Når brukeren har svart "nei" på AFP steget og navigerer tilbake fra samtykke steget, er hen sendt tilbake til afp steget.', () => {
+        it('Når brukeren har svart "nei" på AFP steget og navigerer tilbake fra samtykke steget, kalles navigasjonsfunksjonen med riktig format', () => {
           const wrapper = ({ children }: { children: React.ReactNode }) => {
             const storeRef = setupStore(
               {
@@ -176,10 +191,14 @@ describe('stegvisning - hooks', () => {
 
           // onStegvisningPrevious
           result.current[0].onStegvisningPrevious()
-          expect(navigateMock).toHaveBeenCalledWith(paths.afp)
+          expect(navigateMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+              search: 'back=true',
+            })
+          )
         })
 
-        it('Når brukeren har svart ja på AFP-steget og navigerer tilbake fra samtykke steget, er hen sendt tilbake til ufoeretrygdAFP steget.', () => {
+        it('Når brukeren har svart ja på AFP-steget og navigerer tilbake fra samtykke steget, kalles navigasjonsfunksjonen med riktig format', () => {
           const wrapper = ({ children }: { children: React.ReactNode }) => {
             const storeRef = setupStore(
               {
@@ -201,7 +220,11 @@ describe('stegvisning - hooks', () => {
 
           // onStegvisningPrevious
           result.current[0].onStegvisningPrevious()
-          expect(navigateMock).toHaveBeenCalledWith(paths.ufoeretrygdAFP)
+          expect(navigateMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+              search: 'back=true',
+            })
+          )
         })
 
         it('Når brukeren navigerer tilbake fra ufoeretrygdAFP steget, er hen sendt tilbake til afp steget.', () => {
@@ -226,7 +249,10 @@ describe('stegvisning - hooks', () => {
 
           // onStegvisningPrevious
           result.current[0].onStegvisningPrevious()
-          expect(navigateMock).toHaveBeenCalledWith(paths.afp)
+          expect(navigateMock).toHaveBeenCalledWith({
+            pathname: paths.afp,
+            search: 'back=true',
+          })
         })
       })
 
@@ -239,7 +265,7 @@ describe('stegvisning - hooks', () => {
           },
         }
 
-        it('Når brukeren navigerer tilbake fra samtykke steget, er hen sendt tilbake til afp steget.', () => {
+        it('Når brukeren navigerer tilbake fra samtykke steget, kalles navigasjonsfunksjonen med riktig format', () => {
           const wrapper = ({ children }: { children: React.ReactNode }) => {
             const storeRef = setupStore(
               {
@@ -261,7 +287,11 @@ describe('stegvisning - hooks', () => {
 
           // onStegvisningPrevious
           result.current[0].onStegvisningPrevious()
-          expect(navigateMock).toHaveBeenCalledWith(paths.afp)
+          expect(navigateMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+              search: 'back=true',
+            })
+          )
         })
       })
     })
@@ -309,7 +339,10 @@ describe('stegvisning - hooks', () => {
 
         // onStegvisningPrevious
         result.current[0].onStegvisningPrevious()
-        expect(navigateMock).toHaveBeenCalledWith(paths.login)
+        expect(navigateMock).toHaveBeenCalledWith({
+          pathname: paths.login,
+          search: 'back=true',
+        })
 
         // onStegvisningCancel
         result.current[0].onStegvisningCancel()
@@ -348,7 +381,10 @@ describe('stegvisning - hooks', () => {
 
           // onStegvisningPrevious
           result.current[0].onStegvisningPrevious()
-          expect(navigateMock).toHaveBeenCalledWith(paths.afp)
+          expect(navigateMock).toHaveBeenCalledWith({
+            pathname: paths.afp,
+            search: 'back=true',
+          })
         })
       })
 
@@ -361,7 +397,7 @@ describe('stegvisning - hooks', () => {
           },
         }
 
-        it('Når brukeren har svart "ja_offentlig" og navigerer tilbake fra samtykkeOffentligAFP, er hen sendt tilbake til afp steget.', () => {
+        it('Når brukeren har svart "ja_offentlig" og navigerer tilbake fra samtykkeOffentligAFP, kalles navigasjonsfunksjonen med riktig format', () => {
           const wrapper = ({ children }: { children: React.ReactNode }) => {
             const storeRef = setupStore(
               {
@@ -383,7 +419,11 @@ describe('stegvisning - hooks', () => {
 
           // onStegvisningPrevious
           result.current[0].onStegvisningPrevious()
-          expect(navigateMock).toHaveBeenCalledWith(paths.afp)
+          expect(navigateMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+              search: 'back=true',
+            })
+          )
         })
       })
     })

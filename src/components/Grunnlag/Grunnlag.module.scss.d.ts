@@ -1,8 +1,9 @@
 declare const classNames: {
+  readonly visListekomponenter: "visListekomponenter";
+  readonly "navds-read-more__content": "navds-read-more__content";
+  readonly wideDetailedView: "wideDetailedView";
+  readonly alderspensjonDetaljer: "alderspensjonDetaljer";
   readonly section: "section";
-  readonly "navds-accordion__item": "navds-accordion__item";
-  readonly "navds-accordion__item--open": "navds-accordion__item--open";
   readonly sectionHeader: "sectionHeader";
-  readonly description: "description";
 };
 export = classNames;

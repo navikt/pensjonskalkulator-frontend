@@ -30,12 +30,12 @@ jobs:
       id-token: 'write'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
-      - name: Use Node.js v22.11.0
+      - name: Use Node.js v22.16.0
         uses: actions/setup-node@v4
         with:
-          node-version: '22.11.0'
+          node-version: '22.16.0'
           registry-url: 'https://npm.pkg.github.com'
 
       - name: Cache node modules
@@ -97,12 +97,12 @@ jobs:
       fail-fast: true
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
-      - name: Use Node.js v22.11.0
+      - name: Use Node.js v22.16.0
         uses: actions/setup-node@v4
         with:
-          node-version: '22.11.0'
+          node-version: '22.16.0'
           registry-url: 'https://npm.pkg.github.com'
 
       - name: Cache node modules
@@ -137,12 +137,12 @@ jobs:
       fail-fast: true
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
-      - name: Use Node.js v22.11.0
+      - name: Use Node.js v22.16.0
         uses: actions/setup-node@v4
         with:
-          node-version: '22.11.0'
+          node-version: '22.16.0'
           registry-url: 'https://npm.pkg.github.com'
 
       - name: Cache node modules
@@ -162,7 +162,7 @@ jobs:
           key: ${{ runner.os }}-cypress-${{ hashFiles('**/package.json') }}
 
       - name: Download the build folders
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: dist
           path: dist
@@ -205,14 +205,14 @@ jobs:
       github.ref == 'refs/heads/main'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Deploy to staging
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
           IMAGE: ${{ needs.build.outputs.image }}
-          RESOURCE: .nais/deploy-staging.yml
+          RESOURCE: .nais/deploy-staging.yml,.nais/unleash-api-token-dev.yaml
 
       - name: Deploy veiledning to staging
         uses: nais/deploy/actions/deploy@v2
@@ -223,7 +223,7 @@ jobs:
 
   deploy-sandbox:
     name: Deploy to sandbox
-    needs: [build, run-unit-tests, run-integration-tests]
+    needs: [build]
     permissions:
       id-token: 'write'
     runs-on: ubuntu-latest
@@ -236,14 +236,14 @@ jobs:
       IMAGE: ghcr.io/${{ github.repository }}/pensjonskalkulator-frontend-node:${{ github.sha }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Deploy to sandbox
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
           IMAGE: ${{ needs.build.outputs.image }}
-          RESOURCE: .nais/deploy-sandbox.yml
+          RESOURCE: .nais/deploy-sandbox.yml,.nais/unleash-api-token-dev.yaml
 
       - name: Deploy veiledning to sandbox
         uses: nais/deploy/actions/deploy@v2
@@ -254,7 +254,7 @@ jobs:
 
   deploy-catbox:
     name: Deploy to catbox
-    needs: [build, run-unit-tests, run-integration-tests]
+    needs: [build]
     permissions:
       id-token: 'write'
     runs-on: ubuntu-latest
@@ -265,14 +265,14 @@ jobs:
       github.ref == 'refs/heads/catbox'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Deploy to catbox
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
           IMAGE: ${{ needs.build.outputs.image }}
-          RESOURCE: .nais/deploy-catbox.yml
+          RESOURCE: .nais/deploy-catbox.yml,.nais/unleash-api-token-dev.yaml
 
       - name: Deploy veiledning to catbox
         uses: nais/deploy/actions/deploy@v2
@@ -283,7 +283,7 @@ jobs:
 
   deploy-magicbox:
     name: Deploy to magicbox
-    needs: [build, run-unit-tests, run-integration-tests]
+    needs: [build]
     permissions:
       id-token: 'write'
     runs-on: ubuntu-latest
@@ -294,14 +294,14 @@ jobs:
       github.ref == 'refs/heads/magicbox'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Deploy to magicbox
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
           IMAGE: ${{ needs.build.outputs.image }}
-          RESOURCE: .nais/deploy-magicbox.yml
+          RESOURCE: .nais/deploy-magicbox.yml,.nais/unleash-api-token-dev.yaml
 
       - name: Deploy veiledning to magicbox
         uses: nais/deploy/actions/deploy@v2
@@ -312,7 +312,7 @@ jobs:
 
   deploy-dreambox:
     name: Deploy to dreambox
-    needs: [build, run-unit-tests, run-integration-tests]
+    needs: [build]
     permissions:
       id-token: 'write'
     runs-on: ubuntu-latest
@@ -323,14 +323,14 @@ jobs:
       github.ref == 'refs/heads/dreambox'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Deploy to dreambox
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
           IMAGE: ${{ needs.build.outputs.image }}
-          RESOURCE: .nais/deploy-dreambox.yml
+          RESOURCE: .nais/deploy-dreambox.yml,.nais/unleash-api-token-dev.yaml
 
       - name: Deploy veiledning to dreambox
         uses: nais/deploy/actions/deploy@v2
@@ -341,7 +341,7 @@ jobs:
 
   deploy-coffeebox:
     name: Deploy to coffeebox
-    needs: [build, run-unit-tests, run-integration-tests]
+    needs: [build]
     permissions:
       id-token: 'write'
     runs-on: ubuntu-latest
@@ -352,14 +352,14 @@ jobs:
       github.ref == 'refs/heads/coffeebox'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Deploy to coffeebox
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
           IMAGE: ${{ needs.build.outputs.image }}
-          RESOURCE: .nais/deploy-coffeebox.yml
+          RESOURCE: .nais/deploy-coffeebox.yml,.nais/unleash-api-token-dev.yaml
 
       - name: Deploy veiledning to coffeebox
         uses: nais/deploy/actions/deploy@v2
@@ -370,7 +370,7 @@ jobs:
 
   deploy-codebox:
     name: Deploy to codebox
-    needs: [build, run-unit-tests, run-integration-tests]
+    needs: [build]
     permissions:
       id-token: 'write'
     runs-on: ubuntu-latest
@@ -381,14 +381,14 @@ jobs:
       github.ref == 'refs/heads/codebox'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Deploy to codebox
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
           IMAGE: ${{ needs.build.outputs.image }}
-          RESOURCE: .nais/deploy-codebox.yml
+          RESOURCE: .nais/deploy-codebox.yml,.nais/unleash-api-token-dev.yaml
 
       - name: Deploy veiledning to codebox
         uses: nais/deploy/actions/deploy@v2
@@ -409,14 +409,14 @@ jobs:
       github.event.inputs.prod == 'true'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Deploy to prod-gcp
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: prod-gcp
           IMAGE: ${{ needs.build.outputs.image }}
-          RESOURCE: .nais/deploy-prod.yml
+          RESOURCE: .nais/deploy-prod.yml,.nais/unleash-api-token-prod.yaml
 
       - name: Deploy veiledning to prod-gcp
         uses: nais/deploy/actions/deploy@v2
@@ -424,3 +424,33 @@ jobs:
           CLUSTER: prod-gcp
           IMAGE: ${{ needs.build.outputs.image }}
           RESOURCE: .nais/deploy-veiledning-prod.yml
+
+      - name: Notify Slack of successful production deploy
+        if: success()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_PROD_DEPLOY_URL }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+        run: |
+          COMMIT_MSG=$(git log -1 --pretty=format:"%s")
+          PR_NUMBER=$(echo "$COMMIT_MSG" | grep -oE "#[0-9]+" | tr -d '#')
+
+          if [ -z "$PR_NUMBER" ]; then
+            # No PR number found, send notification with just commit info
+            COMMIT_AUTHOR=$(git log -1 --pretty=format:"%an")
+            curl -X POST -H 'Content-type: application/json' --data "{
+              \"text\": \"🚀 *Production deploy complete!*\n*Commit Message:* $COMMIT_MSG\n*Author:* $COMMIT_AUTHOR\n*Commit:* <https://github.com/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}>\" 
+            }" $SLACK_WEBHOOK_URL
+          else
+            # PR number found, get PR details and send notification
+            PR_DATA=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+              https://api.github.com/repos/${{ github.repository }}/pulls/$PR_NUMBER)
+
+            PR_TITLE=$(echo "$PR_DATA" | jq -r '.title')
+            PR_URL=$(echo "$PR_DATA" | jq -r '.html_url')
+            PR_AUTHOR=$(echo "$PR_DATA" | jq -r '.user.login')
+
+            curl -X POST -H 'Content-type: application/json' --data "{
+              \"text\": \"🚀 *Production deploy complete!*\n*PR:* <$PR_URL|$PR_TITLE> by \`@$PR_AUTHOR\`\n*Commit:* <https://github.com/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}>\" 
+            }" $SLACK_WEBHOOK_URL
+          fi

@@ -1,7 +1,9 @@
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
 
-import { VeilederInputRequestError } from '../VeilederInputRequestError'
 import { render, screen } from '@/test-utils'
+
+import { VeilederInputRequestError } from '../VeilederInputRequestError'
+
 describe('veileder - feilmeldinger', () => {
   it('403 - Ikke tilgang', () => {
     const personError: FetchBaseQueryError = {
@@ -38,7 +40,7 @@ describe('veileder - feilmeldinger', () => {
     expect(screen.getByTestId('alert-annet')).toBeInTheDocument()
   })
 
-  it('Ingen feil', () => {
+  it('Ingen feil', async () => {
     const { container } = render(
       <VeilederInputRequestError personError={undefined} />
     )

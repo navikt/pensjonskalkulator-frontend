@@ -1,10 +1,9 @@
-import React from 'react'
+import { MouseEvent, useContext, useEffect, useMemo, useState } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useNavigate } from 'react-router'
 
-import { BodyLong, Heading, HeadingProps, Link } from '@navikt/ds-react'
+import { BodyLong, Heading, HeadingProps, Link, VStack } from '@navikt/ds-react'
 
-import ShowMore from '../common/ShowMore/ShowMore'
 import { BeregningContext } from '@/pages/Beregning/context'
 import { paths } from '@/router/constants'
 import {
@@ -17,30 +16,34 @@ import {
 } from '@/state/api/utils'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
-  selectSamtykke,
   selectAarligInntektFoerUttakBeloep,
   selectAfp,
-  selectFoedselsdato,
-  selectUfoeregrad,
-  selectSivilstand,
+  selectCurrentSimulation,
   selectEpsHarInntektOver2G,
   selectEpsHarPensjon,
-  selectCurrentSimulation,
+  selectErApoteker,
+  selectFoedselsdato,
+  selectSamtykke,
+  selectSivilstand,
+  selectSkalBeregneAfpKap19,
+  selectUfoeregrad,
   selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
 import { getFormatMessageValues } from '@/utils/translations'
 
+import ShowMore from '../common/ShowMore/ShowMore'
 import { OffentligTjenestepensjon } from './OffentligTjenestePensjon/OffentligTjenestepensjon'
 import { PrivatePensjonsavtaler } from './PrivatePensjonsavtaler'
 
 import styles from './Pensjonsavtaler.module.scss'
 
-export const Pensjonsavtaler = (props: {
+export const Pensjonsavtaler = ({
+  headingLevel,
+}: {
   headingLevel: Exclude<HeadingProps['level'], undefined>
 }) => {
-  const { headingLevel } = props
-  const { pensjonsavtalerShowMoreRef } = React.useContext(BeregningContext)
+  const { pensjonsavtalerShowMoreRef } = useContext(BeregningContext)
   const intl = useIntl()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
@@ -54,11 +57,13 @@ export const Pensjonsavtaler = (props: {
   const foedselsdato = useAppSelector(selectFoedselsdato)
   const epsHarInntektOver2G = useAppSelector(selectEpsHarInntektOver2G)
   const epsHarPensjon = useAppSelector(selectEpsHarPensjon)
+  const erApoteker = useAppSelector(selectErApoteker)
   const utenlandsperioder = useAppSelector(selectUtenlandsperioder)
   const { uttaksalder, aarligInntektVsaHelPensjon, gradertUttaksperiode } =
     useAppSelector(selectCurrentSimulation)
+  const skalBeregneAfpKap19 = useAppSelector(selectSkalBeregneAfpKap19)
 
-  const [offentligTpRequestBody, setOffentligTpRequestBody] = React.useState<
+  const [offentligTpRequestBody, setOffentligTpRequestBody] = useState<
     OffentligTpRequestBody | undefined
   >(undefined)
 
@@ -71,7 +76,7 @@ export const Pensjonsavtaler = (props: {
   })
 
   // Hent Offentlig Tjenestepensjon
-  React.useEffect(() => {
+  useEffect(() => {
     if (harSamtykket && uttaksalder) {
       const requestBody = generateOffentligTpRequestBody({
         afp,
@@ -86,16 +91,18 @@ export const Pensjonsavtaler = (props: {
           aarligInntektVsaPensjon: aarligInntektVsaHelPensjon,
         },
         utenlandsperioder,
+        erApoteker,
       })
       setOffentligTpRequestBody(requestBody)
     }
   }, [harSamtykket, uttaksalder])
 
-  const [pensjonsavtalerRequestBody, setPensjonsavtalerRequestBody] =
-    React.useState<PensjonsavtalerRequestBody | undefined>(undefined)
+  const [pensjonsavtalerRequestBody, setPensjonsavtalerRequestBody] = useState<
+    PensjonsavtalerRequestBody | undefined
+  >(undefined)
 
   // Hent Private Pensjonsavtaler
-  React.useEffect(() => {
+  useEffect(() => {
     if (harSamtykket && uttaksalder) {
       const requestBody = generatePensjonsavtalerRequestBody({
         ufoeregrad,
@@ -109,6 +116,7 @@ export const Pensjonsavtaler = (props: {
           uttaksalder,
           aarligInntektVsaPensjon: aarligInntektVsaHelPensjon,
         },
+        skalBeregneAfpKap19,
       })
       setPensjonsavtalerRequestBody(requestBody)
     }
@@ -125,21 +133,28 @@ export const Pensjonsavtaler = (props: {
     }
   )
 
-  const subHeadingLevel = React.useMemo(() => {
+  const subHeadingLevel = useMemo(() => {
     return (
       headingLevel ? (parseInt(headingLevel, 10) + 1).toString() : '4'
     ) as Exclude<HeadingProps['level'], undefined>
   }, [headingLevel])
 
-  const onCancel = (e: React.MouseEvent<HTMLAnchorElement>): void => {
+  const onCancel = (e: MouseEvent<HTMLAnchorElement>): void => {
     e.preventDefault()
     dispatch(userInputActions.flush())
     navigate(paths.start)
   }
 
+  const showExplanation =
+    (isPensjonsavtalerSuccess &&
+      pensjonsavtaler?.avtaler &&
+      pensjonsavtaler?.avtaler.length > 0) ||
+    (offentligTp?.simuleringsresultatStatus === 'OK' &&
+      offentligTp?.simulertTjenestepensjon?.tpNummer !== undefined)
+
   return (
-    <section className={styles.section}>
-      <Heading id="pensjonsavtaler-heading" level={headingLevel} size="medium">
+    <VStack gap="1">
+      <Heading id="pensjonsavtaler-heading" level={headingLevel} size="small">
         {intl.formatMessage({ id: 'pensjonsavtaler.title' })}
       </Heading>
 
@@ -160,14 +175,15 @@ export const Pensjonsavtaler = (props: {
               headingLevel={subHeadingLevel}
               privatePensjonsavtaler={pensjonsavtaler?.avtaler}
             />
+
             <OffentligTjenestepensjon
               isLoading={isOffentligTpLoading}
               isError={isOffentligTpError}
               offentligTp={offentligTp}
               headingLevel={subHeadingLevel}
             />
-            {(isPensjonsavtalerSuccess ||
-              offentligTp?.simulertTjenestepensjon) && (
+
+            {showExplanation && (
               <BodyLong className={styles.footnote}>
                 <FormattedMessage id="pensjonsavtaler.fra_og_med_forklaring" />
               </BodyLong>
@@ -190,6 +206,6 @@ export const Pensjonsavtaler = (props: {
           />
         </BodyLong>
       )}
-    </section>
+    </VStack>
   )
 }

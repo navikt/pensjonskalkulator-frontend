@@ -1,5 +1,4 @@
-import { createMemoryRouter, RouterProvider } from 'react-router'
-
+import { RouterProvider, createMemoryRouter } from 'react-router'
 import { describe, expect, it } from 'vitest'
 
 import { RouteErrorBoundary } from '@/router/RouteErrorBoundary'
@@ -23,8 +22,8 @@ describe('RouteErrorBoundary', () => {
 
     render(<RouterProvider router={router} />, { hasRouter: false })
 
-    act(() => {
-      router.navigate('/denne/siden/finnes/ikke')
+    await act(async () => {
+      await router.navigate('/denne/siden/finnes/ikke')
     })
 
     expect(screen.queryByTestId('error-boundary')).not.toBeInTheDocument()

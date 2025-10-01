@@ -1,33 +1,29 @@
-import { IntlShape } from 'react-intl'
-
 import {
-  differenceInYears,
+  addYears,
   differenceInMonths,
+  differenceInYears,
   endOfDay,
+  endOfMonth,
   format,
+  isAfter,
   isBefore,
   isSameDay,
   parse,
   startOfMonth,
-  isAfter,
 } from 'date-fns'
-import { nb, nn, enGB } from 'date-fns/locale'
+import { enGB, nb, nn } from 'date-fns/locale'
+import { IntlShape } from 'react-intl'
 
-import { DATE_ENDUSER_FORMAT, DATE_BACKEND_FORMAT } from '@/utils/dates'
+import { DATE_BACKEND_FORMAT, DATE_ENDUSER_FORMAT } from '@/utils/dates'
 import { capitalize } from '@/utils/string'
-
-export const DEFAULT_SENEST_UTTAKSALDER: Alder = {
-  aar: 75,
-  maaneder: 0,
-}
-
-export const DEFAULT_MAX_OPPTJENINGSALDER: Alder = {
-  aar: 75,
-  maaneder: 11,
-}
 
 export const AFP_UFOERE_OPPSIGELSESALDER: Alder = {
   aar: 62,
+  maaneder: 0,
+}
+
+export const UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP: Alder = {
+  aar: 67,
   maaneder: 0,
 }
 
@@ -68,6 +64,19 @@ export const isFoedtFoer1963 = (foedselsdato: string): boolean => {
   )
 }
 
+export const isFoedtEtter1963 = (
+  foedselsdato: string | undefined | null
+): boolean | null => {
+  if (!foedselsdato) {
+    return null
+  }
+  const FIRST_DAY_1963 = new Date(1963, 0, 1)
+  return (
+    isAfter(new Date(foedselsdato), FIRST_DAY_1963) ||
+    isSameDay(new Date(foedselsdato), FIRST_DAY_1963)
+  )
+}
+
 export const isFoedtFoer1964 = (foedselsdato: string): boolean => {
   const LAST_DAY_1963 = new Date(1963, 11, 31)
   return (
@@ -78,11 +87,7 @@ export const isFoedtFoer1964 = (foedselsdato: string): boolean => {
 
 export const getAlderFromFoedselsdato = (foedselsdato: string) => {
   const TODAY = new Date()
-  const parsedFoedselsdato = parse(
-    foedselsdato,
-    DATE_BACKEND_FORMAT,
-    new Date()
-  )
+  const parsedFoedselsdato = parse(foedselsdato, DATE_BACKEND_FORMAT, TODAY)
   return differenceInYears(TODAY, parsedFoedselsdato)
 }
 
@@ -95,7 +100,31 @@ export const isAlderOver =
 
 export const isAlderOver67 = isAlderOver(67)
 
-export const isOvergangskull = (foedselsdato: string) => {
+export const isAlderOver62 = isAlderOver(62)
+
+export const isAlder75MaanedenFylt = (foedselsdato: string): boolean => {
+  const TODAY = new Date()
+  const parsedFoedselsdato = parse(foedselsdato, DATE_BACKEND_FORMAT, TODAY)
+
+  const foedselsdato75 = addYears(parsedFoedselsdato, 75)
+  const foersteDagIMaanedenFylt75 = startOfMonth(foedselsdato75)
+
+  return !isBefore(TODAY, foersteDagIMaanedenFylt75)
+}
+export const isAlderOver75Plus1Maaned = (foedselsdato: string): boolean => {
+  const parsedFoedselsdato = parse(
+    foedselsdato,
+    DATE_BACKEND_FORMAT,
+    new Date()
+  )
+
+  const foedselsdato75 = addYears(parsedFoedselsdato, 75)
+  const sisteDagIMaanedenFyllt75 = endOfMonth(foedselsdato75)
+
+  return isAfter(new Date(), sisteDagIMaanedenFyllt75)
+}
+
+export const isOvergangskull = (foedselsdato: string): boolean => {
   const DATE_START = new Date(1954, 0, 0)
   const DATE_STOP = new Date(1963, 0, 1)
   const parsedFoedselsdato = parse(
@@ -112,7 +141,7 @@ export const isOvergangskull = (foedselsdato: string) => {
 export const isAlderOverAnnenAlder = (
   stoersteAlder: Alder,
   minsteAlder: Alder
-) => {
+): boolean => {
   if (stoersteAlder.aar > minsteAlder.aar) {
     return true
   } else if (
@@ -128,7 +157,7 @@ export const isAlderOverAnnenAlder = (
 export const isAlderLikEllerOverAnnenAlder = (
   stoersteAlder: Alder | Partial<Alder>,
   minsteAlder: Alder
-) => {
+): boolean => {
   if (!stoersteAlder.aar) {
     return false
   }
@@ -173,7 +202,7 @@ export const getAlderMinus1Maaned = (alder: Alder) => {
 
 export const transformFoedselsdatoToAlder = (foedselsdato: string): Alder => {
   const birtdateJs = startOfMonth(
-    parse(foedselsdato as string, DATE_BACKEND_FORMAT, new Date())
+    parse(foedselsdato, DATE_BACKEND_FORMAT, new Date())
   )
   const currentDate = endOfDay(new Date())
   const aar = differenceInYears(currentDate, birtdateJs)
@@ -200,10 +229,10 @@ export const getBrukerensAlderISluttenAvMaaneden = (
     : nedreAldersgrense
 }
 
-export const transformUttaksalderToDate = (
+export const calculateUttaksalderAsDate = (
   alder: Alder,
   foedselsdato: string
-) => {
+): Date => {
   const foedselsdatoDate = new Date(foedselsdato)
   const antallMaaneder = foedselsdatoDate.getMonth() + alder.maaneder + 1
   const oppdatertAar =
@@ -211,7 +240,15 @@ export const transformUttaksalderToDate = (
 
   const calculatedDate = new Date(oppdatertAar, antallMaaneder % 12, 1)
 
-  return format(startOfMonth(calculatedDate), DATE_ENDUSER_FORMAT)
+  return startOfMonth(calculatedDate)
+}
+
+export const transformUttaksalderToDate = (
+  alder: Alder,
+  foedselsdato: string
+): string => {
+  const calculatedDate = calculateUttaksalderAsDate(alder, foedselsdato)
+  return format(calculatedDate, DATE_ENDUSER_FORMAT)
 }
 
 export const transformMaanedToDate = (

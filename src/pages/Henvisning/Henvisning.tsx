@@ -1,29 +1,29 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
 import { useIntl } from 'react-intl'
-import { useParams } from 'react-router'
-import { useNavigate } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 
-import { Card } from '../../components/common/Card'
-import { externalUrls, paths, henvisningUrlParams } from '@/router/constants'
+import { externalUrls, henvisningUrlParams, paths } from '@/router/constants'
 import { apiSlice } from '@/state/api/apiSlice'
 import { useAppDispatch } from '@/state/hooks'
 import { userInputActions } from '@/state/userInput/userInputSlice'
 import { wrapLogger } from '@/utils/logging'
 
+import { Card } from '../../components/common/Card'
+
 const gaaTilDetaljertKalkulator = () => {
   window.open(externalUrls.detaljertKalkulator, '_self')
 }
 
-export const Henvisning: React.FC = () => {
+export const Henvisning = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const intl = useIntl()
 
   const { id } = useParams()
 
-  const [ingress, setIngress] = React.useState<string>('')
+  const [ingress, setIngress] = useState<string>('')
 
-  React.useEffect(() => {
+  useEffect(() => {
     switch (id) {
       case henvisningUrlParams.apotekerne:
         document.title = intl.formatMessage({
@@ -51,12 +51,12 @@ export const Henvisning: React.FC = () => {
           primaryButton: 'henvisning.detaljert_kalkulator',
           secondaryButton: 'stegvisning.avbryt',
         }}
-        onPrimaryButtonClick={wrapLogger('button klikk', {
+        onPrimaryButtonClick={wrapLogger('knapp klikket', {
           tekst: `Tilbake fra ${paths.henvisning}`,
         })(gaaTilDetaljertKalkulator)}
-        onSecondaryButtonClick={wrapLogger('button klikk', { tekst: 'Avbryt' })(
-          onAvbryt
-        )}
+        onSecondaryButtonClick={wrapLogger('knapp klikket', {
+          tekst: 'Avbryt',
+        })(onAvbryt)}
       />
     </Card>
   )

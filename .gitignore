@@ -17,6 +17,7 @@ coverage
 .stylelintcache
 cypress/videos
 cypress/screenshots
+overrides.env
 analice.html
 vite.config.ts.*
 .sanity
@@ -33,3 +34,4 @@ vite.config.ts.*
 *.sw?
 .qodo
 .fleet
+.zed

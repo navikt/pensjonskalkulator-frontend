@@ -1,13 +1,14 @@
 /* c8 ignore start */
+import cl from 'clsx'
 import React, { forwardRef, useMemo, useRef, useState } from 'react'
 import { FormattedMessage } from 'react-intl'
 
 import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons'
 import { Button, Heading, HeadingProps, useId } from '@navikt/ds-react'
-import cl from 'clsx'
+
+import { logger } from '@/utils/logging'
 
 import './ShowMore.styles.css'
-import { logger } from '@/utils/logging'
 
 type PossibleRef<T> = React.Ref<T> | undefined
 export function mergeRefs<T>(refs: PossibleRef<T>[]): React.RefCallback<T> {
@@ -16,7 +17,7 @@ export function mergeRefs<T>(refs: PossibleRef<T>[]): React.RefCallback<T> {
       if (typeof ref === 'function') {
         ref(value)
       } else if (ref !== null && ref !== undefined) {
-        ;(ref as React.RefObject<T | null>).current = value
+        ref.current = value
       }
     })
   }
@@ -83,7 +84,7 @@ export interface ShowMoreProps
   scrollBackOnCollapse?: boolean
   /**
    * Navn på på innhold.
-   * Brukes til logging i amplitude
+   * Brukes til logging i Umami
    */
   name: string
 }
@@ -215,6 +216,7 @@ export const ShowMore = forwardRef<ShowMoreRef, ShowMoreProps>(
     )
   }
 )
+ShowMore.displayName = 'ShowMore'
 
 export default ShowMore
 /* c8 ignore end */

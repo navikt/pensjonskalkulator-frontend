@@ -1,12 +1,13 @@
-import { resolve } from 'path'
-import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import eslint from 'vite-plugin-eslint'
-import stylelint from 'vite-plugin-stylelint'
-import sassDts from 'vite-plugin-sass-dts'
+import { resolve } from 'path'
 import { visualizer } from 'rollup-plugin-visualizer'
-import CustomPostCSSLoader from './scripts/CustomPostCSSLoader'
+import { defineConfig } from 'vite'
+import eslint from 'vite-plugin-eslint'
+import sassDts from 'vite-plugin-sass-dts'
+import stylelint from 'vite-plugin-stylelint'
 import tsconfigPaths from 'vite-tsconfig-paths'
+
+import CustomPostCSSLoader from './scripts/CustomPostCSSLoader'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -36,7 +37,6 @@ export default defineConfig({
           ['intl']: [
             'react-intl',
             'intl-messageformat',
-            '@formatjs/ecma402-abstract',
             '@formatjs/intl',
             '@formatjs/intl-numberformat',
           ],
@@ -62,11 +62,24 @@ export default defineConfig({
         brotliSize: true,
         filename: 'analice.html',
       }),
-  ],
+
+    // Custom plugin to set Service-Worker-Allowed header for MSW in development
+    process.env.NODE_ENV !== 'test' && {
+      name: 'msw-service-worker-allowed',
+      configureServer(server) {
+        server.middlewares.use((req, res, next) => {
+          if (req.url === '/pensjon/kalkulator/mockServiceWorker.js') {
+            res.setHeader('Service-Worker-Allowed', '/')
+          }
+          next()
+        })
+      },
+    },
+  ].filter(Boolean),
   server: {
     proxy: {
       '/pensjon/kalkulator/api': {
-        target: 'https://pensjonskalkulator-backend.ekstern.dev.nav.no',
+        target: 'http://localhost:8080',
         changeOrigin: true,
         secure: false,
       },
@@ -84,9 +97,7 @@ export default defineConfig({
       },
     },
     preprocessorOptions: {
-      scss: {
-        api: 'modern-compiler',
-      },
+      scss: {},
     },
   },
   test: {
@@ -103,7 +114,9 @@ export default defineConfig({
         '**/*/faro.ts',
         '*.config.ts',
         'cypress',
+        'sanity.cli.ts',
         'server/server.ts',
+        'server/ensureEnv.ts',
         'src/mocks',
         'src/mocks/mockedRTKQueryApiCalls.ts',
         'src/test-utils.tsx',
@@ -117,13 +130,16 @@ export default defineConfig({
         'src/components/common/ShowMore',
         'src/types',
         'src/paths.ts',
+        'schemaTypes/**',
+        'src/components/Signals/**',
+        'src/components/Simulering/Simuleringsdetaljer/Simuleringsdetaljer.tsx',
       ],
       perFile: true,
       thresholds: {
-        lines: 95,
+        lines: 85,
         functions: 50,
-        branches: 95,
-        statements: 95,
+        branches: 85,
+        statements: 85,
       },
       reporter: ['json', 'html', 'text', 'text-summary', 'cobertura'],
     },

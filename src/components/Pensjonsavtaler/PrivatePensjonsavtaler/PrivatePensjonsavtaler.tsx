@@ -6,9 +6,9 @@ import { Alert, BodyLong, Heading, HeadingProps } from '@navikt/ds-react'
 import { getFormatMessageValues } from '@/utils/translations'
 import { useIsMobile } from '@/utils/useIsMobile'
 
-import styles from './PrivatePensjonsavtaler.module.scss'
+import { PrivatePensjonsavtalerDesktop, PrivatePensjonsavtalerMobile } from './'
 
-import { PrivatePensjonsavtalerMobile, PrivatePensjonsavtalerDesktop } from './'
+import styles from './PrivatePensjonsavtaler.module.scss'
 
 interface PrivatePensjonsavtalerProps {
   isPartialResponse: boolean
@@ -39,6 +39,7 @@ export const PrivatePensjonsavtaler: React.FC<PrivatePensjonsavtalerProps> = ({
               <Heading level={headingLevel} size="small" spacing>
                 <FormattedMessage id="pensjonsavtaler.private.title.ingen" />
               </Heading>
+
               <Alert inline variant="info">
                 <FormattedMessage id="pensjonsavtaler.ingress.ingen" />
               </Alert>
@@ -54,10 +55,9 @@ export const PrivatePensjonsavtaler: React.FC<PrivatePensjonsavtalerProps> = ({
             <Heading level={headingLevel} size="small" spacing>
               <FormattedMessage id="pensjonsavtaler.private.title.ingen" />
             </Heading>
+
             <Alert inline variant="warning">
-              <FormattedMessage
-                id={'pensjonsavtaler.private.ingress.error.pensjonsavtaler'}
-              />
+              <FormattedMessage id="pensjonsavtaler.private.ingress.error.pensjonsavtaler" />
             </Alert>
           </>
         )

@@ -1,30 +1,33 @@
-import { createMemoryRouter, RouterProvider } from 'react-router'
-
+import { RouterProvider, createMemoryRouter } from 'react-router'
 import { describe, expect, it, vi } from 'vitest'
 
-import { BeregningAvansert } from '../BeregningAvansert'
 import { AVANSERT_FORM_NAMES } from '@/components/AvansertSkjema/utils'
 import { ShowMoreRef } from '@/components/common/ShowMore/ShowMore'
 import {
   fulfilledGetInntekt,
-  fulfilledGetPerson,
   fulfilledGetLoependeVedtak0Ufoeregrad,
   fulfilledGetLoependeVedtak75Ufoeregrad,
-  fulfilledGetLoependeVedtakLoependeAlderspensjon,
+  fulfilledGetLoependeVedtak100Ufoeregrad,
   fulfilledGetLoependeVedtakLoependeAFPprivat,
+  fulfilledGetLoependeVedtakLoependeAlderspensjon,
+  fulfilledGetPerson,
 } from '@/mocks/mockedRTKQueryApiCalls'
-import { mockResponse, mockErrorResponse } from '@/mocks/server'
+import { mockErrorResponse, mockResponse } from '@/mocks/server'
 import {
-  BeregningContext,
   AvansertBeregningModus,
+  BeregningContext,
 } from '@/pages/Beregning/context'
-import { paths } from '@/router/constants'
 import { RouteErrorBoundary } from '@/router/RouteErrorBoundary'
+import { paths } from '@/router/constants'
 import * as apiSliceUtils from '@/state/api/apiSlice'
-import { userInputInitialState } from '@/state/userInput/userInputSlice'
-import { UserInputState } from '@/state/userInput/userInputSlice'
+import {
+  UserInputState,
+  userInputInitialState,
+} from '@/state/userInput/userInputSlice'
 import { fireEvent, render, screen, userEvent, waitFor } from '@/test-utils'
 import * as loggerUtils from '@/utils/logging'
+
+import { BeregningAvansert } from '../BeregningAvansert'
 
 const navigateMock = vi.fn()
 vi.mock(import('react-router'), async (importOriginal) => {
@@ -62,7 +65,6 @@ describe('BeregningAvansert', () => {
       userInput: {
         ...userInputInitialState,
         samtykke: true,
-        samboer: false,
         afp: 'ja_privat',
         currentSimulation: {
           ...userInputInitialState.currentSimulation,
@@ -160,6 +162,7 @@ describe('BeregningAvansert', () => {
         expect(initiateMock).toHaveBeenCalledWith(
           {
             aarligInntektFoerUttakBeloep: 521338,
+            afpInntektMaanedFoerUttak: undefined,
             epsHarInntektOver2G: false,
             epsHarPensjon: false,
             foedselsdato: '1963-04-30',
@@ -206,16 +209,9 @@ describe('BeregningAvansert', () => {
             <BeregningAvansert />
           </BeregningContext.Provider>,
           {
+            // @ts-ignore
             preloadedState: {
               ...preloadedState,
-              api: {
-                // @ts-ignore
-                queries: {
-                  ...fulfilledGetPerson,
-                  ...fulfilledGetInntekt,
-                  ...fulfilledGetLoependeVedtak75Ufoeregrad,
-                },
-              },
             },
           }
         )
@@ -254,6 +250,7 @@ describe('BeregningAvansert', () => {
         expect(initiateMock).toHaveBeenCalledWith(
           {
             aarligInntektFoerUttakBeloep: 521338,
+            afpInntektMaanedFoerUttak: undefined,
             epsHarInntektOver2G: false,
             epsHarPensjon: false,
             foedselsdato: '1963-04-30',
@@ -265,7 +262,7 @@ describe('BeregningAvansert', () => {
                 maaneder: 6,
               },
             },
-            simuleringstype: 'ALDERSPENSJON',
+            simuleringstype: 'ALDERSPENSJON_MED_AFP_PRIVAT',
             sivilstand: 'UGIFT',
             utenlandsperiodeListe: [],
           },
@@ -346,6 +343,7 @@ describe('BeregningAvansert', () => {
         expect(initiateMock).toHaveBeenCalledWith(
           {
             aarligInntektFoerUttakBeloep: 521338,
+            afpInntektMaanedFoerUttak: undefined,
             epsHarInntektOver2G: false,
             epsHarPensjon: false,
             foedselsdato: '1963-04-30',
@@ -438,6 +436,7 @@ describe('BeregningAvansert', () => {
         expect(initiateMock).toHaveBeenCalledWith(
           {
             aarligInntektFoerUttakBeloep: 521338,
+            afpInntektMaanedFoerUttak: undefined,
             epsHarInntektOver2G: false,
             epsHarPensjon: false,
             foedselsdato: '1963-04-30',
@@ -465,8 +464,7 @@ describe('BeregningAvansert', () => {
         )
       })
 
-      it('Når simuleringen svarer med en beregning, vises det resultatkort og simulering med tabell, Pensjonsavtaler, Grunnlag og Forbehold', async () => {
-        const user = userEvent.setup()
+      it('Når simuleringen svarer med en beregning, vises det simulering med tabell, Pensjonsavtaler, Grunnlag og Forbehold', async () => {
         const initiateMock = vi.spyOn(
           apiSliceUtils.apiSlice.endpoints.alderspensjon,
           'initiate'
@@ -488,8 +486,6 @@ describe('BeregningAvansert', () => {
                 ...preloadedState.userInput,
                 currentSimulation: {
                   beregningsvalg: null,
-                  formatertUttaksalderReadOnly:
-                    '67 år string.og 6 alder.maaned',
                   uttaksalder: { aar: 67, maaneder: 6 },
                   aarligInntektFoerUttakBeloep: null,
                   gradertUttaksperiode: {
@@ -505,9 +501,8 @@ describe('BeregningAvansert', () => {
         await waitFor(() => {
           expect(initiateMock).toHaveBeenCalledTimes(1)
         })
-        expect(
-          screen.getByText('beregning.avansert.resultatkort.tittel')
-        ).toBeVisible()
+        expect(screen.getByText('beregning.intro.title')).toBeVisible()
+        expect(screen.getByText('beregning.intro.description_1')).toBeVisible()
         expect(screen.getByText('pensjonsavtaler.title')).toBeVisible()
         expect(
           container.getElementsByClassName('highcharts-loading')
@@ -524,15 +519,13 @@ describe('BeregningAvansert', () => {
           await screen.findByTestId('highcharts-done-drawing')
         ).toBeVisible()
 
-        await user.click(
-          screen.getByText('beregning.avansert.resultatkort.button')
-        )
-
-        expect(await screen.findByText('grunnlag.title')).toBeInTheDocument()
+        expect(
+          await screen.findByText('grunnlag.endring.title')
+        ).toBeInTheDocument()
         expect(
           await screen.findByText('grunnlag.forbehold.title')
         ).toBeInTheDocument()
-        expect(await screen.findByText('savnerdunoe.title')).toBeInTheDocument()
+        expect(screen.queryByText('savnerdunoe.title')).not.toBeInTheDocument()
         expect(
           screen.queryByText('savnerdunoe.ingress')
         ).not.toBeInTheDocument()
@@ -579,8 +572,6 @@ describe('BeregningAvansert', () => {
                 ...preloadedState.userInput,
                 currentSimulation: {
                   beregningsvalg: null,
-                  formatertUttaksalderReadOnly:
-                    '67 år string.og 6 alder.maaned',
                   uttaksalder: { aar: 67, maaneder: 6 },
                   aarligInntektFoerUttakBeloep: null,
                   gradertUttaksperiode: null,
@@ -632,8 +623,6 @@ describe('BeregningAvansert', () => {
                 ...preloadedState.userInput,
                 currentSimulation: {
                   beregningsvalg: null,
-                  formatertUttaksalderReadOnly:
-                    '67 år string.og 6 alder.maaned',
                   uttaksalder: { aar: 67, maaneder: 6 },
                   aarligInntektFoerUttakBeloep: null,
                   gradertUttaksperiode: null,
@@ -646,7 +635,7 @@ describe('BeregningAvansert', () => {
         await waitFor(() => {
           expect(initiateMock).toHaveBeenCalledTimes(1)
           expect(
-            screen.getByText('beregning.avansert.resultatkort.tittel')
+            screen.getByText('beregning.avansert.link.endre_avanserte_valg')
           ).toBeVisible()
           expect(screen.getByText('beregning.error')).toBeVisible()
         })
@@ -656,9 +645,6 @@ describe('BeregningAvansert', () => {
         })
         await user.click(await screen.findByText('application.global.retry'))
         expect(initiateMock).toHaveBeenCalledTimes(3)
-        await user.click(
-          screen.getByText('beregning.avansert.resultatkort.button')
-        )
       })
 
       it('Når simulering svarer med errorcode 503, vises ErrorPageUnexpected ', async () => {
@@ -692,7 +678,6 @@ describe('BeregningAvansert', () => {
               ...preloadedState.userInput,
               currentSimulation: {
                 beregningsvalg: null,
-                formatertUttaksalderReadOnly: '67 år string.og 6 alder.maaned',
                 uttaksalder: { aar: 67, maaneder: 6 },
                 aarligInntektFoerUttakBeloep: null,
                 gradertUttaksperiode: null,
@@ -708,9 +693,8 @@ describe('BeregningAvansert', () => {
     })
   })
 
-  describe('Gitt at brukeren har vedtak om alderspensjon,', () => {
-    it('Når simuleringen svarer med en beregning, vises det resultatkort og simulering med tabell, Grunnlag og Forbehold uten Pensjonsavtaler', async () => {
-      const user = userEvent.setup()
+  describe('Gitt at brukeren har vedtak om alderspensjon', () => {
+    it('Når simuleringen svarer med en beregning, vises det og simulering med tabell, Grunnlag og Forbehold uten Pensjonsavtaler', async () => {
       const initiateMock = vi.spyOn(
         apiSliceUtils.apiSlice.endpoints.alderspensjon,
         'initiate'
@@ -738,7 +722,6 @@ describe('BeregningAvansert', () => {
               ...userInputInitialState,
               currentSimulation: {
                 ...userInputInitialState.currentSimulation,
-                formatertUttaksalderReadOnly: '67 år string.og 6 alder.maaned',
                 uttaksalder: { aar: 67, maaneder: 6 },
                 aarligInntektFoerUttakBeloep: null,
                 gradertUttaksperiode: {
@@ -754,8 +737,9 @@ describe('BeregningAvansert', () => {
       await waitFor(() => {
         expect(initiateMock).toHaveBeenCalledTimes(1)
       })
+      expect(screen.getByText('beregning.intro.title.endring')).toBeVisible()
       expect(
-        screen.getByText('beregning.avansert.resultatkort.tittel')
+        screen.getByText('beregning.intro.description_1.endring')
       ).toBeVisible()
       expect(
         screen.queryByText('pensjonsavtaler.title')
@@ -774,11 +758,9 @@ describe('BeregningAvansert', () => {
       })
       expect(await screen.findByTestId('highcharts-done-drawing')).toBeVisible()
 
-      await user.click(
-        screen.getByText('beregning.avansert.resultatkort.button')
-      )
-
-      expect(await screen.findByText('grunnlag.title')).toBeInTheDocument()
+      expect(
+        await screen.findByText('grunnlag.endring.title')
+      ).toBeInTheDocument()
       expect(
         await screen.findByText('grunnlag.forbehold.title')
       ).toBeInTheDocument()
@@ -817,7 +799,6 @@ describe('BeregningAvansert', () => {
               ...userInputInitialState,
               currentSimulation: {
                 ...userInputInitialState.currentSimulation,
-                formatertUttaksalderReadOnly: '67 år string.og 6 alder.maaned',
                 uttaksalder: { aar: 67, maaneder: 6 },
                 aarligInntektFoerUttakBeloep: null,
                 gradertUttaksperiode: {
@@ -833,9 +814,6 @@ describe('BeregningAvansert', () => {
       await waitFor(() => {
         expect(initiateMock).toHaveBeenCalledTimes(1)
       })
-      expect(
-        screen.getByText('beregning.avansert.resultatkort.tittel')
-      ).toBeVisible()
 
       expect(
         container.getElementsByClassName('highcharts-loading')
@@ -852,6 +830,7 @@ describe('BeregningAvansert', () => {
       expect(initiateMock).toHaveBeenCalledWith(
         {
           aarligInntektFoerUttakBeloep: 521338,
+          afpInntektMaanedFoerUttak: undefined,
           epsHarInntektOver2G: false,
           epsHarPensjon: false,
           foedselsdato: '1963-04-30',
@@ -902,5 +881,112 @@ describe('BeregningAvansert', () => {
         })
       ).toBeInTheDocument()
     })
+  })
+
+  describe('Gitt at brukeren har gradert uføretrygd', () => {
+    it('Når brukeren har valgt å beregne med AFP, vises riktig intro', async () => {
+      render(
+        <BeregningContext.Provider
+          value={{
+            ...contextMockedValues,
+          }}
+        >
+          <BeregningAvansert />
+        </BeregningContext.Provider>,
+        {
+          preloadedState: {
+            api: {
+              // @ts-ignore
+              queries: {
+                ...fulfilledGetPerson,
+                ...fulfilledGetInntekt,
+                ...fulfilledGetLoependeVedtak75Ufoeregrad,
+              },
+            },
+            userInput: {
+              ...userInputInitialState,
+              currentSimulation: {
+                ...userInputInitialState.currentSimulation,
+                beregningsvalg: 'med_afp',
+              },
+            },
+          },
+        }
+      )
+
+      expect(
+        screen.getByText('beregning.intro.description_2.gradert_UT.med_afp')
+      ).toBeVisible()
+    })
+
+    it('Når AFP ikke er med i beregningen, vises riktig intro', async () => {
+      render(
+        <BeregningContext.Provider
+          value={{
+            ...contextMockedValues,
+          }}
+        >
+          <BeregningAvansert />
+        </BeregningContext.Provider>,
+        {
+          preloadedState: {
+            api: {
+              // @ts-ignore
+              queries: {
+                ...fulfilledGetPerson,
+                ...fulfilledGetInntekt,
+                ...fulfilledGetLoependeVedtak75Ufoeregrad,
+              },
+            },
+            userInput: {
+              ...userInputInitialState,
+              currentSimulation: {
+                ...userInputInitialState.currentSimulation,
+                beregningsvalg: 'uten_afp',
+              },
+            },
+          },
+        }
+      )
+      // beregning.intro.description_2.gradert_UT.uten_afp
+      expect(
+        screen.getByText(
+          'Du har 75 % uføretrygd. Den kommer i tillegg til inntekt og pensjon frem til du blir 67 alder.aar. Uføretrygd vises ikke i beregningen.',
+          {
+            exact: false,
+          }
+        )
+      ).toBeVisible()
+    })
+  })
+
+  it('Når brukeren har 100 % uføretrygd, vises riktig intro', async () => {
+    render(
+      <BeregningContext.Provider
+        value={{
+          ...contextMockedValues,
+        }}
+      >
+        <BeregningAvansert />
+      </BeregningContext.Provider>,
+      {
+        preloadedState: {
+          api: {
+            // @ts-ignore
+            queries: {
+              ...fulfilledGetPerson,
+              ...fulfilledGetInntekt,
+              ...fulfilledGetLoependeVedtak100Ufoeregrad,
+            },
+          },
+          userInput: {
+            ...userInputInitialState,
+          },
+        },
+      }
+    )
+    expect(
+      screen.getByText('beregning.intro.description_2.hel_UT')
+    ).toBeVisible()
   })
 })

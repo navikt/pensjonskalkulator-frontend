@@ -1,10 +1,11 @@
 import { describe, it, vi } from 'vitest'
 
-import { StepSamtykkeOffentligAFP } from '..'
 import { fulfilledGetLoependeVedtak0Ufoeregrad } from '@/mocks/mockedRTKQueryApiCalls'
 import { paths } from '@/router/constants'
 import { userInputInitialState } from '@/state/userInput/userInputSlice'
-import { screen, render, userEvent } from '@/test-utils'
+import { render, screen, userEvent } from '@/test-utils'
+
+import { StepSamtykkeOffentligAFP } from '..'
 
 const navigateMock = vi.fn()
 vi.mock(import('react-router'), async (importOriginal) => {
@@ -85,7 +86,11 @@ describe('StepSamtykkeOffentligAFP', () => {
 
     await user.click(screen.getByText('stegvisning.tilbake'))
 
-    expect(navigateMock).toHaveBeenCalledWith(paths.afp)
+    expect(navigateMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        search: expect.stringContaining('back=true') as string,
+      })
+    )
   })
 
   describe('Gitt at brukeren er logget på som veileder', async () => {

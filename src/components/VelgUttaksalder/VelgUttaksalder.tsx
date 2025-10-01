@@ -1,13 +1,14 @@
+import clsx from 'clsx'
 import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 import { Chips, Heading } from '@navikt/ds-react'
-import clsx from 'clsx'
 
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
   selectCurrentSimulation,
   selectNedreAldersgrense,
+  selectOevreAldersgrense,
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
 import { unformatUttaksalder } from '@/utils/alder'
@@ -30,16 +31,17 @@ export const VelgUttaksalder: React.FC<Props> = ({
 
   const { uttaksalder } = useAppSelector(selectCurrentSimulation)
 
+  const oevreAldersgrense = useAppSelector(selectOevreAldersgrense)
+
   const formaterteAldere = React.useMemo(
-    () =>
-      getFormaterteAldere(intl, tidligstMuligUttak, { aar: 75, maaneder: 0 }),
+    () => getFormaterteAldere(intl, tidligstMuligUttak, oevreAldersgrense),
     [tidligstMuligUttak]
   )
 
   const onAlderClick = (formatertAlder: string) => {
     logger('chip valgt', {
       tekst: 'Velg uttaksalder',
-      data: formatertAlder,
+      chipVerdi: formatertAlder,
     })
     const alder = unformatUttaksalder(formatertAlder)
     dispatch(userInputActions.setCurrentSimulationUttaksalder(alder))
@@ -49,10 +51,11 @@ export const VelgUttaksalder: React.FC<Props> = ({
   return (
     <div className={styles.wrapper}>
       <div className={styles.wrapperCard}>
-        <span ref={pinRef} className={styles.pin}></span>
+        <span ref={pinRef} className={styles.pin} />
         <Heading size="xsmall" level="2">
           <FormattedMessage id="velguttaksalder.title" />
         </Heading>
+
         <Chips
           className={clsx(styles.chipsWrapper, styles.chipsWrapper__hasGap)}
         >

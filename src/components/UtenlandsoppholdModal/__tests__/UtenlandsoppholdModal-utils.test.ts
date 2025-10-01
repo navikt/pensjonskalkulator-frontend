@@ -1,9 +1,10 @@
-import {
-  validateOpphold,
-  onUtenlandsoppholdSubmit,
-  UTENLANDSOPPHOLD_FORM_NAMES,
-} from '../utils'
 import * as loggerUtils from '@/utils/logging'
+
+import {
+  UTENLANDSOPPHOLD_FORM_NAMES,
+  onUtenlandsoppholdSubmit,
+  validateOpphold,
+} from '../utils'
 
 describe('UtenlandsoppholdModal-utils', () => {
   describe('validateOpphold', () => {
@@ -45,7 +46,7 @@ describe('UtenlandsoppholdModal-utils', () => {
           )
         ).toBeFalsy()
         expect(updateErrorMessageMock).toHaveBeenCalled()
-        expect(loggerMock).toHaveBeenCalledWith('skjema validering feilet', {
+        expect(loggerMock).toHaveBeenCalledWith('skjemavalidering feilet', {
           skjemanavn: 'utenlandsopphold-oppholdet-ditt',
           data: 'Utenlandsopphold - land',
           tekst:
@@ -67,7 +68,7 @@ describe('UtenlandsoppholdModal-utils', () => {
           )
         ).toBeFalsy()
         expect(updateErrorMessageMock).toHaveBeenCalled()
-        expect(loggerMock).toHaveBeenCalledWith('skjema validering feilet', {
+        expect(loggerMock).toHaveBeenCalledWith('skjemavalidering feilet', {
           skjemanavn: 'utenlandsopphold-oppholdet-ditt',
           data: 'Utenlandsopphold - land',
           tekst:
@@ -116,7 +117,7 @@ describe('UtenlandsoppholdModal-utils', () => {
             )
           ).toBeFalsy()
           expect(updateErrorMessageMock).toHaveBeenCalled()
-          expect(loggerMock).toHaveBeenCalledWith('skjema validering feilet', {
+          expect(loggerMock).toHaveBeenCalledWith('skjemavalidering feilet', {
             skjemanavn: 'utenlandsopphold-oppholdet-ditt',
             data: 'Utenlandsopphold - arbeidet utenlands',
             tekst:
@@ -141,7 +142,7 @@ describe('UtenlandsoppholdModal-utils', () => {
             )
           ).toBeFalsy()
           expect(updateErrorMessageMock).toHaveBeenCalled()
-          expect(loggerMock).toHaveBeenCalledWith('skjema validering feilet', {
+          expect(loggerMock).toHaveBeenCalledWith('skjemavalidering feilet', {
             skjemanavn: 'utenlandsopphold-oppholdet-ditt',
             data: 'Utenlandsopphold - arbeidet utenlands',
             tekst:
@@ -166,7 +167,7 @@ describe('UtenlandsoppholdModal-utils', () => {
             )
           ).toBeFalsy()
           expect(updateErrorMessageMock).toHaveBeenCalled()
-          expect(loggerMock).toHaveBeenCalledWith('skjema validering feilet', {
+          expect(loggerMock).toHaveBeenCalledWith('skjemavalidering feilet', {
             skjemanavn: 'utenlandsopphold-oppholdet-ditt',
             data: 'Utenlandsopphold - arbeidet utenlands',
             tekst:
@@ -191,7 +192,7 @@ describe('UtenlandsoppholdModal-utils', () => {
           )
         ).toBeFalsy()
         expect(updateErrorMessageMock).toHaveBeenCalled()
-        expect(loggerMock).toHaveBeenCalledWith('skjema validering feilet', {
+        expect(loggerMock).toHaveBeenCalledWith('skjemavalidering feilet', {
           skjemanavn: 'utenlandsopphold-oppholdet-ditt',
           data: 'Utenlandsopphold - startdato',
           tekst:
@@ -212,7 +213,7 @@ describe('UtenlandsoppholdModal-utils', () => {
           )
         ).toBeFalsy()
         expect(updateErrorMessageMock).toHaveBeenCalled()
-        expect(loggerMock).toHaveBeenCalledWith('skjema validering feilet', {
+        expect(loggerMock).toHaveBeenCalledWith('skjemavalidering feilet', {
           skjemanavn: 'utenlandsopphold-oppholdet-ditt',
           data: 'Utenlandsopphold - startdato',
           tekst:
@@ -233,7 +234,7 @@ describe('UtenlandsoppholdModal-utils', () => {
           )
         ).toBeFalsy()
         expect(updateErrorMessageMock).toHaveBeenCalled()
-        expect(loggerMock).toHaveBeenCalledWith('skjema validering feilet', {
+        expect(loggerMock).toHaveBeenCalledWith('skjemavalidering feilet', {
           skjemanavn: 'utenlandsopphold-oppholdet-ditt',
           data: 'Utenlandsopphold - startdato',
           tekst:
@@ -254,7 +255,7 @@ describe('UtenlandsoppholdModal-utils', () => {
           )
         ).toBeFalsy()
         expect(updateErrorMessageMock).toHaveBeenCalled()
-        expect(loggerMock).toHaveBeenCalledWith('skjema validering feilet', {
+        expect(loggerMock).toHaveBeenCalledWith('skjemavalidering feilet', {
           skjemanavn: 'utenlandsopphold-oppholdet-ditt',
           data: 'Utenlandsopphold - startdato',
           tekst:
@@ -275,7 +276,7 @@ describe('UtenlandsoppholdModal-utils', () => {
           )
         ).toBeFalsy()
         expect(updateErrorMessageMock).toHaveBeenCalled()
-        expect(loggerMock).toHaveBeenCalledWith('skjema validering feilet', {
+        expect(loggerMock).toHaveBeenCalledWith('skjemavalidering feilet', {
           skjemanavn: 'utenlandsopphold-oppholdet-ditt',
           data: 'Utenlandsopphold - startdato',
           tekst:
@@ -299,7 +300,7 @@ describe('UtenlandsoppholdModal-utils', () => {
           )
         ).toBeFalsy()
         expect(updateErrorMessageMock).toHaveBeenCalled()
-        expect(loggerMock).toHaveBeenCalledWith('skjema validering feilet', {
+        expect(loggerMock).toHaveBeenCalledWith('skjemavalidering feilet', {
           skjemanavn: 'utenlandsopphold-oppholdet-ditt',
           data: 'Utenlandsopphold - sluttdato',
           tekst:
@@ -320,7 +321,7 @@ describe('UtenlandsoppholdModal-utils', () => {
           )
         ).toBeFalsy()
         expect(updateErrorMessageMock).toHaveBeenCalled()
-        expect(loggerMock).toHaveBeenCalledWith('skjema validering feilet', {
+        expect(loggerMock).toHaveBeenCalledWith('skjemavalidering feilet', {
           skjemanavn: 'utenlandsopphold-oppholdet-ditt',
           data: 'Utenlandsopphold - sluttdato',
           tekst:
@@ -341,7 +342,7 @@ describe('UtenlandsoppholdModal-utils', () => {
           )
         ).toBeFalsy()
         expect(updateErrorMessageMock).toHaveBeenCalled()
-        expect(loggerMock).toHaveBeenCalledWith('skjema validering feilet', {
+        expect(loggerMock).toHaveBeenCalledWith('skjemavalidering feilet', {
           skjemanavn: 'utenlandsopphold-oppholdet-ditt',
           data: 'Utenlandsopphold - sluttdato',
           tekst:
@@ -418,7 +419,7 @@ describe('UtenlandsoppholdModal-utils', () => {
           )
         ).toBeFalsy()
         expect(updateErrorMessageMock).toHaveBeenCalled()
-        expect(loggerMock).toHaveBeenCalledWith('skjema validering feilet', {
+        expect(loggerMock).toHaveBeenCalledWith('skjemavalidering feilet', {
           skjemanavn: 'utenlandsopphold-oppholdet-ditt',
           data: 'Utenlandsopphold - overlappende perioder',
           tekst:
@@ -445,7 +446,7 @@ describe('UtenlandsoppholdModal-utils', () => {
           )
         ).toBeFalsy()
         expect(updateErrorMessageMock).toHaveBeenCalled()
-        expect(loggerMock).toHaveBeenCalledWith('skjema validering feilet', {
+        expect(loggerMock).toHaveBeenCalledWith('skjemavalidering feilet', {
           skjemanavn: 'utenlandsopphold-oppholdet-ditt',
           data: 'Utenlandsopphold - overlappende perioder',
           tekst:
@@ -472,7 +473,7 @@ describe('UtenlandsoppholdModal-utils', () => {
           )
         ).toBeFalsy()
         expect(updateErrorMessageMock).toHaveBeenCalled()
-        expect(loggerMock).toHaveBeenCalledWith('skjema validering feilet', {
+        expect(loggerMock).toHaveBeenCalledWith('skjemavalidering feilet', {
           skjemanavn: 'utenlandsopphold-oppholdet-ditt',
           data: 'Utenlandsopphold - overlappende perioder',
           tekst:
@@ -499,7 +500,7 @@ describe('UtenlandsoppholdModal-utils', () => {
           )
         ).toBeFalsy()
         expect(updateErrorMessageMock).toHaveBeenCalled()
-        expect(loggerMock).toHaveBeenCalledWith('skjema validering feilet', {
+        expect(loggerMock).toHaveBeenCalledWith('skjemavalidering feilet', {
           skjemanavn: 'utenlandsopphold-oppholdet-ditt',
           data: 'Utenlandsopphold - overlappende perioder',
           tekst:
@@ -590,26 +591,20 @@ describe('UtenlandsoppholdModal-utils', () => {
           }
         )
 
-        expect(dispatchMock.mock.calls[0][0].type).toStrictEqual(
-          'userInputSlice/setUtenlandsperiode'
-        )
-        expect(dispatchMock.mock.calls[0][0].payload.id).toBeDefined()
-        expect(
-          dispatchMock.mock.calls[0][0].payload.arbeidetUtenlands
-        ).toStrictEqual(true)
-        expect(dispatchMock.mock.calls[0][0].payload.landkode).toStrictEqual(
-          'SWE'
-        )
-        expect(dispatchMock.mock.calls[0][0].payload.startdato).toStrictEqual(
-          '21.12.2012'
-        )
-        expect(dispatchMock.mock.calls[0][0].payload.sluttdato).toStrictEqual(
-          '18.03.2015'
-        )
+        expect(dispatchMock.mock.calls[0][0]).toStrictEqual({
+          type: 'userInputSlice/setUtenlandsperiode',
+          payload: {
+            id: expect.any(String) as string,
+            arbeidetUtenlands: true,
+            landkode: 'SWE',
+            startdato: '21.12.2012',
+            sluttdato: '18.03.2015',
+          },
+        })
 
         expect(onSubmitCallbackMock).toHaveBeenCalled()
         expect(closeMock).toHaveBeenCalled()
-        expect(loggerMock).toHaveBeenCalledWith('button klikk', {
+        expect(loggerMock).toHaveBeenCalledWith('knapp klikket', {
           tekst: 'legger til utenlandsopphold',
         })
         expect(setValidationErrorsMock).not.toHaveBeenCalled()
@@ -665,26 +660,20 @@ describe('UtenlandsoppholdModal-utils', () => {
           }
         )
 
-        expect(dispatchMock.mock.calls[0][0].type).toStrictEqual(
-          'userInputSlice/setUtenlandsperiode'
-        )
-        expect(dispatchMock.mock.calls[0][0].payload.id).toBeDefined()
-        expect(
-          dispatchMock.mock.calls[0][0].payload.arbeidetUtenlands
-        ).toStrictEqual(true)
-        expect(dispatchMock.mock.calls[0][0].payload.landkode).toStrictEqual(
-          'SWE'
-        )
-        expect(dispatchMock.mock.calls[0][0].payload.startdato).toStrictEqual(
-          '21.12.2012'
-        )
-        expect(dispatchMock.mock.calls[0][0].payload.sluttdato).toStrictEqual(
-          undefined
-        )
+        expect(dispatchMock.mock.calls[0][0]).toStrictEqual({
+          type: 'userInputSlice/setUtenlandsperiode',
+          payload: {
+            id: expect.any(String) as string,
+            arbeidetUtenlands: true,
+            landkode: 'SWE',
+            startdato: '21.12.2012',
+            sluttdato: undefined,
+          },
+        })
 
         expect(onSubmitCallbackMock).toHaveBeenCalled()
         expect(closeMock).toHaveBeenCalled()
-        expect(loggerMock).toHaveBeenCalledWith('button klikk', {
+        expect(loggerMock).toHaveBeenCalledWith('knapp klikket', {
           tekst: 'endrer utenlandsopphold',
         })
         expect(setValidationErrorsMock).not.toHaveBeenCalled()

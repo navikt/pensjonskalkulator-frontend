@@ -5,8 +5,8 @@ export const externalUrls = {
   dinPensjonBeholdning: 'https://www.nav.no/pensjon/opptjening/nb/',
   dinPensjonEndreSoeknad:
     'https://www.nav.no/pensjon/selvbetjening/alderspensjon/endringssoknad',
-  detaljertKalkulator:
-    'https://www.nav.no/pselv/simulering.jsf?simpleMode=true',
+  dinPensjonInnlogget: 'https://www.nav.no/pensjon/selvbetjening/dinpensjon',
+  detaljertKalkulator: '/pensjon/kalkulator/redirect/detaljert-kalkulator',
   alderspensjonsregler: 'https://www.nav.no/alderspensjon#beregning',
   afp: 'https://www.afp.no',
   afpPrivat: 'https://www.nav.no/afp-i-privat-sektor',
@@ -24,7 +24,7 @@ export const externalUrls = {
     'https://www.nav.no/no/person/flere-tema/arbeid-og-opphold-i-norge/relatert-informasjon/medlemskap-i-folketrygden',
   kortBotid: 'https://www.nav.no/alderspensjon#kort-botid',
   ufoeretrygdOgAfp: 'https://www.nav.no/ufor-til-pensjon#afp',
-  byttBruker: import.meta.env.VITE_BYTT_BRUKER_URL,
+  byttBruker: import.meta.env.VITE_BYTT_BRUKER_URL as string,
   personopplysninger:
     'https://www.nav.no/personopplysninger-i-pensjonskalkulator',
   spk: 'https://www.spk.no/',
@@ -47,6 +47,8 @@ export const paths = {
   beregningEnkel: '/beregning',
   beregningAvansert: '/beregning-detaljert',
   forbehold: '/forbehold',
+  kalkulatorVirkerIkke: '/kalkulatoren-virker-ikke',
+  lavtSikkerhetsnivaa: '/for-lavt-sikkerhetsnivaa',
 } as const
 
 export const henvisningUrlParams = {
@@ -73,4 +75,14 @@ export const stegvisningOrderEndring = [
   paths.ufoeretrygdAFP,
   paths.samtykkeOffentligAFP,
   paths.beregningAvansert,
+] as const
+
+export const stegvisningOrderKap19 = [
+  paths.login,
+  paths.start,
+  paths.sivilstand,
+  paths.utenlandsopphold,
+  paths.afp,
+  paths.samtykke,
+  paths.beregningEnkel,
 ] as const

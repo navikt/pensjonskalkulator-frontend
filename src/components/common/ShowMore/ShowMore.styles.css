@@ -3,8 +3,8 @@
   interpolate-size: allow-keywords;
 
   --ac-show-more-mask: linear-gradient(
-    rgba(0 0 0 / 100%),
-    rgba(0 0 0 / 0%) calc(100% - 0.5rem)
+    rgb(0 0 0 / 100%),
+    rgb(0 0 0 / 0%) calc(100% - 0.5rem)
   );
 
   position: relative;
@@ -40,7 +40,6 @@
 }
 
 .navds-show-more__content {
-  transition: height cubic-bezier(0, 0.3, 0.15, 1) 400ms;
   overflow: hidden;
   height: max-content;
 }

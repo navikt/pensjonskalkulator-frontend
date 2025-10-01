@@ -1,10 +1,11 @@
 import { describe, it } from 'vitest'
 
+import { userInputInitialState } from '@/state/userInput/userInputSlice'
+import { render, screen } from '@/test-utils'
+import * as useIsMobileUtils from '@/utils/useIsMobile'
+
 import offentligTpData from '../../../../mocks/data/offentlig-tp.json' with { type: 'json' }
 import { OffentligTjenestepensjon } from '../OffentligTjenestepensjon'
-import { userInputInitialState } from '@/state/userInput/userInputSlice'
-import { render, screen, waitFor } from '@/test-utils'
-import * as useIsMobileUtils from '@/utils/useIsMobile'
 
 describe('OffentligTjenestepensjon', () => {
   it('viser loader mens info om tp-medlemskap hentes.', () => {
@@ -73,14 +74,12 @@ describe('OffentligTjenestepensjon', () => {
     expect(screen.getByRole('heading', { level: 3 })).toHaveTextContent(
       'pensjonsavtaler.offentligtp.title'
     )
-    await waitFor(() => {
-      expect(
-        screen.getByText(
-          'Du er eller har vært ansatt i offentlig sektor, men vi kan dessverre ikke hente inn offentlige pensjonsavtaler. Sjekk tjenestepensjonsavtalene dine hos aktuell tjenestepensjonsordning',
-          { exact: false }
-        )
-      ).toBeVisible()
-    })
+    expect(
+      screen.getByText(
+        'Du er eller har vært ansatt i offentlig sektor, men vi kan dessverre ikke hente inn offentlige pensjonsavtaler. Sjekk tjenestepensjonsavtalene dine hos aktuell tjenestepensjonsordning',
+        { exact: false }
+      )
+    ).toBeVisible()
   })
 
   describe('Gitt at brukeren er medlem av SPK, ', async () => {
@@ -101,14 +100,12 @@ describe('OffentligTjenestepensjon', () => {
       expect(screen.getByRole('heading', { level: 3 })).toHaveTextContent(
         'pensjonsavtaler.offentligtp.title'
       )
-      await waitFor(() => {
-        expect(
-          screen.getByText(
-            'Vi klarte ikke å hente din offentlige tjenestepensjon. Prøv igjen senere eller kontakt',
-            { exact: false }
-          )
-        ).toBeVisible()
-      })
+      expect(
+        screen.getByText(
+          'Vi klarte ikke å hente din offentlige tjenestepensjon. Prøv igjen senere eller kontakt',
+          { exact: false }
+        )
+      ).toBeVisible()
     })
 
     it('Når simuleringen er tom, viser riktig heading på riktig level og riktig infomelding.', async () => {
@@ -128,11 +125,9 @@ describe('OffentligTjenestepensjon', () => {
       expect(screen.getByRole('heading', { level: 3 })).toHaveTextContent(
         'pensjonsavtaler.offentligtp.title'
       )
-      await waitFor(() => {
-        expect(
-          screen.getByText('pensjonsavtaler.offentligtp.empty')
-        ).toBeVisible()
-      })
+      expect(
+        screen.getByText('pensjonsavtaler.offentligtp.empty')
+      ).toBeVisible()
     })
 
     it('Når simuleringen er vellykket og brukeren er på desktop, viser riktig informasjon og liste over offentlige avtaler.', async () => {
@@ -231,25 +226,25 @@ describe('OffentligTjenestepensjon', () => {
       ).toBeVisible()
       expect(
         await screen.findByText(
-          'String.fra 67 alder.aar string.til 69 alder.aar:'
+          'String.fra 67 alder.aar string.til 69 alder.aar'
         )
       ).toBeVisible()
       expect(
-        await screen.findAllByText('64 340 pensjonsavtaler.kr_pr_aar')
+        await screen.findAllByText('64 340 pensjonsavtaler_mobil.kr_pr_aar')
       ).toHaveLength(1)
       expect(
         await screen.findByText(
-          'String.fra 70 alder.aar string.til 74 alder.aar:'
+          'String.fra 70 alder.aar string.til 74 alder.aar'
         )
       ).toBeVisible()
       expect(
-        await screen.findAllByText('53 670 pensjonsavtaler.kr_pr_aar')
+        await screen.findAllByText('53 670 pensjonsavtaler_mobil.kr_pr_aar')
       ).toHaveLength(1)
       expect(
-        await screen.findByText('alder.livsvarig 75 alder.aar:')
+        await screen.findByText('alder.livsvarig 75 alder.aar')
       ).toBeVisible()
       expect(
-        await screen.findAllByText('48 900 pensjonsavtaler.kr_pr_aar')
+        await screen.findAllByText('48 900 pensjonsavtaler_mobil.kr_pr_aar')
       ).toHaveLength(1)
       const rows = container.querySelectorAll('tr')
       expect(rows?.length).toBe(3)
@@ -494,7 +489,7 @@ describe('OffentligTjenestepensjon', () => {
             simulertTjenestepensjon: {
               ...offentligTpData.simulertTjenestepensjon,
               tpLeverandoer: 'Kommunal Landspensjonskasse',
-              tpNummer: '4080',
+              tpNummer: '4082',
             },
           }}
           headingLevel="3"
@@ -523,7 +518,7 @@ describe('OffentligTjenestepensjon', () => {
             simulertTjenestepensjon: {
               ...offentligTpData.simulertTjenestepensjon,
               tpLeverandoer: 'Kommunal Landspensjonskasse',
-              tpNummer: '4080',
+              tpNummer: '4082',
             },
           }}
           headingLevel="3"
@@ -550,7 +545,7 @@ describe('OffentligTjenestepensjon', () => {
               simulertTjenestepensjon: {
                 ...offentligTpData.simulertTjenestepensjon,
                 tpLeverandoer: 'Kommunal Landspensjonskasse',
-                tpNummer: '4080',
+                tpNummer: '4082',
               },
             }}
             headingLevel="3"
@@ -590,7 +585,7 @@ describe('OffentligTjenestepensjon', () => {
               simulertTjenestepensjon: {
                 ...offentligTpData.simulertTjenestepensjon,
                 tpLeverandoer: 'Kommunal Landspensjonskasse',
-                tpNummer: '4080',
+                tpNummer: '4082',
               },
             }}
             headingLevel="3"
@@ -630,7 +625,7 @@ describe('OffentligTjenestepensjon', () => {
               simulertTjenestepensjon: {
                 ...offentligTpData.simulertTjenestepensjon,
                 tpLeverandoer: 'Kommunal Landspensjonskasse',
-                tpNummer: '4080',
+                tpNummer: '4082',
               },
             }}
             headingLevel="3"
@@ -670,7 +665,7 @@ describe('OffentligTjenestepensjon', () => {
               simulertTjenestepensjon: {
                 ...offentligTpData.simulertTjenestepensjon,
                 tpLeverandoer: 'Kommunal Landspensjonskasse',
-                tpNummer: '4080',
+                tpNummer: '4082',
               },
             }}
             headingLevel="3"

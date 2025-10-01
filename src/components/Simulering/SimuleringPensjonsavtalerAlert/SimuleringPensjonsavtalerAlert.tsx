@@ -6,9 +6,18 @@ import { Alert, Link } from '@navikt/ds-react'
 import { BeregningContext } from '@/pages/Beregning/context'
 import { useAppSelector } from '@/state/hooks'
 import { selectIsEndring } from '@/state/userInput/selectors'
+import { ALERT_VIST } from '@/utils/loggerConstants'
 import { logger } from '@/utils/logging'
 
 import styles from './SimuleringPensjonsavtalerAlert.module.scss'
+
+const ALERT_VARIANTS = {
+  INFO: 'info',
+  WARNING: 'warning',
+  INLINE_INFO: 'inline-info',
+} as const
+
+type AlertVariant = (typeof ALERT_VARIANTS)[keyof typeof ALERT_VARIANTS]
 
 interface Props {
   pensjonsavtaler: {
@@ -43,8 +52,27 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
   } = pensjonsavtaler
   const { isError: isOffentligTpError, data: offentligTpData } = offentligTp
 
-  const alert = React.useMemo(():
-    | { variant: 'info' | 'warning' | 'inline-info'; text: string }
+  const alertsList: Array<{
+    variant: AlertVariant
+    text: string
+  }> = []
+
+  // Varselet om at avtaler starter tidligere enn uttakstidspunkt skal være øverst av varslene
+  if (!isPensjonsavtalerLoading && isPensjonsavtaleFlagVisible) {
+    const text = 'beregning.pensjonsavtaler.alert.avtaler_foer_alder'
+    const variant = ALERT_VARIANTS.INLINE_INFO
+    logger(ALERT_VIST, {
+      tekst: `Pensjonsavtaler: ${intl.formatMessage({ id: text })}`,
+      variant,
+    })
+    alertsList.push({
+      variant,
+      text,
+    })
+  }
+
+  const pensjonsavtaleAlert = React.useMemo(():
+    | { variant: AlertVariant; text: string }
     | undefined => {
     const isPartialWith0Avtaler =
       pensjonsavtalerData?.partialResponse &&
@@ -63,8 +91,8 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
 
     if (isEndring) {
       const text = 'beregning.pensjonsavtaler.alert.endring'
-      const variant = 'inline-info'
-      logger('alert vist', {
+      const variant = ALERT_VARIANTS.INLINE_INFO
+      logger(ALERT_VIST, {
         tekst: `Pensjonsavtaler: ${intl.formatMessage({ id: text })}`,
         variant,
       })
@@ -77,8 +105,8 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
     // Offentlig-TP OK + Private pensjonsavtaler FEIL/UKOMPLETT
     if (isOffentligTpOK && (isPensjonsavtalerError || isPartialWith0Avtaler)) {
       const text = 'beregning.pensjonsavtaler.alert.privat.error'
-      const variant = 'warning'
-      logger('alert vist', {
+      const variant = ALERT_VARIANTS.WARNING
+      logger(ALERT_VIST, {
         tekst: `Pensjonsavtaler: ${intl.formatMessage({ id: text })}`,
         variant,
       })
@@ -97,8 +125,8 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
       (isPensjonsavtalerError || isPartialWith0Avtaler)
     ) {
       const text = 'beregning.pensjonsavtaler.alert.privat_og_offentlig.error'
-      const variant = 'warning'
-      logger('alert vist', {
+      const variant = ALERT_VARIANTS.WARNING
+      logger(ALERT_VIST, {
         tekst: `Pensjonsavtaler: ${intl.formatMessage({ id: text })}`,
         variant,
       })
@@ -114,8 +142,8 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
       isPensjonsavtalerSuccess
     ) {
       const text = 'beregning.pensjonsavtaler.alert.offentlig.error'
-      const variant = 'warning'
-      logger('alert vist', {
+      const variant = ALERT_VARIANTS.WARNING
+      logger(ALERT_VIST, {
         tekst: `Pensjonsavtaler: ${intl.formatMessage({ id: text })}`,
         variant,
       })
@@ -131,21 +159,8 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
       offentligTpData.simuleringsresultatStatus === 'TP_ORDNING_STOETTES_IKKE'
     ) {
       const text = 'beregning.pensjonsavtaler.alert.stoettes_ikke'
-      const variant = 'info'
-      logger('alert vist', {
-        tekst: `Pensjonsavtaler: ${intl.formatMessage({ id: text })}`,
-        variant,
-      })
-      return {
-        variant,
-        text,
-      }
-    }
-
-    if (!isPensjonsavtalerLoading && isPensjonsavtaleFlagVisible) {
-      const text = 'beregning.pensjonsavtaler.alert.avtaler_foer_alder'
-      const variant = 'inline-info'
-      logger('alert vist', {
+      const variant = ALERT_VARIANTS.INFO
+      logger(ALERT_VIST, {
         tekst: `Pensjonsavtaler: ${intl.formatMessage({ id: text })}`,
         variant,
       })
@@ -162,6 +177,10 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
     isOffentligTpError,
     offentligTpData,
   ])
+
+  if (pensjonsavtaleAlert) {
+    alertsList.push(pensjonsavtaleAlert)
+  }
 
   const handlePensjonsavtalerLinkClick: React.MouseEventHandler<
     HTMLAnchorElement
@@ -182,31 +201,42 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
     }
   }
 
-  if (alert === undefined) {
+  if (!alertsList.length) {
     return null
   }
 
   return (
-    <Alert
-      variant={alert.variant === 'inline-info' ? 'info' : alert.variant}
-      data-testid="pensjonsavtaler-alert"
-      className={styles.alert}
-      inline={alert.variant === 'inline-info'}
-    >
-      <FormattedMessage
-        id={alert.text}
-        values={{
-          scrollTo: (chunk) => (
-            <Link
-              href="#"
-              data-testid="pensjonsavtaler-alert-link"
-              onClick={handlePensjonsavtalerLinkClick}
-            >
-              {chunk}
-            </Link>
-          ),
-        }}
-      />
-    </Alert>
+    <>
+      {alertsList.map((alert, index) => (
+        <Alert
+          key={`${alert.text}-${alert.variant}-${index}`}
+          variant={
+            alert.variant === ALERT_VARIANTS.INLINE_INFO
+              ? ALERT_VARIANTS.INFO
+              : alert.variant
+          }
+          data-testid="pensjonsavtaler-alert"
+          className={styles.alert}
+          {...(index === 1 && { style: { margin: '16px 0' } })}
+          inline={alert.variant === ALERT_VARIANTS.INLINE_INFO}
+        >
+          <FormattedMessage
+            id={alert.text}
+            values={{
+              // eslint-disable-next-line react/no-unstable-nested-components
+              scrollTo: (chunk) => (
+                <Link
+                  href="#"
+                  data-testid="pensjonsavtaler-alert-link"
+                  onClick={handlePensjonsavtalerLinkClick}
+                >
+                  {chunk}
+                </Link>
+              ),
+            }}
+          />
+        </Alert>
+      ))}
+    </>
   )
 }

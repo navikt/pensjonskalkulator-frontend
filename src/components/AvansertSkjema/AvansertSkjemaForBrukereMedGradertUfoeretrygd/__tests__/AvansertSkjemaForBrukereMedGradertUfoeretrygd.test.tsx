@@ -1,26 +1,28 @@
 import { describe, expect, it } from 'vitest'
 
-import { AvansertSkjemaForBrukereMedGradertUfoeretrygd } from '..'
-import { AVANSERT_FORM_NAMES } from '../../utils'
-import * as AvansertSkjemaForBrukereMedGradertUfoeretrygdUtils from '../../utils'
 import {
-  fulfilledGetPerson,
   fulfilledGetLoependeVedtak75Ufoeregrad,
   fulfilledGetLoependeVedtakLoependeAlderspensjonOg40Ufoeretrygd,
+  fulfilledGetPerson,
   fulfilledGetPersonMedOekteAldersgrenser,
 } from '@/mocks/mockedRTKQueryApiCalls'
 import { mockResponse } from '@/mocks/server'
 import {
-  BeregningContext,
   AvansertBeregningModus,
+  BeregningContext,
 } from '@/pages/Beregning/context'
 import { apiSlice } from '@/state/api/apiSlice'
 import {
-  userInputInitialState,
   Simulation,
+  userInputInitialState,
 } from '@/state/userInput/userInputSlice'
-import { render, screen, fireEvent, userEvent } from '@/test-utils'
+import { fireEvent, render, screen, userEvent } from '@/test-utils'
 import * as alderUtils from '@/utils/alder'
+
+import { AvansertSkjemaForBrukereMedGradertUfoeretrygd } from '..'
+import { getPreviousMonth } from '../../test-utils'
+import { AVANSERT_FORM_NAMES } from '../../utils'
+import * as AvansertSkjemaForBrukereMedGradertUfoeretrygdUtils from '../../utils'
 
 describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
   afterEach(() => {
@@ -33,6 +35,8 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
     harAvansertSkjemaUnsavedChanges: false,
     setHarAvansertSkjemaUnsavedChanges: () => {},
   }
+
+  const agePickerMonth = getPreviousMonth()
 
   const mockedQueries = {
     ...fulfilledGetPerson,
@@ -67,24 +71,17 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
       }
     )
 
-    expect(
-      screen.getByText('inntekt.info_om_inntekt.read_more.label')
-    ).toBeVisible()
+    expect(screen.queryByTestId('om_pensjonsgivende_inntekt')).toBeVisible()
 
     expect(
       await screen.findByText(
         'beregning.avansert.rediger.inntekt_frem_til_uttak.description_ufoere'
       )
     ).toBeVisible()
+    expect(screen.queryByTestId('om_uttaksgrad_UT_gradert')).toBeVisible()
     expect(
-      await screen.findByText('omufoeretrygd.readmore.title')
+      screen.queryByTestId('om_pensjonsalder_UT_gradert_avansert')
     ).toBeVisible()
-    expect(
-      await screen.findByText(
-        'beregning.avansert.rediger.read_more.uttaksgrad.gradert_ufoeretrygd.label'
-      )
-    ).toBeVisible()
-    expect(screen.getByTestId('om-uttaksgrad')).toBeInTheDocument()
 
     const selectAarElement = screen.getByTestId(
       `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
@@ -215,8 +212,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
     )
     const optionMaanederElements =
       selectMaanederElement?.querySelectorAll('option')
-    expect(optionMaanederElements?.[0].value).toBe('')
-    expect(optionMaanederElements?.[1].value).toBe('5')
+    expect(optionMaanederElements?.[0].value).toBe('5')
 
     fireEvent.change(
       screen.getByTestId(
@@ -283,8 +279,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
     )
     const optionMaanederElements2 =
       selectMaanederElement2?.querySelectorAll('option')
-    expect(optionMaanederElements2?.[0].value).toBe('')
-    expect(optionMaanederElements2?.[1].value).toBe('0')
+    expect(optionMaanederElements2?.[0].value).toBe('0')
 
     const selectAarElement3 = screen.getByTestId(
       `age-picker-${AVANSERT_FORM_NAMES.uttaksalderGradertUttak}-aar`
@@ -307,8 +302,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
     )
     const optionMaanederElements3 =
       selectMaanederElement3?.querySelectorAll('option')
-    expect(optionMaanederElements3?.[0].value).toBe('')
-    expect(optionMaanederElements3?.[1].value).toBe('5')
+    expect(optionMaanederElements3?.[0].value).toBe('5')
 
     expect(
       screen.queryByTestId(AVANSERT_FORM_NAMES.inntektVsaGradertUttak)
@@ -325,7 +319,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
     ).toBeVisible()
   })
 
-  it('Når alle feltene fylles ut og resetForm kalles, nullstilles det alle feltene', async () => {
+  it('Når alle feltene fylles ut og resetForm kalles, nullstilles alle feltene', async () => {
     const user = userEvent.setup()
     const { store } = render(
       <BeregningContext.Provider
@@ -347,7 +341,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
         },
       }
     )
-    store.dispatch(apiSlice.endpoints.getInntekt.initiate())
+    await store.dispatch(apiSlice.endpoints.getInntekt.initiate())
 
     // Endrer inntekt frem til uttak
     await user.click(
@@ -373,24 +367,18 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
       await screen.findByTestId(
         `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
       ),
-      {
-        target: { value: '67' },
-      }
+      { target: { value: '67' } }
     )
     fireEvent.change(
       await screen.findByTestId(
         `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`
       ),
-      {
-        target: { value: '2' },
-      }
+      { target: { value: '2' } }
     )
     // Endrer uttaksgrad
     fireEvent.change(
       await screen.findByTestId(AVANSERT_FORM_NAMES.uttaksgrad),
-      {
-        target: { value: '60 %' },
-      }
+      { target: { value: '60 %' } }
     )
 
     await user.click(
@@ -409,17 +397,13 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
       await screen.findByTestId(
         `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
       ),
-      {
-        target: { value: '70' },
-      }
+      { target: { value: '70' } }
     )
     fireEvent.change(
       await screen.findByTestId(
         `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`
       ),
-      {
-        target: { value: '6' },
-      }
+      { target: { value: '6' } }
     )
 
     await user.click(
@@ -454,16 +438,16 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
     ).toHaveTextContent('123 000')
     expect(
       (
-        (await screen.findByTestId(
+        await screen.findByTestId<HTMLSelectElement>(
           `age-picker-${AVANSERT_FORM_NAMES.uttaksalderGradertUttak}-aar`
-        )) as HTMLSelectElement
+        )
       ).value
     ).toBe('67')
     expect(
       (
-        (await screen.findByTestId(
+        await screen.findByTestId<HTMLSelectElement>(
           `age-picker-${AVANSERT_FORM_NAMES.uttaksalderGradertUttak}-maaneder`
-        )) as HTMLSelectElement
+        )
       ).value
     ).toBe('2')
     expect(
@@ -475,16 +459,16 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
     ).toBe('100 000')
     expect(
       (
-        (await screen.findByTestId(
+        await screen.findByTestId<HTMLSelectElement>(
           `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
-        )) as HTMLSelectElement
+        )
       ).value
     ).toBe('70')
     expect(
       (
-        (await screen.findByTestId(
+        await screen.findByTestId<HTMLSelectElement>(
           `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`
-        )) as HTMLSelectElement
+        )
       ).value
     ).toBe('6')
 
@@ -496,16 +480,16 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
     ).toHaveTextContent('521 338')
     expect(
       (
-        (await screen.findByTestId(
+        await screen.findByTestId<HTMLSelectElement>(
           `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
-        )) as HTMLSelectElement
+        )
       ).value
     ).toBe('')
     expect(
       (
-        (await screen.findByTestId(
+        await screen.findByTestId<HTMLSelectElement>(
           `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`
-        )) as HTMLSelectElement
+        )
       ).value
     ).toBe('')
     expect(
@@ -593,7 +577,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
     ).not.toBeChecked()
   })
 
-  it('Når alle feltene for 100 % uttak fylles ut og at radioknappen for inntekt endres til nei, skjules det inntekt og sluttAlder', async () => {
+  it('Når alle feltene for 100 % uttak fylles ut og radioknappen for inntekt endres til nei, skjules inntekt og sluttAlder', async () => {
     const user = userEvent.setup()
     const { store } = render(
       <BeregningContext.Provider
@@ -615,7 +599,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
         },
       }
     )
-    store.dispatch(apiSlice.endpoints.getInntekt.initiate())
+    await store.dispatch(apiSlice.endpoints.getInntekt.initiate())
 
     // Fyller ut feltene for 100 % uttak + inntekt vsa 100 % uttak
     fireEvent.change(
@@ -683,7 +667,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
     ).not.toBeInTheDocument()
   })
 
-  it('Når alle feltene for gradert uttak fylles ut og at radioknappen for inntekt endres til nei, skjules det inputfeltet for inntekt', async () => {
+  it('Når alle feltene for gradert uttak fylles ut og radioknappen for inntekt endres til nei, skjules inputfeltet for inntekt', async () => {
     const user = userEvent.setup()
     const { store } = render(
       <BeregningContext.Provider
@@ -705,7 +689,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
         },
       }
     )
-    store.dispatch(apiSlice.endpoints.getInntekt.initiate())
+    await store.dispatch(apiSlice.endpoints.getInntekt.initiate())
 
     // Fyller ut feltene for 100 % uttak
     fireEvent.change(
@@ -772,31 +756,31 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
 
     expect(
       (
-        (await screen.findByTestId(
+        await screen.findByTestId<HTMLSelectElement>(
           `age-picker-${AVANSERT_FORM_NAMES.uttaksalderGradertUttak}-aar`
-        )) as HTMLSelectElement
+        )
       ).value
     ).toBe('67')
     expect(
       (
-        (await screen.findByTestId(
+        await screen.findByTestId<HTMLSelectElement>(
           `age-picker-${AVANSERT_FORM_NAMES.uttaksalderGradertUttak}-maaneder`
-        )) as HTMLSelectElement
+        )
       ).value
     ).toBe('2')
 
     expect(
       (
-        (await screen.findByTestId(
+        await screen.findByTestId<HTMLSelectElement>(
           `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
-        )) as HTMLSelectElement
+        )
       ).value
     ).toBe('70')
     expect(
       (
-        (await screen.findByTestId(
+        await screen.findByTestId<HTMLSelectElement>(
           `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`
-        )) as HTMLSelectElement
+        )
       ).value
     ).toBe('6')
     expect(
@@ -804,7 +788,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
     ).not.toBeInTheDocument()
   })
 
-  it('Når feltene for 100 % uttak fylles ut og uttaksalder endres til en alder større enn sluttAlder for inntekt, nullstilles det sluttAlder feltet', async () => {
+  it('Når feltene for 100 % uttak fylles ut og uttaksalder endres til en alder større enn sluttAlder for inntekt, nullstilles sluttAlder', async () => {
     const user = userEvent.setup()
     const { store } = render(
       <BeregningContext.Provider
@@ -826,31 +810,25 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
         },
       }
     )
-    store.dispatch(apiSlice.endpoints.getInntekt.initiate())
+    await store.dispatch(apiSlice.endpoints.getInntekt.initiate())
 
     // Fyller ut feltene for 100 % uttak + inntekt vsa 100 % uttak
     fireEvent.change(
       await screen.findByTestId(
         `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
       ),
-      {
-        target: { value: '67' },
-      }
+      { target: { value: '67' } }
     )
     fireEvent.change(
       await screen.findByTestId(
         `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`
       ),
-      {
-        target: { value: '2' },
-      }
+      { target: { value: '2' } }
     )
     // Endrer uttaksgrad
     fireEvent.change(
       await screen.findByTestId(AVANSERT_FORM_NAMES.uttaksgrad),
-      {
-        target: { value: '100 %' },
-      }
+      { target: { value: '100 %' } }
     )
     await user.click(
       screen.getByTestId(`${AVANSERT_FORM_NAMES.inntektVsaHeltUttakRadio}-ja`)
@@ -882,48 +860,44 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
       await screen.findByTestId(
         `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
       ),
-      {
-        target: { value: '73' },
-      }
+      { target: { value: '73' } }
     )
     fireEvent.change(
       await screen.findByTestId(
         `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`
       ),
-      {
-        target: { value: '2' },
-      }
+      { target: { value: '2' } }
     )
 
     // Sjekker at feltet for sluttAlder er nullstilt, men ikke de andre feltene
 
     expect(
       (
-        (await screen.findByTestId(
+        await screen.findByTestId<HTMLSelectElement>(
           `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
-        )) as HTMLSelectElement
+        )
       ).value
     ).toBe('73')
     expect(
       (
-        (await screen.findByTestId(
+        await screen.findByTestId<HTMLSelectElement>(
           `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`
-        )) as HTMLSelectElement
+        )
       ).value
     ).toBe('2')
 
     expect(
       (
-        (await screen.findByTestId(
+        await screen.findByTestId<HTMLSelectElement>(
           `age-picker-${AVANSERT_FORM_NAMES.inntektVsaHeltUttakSluttAlder}-aar`
-        )) as HTMLSelectElement
+        )
       ).value
     ).toBe('')
     expect(
       (
-        (await screen.findByTestId(
+        await screen.findByTestId<HTMLSelectElement>(
           `age-picker-${AVANSERT_FORM_NAMES.inntektVsaHeltUttakSluttAlder}-maaneder`
-        )) as HTMLSelectElement
+        )
       ).value
     ).toBe('')
     expect(
@@ -987,15 +961,8 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
       )
     ).toBeVisible()
     expect(
-      await screen.findByText(
-        'inntekt.info_om_inntekt.ufoeretrygd.read_more.label'
-      )
+      screen.getByTestId('om_alderspensjon_inntektsgrense_UT')
     ).toBeVisible()
-    expect(
-      await screen.findByText(
-        'inntekt.info_om_inntekt.ufoeretrygd.read_more.body'
-      )
-    ).toBeInTheDocument()
   })
 
   it('Når brukeren velger en alder før normert pensjonsalder, begrenses valgene for uttaksgrad basert på uføregraden', async () => {
@@ -1108,33 +1075,29 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
 
       // Sjekker at feltene for 100 % uttak er tomme
       expect(
-        (
-          screen.getByTestId(
-            `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
-          ) as HTMLSelectElement
+        screen.getByTestId<HTMLSelectElement>(
+          `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
         ).value
       ).toBe('')
       expect(
-        (
-          screen.getByTestId(
-            `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`
-          ) as HTMLSelectElement
+        screen.getByTestId<HTMLSelectElement>(
+          `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`
         ).value
       ).toBe('')
 
       // Sjekker at feltene for gradert uttak har fått riktig verdi
       expect(
         (
-          (await screen.findByTestId(
+          await screen.findByTestId<HTMLSelectElement>(
             `age-picker-${AVANSERT_FORM_NAMES.uttaksalderGradertUttak}-aar`
-          )) as HTMLSelectElement
+          )
         ).value
       ).toBe('65')
       expect(
         (
-          (await screen.findByTestId(
+          await screen.findByTestId<HTMLSelectElement>(
             `age-picker-${AVANSERT_FORM_NAMES.uttaksalderGradertUttak}-maaneder`
-          )) as HTMLSelectElement
+          )
         ).value
       ).toBe('5')
     })
@@ -1275,16 +1238,16 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
       // Sjekker at uttaksalderen ble overført tilbake til helt uttak
       expect(
         (
-          (await screen.findByTestId(
+          await screen.findByTestId<HTMLSelectElement>(
             `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
-          )) as HTMLSelectElement
+          )
         ).value
       ).toBe('67')
       expect(
         (
-          (await screen.findByTestId(
+          await screen.findByTestId<HTMLSelectElement>(
             `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`
-          )) as HTMLSelectElement
+          )
         ).value
       ).toBe('2')
 
@@ -1294,9 +1257,9 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
         foedselsdato: '1963-04-30',
         harAvansertSkjemaUnsavedChanges: false,
         hasVilkaarIkkeOppfylt: false,
-        localBeregningsTypeRadio: null,
         localInntektFremTilUttak: null,
         loependeVedtak: {
+          harLoependeVedtak: true,
           ufoeretrygd: { grad: 75 },
         } satisfies LoependeVedtak,
         normertPensjonsalder: {
@@ -1329,6 +1292,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
                   requestId: 'xTaE6mOydr5ZI75UXq4Wi',
                   startedTimeStamp: 1688046411971,
                   data: {
+                    harLoependeVedtak: true,
                     ufoeretrygd: { grad: 40 },
                   } satisfies LoependeVedtak,
                   fulfilledTimeStamp: 1688046412103,
@@ -1408,30 +1372,30 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
       // Sjekker at uttaksalderene ikke ble endret
       expect(
         (
-          (await screen.findByTestId(
+          await screen.findByTestId<HTMLSelectElement>(
             `age-picker-${AVANSERT_FORM_NAMES.uttaksalderGradertUttak}-aar`
-          )) as HTMLSelectElement
+          )
         ).value
       ).toBe('67')
       expect(
         (
-          (await screen.findByTestId(
+          await screen.findByTestId<HTMLSelectElement>(
             `age-picker-${AVANSERT_FORM_NAMES.uttaksalderGradertUttak}-maaneder`
-          )) as HTMLSelectElement
+          )
         ).value
       ).toBe('6')
       expect(
         (
-          (await screen.findByTestId(
+          await screen.findByTestId<HTMLSelectElement>(
             `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
-          )) as HTMLSelectElement
+          )
         ).value
       ).toBe('70')
       expect(
         (
-          (await screen.findByTestId(
+          await screen.findByTestId<HTMLSelectElement>(
             `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`
-          )) as HTMLSelectElement
+          )
         ).value
       ).toBe('6')
 
@@ -1457,24 +1421,24 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
       // Sjekker igjen at uttaksalder for hel pensjon ikke ble påvirket
       expect(
         (
-          (await screen.findByTestId(
+          await screen.findByTestId<HTMLSelectElement>(
             `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
-          )) as HTMLSelectElement
+          )
         ).value
       ).toBe('70')
       expect(
         (
-          (await screen.findByTestId(
+          await screen.findByTestId<HTMLSelectElement>(
             `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`
-          )) as HTMLSelectElement
+          )
         ).value
       ).toBe('6')
       // Sjekker igjen at inntekt vsa gradert pensjon ikke ble påvirket
       expect(
         (
-          (await screen.findByTestId(
+          await screen.findByTestId<HTMLSelectElement>(
             `${AVANSERT_FORM_NAMES.inntektVsaGradertUttak}`
-          )) as HTMLSelectElement
+          )
         ).value
       ).toBe('100 000')
     })
@@ -1615,16 +1579,16 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
       // Sjekker at uttaksalderen ble overført tilbake til helt uttak
       expect(
         (
-          (await screen.findByTestId(
+          await screen.findByTestId<HTMLSelectElement>(
             `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
-          )) as HTMLSelectElement
+          )
         ).value
       ).toBe('67')
       expect(
         (
-          (await screen.findByTestId(
+          await screen.findByTestId<HTMLSelectElement>(
             `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`
-          )) as HTMLSelectElement
+          )
         ).value
       ).toBe('2')
 
@@ -1634,9 +1598,9 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
         foedselsdato: '1963-04-30',
         harAvansertSkjemaUnsavedChanges: false,
         hasVilkaarIkkeOppfylt: false,
-        localBeregningsTypeRadio: null,
         localInntektFremTilUttak: null,
         loependeVedtak: {
+          harLoependeVedtak: true,
           ufoeretrygd: { grad: 75 },
         } satisfies LoependeVedtak,
         normertPensjonsalder: {
@@ -1649,24 +1613,16 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
     it('Når brukeren velger uttaksgraden først og etterpå en alder før normert pensjonsalder som gjør at uttaksgraden er ugyldig, begrenses ikke valgene for uttaksgrad og brukeren er informert gjennom valideringen', async () => {
       const user = userEvent.setup()
       render(
-        <BeregningContext.Provider
-          value={{
-            ...contextMockedValues,
-          }}
-        >
+        <BeregningContext.Provider value={{ ...contextMockedValues }}>
           <AvansertSkjemaForBrukereMedGradertUfoeretrygd />
         </BeregningContext.Provider>,
         {
           preloadedState: {
             api: {
               // @ts-ignore
-              queries: {
-                ...mockedQueries,
-              },
+              queries: { ...mockedQueries },
             },
-            userInput: {
-              ...userInputInitialState,
-            },
+            userInput: { ...userInputInitialState },
           },
         }
       )
@@ -1674,9 +1630,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
       // Velger gradert uttak som etterhvert blir ugyldig
       fireEvent.change(
         await screen.findByTestId(AVANSERT_FORM_NAMES.uttaksgrad),
-        {
-          target: { value: '80 %' },
-        }
+        { target: { value: '80 %' } }
       )
 
       // Fyller ut uttaksalder
@@ -1684,17 +1638,111 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
         screen.getByTestId(
           `age-picker-${AVANSERT_FORM_NAMES.uttaksalderGradertUttak}-aar`
         ),
-        {
-          target: { value: '64' },
-        }
+        { target: { value: '64' } }
       )
       fireEvent.change(
         screen.getByTestId(
           `age-picker-${AVANSERT_FORM_NAMES.uttaksalderGradertUttak}-maaneder`
         ),
+        { target: { value: '5' } }
+      )
+
+      const selectUttaksgradElement = screen.getByTestId(
+        AVANSERT_FORM_NAMES.uttaksgrad
+      )
+      const optionUttaksgradElements =
+        selectUttaksgradElement?.querySelectorAll('option')
+      expect(optionUttaksgradElements?.[0].value).toBe('')
+      expect(optionUttaksgradElements?.[1].value).toBe('20 %')
+      expect(optionUttaksgradElements?.[6].value).toBe('100 %')
+      expect(optionUttaksgradElements?.length).toBe(7)
+
+      // Fyller ut de andre påkrevde feltene
+      await user.click(
+        screen.getByTestId(
+          `${AVANSERT_FORM_NAMES.inntektVsaGradertUttakRadio}-nei`
+        )
+      )
+      fireEvent.change(
+        screen.getByTestId(
+          `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
+        ),
+        { target: { value: '70' } }
+      )
+      fireEvent.change(
+        screen.getByTestId(
+          `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`
+        ),
+        { target: { value: '5' } }
+      )
+      await user.click(
+        screen.getByTestId(
+          `${AVANSERT_FORM_NAMES.inntektVsaHeltUttakRadio}-nei`
+        )
+      )
+
+      await user.click(screen.getByText('beregning.avansert.button.beregn'))
+
+      // Feilmelding for ugyldig uttaksgrad
+      expect(
+        screen.getByText(
+          'Du må sette ned uttaksgraden slik at gradene av alderspensjon og uføretrygd ikke overstiger 100 % til sammen. Etter 67 alder.aar kan du velge 100 % uttak.'
+        )
+      ).toBeVisible()
+    })
+
+    it('Når brukeren velger en alder etter normert pensjonsalder med en uttaksgrad og endrer til en alder før normert pensjonsalder som gjør at uttaksgraden blir ugyldig, begrenses ikke valgene for uttaksgrad og brukeren er informert gjennom valideringen', async () => {
+      const user = userEvent.setup()
+      render(
+        <BeregningContext.Provider value={{ ...contextMockedValues }}>
+          <AvansertSkjemaForBrukereMedGradertUfoeretrygd />
+        </BeregningContext.Provider>,
         {
-          target: { value: '5' },
+          preloadedState: {
+            api: {
+              // @ts-ignore
+              queries: {
+                ...fulfilledGetPersonMedOekteAldersgrenser,
+                ...fulfilledGetLoependeVedtak75Ufoeregrad,
+              },
+            },
+            userInput: { ...userInputInitialState },
+          },
         }
+      )
+
+      // Fyller ut uttaksalder
+      fireEvent.change(
+        screen.getByTestId(
+          `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
+        ),
+        { target: { value: '72' } }
+      )
+      fireEvent.change(
+        screen.getByTestId(
+          `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`
+        ),
+        { target: { value: '5' } }
+      )
+
+      // Velger gradert uttak som etterhvert blir ugyldig
+      fireEvent.change(
+        await screen.findByTestId(AVANSERT_FORM_NAMES.uttaksgrad),
+        { target: { value: '80 %' } }
+      )
+
+      // Endrer uttaksalder
+      fireEvent.change(
+        screen.getByTestId(
+          `age-picker-${AVANSERT_FORM_NAMES.uttaksalderGradertUttak}-aar`
+        ),
+        { target: { value: '66' } }
+      )
+      fireEvent.change(
+        screen.getByTestId(
+          `age-picker-${AVANSERT_FORM_NAMES.uttaksalderGradertUttak}-maaneder`
+        ),
+        { target: { value: '5' } }
       )
 
       const selectUttaksgradElement = screen.getByTestId(
@@ -1738,13 +1786,14 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
       await user.click(screen.getByText('beregning.avansert.button.beregn'))
 
       // Feilmelding for ugyldig uttaksgrad
-      const uttaksgradSelect = screen.getByTestId(
-        AVANSERT_FORM_NAMES.uttaksgrad
-      )
-      expect(uttaksgradSelect).toHaveErrorMessage(expect.stringContaining(''))
+      expect(
+        screen.getByText(
+          'Du må sette ned uttaksgraden slik at gradene av alderspensjon og uføretrygd ikke overstiger 100 % til sammen. Etter 70 alder.aar kan du velge 100 % uttak.'
+        )
+      ).toBeVisible()
     })
 
-    it('Når brukeren velger en alder etter normert pensjonsalder med en uttaksgrad og endrer til en alder før normert pensjonsalder som gjør at uttaksgraden blir ugyldig, begrenses ikke valgene for uttaksgrad og brukeren er informert gjennom valideringen', async () => {
+    it('Når brukeren velger en alder før normert pensjonsalder med gradert uttak, så velger en alder etter normert pensjonsalder, nullstilles feltene under', async () => {
       const user = userEvent.setup()
       render(
         <BeregningContext.Provider
@@ -1770,185 +1819,107 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
         }
       )
 
-      // Fyller ut uttaksalder
-      fireEvent.change(
-        screen.getByTestId(
-          `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
-        ),
-        {
-          target: { value: '72' },
-        }
-      )
-      fireEvent.change(
-        screen.getByTestId(
-          `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`
-        ),
-        {
-          target: { value: '5' },
-        }
-      )
+      function fillOutAgePicker(name: string, years: number, months = 0) {
+        fireEvent.change(screen.getByTestId(`age-picker-${name}-aar`), {
+          target: { value: years.toString() },
+        })
+        fireEvent.change(screen.getByTestId(`age-picker-${name}-maaneder`), {
+          target: { value: months.toString() },
+        })
+      }
 
-      // Velger gradert uttak som etterhvert blir ugyldig
+      // Fyller ut uttaksalder
+      fillOutAgePicker(AVANSERT_FORM_NAMES.uttaksalderHeltUttak, 66, 5)
+
+      // Velger gradert uttak
       fireEvent.change(
         await screen.findByTestId(AVANSERT_FORM_NAMES.uttaksgrad),
-        {
-          target: { value: '80 %' },
-        }
+        { target: { value: '20 %' } }
       )
 
-      // Endrer uttaksalder
+      const uttaksgradOptions = screen
+        .getByTestId(AVANSERT_FORM_NAMES.uttaksgrad)
+        .querySelectorAll('option')
+      expect(uttaksgradOptions.length).toBe(2)
+
+      // Fyller ut inntekt vs. gradert uttak
+      await user.click(
+        await screen.findByTestId(
+          `${AVANSERT_FORM_NAMES.inntektVsaGradertUttakRadio}-ja`
+        )
+      )
+      await user.type(
+        screen.getByTestId(AVANSERT_FORM_NAMES.inntektVsaGradertUttak),
+        '123'
+      )
+
+      // Fyller ut alder for helt uttak
+      fillOutAgePicker(AVANSERT_FORM_NAMES.uttaksalderHeltUttak, 70, 0)
+
+      // Fyller ut inntekt vsa. helt uttak
+      await user.click(
+        await screen.findByTestId(
+          `${AVANSERT_FORM_NAMES.inntektVsaHeltUttakRadio}-ja`
+        )
+      )
+      await user.type(
+        screen.getByTestId(AVANSERT_FORM_NAMES.inntektVsaHeltUttak),
+        '456'
+      )
+
+      // Fyller ut sluttalder for inntekt vsa. helt uttak
+      fillOutAgePicker(AVANSERT_FORM_NAMES.inntektVsaHeltUttakSluttAlder, 75, 1)
+
+      // Dobbeltsjekk at sluttalder ble fylt ut
+      expect(screen.getByDisplayValue('75 alder.aar')).toBeVisible()
+
+      // Endrer alder for gradert uttak til etter normert pensjonsalder
       fireEvent.change(
         screen.getByTestId(
           `age-picker-${AVANSERT_FORM_NAMES.uttaksalderGradertUttak}-aar`
         ),
-        {
-          target: { value: '66' },
-        }
-      )
-      fireEvent.change(
-        screen.getByTestId(
-          `age-picker-${AVANSERT_FORM_NAMES.uttaksalderGradertUttak}-maaneder`
-        ),
-        {
-          target: { value: '5' },
-        }
+        { target: { value: '72' } }
       )
 
-      const selectUttaksgradElement = screen.getByTestId(
-        AVANSERT_FORM_NAMES.uttaksgrad
-      )
-      const optionUttaksgradElements =
-        selectUttaksgradElement?.querySelectorAll('option')
-      expect(optionUttaksgradElements?.[0].value).toBe('')
-      expect(optionUttaksgradElements?.[1].value).toBe('20 %')
-      expect(optionUttaksgradElements?.[6].value).toBe('100 %')
-      expect(optionUttaksgradElements?.length).toBe(7)
+      // Sjekk at uttaksgraden ble nullstilt
+      expect(screen.getByTestId(AVANSERT_FORM_NAMES.uttaksgrad)).toHaveValue('')
 
-      // Fyller ut de andre påkrevde feltene
-      await user.click(
-        screen.getByTestId(
-          `${AVANSERT_FORM_NAMES.inntektVsaGradertUttakRadio}-nei`
-        )
-      )
-      fireEvent.change(
-        screen.getByTestId(
-          `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
-        ),
-        {
-          target: { value: '70' },
-        }
-      )
-      fireEvent.change(
-        screen.getByTestId(
-          `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`
-        ),
-        {
-          target: { value: '5' },
-        }
-      )
-      await user.click(
-        screen.getByTestId(
-          `${AVANSERT_FORM_NAMES.inntektVsaHeltUttakRadio}-nei`
-        )
-      )
+      // Dobbeltsjekk at mulige uttaksgrader nå er endret (som er grunnen til at vi nullstiller)
+      const newUttaksgradOptions = screen
+        .getByTestId(AVANSERT_FORM_NAMES.uttaksgrad)
+        .querySelectorAll('option')
+      expect(newUttaksgradOptions[0].value).toBe('')
+      expect(newUttaksgradOptions[1].value).toBe('20 %')
+      expect(newUttaksgradOptions[6].value).toBe('100 %')
+      expect(newUttaksgradOptions.length).toBe(7)
 
-      await user.click(screen.getByText('beregning.avansert.button.beregn'))
-
-      // Feilmelding for ugyldig uttaksgrad
-      const uttaksgradSelect = screen.getByTestId(
-        AVANSERT_FORM_NAMES.uttaksgrad
-      )
-      expect(uttaksgradSelect).toHaveErrorMessage(expect.stringContaining(''))
-    })
-
-    it('Når brukeren velger en alder før normert pensjonsalder så en avgrenset uttaksgrad så velger en uttaksalder etter normert pensjonsalder, nullstilles uttaksgraden', async () => {
-      render(
-        <BeregningContext.Provider
-          value={{
-            ...contextMockedValues,
-          }}
-        >
-          <AvansertSkjemaForBrukereMedGradertUfoeretrygd />
-        </BeregningContext.Provider>,
-        {
-          preloadedState: {
-            api: {
-              // @ts-ignore
-              queries: {
-                ...fulfilledGetPersonMedOekteAldersgrenser,
-                ...fulfilledGetLoependeVedtak75Ufoeregrad,
-              },
-            },
-            userInput: {
-              ...userInputInitialState,
-            },
-          },
-        }
-      )
-
-      // Fyller ut uttaksalder
-      fireEvent.change(
-        screen.getByTestId(
-          `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
-        ),
-        {
-          target: { value: '66' },
-        }
-      )
-      fireEvent.change(
-        screen.getByTestId(
-          `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`
-        ),
-        {
-          target: { value: '5' },
-        }
-      )
-
-      // Velger avgrenset uttaksgrad
-      fireEvent.change(
-        await screen.findByTestId(AVANSERT_FORM_NAMES.uttaksgrad),
-        {
-          target: { value: '20 %' },
-        }
-      )
-
-      const selectUttaksgradElement = screen.getByTestId(
-        AVANSERT_FORM_NAMES.uttaksgrad
-      )
-      const optionUttaksgradElements =
-        selectUttaksgradElement?.querySelectorAll('option')
-      expect(optionUttaksgradElements?.length).toBe(2)
-
-      // Endrer uttaksalder for gradert uttak med noe høyere alder
-      fireEvent.change(
-        screen.getByTestId(
-          `age-picker-${AVANSERT_FORM_NAMES.uttaksalderGradertUttak}-aar`
-        ),
-        {
-          target: { value: '72' },
-        }
-      )
-
+      // Sjekk at resten av feltene er borte
       expect(
         screen.queryByTestId(
-          `age-picker-${AVANSERT_FORM_NAMES.uttaksalderGradertUttak}-aar`
+          `age-picker-${AVANSERT_FORM_NAMES.uttaksalderGradertUttak}`
         )
       ).not.toBeInTheDocument()
       expect(
         screen.queryByTestId(
-          `age-picker-${AVANSERT_FORM_NAMES.uttaksalderGradertUttak}-maaneder`
+          `${AVANSERT_FORM_NAMES.inntektVsaGradertUttakRadio}-ja`
         )
       ).not.toBeInTheDocument()
-
-      const selectOppdatertUttaksgradElement = screen.getByTestId(
-        AVANSERT_FORM_NAMES.uttaksgrad
-      )
-      const optionOppdatertUttaksgradElements =
-        selectOppdatertUttaksgradElement?.querySelectorAll('option')
-      expect(optionOppdatertUttaksgradElements?.[0].value).toBe('')
-      expect(optionOppdatertUttaksgradElements?.[1].value).toBe('20 %')
-      expect(optionOppdatertUttaksgradElements?.[6].value).toBe('100 %')
-      expect(optionOppdatertUttaksgradElements?.length).toBe(7)
+      expect(
+        screen.queryByTestId(AVANSERT_FORM_NAMES.inntektVsaGradertUttak)
+      ).not.toBeInTheDocument()
+      expect(
+        screen.queryByTestId(
+          `${AVANSERT_FORM_NAMES.inntektVsaHeltUttakRadio}-ja`
+        )
+      ).not.toBeInTheDocument()
+      expect(
+        screen.queryByTestId(AVANSERT_FORM_NAMES.inntektVsaHeltUttak)
+      ).not.toBeInTheDocument()
+      expect(
+        screen.queryByTestId(
+          `age-picker-${AVANSERT_FORM_NAMES.inntektVsaHeltUttakSluttAlder}`
+        )
+      ).not.toBeInTheDocument()
     })
 
     it('Når brukeren har lagt inn et gradert uttak, er minimum alder i aldersvelgeren for helt uttak lik normert pensjonsalder', async () => {
@@ -2098,7 +2069,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
     // Feilmelding for inntekt vsa 100 % uttak
     expect(
       screen.getByText(
-        'Du må fylle ut forventet inntekt samtidig som du tar ut',
+        'Du må fylle ut forventet årsinntekt samtidig som du tar ut',
         {
           exact: false,
         }
@@ -2199,7 +2170,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
     // Feilmelding for inntekt vsa gradert uttak
     expect(
       screen.getByText(
-        'Du må fylle ut forventet inntekt samtidig som du tar ut',
+        'Du må fylle ut forventet årsinntekt samtidig som du tar ut',
         { exact: false }
       )
     ).toBeVisible()
@@ -2238,6 +2209,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
                   requestId: 'xTaE6mOydr5ZI75UXq4Wi',
                   startedTimeStamp: 1688046411971,
                   data: {
+                    harLoependeVedtak: true,
                     alderspensjon: {
                       grad: 100,
                       fom: new Date().toLocaleDateString('en-CA'), // dette gir dato i format yyyy-mm-dd
@@ -2270,17 +2242,14 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
           `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`
         ),
         {
-          target: { value: '0' },
+          target: { value: agePickerMonth },
         }
       )
 
       // Velger gradert uttak
-      fireEvent.change(
-        await screen.findByTestId(AVANSERT_FORM_NAMES.uttaksgrad),
-        {
-          target: { value: '40 %' },
-        }
-      )
+      fireEvent.change(screen.getByTestId(AVANSERT_FORM_NAMES.uttaksgrad), {
+        target: { value: '40 %' },
+      })
 
       await user.click(
         screen.getByTestId(
@@ -2348,7 +2317,6 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
 
       const currentSimulation: Simulation = {
         beregningsvalg: null,
-        formatertUttaksalderReadOnly: '62 år string.og 0 alder.maaned',
         uttaksalder: { aar: 62, maaneder: 0 },
         aarligInntektFoerUttakBeloep: null,
         gradertUttaksperiode: null,
@@ -2472,110 +2440,13 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
       ).not.toBeInTheDocument()
 
       expect(
-        await screen.findByText(
-          'Uttaksgrad angir hvor stor del av månedlig alderspensjon du ønsker å ta ut',
-          { exact: false }
-        )
+        screen.queryByTestId('om_uttaksgrad_UT_gradert_endring')
       ).toBeVisible()
-    })
-
-    it('Når brukeren har gradert uføretrygd, vises det riktig label på feltene', async () => {
-      const user = userEvent.setup()
-
-      const { asFragment, store } = render(
-        <BeregningContext.Provider
-          value={{
-            ...contextMockedValues,
-          }}
-        >
-          <AvansertSkjemaForBrukereMedGradertUfoeretrygd />
-        </BeregningContext.Provider>,
-        {
-          preloadedState: {
-            api: {
-              // @ts-ignore
-              queries: {
-                ...fulfilledGetPerson,
-                ...fulfilledGetLoependeVedtakLoependeAlderspensjonOg40Ufoeretrygd,
-              },
-            },
-            userInput: {
-              ...userInputInitialState,
-            },
-          },
-        }
-      )
-      await store.dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
-      expect(
-        await screen.findByText(
-          'beregning.avansert.rediger.inntekt_frem_til_endring.label'
-        )
-      ).toBeVisible()
-      expect(asFragment()).toMatchSnapshot()
-      await user.click(
-        await screen.findByText(
-          'beregning.avansert.rediger.read_more.uttaksgrad.gradert_ufoeretrygd.label'
-        )
-      )
-      expect(await screen.findByTestId('om-uttaksgrad')).toMatchInlineSnapshot(`
-        <p
-          class="navds-body-long navds-body-long--medium"
-          data-testid="om-uttaksgrad"
-        >
-          Uttaksgrad angir hvor stor del av månedlig alderspensjon du ønsker å ta ut. Grad av uføretrygd og alderspensjon kan til sammen ikke overstige 
-          <span
-            class="nowrap"
-          >
-            100 %
-          </span>
-          . Fra 
-          <span
-            class="nowrap"
-          >
-            67 alder.aar
-          </span>
-           kan du fritt velge gradert uttak (20, 40, 50, 60 eller 
-          <span
-            class="nowrap"
-          >
-            80 %
-          </span>
-          ), eller hel alderspensjon (
-          <span
-            class="nowrap"
-          >
-            100 %
-          </span>
-          ).
-          <br />
-          <br />
-          Hvis du vil endre gradering må det ha gått minimum 12 måneder siden du startet uttak av alderspensjon eller endret uttaksgrad. Du kan likevel endre til 
-          <span
-            class="nowrap"
-          >
-            0 %
-          </span>
-           når du vil.
-        </p>
-      `)
-
-      expect(
-        screen.queryByText(
-          'beregning.avansert.rediger.read_more.uttaksgrad.gradert_ufoeretrygd.body'
-        )
-      ).not.toBeInTheDocument()
     })
   })
 
-  describe('Gitt at feature toggle for gradert uføretrygd og AFP er enabled', () => {
-    beforeEach(() => {
-      mockResponse('/feature/pensjonskalkulator.gradert-ufoere-afp', {
-        status: 200,
-        json: { enabled: true },
-      })
-    })
-
-    it('Vis intro tekst om AFP og beregningsvalg', async () => {
+  describe('Gitt at brukeren kan simulere AFP,', () => {
+    it('Viser intro-tekst om AFP og beregningsvalg.', async () => {
       render(
         <BeregningContext.Provider
           value={{
@@ -2588,10 +2459,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
           preloadedState: {
             api: {
               // @ts-ignore
-              queries: {
-                ...fulfilledGetPerson,
-                ...fulfilledGetLoependeVedtak75Ufoeregrad,
-              },
+              queries: mockedQueries,
             },
             userInput: {
               ...userInputInitialState,
@@ -2609,7 +2477,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
       ).toBeVisible()
     })
 
-    it('Vis resten av skjemaet når man har gjort et valg i Beregningsvalg', async () => {
+    it('Viser resten av skjemaet når man har valgt beregning med eller uten AFP.', async () => {
       const user = userEvent.setup()
 
       render(
@@ -2620,10 +2488,7 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
           preloadedState: {
             api: {
               // @ts-ignore
-              queries: {
-                ...fulfilledGetPerson,
-                ...fulfilledGetLoependeVedtak75Ufoeregrad,
-              },
+              queries: mockedQueries,
             },
             userInput: {
               ...userInputInitialState,
@@ -2653,6 +2518,186 @@ describe('AvansertSkjemaForBrukereMedGradertUfoeretrygd', () => {
       expect(
         await screen.findByTestId(AVANSERT_FORM_NAMES.uttaksgrad)
       ).toBeVisible()
+    })
+
+    it('Viser riktig innhold når man har valgt beregning uten AFP', async () => {
+      const user = userEvent.setup()
+      render(
+        <BeregningContext.Provider value={{ ...contextMockedValues }}>
+          <AvansertSkjemaForBrukereMedGradertUfoeretrygd />
+        </BeregningContext.Provider>,
+        {
+          preloadedState: {
+            api: {
+              // @ts-ignore
+              queries: mockedQueries,
+            },
+            userInput: {
+              ...userInputInitialState,
+              afp: 'ja_privat',
+            },
+          },
+        }
+      )
+
+      await user.click(await screen.findByTestId('uten_afp'))
+
+      // Viser AgePicker
+      expect(screen.getByRole('combobox', { name: 'Velg år' })).toBeVisible()
+
+      // Fyller ut uttaksalder
+      fireEvent.change(
+        screen.getByTestId(
+          `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
+        ),
+        {
+          target: { value: '66' },
+        }
+      )
+      fireEvent.change(
+        screen.getByTestId(
+          `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`
+        ),
+        {
+          target: { value: '5' },
+        }
+      )
+
+      // Velger gradert uttak
+      fireEvent.change(
+        await screen.findByTestId(AVANSERT_FORM_NAMES.uttaksgrad),
+        {
+          target: { value: '20 %' },
+        }
+      )
+
+      // Viser riktig beskrivelse på spørsmålet om inntekt vsa. gradert uttak
+      expect(
+        await screen.findByText(
+          'beregning.avansert.rediger.radio.inntekt_vsa_gradert_uttak.ufoeretrygd.description'
+        )
+      ).toBeVisible()
+      // Viser riktig beskrivelse om inntektsgrense
+      expect(
+        screen.getByTestId('om_alderspensjon_inntektsgrense_UT')
+      ).toBeVisible()
+    })
+
+    it('Setter uttaksalder fast og viser riktig innhold når man velger beregning med AFP', async () => {
+      const user = userEvent.setup()
+      render(
+        <BeregningContext.Provider value={{ ...contextMockedValues }}>
+          <AvansertSkjemaForBrukereMedGradertUfoeretrygd />
+        </BeregningContext.Provider>,
+        {
+          preloadedState: {
+            api: {
+              // @ts-ignore
+              queries: mockedQueries,
+            },
+            userInput: {
+              ...userInputInitialState,
+              afp: 'ja_privat',
+            },
+          },
+        }
+      )
+
+      await user.click(await screen.findByTestId('med_afp'))
+
+      // Rendrer skjulte felter for uttaksalder med riktige verdier
+      const yearInput = screen.getByDisplayValue('62')
+      const monthInput = screen.getByDisplayValue('0')
+      expect(yearInput).toBeInTheDocument()
+      expect(monthInput).toBeInTheDocument()
+      expect(yearInput).toHaveAttribute('type', 'hidden')
+      expect(monthInput).toHaveAttribute('type', 'hidden')
+      expect(yearInput).toHaveAttribute(
+        'name',
+        `${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
+      )
+      expect(monthInput).toHaveAttribute(
+        'name',
+        `${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`
+      )
+
+      // Rendrer ikke AgePicker
+      expect(
+        screen.queryByRole('combobox', { name: 'Velg år' })
+      ).not.toBeInTheDocument()
+
+      // Viser riktig readmore om uttaksgrad
+      expect(screen.queryByTestId('om_uttaksgrad')).toBeVisible()
+      expect(
+        screen.queryByTestId('om_uttaksgrad_UT_gradert_endring')
+      ).not.toBeInTheDocument()
+      expect(
+        screen.queryByTestId('om_uttaksgrad_UT_gradert')
+      ).not.toBeInTheDocument()
+
+      // Velger gradert uttak
+      fireEvent.change(
+        await screen.findByTestId(AVANSERT_FORM_NAMES.uttaksgrad),
+        {
+          target: { value: '80 %' },
+        }
+      )
+      // Viser riktig beskrivelse på spørsmålet om inntekt vsa. gradert uttak
+      expect(
+        await screen.findByText(
+          'beregning.avansert.rediger.radio.inntekt_vsa_gradert_uttak.description'
+        )
+      ).toBeVisible()
+
+      // Ikke vis readmore om inntektsgrense
+      expect(
+        screen.queryByTestId('om_alderspensjon_inntektsgrense_UT')
+      ).not.toBeInTheDocument()
+    })
+
+    it('Aldersvelger for fullt uttak får riktig minAlder når man har valgt beregning med AFP og gradert uttak', () => {
+      // Minimum alder skal være gradert uttaksalder + 1 mnd, i praksis nedreAldersgrense + 1 mnd.
+      render(
+        <BeregningContext.Provider value={{ ...contextMockedValues }}>
+          <AvansertSkjemaForBrukereMedGradertUfoeretrygd />
+        </BeregningContext.Provider>,
+        {
+          preloadedState: {
+            api: {
+              // @ts-ignore
+              queries: mockedQueries,
+            },
+            userInput: {
+              ...userInputInitialState,
+              afp: 'ja_privat',
+              currentSimulation: {
+                ...userInputInitialState.currentSimulation,
+                beregningsvalg: 'med_afp',
+                gradertUttaksperiode: {
+                  grad: 50,
+                  uttaksalder: {
+                    aar: 62,
+                    maaneder: 0,
+                  },
+                },
+              },
+            },
+          },
+        }
+      )
+
+      const aarSelect = screen.getByTestId(
+        `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-aar`
+      )
+      expect(aarSelect.children.item(0)?.innerHTML).toBe(' ')
+      expect(aarSelect.children.item(1)?.innerHTML).toBe('62 alder.aar')
+
+      fireEvent.change(aarSelect, { target: { value: '62' } })
+
+      const mndSelect = screen.getByTestId(
+        `age-picker-${AVANSERT_FORM_NAMES.uttaksalderHeltUttak}-maaneder`
+      )
+      expect(mndSelect.children.item(0)?.innerHTML).toBe('1 alder.md (juni)')
     })
   })
 })

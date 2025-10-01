@@ -26,19 +26,19 @@ import {
 } from '@/state/api/apiSlice'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
-  selectVeilederBorgerFnr,
   selectVeilederBorgerEncryptedFnr,
+  selectVeilederBorgerFnr,
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
-import { findRoutesWithoutLoaders } from '@/utils/veileder'
 
 import { VeilederInputRequestError } from './VeilederInputRequestError'
 
 import styles from './VeilederInput.module.scss'
 
-const router = createBrowserRouter(routes, {
-  basename: `${BASE_PATH}/veileder`,
-})
+const router = () =>
+  createBrowserRouter(routes, {
+    basename: `${BASE_PATH}/veileder`,
+  })
 
 export const VeilederInput = () => {
   const dispatch = useAppDispatch()
@@ -84,10 +84,6 @@ export const VeilederInput = () => {
     return () => clearTimeout(timer)
   }, [])
 
-  const onTitleClick = () => {
-    window.location.href = `${BASE_PATH}/veileder`
-  }
-
   const encryptFnr = (fnr: string) => {
     setEncryptedRequestLoading('LOADING')
     return fetch(`${API_BASEURL}/v1/encrypt`, {
@@ -122,27 +118,6 @@ export const VeilederInput = () => {
         dispatch(apiSlice.util.invalidateTags(['Person']))
       })
     }
-  }
-
-  const excludedPaths = findRoutesWithoutLoaders(routes)
-  const isExcludedPath = excludedPaths.some((path) =>
-    window.location.pathname.includes(`/veileder${path}`)
-  )
-
-  // Unntak for rutene som skal serveres uten å slå opp bruker
-  if (isExcludedPath) {
-    return (
-      <div data-testid="veileder-ekskludert-side">
-        <InternalHeader>
-          <InternalHeader.Title onClick={onTitleClick}>
-            Pensjonskalkulator
-          </InternalHeader.Title>
-          <Spacer />
-          <InternalHeader.User name={ansatt?.id ?? ''} />
-        </InternalHeader>
-        <RouterProvider router={router} />
-      </div>
-    )
   }
 
   if ((!personSuccess && !veilederBorgerFnr) || personError || isLoading) {
@@ -183,7 +158,7 @@ export const VeilederInput = () => {
                     label="Fødselsnummer"
                     name="veilederBorgerFnr"
                     description="11 siffer"
-                  ></TextField>
+                  />
                   <HStack gap="2">
                     <Button
                       type="submit"
@@ -208,19 +183,19 @@ export const VeilederInput = () => {
     return (
       <div data-testid="veileder-med-borger">
         <InternalHeader>
-          <InternalHeader.Title onClick={onTitleClick}>
+          <InternalHeader.Title href={`${BASE_PATH}/veileder`}>
             Pensjonskalkulator
           </InternalHeader.Title>
           <Spacer />
           <InternalHeader.User name={ansatt?.id ?? ''} />
         </InternalHeader>
         {veilederBorgerFnr && <BorgerInformasjon fnr={veilederBorgerFnr} />}
-        <RouterProvider router={router} />
+        <RouterProvider router={router()} />
       </div>
     )
   }
 }
 
 if (window.Cypress) {
-  window.router = router
+  window.router = router()
 }

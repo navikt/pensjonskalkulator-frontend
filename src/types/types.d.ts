@@ -1,4 +1,3 @@
-import { paths } from './router/constants'
 import { components } from './schema'
 
 declare global {
@@ -8,10 +7,12 @@ declare global {
 
   type Locales = 'nb' | 'nn' | 'en'
 
-  type Path = (typeof paths)[number]
-
   type BooleanRadio = 'ja' | 'nei'
   type AfpRadio = 'ja_offentlig' | 'ja_privat' | 'nei' | 'vet_ikke'
+  type AfpUtregningValg =
+    | 'KUN_ALDERSPENSJON'
+    | 'AFP_ETTERFULGT_AV_ALDERSPENSJON'
+    | null
   type BeregningVisning = 'enkel' | 'avansert'
   type Beregningsvalg = 'uten_afp' | 'med_afp'
   type Alder = components['schemas']['Alder']
@@ -31,16 +32,11 @@ declare global {
   type Ansatt = components['schemas']['AnsattV1']
 
   // /person
-  export type GetPersonQuery = TypedUseQueryStateResult<
-    Person,
-    void,
-    BaseQueryFn<Record<string, unknown>, Person>
-  >
-  type Person = components['schemas']['PersonResultV4']
+  type Person = components['schemas']['PersonResultV5']
   type Sivilstand =
     components['schemas']['AlderspensjonDetaljerV4']['sivilstand']
   type pensjoneringAldre =
-    components['schemas']['PersonResultV4']['pensjoneringAldre']
+    components['schemas']['PersonResultV5']['pensjoneringAldre']
 
   // /inntekt
   export type GetInntektQuery = TypedUseQueryStateResult<
@@ -57,17 +53,13 @@ declare global {
     BaseQueryFn<Record<string, unknown>, Person>
   >
   type EkskludertStatus = components['schemas']['EkskluderingStatusV1']
+  type ApotekerStatusV1 = components['schemas']['ApotekerStatusV1']
 
   // /loepende-omstillingsstoenad-eller-gjenlevendeytelse
   type OmstillingsstoenadOgGjenlevende =
     components['schemas']['BrukerHarLoependeOmstillingsstoenadEllerGjenlevendeYtelse']
 
   // /v4/vedtak/loepende-vedtak
-  export type GetLoependeVedtakQuery = TypedUseQueryStateResult<
-    LoependeVedtak,
-    void,
-    BaseQueryFn<Record<string, unknown>, LoependeVedtak>
-  >
   type LoependeVedtak = components['schemas']['LoependeVedtakV4']
 
   // /tidligste-uttaksalder
@@ -91,6 +83,8 @@ declare global {
     components['schemas']['PersonligSimuleringAarligInntektResultV8']
   type AlderspensjonMaanedligVedEndring =
     components['schemas']['PersonligSimuleringMaanedligPensjonResultV8']
+  type AfpEtterfulgtAvAlderspensjon =
+    components['schemas']['PersonligSimuleringPre2025OffentligAfpResultV8']
   type AarligInntektVsaPensjon = {
     beloep: string
     sluttAlder: Alder
@@ -109,10 +103,13 @@ declare global {
     aarligInntektVsaPensjonBeloep?: string
   }
   type AfpPrivatPensjonsberegning =
+    components['schemas']['PersonligSimuleringAfpPrivatResultV8']
+  type AfpPensjonsberegning =
     components['schemas']['PersonligSimuleringAarligPensjonResultV8']
   type AlderspensjonPensjonsberegning =
     components['schemas']['PersonligSimuleringAlderspensjonResultV8']
-
+  type pre2025OffentligPensjonsberegning =
+    components['schemas']['PersonligSimuleringPre2025OffentligAfpResultV8']
   // /pensjonsavtaler
   type PensjonsavtalerRequestBody =
     components['schemas']['PensjonsavtaleSpecV3']
@@ -135,9 +132,11 @@ declare global {
     BaseQueryFn<Record<string, unknown>, OffentligTp>
   >
   type OffentligTpRequestBody =
-    components['schemas']['IngressSimuleringOffentligTjenestepensjonSpecV2']
+    components['schemas']['SimuleringOffentligTjenestepensjonSpecV2']
   type OffentligTp =
-    components['schemas']['OffentligTjenestepensjonSimuleringsresultatDtoV2']
+    components['schemas']['OffentligTjenestepensjonSimuleringResultV2']
+  type SimulertTjenestepensjon =
+    components['schemas']['SimulertTjenestepensjonV2']
 }
 
 declare module 'react/jsx-runtime' {

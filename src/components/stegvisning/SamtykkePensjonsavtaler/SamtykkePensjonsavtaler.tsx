@@ -1,14 +1,21 @@
 import { FormEvent, useState } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 
-import { BodyLong, Button, Heading, Radio, RadioGroup } from '@navikt/ds-react'
+import { BodyLong, Heading, Radio, RadioGroup } from '@navikt/ds-react'
 
-import { STEGVISNING_FORM_NAMES } from '../utils'
+import { ApotekereWarning } from '@/components/common/ApotekereWarning/ApotekereWarning'
 import { Card } from '@/components/common/Card'
 import { SanityReadmore } from '@/components/common/SanityReadmore/SanityReadmore'
 import { paths } from '@/router/constants'
-import { logger, wrapLogger } from '@/utils/logging'
+import { useAppSelector } from '@/state/hooks'
+import { selectHasErApotekerError } from '@/state/session/selectors'
+import { selectAfp, selectFoedselsdato } from '@/state/userInput/selectors'
+import { isFoedtEtter1963 } from '@/utils/alder'
+import { logger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
+
+import Navigation from '../Navigation/Navigation'
+import { STEGVISNING_FORM_NAMES } from '../utils'
 
 import styles from './SamtykkePensjonsavtaler.module.scss'
 
@@ -17,6 +24,8 @@ interface Props {
   onCancel?: () => void
   onPrevious: () => void
   onNext: (samtykkeData: BooleanRadio) => void
+  erApoteker: boolean
+  isKap19: boolean
 }
 
 export function SamtykkePensjonsavtaler({
@@ -24,8 +33,16 @@ export function SamtykkePensjonsavtaler({
   onCancel,
   onPrevious,
   onNext,
+  erApoteker,
+  isKap19,
 }: Props) {
   const intl = useIntl()
+
+  const foedselsdato = useAppSelector(selectFoedselsdato)
+  const foedtEtter1963 = isFoedtEtter1963(foedselsdato)
+  const hasErApotekerError = useAppSelector(selectHasErApotekerError)
+  const afp = useAppSelector(selectAfp)
+
   const [validationError, setValidationError] = useState<string>('')
 
   const onSubmit = (e: FormEvent<HTMLFormElement>): void => {
@@ -39,7 +56,7 @@ export function SamtykkePensjonsavtaler({
         id: 'stegvisning.samtykke_pensjonsavtaler.validation_error',
       })
       setValidationError(tekst)
-      logger('skjema validering feilet', {
+      logger('skjemavalidering feilet', {
         skjemanavn: STEGVISNING_FORM_NAMES.samtykkePensjonsavtaler,
         data: intl.formatMessage({
           id: 'stegvisning.samtykke_pensjonsavtaler.radio_label',
@@ -51,7 +68,7 @@ export function SamtykkePensjonsavtaler({
         tekst: 'Samtykke',
         valg: samtykkeData,
       })
-      logger('button klikk', {
+      logger('knapp klikket', {
         tekst: `Neste fra ${paths.samtykke}`,
       })
       onNext(samtykkeData)
@@ -64,6 +81,12 @@ export function SamtykkePensjonsavtaler({
 
   return (
     <Card hasLargePadding hasMargin>
+      <ApotekereWarning
+        showWarning={Boolean(
+          afp === 'ja_offentlig' && hasErApotekerError && foedtEtter1963
+        )}
+      />
+
       <form onSubmit={onSubmit}>
         <Heading level="2" size="medium" spacing>
           <FormattedMessage id="stegvisning.samtykke_pensjonsavtaler.title" />
@@ -71,17 +94,35 @@ export function SamtykkePensjonsavtaler({
         <BodyLong size="large">
           <FormattedMessage
             id="stegvisning.samtykke_pensjonsavtaler.ingress"
-            values={{ ...getFormatMessageValues() }}
+            values={getFormatMessageValues()}
           />
         </BodyLong>
-        <SanityReadmore
-          id={'dette_henter_vi_OFTP'}
-          className={styles.readmoreOffentlig}
-        />
-        <SanityReadmore
-          id={'dette_henter_vi_NP'}
-          className={styles.readmorePrivat}
-        />
+
+        {isKap19 || erApoteker ? (
+          <>
+            <SanityReadmore
+              id="dette_henter_vi_NP"
+              className={styles.readmoreOffentlig}
+            />
+            <SanityReadmore
+              id="dette_sjekker_vi_OFTP"
+              data-testid="dette_sjekker_vi_OFTP"
+              className={styles.readmorePrivat}
+            />
+          </>
+        ) : (
+          <>
+            <SanityReadmore
+              id="dette_henter_vi_OFTP"
+              data-testid="dette_henter_vi_OFTP"
+              className={styles.readmoreOffentlig}
+            />
+            <SanityReadmore
+              id="dette_henter_vi_NP"
+              className={styles.readmorePrivat}
+            />
+          </>
+        )}
 
         <RadioGroup
           className={styles.radiogroup}
@@ -97,8 +138,6 @@ export function SamtykkePensjonsavtaler({
           }
           onChange={handleRadioChange}
           error={validationError}
-          role="radiogroup"
-          aria-required="true"
         >
           <Radio value="ja">
             <FormattedMessage id="stegvisning.samtykke_pensjonsavtaler.radio_ja" />
@@ -108,29 +147,7 @@ export function SamtykkePensjonsavtaler({
           </Radio>
         </RadioGroup>
 
-        <Button type="submit" className={styles.button}>
-          <FormattedMessage id="stegvisning.neste" />
-        </Button>
-        <Button
-          type="button"
-          className={styles.button}
-          variant="secondary"
-          onClick={wrapLogger('button klikk', {
-            tekst: `Tilbake fra ${paths.samtykke}`,
-          })(onPrevious)}
-        >
-          <FormattedMessage id="stegvisning.tilbake" />
-        </Button>
-        {onCancel && (
-          <Button
-            type="button"
-            className={styles.button}
-            variant="tertiary"
-            onClick={wrapLogger('button klikk', { tekst: 'Avbryt' })(onCancel)}
-          >
-            <FormattedMessage id="stegvisning.avbryt" />
-          </Button>
-        )}
+        <Navigation onPrevious={onPrevious} onCancel={onCancel} />
       </form>
     </Card>
   )

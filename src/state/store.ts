@@ -2,25 +2,25 @@ import {
   combineReducers,
   configureStore,
   createListenerMiddleware,
-  ListenerEffectAPI,
-  TypedStartListening,
-  TypedAddListener,
 } from '@reduxjs/toolkit'
 
 import { apiSlice } from './api/apiSlice'
-import { createUttaksalderListener } from './listeners/uttaksalderListener'
-import { userInputInitialState } from './userInput/userInputSlice'
-import userInputReducer from './userInput/userInputSlice'
+import sessionReducer, { sessionInitialState } from './session/sessionSlice'
+import userInputReducer, {
+  userInputInitialState,
+} from './userInput/userInputSlice'
 
 const listenerMiddleware = createListenerMiddleware()
 
 export const rootReducer = combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer,
+  session: sessionReducer,
   userInput: userInputReducer,
 })
 
 export const initialState = {
   api: {},
+  session: sessionInitialState,
   userInput: userInputInitialState,
 } as RootState
 
@@ -39,14 +39,6 @@ export function setupStore(preloadedState?: Partial<RootState>, isDev = false) {
 
 export const store = setupStore()
 
-createUttaksalderListener(
-  listenerMiddleware.startListening as AppStartListening
-)
-
 export type RootState = ReturnType<typeof rootReducer>
 export type AppStore = ReturnType<typeof setupStore>
 export type AppDispatch = AppStore['dispatch']
-
-export type AppListenerEffectAPI = ListenerEffectAPI<RootState, AppDispatch>
-export type AppStartListening = TypedStartListening<RootState, AppDispatch>
-export type AppAddListener = TypedAddListener<RootState, AppDispatch>

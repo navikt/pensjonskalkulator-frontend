@@ -1,15 +1,16 @@
 import { vi } from 'vitest'
 
-import offentligTpData from '../../../../mocks/data/offentlig-tp.json' with { type: 'json' }
-import pensjonsavtalerData from '../../../../mocks/data/pensjonsavtaler/67.json' with { type: 'json' }
-import { SimuleringPensjonsavtalerAlert } from '../SimuleringPensjonsavtalerAlert'
 import { ShowMoreRef } from '@/components/common/ShowMore/ShowMore'
 import { fulfilledGetLoependeVedtakLoependeAlderspensjon } from '@/mocks/mockedRTKQueryApiCalls'
 import {
   AvansertBeregningModus,
   BeregningContext,
 } from '@/pages/Beregning/context'
-import { render, screen, fireEvent } from '@/test-utils'
+import { fireEvent, render, screen } from '@/test-utils'
+
+import offentligTpData from '../../../../mocks/data/offentlig-tp.json' with { type: 'json' }
+import pensjonsavtalerData from '../../../../mocks/data/pensjonsavtaler/67.json' with { type: 'json' }
+import { SimuleringPensjonsavtalerAlert } from '../SimuleringPensjonsavtalerAlert'
 
 describe('SimuleringPensjonsavtalerAlert', () => {
   const avtalerWithKeys = pensjonsavtalerData.avtaler.map(
@@ -48,7 +49,7 @@ describe('SimuleringPensjonsavtalerAlert', () => {
         offentligTp={{
           isError: false,
         }}
-        isPensjonsavtaleFlagVisible
+        isPensjonsavtaleFlagVisible={false}
       />,
       {
         preloadedState: {
@@ -90,6 +91,36 @@ describe('SimuleringPensjonsavtalerAlert', () => {
       expect(screen.queryByTestId('pensjonsavtaler-alert')).toBeNull()
     })
 
+    it('Når simulering av offentlig-tp er vellykket med status "OK", og henting av private pensjonsavtaler også, men en avtale starter før uttaksalder, viser riktig alert.', () => {
+      render(
+        <SimuleringPensjonsavtalerAlert
+          pensjonsavtaler={{
+            isLoading: false,
+            isSuccess: true,
+            isError: false,
+            data: {
+              avtaler: avtalerWithKeys,
+              partialResponse: false,
+            },
+          }}
+          offentligTp={{
+            isError: false,
+          }}
+          isPensjonsavtaleFlagVisible
+        />
+      )
+      expect(screen.queryByTestId('pensjonsavtaler-alert')).toBeVisible()
+      expect(screen.getByTitle('Informasjon')).toBeInTheDocument()
+      expect(
+        screen.getByText(
+          'Du har pensjonsavtaler som starter før valgt alder.',
+          {
+            exact: false,
+          }
+        )
+      ).toBeVisible()
+    })
+
     it('Når simulering av offentlig-tp er vellykket med status "OK", og at private pensjonsavtaler har feilet, viser riktig alert.', () => {
       render(
         <SimuleringPensjonsavtalerAlert
@@ -107,6 +138,49 @@ describe('SimuleringPensjonsavtalerAlert', () => {
       )
       expect(screen.queryByTestId('pensjonsavtaler-alert')).toBeVisible()
       expect(screen.getByTitle('Advarsel')).toBeInTheDocument()
+      expect(
+        screen.getByText(
+          'Beregningen viser kanskje ikke alt. Noe gikk galt ved henting av pensjonsavtaler i privat sektor. Les mer under',
+          {
+            exact: false,
+          }
+        )
+      ).toBeVisible()
+    })
+
+    it('Når simulering av offentlig-tp er vellykket med status "OK", og at private pensjonsavtaler har feilet, og en avtale starter før uttaksalder, viser to riktig alerts.', () => {
+      render(
+        <SimuleringPensjonsavtalerAlert
+          pensjonsavtaler={{
+            isLoading: false,
+            isSuccess: false,
+            isError: true,
+          }}
+          offentligTp={{
+            isError: false,
+            data: offentligTpData as OffentligTp,
+          }}
+          isPensjonsavtaleFlagVisible={true}
+        />
+      )
+      const alerts = screen.queryAllByTestId('pensjonsavtaler-alert')
+      expect(alerts).toHaveLength(2)
+      alerts.forEach((alert) => {
+        expect(alert).toBeVisible()
+      })
+
+      expect(screen.getByTitle('Informasjon')).toBeInTheDocument()
+      expect(screen.getByTitle('Advarsel')).toBeInTheDocument()
+
+      expect(
+        screen.getByText(
+          'Du har pensjonsavtaler som starter før valgt alder.',
+          {
+            exact: false,
+          }
+        )
+      ).toBeVisible()
+
       expect(
         screen.getByText(
           'Beregningen viser kanskje ikke alt. Noe gikk galt ved henting av pensjonsavtaler i privat sektor. Les mer under',
@@ -538,7 +612,7 @@ describe('SimuleringPensjonsavtalerAlert', () => {
           offentligTp={{
             isError: true,
           }}
-          isPensjonsavtaleFlagVisible
+          isPensjonsavtaleFlagVisible={false}
         />
       )
       expect(screen.queryByTestId('pensjonsavtaler-alert')).toBeVisible()
@@ -572,7 +646,7 @@ describe('SimuleringPensjonsavtalerAlert', () => {
               muligeTpLeverandoerListe: ['Statens pensjonskasse'],
             },
           }}
-          isPensjonsavtaleFlagVisible
+          isPensjonsavtaleFlagVisible={false}
         />
       )
       expect(screen.queryByTestId('pensjonsavtaler-alert')).toBeVisible()
@@ -606,7 +680,7 @@ describe('SimuleringPensjonsavtalerAlert', () => {
               muligeTpLeverandoerListe: ['Statens pensjonskasse'],
             },
           }}
-          isPensjonsavtaleFlagVisible
+          isPensjonsavtaleFlagVisible={false}
         />
       )
       expect(screen.queryByTestId('pensjonsavtaler-alert')).toBeVisible()
@@ -636,11 +710,13 @@ describe('SimuleringPensjonsavtalerAlert', () => {
           offentligTp={{
             isError: false,
           }}
-          isPensjonsavtaleFlagVisible
+          isPensjonsavtaleFlagVisible={true}
         />
       )
+
       expect(screen.queryByTestId('pensjonsavtaler-alert')).toBeVisible()
       expect(screen.getByTitle('Informasjon')).toBeInTheDocument()
+
       expect(
         screen.getByText(
           'Du har pensjonsavtaler som starter før valgt alder.',

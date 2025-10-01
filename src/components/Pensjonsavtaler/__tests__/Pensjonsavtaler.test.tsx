@@ -1,14 +1,15 @@
 import { describe, it, vi } from 'vitest'
 
-import { Pensjonsavtaler } from '../Pensjonsavtaler'
 import { fulfilledGetInntekt } from '@/mocks/mockedRTKQueryApiCalls'
 import { paths } from '@/router/constants'
 import * as apiSliceUtils from '@/state/api/apiSlice'
 import {
-  userInputInitialState,
   Simulation,
+  userInputInitialState,
 } from '@/state/userInput/userInputSlice'
 import { render, screen, userEvent } from '@/test-utils'
+
+import { Pensjonsavtaler } from '../Pensjonsavtaler'
 
 const navigateMock = vi.fn()
 vi.mock(import('react-router'), async (importOriginal) => {
@@ -26,7 +27,6 @@ describe('Pensjonsavtaler', () => {
 
   const currentSimulation: Simulation = {
     beregningsvalg: null,
-    formatertUttaksalderReadOnly: '67 år string.og 1 alder.maaned',
     uttaksalder: { aar: 70, maaneder: 0 },
     aarligInntektVsaHelPensjon: {
       beloep: '500 000',
@@ -39,6 +39,7 @@ describe('Pensjonsavtaler', () => {
       aarligInntektVsaPensjonBeloep: '300 000',
     },
   }
+
   describe('Gitt at brukeren ikke har samtykket,', () => {
     it('viser riktig header og melding med lenke tilbake til start, og skjuler ingress, tabell og info om offentlig tjenestepensjon.', async () => {
       const user = userEvent.setup()
@@ -151,21 +152,10 @@ describe('Pensjonsavtaler', () => {
                 beloep: 300000,
                 sluttAlder: { aar: 70, maaneder: 0 },
               },
-              grad: 50,
+              grad: 100, // * Denne er hardkodet til 100 pga private pensjonsavtaler ikke har gradert uttak
               startAlder: {
                 aar: 67,
                 maaneder: 1,
-              },
-            },
-            {
-              aarligInntektVsaPensjon: {
-                beloep: 500000,
-                sluttAlder: { aar: 75, maaneder: 0 },
-              },
-              grad: 100,
-              startAlder: {
-                aar: 70,
-                maaneder: 0,
               },
             },
           ],
@@ -200,6 +190,7 @@ describe('Pensjonsavtaler', () => {
                 requestId: 'xTaE6mOydr5ZI75UXq4Wi',
                 startedTimeStamp: 1688046411971,
                 data: {
+                  harLoependeVedtak: true,
                   ufoeretrygd: { grad: 75 },
                 } satisfies LoependeVedtak,
                 fulfilledTimeStamp: 1688046412103,
@@ -265,6 +256,32 @@ describe('Pensjonsavtaler', () => {
       expect(
         await screen.findByText('pensjonsavtaler.fra_og_med_forklaring')
       ).toBeVisible()
+    })
+
+    it('Når ingen pensjonsavtaler kunne hentes, skjules fra og med forklaring', async () => {
+      render(<Pensjonsavtaler headingLevel="3" />, {
+        preloadedState: {
+          api: {
+            // @ts-ignore
+            queries: {
+              ...fulfilledGetInntekt,
+            },
+          },
+          userInput: {
+            ...userInputInitialState,
+            samtykke: true,
+            currentSimulation: currentSimulation,
+          },
+        },
+      })
+
+      expect(
+        await screen.findByRole('heading', { level: 3 })
+      ).toHaveTextContent('pensjonsavtaler.title')
+
+      expect(
+        screen.queryByText('pensjonsavtaler.fra_og_med_forklaring')
+      ).not.toBeInTheDocument()
     })
   })
 })

@@ -1,9 +1,10 @@
 import { describe, expect, it } from 'vitest'
 
-import { VelgUttaksalder } from '../VelgUttaksalder'
 import { fulfilledGetPerson } from '@/mocks/mockedRTKQueryApiCalls'
 import { userInputInitialState } from '@/state/userInput/userInputSlice'
 import { render, screen, userEvent } from '@/test-utils'
+
+import { VelgUttaksalder } from '../VelgUttaksalder'
 
 describe('VelgUttaksalder', () => {
   const uttaksalder: Alder = {
@@ -48,7 +49,7 @@ describe('VelgUttaksalder', () => {
 
     await user.click(screen.getByText('65 alder.aar', { exact: false }))
 
-    expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled()
+    expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled() // eslint-disable-line @typescript-eslint/unbound-method
 
     rerender(<VelgUttaksalder {...getProps()} />)
     expect(screen.getByRole('button', { pressed: true })).toHaveTextContent(

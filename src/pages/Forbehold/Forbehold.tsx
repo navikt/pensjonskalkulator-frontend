@@ -1,8 +1,8 @@
+import { PortableText } from '@portabletext/react'
 import React from 'react'
-import { useIntl, FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 import { BodyLong, Heading } from '@navikt/ds-react'
-import { PortableText } from '@portabletext/react'
 
 import { Card } from '@/components/common/Card'
 import { SanityContext } from '@/context/SanityContext'
@@ -26,7 +26,7 @@ export function Forbehold() {
       <>
         {forbeholdAvsnittData.map((forbeholdAvsnitt, i) => {
           return forbeholdAvsnitt.overskrift ? (
-            <section key={i}>
+            <section data-testid="forbehold-avsnitt" key={i}>
               <Heading level="3" size="small" spacing>
                 {forbeholdAvsnitt.overskrift}
               </Heading>
@@ -38,9 +38,8 @@ export function Forbehold() {
               </BodyLong>
             </section>
           ) : (
-            <BodyLong spacing as="div">
+            <BodyLong data-testid="forbehold-avsnitt" key={i} spacing as="div">
               <PortableText
-                key={i}
                 value={forbeholdAvsnitt.innhold}
                 components={getSanityPortableTextComponents(intl)}
               />

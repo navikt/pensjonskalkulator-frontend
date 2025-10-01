@@ -1,13 +1,19 @@
-import React from 'react'
+import { compareAsc, parse } from 'date-fns'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 import { PencilIcon, PlusCircleIcon } from '@navikt/aksel-icons'
-import { BodyShort, Button, Heading, Modal } from '@navikt/ds-react'
-import { parse, compareAsc } from 'date-fns'
+import {
+  BodyShort,
+  Button,
+  ErrorMessage,
+  Heading,
+  Modal,
+} from '@navikt/ds-react'
 
 import { UtenlandsoppholdModal } from '@/components/UtenlandsoppholdModal'
 import { getSelectedLanguage } from '@/context/LanguageProvider/utils'
-import { useAppSelector, useAppDispatch } from '@/state/hooks'
+import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
   selectCurrentSimulation,
   selectUtenlandsperioder,
@@ -17,6 +23,12 @@ import {
   getTranslatedLandFromLandkode,
   harKravOmArbeidFromLandkode,
 } from '@/utils/land'
+import {
+  BUTTON_KLIKK,
+  GRUNNLAG_FOR_BEREGNINGEN,
+  KNAPP_KLIKKET,
+  MODAL_AAPNET,
+} from '@/utils/loggerConstants'
 import { logger } from '@/utils/logging'
 
 import styles from './UtenlandsoppholdListe.module.scss'
@@ -31,29 +43,29 @@ export function UtenlandsoppholdListe({
   validationError,
 }: Props) {
   const intl = useIntl()
-  const avbrytModalRef = React.useRef<HTMLDialogElement>(null)
-  const utenlandsoppholdModalRef = React.useRef<HTMLDialogElement>(null)
+  const avbrytModalRef = useRef<HTMLDialogElement>(null)
+  const utenlandsoppholdModalRef = useRef<HTMLDialogElement>(null)
   const utenlandsperioder = useAppSelector(selectUtenlandsperioder)
-  const { formatertUttaksalderReadOnly } = useAppSelector(
-    selectCurrentSimulation
-  )
+  const { uttaksalder } = useAppSelector(selectCurrentSimulation)
   const dispatch = useAppDispatch()
   const [valgtUtenlandsperiodeId, setValgtUtenlandsperiodeId] =
-    React.useState<string>('')
+    useState<string>('')
 
   const locale = getSelectedLanguage()
 
   const openUtenlandsoppholdModal = () => {
-    logger('modal åpnet', {
-      tekst: `Modal: Om oppholdet ditt`,
+    logger('MODAL_AAPNET', {
+      modalId: 'utenlandsopphold-modal',
+      tittel: 'Modal: Om oppholdet ditt',
     })
     utenlandsoppholdModalRef.current?.showModal()
   }
 
   const onEditClick = (id: string) => {
     setValgtUtenlandsperiodeId(id)
-    logger('modal åpnet', {
-      tekst: `Modal: Om oppholdet ditt`,
+    logger(MODAL_AAPNET, {
+      modalId: 'edit-utenlandsopphold-modal',
+      tittel: `Modal: Om oppholdet ditt`,
     })
     utenlandsoppholdModalRef.current?.showModal()
   }
@@ -63,7 +75,7 @@ export function UtenlandsoppholdListe({
     avbrytModalRef.current?.showModal()
   }
 
-  const sortedUtenlandsperioder = React.useMemo(() => {
+  const sortedUtenlandsperioder = useMemo(() => {
     return [...utenlandsperioder].sort((a, b) => {
       // If a has no sluttdato and b has, a comes first
       if (!a.sluttdato) return -1
@@ -77,17 +89,17 @@ export function UtenlandsoppholdListe({
     })
   }, [utenlandsperioder])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (erVisningIGrunnlag) {
       utenlandsperioder.forEach((utenlandsperiode) => {
-        logger('grunnlag for beregningen', {
+        logger(GRUNNLAG_FOR_BEREGNINGEN, {
           tekst: 'utenlandsopphold',
           data: utenlandsperiode.landkode,
           valg: utenlandsperiode.arbeidetUtenlands,
         })
       })
     }
-  }, [formatertUttaksalderReadOnly, utenlandsperioder])
+  }, [uttaksalder?.aar, uttaksalder?.maaneder, utenlandsperioder])
 
   return (
     <section className={styles.section}>
@@ -110,7 +122,10 @@ export function UtenlandsoppholdListe({
               dispatch(
                 userInputActions.deleteUtenlandsperiode(valgtUtenlandsperiodeId)
               )
-              logger('button klikk', {
+              logger(KNAPP_KLIKKET, {
+                tekst: `sletter utenlandsopphold`,
+              })
+              logger(BUTTON_KLIKK, {
                 tekst: `sletter utenlandsopphold`,
               })
               avbrytModalRef.current?.close()
@@ -133,14 +148,17 @@ export function UtenlandsoppholdListe({
           </Button>
         </Modal.Footer>
       </Modal>
+
       <Heading size="small" level="3">
         <FormattedMessage id="stegvisning.utenlandsopphold.oppholdene.title" />
       </Heading>
+
       {!erVisningIGrunnlag && (
         <BodyShort size="medium" className={styles.bodyshort}>
           <FormattedMessage id="stegvisning.utenlandsopphold.oppholdene.description" />
         </BodyShort>
       )}
+
       <UtenlandsoppholdModal
         modalRef={utenlandsoppholdModalRef}
         utenlandsperiode={
@@ -195,6 +213,7 @@ export function UtenlandsoppholdListe({
                     </dd>
                   )}
                 </div>
+
                 {!erVisningIGrunnlag && (
                   <dd className={styles.utenlandsperioderButtons}>
                     <Button
@@ -211,6 +230,7 @@ export function UtenlandsoppholdListe({
                         id: 'stegvisning.utenlandsopphold.oppholdene.button.endre',
                       })}
                     </Button>
+
                     <Button
                       variant="tertiary"
                       size="small"
@@ -230,6 +250,7 @@ export function UtenlandsoppholdListe({
             )
           })}
       </dl>
+
       {!erVisningIGrunnlag && (
         <Button
           data-testid="legg-til-utenlandsopphold"
@@ -246,13 +267,16 @@ export function UtenlandsoppholdListe({
           })}
         </Button>
       )}
+
       {validationError && (
-        <BodyShort
-          size="medium"
-          className={`navds-error-message navds-label ${styles.error}`}
+        <ErrorMessage
+          showIcon
+          className={styles.error}
+          role="alert"
+          aria-live="polite"
         >
           {validationError}
-        </BodyShort>
+        </ErrorMessage>
       )}
     </section>
   )

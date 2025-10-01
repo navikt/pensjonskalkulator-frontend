@@ -1,4 +1,5 @@
 import 'cypress-axe'
+import './apoteker-utils'
 
 import { userInputActions } from '../../src/state/userInput/userInputSlice'
 
@@ -96,9 +97,9 @@ beforeEach(() => {
     { fixture: 'decorator-env-features.json' }
   ).as('getDecoratorEnvFeatures')
 
-  cy.intercept('POST', 'https://amplitude.nav.no/collect-auto', {
+  cy.intercept('POST', 'https://umami.nav.no/api/send', {
     statusCode: 200,
-  }).as('amplitudeCollect')
+  }).as('umamiCollect')
 
   cy.intercept('GET', '/pensjon/kalkulator/oauth2/session', {
     statusCode: 200,
@@ -115,34 +116,26 @@ beforeEach(() => {
   cy.intercept(
     {
       method: 'GET',
-      url: '/pensjon/kalkulator/api/feature/pensjonskalkulator.enable-redirect-1963',
+      url: '/pensjon/kalkulator/api/feature/pensjonskalkulator.vedlikeholdsmodus',
     },
-    { fixture: 'toggle-enable-redirect-1963.json' }
-  ).as('getFeatureToggleRedirect1963')
+    { enabled: false }
+  ).as('getVedlikeholdsmodusFeatureToggle')
 
   cy.intercept(
     {
       method: 'GET',
-      url: '/pensjon/kalkulator/api/feature/pensjonskalkulator.hent-tekster-fra-sanity',
+      url: '/pensjon/kalkulator/api/feature/utvidet-simuleringsresultat',
     },
-    { fixture: 'toggle-enable-sanity.json' }
-  ).as('getFeatureToggleRedirect1963')
+    { enabled: false }
+  ).as('getFeatureToggleUtvidetSimuleringsresult')
 
   cy.intercept(
     {
       method: 'GET',
-      url: '/pensjon/kalkulator/api/feature/pensjonskalkulator.vis-otp-fra-klp',
+      url: '/pensjon/kalkulator/api/v1/er-apoteker',
     },
-    { fixture: 'toggle-otp-fra-klp.json' }
-  ).as('getFeatureToggleOtpFraKlp')
-
-  cy.intercept(
-    {
-      method: 'GET',
-      url: '/pensjon/kalkulator/api/feature/pensjonskalkulator.gradert-ufoere-afp',
-    },
-    { fixture: 'toggle-gradert-ufoere-afp.json' }
-  ).as('getGradertUfoereAfpFeatureToggle')
+    { fixture: 'er-apoteker.json' }
+  ).as('getErApoteker')
 
   cy.intercept(
     {
@@ -169,7 +162,7 @@ beforeEach(() => {
   ).as('getLoependeVedtak')
 
   cy.intercept(
-    { method: 'GET', url: '/pensjon/kalkulator/api/v4/person' },
+    { method: 'GET', url: '/pensjon/kalkulator/api/v5/person' },
     { fixture: 'person.json' }
   ).as('getPerson')
 
@@ -217,28 +210,9 @@ beforeEach(() => {
   ).as('getGrunnbeløp')
 
   cy.intercept(
-    {
-      method: 'GET',
-      url: `https://g2by7q6m.apicdn.sanity.io/v2023-05-03/data/query/development?query=*%5B_type+%3D%3D+%22readmore%22+%26%26+language+%3D%3D+%22nb%22%5D*`,
-    },
-    { fixture: 'sanity-readmore-nb-data.json' }
-  ).as('fetchSanityReadMoreDataNb')
-
-  cy.intercept(
-    {
-      method: 'GET',
-      url: `https://g2by7q6m.apicdn.sanity.io/v2023-05-03/data/query/development?query=*%5B_type+%3D%3D+%22readmore%22+%26%26+language+%3D%3D+%22en%22%5D*`,
-    },
-    { fixture: 'sanity-readmore-en-data.json' }
-  ).as('fetchSanityReadMoreDataEn')
-
-  cy.intercept(
-    {
-      method: 'GET',
-      url: `https://g2by7q6m.apicdn.sanity.io/v2023-05-03/data/query/development?query=*%5B_type+%3D%3D+%22forbeholdAvsnitt%22+%26%26*`,
-    },
-    { fixture: 'sanity-forbehold-avsnitt-data.json' }
-  ).as('fetchSanityForbeholdAvsnittData')
+    { url: 'https://api.uxsignals.com/v2/study/id/*/active' },
+    { active: false }
+  ).as('getUxSignalsActive')
 })
 
 Cypress.Commands.add('login', () => {
@@ -247,9 +221,9 @@ Cypress.Commands.add('login', () => {
   // TODO reaktivere når dekoratøren er i produksjon
   // cy.wait('@getDecoratorMainMenu')
   cy.contains('button', 'Pensjonskalkulator').click()
-  // På start steget kjøres automatisk kall til  /person, /ekskludert, /inntekt, /loepende-omstillingsstoenad-eller-gjenlevendeytelse
+  // På start steget kjøres automatisk kall til  /person, /apoteker, /inntekt, /loepende-omstillingsstoenad-eller-gjenlevendeytelse
   cy.wait('@getPerson')
-  cy.wait('@getEkskludertStatus')
+  cy.wait('@getErApoteker')
   cy.wait('@getInntekt')
   cy.wait('@getOmstillingsstoenadOgGjenlevende')
   cy.wait('@getLoependeVedtak')
@@ -293,8 +267,8 @@ Cypress.Commands.add('fillOutStegvisning', (args) => {
 })
 
 Cypress.on('uncaught:exception', (err) => {
-  if (err.message.includes('Amplitude')) {
-    // prevents Amplitude errors to fail tests
+  if (err.message.includes('Analytics')) {
+    // prevents Analytics errors to fail tests
     return false
   } else if (
     err.stack?.includes(

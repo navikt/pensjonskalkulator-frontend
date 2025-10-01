@@ -1,7 +1,8 @@
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
+
+import { render, screen } from '@/test-utils'
 
 import { Simuleringsdetaljer } from '../Simuleringsdetaljer'
-import { render, screen } from '@/test-utils'
 
 describe('Simuleringsdetaljer', () => {
   it('Når trygdetid er undefined, viser tomt år', () => {
@@ -29,7 +30,7 @@ describe('Simuleringsdetaljer', () => {
     expect(screen.getByText('Ingen opptjeningsgrunnlag')).toBeVisible()
   })
 
-  it('viser opptjeningsgrunnlag', () => {
+  it('viser opptjeningsgrunnlag', async () => {
     const opptjeningsgrunnlag = [
       { aar: 2020, pensjonsgivendeInntektBeloep: 500000 },
       { aar: 2021, pensjonsgivendeInntektBeloep: 550000 },
@@ -129,6 +130,7 @@ describe('Simuleringsdetaljer', () => {
               <dd>
                 Ingen alderspensjon
               </dd>
+              Ingen gammel AFP data
             </dl>
           </div>
         </div>
@@ -141,7 +143,7 @@ describe('Simuleringsdetaljer', () => {
     expect(screen.getByText('Ingen alderspensjon')).toBeVisible()
   })
 
-  it('viser alderspensjon', () => {
+  it('viser alderspensjon', async () => {
     const alderspensjonListe = [
       {
         alder: 67,
@@ -332,6 +334,7 @@ describe('Simuleringsdetaljer', () => {
                   </li>
                 </ul>
               </dd>
+              Ingen gammel AFP data
             </dl>
           </div>
         </div>
@@ -339,7 +342,7 @@ describe('Simuleringsdetaljer', () => {
     `)
   })
 
-  it('Når inntektspensjonBeloep, garantipensjonBeloepviser, pensjonBeholdningFoerUttakBeloep, grunnpensjon, tilleggspensjon, pensjonstillegg og skjermingstillegg er undefined, viser alderspensjon.', () => {
+  it('Når inntektspensjonBeloep, garantipensjonBeloepviser, pensjonBeholdningFoerUttakBeloep, grunnpensjon, tilleggspensjon, pensjonstillegg og skjermingstillegg er undefined, viser alderspensjon.', async () => {
     const alderspensjonListe = [
       {
         alder: 67,
@@ -530,10 +533,61 @@ describe('Simuleringsdetaljer', () => {
                   </li>
                 </ul>
               </dd>
+              Ingen gammel AFP data
             </dl>
           </div>
         </div>
       </DocumentFragment>
     `)
+  })
+
+  it('viser opptjeningsgrunnlag for Simuleringsdetaljer pre2025 offentlig afp', () => {
+    const alderspensjonListe = [
+      {
+        alder: 67,
+        beloep: 300000,
+        inntektspensjonBeloep: undefined,
+        garantipensjonBeloep: undefined,
+        delingstall: 13.5,
+        pensjonBeholdningFoerUttakBeloep: undefined,
+        andelsbroekKap19: 0.7,
+        andelsbroekKap20: 0.3,
+        sluttpoengtall: 5.11,
+        trygdetidKap19: 40,
+        trygdetidKap20: 40,
+        poengaarFoer92: 13,
+        poengaarEtter91: 27,
+        forholdstall: 0.971,
+        grunnpensjon: undefined,
+        tilleggspensjon: undefined,
+        pensjonstillegg: undefined,
+        skjermingstillegg: undefined,
+      },
+    ]
+
+    const afp = {
+      alderAar: 64,
+      totaltAfpBeloep: 10000,
+      tidligereArbeidsinntekt: 10,
+      grunnbeloep: 1000,
+      sluttpoengtall: 1000,
+      trygdetid: 1000,
+      poengaarTom1991: 1000,
+      poengaarFom1992: 1000,
+      grunnpensjon: 1000,
+      tilleggspensjon: 1000,
+      afpTillegg: 1000,
+      saertillegg: 1000,
+      afpGrad: 1000,
+      afpAvkortetTil70Prosent: false,
+    }
+    render(
+      <Simuleringsdetaljer
+        alderspensjonListe={alderspensjonListe}
+        detaljer={{}}
+        pre2025OffentligAfp={afp}
+      />
+    )
+    expect(screen.getByText('AFP etterfulgt av alderspensjon:')).toBeVisible()
   })
 })

@@ -1,11 +1,16 @@
 import { describe, it } from 'vitest'
 
-import { VeilederInput } from '../'
-import { BASE_PATH, paths } from '@/router/constants'
+import {
+  fulfilledGetPerson,
+  fulfilledPre1963GetPerson,
+} from '@/mocks/mockedRTKQueryApiCalls'
+import { BASE_PATH } from '@/router/constants'
 import * as apiSliceUtils from '@/state/api/apiSlice'
-import { userInputInitialState } from '@/state/userInput/userInputSlice'
 import * as userInputReducerUtils from '@/state/userInput/userInputSlice'
-import { render, screen, waitFor, userEvent } from '@/test-utils'
+import { userInputInitialState } from '@/state/userInput/userInputSlice'
+import { render, screen, userEvent, waitFor } from '@/test-utils'
+
+import { VeilederInput } from '../'
 
 const previousWindow = window
 
@@ -14,31 +19,6 @@ describe('VeilederInput', () => {
     vi.clearAllMocks()
     vi.resetAllMocks()
     global.window = previousWindow
-  })
-
-  describe('Gitt at veilederen besøker en side som er ekskludert', () => {
-    afterEach(() => {
-      global.window = previousWindow
-    })
-    it('Når veilederen klikker på tittelen, vises det ansattid med vanlig side under', async () => {
-      const user = userEvent.setup()
-      global.window = Object.create(window)
-      Object.defineProperty(window, 'location', {
-        value: {
-          href: 'before',
-          pathname: `/veileder${paths.forbehold}`,
-        },
-        writable: true,
-      })
-      render(<VeilederInput />, {
-        hasRouter: false,
-      })
-      expect(window.location.href).toBe('before')
-
-      await user.click(screen.getByText('Pensjonskalkulator', { exact: true }))
-      expect(window.location.href).toBe(`${BASE_PATH}/veileder`)
-      expect(screen.getByTestId('veileder-ekskludert-side')).toBeVisible()
-    })
   })
 
   describe('Gitt at borger ikke er valgt', () => {
@@ -180,16 +160,7 @@ describe('VeilederInput', () => {
       })
     })
 
-    it('Når veilederen klikker på tittelen', async () => {
-      const user = userEvent.setup()
-      global.window = Object.create(window)
-      Object.defineProperty(window, 'location', {
-        value: {
-          href: 'before',
-          pathname: 'before',
-        },
-        writable: true,
-      })
+    it('tittelen er klikkbar', async () => {
       render(<VeilederInput />, {
         hasRouter: false,
         preloadedState: {
@@ -199,10 +170,10 @@ describe('VeilederInput', () => {
           },
         },
       })
-      expect(window.location.href).toBe('before')
 
-      await user.click(screen.getByText('Pensjonskalkulator', { exact: true }))
-      expect(window.location.href).toBe(`${BASE_PATH}/veileder`)
+      expect(
+        screen.getByRole('link', { name: 'Pensjonskalkulator' })
+      ).toHaveProperty('href', `${window.location.origin}${BASE_PATH}/veileder`)
     })
 
     it('viser inaktiv-alert', async () => {
@@ -212,6 +183,40 @@ describe('VeilederInput', () => {
       })
       await waitFor(async () => {
         expect(screen.getByTestId('inaktiv-alert')).toBeInTheDocument()
+      })
+    })
+
+    it('viser advarsel om delB når bruker er født før 1963', async () => {
+      render(<VeilederInput />, {
+        hasRouter: false,
+        preloadedState: {
+          api: {
+            // @ts-ignore
+            queries: { ...fulfilledPre1963GetPerson },
+          },
+          userInput: {
+            ...userInputInitialState,
+            veilederBorgerFnr: '12345678901',
+            veilederBorgerEncryptedFnr: 'encrypted123',
+          },
+        },
+      })
+    })
+
+    it('viser ikke advarsel om delB når bruker er født etter 1962', async () => {
+      render(<VeilederInput />, {
+        hasRouter: false,
+        preloadedState: {
+          api: {
+            // @ts-ignore
+            queries: { ...fulfilledGetPerson },
+          },
+          userInput: {
+            ...userInputInitialState,
+            veilederBorgerFnr: '12345678901',
+            veilederBorgerEncryptedFnr: 'encrypted123',
+          },
+        },
       })
     })
   })

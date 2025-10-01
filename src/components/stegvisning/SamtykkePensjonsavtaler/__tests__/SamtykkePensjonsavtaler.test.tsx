@@ -1,20 +1,23 @@
 import { describe, it, vi } from 'vitest'
 
-import { SamtykkePensjonsavtaler } from '..'
 import { RootState } from '@/state/store'
-import { screen, render, waitFor, userEvent } from '@/test-utils'
+import { render, screen, userEvent, waitFor } from '@/test-utils'
+
+import { SamtykkePensjonsavtaler } from '..'
 
 describe('stegvisning - SamtykkePensjonsavtaler', () => {
   const onCancelMock = vi.fn()
   const onPreviousMock = vi.fn()
   const onNextMock = vi.fn()
   it('rendrer slik den skal når samtykket ikke er oppgitt', async () => {
-    const result = render(
+    render(
       <SamtykkePensjonsavtaler
         harSamtykket={null}
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
+        erApoteker={false}
+        isKap19={false}
       />
     )
     expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
@@ -26,7 +29,6 @@ describe('stegvisning - SamtykkePensjonsavtaler', () => {
       expect(screen.getAllByRole('radio')).toHaveLength(2)
       expect(radioButtons[0]).not.toBeChecked()
       expect(radioButtons[1]).not.toBeChecked()
-      expect(result.asFragment()).toMatchSnapshot()
     })
   })
   describe('rendrer slik den skal når samtykket er oppgitt', async () => {
@@ -37,6 +39,8 @@ describe('stegvisning - SamtykkePensjonsavtaler', () => {
           onCancel={onCancelMock}
           onPrevious={onPreviousMock}
           onNext={onNextMock}
+          erApoteker={false}
+          isKap19={false}
         />
       )
       const radioButtons = screen.getAllByRole('radio')
@@ -54,6 +58,8 @@ describe('stegvisning - SamtykkePensjonsavtaler', () => {
           onCancel={onCancelMock}
           onPrevious={onPreviousMock}
           onNext={onNextMock}
+          erApoteker={false}
+          isKap19={false}
         />
       )
       const radioButtons = screen.getAllByRole('radio')
@@ -73,20 +79,18 @@ describe('stegvisning - SamtykkePensjonsavtaler', () => {
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
+        erApoteker={false}
+        isKap19={false}
       />
     )
     const radioButtons = screen.getAllByRole('radio')
 
     await user.click(screen.getByText('stegvisning.neste'))
 
-    waitFor(() => {
-      expect(
-        screen.getByText(
-          'stegvisning.samtykke_pensjonsavtaler.validation_error'
-        )
-      ).toBeInTheDocument()
-      expect(onNextMock).not.toHaveBeenCalled()
-    })
+    expect(
+      screen.getByText('stegvisning.samtykke_pensjonsavtaler.validation_error')
+    ).toBeInTheDocument()
+    expect(onNextMock).not.toHaveBeenCalled()
 
     await user.click(radioButtons[0])
 
@@ -98,9 +102,7 @@ describe('stegvisning - SamtykkePensjonsavtaler', () => {
 
     await user.click(screen.getByText('stegvisning.neste'))
 
-    waitFor(() => {
-      expect(onNextMock).toHaveBeenCalled()
-    })
+    expect(onNextMock).toHaveBeenCalled()
   })
 
   it('kaller onPrevious når brukeren klikker på Tilbake', async () => {
@@ -111,6 +113,8 @@ describe('stegvisning - SamtykkePensjonsavtaler', () => {
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
+        erApoteker={false}
+        isKap19={false}
       />,
       {
         preloadedState: { userInput: { samtykke: true } } as RootState,
@@ -119,9 +123,7 @@ describe('stegvisning - SamtykkePensjonsavtaler', () => {
     const radioButtons = screen.getAllByRole('radio')
     expect(radioButtons[0]).toBeChecked()
     await user.click(screen.getByText('stegvisning.tilbake'))
-    waitFor(() => {
-      expect(onPreviousMock).toHaveBeenCalled()
-    })
+    expect(onPreviousMock).toHaveBeenCalled()
   })
 
   it('kaller onCancelMock når brukeren klikker på Avbryt', async () => {
@@ -132,13 +134,13 @@ describe('stegvisning - SamtykkePensjonsavtaler', () => {
         onCancel={onCancelMock}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
+        erApoteker={false}
+        isKap19={false}
       />
     )
     expect(screen.getByText('stegvisning.avbryt')).toBeInTheDocument()
     await user.click(screen.getByText('stegvisning.avbryt'))
-    waitFor(() => {
-      expect(onCancelMock).toHaveBeenCalled()
-    })
+    expect(onCancelMock).toHaveBeenCalled()
   })
 
   it('viser ikke avbryt knapp når onCancel ikke er definert', async () => {
@@ -148,8 +150,65 @@ describe('stegvisning - SamtykkePensjonsavtaler', () => {
         onCancel={undefined}
         onPrevious={onPreviousMock}
         onNext={onNextMock}
+        erApoteker={false}
+        isKap19={false}
       />
     )
     expect(screen.queryByText('stegvisning.avbryt')).not.toBeInTheDocument()
+  })
+
+  it('viser "dette_henter_vi_OFTP" hvis person ikke er apoteker eller kap19', () => {
+    render(
+      <SamtykkePensjonsavtaler
+        harSamtykket
+        onCancel={undefined}
+        onPrevious={onPreviousMock}
+        onNext={onNextMock}
+        erApoteker={false}
+        isKap19={false}
+      />
+    )
+    expect(screen.getByTestId('dette_henter_vi_OFTP')).toBeInTheDocument()
+  })
+  it('viser "dette_sjekker_vi_OFTP" er kap19', () => {
+    render(
+      <SamtykkePensjonsavtaler
+        harSamtykket
+        onCancel={undefined}
+        onPrevious={onPreviousMock}
+        onNext={onNextMock}
+        erApoteker={false}
+        isKap19={true}
+      />
+    )
+    expect(screen.getByTestId('dette_sjekker_vi_OFTP')).toBeInTheDocument()
+  })
+
+  it('viser "dette_sjekker_vi_OFTP" er apoteker og ikke kap19', () => {
+    render(
+      <SamtykkePensjonsavtaler
+        harSamtykket
+        onCancel={undefined}
+        onPrevious={onPreviousMock}
+        onNext={onNextMock}
+        erApoteker={true}
+        isKap19={false}
+      />
+    )
+    expect(screen.getByTestId('dette_sjekker_vi_OFTP')).toBeInTheDocument()
+  })
+
+  it('viser "dette_sjekker_vi_OFTP" er apoteker og kap19', () => {
+    render(
+      <SamtykkePensjonsavtaler
+        harSamtykket
+        onCancel={undefined}
+        onPrevious={onPreviousMock}
+        onNext={onNextMock}
+        erApoteker={true}
+        isKap19={true}
+      />
+    )
+    expect(screen.getByTestId('dette_sjekker_vi_OFTP')).toBeInTheDocument()
   })
 })

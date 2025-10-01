@@ -1,16 +1,11 @@
-import { createMemoryRouter, RouterProvider } from 'react-router'
-
+import { RouterProvider, createMemoryRouter } from 'react-router'
 import { describe, it, vi } from 'vitest'
 
 import { mockErrorResponse } from '@/mocks/server'
 import { HOST_BASEURL } from '@/paths'
-import { BASE_PATH, paths } from '@/router/constants'
-import { externalUrls } from '@/router/constants'
+import { BASE_PATH, externalUrls, paths } from '@/router/constants'
 import { routes } from '@/router/routes'
-import { store } from '@/state/store'
 import { render, screen, userEvent, waitFor } from '@/test-utils'
-
-const initialGetState = store.getState
 
 const navigateMock = vi.fn()
 vi.mock(import('react-router'), async (importOriginal) => {
@@ -25,7 +20,6 @@ describe('LandingPage', () => {
   afterEach(() => {
     vi.clearAllMocks()
     vi.resetAllMocks()
-    store.getState = initialGetState
   })
 
   it('har riktig sidetittel', async () => {
@@ -51,10 +45,7 @@ describe('LandingPage', () => {
     })
 
     await waitFor(() => {
-      // Viser TopSection
-      expect(
-        screen.getByText('landingsside.for.deg.foedt.etter.1963')
-      ).toBeVisible()
+      // Viser TopSection uten fødselsårbegrensning
       expect(
         screen.getByText('landingsside.velge_mellom_detaljert_og_enkel')
       ).toBeVisible()
@@ -66,14 +57,6 @@ describe('LandingPage', () => {
       expect(
         screen.getByText('landingsside.link.personopplysninger')
       ).toBeVisible()
-      expect(
-        screen.getByText('landingsside.velge_mellom_detaljert_og_enkel_2')
-      ).toBeVisible()
-      // Viser riktig tekst på Detaljert kalkulator knappen
-      expect(
-        screen.getByTestId('landingside-detaljert-kalkulator-button')
-          .textContent
-      ).toBe('landingsside.button.detaljert_kalkulator')
     })
   })
 
@@ -89,12 +72,15 @@ describe('LandingPage', () => {
 
     render(<RouterProvider router={router} />, {
       hasRouter: false,
+      preloadedState: {
+        session: { isLoggedIn: false, hasErApotekerError: false },
+      },
     })
 
     await waitFor(() => {
-      // Viser TopSection
+      // Viser TopSection med innloggingsprompt
       expect(
-        screen.getByText('landingsside.for.deg.foedt.etter.1963')
+        screen.getByText('landingsside.for.deg.som.kan.logge.inn')
       ).toBeVisible()
       expect(
         screen.getByText('landingsside.velge_mellom_detaljert_og_enkel')
@@ -107,26 +93,6 @@ describe('LandingPage', () => {
       expect(
         screen.getByText('landingsside.link.personopplysninger')
       ).toBeVisible()
-      expect(
-        screen.getByText('landingsside.velge_mellom_detaljert_og_enkel_2')
-      ).toBeVisible()
-      // Viser riktig tekst på Detaljert kalkulator knappen
-      expect(
-        screen.getByTestId('landingside-detaljert-kalkulator-button')
-          .textContent
-      ).toBe('landingsside.button.detaljert_kalkulator_utlogget')
-      // Viser info for brukere født før 1963
-      expect(
-        screen.getByText('landingsside.for.deg.foedt.foer.1963')
-      ).toBeVisible()
-      expect(
-        screen.getByText('landingsside.du.maa.bruke.detaljert')
-      ).toBeVisible()
-      // Viser riktig tekst på den tilleggsknappen som går til detaljert
-      expect(
-        screen.getByTestId('landingside-detaljert-kalkulator-second-button')
-          .textContent
-      ).toBe('landingsside.button.detaljert_kalkulator_utlogget')
       // Viser info om Uinnlogget kalkulator
       expect(
         screen.getByText('landingsside.text.uinnlogget_kalkulator')
@@ -140,33 +106,6 @@ describe('LandingPage', () => {
           .textContent
       ).toBe('landingsside.button.uinnlogget_kalkulator')
     })
-  })
-
-  it('går til detaljert kalkulator når brukeren klikker på detaljert kalkulator knappen', async () => {
-    const user = userEvent.setup()
-
-    const open = vi.fn()
-    vi.stubGlobal('open', open)
-
-    const router = createMemoryRouter(routes, {
-      basename: BASE_PATH,
-      initialEntries: [`${BASE_PATH}${paths.login}`],
-    })
-    render(<RouterProvider router={router} />, {
-      hasRouter: false,
-    })
-
-    await waitFor(() => {
-      expect(
-        screen.getByTestId('landingside-detaljert-kalkulator-button')
-      ).toBeDefined()
-    })
-
-    await user.click(
-      screen.getByTestId('landingside-detaljert-kalkulator-button')
-    )
-
-    expect(open).toHaveBeenCalledWith(externalUrls.detaljertKalkulator, '_self')
   })
 
   it('går til enkel kalkulator når brukeren klikker på enkel kalkulator knappen', async () => {
@@ -185,6 +124,9 @@ describe('LandingPage', () => {
     })
     render(<RouterProvider router={router} />, {
       hasRouter: false,
+      preloadedState: {
+        session: { isLoggedIn: false, hasErApotekerError: false },
+      },
     })
 
     await waitFor(async () => {
@@ -193,38 +135,8 @@ describe('LandingPage', () => {
       )
     })
 
-    expect(navigateMock).toHaveBeenCalledWith(`${paths.start}`)
-  })
-
-  it('går til detaljert kalkulator når brukeren klikker på tilleggsknappen i det andre avsnittet', async () => {
-    mockErrorResponse('/oauth2/session', {
-      baseUrl: `${HOST_BASEURL}`,
-    })
-
-    const user = userEvent.setup()
-
-    const open = vi.fn()
-    vi.stubGlobal('open', open)
-
-    const router = createMemoryRouter(routes, {
-      basename: BASE_PATH,
-      initialEntries: [`${BASE_PATH}${paths.login}`],
-    })
-    render(<RouterProvider router={router} />, {
-      hasRouter: false,
-    })
-
-    await waitFor(() => {
-      expect(
-        screen.getByTestId('landingside-detaljert-kalkulator-second-button')
-      ).toBeDefined()
-    })
-
-    await user.click(
-      screen.getByTestId('landingside-detaljert-kalkulator-second-button')
-    )
-
-    expect(open).toHaveBeenCalledWith(externalUrls.detaljertKalkulator, '_self')
+    const expectedRedirect = `${HOST_BASEURL}/oauth2/login?redirect=${encodeURIComponent(`${HOST_BASEURL}${paths.start}`)}`
+    expect(open).toHaveBeenCalledWith(expectedRedirect, '_self')
   })
 
   it('går til uinnlogget kalkulator når brukeren klikker på uinnlogget kalkulator knappen', async () => {
@@ -243,6 +155,9 @@ describe('LandingPage', () => {
     })
     render(<RouterProvider router={router} />, {
       hasRouter: false,
+      preloadedState: {
+        session: { isLoggedIn: false, hasErApotekerError: false },
+      },
     })
 
     await waitFor(() => {

@@ -37,6 +37,15 @@ spec:
     autoInstrumentation:
       enabled: true
       runtime: nodejs
+  gcp:
+    buckets:
+      - name: pkf
+        retentionPeriodDays: 30
+        lifecycleCondition:
+          age: 7
+          createdBefore: 2020-01-01
+          numNewerVersions: 2
+          withState: ANY
   tokenx:
     enabled: true
   idporten:
@@ -62,8 +71,13 @@ spec:
         - application: pensjonskalkulator-backend
       external:
         - host: www.nav.no
+        - host: pensjonskalkulator-unleash-api.nav.cloud.nais.io
   env:
     - name: "PENSJONSKALKULATOR_BACKEND"
       value: "http://pensjonskalkulator-backend"
     - name: "TOKEN_X_OBO_AUDIENCE"
       value: "prod-gcp:pensjonskalkulator:pensjonskalkulator-backend"
+    - name: "DETALJERT_KALKULATOR_URL"
+      value: "https://www.nav.no/pselv/simulering.jsf?simpleMode=true"
+  envFrom:
+    - secret: pensjonskalkulator-frontend-unleash-api-token

@@ -1,128 +1,154 @@
 import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
+import { useNavigate } from 'react-router'
 
-import { BodyLong, Link } from '@navikt/ds-react'
+import { BodyLong, Heading, Link, VStack } from '@navikt/ds-react'
 
-import { GrunnlagSection } from '../GrunnlagSection'
-import { AccordionItem } from '@/components/common/AccordionItem'
-import { useAppSelector } from '@/state/hooks'
+import { BeregningContext } from '@/pages/Beregning/context'
+import { paths } from '@/router/constants'
+import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
   selectAfp,
-  selectIsEndring,
-  selectUfoeregrad,
+  selectAfpUtregningValg,
+  selectCurrentSimulation,
+  selectErApoteker,
   selectFoedselsdato,
   selectLoependeVedtak,
   selectSamtykkeOffentligAFP,
+  selectUfoeregrad,
 } from '@/state/userInput/selectors'
-import { formatAfp } from '@/utils/afp'
-import {
-  AFP_UFOERE_OPPSIGELSESALDER,
-  isFoedselsdatoOverAlder,
-} from '@/utils/alder'
+import { userInputActions } from '@/state/userInput/userInputSlice'
+import { BUTTON_KLIKK, KNAPP_KLIKKET } from '@/utils/loggerConstants'
+import { logger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
 
-interface Props {
-  goToStart: React.MouseEventHandler<HTMLAnchorElement>
-}
+import { generateAfpContent } from './utils'
 
-export const GrunnlagAFP: React.FC<Props> = ({ goToStart }) => {
+import styles from '../Grunnlag.module.scss'
+
+export const GrunnlagAFP: React.FC = () => {
   const intl = useIntl()
-
   const afp = useAppSelector(selectAfp)
+  const afpUtregningValg = useAppSelector(selectAfpUtregningValg)
+  const erApoteker = useAppSelector(selectErApoteker)
   const foedselsdato = useAppSelector(selectFoedselsdato)
-  const harSamtykketOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
-  const isEndring = useAppSelector(selectIsEndring)
+  const samtykkeOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
   const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const ufoeregrad = useAppSelector(selectUfoeregrad)
+  const { beregningsvalg } = useAppSelector(selectCurrentSimulation)
 
-  if (
-    loependeVedtak.ufoeretrygd.grad &&
-    foedselsdato &&
-    isFoedselsdatoOverAlder(foedselsdato, AFP_UFOERE_OPPSIGELSESALDER)
-  ) {
-    return null
-  }
-
-  const formatertAfpHeader = React.useMemo(() => {
-    const afpString = formatAfp(intl, afp ?? 'vet_ikke')
-
-    if (isEndring && loependeVedtak.afpPrivat) {
-      return `${formatAfp(intl, 'ja_privat')} (${intl.formatMessage({ id: 'grunnlag.afp.endring' })})`
-    }
-
-    if (loependeVedtak.afpOffentlig) {
-      return `${formatAfp(intl, 'ja_offentlig')} (${intl.formatMessage({ id: 'grunnlag.afp.endring' })})`
-    }
-
-    if (ufoeregrad && (afp === 'ja_offentlig' || afp === 'ja_privat')) {
-      return `${afpString} (${intl.formatMessage({ id: 'grunnlag.afp.ikke_beregnet' })})`
-    }
-
-    if (!harSamtykketOffentligAFP && !ufoeregrad && afp === 'ja_offentlig') {
-      return `${afpString} (${intl.formatMessage({ id: 'grunnlag.afp.ikke_beregnet' })})`
-    }
-
-    if (ufoeregrad === 100) {
-      return formatAfp(intl, 'nei')
-    }
-
-    return afpString
-  }, [afp])
-
-  const formatertAfpIngress = React.useMemo(() => {
-    if (isEndring && loependeVedtak.afpPrivat) {
-      return 'grunnlag.afp.ingress.ja_privat.endring'
-    }
-
-    if (loependeVedtak.afpOffentlig) {
-      return 'grunnlag.afp.ingress.ja_offentlig.endring'
-    }
-
-    if (isEndring && afp === 'nei') {
-      return 'grunnlag.afp.ingress.nei.endring'
-    }
-
-    if (ufoeregrad === 100) {
-      return 'grunnlag.afp.ingress.full_ufoeretrygd'
-    }
-
-    const afpString =
-      afp === 'ja_offentlig' && !harSamtykketOffentligAFP && !ufoeregrad
-        ? 'ja_offentlig_utilgjengelig'
-        : afp
-    const ufoeregradString = ufoeregrad ? '.ufoeretrygd' : ''
-
-    return `grunnlag.afp.ingress.${afpString}${ufoeregradString}`
-  }, [afp])
+  const { title, content } = React.useMemo(() => {
+    return generateAfpContent(intl)({
+      afpUtregning: afpUtregningValg,
+      erApoteker: erApoteker ?? false,
+      loependeVedtak: loependeVedtak,
+      afpValg: afp,
+      foedselsdato: foedselsdato!,
+      samtykkeOffentligAFP: samtykkeOffentligAFP,
+      beregningsvalg: beregningsvalg,
+    })
+  }, [
+    intl,
+    afp,
+    afpUtregningValg,
+    erApoteker,
+    loependeVedtak,
+    ufoeregrad,
+    beregningsvalg,
+    foedselsdato,
+  ])
 
   return (
-    <>
-      <AccordionItem name="Grunnlag: AFP">
-        <GrunnlagSection
-          headerTitle={intl.formatMessage({
-            id: 'grunnlag.afp.title',
-          })}
-          headerValue={formatertAfpHeader}
-        >
-          <BodyLong>
-            <FormattedMessage
-              id={formatertAfpIngress}
-              values={{
-                ...getFormatMessageValues(),
-              }}
-            />
+    <VStack gap="1">
+      <Heading level="3" size="small" data-testid="grunnlag.afp.title">
+        <FormattedMessage id="grunnlag.afp.title" />:{' '}
+        <span style={{ fontWeight: 'normal' }}>{title}</span>
+      </Heading>
+      <BodyLong
+        data-testid="grunnlag.afp.content"
+        className={styles.alderspensjonDetaljer}
+      >
+        <FormattedMessage
+          id={content}
+          values={{
+            ...getFormatMessageValues(),
+            goToAFP: GoToAFP,
+            goToAvansert: GoToAvansert,
+            goToStart: GoToStart,
+          }}
+        />
+      </BodyLong>
+    </VStack>
+  )
+}
 
-            {!isEndring && !ufoeregrad && afp === 'nei' && (
-              <>
-                <Link href="#" onClick={goToStart}>
-                  <FormattedMessage id="grunnlag.afp.reset_link" />
-                </Link>
-                .
-              </>
-            )}
-          </BodyLong>
-        </GrunnlagSection>
-      </AccordionItem>
-    </>
+const GoToAFP = (chunks: React.ReactNode) => {
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+
+  const onClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
+    e.preventDefault()
+    logger(KNAPP_KLIKKET, {
+      tekst: 'Grunnlag AFP: Gå til AFP',
+    })
+    logger(BUTTON_KLIKK, {
+      tekst: 'Grunnlag AFP: Gå til AFP',
+    })
+    dispatch(userInputActions.flushCurrentSimulation())
+    navigate(paths.afp)
+  }
+  return (
+    <Link href="#" onClick={onClick} data-testid="grunnlag.afp.afp_link">
+      {chunks}
+    </Link>
+  )
+}
+const GoToAvansert = (chunks: React.ReactNode) => {
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+
+  const { avansertSkjemaModus, setAvansertSkjemaModus } =
+    React.useContext(BeregningContext)
+
+  const onClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
+    e.preventDefault()
+    logger(KNAPP_KLIKKET, {
+      tekst: 'Grunnlag AFP: Gå til avansert',
+    })
+    logger(BUTTON_KLIKK, {
+      tekst: 'Grunnlag AFP: Gå til avansert',
+    })
+    if (avansertSkjemaModus === 'resultat') {
+      setAvansertSkjemaModus('redigering')
+    } else {
+      dispatch(userInputActions.flushCurrentSimulation())
+      navigate(paths.beregningAvansert)
+    }
+  }
+  return (
+    <Link href="#" onClick={onClick} data-testid="grunnlag.afp.avansert_link">
+      {chunks}
+    </Link>
+  )
+}
+const GoToStart = (chunks: React.ReactNode) => {
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+
+  const onClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
+    e.preventDefault()
+    logger(KNAPP_KLIKKET, {
+      tekst: 'Grunnlag AFP: Gå til start',
+    })
+    logger(BUTTON_KLIKK, {
+      tekst: 'Grunnlag AFP: Gå til start',
+    })
+    dispatch(userInputActions.flush())
+    navigate(paths.start)
+  }
+  return (
+    <Link href="#" onClick={onClick} data-testid="grunnlag.afp.reset_link">
+      {chunks}
+    </Link>
   )
 }

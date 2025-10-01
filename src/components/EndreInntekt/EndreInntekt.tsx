@@ -13,11 +13,13 @@ import {
 
 import { useAppSelector } from '@/state/hooks'
 import {
-  selectUfoeregrad,
   selectAarligInntektFoerUttakBeloepFraSkatt,
+  selectUfoeregrad,
 } from '@/state/userInput/selectors'
-import { updateAndFormatInntektFromInputField } from '@/utils/inntekt'
-import { validateInntekt } from '@/utils/inntekt'
+import {
+  updateAndFormatInntektFromInputField,
+  validateInntekt,
+} from '@/utils/inntekt'
 import { logger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
 
@@ -29,6 +31,7 @@ interface Props {
   buttonLabel?: string
   value: string | null
   onSubmit: (inntekt: string) => void
+  variant?: 'secondary' | 'tertiary'
 }
 
 const ENDRE_INNTEKT_FORM_NAME = 'endre-inntekt'
@@ -39,6 +42,7 @@ export const EndreInntekt: React.FC<Props> = ({
   buttonLabel,
   value,
   onSubmit: onSubmitCallback,
+  variant = 'tertiary',
 }) => {
   const intl = useIntl()
 
@@ -72,7 +76,8 @@ export const EndreInntekt: React.FC<Props> = ({
 
   const openInntektModal = () => {
     logger('modal åpnet', {
-      tekst: `Modal: Endring av pensjonsgivende inntekt ${visning}`,
+      modalId: 'inntekt-modal',
+      tittel: `Modal: Endring av pensjonsgivende inntekt ${visning}`,
     })
     inntektModalRef.current?.showModal()
   }
@@ -81,7 +86,7 @@ export const EndreInntekt: React.FC<Props> = ({
     const tekst = intl.formatMessage({
       id,
     })
-    logger('skjema validering feilet', {
+    logger('skjemavalidering feilet', {
       skjemanavn: ENDRE_INNTEKT_FORM_NAME,
       data: intl.formatMessage({
         id: 'inntekt.endre_inntekt_modal.textfield.label',
@@ -98,7 +103,7 @@ export const EndreInntekt: React.FC<Props> = ({
     const inntektData = data.get('inntekt') as string | undefined
 
     if (validateInntekt(inntektData, updateValidationErrorMessage)) {
-      logger('button klikk', {
+      logger('knapp klikket', {
         tekst: `endrer pensjonsgivende inntekt ${visning}`,
       })
       window.scrollTo(0, 0)
@@ -135,7 +140,7 @@ export const EndreInntekt: React.FC<Props> = ({
           {visning === 'avansert' && (
             <BodyLong>
               <FormattedMessage
-                id="grunnlag.inntekt.ingress"
+                id="grunnlag.inntekt.ingress.endring"
                 values={{
                   ...getFormatMessageValues(),
                   beloep: aarligInntektFoerUttakBeloepFraSkatt?.beloep,
@@ -195,8 +200,8 @@ export const EndreInntekt: React.FC<Props> = ({
       <Button
         type="button"
         className={className ? className : ''}
-        variant="tertiary"
-        size="small"
+        variant={variant}
+        size="medium"
         icon={<PencilIcon aria-hidden />}
         onClick={openInntektModal}
       >
