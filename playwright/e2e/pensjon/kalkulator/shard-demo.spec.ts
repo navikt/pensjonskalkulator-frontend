@@ -1,9 +1,5 @@
-import {
-  expect,
-  handlePageError,
-  setupInterceptions,
-  test,
-} from '../../../base'
+import { expect, setupInterceptions, test } from '../../../base'
+import { handlePageError } from '../../../utils/error'
 
 const totalTests = 12
 

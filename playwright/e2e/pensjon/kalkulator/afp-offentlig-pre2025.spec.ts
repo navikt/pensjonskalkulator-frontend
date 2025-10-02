@@ -1,24 +1,19 @@
-import {
-  expect,
-  fillOutStegvisning,
-  loadJSONFixture,
-  login,
-  setupInterceptions,
-  test,
-} from '../../../base'
+import { expect, setupInterceptions, test } from '../../../base'
+import { loadJSONMock } from '../../../utils/mock'
+import { fillOutStegvisning, login } from '../../../utils/navigation'
 
-type PersonFixture = { foedselsdato?: string } & Record<string, unknown>
-type LoependeVedtakFixture = {
+type PersonMock = { foedselsdato?: string } & Record<string, unknown>
+type LoependeVedtakMock = {
   pre2025OffentligAfp?: { fom: string }
 } & Record<string, unknown>
 
 test.beforeEach(async ({ page }) => {
-  const person = (await loadJSONFixture('person.json')) as PersonFixture
+  const person = (await loadJSONMock('person.json')) as PersonMock
   person.foedselsdato = '1960-01-01'
 
-  const loependeVedtak = (await loadJSONFixture(
+  const loependeVedtak = (await loadJSONMock(
     'loepende-vedtak.json'
-  )) as LoependeVedtakFixture
+  )) as LoependeVedtakMock
   loependeVedtak.pre2025OffentligAfp = { fom: '2024-08-01' }
 
   await setupInterceptions(page, [

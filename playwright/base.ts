@@ -1,33 +1,16 @@
-import { Page, expect, test } from '@playwright/test'
-import fs from 'fs/promises'
+import { Page, test as baseTest, expect } from '@playwright/test'
 
-declare global {
-  interface Window {
-    store: { dispatch: (...args: unknown[]) => void }
-    router: { navigate: (url: string) => void }
-  }
-}
+import { loadHTMLMock, loadJSONMock } from './utils/mock'
+
+export { baseTest as test, expect }
 
 export type RouteDefinition = {
   url: RegExp | string
   method?: 'GET' | 'POST'
-  fixtureName?: string
+  mockName?: string
   jsonResponse?: Record<string, unknown>
   status?: number
   isHTML?: boolean
-}
-
-export { expect, test }
-
-export async function loadJSONFixture(name: string): Promise<unknown> {
-  const fileUrl = new URL(`./fixtures/${name}`, import.meta.url)
-  const data = await fs.readFile(fileUrl, 'utf-8')
-  return JSON.parse(data)
-}
-
-export async function loadHTMLFixture(name: string): Promise<string> {
-  const fileUrl = new URL(`./fixtures/${name}`, import.meta.url)
-  return fs.readFile(fileUrl, 'utf-8')
 }
 
 export async function setupInterceptions(
@@ -62,29 +45,29 @@ export async function setupInterceptions(
   ])
 
   const routes: RouteDefinition[] = [
-    { url: /\/auth\?/, fixtureName: 'decorator-auth.json' },
+    { url: /\/auth\?/, mockName: 'decorator-auth.json' },
     { url: 'https://login.ekstern.dev.nav.no/oauth2/session', status: 200 },
     { url: 'https://login.nav.no/oauth2/session', status: 200 },
     {
       url: /representasjon\/harRepresentasjonsforhold/,
-      fixtureName: 'representasjon-banner.json',
+      mockName: 'representasjon-banner.json',
     },
     { url: /\/collect$/, status: 200 },
-    { url: /\/api\/ta/, fixtureName: 'decorator-ta.json' },
+    { url: /\/api\/ta/, mockName: 'decorator-ta.json' },
     {
       url: /main-menu\?/,
-      fixtureName: 'decorator-main-menu.html',
+      mockName: 'decorator-main-menu.html',
       isHTML: true,
     },
     {
       url: /user-menu\?/,
-      fixtureName: 'decorator-user-menu.html',
+      mockName: 'decorator-user-menu.html',
       isHTML: true,
     },
-    { url: /ops-messages/, fixtureName: 'decorator-ops.json' },
+    { url: /ops-messages/, mockName: 'decorator-ops.json' },
     {
       url: /\/env\?chatbot=false&logoutWarning=true&redirectToUrl=/,
-      fixtureName: 'decorator-env-features.json',
+      mockName: 'decorator-env-features.json',
     },
     {
       url: 'https://amplitude.nav.no/collect-auto',
@@ -94,7 +77,7 @@ export async function setupInterceptions(
     { url: /pensjon\/kalkulator\/oauth2\/session/, status: 200 },
     {
       url: /\/pensjon\/kalkulator\/api\/feature\/pensjonskalkulator\.disable-spraakvelger/,
-      fixtureName: 'toggle-disable-spraakvelger.json',
+      mockName: 'toggle-disable-spraakvelger.json',
     },
     {
       url: /\/pensjon\/kalkulator\/api\/feature\/pensjonskalkulator\.vedlikeholdsmodus/,
@@ -106,44 +89,44 @@ export async function setupInterceptions(
     },
     {
       url: /\/pensjon\/kalkulator\/api\/v1\/er-apoteker/,
-      fixtureName: 'er-apoteker.json',
+      mockName: 'er-apoteker.json',
     },
     {
       url: /\/pensjon\/kalkulator\/api\/v2\/ekskludert/,
-      fixtureName: 'ekskludert-status.json',
+      mockName: 'ekskludert-status.json',
     },
     {
       url: /\/pensjon\/kalkulator\/api\/v1\/loepende-omstillingsstoenad-eller-gjenlevendeytelse/,
-      fixtureName: 'omstillingsstoenad-og-gjenlevende.json',
+      mockName: 'omstillingsstoenad-og-gjenlevende.json',
     },
     {
       url: /\/pensjon\/kalkulator\/api\/v4\/vedtak\/loepende-vedtak/,
-      fixtureName: 'loepende-vedtak.json',
+      mockName: 'loepende-vedtak.json',
     },
     {
       url: /\/pensjon\/kalkulator\/api\/v5\/person/,
-      fixtureName: 'person.json',
+      mockName: 'person.json',
     },
-    { url: /\/pensjon\/kalkulator\/api\/inntekt/, fixtureName: 'inntekt.json' },
+    { url: /\/pensjon\/kalkulator\/api\/inntekt/, mockName: 'inntekt.json' },
     {
       url: /\/pensjon\/kalkulator\/api\/v2\/simuler-oftp/,
       method: 'POST',
-      fixtureName: 'offentlig-tp.json',
+      mockName: 'offentlig-tp.json',
     },
     {
       url: /\/pensjon\/kalkulator\/api\/v2\/tidligste-hel-uttaksalder/,
       method: 'POST',
-      fixtureName: 'tidligste-uttaksalder.json',
+      mockName: 'tidligste-uttaksalder.json',
     },
     {
       url: /\/pensjon\/kalkulator\/api\/v3\/pensjonsavtaler/,
       method: 'POST',
-      fixtureName: 'pensjonsavtaler.json',
+      mockName: 'pensjonsavtaler.json',
     },
     {
       url: /\/pensjon\/kalkulator\/api\/v8\/alderspensjon\/simulering/,
       method: 'POST',
-      fixtureName: 'alderspensjon.json',
+      mockName: 'alderspensjon.json',
     },
     {
       url: 'https://g.nav.no/api/v1/grunnbel%C3%B8p',
@@ -198,12 +181,21 @@ export async function setupInterceptions(
   )
   finalRoutes.push(...newRoutes)
 
-  page.on('pageerror', handlePageError)
+  page.on('pageerror', (error: Error) => {
+    if (
+      error.message.includes('Amplitude') ||
+      error.stack?.includes(
+        'representasjon-banner-frontend-borger-q2.ekstern.dev.nav.no'
+      )
+    )
+      return
+    console.error(error)
+  })
 
   for (const {
     url,
     method,
-    fixtureName,
+    mockName,
     jsonResponse,
     status = 200,
     isHTML,
@@ -216,16 +208,16 @@ export async function setupInterceptions(
         return route.fallback()
       }
 
-      if (fixtureName) {
+      if (mockName) {
         if (isHTML) {
-          const body = await loadHTMLFixture(fixtureName)
+          const body = await loadHTMLMock(mockName)
           return route.fulfill({
             status,
             body,
             headers: { 'Content-Type': 'text/html; charset=utf-8' },
           })
         } else {
-          const data = await loadJSONFixture(fixtureName)
+          const data = await loadJSONMock(mockName)
           return route.fulfill({
             status,
             body: JSON.stringify(data),
@@ -245,118 +237,4 @@ export async function setupInterceptions(
       return route.fulfill({ status, headers: {} })
     })
   }
-}
-
-export async function login(page: Page) {
-  const personResponsePromise = page.waitForResponse(
-    (r) =>
-      r.request().method() === 'GET' &&
-      r.url().includes('/pensjon/kalkulator/api/v5/person') &&
-      r.ok()
-  )
-  const inntektResponsePromise = page.waitForResponse(
-    (r) =>
-      r.request().method() === 'GET' &&
-      r.url().includes('/pensjon/kalkulator/api/inntekt') &&
-      r.ok()
-  )
-  const omstillingsstoenadResponsePromise = page.waitForResponse(
-    (r) =>
-      r.request().method() === 'GET' &&
-      r
-        .url()
-        .includes(
-          '/pensjon/kalkulator/api/v1/loepende-omstillingsstoenad-eller-gjenlevendeytelse'
-        ) &&
-      r.ok()
-  )
-  const loependeVedtakResponsePromise = page.waitForResponse(
-    (r) =>
-      r.request().method() === 'GET' &&
-      r.url().includes('/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak') &&
-      r.ok()
-  )
-
-  await page.goto('/pensjon/kalkulator/', { waitUntil: 'load' })
-
-  const btn = page.getByTestId('landingside-enkel-kalkulator-button')
-  await btn.waitFor({ state: 'visible' })
-
-  await Promise.all([
-    personResponsePromise,
-    inntektResponsePromise,
-    omstillingsstoenadResponsePromise,
-    loependeVedtakResponsePromise,
-    btn.click(),
-  ])
-}
-
-export async function fillOutStegvisning(
-  page: Page,
-  args: Partial<{
-    samtykke: boolean
-    afp: string
-    samtykkeAfpOffentlig: boolean
-    sivilstand: string
-    epsHarPensjon: boolean | null
-    epsHarInntektOver2G: boolean | null
-  }>
-) {
-  const {
-    samtykke = false,
-    afp = 'vet_ikke',
-    samtykkeAfpOffentlig = true,
-    sivilstand = 'UGIFT',
-    epsHarPensjon = null,
-    epsHarInntektOver2G = null,
-  } = args
-
-  await page.evaluate(
-    ({ samtykke: v }) =>
-      window.store.dispatch({ type: 'userInputSlice/setSamtykke', payload: v }),
-    { samtykke }
-  )
-
-  if (afp === 'ja_offentlig') {
-    await page.evaluate(
-      ({ v }) =>
-        window.store.dispatch({
-          type: 'userInputSlice/setSamtykkeOffentligAFP',
-          payload: v,
-        }),
-      { v: samtykkeAfpOffentlig }
-    )
-  }
-
-  await page.evaluate(
-    ({ v }) =>
-      window.store.dispatch({ type: 'userInputSlice/setAfp', payload: v }),
-    { v: afp }
-  )
-
-  await page.evaluate(
-    ({ sivilstand: s, epsHarPensjon: epp, epsHarInntektOver2G: epi2g }) =>
-      window.store.dispatch({
-        type: 'userInputSlice/setSivilstand',
-        payload: {
-          sivilstand: s,
-          epsHarPensjon: epp,
-          epsHarInntektOver2G: epi2g,
-        },
-      }),
-    { sivilstand, epsHarPensjon, epsHarInntektOver2G }
-  )
-
-  await page.evaluate(() => window.router.navigate('/beregning'))
-}
-
-export function handlePageError(error: Error) {
-  if (
-    error.message.includes('Amplitude') ||
-    error.stack?.includes(
-      'representasjon-banner-frontend-borger-q2.ekstern.dev.nav.no'
-    )
-  )
-    return
-  console.error(error)
 }

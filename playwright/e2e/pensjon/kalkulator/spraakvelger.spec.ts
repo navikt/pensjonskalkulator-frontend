@@ -1,10 +1,6 @@
-import {
-  expect,
-  handlePageError,
-  login,
-  setupInterceptions,
-  test,
-} from '../../../base'
+import { expect, setupInterceptions, test } from '../../../base'
+import { handlePageError } from '../../../utils/error'
+import { login } from '../../../utils/navigation'
 
 test.beforeEach(async ({ page }) => {
   await setupInterceptions(page)
