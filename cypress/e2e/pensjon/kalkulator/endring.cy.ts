@@ -829,6 +829,40 @@ describe('Endring av alderspensjon', () => {
       })
     })
 
+    describe('Som bruker som har gjeldende vedtak på alderspensjon oggammel AFP (offentlig)', () => {
+      beforeEach(() => {})
+
+      it('forventer jeg informasjon på startsiden om at jeg har gammel AFP og hvilken uttaksgrad.', () => {
+        cy.contains('Hei Aprikos!')
+        cy.contains('Du har nå 80 % alderspensjon og AFP i offentlig sektor')
+      })
+      it('forventer jeg å kunne gå videre ved å trykke kom i gang ', () => {
+        cy.contains('button', 'Kom i gang').click()
+      })
+
+      describe('Som bruker som har om 0 % alderspensjon ', () => {
+        it('forventer jeg informasjon på startsiden om at jeg har 0 % alderspensjon og AFP i offentlig sektor', () => {})
+        it('forventer jeg å kunne velge mellom 0, 20, 40, 50, 60, 80, 100 % uttaksgrad', () => {})
+
+        describe('Som bruker som har valgt uttaksalder som er 67 år eller senere,', () => {
+          it('forventer jeg å kunne velge pensjonsalder for endring mellom dagens alder + 1 md og 75 år + 0 md', () => {})
+          it('forventer jeg å kunne oppgi inntekt ved siden av 100% alderspensjon og beregne ny pensjon', () => {})
+        })
+
+        describe('Som bruker som har valgt uttaksalder som er mellom 62 og 67 år,', () => {
+          it('forventer jeg informasjon (varsel) om at AFP i offentlig sektor ikke kan kombineres med alderspensjon.', () => {})
+        })
+      })
+
+      describe('​​​​​Når jeg har trykket kom i gang og er kommet til beregningssiden i redigeringsmodus,', () => {
+        it('forventer jeg informasjon om hvilken uttaksgrad på alderspensjon jeg har i dag.', () => {})
+        it('forventer jeg informasjon om hva siste månedlige utbetaling var og hva månedlig alderspensjon vil bli de månedene jeg har valgt å endre fra.', () => {})
+        it('forventer jeg en lenke for å endre mine valg.', () => {})
+        it('forventer jeg informasjon om at pensjonsavtaler ikke er med i beregningen.', () => {})
+        it('forventer jeg tilpasset informasjon i grunnlag: at opphold utenfor Norge er hentet fra vedtak og at beregningen av alderspensjon tar høyde for at jeg mottar AFP i offentlig sektor, men at den ikke vises i beregningen.', () => {})
+      })
+    })
+
     // OBS: Dette er ikke i Jira
     describe('Som bruker som har gjeldende vedtak på alderspensjon og Livsvarig AFP (offentlig)', () => {
       beforeEach(() => {
