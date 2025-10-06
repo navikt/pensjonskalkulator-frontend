@@ -716,7 +716,7 @@ const translations = {
   'inntekt.endre_inntekt_modal.textfield.description':
     'Dagens kroneverdi før skatt',
   'inntekt.endre_inntekt_modal.textfield.description.ufoere':
-    'Uføretrygd og uførepensjon skal ikke være med. Dagens kroneverdi før skatt',
+    'Uføretrygd og uførepensjon skal ikke være med. Dagens kroneverdi før skatt.',
   'inntekt.endre_inntekt_modal.paragraph':
     'Når du oppdaterer inntekten, må du velge alder på nytt.',
   'inntekt.endre_inntekt_modal.textfield.validation_error.required':
