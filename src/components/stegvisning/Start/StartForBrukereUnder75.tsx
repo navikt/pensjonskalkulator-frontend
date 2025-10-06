@@ -1,7 +1,7 @@
 import { FormattedMessage, useIntl } from 'react-intl'
 
 import { ExternalLinkIcon } from '@navikt/aksel-icons'
-import { BodyLong, Button, Heading, Link } from '@navikt/ds-react'
+import { Button, Heading, Link } from '@navikt/ds-react'
 
 import { InfoOmFremtidigVedtak } from '@/components/InfoOmFremtidigVedtak'
 import { Card } from '@/components/common/Card'
@@ -57,7 +57,7 @@ export function StartForBrukereUnder75({
                 data-testid="stegvisning-start-button"
                 type="submit"
                 className={styles.button}
-                onClick={wrapLogger('button klikk', {
+                onClick={wrapLogger('knapp klikket', {
                   tekst: 'Kom i gang',
                 })(onNext)}
               >
@@ -71,7 +71,7 @@ export function StartForBrukereUnder75({
                 type="button"
                 className={styles.button}
                 variant="tertiary"
-                onClick={wrapLogger('button klikk', { tekst: 'Avbryt' })(
+                onClick={wrapLogger('knapp klikket', { tekst: 'Avbryt' })(
                   onCancel
                 )}
               >
@@ -79,16 +79,6 @@ export function StartForBrukereUnder75({
               </Button>
             )}
           </div>
-        </div>
-
-        <div className={styles.alert} data-testid="stegvisning-start-alert">
-          <Heading size="xsmall" level="3">
-            <FormattedMessage id="stegvisning.start.alert.title" />
-          </Heading>
-
-          <BodyLong size="medium">
-            <FormattedMessage id="stegvisning.start.alert.description" />
-          </BodyLong>
         </div>
 
         <Link

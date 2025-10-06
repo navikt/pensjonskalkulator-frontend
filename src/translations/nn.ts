@@ -14,7 +14,6 @@ export default {
   'application.title.securityLevel_feil': 'MANGLER_TEKST',
   'application.title.beregning': 'Utrekning - Pensjonskalkulator',
   'application.title.forbehold': 'Atterhald - Pensjonskalkulator',
-  'application.title.henvisning.apotekerne': 'MANGLER_TEKST',
   'application.title.personopplysninger':
     'Personopplysningar i enkel kalkulator Pensjonskalkulator',
   'application.global.external_link': 'opnar i ei ny fane',
@@ -60,8 +59,6 @@ export default {
     'For deg som ikkje kan logge inn på nav.no. Kalkulatoren hentar ikkje inn og lagrar ikkje  opplysningar om deg. Du må sjølv finne og gje opp alle opplysningane til kalkulatoren, og du får kun svar på kva du kan rekne med å få i alderspensjon frå folketrygda (Nav).',
   'landingsside.link.personopplysninger':
     'Personopplysningar som vert brukt i enkel kalkulator',
-  'henvisning.detaljert_kalkulator': 'Detaljert pensjonskalkulator',
-  'henvisning.apotekerne.body': 'MANGLER_TEKST',
   'stegvisning.radio_ja': 'Ja',
   'stegvisning.radio_nei': 'Nei',
   'stegvisning.neste': 'Neste',
@@ -88,8 +85,6 @@ export default {
   'stegvisning.start.button': 'Kom i gang',
   'stegvisning.start.link':
     'Personopplysningar som vert brukt i enkel kalkulator',
-  'stegvisning.start.alert.title': 'MANGLER_TEKST',
-  'stegvisning.start.alert.description': 'MANGLER_TEKST',
   'stegvisning.start_brukere_fyllt_75.title': 'MANGLER_TEKST',
   'stegvisning.start_brukere_fyllt_75.ingress': 'MANGLER_TEKST',
   'stegvisning.start_brukere_fyllt_75.button': 'MANGLER_TEKST',
@@ -286,7 +281,7 @@ export default {
     'Vi klarte dessverre ikkje å rekne ut pensjonen din akkurat nå.',
   'beregning.livsvarig': 'MANGLER_TEKST',
   'beregning.lav_opptjening.aar':
-    'Du har ikkje høg nok opptening til å kunne starte uttak ved 63 år. Prøv ein høgare alder.',
+    'Du har ikkje høg nok opptening til å kunne starte uttak ved {startAar} år{startMaaned}. Prøv ein høgare alder.',
   'beregning.button.faerre_aar': 'Færre år',
   'beregning.button.flere_aar': 'Fleire år',
   'beregning.pensjonsavtaler.alert.endring': 'MANGLER_TEKST',

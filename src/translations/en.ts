@@ -17,8 +17,6 @@ export default {
   'application.title.securityLevel_feil': 'MANGLER_TEKST',
   'application.title.beregning': 'Calculation – Pension Calculator',
   'application.title.forbehold': 'Reservation – Pension Calculator',
-  'application.title.henvisning.apotekerne':
-    'Referral to Pharmacists – Pension Calculator',
   'application.title.personopplysninger':
     'Personal Data in basic calculator – Pension Calculator',
   'application.global.external_link': 'opens in a new tab',
@@ -67,9 +65,6 @@ export default {
     'You can use our unauthenticated calculator. It does not retrieve or store any information about you. You must find and enter all the information yourself. The calculator gives you an estimate of retirement pension from the National Insurance Scheme (Nav) and AFP (contractual early retirement pension) in the private sector.',
   'landingsside.link.personopplysninger':
     'Personal data used in the pension calculator',
-  'henvisning.detaljert_kalkulator': 'Detailed Pension Calculator',
-  'henvisning.apotekerne.body':
-    'Since you are a member of the Pharmacy Scheme (POA), you must use the detailed pension calculator.',
   'stegvisning.radio_ja': 'Yes',
   'stegvisning.radio_nei': 'No',
   'stegvisning.neste': 'Next',
@@ -103,8 +98,6 @@ export default {
     'To get an estimate of your pension, you must answer all the following questions.',
   'stegvisning.start.button': 'Get Started',
   'stegvisning.start.link': 'Personal data used in the pension calculator',
-  'stegvisning.start.alert.title': 'MANGLER_TEKST',
-  'stegvisning.start.alert.description': 'MANGLER_TEKST',
   'stegvisning.start_brukere_fyllt_75.title': 'MANGLER_TEKST',
   'stegvisning.start_brukere_fyllt_75.ingress': 'MANGLER_TEKST',
   'stegvisning.start_brukere_fyllt_75.button': 'MANGLER_TEKST',
@@ -323,7 +316,7 @@ export default {
     'Unfortunately, we could not calculate your pension right now.',
   'beregning.livsvarig': 'lifelong',
   'beregning.lav_opptjening.aar':
-    'You do not have enough accrual to start withdrawing at {startAar} years. Try a higher age.',
+    'You do not have enough accrual to start withdrawing at {startAar} years{startMaaned}. Try a higher age.',
   'beregning.button.faerre_aar': 'Fewer Years',
   'beregning.button.flere_aar': 'More Years',
   'beregning.pensjonsavtaler.alert.endring':

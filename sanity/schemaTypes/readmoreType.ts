@@ -1,13 +1,15 @@
 import { InfoOutlineIcon } from '@sanity/icons'
 import { defineField, defineType } from 'sanity'
 
+import TaggedDocumentPreview from '../components/taggedDocumentPreview/TaggedDocumentPreview'
+import { prepareTaggedDocumentPreview } from '../components/taggedDocumentPreview/prepareTaggedDocumentPreview'
 import {
   innholdField,
   languageField,
   nameField,
   overskriftField,
+  tagField,
 } from './common/commonSchemaTypes'
-import { supportedLanguages } from './supportedLanguages'
 
 export const readmoreType = defineType({
   name: 'readmore',
@@ -19,16 +21,12 @@ export const readmoreType = defineType({
       title: 'overskrift',
       subtitle: 'name',
       language: 'language',
+      tags: 'tags',
     },
-    prepare(selection) {
-      return {
-        ...selection,
-        title: `${selection.title} (${
-          supportedLanguages.find((lang) => lang.id === selection.language)
-            ?.title
-        })`,
-      }
-    },
+    prepare: prepareTaggedDocumentPreview,
+  },
+  components: {
+    preview: TaggedDocumentPreview,
   },
   fields: [
     languageField,
@@ -41,5 +39,6 @@ export const readmoreType = defineType({
       ...innholdField,
       description: 'Avsnitt(ene) i ReadMore. Vises når ReadMore er åpent.',
     }),
+    tagField,
   ],
 })

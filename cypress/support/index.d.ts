@@ -22,6 +22,36 @@ declare global {
        * @example cy.login()
        */
       login(): Chainable<void>
+      /**
+       * Custom command for å sette opp apoteker error scenario
+       *
+       * @example cy.setupApotekerError()
+       */
+      setupApotekerError(): Chainable<void>
+      /**
+       * Custom command for å sette Redux state for apoteker error (call after login)
+       *
+       * @example cy.setApotekerErrorState()
+       */
+      setApotekerErrorState(): Chainable<void>
+      /**
+       * Custom command for å sette opp apoteker success scenario
+       *
+       * @example cy.setupApotekerSuccess()
+       */
+      setupApotekerSuccess(): Chainable<void>
+      /**
+       * Custom command for å sette opp person født før 1963
+       *
+       * @example cy.setupPersonFoedtFoer1963()
+       */
+      setupPersonFoedtFoer1963(): Chainable<void>
+      /**
+       * Custom command for å sette opp person født etter 1963
+       *
+       * @example cy.setupPersonFoedtEtter1963()
+       */
+      setupPersonFoedtEtter1963(): Chainable<void>
     }
   }
 }

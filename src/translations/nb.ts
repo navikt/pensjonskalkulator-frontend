@@ -18,8 +18,6 @@ const translations = {
     'For lavt sikkerhetsnivå – Pensjonskalkulator',
   'application.title.beregning': 'Beregning – Pensjonskalkulator',
   'application.title.forbehold': 'Forbehold – Pensjonskalkulator',
-  'application.title.henvisning.apotekerne':
-    'Henvisning apotekerne – Pensjonskalkulator',
   'application.title.personopplysninger':
     'Personopplysninger i enkel kalkulator – Pensjonskalkulator',
   'application.global.external_link': 'åpner i en ny fane',
@@ -54,7 +52,7 @@ const translations = {
   'error.virker_ikke.link': 'kontakte oss',
   'error.virker_ikke.button': 'Gå til Din pensjon',
   'error.apoteker_warning':
-    'Hvis du er medlem av Pensjonsordningen for apotekvirksomhet (POA) vil beregning av AFP og alderspensjon for øyeblikket bli feil. Prøv igjen senere.',
+    'Hvis du er medlem av Pensjonsordningen for apotekvirksomhet (POA) er beregning med AFP for øyeblikket feil. Prøv igjen senere.',
   'landingsside.for.deg.som.kan.logge.inn': 'For deg som kan logge inn',
   'landingsside.for.deg.foedt.foer.1963': 'For deg født før 1963',
   'landingsside.du.maa.bruke.detaljert':
@@ -70,9 +68,6 @@ const translations = {
     'Du kan bruke vår uinnloggede kalkulator. Den henter ikke inn eller lagrer noen opplysninger om deg. Du må finne og oppgi alle opplysningene selv. Kalkulatoren gir deg et estimat på alderspensjon fra folketrygden (Nav) og AFP (avtalefestet pensjon) i privat sektor. Hvis du mottar uføretrygd eller andre ytelser, tar vi ikke hensyn til dette i kalkulatoren. Du bør derfor bruke den innloggede kalkulatoren.',
   'landingsside.link.personopplysninger':
     'Personopplysninger som brukes i pensjonskalkulator',
-  'henvisning.detaljert_kalkulator': 'Detaljert pensjonskalkulator',
-  'henvisning.apotekerne.body':
-    'Siden du er medlem av Pensjonsordningen for apotekvirksomhet (POA), må du bruke detaljert pensjonskalkulator.',
   'stegvisning.radio_ja': 'Ja',
   'stegvisning.radio_nei': 'Nei',
   'stegvisning.neste': 'Neste',
@@ -112,9 +107,6 @@ const translations = {
   'stegvisning.start.button': 'Kom i gang',
   'stegvisning.start.link':
     'Personopplysninger som brukes i pensjonskalkulator',
-  'stegvisning.start.alert.title': 'Kjenner du deg ikke helt igjen?',
-  'stegvisning.start.alert.description':
-    'Vi har laget ny kalkulator og pensjonert den gamle.',
   'stegvisning.start_brukere_fyllt_75.title':
     'Du kan dessverre ikke beregne alderspensjon i kalkulatoren etter at du har fylt 75 år',
   'stegvisning.start_brukere_fyllt_75.ingress':
@@ -359,7 +351,7 @@ const translations = {
     'Vi klarte dessverre ikke å beregne pensjonen din akkurat nå.',
   'beregning.livsvarig': 'livsvarig',
   'beregning.lav_opptjening.aar':
-    'Du har ikke høy nok opptjening til å kunne starte uttak ved {startAar} år. Prøv en høyere alder.',
+    'Du har ikke høy nok opptjening til å kunne starte uttak ved {startAar} år{startMaaned}. Prøv en høyere alder.',
   'beregning.button.faerre_aar': 'Færre år',
   'beregning.button.flere_aar': 'Flere år',
   'beregning.pensjonsavtaler.alert.endring':
@@ -684,6 +676,7 @@ const translations = {
     'hvis du ønsker å få dette i beregningen.',
   'pensjonsavtaler.ingress.ingen': 'Vi fant ingen pensjonsavtaler.',
   'pensjonsavtaler.kr_pr_aar': 'kr per år',
+  'pensjonsavtaler_mobil.kr_pr_aar': 'kr/år',
   'alder.livsvarig': 'Livsvarig fra',
   'pensjonsavtaler.md': 'md.',
   'pensjonsavtaler.tabell.title.left': 'Avtaler',

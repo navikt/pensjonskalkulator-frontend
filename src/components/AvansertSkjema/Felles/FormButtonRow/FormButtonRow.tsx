@@ -46,6 +46,7 @@ export const FormButtonRow: React.FC<{
       <div>
         <Button
           form={formId}
+          data-testid="beregn-pensjon"
           className={clsx(styles.button, styles.buttonSubmit)}
         >
           {intl.formatMessage({ id: getButtonMessageId() })}
@@ -55,7 +56,7 @@ export const FormButtonRow: React.FC<{
           type="button"
           variant="secondary"
           className={styles.button}
-          onClick={wrapLogger('button klikk', {
+          onClick={wrapLogger('knapp klikket', {
             tekst: 'nullstiller avansert skjema',
           })(resetForm)}
         >
@@ -72,7 +73,7 @@ export const FormButtonRow: React.FC<{
             variant="tertiary"
             className={styles.button}
             onClick={() => {
-              logger('button klikk', {
+              logger('knapp klikket', {
                 tekst: 'Beregning avansert: Avbryt endring',
               })
               gaaTilResultat()
