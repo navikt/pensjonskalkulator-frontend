@@ -1,6 +1,4 @@
-import Highcharts, {
-  SeriesOptionsType,
-} from 'highcharts'
+import Highcharts, { SeriesOptionsType } from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import React from 'react'
 import { useIntl } from 'react-intl'
