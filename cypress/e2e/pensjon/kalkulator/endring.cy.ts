@@ -829,32 +829,126 @@ describe('Endring av alderspensjon', () => {
       })
     })
 
-    describe('Som bruker som har gjeldende vedtak på alderspensjon oggammel AFP (offentlig)', () => {
-      beforeEach(() => {})
+    describe('Som bruker som har gjeldende vedtak på gammel AFP (offentlig)', () => {
+      beforeEach(() => {
+        cy.setupPersonFoedtFoer1963()
+        cy.setupLoependeVedtakWithPre2025OffentligAFP()
+        cy.login()
+      })
 
       it('forventer jeg informasjon på startsiden om at jeg har gammel AFP og hvilken uttaksgrad.', () => {
-        cy.contains('Hei Aprikos!')
-        cy.contains('Du har nå 80 % alderspensjon og AFP i offentlig sektor')
+        cy.get(
+          '[data-testid="stegvisning-start-ingress-pre2025-offentlig-afp"]'
+        ).should('exist')
       })
       it('forventer jeg å kunne gå videre ved å trykke kom i gang ', () => {
-        cy.contains('button', 'Kom i gang').click()
+        cy.get('[data-testid="stegvisning-start-button"]').click()
+        cy.location('pathname').should('include', '/beregning-detaljert')
       })
 
-      describe('Som bruker som har om 0 % alderspensjon ', () => {
-        it('forventer jeg informasjon på startsiden om at jeg har 0 % alderspensjon og AFP i offentlig sektor', () => {})
-        it('forventer jeg å kunne velge mellom 0, 20, 40, 50, 60, 80, 100 % uttaksgrad', () => {})
+      describe('Som bruker som har valgt uttaksalder som er 67 år eller senere,', () => {
+        it('forventer jeg å kunne velge pensjonsalder for endring mellom dagens alder + 1 md og 75 år + 0 md', () => {
+          cy.get('[data-testid="stegvisning-start-button"]').click()
+          cy.location('pathname').should('include', '/beregning-detaljert')
 
-        describe('Som bruker som har valgt uttaksalder som er 67 år eller senere,', () => {
-          it('forventer jeg å kunne velge pensjonsalder for endring mellom dagens alder + 1 md og 75 år + 0 md', () => {})
-          it('forventer jeg å kunne oppgi inntekt ved siden av 100% alderspensjon og beregne ny pensjon', () => {})
+          cy.get(
+            '[data-testid="age-picker-uttaksalder-helt-uttak-aar"]'
+          ).should('exist')
+          cy.get(
+            '[data-testid="age-picker-uttaksalder-helt-uttak-maaneder"]'
+          ).should('exist')
+
+          // Sjekker at 75 år er tilgjengelig som maksimum
+          cy.get('[data-testid="age-picker-uttaksalder-helt-uttak-aar"]')
+            .select('75')
+            .should('exist')
+          cy.get(
+            '[data-testid="age-picker-uttaksalder-helt-uttak-aar"] option[value="76"]'
+          ).should('not.exist')
+
+          cy.get(
+            '[data-testid="age-picker-uttaksalder-helt-uttak-aar"]'
+          ).select('67')
+
+          //Verifiserer at 0 måned er 1 måned etter dagens måned som er april
+          cy.get(
+            '[data-testid="age-picker-uttaksalder-helt-uttak-maaneder"]'
+          ).then((selectElements) => {
+            const options = selectElements.find('option')
+            expect(options.eq(0).text()).equal('0 md. (mai)')
+          })
         })
 
-        describe('Som bruker som har valgt uttaksalder som er mellom 62 og 67 år,', () => {
-          it('forventer jeg informasjon (varsel) om at AFP i offentlig sektor ikke kan kombineres med alderspensjon.', () => {})
+        it('forventer jeg å kunne oppgi inntekt ved siden av 100% alderspensjon og beregne ny pensjon', () => {
+          cy.get('[data-testid="stegvisning-start-button"]').click()
+          cy.location('pathname').should('include', '/beregning-detaljert')
+
+          cy.get(
+            '[data-testid="age-picker-uttaksalder-helt-uttak-aar"]'
+          ).select('67')
+          cy.get(
+            '[data-testid="age-picker-uttaksalder-helt-uttak-maaneder"]'
+          ).select('4')
+          cy.get('[data-testid="uttaksgrad"]').select('100 %')
+          cy.get('[data-testid="inntekt-vsa-helt-uttak-radio-ja"]').check()
+          cy.get('[data-testid="inntekt-vsa-helt-uttak"]').type('100000')
+          cy.get(
+            '[data-testid="age-picker-inntekt-vsa-helt-uttak-slutt-alder-aar"]'
+          ).should('be.visible')
+          cy.get(
+            '[data-testid="age-picker-inntekt-vsa-helt-uttak-slutt-alder-maaneder"]'
+          ).should('be.visible')
+          cy.get(
+            '[data-testid="age-picker-inntekt-vsa-helt-uttak-slutt-alder-aar"]'
+          ).select('70')
+
+          cy.get(
+            '[data-testid="age-picker-inntekt-vsa-helt-uttak-slutt-alder-aar"]'
+          ).select('75')
+          cy.get(
+            '[data-testid="age-picker-inntekt-vsa-helt-uttak-slutt-alder-maaneder"]'
+          ).select('3')
+
+          cy.contains('Beregn ny pensjon').click()
+
+          cy.contains('Beregning').should('exist')
         })
       })
+    })
 
-      describe('​​​​​Når jeg har trykket kom i gang og er kommet til beregningssiden i redigeringsmodus,', () => {
+    describe('Som bruker som har om 0 % alderspensjon ', () => {
+      beforeEach(() => {
+        cy.setupPersonFoedtFoer1963()
+        cy.setupLoependeVedtakWithPre2025OffentligAFP(0)
+        cy.login()
+      })
+
+      it('forventer jeg informasjon på startsiden om at jeg har 0 % alderspensjon og AFP i offentlig sektor', () => {
+        cy.get(
+          '[data-testid="stegvisning-start-ingress-pre2025-offentlig-afp"]'
+        )
+          .should('exist')
+          .and('contain', '0 %')
+      })
+
+      it('forventer jeg å kunne velge mellom 0, 20, 40, 50, 60, 80, 100 % uttaksgrad', () => {
+        cy.get('[data-testid="stegvisning-start-button"]').click()
+        cy.location('pathname').should('include', '/beregning-detaljert')
+
+        cy.contains('uttaksgrad').should('exist')
+        cy.get('[data-testid="uttaksgrad"]').then((selectElements) => {
+          const options = selectElements.find('option')
+          expect(options.length).equal(8)
+          expect(options.eq(1).text()).equal('0 %')
+          expect(options.eq(2).text()).equal('20 %')
+          expect(options.eq(3).text()).equal('40 %')
+          expect(options.eq(4).text()).equal('50 %')
+          expect(options.eq(5).text()).equal('60 %')
+          expect(options.eq(6).text()).equal('80 %')
+          expect(options.eq(7).text()).equal('100 %')
+        })
+      })
+      describe.skip('​​​​​Når jeg har trykket kom i gang og er kommet til beregningssiden i redigeringsmodus,', () => {
         it('forventer jeg informasjon om hvilken uttaksgrad på alderspensjon jeg har i dag.', () => {})
         it('forventer jeg informasjon om hva siste månedlige utbetaling var og hva månedlig alderspensjon vil bli de månedene jeg har valgt å endre fra.', () => {})
         it('forventer jeg en lenke for å endre mine valg.', () => {})
