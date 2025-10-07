@@ -35,6 +35,7 @@ export const InfoOmFremtidigVedtak = ({
             DATE_ENDUSER_FORMAT
           ),
         }}
+        data-intl="stegvisning.fremtidigvedtak.alert"
       />
     </Alert>
   )
