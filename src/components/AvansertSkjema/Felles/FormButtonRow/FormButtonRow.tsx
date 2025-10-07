@@ -46,6 +46,7 @@ export const FormButtonRow: React.FC<{
       <div>
         <Button
           form={formId}
+          data-testid="beregn-pensjon"
           className={clsx(styles.button, styles.buttonSubmit)}
         >
           {intl.formatMessage({ id: getButtonMessageId() })}
@@ -72,6 +73,10 @@ export const FormButtonRow: React.FC<{
             variant="tertiary"
             className={styles.button}
             onClick={() => {
+              // TODO: fjern når amplitude er ikke i bruk lenger
+              logger('button klikk', {
+                tekst: 'Beregning avansert: Avbryt endring',
+              })
               logger('knapp klikket', {
                 tekst: 'Beregning avansert: Avbryt endring',
               })
