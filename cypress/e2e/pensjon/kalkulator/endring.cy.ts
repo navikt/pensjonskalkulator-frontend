@@ -909,9 +909,9 @@ describe('Endring av alderspensjon', () => {
             '[data-testid="age-picker-inntekt-vsa-helt-uttak-slutt-alder-maaneder"]'
           ).select('3')
 
-          cy.contains('Beregn ny pensjon').click()
+          cy.get('[data-testid="beregn-pensjon"]').click()
 
-          cy.contains('Beregning').should('exist')
+          cy.location('pathname').should('include', '/beregning')
         })
       })
     })
@@ -948,12 +948,68 @@ describe('Endring av alderspensjon', () => {
           expect(options.eq(7).text()).equal('100 %')
         })
       })
-      describe.skip('​​​​​Når jeg har trykket kom i gang og er kommet til beregningssiden i redigeringsmodus,', () => {
-        it('forventer jeg informasjon om hvilken uttaksgrad på alderspensjon jeg har i dag.', () => {})
-        it('forventer jeg informasjon om hva siste månedlige utbetaling var og hva månedlig alderspensjon vil bli de månedene jeg har valgt å endre fra.', () => {})
-        it('forventer jeg en lenke for å endre mine valg.', () => {})
-        it('forventer jeg informasjon om at pensjonsavtaler ikke er med i beregningen.', () => {})
-        it('forventer jeg tilpasset informasjon i grunnlag: at opphold utenfor Norge er hentet fra vedtak og at beregningen av alderspensjon tar høyde for at jeg mottar AFP i offentlig sektor, men at den ikke vises i beregningen.', () => {})
+      describe('Når jeg har trykket kom i gang og er kommet til beregningssiden i redigeringsmodus,', () => {
+        beforeEach(() => {
+          cy.get('[data-testid="stegvisning-start-button"]').click()
+          cy.location('pathname').should('include', '/beregning-detaljert')
+
+          cy.get(
+            '[data-testid="age-picker-uttaksalder-helt-uttak-aar"]'
+          ).select('67')
+          cy.get(
+            '[data-testid="age-picker-uttaksalder-helt-uttak-maaneder"]'
+          ).select('4')
+          cy.get('[data-testid="uttaksgrad"]').select('100 %')
+          cy.get('[data-testid="inntekt-vsa-helt-uttak-radio-ja"]').check()
+          cy.get('[data-testid="inntekt-vsa-helt-uttak"]').type('100000')
+          cy.get(
+            '[data-testid="age-picker-inntekt-vsa-helt-uttak-slutt-alder-aar"]'
+          ).should('be.visible')
+          cy.get(
+            '[data-testid="age-picker-inntekt-vsa-helt-uttak-slutt-alder-maaneder"]'
+          ).should('be.visible')
+          cy.get(
+            '[data-testid="age-picker-inntekt-vsa-helt-uttak-slutt-alder-aar"]'
+          ).select('75')
+          cy.get(
+            '[data-testid="age-picker-inntekt-vsa-helt-uttak-slutt-alder-maaneder"]'
+          ).select('3')
+
+          cy.get('[data-testid="beregn-pensjon"]').click()
+          cy.location('pathname').should('include', '/beregning')
+        })
+
+        it('forventer jeg informasjon om uttaksgrad,hva siste månedlige utbetaling var, og hva månedlig alderspensjon vil bli de månedene jeg har valgt å endre fra.', () => {
+          cy.get(
+            '[data-intl="beregning.endring.rediger.vedtak_grad_status"]'
+          ).should('exist')
+        })
+
+        it('forventer jeg en lenke for å endre mine valg.', () => {
+          cy.get('[data-testid="endre-valg"]').should('exist')
+        })
+
+        it('forventer jeg informasjon om at pensjonsavtaler ikke er med i beregningen.', () => {
+          cy.get('[data-testid="pensjonsavtaler-alert"]').should('exist')
+        })
+
+        it('forventer jeg tilpasset informasjon i grunnlag: at opphold utenfor Norge er hentet fra vedtak og at beregningen av alderspensjon tar høyde for at jeg mottar AFP i offentlig sektor, men at den ikke vises i beregningen.', () => {
+          cy.get('[data-intl="grunnlag.title"]').should('exist')
+          cy.get('[data-testid="grunnlag-sivilstand"]').click({
+            force: true,
+          })
+          cy.get('[data-intl="grunnlag.opphold.title.endring"]').click({
+            force: true,
+          })
+          cy.get('[data-intl="grunnlag.opphold.value.endring"]').should('exist')
+          cy.get('[data-intl="grunnlag.opphold.ingress.endring"]').should(
+            'exist'
+          )
+          cy.get('[data-intl="grunnlag.afp.title"]').should('exist')
+          cy.get('[data-intl="grunnlag.afp.ingress.overgangskull"]').should(
+            'exist'
+          )
+        })
       })
     })
 

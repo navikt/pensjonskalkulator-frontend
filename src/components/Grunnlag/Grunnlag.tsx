@@ -144,7 +144,7 @@ export const Grunnlag: React.FC<Props> = ({
 
   return (
     <section className={styles.section}>
-      <Heading level={headingLevel} size="medium">
+      <Heading level={headingLevel} size="medium" data-intl="grunnlag.title">
         {isEndring || visning === 'avansert' ? (
           <FormattedMessage id="grunnlag.endring.title" />
         ) : (
@@ -332,7 +332,10 @@ export const Grunnlag: React.FC<Props> = ({
       </VStack>
 
       <Accordion>
-        <AccordionItem name="Gunnlag: Sivilstand">
+        <AccordionItem
+          name="Gunnlag: Sivilstand"
+          data-testid="grunnlag-sivilstand"
+        >
           <GrunnlagSection
             headerTitle={intl.formatMessage({
               id: 'grunnlag.sivilstand.title',
