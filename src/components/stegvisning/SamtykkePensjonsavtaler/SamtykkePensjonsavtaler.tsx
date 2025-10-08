@@ -1,15 +1,21 @@
 import { FormEvent, useState } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 
-import { BodyLong, Heading, Radio, RadioGroup } from '@navikt/ds-react'
+import { Alert, BodyLong, Heading, Radio, RadioGroup } from '@navikt/ds-react'
 
 import { ApotekereWarning } from '@/components/common/ApotekereWarning/ApotekereWarning'
 import { Card } from '@/components/common/Card'
 import { SanityReadmore } from '@/components/common/SanityReadmore/SanityReadmore'
 import { paths } from '@/router/constants'
+import { isLoependeVedtak } from '@/state/api/typeguards'
 import { useAppSelector } from '@/state/hooks'
 import { selectHasErApotekerError } from '@/state/session/selectors'
-import { selectAfp, selectFoedselsdato } from '@/state/userInput/selectors'
+import {
+  selectAfp,
+  selectFoedselsdato,
+  selectLoependeVedtak,
+  selectSkalBeregneAfpKap19,
+} from '@/state/userInput/selectors'
 import { isFoedtEtter1963 } from '@/utils/alder'
 import { logger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
@@ -40,10 +46,16 @@ export function SamtykkePensjonsavtaler({
 
   const foedselsdato = useAppSelector(selectFoedselsdato)
   const foedtEtter1963 = isFoedtEtter1963(foedselsdato)
+  const loependeVedtak = useAppSelector(selectLoependeVedtak)
+  const skalBeregneAfpKap19 = useAppSelector(selectSkalBeregneAfpKap19)
   const hasErApotekerError = useAppSelector(selectHasErApotekerError)
   const afp = useAppSelector(selectAfp)
 
   const [validationError, setValidationError] = useState<string>('')
+
+  const [jaPensjonsavtaler, setJaPensjonsavtaler] = useState<boolean | null>(
+    null
+  )
 
   const onSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
@@ -75,8 +87,9 @@ export function SamtykkePensjonsavtaler({
     }
   }
 
-  const handleRadioChange = (): void => {
+  const handleRadioChange = (value: string): void => {
     setValidationError('')
+    setJaPensjonsavtaler(value === 'ja')
   }
 
   return (
@@ -146,6 +159,13 @@ export function SamtykkePensjonsavtaler({
             <FormattedMessage id="stegvisning.samtykke_pensjonsavtaler.radio_nei" />
           </Radio>
         </RadioGroup>
+        {!loependeVedtak.harLoependeVedtak &&
+          skalBeregneAfpKap19 &&
+          jaPensjonsavtaler === false && (
+            <Alert variant="info" size="medium">
+              <FormattedMessage id="stegvisning.samtykke_pensjonsavtaler.alert" />
+            </Alert>
+          )}
 
         <Navigation onPrevious={onPrevious} onCancel={onCancel} />
       </form>
