@@ -166,7 +166,11 @@ export function SamtykkePensjonsavtaler({
         {!loependeVedtak.harLoependeVedtak &&
           skalBeregneAfpKap19 &&
           jaPensjonsavtaler === false && (
-            <Alert variant="info" size="medium">
+            <Alert
+              className={styles.pensjonsavtaleAlert as string}
+              variant="info"
+              size="medium"
+            >
               <FormattedMessage id="stegvisning.samtykke_pensjonsavtaler.alert" />
             </Alert>
           )}
