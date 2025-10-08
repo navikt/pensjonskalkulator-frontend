@@ -168,15 +168,26 @@ export function LanguageProvider({ children }: Props) {
           setSanityTimeoutTriggered(true)
           return
         }
+
+        const [forbeholdData, guidePanelData, readMoreData] = await fetchPromise
+        const anyEmpty =
+          forbeholdData.length === 0 ||
+          Object.keys(guidePanelData).length === 0 ||
+          Object.keys(readMoreData).length === 0
+
+        if (anyEmpty) {
+          setSanityTimeoutTriggered(true)
+          return
+        }
       } finally {
         if (timeoutId !== undefined) {
           window.clearTimeout(timeoutId)
         }
         setIsSanityLoading(false)
       }
+    } else {
+      await fetchPromise
     }
-
-    await fetchPromise
   }
 
   /* c8 ignore next 4 */
