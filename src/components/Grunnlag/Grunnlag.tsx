@@ -332,17 +332,14 @@ export const Grunnlag: React.FC<Props> = ({
       </VStack>
 
       <Accordion>
-        <AccordionItem
-          name="Gunnlag: Sivilstand"
-          data-testid="grunnlag-sivilstand"
-        >
+        <AccordionItem name="Gunnlag: Sivilstand">
           <GrunnlagSection
             headerTitle={intl.formatMessage({
               id: 'grunnlag.sivilstand.title',
             })}
             headerValue={formatertSivilstand}
           >
-            <BodyLong>
+            <BodyLong data-intl="grunnlag-sivilstand">
               <FormattedMessage
                 id="grunnlag.sivilstand.ingress"
                 values={{

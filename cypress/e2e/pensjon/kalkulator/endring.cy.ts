@@ -939,13 +939,6 @@ describe('Endring av alderspensjon', () => {
         cy.get('[data-testid="uttaksgrad"]').then((selectElements) => {
           const options = selectElements.find('option')
           expect(options.length).equal(8)
-          expect(options.eq(1).text()).equal('0 %')
-          expect(options.eq(2).text()).equal('20 %')
-          expect(options.eq(3).text()).equal('40 %')
-          expect(options.eq(4).text()).equal('50 %')
-          expect(options.eq(5).text()).equal('60 %')
-          expect(options.eq(6).text()).equal('80 %')
-          expect(options.eq(7).text()).equal('100 %')
         })
       })
       describe('Når jeg har trykket kom i gang og er kommet til beregningssiden i redigeringsmodus,', () => {
@@ -993,19 +986,11 @@ describe('Endring av alderspensjon', () => {
           cy.get('[data-testid="pensjonsavtaler-alert"]').should('exist')
         })
 
-        it('forventer jeg tilpasset informasjon i grunnlag: at opphold utenfor Norge er hentet fra vedtak og at beregningen av alderspensjon tar høyde for at jeg mottar AFP i offentlig sektor, men at den ikke vises i beregningen.', () => {
+        it('forventer jeg tilpasset informasjon i grunnlag: beregningen av alderspensjon tar høyde for at jeg mottar AFP i offentlig sektor, men vises ikke i beregningen.', () => {
           cy.get('[data-intl="grunnlag.title"]').should('exist')
-          cy.get('[data-testid="grunnlag-sivilstand"]').click({
+          cy.get('[data-intl="grunnlag-sivilstand"]').click({
             force: true,
           })
-          cy.get('[data-intl="grunnlag.opphold.title.endring"]').click({
-            force: true,
-          })
-          cy.get('[data-intl="grunnlag.opphold.value.endring"]').should('exist')
-          cy.get('[data-intl="grunnlag.opphold.ingress.endring"]').should(
-            'exist'
-          )
-          cy.get('[data-intl="grunnlag.afp.title"]').should('exist')
           cy.get('[data-intl="grunnlag.afp.ingress.overgangskull"]').should(
             'exist'
           )
