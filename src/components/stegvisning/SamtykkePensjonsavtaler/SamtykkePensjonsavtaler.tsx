@@ -7,7 +7,6 @@ import { ApotekereWarning } from '@/components/common/ApotekereWarning/Apotekere
 import { Card } from '@/components/common/Card'
 import { SanityReadmore } from '@/components/common/SanityReadmore/SanityReadmore'
 import { paths } from '@/router/constants'
-import { isLoependeVedtak } from '@/state/api/typeguards'
 import { useAppSelector } from '@/state/hooks'
 import { selectHasErApotekerError } from '@/state/session/selectors'
 import {
