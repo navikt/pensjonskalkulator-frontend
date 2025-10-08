@@ -36,7 +36,7 @@ function expect_IKKE_pensjonsavtaler_i_graf_og_tabell() {
 // https://jira.adeo.no/secure/Tests.jspa#/testCase/PEK-T15
 
 describe('Med samtykke - Offentlig tjenestepensjon', () => {
-  describe('Som bruker som har samtykket til innhenting av avtaler,', () => {
+  describe('Som bruker som er født etter 1963 og har samtykket til innhenting av avtaler,', () => {
     beforeEach(() => {
       cy.login()
     })
@@ -801,6 +801,18 @@ describe('Med samtykke - Offentlig tjenestepensjon', () => {
           ).should('exist')
         })
       })
+    })
+  })
+  describe('Som bruker som er født før 1963 og har samtykket til innhenting av avtaler,', () => {
+    beforeEach(() => {
+      cy.setupPersonFoedtFoer1963()
+      cy.login()
+    })
+    describe('Som bruker som har TPO-forhold', () => {
+      it('forventer jeg informasjon i alert under Pensjonsavtaler om hvilke TP-ordninger jeg er medlem av.', () => {})
+    })
+    describe('Som bruker som ikke har TPO-forhold', () => {
+      it('forventer jeg informasjon i alert under Pensjonsavtaler om at ingen avtaler ble funnet.', () => {})
     })
   })
 })
