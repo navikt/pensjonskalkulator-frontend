@@ -111,8 +111,8 @@ export function SamtykkePensjonsavtaler({
         </BodyLong>
 
         {(isKap19 &&
-          (loependeVedtak.ufoeretrygd.grad ||
-            loependeVedtak.pre2025OffentligAfp)) ||
+          (loependeVedtak?.ufoeretrygd.grad ||
+            loependeVedtak?.pre2025OffentligAfp)) ||
         erApoteker ? (
           <>
             <SanityReadmore
@@ -161,10 +161,11 @@ export function SamtykkePensjonsavtaler({
             <FormattedMessage id="stegvisning.samtykke_pensjonsavtaler.radio_nei" />
           </Radio>
         </RadioGroup>
-        {!loependeVedtak.harLoependeVedtak &&
+        {!loependeVedtak?.harLoependeVedtak &&
           skalBeregneAfpKap19 &&
           jaPensjonsavtaler === false && (
             <Alert
+              data-testid="samtykke-pensjonsavtaler-alert"
               className={styles.pensjonsavtaleAlert as string}
               variant="info"
               size="medium"
