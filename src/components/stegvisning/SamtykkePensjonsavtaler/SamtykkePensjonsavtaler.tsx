@@ -111,7 +111,21 @@ export function SamtykkePensjonsavtaler({
           />
         </BodyLong>
 
-        {isKap19 || erApoteker ? (
+        {isKap19 && !loependeVedtak.harLoependeVedtak ? (
+          // kap19 uten løpende vedtak
+          <>
+            <SanityReadmore
+              id="dette_henter_vi_OFTP"
+              data-testid="dette_henter_vi_OFTP"
+              className={styles.readmoreOffentlig}
+            />
+            <SanityReadmore
+              id="dette_henter_vi_NP"
+              className={styles.readmorePrivat}
+            />
+          </>
+        ) : isKap19 || erApoteker ? (
+          // kap19 med løpende vedtak eller apoteker
           <>
             <SanityReadmore
               id="dette_henter_vi_NP"
@@ -124,6 +138,7 @@ export function SamtykkePensjonsavtaler({
             />
           </>
         ) : (
+          // alle andre
           <>
             <SanityReadmore
               id="dette_henter_vi_OFTP"
