@@ -16,6 +16,7 @@ import {
   selectSkalBeregneAfpKap19,
 } from '@/state/userInput/selectors'
 import { isFoedtEtter1963 } from '@/utils/alder'
+import { ALERT_VIST } from '@/utils/loggerConstants'
 import { logger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
 
@@ -52,9 +53,7 @@ export function SamtykkePensjonsavtaler({
 
   const [validationError, setValidationError] = useState<string>('')
 
-  const [jaPensjonsavtaler, setJaPensjonsavtaler] = useState<boolean | null>(
-    null
-  )
+  const [jaPensjonsavtaler, setJaPensjonsavtaler] = useState<boolean>(false)
 
   const onSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
@@ -91,6 +90,17 @@ export function SamtykkePensjonsavtaler({
   const handleRadioChange = (value: string): void => {
     setValidationError('')
     setJaPensjonsavtaler(value === 'ja')
+    if (
+      !loependeVedtak?.harLoependeVedtak &&
+      skalBeregneAfpKap19 &&
+      value === 'ja'
+    ) {
+      logger(ALERT_VIST, {
+        tekst:
+          'Er du medlem av SPK, kan du få en mer fullstendig beregning av AFP hvis du samtykker.',
+        variant: 'info',
+      })
+    }
   }
 
   return (
