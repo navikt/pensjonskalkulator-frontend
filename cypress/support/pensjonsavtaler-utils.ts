@@ -215,13 +215,13 @@ export class PensjonsavtalerIntercepts {
   }
 }
 
-
-
 // Register Cypress commands
 Cypress.Commands.add(
   'setupOffentligTpSpkOk',
   (betingetTjenestepensjonErInkludert = true) => {
-    PensjonsavtalerIntercepts.offentligTpSpkOk(betingetTjenestepensjonErInkludert)
+    PensjonsavtalerIntercepts.offentligTpSpkOk(
+      betingetTjenestepensjonErInkludert
+    )
   }
 )
 
