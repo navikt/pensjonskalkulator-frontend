@@ -28,6 +28,8 @@ import {
   getBrukerensAlderISluttenAvMaaneden,
 } from '@/utils/alder'
 import { updateAndFormatInntektFromInputField } from '@/utils/inntekt'
+import { ALERT_VIST } from '@/utils/loggerConstants'
+import { logger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
 
 import {
@@ -350,6 +352,19 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
     setShowPre2025OffentligAfpAlert(false)
   }
 
+  if (validationErrors[AVANSERT_FORM_NAMES.endringAlertFremtidigDato]) {
+    logger(ALERT_VIST, {
+      tekst: '12 måneders regel, du kan tidligst endre uttaksgrad',
+      variant: 'warning',
+    })
+  }
+
+  if (showPre2025OffentligAfpAlert) {
+    logger(ALERT_VIST, {
+      tekst: 'AFP i offentlig sektor kan ikke kombineres med AP',
+      variant: 'info',
+    })
+  }
   return (
     <>
       <form
