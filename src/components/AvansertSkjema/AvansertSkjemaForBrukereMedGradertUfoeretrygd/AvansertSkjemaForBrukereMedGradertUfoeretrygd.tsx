@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 import { Alert, Radio, RadioGroup, Select, TextField } from '@navikt/ds-react'
@@ -387,15 +387,20 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
 
   const showFormFields = hasSelectedBeregning || !hasSelectedAFP
 
-  if (
-    showFormFields &&
-    validationErrors[AVANSERT_FORM_NAMES.endringAlertFremtidigDato]
-  ) {
-    logger(ALERT_VIST, {
-      tekst: '12 måneders regel, du kan tidligst endre uttaksgrad',
-      variant: 'warning',
-    })
-  }
+  useEffect(() => {
+    if (
+      showFormFields &&
+      validationErrors[AVANSERT_FORM_NAMES.endringAlertFremtidigDato]
+    ) {
+      logger(ALERT_VIST, {
+        tekst: '12 måneders regel, du kan tidligst endre uttaksgrad',
+        variant: 'warning',
+      })
+    }
+  }, [
+    showFormFields,
+    validationErrors[AVANSERT_FORM_NAMES.endringAlertFremtidigDato],
+  ])
 
   return (
     <>
