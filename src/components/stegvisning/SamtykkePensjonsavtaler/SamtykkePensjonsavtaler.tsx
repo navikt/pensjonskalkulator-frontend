@@ -53,7 +53,9 @@ export function SamtykkePensjonsavtaler({
 
   const [validationError, setValidationError] = useState<string>('')
 
-  const [jaPensjonsavtaler, setJaPensjonsavtaler] = useState<boolean>(false)
+  const [jaPensjonsavtaler, setJaPensjonsavtaler] = useState<boolean>(
+    harSamtykket ?? true
+  )
 
   const onSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
@@ -150,7 +152,6 @@ export function SamtykkePensjonsavtaler({
         )}
 
         <RadioGroup
-          className={styles.radiogroup}
           legend={
             <FormattedMessage id="stegvisning.samtykke_pensjonsavtaler.radio_label" />
           }
