@@ -397,10 +397,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
         variant: 'warning',
       })
     }
-  }, [
-    showFormFields,
-    validationErrors[AVANSERT_FORM_NAMES.endringAlertFremtidigDato],
-  ])
+  }, [validationErrors[AVANSERT_FORM_NAMES.endringAlertFremtidigDato]])
 
   return (
     <>

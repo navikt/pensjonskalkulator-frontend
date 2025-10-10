@@ -148,14 +148,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
         variant: 'warning',
       })
     }
-
-    if (showPre2025OffentligAfpAlert) {
-      logger(ALERT_VIST, {
-        tekst: 'AFP i offentlig sektor kan ikke kombineres med AP',
-        variant: 'info',
-      })
-    }
-  }, [validationErrors, showPre2025OffentligAfpAlert])
+  }, [validationErrors])
 
   const handleHeltUttaksalderChange = (alder: Partial<Alder> | undefined) => {
     if (localGradertUttak?.grad === 100 || !localGradertUttak?.grad) {
@@ -167,6 +160,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
             loependeVedtak.pre2025OffentligAfp
         )
       )
+      logShowPre2025OffentligAfpAlert()
     }
     setValidationErrorUttaksalderHeltUttak('')
     setLocalHeltUttak((prevState) => {
@@ -201,6 +195,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
           loependeVedtak.pre2025OffentligAfp
       )
     )
+    logShowPre2025OffentligAfpAlert()
     setValidationErrors((prevState) => {
       return {
         ...prevState,
@@ -215,6 +210,12 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
     }))
   }
 
+  const logShowPre2025OffentligAfpAlert = () => {
+    logger(ALERT_VIST, {
+      tekst: 'AFP i offentlig sektor kan ikke kombineres med AP',
+      variant: 'info',
+    })
+  }
   const handleUttaksgradChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setValidationErrors((prevState) => {
       return {
