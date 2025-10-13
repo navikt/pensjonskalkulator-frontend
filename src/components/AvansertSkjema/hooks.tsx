@@ -253,6 +253,9 @@ export const useFormValidationErrors = (initialValues: {
     [AVANSERT_FORM_NAMES.uttaksalderGradertUttak]: '',
     [AVANSERT_FORM_NAMES.inntektVsaGradertUttak]: '',
     [AVANSERT_FORM_NAMES.inntektVsaAfpRadio]: '',
+    [AVANSERT_FORM_NAMES.stillingsprosentVsaAfp]: '',
+    [AVANSERT_FORM_NAMES.stillingsprosentVsaGradertPensjon]: '',
+    [AVANSERT_FORM_NAMES.stillingsprosentVsaHelPensjon]: '',
   })
 
   React.useEffect(() => {
@@ -371,6 +374,30 @@ export const useFormValidationErrors = (initialValues: {
           }
         })
       },
+      setValidationErrorStillingsprosentVsaAfp: (s: string) => {
+        setValidationErrors((prevState) => {
+          return {
+            ...prevState,
+            [AVANSERT_FORM_NAMES.stillingsprosentVsaAfp]: s,
+          }
+        })
+      },
+      setValidationErrorStillingsprosentVsaGradertPensjon: (s: string) => {
+        setValidationErrors((prevState) => {
+          return {
+            ...prevState,
+            [AVANSERT_FORM_NAMES.stillingsprosentVsaGradertPensjon]: s,
+          }
+        })
+      },
+      setValidationErrorStillingsprosentVsaHelPensjon: (s: string) => {
+        setValidationErrors((prevState) => {
+          return {
+            ...prevState,
+            [AVANSERT_FORM_NAMES.stillingsprosentVsaHelPensjon]: s,
+          }
+        })
+      },
 
       resetValidationErrors: () => {
         setValidationErrors(() => {
@@ -379,6 +406,9 @@ export const useFormValidationErrors = (initialValues: {
             [AVANSERT_FORM_NAMES.uttaksalderGradertUttak]: '',
             [AVANSERT_FORM_NAMES.inntektVsaGradertUttak]: '',
             [AVANSERT_FORM_NAMES.inntektVsaAfp]: '',
+            [AVANSERT_FORM_NAMES.stillingsprosentVsaAfp]: '',
+            [AVANSERT_FORM_NAMES.stillingsprosentVsaGradertPensjon]: '',
+            [AVANSERT_FORM_NAMES.stillingsprosentVsaHelPensjon]: '',
           }
         })
       },

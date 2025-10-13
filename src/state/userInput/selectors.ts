@@ -41,6 +41,10 @@ export const selectAfpUtregningValg = (state: RootState): AfpUtregningValg =>
 export const selectSkalBeregneAfpKap19 = (state: RootState): boolean | null =>
   state.userInput.afpUtregningValg === 'AFP_ETTERFULGT_AV_ALDERSPENSJON'
 
+export const selectSkalBeregneKunAlderspensjon = (
+  state: RootState
+): boolean | null => state.userInput.afpUtregningValg === 'KUN_ALDERSPENSJON'
+
 const selectPersonResponse = apiSlice.endpoints.getPerson.select()
 const selectGrunnbeloepResponse = apiSlice.endpoints.getGrunnbeloep.select()
 const selectInntektResponse = apiSlice.endpoints.getInntekt.select()

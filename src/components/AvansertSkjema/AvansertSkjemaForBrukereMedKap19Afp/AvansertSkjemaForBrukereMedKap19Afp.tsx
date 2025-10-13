@@ -9,6 +9,7 @@ import {
   Link,
   Radio,
   RadioGroup,
+  Select,
   TextField,
 } from '@navikt/ds-react'
 
@@ -30,6 +31,7 @@ import {
   selectLoependeVedtak,
   selectNedreAldersgrense,
   selectNormertPensjonsalder,
+  selectSamtykke,
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
 import { getBrukerensAlderISluttenAvMaaneden } from '@/utils/alder'
@@ -67,6 +69,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
   const inntektVsaGradertUttakInputRef = React.useRef<HTMLInputElement>(null)
   const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const nedreAldersgrense = useAppSelector(selectNedreAldersgrense)
+  const samtykkePensjonsavtaler = useAppSelector(selectSamtykke)
   const { uttaksalder, gradertUttaksperiode, aarligInntektVsaHelPensjon } =
     useAppSelector(selectCurrentSimulation)
   const aarligInntektFoerUttakBeloepFraBrukerInput = useAppSelector(
@@ -127,6 +130,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
       setValidationErrors,
       setValidationErrorUttaksalderHeltUttak,
       setValidationErrorInntektVsaAfp,
+      setValidationErrorStillingsprosentVsaAfp,
       resetValidationErrors,
     },
   } = useFormValidationErrors({
@@ -178,6 +182,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
         ...prevState,
         [AVANSERT_FORM_NAMES.inntektVsaAfpRadio]: '',
         [AVANSERT_FORM_NAMES.inntektVsaAfp]: '',
+        [AVANSERT_FORM_NAMES.stillingsprosentVsaAfp]: '',
       }
     })
     setLocalHarInntektVsaGradertUttakRadio(s === 'ja')
@@ -197,6 +202,10 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
       },
       setValidationErrorInntektVsaAfp
     )
+  }
+
+  const handleStillingsprosentVsaAfpChange = () => {
+    setValidationErrorStillingsprosentVsaAfp('')
   }
 
   const resetForm = (): void => {
@@ -502,6 +511,36 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
               aria-required="true"
             />
           )}
+          {localHarInntektVsaGradertUttakRadio &&
+            samtykkePensjonsavtaler === true && (
+              <Select
+                label={intl.formatMessage({
+                  id: 'inntekt.stillingsprosent_vsa_afp.textfield.label',
+                })}
+                name={AVANSERT_FORM_NAMES.stillingsprosentVsaAfp}
+                form={AVANSERT_FORM_NAMES.form}
+                data-testid={AVANSERT_FORM_NAMES.stillingsprosentVsaAfp}
+                className={styles.select}
+                defaultValue=""
+                onChange={handleStillingsprosentVsaAfpChange}
+                error={
+                  validationErrors[AVANSERT_FORM_NAMES.stillingsprosentVsaAfp]
+                    ? intl.formatMessage({
+                        id: validationErrors[
+                          AVANSERT_FORM_NAMES.stillingsprosentVsaAfp
+                        ],
+                      })
+                    : ''
+                }
+              >
+                <option disabled value="">
+                  {' '}
+                </option>
+                {[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map((p) => (
+                  <option key={p} value={p}>{`${p} %`}</option>
+                ))}
+              </Select>
+            )}
 
           <FormButtonRow
             formId={AVANSERT_FORM_NAMES.form}

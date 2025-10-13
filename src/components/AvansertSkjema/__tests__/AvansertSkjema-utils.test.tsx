@@ -4,6 +4,7 @@ import * as alderUtils from '@/utils/alder'
 import * as inntektUtils from '@/utils/inntekt'
 
 import {
+  AVANSERT_FORM_NAMES,
   onAvansertBeregningSubmit,
   validateAvansertBeregningSkjema,
 } from '../utils'
@@ -34,6 +35,12 @@ describe('AvansertSkjema-utils', () => {
           return '0'
         case 'inntekt-vsa-gradert-uttak':
           return '100000'
+        case 'stillingsprosent-vsa-gradert-pensjon':
+          return '80'
+        case 'stillingsprosent-vsa-hel-pensjon':
+          return '100'
+        case 'stillingsprosent-vsa-afp':
+          return '80'
         default:
           return ''
       }
@@ -233,6 +240,12 @@ describe('AvansertSkjema-utils', () => {
               return '0'
             case 'inntekt-vsa-gradert-uttak':
               return null
+            case 'stillingsprosent-vsa-gradert-pensjon':
+              return ''
+            case 'stillingsprosent-vsa-hel-pensjon':
+              return '100'
+            case 'stillingsprosent-vsa-afp':
+              return ''
             default:
               return ''
           }
@@ -375,6 +388,9 @@ describe('AvansertSkjema-utils', () => {
       afpInntektMaanedFoerUttakRadioFormData: null,
       inntektVsaAfpRadioFormData: null,
       inntektVsaAfpFormData: null,
+      stillingsprosentVsaAfpFormData: null,
+      stillingsprosentVsaGradertPensjonFormData: '80',
+      stillingsprosentVsaHelPensjonFormData: '100',
     }
 
     const mockedFoedselsdato = '1963-04-30'
@@ -981,6 +997,115 @@ describe('AvansertSkjema-utils', () => {
       ).toBeFalsy()
       expect(validateInntektMock).toHaveBeenCalled()
       expect(updateErrorMessageMock).toHaveBeenCalled()
+    })
+
+    it('returnerer false når stillingsprosent for gradert uttak mangler', () => {
+      const updateErrorMessageMock = vi.fn()
+      expect(
+        validateAvansertBeregningSkjema(
+          {
+            ...correctInputData,
+            stillingsprosentVsaGradertPensjonFormData: '',
+          },
+          mockedFoedselsdato,
+          mockedNormertPensjonsalder,
+          mockedLoependeVedtak,
+          updateErrorMessageMock
+        )
+      ).toBeFalsy()
+      expect(updateErrorMessageMock).toHaveBeenCalled()
+      const callback = updateErrorMessageMock.mock.calls[
+        updateErrorMessageMock.mock.calls.length - 1
+      ][0] as (prev: Record<string, string>) => Record<string, string>
+      expect(
+        callback({
+          [AVANSERT_FORM_NAMES.stillingsprosentVsaGradertPensjon]: '',
+        })
+      ).toMatchObject({
+        [AVANSERT_FORM_NAMES.stillingsprosentVsaGradertPensjon]:
+          'inntekt.stillingsprosent_vsa_pensjon.validation_error',
+      })
+    })
+
+    it('returnerer false når stillingsprosent for helt uttak mangler', () => {
+      const updateErrorMessageMock = vi.fn()
+      expect(
+        validateAvansertBeregningSkjema(
+          {
+            ...correctInputData,
+            stillingsprosentVsaHelPensjonFormData: '',
+          },
+          mockedFoedselsdato,
+          mockedNormertPensjonsalder,
+          mockedLoependeVedtak,
+          updateErrorMessageMock
+        )
+      ).toBeFalsy()
+      expect(updateErrorMessageMock).toHaveBeenCalled()
+      const callback = updateErrorMessageMock.mock.calls[
+        updateErrorMessageMock.mock.calls.length - 1
+      ][0] as (prev: Record<string, string>) => Record<string, string>
+      expect(
+        callback({
+          [AVANSERT_FORM_NAMES.stillingsprosentVsaHelPensjon]: '',
+        })
+      ).toMatchObject({
+        [AVANSERT_FORM_NAMES.stillingsprosentVsaHelPensjon]:
+          'inntekt.stillingsprosent_vsa_pensjon.validation_error',
+      })
+    })
+
+    it('returnerer false når Kap19 AFP mangler stillingsprosent ved valgt inntekt', () => {
+      const updateErrorMessageMock = vi.fn()
+      expect(
+        validateAvansertBeregningSkjema(
+          {
+            ...correctInputData,
+            afpInntektMaanedFoerUttakRadioFormData: 'ja',
+            inntektVsaAfpRadioFormData: 'ja',
+            inntektVsaAfpFormData: '250000',
+            stillingsprosentVsaAfpFormData: '',
+          },
+          mockedFoedselsdato,
+          mockedNormertPensjonsalder,
+          mockedLoependeVedtak,
+          updateErrorMessageMock,
+          true
+        )
+      ).toBeFalsy()
+      expect(updateErrorMessageMock).toHaveBeenCalled()
+      const callback = updateErrorMessageMock.mock.calls[
+        updateErrorMessageMock.mock.calls.length - 1
+      ][0] as (prev: Record<string, string>) => Record<string, string>
+      expect(
+        callback({
+          [AVANSERT_FORM_NAMES.stillingsprosentVsaAfp]: '',
+        })
+      ).toMatchObject({
+        [AVANSERT_FORM_NAMES.stillingsprosentVsaAfp]:
+          'inntekt.stillingsprosent_vsa_afp.validation_error',
+      })
+    })
+
+    it('returnerer true når Kap19 AFP har stillingsprosent ved valgt inntekt', () => {
+      const updateErrorMessageMock = vi.fn()
+      expect(
+        validateAvansertBeregningSkjema(
+          {
+            ...correctInputData,
+            afpInntektMaanedFoerUttakRadioFormData: 'ja',
+            inntektVsaAfpRadioFormData: 'ja',
+            inntektVsaAfpFormData: '250000',
+            stillingsprosentVsaAfpFormData: '80',
+          },
+          mockedFoedselsdato,
+          mockedNormertPensjonsalder,
+          mockedLoependeVedtak,
+          updateErrorMessageMock,
+          true
+        )
+      ).toBeTruthy()
+      expect(updateErrorMessageMock).not.toHaveBeenCalled()
     })
   })
 })

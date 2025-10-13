@@ -1629,6 +1629,24 @@ describe('AvansertSkjemaForAndreBrukere', () => {
     await user.type(inputField, '0')
     await user.type(inputField, '0')
     await user.click(screen.getByText('beregning.avansert.button.beregn'))
+    // Feilmelding for stillingsprosent for inntekt vsa 100 % uttak
+    expect(
+      screen.getByText((content) =>
+        content.includes(
+          'Du må velge stillingsprosenten din i offentlig sektor samtidig som du tar ut 100'
+        )
+      )
+    ).toBeVisible()
+    expect((document.activeElement as HTMLElement).getAttribute('name')).toBe(
+      AVANSERT_FORM_NAMES.stillingsprosentVsaHelPensjon
+    )
+
+    await user.selectOptions(
+      screen.getByTestId(AVANSERT_FORM_NAMES.stillingsprosentVsaHelPensjon),
+      '100'
+    )
+
+    await user.click(screen.getByText('beregning.avansert.button.beregn'))
     // Feilmelding for sluttAlder for inntekt vsa 100 % uttak
     expect(
       screen.getByText('agepicker.validation_error.aar', {

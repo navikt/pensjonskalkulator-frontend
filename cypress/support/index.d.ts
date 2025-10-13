@@ -52,6 +52,79 @@ declare global {
        * @example cy.setupPersonFoedtEtter1963()
        */
       setupPersonFoedtEtter1963(): Chainable<void>
+      /**
+       * Custom command for å sette opp løpende vedtak med pre-2025 offentlig AFP
+       *
+       * @example cy.setupLoependeVedtakWithPre2025OffentligAFP(80)
+       */
+      setupLoependeVedtakWithPre2025OffentligAFP(grad?: number): Chainable<void>
+      /**
+       * Custom command for å sette opp løpende vedtak med fremtidig alderspensjon
+       *
+       * @example cy.setupLoependeVedtakWithFremtidigAlderspensjon(100, '2099-01-01')
+       */
+      setupLoependeVedtakWithFremtidigAlderspensjon(
+        grad: number,
+        fom?: string
+      ): Chainable<void>
+      /**
+       * Custom command for å sette opp offentlig tjenestepensjon med OK status og SPK provider
+       *
+       * @example cy.setupOffentligTpSpkOk()
+       * @example cy.setupOffentligTpSpkOk(false)
+       */
+      setupOffentligTpSpkOk(
+        betingetTjenestepensjonErInkludert?: boolean
+      ): Chainable<void>
+      /**
+       * Custom command for å sette opp offentlig tjenestepensjon med OK status og KLP provider
+       *
+       * @example cy.setupOffentligTpKlpOk()
+       */
+      setupOffentligTpKlpOk(): Chainable<void>
+      /**
+       * Custom command for å sette opp offentlig tjenestepensjon med ikke-støttet ordning
+       *
+       * @example cy.setupOffentligTpUnsupported()
+       * @example cy.setupOffentligTpUnsupported(['Oslo Pensjonsforsikring'])
+       */
+      setupOffentligTpUnsupported(providers?: string[]): Chainable<void>
+      /**
+       * Custom command for å sette opp offentlig tjenestepensjon uten medlemskap
+       *
+       * @example cy.setupOffentligTpNoMembership()
+       */
+      setupOffentligTpNoMembership(): Chainable<void>
+      /**
+       * Custom command for å sette opp offentlig tjenestepensjon med teknisk feil
+       *
+       * @example cy.setupOffentligTpTechnicalError()
+       */
+      setupOffentligTpTechnicalError(): Chainable<void>
+      /**
+       * Custom command for å sette opp offentlig tjenestepensjon med tom respons
+       *
+       * @example cy.setupOffentligTpEmptyResponse()
+       */
+      setupOffentligTpEmptyResponse(): Chainable<void>
+      /**
+       * Custom command for å sette opp offentlig tjenestepensjon med server feil
+       *
+       * @example cy.setupOffentligTpServerError()
+       */
+      setupOffentligTpServerError(): Chainable<void>
+      /**
+       * Custom command for å sette opp tom pensjonsavtaler respons
+       *
+       * @example cy.setupPensjonsavtalerEmpty()
+       */
+      setupPensjonsavtalerEmpty(): Chainable<void>
+      /**
+       * Custom command for å sette opp alderspensjon simulering med AFP offentlig
+       *
+       * @example cy.setupAlderspensjonMedAfpOffentlig()
+       */
+      setupAlderspensjonMedAfpOffentlig(): Chainable<void>
     }
   }
 }

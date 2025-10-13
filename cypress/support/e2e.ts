@@ -1,6 +1,8 @@
 import 'cypress-axe'
 import './apoteker-utils'
 import './person-utils'
+import './loepende-vedtak-utils'
+import './pensjonsavtaler-utils'
 
 import { userInputActions } from '../../src/state/userInput/userInputSlice'
 

@@ -741,6 +741,14 @@ const translations = {
     'Hva er din forventede årsinntekt samtidig som du tar ut <nowrap>100 %</nowrap> alderspensjon?',
   'inntekt.endre_inntekt_vsa_afp_modal.textfield.label':
     'Hva er din forventede årsinntekt samtidig som du tar ut AFP?',
+  'inntekt.stillingsprosent_vsa_afp.textfield.label':
+    'Hva er stillingsprosenten din i offentlig sektor samtidig som du tar ut AFP?',
+  'inntekt.stillingsprosent_vsa_pensjon.textfield.label':
+    'Hva er stillingsprosenten din i offentlig sektor samtidig som du tar ut {grad} % pensjon?',
+  'inntekt.stillingsprosent_vsa_pensjon.validation_error':
+    'Du må velge stillingsprosenten din i offentlig sektor samtidig som du tar ut {grad} % pensjon.',
+  'inntekt.stillingsprosent_vsa_afp.validation_error':
+    'Du må velge stillingsprosenten din i offentlig sektor samtidig som du tar ut AFP.',
   'inntekt.endre_inntekt_vsa_pensjon_modal.textfield.description':
     'Dagens kroneverdi før skatt',
   'inntekt.endre_inntekt_vsa_pensjon_modal.agepicker.label':

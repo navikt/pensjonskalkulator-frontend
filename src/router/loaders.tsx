@@ -1,5 +1,6 @@
 import { SerializedError } from '@reduxjs/toolkit'
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
+import { sk } from 'date-fns/locale'
 import { LoaderFunctionArgs, redirect } from 'react-router'
 
 import { getStepArrays } from '@/components/stegvisning/utils'
@@ -12,7 +13,10 @@ import { store } from '@/state/store'
 import {
   selectAfp,
   selectIsVeileder,
+  selectSamtykke,
+  selectSamtykkeOffentligAFP,
   selectSkalBeregneAfpKap19,
+  selectSkalBeregneKunAlderspensjon,
 } from '@/state/userInput/selectors'
 import {
   AFP_UFOERE_OPPSIGELSESALDER,
@@ -56,6 +60,13 @@ export const authenticationGuard = async () => {
 }
 
 export const directAccessGuard = (): Response | undefined => {
+  if (typeof window !== 'undefined') {
+    const url = new URL(window.location.href)
+    if (url.searchParams.has('sanity-timeout')) {
+      return undefined
+    }
+  }
+
   const state = store.getState()
   // Dersom ingen kall er registrert i store betyr det at brukeren prøver å aksessere en url direkte
   if (
@@ -477,11 +488,17 @@ export const beregningEnkelAccessGuard = async () => {
   }
   const state = store.getState()
   const skalBeregneAfpKap19 = selectSkalBeregneAfpKap19(state)
+  const skalBeregneKunAlderspensjon = selectSkalBeregneKunAlderspensjon(state)
+  const harSamtykketPensjonsavtaler = selectSamtykke(state)
   const loependeVedtak = await store
     .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
     .unwrap()
 
-  if (skalBeregneAfpKap19 || loependeVedtak.alderspensjon) {
+  if (
+    skalBeregneAfpKap19 ||
+    loependeVedtak.alderspensjon ||
+    (harSamtykketPensjonsavtaler && skalBeregneKunAlderspensjon)
+  ) {
     return redirect(paths.beregningAvansert)
   }
 }
