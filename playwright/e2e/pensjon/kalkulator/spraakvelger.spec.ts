@@ -13,18 +13,12 @@ test.describe('Språkvelger', () => {
   }) => {
     await login(page)
 
-    await page.click('button:has-text("Kom i gang")')
+    await page.getByTestId('stegvisning-start-button').click()
 
-    await expect(
-      page.getByRole('heading', { name: 'Sivilstand' })
-    ).toBeVisible()
-    await page.click('button:has-text("Neste")')
+    await expect(page.getByTestId('sivilstand-heading')).toBeVisible()
+    await page.getByTestId('stegvisning-neste-button').click()
 
-    await expect(
-      page.getByRole('heading', { name: 'Opphold utenfor Norge' })
-    ).toBeVisible()
-    await expect(
-      page.locator('text=Hva som er opphold utenfor Norge')
-    ).toBeVisible()
+    await expect(page.getByTestId('utenlandsopphold-heading')).toBeVisible()
+    await expect(page.getByTestId('hva_er_opphold_utenfor_norge')).toBeVisible()
   })
 })

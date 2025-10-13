@@ -8,7 +8,7 @@ export type RouteDefinition = {
   url: RegExp | string
   method?: 'GET' | 'POST'
   mockName?: string
-  jsonResponse?: Record<string, unknown>
+  jsonResponse?: Record<string, unknown> | unknown[]
   status?: number
   isHTML?: boolean
 }
@@ -64,7 +64,7 @@ export async function setupInterceptions(
       mockName: 'decorator-user-menu.html',
       isHTML: true,
     },
-    { url: /ops-messages/, mockName: 'decorator-ops.json' },
+    { url: /ops-messages/, jsonResponse: [] },
     {
       url: /\/env\?chatbot=false&logoutWarning=true&redirectToUrl=/,
       mockName: 'decorator-env-features.json',
@@ -76,16 +76,8 @@ export async function setupInterceptions(
     },
     { url: /pensjon\/kalkulator\/oauth2\/session/, status: 200 },
     {
-      url: /\/pensjon\/kalkulator\/api\/feature\/pensjonskalkulator\.disable-spraakvelger/,
-      mockName: 'toggle-disable-spraakvelger.json',
-    },
-    {
-      url: /\/pensjon\/kalkulator\/api\/feature\/pensjonskalkulator\.vedlikeholdsmodus/,
-      jsonResponse: { enabled: false },
-    },
-    {
-      url: /\/pensjon\/kalkulator\/api\/feature\/utvidet-simuleringsresultat/,
-      jsonResponse: { enabled: false },
+      url: /\/pensjon\/kalkulator\/api\/feature\//,
+      mockName: 'toggle-config.json',
     },
     {
       url: /\/pensjon\/kalkulator\/api\/v1\/er-apoteker/,
@@ -200,6 +192,8 @@ export async function setupInterceptions(
     status = 200,
     isHTML,
   } of finalRoutes) {
+    const JSON_CONTENT_TYPE = 'application/json; charset=utf-8'
+
     await page.route(url, async (route) => {
       const reqMethod = route.request().method()
       const expectedMethod = method || 'GET'
@@ -218,10 +212,45 @@ export async function setupInterceptions(
           })
         } else {
           const data = await loadJSONMock(mockName)
+
+          // Special handling for feature toggle config
+          if (
+            mockName === 'toggle-config.json' &&
+            route.request().url().includes('/api/feature/')
+          ) {
+            const requestUrl = route.request().url()
+            const featureNameRegex = /\/api\/feature\/(.+?)(?:\?|$)/
+            const featureNameMatch = featureNameRegex.exec(requestUrl)
+
+            if (featureNameMatch) {
+              const featureName = featureNameMatch[1]
+              const toggleConfig = data as Record<string, { enabled: boolean }>
+
+              // Map feature names to config keys
+              const featureMap: Record<string, string> = {
+                'pensjonskalkulator.disable-spraakvelger': 'spraakvelger',
+                'pensjonskalkulator.vedlikeholdsmodus': 'vedlikeholdsmodus',
+                'utvidet-simuleringsresultat': 'utvidetSimuleringsresultat',
+                'pensjonskalkulator.enable-redirect-1963': 'enableRedirect1963',
+              }
+
+              const configKey = featureMap[featureName] || featureName
+              const featureToggle = toggleConfig[configKey] || {
+                enabled: false,
+              }
+
+              return route.fulfill({
+                status,
+                body: JSON.stringify(featureToggle),
+                headers: { 'Content-Type': JSON_CONTENT_TYPE },
+              })
+            }
+          }
+
           return route.fulfill({
             status,
             body: JSON.stringify(data),
-            headers: { 'Content-Type': 'application/json; charset=utf-8' },
+            headers: { 'Content-Type': JSON_CONTENT_TYPE },
           })
         }
       }
@@ -230,7 +259,7 @@ export async function setupInterceptions(
         return route.fulfill({
           status,
           body: JSON.stringify(jsonResponse),
-          headers: { 'Content-Type': 'application/json; charset=utf-8' },
+          headers: { 'Content-Type': JSON_CONTENT_TYPE },
         })
       }
 
