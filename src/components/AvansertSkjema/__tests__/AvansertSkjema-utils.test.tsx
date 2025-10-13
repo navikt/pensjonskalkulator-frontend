@@ -377,6 +377,8 @@ describe('AvansertSkjema-utils', () => {
       inntektVsaAfpRadioFormData: null,
       inntektVsaAfpFormData: null,
       stillingsprosentVsaAfpFormData: null,
+      stillingsprosentVsaGradertPensjonFormData: '80',
+      stillingsprosentVsaHelPensjonFormData: '100',
     }
 
     const mockedFoedselsdato = '1963-04-30'
@@ -983,6 +985,62 @@ describe('AvansertSkjema-utils', () => {
       ).toBeFalsy()
       expect(validateInntektMock).toHaveBeenCalled()
       expect(updateErrorMessageMock).toHaveBeenCalled()
+    })
+
+    it('returnerer false når stillingsprosent for gradert uttak mangler', () => {
+      const updateErrorMessageMock = vi.fn()
+      expect(
+        validateAvansertBeregningSkjema(
+          {
+            ...correctInputData,
+            stillingsprosentVsaGradertPensjonFormData: '',
+          },
+          mockedFoedselsdato,
+          mockedNormertPensjonsalder,
+          mockedLoependeVedtak,
+          updateErrorMessageMock
+        )
+      ).toBeFalsy()
+      expect(updateErrorMessageMock).toHaveBeenCalled()
+      const callback = updateErrorMessageMock.mock.calls[
+        updateErrorMessageMock.mock.calls.length - 1
+      ][0] as (prev: Record<string, string>) => Record<string, string>
+      expect(
+        callback({
+          [AVANSERT_FORM_NAMES.stillingsprosentVsaGradertPensjon]: '',
+        })
+      ).toMatchObject({
+        [AVANSERT_FORM_NAMES.stillingsprosentVsaGradertPensjon]:
+          'Test error message',
+      })
+    })
+
+    it('returnerer false når stillingsprosent for helt uttak mangler', () => {
+      const updateErrorMessageMock = vi.fn()
+      expect(
+        validateAvansertBeregningSkjema(
+          {
+            ...correctInputData,
+            stillingsprosentVsaHelPensjonFormData: '',
+          },
+          mockedFoedselsdato,
+          mockedNormertPensjonsalder,
+          mockedLoependeVedtak,
+          updateErrorMessageMock
+        )
+      ).toBeFalsy()
+      expect(updateErrorMessageMock).toHaveBeenCalled()
+      const callback = updateErrorMessageMock.mock.calls[
+        updateErrorMessageMock.mock.calls.length - 1
+      ][0] as (prev: Record<string, string>) => Record<string, string>
+      expect(
+        callback({
+          [AVANSERT_FORM_NAMES.stillingsprosentVsaHelPensjon]: '',
+        })
+      ).toMatchObject({
+        [AVANSERT_FORM_NAMES.stillingsprosentVsaHelPensjon]:
+          'Test error message',
+      })
     })
 
     it('returnerer false når Kap19 AFP mangler stillingsprosent ved valgt inntekt', () => {

@@ -45,6 +45,8 @@ export const AVANSERT_FORM_NAMES = {
   inntektVsaAfpRadio: 'inntekt-vsa-afp-radio',
   inntektVsaAfp: 'inntekt-vsa-afp',
   stillingsprosentVsaAfp: 'stillingsprosent-vsa-afp',
+  stillingsprosentVsaGradertPensjon: 'stillingsprosent-vsa-gradert-pensjon',
+  stillingsprosentVsaHelPensjon: 'stillingsprosent-vsa-hel-pensjon',
   uttaksgrad: 'uttaksgrad',
   uttaksalderGradertUttak: 'uttaksalder-gradert-uttak',
   uttaksalderHeltUttak: 'uttaksalder-helt-uttak',
@@ -219,6 +221,8 @@ export const validateAvansertBeregningSkjema = (
     inntektVsaAfpRadioFormData: FormDataEntryValue | null
     inntektVsaAfpFormData: FormDataEntryValue | null
     stillingsprosentVsaAfpFormData: FormDataEntryValue | null
+    stillingsprosentVsaGradertPensjonFormData: FormDataEntryValue | null
+    stillingsprosentVsaHelPensjonFormData: FormDataEntryValue | null
   },
   foedselsdato: string,
   normertPensjonsalder: Alder,
@@ -245,6 +249,8 @@ export const validateAvansertBeregningSkjema = (
     inntektVsaAfpRadioFormData,
     inntektVsaAfpFormData,
     stillingsprosentVsaAfpFormData,
+    stillingsprosentVsaGradertPensjonFormData,
+    stillingsprosentVsaHelPensjonFormData,
   } = inputData
 
   let isValid = true
@@ -569,6 +575,21 @@ export const validateAvansertBeregningSkjema = (
     )
 
     isValid = isValid && isInntektValid && isSluttAlderValid
+
+    if (
+      !stillingsprosentVsaHelPensjonFormData ||
+      (typeof stillingsprosentVsaHelPensjonFormData === 'string' &&
+        stillingsprosentVsaHelPensjonFormData.trim() === '')
+    ) {
+      isValid = false
+      updateValidationErrorMessage((prevState) => {
+        return {
+          ...prevState,
+          [AVANSERT_FORM_NAMES.stillingsprosentVsaHelPensjon]:
+            'inntekt.stillingsprosent_vsa_pensjon.validation_error',
+        }
+      })
+    }
   }
 
   // * Sjekker at radio for inntekt vsa gradert uttak er fylt ut (gitt at uttaksgrad er ulik 100 %)
@@ -630,6 +651,23 @@ export const validateAvansertBeregningSkjema = (
     )
   ) {
     isValid = false
+  }
+
+  if (
+    uttaksgradFormData !== '100 %' &&
+    inntektVsaGradertUttakRadioFormData === 'ja' &&
+    (!stillingsprosentVsaGradertPensjonFormData ||
+      (typeof stillingsprosentVsaGradertPensjonFormData === 'string' &&
+        stillingsprosentVsaGradertPensjonFormData.trim() === ''))
+  ) {
+    isValid = false
+    updateValidationErrorMessage((prevState) => {
+      return {
+        ...prevState,
+        [AVANSERT_FORM_NAMES.stillingsprosentVsaGradertPensjon]:
+          'inntekt.stillingsprosent_vsa_pensjon.validation_error',
+      }
+    })
   }
 
   // * Hvis alle feltene er gyldige,
@@ -729,6 +767,12 @@ export const onAvansertBeregningSubmit = (
   const stillingsprosentVsaAfpFormData = data.get(
     AVANSERT_FORM_NAMES.stillingsprosentVsaAfp
   )
+  const stillingsprosentVsaGradertPensjonFormData = data.get(
+    AVANSERT_FORM_NAMES.stillingsprosentVsaGradertPensjon
+  )
+  const stillingsprosentVsaHelPensjonFormData = data.get(
+    AVANSERT_FORM_NAMES.stillingsprosentVsaHelPensjon
+  )
   if (
     !validateAvansertBeregningSkjema(
       {
@@ -748,6 +792,8 @@ export const onAvansertBeregningSubmit = (
         inntektVsaAfpRadioFormData,
         inntektVsaAfpFormData,
         stillingsprosentVsaAfpFormData,
+        stillingsprosentVsaGradertPensjonFormData,
+        stillingsprosentVsaHelPensjonFormData,
       },
       foedselsdato,
       normertPensjonsalder,
