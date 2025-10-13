@@ -218,6 +218,7 @@ export const validateAvansertBeregningSkjema = (
     afpInntektMaanedFoerUttakRadioFormData: FormDataEntryValue | null
     inntektVsaAfpRadioFormData: FormDataEntryValue | null
     inntektVsaAfpFormData: FormDataEntryValue | null
+    stillingsprosentVsaAfpFormData: FormDataEntryValue | null
   },
   foedselsdato: string,
   normertPensjonsalder: Alder,
@@ -243,6 +244,7 @@ export const validateAvansertBeregningSkjema = (
     afpInntektMaanedFoerUttakRadioFormData,
     inntektVsaAfpRadioFormData,
     inntektVsaAfpFormData,
+    stillingsprosentVsaAfpFormData,
   } = inputData
 
   let isValid = true
@@ -337,6 +339,22 @@ export const validateAvansertBeregningSkjema = (
       )
     ) {
       isValid = false
+    }
+
+    if (
+      inntektVsaAfpRadioFormData === 'ja' &&
+      (!stillingsprosentVsaAfpFormData ||
+        (typeof stillingsprosentVsaAfpFormData === 'string' &&
+          stillingsprosentVsaAfpFormData.trim() === ''))
+    ) {
+      isValid = false
+      updateValidationErrorMessage((prevState) => {
+        return {
+          ...prevState,
+          [AVANSERT_FORM_NAMES.stillingsprosentVsaAfp]:
+            'inntekt.stillingsprosent_vsa_afp.validation_error',
+        }
+      })
     }
     return isValid
   }
@@ -708,6 +726,9 @@ export const onAvansertBeregningSubmit = (
     AVANSERT_FORM_NAMES.inntektVsaAfpRadio
   )
   const inntektVsaAfpFormData = data.get(AVANSERT_FORM_NAMES.inntektVsaAfp)
+  const stillingsprosentVsaAfpFormData = data.get(
+    AVANSERT_FORM_NAMES.stillingsprosentVsaAfp
+  )
   if (
     !validateAvansertBeregningSkjema(
       {
@@ -726,6 +747,7 @@ export const onAvansertBeregningSubmit = (
         afpInntektMaanedFoerUttakRadioFormData,
         inntektVsaAfpRadioFormData,
         inntektVsaAfpFormData,
+        stillingsprosentVsaAfpFormData,
       },
       foedselsdato,
       normertPensjonsalder,

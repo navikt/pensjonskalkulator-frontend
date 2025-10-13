@@ -372,7 +372,7 @@ export const useFormValidationErrors = (initialValues: {
           }
         })
       },
-      setValidationErrorsStillingsprosentVsaAfp: (s: string) => {
+      setValidationErrorStillingsprosentVsaAfp: (s: string) => {
         setValidationErrors((prevState) => {
           return {
             ...prevState,
@@ -388,6 +388,7 @@ export const useFormValidationErrors = (initialValues: {
             [AVANSERT_FORM_NAMES.uttaksalderGradertUttak]: '',
             [AVANSERT_FORM_NAMES.inntektVsaGradertUttak]: '',
             [AVANSERT_FORM_NAMES.inntektVsaAfp]: '',
+            [AVANSERT_FORM_NAMES.stillingsprosentVsaAfp]: '',
           }
         })
       },

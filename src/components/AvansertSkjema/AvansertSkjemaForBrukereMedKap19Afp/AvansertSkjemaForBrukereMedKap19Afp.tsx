@@ -182,6 +182,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
         ...prevState,
         [AVANSERT_FORM_NAMES.inntektVsaAfpRadio]: '',
         [AVANSERT_FORM_NAMES.inntektVsaAfp]: '',
+        [AVANSERT_FORM_NAMES.stillingsprosentVsaAfp]: '',
       }
     })
     setLocalHarInntektVsaGradertUttakRadio(s === 'ja')
@@ -201,6 +202,10 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
       },
       setValidationErrorInntektVsaAfp
     )
+  }
+
+  const handleStillingsprosentVsaAfpChange = () => {
+    setValidationErrorStillingsprosentVsaAfp('')
   }
 
   const resetForm = (): void => {
@@ -512,13 +517,20 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
                 label={intl.formatMessage({
                   id: 'inntekt.stillingsprosent_vsa_afp.textfield.label',
                 })}
-                name="stillingsprosentVsaAfp"
+                name={AVANSERT_FORM_NAMES.stillingsprosentVsaAfp}
+                form={AVANSERT_FORM_NAMES.form}
+                data-testid={AVANSERT_FORM_NAMES.stillingsprosentVsaAfp}
                 className={styles.select}
                 defaultValue=""
+                onChange={handleStillingsprosentVsaAfpChange}
                 error={
                   validationErrors[AVANSERT_FORM_NAMES.stillingsprosentVsaAfp]
-                    ? 'test'
-                    : undefined
+                    ? intl.formatMessage({
+                        id: validationErrors[
+                          AVANSERT_FORM_NAMES.stillingsprosentVsaAfp
+                        ],
+                      })
+                    : ''
                 }
               >
                 <option disabled value="">

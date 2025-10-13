@@ -4,6 +4,7 @@ import * as alderUtils from '@/utils/alder'
 import * as inntektUtils from '@/utils/inntekt'
 
 import {
+  AVANSERT_FORM_NAMES,
   onAvansertBeregningSubmit,
   validateAvansertBeregningSkjema,
 } from '../utils'
@@ -375,6 +376,7 @@ describe('AvansertSkjema-utils', () => {
       afpInntektMaanedFoerUttakRadioFormData: null,
       inntektVsaAfpRadioFormData: null,
       inntektVsaAfpFormData: null,
+      stillingsprosentVsaAfpFormData: null,
     }
 
     const mockedFoedselsdato = '1963-04-30'
@@ -981,6 +983,58 @@ describe('AvansertSkjema-utils', () => {
       ).toBeFalsy()
       expect(validateInntektMock).toHaveBeenCalled()
       expect(updateErrorMessageMock).toHaveBeenCalled()
+    })
+
+    it('returnerer false når Kap19 AFP mangler stillingsprosent ved valgt inntekt', () => {
+      const updateErrorMessageMock = vi.fn()
+      expect(
+        validateAvansertBeregningSkjema(
+          {
+            ...correctInputData,
+            afpInntektMaanedFoerUttakRadioFormData: 'ja',
+            inntektVsaAfpRadioFormData: 'ja',
+            inntektVsaAfpFormData: '250000',
+            stillingsprosentVsaAfpFormData: '',
+          },
+          mockedFoedselsdato,
+          mockedNormertPensjonsalder,
+          mockedLoependeVedtak,
+          updateErrorMessageMock,
+          true
+        )
+      ).toBeFalsy()
+      expect(updateErrorMessageMock).toHaveBeenCalled()
+      const callback = updateErrorMessageMock.mock.calls[
+        updateErrorMessageMock.mock.calls.length - 1
+      ][0] as (prev: Record<string, string>) => Record<string, string>
+      expect(
+        callback({
+          [AVANSERT_FORM_NAMES.stillingsprosentVsaAfp]: '',
+        })
+      ).toMatchObject({
+        [AVANSERT_FORM_NAMES.stillingsprosentVsaAfp]: 'Test error message',
+      })
+    })
+
+    it('returnerer true når Kap19 AFP har stillingsprosent ved valgt inntekt', () => {
+      const updateErrorMessageMock = vi.fn()
+      expect(
+        validateAvansertBeregningSkjema(
+          {
+            ...correctInputData,
+            afpInntektMaanedFoerUttakRadioFormData: 'ja',
+            inntektVsaAfpRadioFormData: 'ja',
+            inntektVsaAfpFormData: '250000',
+            stillingsprosentVsaAfpFormData: '80',
+          },
+          mockedFoedselsdato,
+          mockedNormertPensjonsalder,
+          mockedLoependeVedtak,
+          updateErrorMessageMock,
+          true
+        )
+      ).toBeTruthy()
+      expect(updateErrorMessageMock).not.toHaveBeenCalled()
     })
   })
 })
