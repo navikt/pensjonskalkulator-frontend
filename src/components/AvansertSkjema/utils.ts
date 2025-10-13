@@ -44,6 +44,7 @@ export const AVANSERT_FORM_NAMES = {
   afpInntektMaanedFoerUttakRadio: 'afp-inntekt-maaned-foer-uttak-radio',
   inntektVsaAfpRadio: 'inntekt-vsa-afp-radio',
   inntektVsaAfp: 'inntekt-vsa-afp',
+  stillingsprosentVsaAfp: 'stillingsprosent-vsa-afp',
   uttaksgrad: 'uttaksgrad',
   uttaksalderGradertUttak: 'uttaksalder-gradert-uttak',
   uttaksalderHeltUttak: 'uttaksalder-helt-uttak',

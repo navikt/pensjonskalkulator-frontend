@@ -253,6 +253,7 @@ export const useFormValidationErrors = (initialValues: {
     [AVANSERT_FORM_NAMES.uttaksalderGradertUttak]: '',
     [AVANSERT_FORM_NAMES.inntektVsaGradertUttak]: '',
     [AVANSERT_FORM_NAMES.inntektVsaAfpRadio]: '',
+    [AVANSERT_FORM_NAMES.stillingsprosentVsaAfp]: '',
   })
 
   React.useEffect(() => {
@@ -368,6 +369,14 @@ export const useFormValidationErrors = (initialValues: {
           return {
             ...prevState,
             [AVANSERT_FORM_NAMES.inntektVsaAfp]: s,
+          }
+        })
+      },
+      setValidationErrorsStillingsprosentVsaAfp: (s: string) => {
+        setValidationErrors((prevState) => {
+          return {
+            ...prevState,
+            [AVANSERT_FORM_NAMES.stillingsprosentVsaAfp]: s,
           }
         })
       },
