@@ -917,6 +917,9 @@ describe('AvansertSkjema-hooks', () => {
       expect(result.current.validationErrors).toStrictEqual({
         'inntekt-vsa-afp-radio': '',
         'inntekt-vsa-gradert-uttak': '',
+        'stillingsprosent-vsa-afp': '',
+        'stillingsprosent-vsa-gradert-pensjon': '',
+        'stillingsprosent-vsa-hel-pensjon': '',
         'uttaksalder-gradert-uttak': '',
         'uttaksalder-helt-uttak': '',
       })
@@ -936,6 +939,9 @@ describe('AvansertSkjema-hooks', () => {
       expect(result.current.validationErrors).toStrictEqual({
         'inntekt-vsa-afp-radio': '',
         'inntekt-vsa-gradert-uttak': '',
+        'stillingsprosent-vsa-afp': '',
+        'stillingsprosent-vsa-gradert-pensjon': '',
+        'stillingsprosent-vsa-hel-pensjon': '',
         'uttaksalder-gradert-uttak': '',
         'uttaksalder-helt-uttak': '',
       })
@@ -966,6 +972,9 @@ describe('AvansertSkjema-hooks', () => {
       expect(result.current.validationErrors).toStrictEqual({
         'inntekt-vsa-afp-radio': '',
         'inntekt-vsa-gradert-uttak': '',
+        'stillingsprosent-vsa-afp': '',
+        'stillingsprosent-vsa-gradert-pensjon': '',
+        'stillingsprosent-vsa-hel-pensjon': '',
         'uttaksalder-gradert-uttak': '',
         'uttaksalder-helt-uttak': 'id1',
       })
@@ -976,6 +985,9 @@ describe('AvansertSkjema-hooks', () => {
       expect(result.current.validationErrors).toStrictEqual({
         'inntekt-vsa-afp-radio': '',
         'inntekt-vsa-gradert-uttak': '',
+        'stillingsprosent-vsa-afp': '',
+        'stillingsprosent-vsa-gradert-pensjon': '',
+        'stillingsprosent-vsa-hel-pensjon': '',
         'uttaksalder-gradert-uttak': 'id2',
         'uttaksalder-helt-uttak': 'id1',
       })
@@ -986,6 +998,9 @@ describe('AvansertSkjema-hooks', () => {
       expect(result.current.validationErrors).toStrictEqual({
         'inntekt-vsa-afp-radio': '',
         'inntekt-vsa-gradert-uttak': 'id3',
+        'stillingsprosent-vsa-afp': '',
+        'stillingsprosent-vsa-gradert-pensjon': '',
+        'stillingsprosent-vsa-hel-pensjon': '',
         'uttaksalder-gradert-uttak': 'id2',
         'uttaksalder-helt-uttak': 'id1',
       })
@@ -998,6 +1013,9 @@ describe('AvansertSkjema-hooks', () => {
       expect(result.current.validationErrors).toStrictEqual({
         'inntekt-vsa-afp-radio': '',
         'inntekt-vsa-gradert-uttak': 'id3',
+        'stillingsprosent-vsa-afp': '',
+        'stillingsprosent-vsa-gradert-pensjon': '',
+        'stillingsprosent-vsa-hel-pensjon': '',
         'uttaksalder-gradert-uttak': 'id2',
         'uttaksalder-helt-uttak': 'id4',
       })
@@ -1035,6 +1053,9 @@ describe('AvansertSkjema-hooks', () => {
       expect(result.current.validationErrors).toStrictEqual({
         'inntekt-vsa-afp': '',
         'inntekt-vsa-gradert-uttak': '',
+        'stillingsprosent-vsa-afp': '',
+        'stillingsprosent-vsa-gradert-pensjon': '',
+        'stillingsprosent-vsa-hel-pensjon': '',
         'uttaksalder-gradert-uttak': '',
         'uttaksalder-helt-uttak': '',
       })

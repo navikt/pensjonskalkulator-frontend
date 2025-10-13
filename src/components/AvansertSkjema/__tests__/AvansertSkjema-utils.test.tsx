@@ -35,6 +35,12 @@ describe('AvansertSkjema-utils', () => {
           return '0'
         case 'inntekt-vsa-gradert-uttak':
           return '100000'
+        case 'stillingsprosent-vsa-gradert-pensjon':
+          return '80'
+        case 'stillingsprosent-vsa-hel-pensjon':
+          return '100'
+        case 'stillingsprosent-vsa-afp':
+          return '80'
         default:
           return ''
       }
@@ -234,6 +240,12 @@ describe('AvansertSkjema-utils', () => {
               return '0'
             case 'inntekt-vsa-gradert-uttak':
               return null
+            case 'stillingsprosent-vsa-gradert-pensjon':
+              return ''
+            case 'stillingsprosent-vsa-hel-pensjon':
+              return '100'
+            case 'stillingsprosent-vsa-afp':
+              return ''
             default:
               return ''
           }
@@ -1011,7 +1023,7 @@ describe('AvansertSkjema-utils', () => {
         })
       ).toMatchObject({
         [AVANSERT_FORM_NAMES.stillingsprosentVsaGradertPensjon]:
-          'Test error message',
+          'inntekt.stillingsprosent_vsa_pensjon.validation_error',
       })
     })
 
@@ -1039,7 +1051,7 @@ describe('AvansertSkjema-utils', () => {
         })
       ).toMatchObject({
         [AVANSERT_FORM_NAMES.stillingsprosentVsaHelPensjon]:
-          'Test error message',
+          'inntekt.stillingsprosent_vsa_pensjon.validation_error',
       })
     })
 
@@ -1070,7 +1082,8 @@ describe('AvansertSkjema-utils', () => {
           [AVANSERT_FORM_NAMES.stillingsprosentVsaAfp]: '',
         })
       ).toMatchObject({
-        [AVANSERT_FORM_NAMES.stillingsprosentVsaAfp]: 'Test error message',
+        [AVANSERT_FORM_NAMES.stillingsprosentVsaAfp]:
+          'inntekt.stillingsprosent_vsa_afp.validation_error',
       })
     })
 
