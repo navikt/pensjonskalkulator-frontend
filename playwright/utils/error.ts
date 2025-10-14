@@ -5,7 +5,7 @@ export function handlePageError(error: unknown): void {
   }
 
   if (
-    error.message.includes('Amplitude') ||
+    error.message.includes('Analytics') ||
     error.stack?.includes(
       'representasjon-banner-frontend-borger-q2.ekstern.dev.nav.no'
     )
