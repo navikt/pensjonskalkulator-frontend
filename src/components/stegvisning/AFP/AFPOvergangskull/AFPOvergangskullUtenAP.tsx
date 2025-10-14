@@ -7,6 +7,7 @@ import { Card } from '@/components/common/Card'
 import { ReadMore } from '@/components/common/ReadMore'
 import { SanityReadmore } from '@/components/common/SanityReadmore'
 import { paths } from '@/router/constants'
+import { ALERT_VIST } from '@/utils/loggerConstants'
 import { logger } from '@/utils/logging'
 
 import Navigation from '../../Navigation/Navigation'
@@ -57,7 +58,7 @@ export function AFPOvergangskullUtenAP({
         id: 'stegvisning.afp.validation_error',
       })
       setValidationError((prev) => ({ ...prev, afp: errorMessage }))
-      logger('skjema validering feilet', {
+      logger('skjemavalidering feilet', {
         skjemanavn: STEGVISNING_FORM_NAMES.afp,
         data: intl.formatMessage({
           id: 'stegvisning.afp.radio_label',
@@ -72,7 +73,7 @@ export function AFPOvergangskullUtenAP({
         ...prev,
         skalBeregneAfp: errorMessage,
       }))
-      logger('skjema validering feilet', {
+      logger('skjemavalidering feilet', {
         skjemanavn: STEGVISNING_FORM_NAMES.afp,
         data: intl.formatMessage({
           id: 'stegvisning.afp.radio_label',
@@ -84,7 +85,9 @@ export function AFPOvergangskullUtenAP({
         tekst: 'Rett til AFP',
         valg: afpInput,
       })
-      logger('button klikk', {
+      // TODO: fjern når amplitude er ikke i bruk lenger
+      logger('button klikk', { tekst: `Neste fra ${paths.afp}` })
+      logger('knapp klikket', {
         tekst: `Neste fra ${paths.afp}`,
       })
 
@@ -109,7 +112,7 @@ export function AFPOvergangskullUtenAP({
     setShowVetIkkeAlert(value === 'vet_ikke')
     setJaAFPOffentlig(value === 'ja_offentlig')
     if (value === 'vet_ikke') {
-      logger('alert vist', {
+      logger(ALERT_VIST, {
         tekst: 'Rett til AFP: Vet ikke',
         variant: 'info',
       })
@@ -158,6 +161,7 @@ export function AFPOvergangskullUtenAP({
           afp={previousAfp}
           handleRadioChange={handleRadioChange}
           validationError={validationError.afp}
+          showApotekerAlert={false}
           showVetIkkeAlert={showVetIkkeAlert}
         />
 
@@ -168,6 +172,7 @@ export function AFPOvergangskullUtenAP({
               <FormattedMessage id="stegvisning.afp.overgangskullUtenAP.radio_label" />
             }
             name="skalBeregneAfp"
+            data-testid="afp-utregning-valg-radiogroup"
             defaultValue={previousAfpUtregningValg}
             onChange={() => setValidationError({ afp: '', skalBeregneAfp: '' })}
             error={validationError.skalBeregneAfp}

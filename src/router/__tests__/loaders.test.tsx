@@ -64,6 +64,10 @@ export function createMockRequest(
 }
 
 describe('Loaders', () => {
+  beforeEach(() => {
+    sessionStorage.clear()
+  })
+
   afterEach(() => {
     store.dispatch(apiSliceUtils.apiSlice.util.resetApiState())
   })
@@ -100,6 +104,30 @@ describe('Loaders', () => {
       const returnedFromLoader = directAccessGuard()
       expect(returnedFromLoader).toBeUndefined()
     })
+
+    it('returnerer ingenting når sanity-timeout query parameter er satt', async () => {
+      const originalLocation = window.location
+      const mockLocation = new URL('https://example.com?sanity-timeout=1')
+      Object.defineProperty(window, 'location', {
+        writable: true,
+        value: mockLocation,
+      })
+
+      const mockedState = {
+        api: { queries: {} },
+        userInput: { ...userInputInitialState, samtykke: null },
+      }
+      store.getState = vi.fn().mockImplementation(() => mockedState)
+
+      const returnedFromLoader = directAccessGuard()
+
+      expect(returnedFromLoader).toBeUndefined()
+
+      Object.defineProperty(window, 'location', {
+        writable: true,
+        value: originalLocation,
+      })
+    })
   })
 
   describe('authenticationGuard', () => {
@@ -116,7 +144,7 @@ describe('Loaders', () => {
     it('returnerer person og loependeVedtak', async () => {
       store.getState = vi.fn().mockImplementation(() => ({
         userInput: { ...userInputInitialState },
-        session: { isLoggedIn: false },
+        session: { isLoggedIn: false, hasErApotekerError: false },
       }))
 
       const returnedFromLoader = await stepStartAccessGuard()
@@ -133,7 +161,7 @@ describe('Loaders', () => {
       mockErrorResponse('/v4/vedtak/loepende-vedtak')
 
       store.getState = vi.fn().mockImplementation(() => ({
-        session: { isLoggedIn: true },
+        session: { isLoggedIn: true, hasErApotekerError: false },
         userInput: { ...userInputInitialState },
       }))
 
@@ -149,7 +177,7 @@ describe('Loaders', () => {
       })
 
       store.getState = vi.fn().mockImplementation(() => ({
-        session: { isLoggedIn: true },
+        session: { isLoggedIn: true, hasErApotekerError: false },
         userInput: { ...userInputInitialState },
       }))
 
@@ -165,7 +193,7 @@ describe('Loaders', () => {
       })
 
       store.getState = vi.fn().mockImplementation(() => ({
-        session: { isLoggedIn: true },
+        session: { isLoggedIn: true, hasErApotekerError: false },
         userInput: { ...userInputInitialState },
       }))
 
@@ -181,7 +209,7 @@ describe('Loaders', () => {
       })
 
       store.getState = vi.fn().mockImplementation(() => ({
-        session: { isLoggedIn: true },
+        session: { isLoggedIn: true, hasErApotekerError: false },
         userInput: { ...userInputInitialState },
       }))
 
@@ -194,7 +222,7 @@ describe('Loaders', () => {
       })
 
       store.getState = vi.fn().mockImplementation(() => ({
-        session: { isLoggedIn: true },
+        session: { isLoggedIn: true, hasErApotekerError: false },
         userInput: { ...userInputInitialState },
       }))
 
@@ -781,34 +809,6 @@ describe('Loaders', () => {
 
       const returnedFromLoader = stepAFPAccessGuard(createMockRequest())
       await expect(returnedFromLoader).resolves.not.toThrow()
-    })
-
-    it('Gitt at getApotekerStatus har tidligere feilet og at den feiler igjen ved nytt kall, loader kaster feil', async () => {
-      mockErrorResponse('/v1/er-apoteker')
-
-      const mockedState = {
-        api: {
-          queries: {
-            ...fulfilledGetLoependeVedtak0Ufoeregrad,
-            ['getApotekerStatus(undefined)']: {
-              status: 'rejected',
-              endpointName: 'getApotekerStatus',
-              requestId: 't1wLPiRKrfe_vchftk8s8',
-              error: {
-                status: 'FETCH_ERROR',
-                error: 'TypeError: Failed to fetch',
-              },
-              startedTimeStamp: 1714725797072,
-              fulfilledTimeStamp: 1714725797669,
-            },
-          },
-        },
-        userInput: { ...userInputInitialState },
-      }
-      store.getState = vi.fn().mockImplementation(() => mockedState)
-
-      const returnedFromLoader = stepAFPAccessGuard(createMockRequest())
-      await expect(returnedFromLoader).rejects.toThrow()
     })
   })
 

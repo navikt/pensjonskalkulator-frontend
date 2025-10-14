@@ -1,4 +1,8 @@
 import 'cypress-axe'
+import './apoteker-utils'
+import './person-utils'
+import './loepende-vedtak-utils'
+import './pensjonsavtaler-utils'
 
 import { userInputActions } from '../../src/state/userInput/userInputSlice'
 
@@ -96,9 +100,9 @@ beforeEach(() => {
     { fixture: 'decorator-env-features.json' }
   ).as('getDecoratorEnvFeatures')
 
-  cy.intercept('POST', 'https://amplitude.nav.no/collect-auto', {
+  cy.intercept('POST', 'https://umami.nav.no/api/send', {
     statusCode: 200,
-  }).as('amplitudeCollect')
+  }).as('umamiCollect')
 
   cy.intercept('GET', '/pensjon/kalkulator/oauth2/session', {
     statusCode: 200,
@@ -266,8 +270,8 @@ Cypress.Commands.add('fillOutStegvisning', (args) => {
 })
 
 Cypress.on('uncaught:exception', (err) => {
-  if (err.message.includes('Amplitude')) {
-    // prevents Amplitude errors to fail tests
+  if (err.message.includes('Analytics')) {
+    // prevents Analytics errors to fail tests
     return false
   } else if (
     err.stack?.includes(

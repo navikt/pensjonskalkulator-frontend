@@ -28,6 +28,7 @@ const ignoredFiles = [
   'public/src/nais.js',
   'scripts/FetchLandListe.js',
   'sanity.cli.ts',
+  'sanity.config.ts',
   'src/translations/**',
 ]
 
@@ -105,6 +106,10 @@ export default [
       '**/*.test.tsx',
       '**/__tests__/**/*.ts',
       '**/__tests__/**/*.tsx',
+      '**/cypress/**/*.ts',
+      '**/cypress/**/*.tsx',
+      '**/*.cy.ts',
+      '**/*.cy.tsx',
     ],
     rules: {
       '@typescript-eslint/ban-ts-comment': 'off', // Fjern når @ts-ignore ikke lenger er i bruk i testkode

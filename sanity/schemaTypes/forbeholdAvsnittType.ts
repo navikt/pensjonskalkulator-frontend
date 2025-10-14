@@ -1,18 +1,18 @@
-import { HelpCircleIcon } from '@sanity/icons'
+import { BookIcon } from '@sanity/icons'
 import { defineField, defineType } from 'sanity'
 
+import { supportedLanguages } from '../supportedLanguages'
 import {
   innholdField,
   languageField,
   nameField,
   overskriftField,
 } from './common/commonSchemaTypes'
-import { supportedLanguages } from './supportedLanguages'
 
-export const guidePanelType = defineType({
-  name: 'guidepanel',
-  title: 'GuidePanel',
-  icon: HelpCircleIcon,
+export const forbeholdAvsnittType = defineType({
+  name: 'forbeholdAvsnitt',
+  title: 'ForbeholdAvsnitt',
+  icon: BookIcon,
   type: 'document',
   preview: {
     select: {
@@ -35,8 +35,16 @@ export const guidePanelType = defineType({
     nameField,
     defineField({
       ...overskriftField,
-      description: 'Valgfri overskrift',
+      description: 'Overskrift til avsnittet',
     }),
-    innholdField,
+    defineField({
+      name: 'order',
+      type: 'number',
+      description: 'Rekkefølge på avsnittet',
+    }),
+    defineField({
+      ...innholdField,
+      description: 'Selve avsnittet.',
+    }),
   ],
 })

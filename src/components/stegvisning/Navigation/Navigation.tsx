@@ -28,7 +28,7 @@ export default function Navigation({
         type="button"
         variant="secondary"
         data-testid="stegvisning-tilbake-button"
-        onClick={wrapLogger('button klikk', {
+        onClick={wrapLogger('knapp klikket', {
           tekst: `Tilbake fra ${pathname}`,
         })(onPrevious)}
       >
@@ -40,7 +40,7 @@ export default function Navigation({
           type="button"
           variant="tertiary"
           data-testid="stegvisning-avbryt-button"
-          onClick={wrapLogger('button klikk', { tekst: 'Avbryt' })(onCancel)}
+          onClick={wrapLogger('knapp klikket', { tekst: 'Avbryt' })(onCancel)}
         >
           <FormattedMessage id="stegvisning.avbryt" />
         </Button>
