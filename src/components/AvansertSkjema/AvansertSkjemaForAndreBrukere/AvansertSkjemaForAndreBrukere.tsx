@@ -373,24 +373,24 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
     )
   }
 
-const handleStillingsprosentVsaGradertPensjonChange = () => {
-  setValidationErrorStillingsprosentVsaGradertPensjon('')
-}
-
-const handleStillingsprosentVsaHelPensjonChange = () => {
-  setValidationErrorStillingsprosentVsaHelPensjon('')
-}
-
-useEffect(() => {
-  if (!skalValidereStillingsprosentVsaPensjon) {
+  const handleStillingsprosentVsaGradertPensjonChange = () => {
     setValidationErrorStillingsprosentVsaGradertPensjon('')
+  }
+
+  const handleStillingsprosentVsaHelPensjonChange = () => {
     setValidationErrorStillingsprosentVsaHelPensjon('')
   }
-}, [
-  skalValidereStillingsprosentVsaPensjon,
-  setValidationErrorStillingsprosentVsaGradertPensjon,
-  setValidationErrorStillingsprosentVsaHelPensjon,
-])
+
+  useEffect(() => {
+    if (!skalValidereStillingsprosentVsaPensjon) {
+      setValidationErrorStillingsprosentVsaGradertPensjon('')
+      setValidationErrorStillingsprosentVsaHelPensjon('')
+    }
+  }, [
+    skalValidereStillingsprosentVsaPensjon,
+    setValidationErrorStillingsprosentVsaGradertPensjon,
+    setValidationErrorStillingsprosentVsaHelPensjon,
+  ])
 
   const resetForm = (): void => {
     resetValidationErrors()
@@ -427,9 +427,7 @@ useEffect(() => {
                 vilkaarsproeving?.vilkaarErOppfylt === false,
               harAvansertSkjemaUnsavedChanges,
             },
-            {
-              skalValidereStillingsprosentVsaPensjon,
-            }
+            skalValidereStillingsprosentVsaPensjon
           )
         }}
       />
@@ -722,52 +720,50 @@ useEffect(() => {
                       }
                     />
                     {skalValidereStillingsprosentVsaPensjon && (
-                        <Select
-                          label={intl.formatMessage(
-                            {
-                              id: 'inntekt.stillingsprosent_vsa_pensjon.textfield.label',
-                            },
-                            { grad: localGradertUttak.grad }
-                          )}
-                          form={AVANSERT_FORM_NAMES.form}
-                          name={
-                            AVANSERT_FORM_NAMES.stillingsprosentVsaGradertPensjon
-                          }
-                          data-testid={
-                            AVANSERT_FORM_NAMES.stillingsprosentVsaGradertPensjon
-                          }
-                          className={styles.select}
-                          defaultValue=""
-                          onChange={
-                            handleStillingsprosentVsaGradertPensjonChange
-                          }
-                          error={
-                            validationErrors[
-                              AVANSERT_FORM_NAMES
-                                .stillingsprosentVsaGradertPensjon
-                            ]
-                              ? intl.formatMessage(
-                                  {
-                                    id: validationErrors[
-                                      AVANSERT_FORM_NAMES
-                                        .stillingsprosentVsaGradertPensjon
-                                    ],
-                                  },
-                                  { grad: localGradertUttak.grad }
-                                )
-                              : ''
-                          }
-                        >
-                          <option disabled value="">
-                            {' '}
-                          </option>
-                          {[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map(
-                            (p) => (
-                              <option key={p} value={p}>{`${p} %`}</option>
-                            )
-                          )}
-                        </Select>
-                      )}
+                      <Select
+                        label={intl.formatMessage(
+                          {
+                            id: 'inntekt.stillingsprosent_vsa_pensjon.textfield.label',
+                          },
+                          { grad: localGradertUttak.grad }
+                        )}
+                        form={AVANSERT_FORM_NAMES.form}
+                        name={
+                          AVANSERT_FORM_NAMES.stillingsprosentVsaGradertPensjon
+                        }
+                        data-testid={
+                          AVANSERT_FORM_NAMES.stillingsprosentVsaGradertPensjon
+                        }
+                        className={styles.select}
+                        defaultValue=""
+                        onChange={handleStillingsprosentVsaGradertPensjonChange}
+                        error={
+                          validationErrors[
+                            AVANSERT_FORM_NAMES
+                              .stillingsprosentVsaGradertPensjon
+                          ]
+                            ? intl.formatMessage(
+                                {
+                                  id: validationErrors[
+                                    AVANSERT_FORM_NAMES
+                                      .stillingsprosentVsaGradertPensjon
+                                  ],
+                                },
+                                { grad: localGradertUttak.grad }
+                              )
+                            : ''
+                        }
+                      >
+                        <option disabled value="">
+                          {' '}
+                        </option>
+                        {[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map(
+                          (p) => (
+                            <option key={p} value={p}>{`${p} %`}</option>
+                          )
+                        )}
+                      </Select>
+                    )}
                   </>
                 )}
 

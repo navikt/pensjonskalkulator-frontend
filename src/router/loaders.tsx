@@ -1,6 +1,5 @@
 import { SerializedError } from '@reduxjs/toolkit'
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
-import { sk } from 'date-fns/locale'
 import { LoaderFunctionArgs, redirect } from 'react-router'
 
 import { getStepArrays } from '@/components/stegvisning/utils'
@@ -14,7 +13,6 @@ import {
   selectAfp,
   selectIsVeileder,
   selectSamtykke,
-  selectSamtykkeOffentligAFP,
   selectSkalBeregneAfpKap19,
   selectSkalBeregneKunAlderspensjon,
 } from '@/state/userInput/selectors'
