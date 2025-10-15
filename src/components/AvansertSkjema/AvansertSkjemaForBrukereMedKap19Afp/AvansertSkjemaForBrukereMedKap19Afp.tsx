@@ -243,11 +243,8 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
                 vilkaarsproeving?.vilkaarErOppfylt === false,
               harAvansertSkjemaUnsavedChanges,
             },
-            {
-              isKap19Afp: true,
-              skalValidereStillingsprosentVsaPensjon:
-                samtykkePensjonsavtaler === true,
-            }
+            true,
+            samtykkePensjonsavtaler === true
           )
         }}
       />

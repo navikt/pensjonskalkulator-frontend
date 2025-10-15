@@ -714,16 +714,9 @@ export const onAvansertBeregningSubmit = (
     hasVilkaarIkkeOppfylt: boolean | undefined
     harAvansertSkjemaUnsavedChanges: boolean
   },
-  options: {
-    isKap19Afp?: boolean
-    skalValidereStillingsprosentVsaPensjon?: boolean
-  } = {}
+  isKap19Afp?: boolean,
+  skalValidereStillingsprosentVsaPensjon?: boolean
 ): void => {
-  const {
-    isKap19Afp = false,
-    skalValidereStillingsprosentVsaPensjon = true,
-  } = options
-
   const {
     foedselsdato,
     normertPensjonsalder,
