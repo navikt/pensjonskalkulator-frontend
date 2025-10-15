@@ -70,8 +70,7 @@ describe('AvansertSkjema-utils', () => {
             aar: 67,
             maaneder: 0,
           },
-        },
-        false
+        }
       )
       expect(dispatchMock).not.toHaveBeenCalled()
       expect(gaaTilResultatMock).not.toHaveBeenCalled()
@@ -1053,6 +1052,44 @@ describe('AvansertSkjema-utils', () => {
         [AVANSERT_FORM_NAMES.stillingsprosentVsaHelPensjon]:
           'inntekt.stillingsprosent_vsa_pensjon.validation_error',
       })
+    })
+
+    it('returnerer true når stillingsprosent for helt uttak er skjult', () => {
+      const updateErrorMessageMock = vi.fn()
+      expect(
+        validateAvansertBeregningSkjema(
+          {
+            ...correctInputData,
+            stillingsprosentVsaHelPensjonFormData: '',
+          },
+          mockedFoedselsdato,
+          mockedNormertPensjonsalder,
+          mockedLoependeVedtak,
+          updateErrorMessageMock,
+          false,
+          false
+        )
+      ).toBeTruthy()
+      expect(updateErrorMessageMock).not.toHaveBeenCalled()
+    })
+
+    it('returnerer true når stillingsprosent for gradert uttak er skjult', () => {
+      const updateErrorMessageMock = vi.fn()
+      expect(
+        validateAvansertBeregningSkjema(
+          {
+            ...correctInputData,
+            stillingsprosentVsaGradertPensjonFormData: '',
+          },
+          mockedFoedselsdato,
+          mockedNormertPensjonsalder,
+          mockedLoependeVedtak,
+          updateErrorMessageMock,
+          false,
+          false
+        )
+      ).toBeTruthy()
+      expect(updateErrorMessageMock).not.toHaveBeenCalled()
     })
 
     it('returnerer false når Kap19 AFP mangler stillingsprosent ved valgt inntekt', () => {
