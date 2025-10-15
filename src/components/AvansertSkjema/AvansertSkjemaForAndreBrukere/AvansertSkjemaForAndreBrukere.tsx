@@ -87,6 +87,10 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
     window.scrollTo(0, 0)
   }
 
+  const skalValidereStillingsprosentVsaPensjon = Boolean(
+    skalBeregneKunAlderspensjon && harSamtykketPensjonsavtaler === true
+  )
+
   const agePickerMinAlder = loependeVedtak.ufoeretrygd.grad
     ? normertPensjonsalder
     : getBrukerensAlderISluttenAvMaaneden(foedselsdato, nedreAldersgrense)
@@ -369,17 +373,24 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
     )
   }
 
-  const handleStillingsprosentVsaGradertPensjonChange = (
-    _event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setValidationErrorStillingsprosentVsaGradertPensjon('')
-  }
+const handleStillingsprosentVsaGradertPensjonChange = () => {
+  setValidationErrorStillingsprosentVsaGradertPensjon('')
+}
 
-  const handleStillingsprosentVsaHelPensjonChange = (
-    _event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
+const handleStillingsprosentVsaHelPensjonChange = () => {
+  setValidationErrorStillingsprosentVsaHelPensjon('')
+}
+
+useEffect(() => {
+  if (!skalValidereStillingsprosentVsaPensjon) {
+    setValidationErrorStillingsprosentVsaGradertPensjon('')
     setValidationErrorStillingsprosentVsaHelPensjon('')
   }
+}, [
+  skalValidereStillingsprosentVsaPensjon,
+  setValidationErrorStillingsprosentVsaGradertPensjon,
+  setValidationErrorStillingsprosentVsaHelPensjon,
+])
 
   const resetForm = (): void => {
     resetValidationErrors()
@@ -415,6 +426,9 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
               hasVilkaarIkkeOppfylt:
                 vilkaarsproeving?.vilkaarErOppfylt === false,
               harAvansertSkjemaUnsavedChanges,
+            },
+            {
+              skalValidereStillingsprosentVsaPensjon,
             }
           )
         }}
@@ -707,46 +721,53 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
                         localGradertUttak.aarligInntektVsaPensjonBeloep ?? ''
                       }
                     />
-                    <Select
-                      label={intl.formatMessage(
-                        {
-                          id: 'inntekt.stillingsprosent_vsa_pensjon.textfield.label',
-                        },
-                        { grad: localGradertUttak.grad }
-                      )}
-                      form={AVANSERT_FORM_NAMES.form}
-                      name={
-                        AVANSERT_FORM_NAMES.stillingsprosentVsaGradertPensjon
-                      }
-                      data-testid={
-                        AVANSERT_FORM_NAMES.stillingsprosentVsaGradertPensjon
-                      }
-                      className={styles.select}
-                      defaultValue=""
-                      onChange={handleStillingsprosentVsaGradertPensjonChange}
-                      error={
-                        validationErrors[
-                          AVANSERT_FORM_NAMES.stillingsprosentVsaGradertPensjon
-                        ]
-                          ? intl.formatMessage(
-                              {
-                                id: validationErrors[
-                                  AVANSERT_FORM_NAMES
-                                    .stillingsprosentVsaGradertPensjon
-                                ],
-                              },
-                              { grad: localGradertUttak.grad }
+                    {skalValidereStillingsprosentVsaPensjon && (
+                        <Select
+                          label={intl.formatMessage(
+                            {
+                              id: 'inntekt.stillingsprosent_vsa_pensjon.textfield.label',
+                            },
+                            { grad: localGradertUttak.grad }
+                          )}
+                          form={AVANSERT_FORM_NAMES.form}
+                          name={
+                            AVANSERT_FORM_NAMES.stillingsprosentVsaGradertPensjon
+                          }
+                          data-testid={
+                            AVANSERT_FORM_NAMES.stillingsprosentVsaGradertPensjon
+                          }
+                          className={styles.select}
+                          defaultValue=""
+                          onChange={
+                            handleStillingsprosentVsaGradertPensjonChange
+                          }
+                          error={
+                            validationErrors[
+                              AVANSERT_FORM_NAMES
+                                .stillingsprosentVsaGradertPensjon
+                            ]
+                              ? intl.formatMessage(
+                                  {
+                                    id: validationErrors[
+                                      AVANSERT_FORM_NAMES
+                                        .stillingsprosentVsaGradertPensjon
+                                    ],
+                                  },
+                                  { grad: localGradertUttak.grad }
+                                )
+                              : ''
+                          }
+                        >
+                          <option disabled value="">
+                            {' '}
+                          </option>
+                          {[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map(
+                            (p) => (
+                              <option key={p} value={p}>{`${p} %`}</option>
                             )
-                          : ''
-                      }
-                    >
-                      <option disabled value="">
-                        {' '}
-                      </option>
-                      {[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map((p) => (
-                        <option key={p} value={p}>{`${p} %`}</option>
-                      ))}
-                    </Select>
+                          )}
+                        </Select>
+                      )}
                   </>
                 )}
 
@@ -865,43 +886,46 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
                   value={localHeltUttak.aarligInntektVsaPensjon?.beloep ?? ''}
                 />
 
-                <Select
-                  label={intl.formatMessage(
-                    {
-                      id: 'inntekt.stillingsprosent_vsa_pensjon.textfield.label',
-                    },
-                    { grad: 100 }
-                  )}
-                  form={AVANSERT_FORM_NAMES.form}
-                  name={AVANSERT_FORM_NAMES.stillingsprosentVsaHelPensjon}
-                  data-testid={
-                    AVANSERT_FORM_NAMES.stillingsprosentVsaHelPensjon
-                  }
-                  className={styles.select}
-                  defaultValue=""
-                  onChange={handleStillingsprosentVsaHelPensjonChange}
-                  error={
-                    validationErrors[
+                {skalValidereStillingsprosentVsaPensjon && (
+                  <Select
+                    label={intl.formatMessage(
+                      {
+                        id: 'inntekt.stillingsprosent_vsa_pensjon.textfield.label',
+                      },
+                      { grad: 100 }
+                    )}
+                    form={AVANSERT_FORM_NAMES.form}
+                    name={AVANSERT_FORM_NAMES.stillingsprosentVsaHelPensjon}
+                    data-testid={
                       AVANSERT_FORM_NAMES.stillingsprosentVsaHelPensjon
-                    ]
-                      ? intl.formatMessage(
-                          {
-                            id: validationErrors[
-                              AVANSERT_FORM_NAMES.stillingsprosentVsaHelPensjon
-                            ],
-                          },
-                          { grad: 100 }
-                        )
-                      : ''
-                  }
-                >
-                  <option disabled value="">
-                    {' '}
-                  </option>
-                  {[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map((p) => (
-                    <option key={p} value={p}>{`${p} %`}</option>
-                  ))}
-                </Select>
+                    }
+                    className={styles.select}
+                    defaultValue=""
+                    onChange={handleStillingsprosentVsaHelPensjonChange}
+                    error={
+                      validationErrors[
+                        AVANSERT_FORM_NAMES.stillingsprosentVsaHelPensjon
+                      ]
+                        ? intl.formatMessage(
+                            {
+                              id: validationErrors[
+                                AVANSERT_FORM_NAMES
+                                  .stillingsprosentVsaHelPensjon
+                              ],
+                            },
+                            { grad: 100 }
+                          )
+                        : ''
+                    }
+                  >
+                    <option disabled value="">
+                      {' '}
+                    </option>
+                    {[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map((p) => (
+                      <option key={p} value={p}>{`${p} %`}</option>
+                    ))}
+                  </Select>
+                )}
 
                 <AgePicker
                   form={AVANSERT_FORM_NAMES.form}

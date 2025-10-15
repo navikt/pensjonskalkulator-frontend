@@ -230,7 +230,8 @@ export const validateAvansertBeregningSkjema = (
   updateValidationErrorMessage: React.Dispatch<
     React.SetStateAction<Record<string, string>>
   >,
-  validerKap19Afp: boolean = false
+  validerKap19Afp: boolean = false,
+  validerStillingsprosentVsaPensjon: boolean = true
 ) => {
   const {
     beregningsvalgFormData,
@@ -577,9 +578,10 @@ export const validateAvansertBeregningSkjema = (
     isValid = isValid && isInntektValid && isSluttAlderValid
 
     if (
-      !stillingsprosentVsaHelPensjonFormData ||
-      (typeof stillingsprosentVsaHelPensjonFormData === 'string' &&
-        stillingsprosentVsaHelPensjonFormData.trim() === '')
+      validerStillingsprosentVsaPensjon &&
+      (!stillingsprosentVsaHelPensjonFormData ||
+        (typeof stillingsprosentVsaHelPensjonFormData === 'string' &&
+          stillingsprosentVsaHelPensjonFormData.trim() === ''))
     ) {
       isValid = false
       updateValidationErrorMessage((prevState) => {
@@ -654,6 +656,7 @@ export const validateAvansertBeregningSkjema = (
   }
 
   if (
+    validerStillingsprosentVsaPensjon &&
     uttaksgradFormData !== '100 %' &&
     inntektVsaGradertUttakRadioFormData === 'ja' &&
     (!stillingsprosentVsaGradertPensjonFormData ||
@@ -711,8 +714,16 @@ export const onAvansertBeregningSubmit = (
     hasVilkaarIkkeOppfylt: boolean | undefined
     harAvansertSkjemaUnsavedChanges: boolean
   },
-  isKap19Afp: boolean = false
+  options: {
+    isKap19Afp?: boolean
+    skalValidereStillingsprosentVsaPensjon?: boolean
+  } = {}
 ): void => {
+  const {
+    isKap19Afp = false,
+    skalValidereStillingsprosentVsaPensjon = true,
+  } = options
+
   const {
     foedselsdato,
     normertPensjonsalder,
@@ -799,7 +810,8 @@ export const onAvansertBeregningSubmit = (
       normertPensjonsalder,
       loependeVedtak,
       setValidationErrors,
-      isKap19Afp
+      isKap19Afp,
+      skalValidereStillingsprosentVsaPensjon
     )
   ) {
     return
