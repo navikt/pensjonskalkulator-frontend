@@ -32,6 +32,7 @@ import {
   selectNedreAldersgrense,
   selectNormertPensjonsalder,
   selectSamtykke,
+  selectStillingsprosentVsaPensjon,
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
 import { getBrukerensAlderISluttenAvMaaneden } from '@/utils/alder'
@@ -84,6 +85,11 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
   const afpInntektMaanedFoerUttak = useAppSelector(
     selectAfpInntektMaanedFoerUttak
   )
+
+  const stillingsprosentVsaPensjon = useAppSelector(
+    selectStillingsprosentVsaPensjon
+  )
+
   const { harAvansertSkjemaUnsavedChanges } = React.useContext(BeregningContext)
 
   const gaaTilResultat = () => {
@@ -101,6 +107,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
     localGradertUttak,
     localHarInntektVsaGradertUttakRadio,
     localHarAfpInntektMaanedFoerUttakRadio,
+    localStillingsprosentVsaHelPensjon,
     handlers: {
       setLocalInntektFremTilUttak,
       setLocalHeltUttak,
@@ -108,6 +115,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
       setLocalHarInntektVsaHeltUttakRadio,
       setLocalHarInntektVsaGradertUttakRadio,
       setLocalHarAfpInntektMaanedFoerUttakRadio,
+      setLocalStillingsprosentVsaHelPensjon,
     },
   } = useFormLocalState({
     isEndring,
@@ -121,6 +129,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
     normertPensjonsalder,
     afpInntektMaanedFoerUttak,
     beregningsvalg: null,
+    stillingsprosentVsaHelPensjon: stillingsprosentVsaPensjon,
   })
 
   const {
@@ -204,8 +213,14 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
     )
   }
 
-  const handleStillingsprosentVsaAfpChange = () => {
+  const handleStillingsprosentVsaAfpChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     setValidationErrorStillingsprosentVsaAfp('')
+    setLocalStillingsprosentVsaHelPensjon(() => {
+      const value = e.target.value === '' ? undefined : Number(e.target.value)
+      return (value ?? 0) < 0 ? 0 : (value ?? 0) > 100 ? 100 : (value ?? 0)
+    })
   }
 
   const resetForm = (): void => {
@@ -522,6 +537,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
                   id: 'inntekt.stillingsprosent_vsa_afp.textfield.label',
                 })}
                 name={AVANSERT_FORM_NAMES.stillingsprosentVsaAfp}
+                value={localStillingsprosentVsaHelPensjon}
                 form={AVANSERT_FORM_NAMES.form}
                 data-testid={AVANSERT_FORM_NAMES.stillingsprosentVsaAfp}
                 className={styles.select}

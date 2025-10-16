@@ -23,6 +23,8 @@ export interface UserInputState {
   epsHarPensjon: boolean | null
   epsHarInntektOver2G: boolean | null
   afpInntektMaanedFoerUttak: boolean | null
+  stillingsprosentVsaPensjon?: number
+  stillingsprosentVsaGradertPensjon?: number
   currentSimulation: Simulation
   xAxis: string[]
 }
@@ -40,6 +42,8 @@ export const userInputInitialState: UserInputState = {
   epsHarInntektOver2G: null,
   epsHarPensjon: null,
   afpInntektMaanedFoerUttak: null,
+  stillingsprosentVsaPensjon: undefined,
+  stillingsprosentVsaGradertPensjon: undefined,
   currentSimulation: {
     beregningsvalg: null,
     uttaksalder: null,
@@ -100,6 +104,18 @@ export const userInputSlice = createSlice({
       action: PayloadAction<boolean | null>
     ) => {
       state.afpInntektMaanedFoerUttak = action.payload
+    },
+    setStillingsprosentVsaPensjon: (
+      state,
+      action: PayloadAction<number | undefined>
+    ) => {
+      state.stillingsprosentVsaPensjon = action.payload
+    },
+    setStillingsprosentVsaGradertPensjon: (
+      state,
+      action: PayloadAction<number | undefined>
+    ) => {
+      state.stillingsprosentVsaGradertPensjon = action.payload
     },
     setSivilstand: (
       state,
