@@ -8,47 +8,44 @@ declare global {
 }
 
 export async function login(page: Page) {
-  const personResponsePromise = page.waitForResponse(
-    (r) =>
-      r.request().method() === 'GET' &&
-      r.url().includes('/pensjon/kalkulator/api/v5/person') &&
-      r.ok()
-  )
-  const inntektResponsePromise = page.waitForResponse(
-    (r) =>
-      r.request().method() === 'GET' &&
-      r.url().includes('/pensjon/kalkulator/api/inntekt') &&
-      r.ok()
-  )
-  const omstillingsstoenadResponsePromise = page.waitForResponse(
-    (r) =>
-      r.request().method() === 'GET' &&
-      r
-        .url()
-        .includes(
-          '/pensjon/kalkulator/api/v1/loepende-omstillingsstoenad-eller-gjenlevendeytelse'
-        ) &&
-      r.ok()
-  )
-  const loependeVedtakResponsePromise = page.waitForResponse(
-    (r) =>
-      r.request().method() === 'GET' &&
-      r.url().includes('/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak') &&
-      r.ok()
-  )
-
   await page.goto('/pensjon/kalkulator/', { waitUntil: 'load' })
 
   const btn = page.getByTestId('landingside-enkel-kalkulator-button')
   await btn.waitFor({ state: 'visible' })
+  await btn.click()
 
   await Promise.all([
-    personResponsePromise,
-    inntektResponsePromise,
-    omstillingsstoenadResponsePromise,
-    loependeVedtakResponsePromise,
-    btn.click(),
+    page.waitForResponse(
+      (r) =>
+        r.request().method() === 'GET' &&
+        r.url().includes('/pensjon/kalkulator/api/v5/person') &&
+        r.ok()
+    ),
+    page.waitForResponse(
+      (r) =>
+        r.request().method() === 'GET' &&
+        r.url().includes('/pensjon/kalkulator/api/inntekt') &&
+        r.ok()
+    ),
+    page.waitForResponse(
+      (r) =>
+        r.request().method() === 'GET' &&
+        r
+          .url()
+          .includes(
+            '/pensjon/kalkulator/api/v1/loepende-omstillingsstoenad-eller-gjenlevendeytelse'
+          ) &&
+        r.ok()
+    ),
+    page.waitForResponse(
+      (r) =>
+        r.request().method() === 'GET' &&
+        r.url().includes('/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak') &&
+        r.ok()
+    ),
   ])
+
+  await page.waitForNavigation({ url: /\/start/ })
 }
 
 export async function fillOutStegvisning(
