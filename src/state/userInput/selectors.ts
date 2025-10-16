@@ -35,6 +35,14 @@ export const selectAfpInntektMaanedFoerUttak = (
   state: RootState
 ): boolean | null => state.userInput.afpInntektMaanedFoerUttak
 
+export const selectStillingsprosentVsaPensjon = (
+  state: RootState
+): number | undefined => state.userInput.stillingsprosentVsaPensjon
+
+export const selectStillingsprosentVsaGradertPensjon = (
+  state: RootState
+): number | undefined => state.userInput.stillingsprosentVsaGradertPensjon
+
 export const selectAfpUtregningValg = (state: RootState): AfpUtregningValg =>
   state.userInput.afpUtregningValg
 

@@ -23,6 +23,8 @@ import {
   selectNormertPensjonsalder,
   selectSamtykke,
   selectSkalBeregneKunAlderspensjon,
+  selectStillingsprosentVsaGradertPensjon,
+  selectStillingsprosentVsaPensjon,
 } from '@/state/userInput/selectors'
 import {
   UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP,
@@ -80,6 +82,12 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
     intl,
     normertPensjonsalder
   )
+  const stillingsprosentVsaHelPensjon = useAppSelector(
+    selectStillingsprosentVsaPensjon
+  )
+  const stillingsprosentVsaGradertPensjon = useAppSelector(
+    selectStillingsprosentVsaGradertPensjon
+  )
   const { harAvansertSkjemaUnsavedChanges } = React.useContext(BeregningContext)
 
   const gaaTilResultat = () => {
@@ -111,6 +119,8 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
     localHarInntektVsaHeltUttakRadio,
     localGradertUttak,
     localHarInntektVsaGradertUttakRadio,
+    localStillingsprosentVsaHelPensjon,
+    localStillingsprosentVsaGradertPensjon,
     minAlderInntektSluttAlder,
     muligeUttaksgrad,
     handlers: {
@@ -119,6 +129,8 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
       setLocalGradertUttak,
       setLocalHarInntektVsaHeltUttakRadio,
       setLocalHarInntektVsaGradertUttakRadio,
+      setLocalStillingsprosentVsaHelPensjon,
+      setLocalStillingsprosentVsaGradertPensjon,
     },
   } = useFormLocalState({
     isEndring,
@@ -132,6 +144,8 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
     afpInntektMaanedFoerUttak: null,
     normertPensjonsalder,
     beregningsvalg: null,
+    stillingsprosentVsaGradertPensjon,
+    stillingsprosentVsaHelPensjon,
   })
 
   const {
@@ -373,12 +387,22 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
     )
   }
 
-  const handleStillingsprosentVsaGradertPensjonChange = () => {
+  const handleStillingsprosentVsaGradertPensjonChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     setValidationErrorStillingsprosentVsaGradertPensjon('')
+    setLocalStillingsprosentVsaGradertPensjon(
+      e.target.value === '' ? undefined : Number(e.target.value)
+    )
   }
 
-  const handleStillingsprosentVsaHelPensjonChange = () => {
+  const handleStillingsprosentVsaHelPensjonChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     setValidationErrorStillingsprosentVsaHelPensjon('')
+    setLocalStillingsprosentVsaHelPensjon(
+      e.target.value === '' ? undefined : Number(e.target.value)
+    )
   }
 
   useEffect(() => {
@@ -730,6 +754,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
                           { grad: localGradertUttak.grad }
                         )}
                         form={AVANSERT_FORM_NAMES.form}
+                        value={localStillingsprosentVsaGradertPensjon}
                         name={
                           AVANSERT_FORM_NAMES.stillingsprosentVsaGradertPensjon
                         }
@@ -893,6 +918,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
                       { grad: 100 }
                     )}
                     form={AVANSERT_FORM_NAMES.form}
+                    value={localStillingsprosentVsaHelPensjon}
                     name={AVANSERT_FORM_NAMES.stillingsprosentVsaHelPensjon}
                     data-testid={
                       AVANSERT_FORM_NAMES.stillingsprosentVsaHelPensjon

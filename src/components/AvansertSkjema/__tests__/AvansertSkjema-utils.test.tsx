@@ -105,7 +105,7 @@ describe('AvansertSkjema-utils', () => {
           }
         )
 
-        expect(dispatchMock).toHaveBeenCalledTimes(5)
+        expect(dispatchMock).toHaveBeenCalledTimes(7)
         expect(dispatchMock).toHaveBeenNthCalledWith(1, {
           payload: {
             aar: 67,
@@ -172,7 +172,7 @@ describe('AvansertSkjema-utils', () => {
           { isKap19Afp: false }
         )
 
-        expect(dispatchMock).toHaveBeenCalledTimes(5)
+        expect(dispatchMock).toHaveBeenCalledTimes(7)
         expect(dispatchMock).toHaveBeenNthCalledWith(1, {
           payload: {
             aar: 67,
@@ -271,7 +271,7 @@ describe('AvansertSkjema-utils', () => {
           }
         )
 
-        expect(dispatchMock).toHaveBeenCalledTimes(5)
+        expect(dispatchMock).toHaveBeenCalledTimes(7)
         expect(dispatchMock).toHaveBeenNthCalledWith(1, {
           payload: {
             aar: 67,
@@ -330,7 +330,7 @@ describe('AvansertSkjema-utils', () => {
           }
         )
 
-        expect(dispatchMock).toHaveBeenCalledTimes(5)
+        expect(dispatchMock).toHaveBeenCalledTimes(7)
         expect(gaaTilResultatMock).not.toHaveBeenCalled()
         expect(setValidationErrorsMock).not.toHaveBeenCalled()
       })
@@ -363,7 +363,7 @@ describe('AvansertSkjema-utils', () => {
           }
         )
 
-        expect(dispatchMock).toHaveBeenCalledTimes(5)
+        expect(dispatchMock).toHaveBeenCalledTimes(7)
         expect(gaaTilResultatMock).toHaveBeenCalled()
         expect(setValidationErrorsMock).not.toHaveBeenCalled()
       })

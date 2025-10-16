@@ -18,6 +18,8 @@ export const useFormLocalState = (initialValues: {
   gradertUttaksperiode: GradertUttak | null
   normertPensjonsalder: Alder
   afpInntektMaanedFoerUttak: boolean | null
+  stillingsprosentVsaHelPensjon?: number
+  stillingsprosentVsaGradertPensjon?: number
   beregningsvalg: Beregningsvalg | null
 }) => {
   const {
@@ -30,6 +32,8 @@ export const useFormLocalState = (initialValues: {
     gradertUttaksperiode,
     normertPensjonsalder,
     afpInntektMaanedFoerUttak = null,
+    stillingsprosentVsaHelPensjon,
+    stillingsprosentVsaGradertPensjon,
     beregningsvalg,
   } = initialValues
 
@@ -43,6 +47,14 @@ export const useFormLocalState = (initialValues: {
     useState<boolean | null>(
       !uttaksalder ? null : aarligInntektVsaHelPensjon ? true : false
     )
+
+  const [localStillingsprosentVsaHelPensjon, setStillingsprosentVsaHelPensjon] =
+    useState<number | undefined>(stillingsprosentVsaHelPensjon)
+
+  const [
+    localStillingsprosentVsaGradertPensjon,
+    setStillingsprosentVsaGradertPensjon,
+  ] = useState<number | undefined>(stillingsprosentVsaGradertPensjon)
 
   const [
     localHarAfpInntektMaanedFoerUttakRadio,
@@ -160,6 +172,12 @@ export const useFormLocalState = (initialValues: {
     const hasAfpInntektMaanedFoerUttakChanged =
       afpInntektMaanedFoerUttak !== undefined &&
       localHarAfpInntektMaanedFoerUttakRadio !== afpInntektMaanedFoerUttak
+    const hasStillingsprosentVsaHelPensjonChanged =
+      (localStillingsprosentVsaHelPensjon ?? 0) !==
+      (stillingsprosentVsaHelPensjon ?? 0)
+    const hasStillingsprosentVsaGradertPensjonChanged =
+      (localStillingsprosentVsaGradertPensjon ?? 0) !==
+      (stillingsprosentVsaGradertPensjon ?? 0)
     const hasGradertUttaksalderChanged =
       JSON.stringify(localGradertUttak?.uttaksalder) !==
       JSON.stringify(gradertUttaksperiode?.uttaksalder)
@@ -187,7 +205,9 @@ export const useFormLocalState = (initialValues: {
       hasUttaksalderChanged ||
       hasAarligInntektBeloepVsaHelPensjonChanged ||
       hasAarligInntektSluttAlderVsaHelPensjonChanged ||
-      hasAfpInntektMaanedFoerUttakChanged
+      hasAfpInntektMaanedFoerUttakChanged ||
+      hasStillingsprosentVsaHelPensjonChanged ||
+      hasStillingsprosentVsaGradertPensjonChanged
 
     setHarAvansertSkjemaUnsavedChanges((previous) => {
       return previous !== updatedHasUnsavedChanges
@@ -206,6 +226,10 @@ export const useFormLocalState = (initialValues: {
     localHeltUttak,
     localHarAfpInntektMaanedFoerUttakRadio,
     afpInntektMaanedFoerUttak,
+    stillingsprosentVsaHelPensjon,
+    localStillingsprosentVsaHelPensjon,
+    localStillingsprosentVsaGradertPensjon,
+    stillingsprosentVsaGradertPensjon,
   ])
 
   const handlers = React.useMemo(
@@ -216,6 +240,9 @@ export const useFormLocalState = (initialValues: {
       setLocalHarInntektVsaHeltUttakRadio: setHarInntektVsaHeltUttakRadio,
       setLocalHarInntektVsaGradertUttakRadio: setHarInntektVsaGradertUttakRadio,
       setLocalBeregningsTypeRadio: setBeregningsTypeRadio,
+      setLocalStillingsprosentVsaHelPensjon: setStillingsprosentVsaHelPensjon,
+      setLocalStillingsprosentVsaGradertPensjon:
+        setStillingsprosentVsaGradertPensjon,
       ...(afpInntektMaanedFoerUttak !== undefined && {
         setLocalHarAfpInntektMaanedFoerUttakRadio:
           setHarAfpInntektMaanedFoerUttakRadio,
@@ -233,6 +260,8 @@ export const useFormLocalState = (initialValues: {
     ...(afpInntektMaanedFoerUttak !== undefined && {
       localHarAfpInntektMaanedFoerUttakRadio,
     }),
+    localStillingsprosentVsaHelPensjon,
+    localStillingsprosentVsaGradertPensjon,
     minAlderInntektSluttAlder,
     muligeUttaksgrad,
     handlers,

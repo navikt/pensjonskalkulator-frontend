@@ -778,9 +778,9 @@ export const onAvansertBeregningSubmit = (
   const stillingsprosentVsaGradertPensjonFormData = data.get(
     AVANSERT_FORM_NAMES.stillingsprosentVsaGradertPensjon
   )
-  const stillingsprosentVsaHelPensjonFormData = data.get(
-    AVANSERT_FORM_NAMES.stillingsprosentVsaHelPensjon
-  )
+  const stillingsprosentVsaHelPensjonFormData =
+    data.get(AVANSERT_FORM_NAMES.stillingsprosentVsaHelPensjon) ??
+    data.get(AVANSERT_FORM_NAMES.stillingsprosentVsaAfp)
   if (
     !validateAvansertBeregningSkjema(
       {
@@ -813,7 +813,6 @@ export const onAvansertBeregningSubmit = (
   ) {
     return
   }
-
   dispatch(
     userInputActions.setCurrentSimulationUttaksalder({
       aar: parseInt(heltUttakAarFormData as string, 10),
@@ -946,6 +945,22 @@ export const onAvansertBeregningSubmit = (
   dispatch(
     userInputActions.setCurrentSimulationAarligInntektFoerUttakBeloep(
       localInntektFremTilUttak
+    )
+  )
+
+  dispatch(
+    userInputActions.setStillingsprosentVsaGradertPensjon(
+      stillingsprosentVsaGradertPensjonFormData
+        ? parseInt(stillingsprosentVsaGradertPensjonFormData as string, 10)
+        : undefined
+    )
+  )
+
+  dispatch(
+    userInputActions.setStillingsprosentVsaPensjon(
+      stillingsprosentVsaHelPensjonFormData
+        ? parseInt(stillingsprosentVsaHelPensjonFormData as string, 10)
+        : undefined
     )
   )
 
