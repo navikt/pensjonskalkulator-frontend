@@ -1776,8 +1776,6 @@ describe('AvansertSkjemaForAndreBrukere', () => {
       }
     )
 
-    await user.click(screen.getByText('beregning.avansert.button.beregn'))
-
     await user.click(
       screen.getByTestId(`${AVANSERT_FORM_NAMES.inntektVsaHeltUttakRadio}-ja`)
     )
@@ -1787,7 +1785,7 @@ describe('AvansertSkjemaForAndreBrukere', () => {
     )
     await user.type(inputField, '123000')
 
-    await user.click(screen.getByText('beregning.avansert.button.beregn'))
+    await user.click(screen.getByTestId('beregn-pensjon'))
 
     const stillingsSelect = await screen.findByTestId(
       AVANSERT_FORM_NAMES.stillingsprosentVsaHelPensjon

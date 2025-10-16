@@ -714,8 +714,10 @@ export const onAvansertBeregningSubmit = (
     hasVilkaarIkkeOppfylt: boolean | undefined
     harAvansertSkjemaUnsavedChanges: boolean
   },
-  isKap19Afp?: boolean,
-  skalValidereStillingsprosentVsaPensjon?: boolean
+  options?: {
+    isKap19Afp?: boolean
+    skalValidereStillingsprosentVsaPensjon?: boolean
+  }
 ): void => {
   const {
     foedselsdato,
@@ -725,6 +727,8 @@ export const onAvansertBeregningSubmit = (
     hasVilkaarIkkeOppfylt,
     harAvansertSkjemaUnsavedChanges,
   } = previousData
+
+  const { isKap19Afp, skalValidereStillingsprosentVsaPensjon } = options || {}
 
   // TODO: Vurder å sende inn verdiene fra controlled state i stedet for direkte fra skjemaet, for bedre typer (kan unngå `as string` o.l.)
   const beregningsvalgFormData = data.get(
