@@ -427,7 +427,9 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
                 vilkaarsproeving?.vilkaarErOppfylt === false,
               harAvansertSkjemaUnsavedChanges,
             },
-            skalValidereStillingsprosentVsaPensjon
+            {
+              skalValidereStillingsprosentVsaPensjon,
+            }
           )
         }}
       />
