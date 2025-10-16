@@ -169,7 +169,7 @@ describe('AvansertSkjema-utils', () => {
               maaneder: 0,
             },
           },
-          false
+          { isKap19Afp: false }
         )
 
         expect(dispatchMock).toHaveBeenCalledTimes(5)
