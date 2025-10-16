@@ -18,8 +18,6 @@ const translations = {
     'For lavt sikkerhetsnivå – Pensjonskalkulator',
   'application.title.beregning': 'Beregning – Pensjonskalkulator',
   'application.title.forbehold': 'Forbehold – Pensjonskalkulator',
-  'application.title.henvisning.apotekerne':
-    'Henvisning apotekerne – Pensjonskalkulator',
   'application.title.personopplysninger':
     'Personopplysninger i enkel kalkulator – Pensjonskalkulator',
   'application.global.external_link': 'åpner i en ny fane',
@@ -70,9 +68,6 @@ const translations = {
     'Du kan bruke vår uinnloggede kalkulator. Den henter ikke inn eller lagrer noen opplysninger om deg. Du må finne og oppgi alle opplysningene selv. Kalkulatoren gir deg et estimat på alderspensjon fra folketrygden (Nav) og AFP (avtalefestet pensjon) i privat sektor. Hvis du mottar uføretrygd eller andre ytelser, tar vi ikke hensyn til dette i kalkulatoren. Du bør derfor bruke den innloggede kalkulatoren.',
   'landingsside.link.personopplysninger':
     'Personopplysninger som brukes i pensjonskalkulator',
-  'henvisning.detaljert_kalkulator': 'Detaljert pensjonskalkulator',
-  'henvisning.apotekerne.body':
-    'Siden du er medlem av Pensjonsordningen for apotekvirksomhet (POA), må du bruke detaljert pensjonskalkulator.',
   'stegvisning.radio_ja': 'Ja',
   'stegvisning.radio_nei': 'Nei',
   'stegvisning.neste': 'Neste',
@@ -84,7 +79,7 @@ const translations = {
   'stegvisning.tilbake_start.modal.bekreft': 'Gå tilbake til start',
   'stegvisning.tilbake_start.modal.avbryt': 'Avbryt',
   'stegvisning.fremtidigvedtak.alert':
-    'Du har vedtak om {grad} % alderspensjon fra {fom}. Du kan gjøre en ny beregning her frem til uttak.',
+    'Du har vedtak om {grad} % alderspensjon fra {fom}. Frem til denne datoen kan du gjøre en ny beregning av andre alternativer.',
   'stegvisning.start.title': 'Hei',
   'stegvisning.start.endring.ingress_1a': `Du har nå <strong>{grad} % alderspensjon</strong>{
       ufoeretrygd,  select,     0 {} other { og <strong>{ufoeretrygd} % uføretrygd</strong>}}{
@@ -435,7 +430,7 @@ const translations = {
   'beregning.avansert.rediger.inntekt_frem_til_endring.label':
     'Pensjonsgivende årsinntekt frem til endring',
   'beregning.avansert.rediger.inntekt_frem_til_uttak.description_ufoere':
-    'Uten uføretrygd og uførepensjon.',
+    'Uføretrygd og uførepensjon skal ikke være med.',
   'beregning.avansert.rediger.inntekt_frem_til_uttak.description':
     'kr per år før skatt',
   'beregning.avansert.rediger.pre2025_offentlig_afp.alert':
@@ -721,7 +716,7 @@ const translations = {
   'inntekt.endre_inntekt_modal.textfield.description':
     'Dagens kroneverdi før skatt',
   'inntekt.endre_inntekt_modal.textfield.description.ufoere':
-    'Ikke uføretrygd og uførepensjon. Dagens kroneverdi før skatt',
+    'Uføretrygd og uførepensjon skal ikke være med. Dagens kroneverdi før skatt.',
   'inntekt.endre_inntekt_modal.paragraph':
     'Når du oppdaterer inntekten, må du velge alder på nytt.',
   'inntekt.endre_inntekt_modal.textfield.validation_error.required':

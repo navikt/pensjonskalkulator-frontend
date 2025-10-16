@@ -16,6 +16,7 @@ import {
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
 import { formatUttaksalder } from '@/utils/alder'
+import { ALERT_VIST } from '@/utils/loggerConstants'
 import { logger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
 
@@ -57,6 +58,11 @@ export const VilkaarsproevingAlert = ({
   const altUttaksgrad = alternativ?.uttaksgrad
 
   if (withAFP) {
+    logger(ALERT_VIST, {
+      tekst: 'Beregning med AFP',
+      variant: 'warning',
+    })
+
     return (
       <Alert variant="warning">
         {alternativ ? (
@@ -160,6 +166,8 @@ export const VilkaarsproevingAlert = ({
                   dispatch(
                     userInputActions.setCurrentSimulationUttaksalder(null)
                   )
+                  // TODO: fjern når amplitude er ikke i bruk lenger
+                  logger('button klikk', { tekst: 'Grunnlag AFP: Gå til AFP' })
                   logger('knapp klikket', {
                     tekst: 'Grunnlag AFP: Gå til AFP',
                   })

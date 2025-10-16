@@ -37,6 +37,7 @@ import {
   formatInntekt,
   updateAndFormatInntektFromInputField,
 } from '@/utils/inntekt'
+import { ALERT_VIST } from '@/utils/loggerConstants'
 import { logger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
 
@@ -164,7 +165,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
     })
     setLocalHarAfpInntektMaanedFoerUttakRadio?.(s === 'ja')
     if (s === 'nei') {
-      logger('alert vist', {
+      logger(ALERT_VIST, {
         tekst: 'Beregning AFP: Ikke høy nok inntekt siste måned',
         variant: 'info',
       })
@@ -242,7 +243,11 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
         className={clsx(styles.container, styles.container__hasMobilePadding)}
       >
         <div className={styles.container_header}>
-          <Heading level="2" size="medium">
+          <Heading
+            level="2"
+            size="medium"
+            data-intl="beregning.avansert.rediger.afp_etterfulgt_av_ap.title"
+          >
             <FormattedMessage
               id="beregning.avansert.rediger.afp_etterfulgt_av_ap.title"
               values={{
@@ -386,6 +391,10 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
                                 null
                               )
                             )
+                            // TODO: fjern når amplitude er ikke i bruk lenger
+                            logger('button klikk', {
+                              tekst: 'Grunnlag AFP: Gå til AFP',
+                            })
                             logger('knapp klikket', {
                               tekst: 'Grunnlag AFP: Gå til AFP',
                             })

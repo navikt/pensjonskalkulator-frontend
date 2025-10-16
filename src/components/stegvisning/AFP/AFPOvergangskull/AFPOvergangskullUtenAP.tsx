@@ -7,6 +7,7 @@ import { Card } from '@/components/common/Card'
 import { ReadMore } from '@/components/common/ReadMore'
 import { SanityReadmore } from '@/components/common/SanityReadmore'
 import { paths } from '@/router/constants'
+import { ALERT_VIST } from '@/utils/loggerConstants'
 import { logger } from '@/utils/logging'
 
 import Navigation from '../../Navigation/Navigation'
@@ -84,6 +85,8 @@ export function AFPOvergangskullUtenAP({
         tekst: 'Rett til AFP',
         valg: afpInput,
       })
+      // TODO: fjern når amplitude er ikke i bruk lenger
+      logger('button klikk', { tekst: `Neste fra ${paths.afp}` })
       logger('knapp klikket', {
         tekst: `Neste fra ${paths.afp}`,
       })
@@ -109,7 +112,7 @@ export function AFPOvergangskullUtenAP({
     setShowVetIkkeAlert(value === 'vet_ikke')
     setJaAFPOffentlig(value === 'ja_offentlig')
     if (value === 'vet_ikke') {
-      logger('alert vist', {
+      logger(ALERT_VIST, {
         tekst: 'Rett til AFP: Vet ikke',
         variant: 'info',
       })
