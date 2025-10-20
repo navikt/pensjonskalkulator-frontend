@@ -231,7 +231,7 @@ export const validateAvansertBeregningSkjema = (
     React.SetStateAction<Record<string, string>>
   >,
   validerKap19Afp: boolean = false,
-  validerStillingsprosentVsaPensjon: boolean = true
+  validerStillingsprosentVsaPensjon: boolean = false
 ) => {
   const {
     beregningsvalgFormData,
@@ -579,9 +579,7 @@ export const validateAvansertBeregningSkjema = (
 
     if (
       validerStillingsprosentVsaPensjon &&
-      (!stillingsprosentVsaHelPensjonFormData ||
-        (typeof stillingsprosentVsaHelPensjonFormData === 'string' &&
-          stillingsprosentVsaHelPensjonFormData.trim() === ''))
+      !stillingsprosentVsaHelPensjonFormData
     ) {
       isValid = false
       updateValidationErrorMessage((prevState) => {
@@ -659,9 +657,7 @@ export const validateAvansertBeregningSkjema = (
     validerStillingsprosentVsaPensjon &&
     uttaksgradFormData !== '100 %' &&
     inntektVsaGradertUttakRadioFormData === 'ja' &&
-    (!stillingsprosentVsaGradertPensjonFormData ||
-      (typeof stillingsprosentVsaGradertPensjonFormData === 'string' &&
-        stillingsprosentVsaGradertPensjonFormData.trim() === ''))
+    !stillingsprosentVsaGradertPensjonFormData
   ) {
     isValid = false
     updateValidationErrorMessage((prevState) => {
@@ -952,15 +948,19 @@ export const onAvansertBeregningSubmit = (
     userInputActions.setStillingsprosentVsaGradertPensjon(
       stillingsprosentVsaGradertPensjonFormData
         ? parseInt(stillingsprosentVsaGradertPensjonFormData as string, 10)
-        : undefined
+        : null
     )
   )
 
   dispatch(
     userInputActions.setStillingsprosentVsaPensjon(
       stillingsprosentVsaHelPensjonFormData
-        ? parseInt(stillingsprosentVsaHelPensjonFormData as string, 10)
-        : undefined
+        ? parseInt(
+            (stillingsprosentVsaHelPensjonFormData ??
+              stillingsprosentVsaAfpFormData) as string,
+            10
+          )
+        : null
     )
   )
 

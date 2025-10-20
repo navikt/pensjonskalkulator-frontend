@@ -18,8 +18,8 @@ export const useFormLocalState = (initialValues: {
   gradertUttaksperiode: GradertUttak | null
   normertPensjonsalder: Alder
   afpInntektMaanedFoerUttak: boolean | null
-  stillingsprosentVsaHelPensjon?: number
-  stillingsprosentVsaGradertPensjon?: number
+  stillingsprosentVsaHelPensjon: number | null
+  stillingsprosentVsaGradertPensjon: number | null
   beregningsvalg: Beregningsvalg | null
 }) => {
   const {
@@ -49,12 +49,12 @@ export const useFormLocalState = (initialValues: {
     )
 
   const [localStillingsprosentVsaHelPensjon, setStillingsprosentVsaHelPensjon] =
-    useState<number | undefined>(stillingsprosentVsaHelPensjon)
+    useState<number | null>(stillingsprosentVsaHelPensjon)
 
   const [
     localStillingsprosentVsaGradertPensjon,
     setStillingsprosentVsaGradertPensjon,
-  ] = useState<number | undefined>(stillingsprosentVsaGradertPensjon)
+  ] = useState<number | null>(stillingsprosentVsaGradertPensjon)
 
   const [
     localHarAfpInntektMaanedFoerUttakRadio,

@@ -130,6 +130,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
     afpInntektMaanedFoerUttak,
     beregningsvalg: null,
     stillingsprosentVsaHelPensjon: stillingsprosentVsaPensjon,
+    stillingsprosentVsaGradertPensjon: null,
   })
 
   const {
@@ -195,6 +196,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
       }
     })
     setLocalHarInntektVsaGradertUttakRadio(s === 'ja')
+    if (s === 'nei') setLocalStillingsprosentVsaHelPensjon(null)
   }
 
   const handleInntektVsaGradertUttakChange = (
@@ -218,8 +220,17 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
   ) => {
     setValidationErrorStillingsprosentVsaAfp('')
     setLocalStillingsprosentVsaHelPensjon(() => {
-      const value = e.target.value === '' ? undefined : Number(e.target.value)
-      return (value ?? 0) < 0 ? 0 : (value ?? 0) > 100 ? 100 : (value ?? 0)
+      const value = e.target.value === '' ? null : Number(e.target.value)
+      if (value === null) {
+        return null
+      }
+      if (value < 0) {
+        return 0
+      }
+      if (value > 100) {
+        return 100
+      }
+      return value
     })
   }
 
@@ -233,6 +244,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
     setLocalHarInntektVsaGradertUttakRadio(null)
     setLocalHarInntektVsaHeltUttakRadio(null)
     setLocalHarAfpInntektMaanedFoerUttakRadio?.(null)
+    setLocalStillingsprosentVsaHelPensjon(null)
   }
 
   return (
@@ -526,7 +538,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
                   : undefined
               }
               onChange={handleInntektVsaGradertUttakChange}
-              value={localGradertUttak?.aarligInntektVsaPensjonBeloep}
+              value={localGradertUttak?.aarligInntektVsaPensjonBeloep ?? ''}
               aria-required="true"
             />
           )}
@@ -537,11 +549,10 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
                   id: 'inntekt.stillingsprosent_vsa_afp.textfield.label',
                 })}
                 name={AVANSERT_FORM_NAMES.stillingsprosentVsaAfp}
-                value={localStillingsprosentVsaHelPensjon}
+                value={localStillingsprosentVsaHelPensjon ?? ''}
                 form={AVANSERT_FORM_NAMES.form}
                 data-testid={AVANSERT_FORM_NAMES.stillingsprosentVsaAfp}
                 className={styles.select}
-                defaultValue=""
                 onChange={handleStillingsprosentVsaAfpChange}
                 error={
                   validationErrors[AVANSERT_FORM_NAMES.stillingsprosentVsaAfp]

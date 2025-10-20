@@ -281,6 +281,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
         grad: 100,
       })
       setLocalHarInntektVsaGradertUttakRadio(null)
+      setLocalStillingsprosentVsaGradertPensjon(null)
     } else {
       // if there was no gradert uttak from before, empty the value for helt
       if (localGradertUttak?.uttaksalder === undefined) {
@@ -319,6 +320,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
           aarligInntektVsaPensjon: undefined,
         }
       })
+      setLocalStillingsprosentVsaHelPensjon(null)
     }
   }
 
@@ -336,6 +338,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
           aarligInntektVsaPensjonBeloep: undefined,
         }
       })
+      setLocalStillingsprosentVsaGradertPensjon(null)
     }
   }
 
@@ -392,7 +395,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
   ) => {
     setValidationErrorStillingsprosentVsaGradertPensjon('')
     setLocalStillingsprosentVsaGradertPensjon(
-      e.target.value === '' ? undefined : Number(e.target.value)
+      e.target.value === '' ? null : Number(e.target.value)
     )
   }
 
@@ -401,7 +404,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
   ) => {
     setValidationErrorStillingsprosentVsaHelPensjon('')
     setLocalStillingsprosentVsaHelPensjon(
-      e.target.value === '' ? undefined : Number(e.target.value)
+      e.target.value === '' ? null : Number(e.target.value)
     )
   }
 
@@ -426,6 +429,8 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
     setLocalHarInntektVsaGradertUttakRadio(null)
     setLocalHarInntektVsaHeltUttakRadio(null)
     setShowPre2025OffentligAfpAlert(false)
+    setLocalStillingsprosentVsaGradertPensjon(null)
+    setLocalStillingsprosentVsaHelPensjon(null)
   }
 
   return (
@@ -754,7 +759,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
                           { grad: localGradertUttak.grad }
                         )}
                         form={AVANSERT_FORM_NAMES.form}
-                        value={localStillingsprosentVsaGradertPensjon}
+                        value={localStillingsprosentVsaGradertPensjon ?? ''}
                         name={
                           AVANSERT_FORM_NAMES.stillingsprosentVsaGradertPensjon
                         }
@@ -762,7 +767,6 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
                           AVANSERT_FORM_NAMES.stillingsprosentVsaGradertPensjon
                         }
                         className={styles.select}
-                        defaultValue=""
                         onChange={handleStillingsprosentVsaGradertPensjonChange}
                         error={
                           validationErrors[
@@ -918,13 +922,12 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
                       { grad: 100 }
                     )}
                     form={AVANSERT_FORM_NAMES.form}
-                    value={localStillingsprosentVsaHelPensjon}
+                    value={localStillingsprosentVsaHelPensjon ?? ''}
                     name={AVANSERT_FORM_NAMES.stillingsprosentVsaHelPensjon}
                     data-testid={
                       AVANSERT_FORM_NAMES.stillingsprosentVsaHelPensjon
                     }
                     className={styles.select}
-                    defaultValue=""
                     onChange={handleStillingsprosentVsaHelPensjonChange}
                     error={
                       validationErrors[
