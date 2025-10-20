@@ -1009,7 +1009,9 @@ describe('AvansertSkjema-utils', () => {
           mockedFoedselsdato,
           mockedNormertPensjonsalder,
           mockedLoependeVedtak,
-          updateErrorMessageMock
+          updateErrorMessageMock,
+          false,
+          true
         )
       ).toBeFalsy()
       expect(updateErrorMessageMock).toHaveBeenCalled()
@@ -1037,7 +1039,9 @@ describe('AvansertSkjema-utils', () => {
           mockedFoedselsdato,
           mockedNormertPensjonsalder,
           mockedLoependeVedtak,
-          updateErrorMessageMock
+          updateErrorMessageMock,
+          false,
+          true
         )
       ).toBeFalsy()
       expect(updateErrorMessageMock).toHaveBeenCalled()
@@ -1054,13 +1058,14 @@ describe('AvansertSkjema-utils', () => {
       })
     })
 
-    it('returnerer true når stillingsprosent for helt uttak er skjult', () => {
+    it('returnerer true når stillingsprosent for helt og gradert uttak er skjult', () => {
       const updateErrorMessageMock = vi.fn()
       expect(
         validateAvansertBeregningSkjema(
           {
             ...correctInputData,
             stillingsprosentVsaHelPensjonFormData: '',
+            stillingsprosentVsaGradertPensjonFormData: '',
           },
           mockedFoedselsdato,
           mockedNormertPensjonsalder,

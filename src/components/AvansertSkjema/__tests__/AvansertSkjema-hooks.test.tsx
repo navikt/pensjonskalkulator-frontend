@@ -34,6 +34,8 @@ describe('AvansertSkjema-hooks', () => {
       },
       normertPensjonsalder: { aar: 67, maaneder: 0 },
       afpInntektMaanedFoerUttak: null,
+      stillingsprosentVsaGradertPensjon: null,
+      stillingsprosentVsaHelPensjon: null,
     }
 
     const wrapper = ({ children }: { children: React.ReactNode }) => {
@@ -73,6 +75,8 @@ describe('AvansertSkjema-hooks', () => {
           normertPensjonsalder: { aar: 67, maaneder: 0 },
           afpInntektMaanedFoerUttak: null,
           beregningsvalg: null,
+          stillingsprosentVsaGradertPensjon: null,
+          stillingsprosentVsaHelPensjon: null,
         },
       })
 
