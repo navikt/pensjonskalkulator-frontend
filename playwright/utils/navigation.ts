@@ -1,4 +1,9 @@
 import { Page } from '@playwright/test'
+import { dirname, resolve } from 'path'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 declare global {
   interface Window {
@@ -12,40 +17,34 @@ export async function login(page: Page) {
 
   const btn = page.getByTestId('landingside-enkel-kalkulator-button')
   await btn.waitFor({ state: 'visible' })
+
+  await page.route('**/api/v5/person', (route) => {
+    route.fulfill({ path: resolve(__dirname, '../mocks/person.json') })
+  })
+
+  await page.route('**/api/inntekt', (route) => {
+    route.fulfill({ path: resolve(__dirname, '../mocks/inntekt.json') })
+  })
+
+  await page.route(
+    '**/api/v1/omstillingsstoenad-eller-gjenlevendeytelse',
+    (route) => {
+      route.fulfill({
+        path: resolve(
+          __dirname,
+          '../mocks/loepende-omstillingsstoenad-eller-gjenlevendeytelse.json'
+        ),
+      })
+    }
+  )
+
+  await page.route('**/api/v4/vedtak/loepende-vedtak', (route) => {
+    route.fulfill({ path: resolve(__dirname, '../mocks/loepende-vedtak.json') })
+  })
+
   await btn.click()
 
-  await Promise.all([
-    page.waitForResponse(
-      (r) =>
-        r.request().method() === 'GET' &&
-        r.url().includes('/pensjon/kalkulator/api/v5/person') &&
-        r.ok()
-    ),
-    page.waitForResponse(
-      (r) =>
-        r.request().method() === 'GET' &&
-        r.url().includes('/pensjon/kalkulator/api/inntekt') &&
-        r.ok()
-    ),
-    page.waitForResponse(
-      (r) =>
-        r.request().method() === 'GET' &&
-        r
-          .url()
-          .includes(
-            '/pensjon/kalkulator/api/v1/loepende-omstillingsstoenad-eller-gjenlevendeytelse'
-          ) &&
-        r.ok()
-    ),
-    page.waitForResponse(
-      (r) =>
-        r.request().method() === 'GET' &&
-        r.url().includes('/pensjon/kalkulator/api/v4/vedtak/loepende-vedtak') &&
-        r.ok()
-    ),
-  ])
-
-  await page.waitForNavigation({ url: /\/start/ })
+  await page.waitForURL(/\/start/)
 }
 
 export async function fillOutStegvisning(
