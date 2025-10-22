@@ -152,15 +152,15 @@ export async function setupInterceptions(
       jsonResponse: { active: false },
     },
     {
-      url: /g2by7q6m\.apicdn\.sanity\.io.*readmore/,
+      url: /^https?:\/\/g2by7q6m\.apicdn\.sanity\.io.*readmore/,
       mockName: 'sanity-readmore-data.json',
     },
     {
-      url: /g2by7q6m\.apicdn\.sanity\.io.*guidepanel/,
+      url: /^https?:\/\/g2by7q6m\.apicdn\.sanity\.io.*guidepanel/,
       mockName: 'sanity-guidepanel-data.json',
     },
     {
-      url: /g2by7q6m\.apicdn\.sanity\.io.*forbeholdAvsnitt/,
+      url: /^https?:\/\/g2by7q6m\.apicdn\.sanity\.io.*forbeholdAvsnitt/,
       mockName: 'sanity-forbehold-avsnitt-data.json',
     },
   ]
