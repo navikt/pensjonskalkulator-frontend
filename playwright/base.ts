@@ -1,8 +1,24 @@
-import { Page, test as baseTest, expect } from '@playwright/test'
+import { Page, test as baseTest } from '@playwright/test'
+import { authenticate } from 'utils/auth'
 
 import { loadHTMLMock, loadJSONMock } from './utils/mock'
 
-export { baseTest as test, expect }
+export { expect } from '@playwright/test'
+
+type TestOptions = {
+  autoAuth: boolean
+}
+
+export const test = baseTest.extend<TestOptions>({
+  autoAuth: [true, { option: true }],
+
+  page: async ({ page, autoAuth }, use) => {
+    if (autoAuth) {
+      await authenticate(page)
+    }
+    await use(page)
+  },
+})
 
 export type RouteDefinition = {
   url: RegExp | string
@@ -134,6 +150,18 @@ export async function setupInterceptions(
     {
       url: /^https?:\/\/api\.uxsignals\.com\/v2\/study\/id\/.*\/active/,
       jsonResponse: { active: false },
+    },
+    {
+      url: /g2by7q6m\.apicdn\.sanity\.io.*readmore/,
+      mockName: 'sanity-readmore-data.json',
+    },
+    {
+      url: /g2by7q6m\.apicdn\.sanity\.io.*guidepanel/,
+      mockName: 'sanity-guidepanel-data.json',
+    },
+    {
+      url: /g2by7q6m\.apicdn\.sanity\.io.*forbeholdAvsnitt/,
+      mockName: 'sanity-forbehold-avsnitt-data.json',
     },
   ]
 
