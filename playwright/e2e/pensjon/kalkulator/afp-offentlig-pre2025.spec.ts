@@ -1,5 +1,5 @@
 import { expect, test } from '../../../base'
-import { person, loependeVedtak } from '../../../utils/mocks'
+import { loependeVedtak, person } from '../../../utils/mocks'
 import { fillOutStegvisning } from '../../../utils/navigation'
 
 test.use({ autoAuth: false })
