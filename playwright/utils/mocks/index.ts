@@ -1,2 +1,6 @@
 export { person } from './person'
 export { alderspensjon } from './alderspensjon'
+export { inntekt } from './inntekt'
+export { apoteker } from './apoteker'
+export { ekskludert } from './ekskludert'
+export { loependeVedtak } from './loepende-vedtak'
