@@ -1,16 +1,17 @@
-import { expect, test } from '../../../base'
+import { test } from '../../../base'
+import { clickButton, expectElementVisible } from '../../../utils/form'
 
 test.describe('Språkvelger', () => {
   test('setter Norsk Bokmål som default språk i løsningen for innhold styrt av react-intl og Sanity', async ({
     page,
   }) => {
-    await expect(page.getByTestId('stegvisning-start-button')).toBeVisible()
-    await page.getByTestId('stegvisning-start-button').click()
+    await expectElementVisible(page, 'stegvisning-start-button')
+    await clickButton(page, 'stegvisning-start-button')
 
-    await expect(page.getByTestId('sivilstand-heading')).toBeVisible()
-    await page.getByTestId('stegvisning-neste-button').click()
+    await expectElementVisible(page, 'sivilstand-heading')
+    await clickButton(page, 'stegvisning-neste-button')
 
-    await expect(page.getByTestId('utenlandsopphold-heading')).toBeVisible()
-    await expect(page.getByTestId('hva_er_opphold_utenfor_norge')).toBeVisible()
+    await expectElementVisible(page, 'utenlandsopphold-heading')
+    await expectElementVisible(page, 'hva_er_opphold_utenfor_norge')
   })
 })
