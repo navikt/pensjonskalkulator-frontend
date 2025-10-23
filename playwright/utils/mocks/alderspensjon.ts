@@ -13,14 +13,20 @@ export const alderspensjon = async (
 ): Promise<RouteDefinition> => {
   const { preset, ...overrides } = options
 
-  let mockFileName = 'alderspensjon.json'
-  if (preset === 'endring') {
-    mockFileName = 'alderspensjon_endring.json'
-  } else if (preset === 'for_lite_trygdetid') {
-    mockFileName = 'alderspensjon_for_lite_trygdetid.json'
-  } else if (preset === 'med_afp_offentlig') {
-    mockFileName = 'alderspensjon_med_afp_offentlig.json'
+  const getMockFileName = (): string => {
+    switch (preset) {
+      case 'endring':
+        return 'alderspensjon_endring.json'
+      case 'for_lite_trygdetid':
+        return 'alderspensjon_for_lite_trygdetid.json'
+      case 'med_afp_offentlig':
+        return 'alderspensjon_med_afp_offentlig.json'
+      default:
+        return 'alderspensjon.json'
+    }
   }
+
+  const mockFileName = getMockFileName()
 
   const alderspensjonMock = (await loadJSONMock(
     mockFileName
