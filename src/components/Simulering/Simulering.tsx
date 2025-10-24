@@ -2,13 +2,20 @@ import clsx from 'clsx'
 import Highcharts, { SeriesColumnOptions, XAxisOptions } from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { useEffect, useRef, useState } from 'react'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 import { HandFingerIcon } from '@navikt/aksel-icons'
-import { BodyLong, BodyShort, Heading, HeadingProps } from '@navikt/ds-react'
+import {
+  BodyLong,
+  BodyShort,
+  Button,
+  Heading,
+  HeadingProps,
+} from '@navikt/ds-react'
 
 import { TabellVisning } from '@/components/TabellVisning'
 import {
+  useGetPersonQuery,
   useOffentligTpQuery,
   usePensjonsavtalerQuery,
 } from '@/state/api/apiSlice'
@@ -31,7 +38,10 @@ import {
   selectUfoeregrad,
   selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
+import { formatUttaksalder } from '@/utils/alder'
+import { formatInntekt } from '@/utils/inntekt'
 
+import { useTableData } from '../TabellVisning/hooks'
 import { MaanedsbeloepAvansertBeregning } from './MaanedsbeloepAvansertBeregning'
 import { SimuleringEndringBanner } from './SimuleringEndringBanner/SimuleringEndringBanner'
 import { SimuleringGrafNavigation } from './SimuleringGrafNavigation/SimuleringGrafNavigation'
@@ -180,7 +190,77 @@ export const Simulering = ({
     },
   })
 
+  const { data: person } = useGetPersonQuery()
   const isEnkel = visning === 'enkel'
+  const series = chartOptions.series as SeriesColumnOptions[]
+  const aarArray = (chartOptions?.xAxis as XAxisOptions).categories
+  const tableData = useTableData(series, aarArray)
+  const intl = useIntl()
+
+  function generateHtmlTable(): string {
+    const uttakstidspunkt = uttaksalder && formatUttaksalder(intl, uttaksalder)
+    let html = `<h3>Uttakstidspunkt: ${uttakstidspunkt} </h3>
+    <h4>Årlig inntekt og pensjon</h4>
+    <h6>Estimert verdi i dagens verdi før skatt</h6>
+    <table><thead><tr>`
+    html += '<th>Alder</th><th>Sum (kr)</th>'
+    // Get all unique detail names for header
+    const detailNames = Array.from(
+      new Set(tableData.flatMap((row) => row.detaljer.map((d) => d.name)))
+    )
+    detailNames.forEach((name) => {
+      html += `<th>${name}</th>`
+    })
+    html += '</tr></thead><tbody>'
+
+    tableData.forEach((row) => {
+      html += `<tr><th>${row.alder}</th><td style="text-align: right;">${formatInntekt(row.sum)}</td>`
+      detailNames.forEach((name) => {
+        const detail = row.detaljer.find((d) => d.name === name)
+        const amount =
+          detail && detail.subSum
+            ? `${formatInntekt(detail.subSum).replace(/\u00A0/g, ' ')} kr`
+            : ''
+
+        html += `<td>${amount}</td>`
+      })
+      html += '</tr>'
+    })
+
+    html += '</tbody></table>'
+    return html
+  }
+
+  useEffect(() => {
+    window.addEventListener('beforeprint', () => {
+      handlePDF()
+    })
+    return () => {
+      window.removeEventListener('beforeprint', handlePDF)
+    }
+  })
+
+  const handlePDF = () => {
+    const header = `<h2>Pensjonskalkulator, <span style="font-weight: 200;">${isEnkel ? 'Enkel' : 'Avansert'} beregning</span></h2>`
+
+    const personalInfo = `<h6>${person?.navn}, ${foedselsdato}</h6>`
+    // Generate the HTML table as a string
+    const tableContent = generateHtmlTable()
+
+    const htmlContent = header + personalInfo + tableContent
+    // Set the print content in the hidden div
+    const pdfContentDiv = document.getElementById('print-content')
+    if (pdfContentDiv) {
+      pdfContentDiv.innerHTML = htmlContent
+    }
+    window.onafterprint = () => {
+      if (pdfContentDiv) {
+        pdfContentDiv.innerHTML = ''
+      }
+    }
+    // Trigger the print dialog
+    window.print()
+  }
 
   return (
     <section className={styles.section}>
@@ -227,6 +307,7 @@ export const Simulering = ({
             options={chartOptions}
           />
 
+          <Button onClick={handlePDF}>Last ned PDF</Button>
           {showButtonsAndTable && (
             <BodyShort
               size="small"
