@@ -1,11 +1,12 @@
 import { expect, test } from '../../../base'
+import { authenticate } from '../../../utils/auth'
+import { expectElementVisible } from '../../../utils/form'
 import { loependeVedtak, person } from '../../../utils/mocks'
 import { fillOutStegvisning } from '../../../utils/navigation'
 
 test.use({ autoAuth: false })
 
 test.beforeEach(async ({ page }) => {
-  const { authenticate } = await import('../../../utils/auth')
   await authenticate(page, [
     await person({ foedselsdato: '1960-01-01' }),
     await loependeVedtak({ pre2025OffentligAfp: { fom: '2024-08-01' } }),
