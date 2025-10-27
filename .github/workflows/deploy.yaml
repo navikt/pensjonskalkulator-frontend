@@ -71,7 +71,7 @@ jobs:
         run: npm run build:server
 
       - name: Save build folder
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: dist
           path: dist
@@ -124,7 +124,7 @@ jobs:
         run: npm run test
 
       - name: Archive code coverage results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: code-coverage-report
           path: coverage
@@ -186,7 +186,7 @@ jobs:
         run: npm run cy:test:production
 
       - name: Archive Cypress artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: failure()
         with:
           name: screenshots
