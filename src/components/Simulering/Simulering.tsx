@@ -47,6 +47,7 @@ import { SimuleringEndringBanner } from './SimuleringEndringBanner/SimuleringEnd
 import { SimuleringGrafNavigation } from './SimuleringGrafNavigation/SimuleringGrafNavigation'
 import { SimuleringPensjonsavtalerAlert } from './SimuleringPensjonsavtalerAlert/SimuleringPensjonsavtalerAlert'
 import { useSimuleringChartLocalState } from './hooks'
+import { navLogo } from './utils'
 
 import styles from './Simulering.module.scss'
 
@@ -199,9 +200,9 @@ export const Simulering = ({
 
   function generateHtmlTable(): string {
     const uttakstidspunkt = uttaksalder && formatUttaksalder(intl, uttaksalder)
-    let html = `<h3>Uttakstidspunkt: ${uttakstidspunkt} </h3>
-    <h4>Årlig inntekt og pensjon</h4>
-    <h6>Estimert verdi i dagens verdi før skatt</h6>
+    let html = `<h2>Uttakstidspunkt: ${uttakstidspunkt} </h2>
+    <h3>Årlig inntekt og pensjon</h3>
+    <div class="pdf-metadata">Estimert verdi i dagens verdi før skatt</div>
     <table><thead><tr>`
     html += '<th>Alder</th><th>Sum (kr)</th>'
     // Get all unique detail names for header
@@ -240,26 +241,65 @@ export const Simulering = ({
     }
   })
 
-  const handlePDF = () => {
-    const header = `<h2>Pensjonskalkulator, <span style="font-weight: 200;">${isEnkel ? 'Enkel' : 'Avansert'} beregning</span></h2>`
+  const isSafari = (): boolean => {
+    return /^((?!chrome|android).)*safari/i.test(window.navigator.userAgent)
+  }
 
-    const personalInfo = `<h6>${person?.navn}, ${foedselsdato}</h6>`
+  const handlePDF = () => {
+    const header = `
+  <table role='presentation' style='width: 100%; margin-bottom: 1em;'>
+    <tr class="header-with-logo">
+      <td style='width: 70%;'>
+        <h1>Pensjonskalkulator, <span style='font-weight: 200;'>${isEnkel ? 'Enkel' : 'Avansert'} beregning</span></h1>
+      </td>
+      <td style='text-align: right; width: 30%;'>
+        <span class='logoContainer' aria-label='NAV Logo'>
+          ${navLogo}
+        </span>
+      </td>
+    </tr>
+  </table>
+`
+
+    const personalInfo = `<div class="pdf-metadata">${person?.navn}, ${foedselsdato}</div>`
+
+    const forbeholdUrl = 'https://nav.no/pensjon/kalkulator/forbehold'
+    const strippedUrl = forbeholdUrl.replace(/^https?:\/\//, '')
+    const forbehold = `<div>
+      <p class="pdf-metadata">
+        <span style="font-weight: 200">Forbehold: </span> 
+        Pensjonen er beregnet med opplysningene vi har om deg og opplysningene du har oppgitt. Beregningen er gjort med gjeldende regelverk. Dette er et foreløpig estimat av hva du kan forvente deg i pensjon. Nav er ikke ansvarlig for beløpene som er hentet inn fra andre. 
+        <a class="pdfLink" data-href-stripped='${strippedUrl}' href='${forbeholdUrl}'
+        aria-label="${strippedUrl}">
+          Alle forbehold
+        </a>
+      </p>
+    </div>`
     // Generate the HTML table as a string
     const tableContent = generateHtmlTable()
 
-    const htmlContent = header + personalInfo + tableContent
+    const htmlContent = header + personalInfo + forbehold + tableContent
+
+    const documentTitle = document.title
     // Set the print content in the hidden div
     const pdfContentDiv = document.getElementById('print-content')
     if (pdfContentDiv) {
       pdfContentDiv.innerHTML = htmlContent
     }
+
+    document.title = ''
     window.onafterprint = () => {
       if (pdfContentDiv) {
         pdfContentDiv.innerHTML = ''
+        document.title = documentTitle
       }
     }
-    // Trigger the print dialog
-    window.print()
+
+    if (isSafari()) {
+      setTimeout(() => window.print(), 100)
+    } else {
+      window.print()
+    }
   }
 
   return (
