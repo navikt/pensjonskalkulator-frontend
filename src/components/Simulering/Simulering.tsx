@@ -38,8 +38,6 @@ import {
   selectUfoeregrad,
   selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
-import { formatUttaksalder } from '@/utils/alder'
-import { formatInntekt } from '@/utils/inntekt'
 
 import { useTableData } from '../TabellVisning/hooks'
 import { MaanedsbeloepAvansertBeregning } from './MaanedsbeloepAvansertBeregning'
@@ -47,7 +45,11 @@ import { SimuleringEndringBanner } from './SimuleringEndringBanner/SimuleringEnd
 import { SimuleringGrafNavigation } from './SimuleringGrafNavigation/SimuleringGrafNavigation'
 import { SimuleringPensjonsavtalerAlert } from './SimuleringPensjonsavtalerAlert/SimuleringPensjonsavtalerAlert'
 import { useSimuleringChartLocalState } from './hooks'
-import { navLogo } from './utils'
+import {
+  getChartTable,
+  getForbeholdAvsnitt,
+  getPdfHeadingWithLogo,
+} from './pdf-utils'
 
 import styles from './Simulering.module.scss'
 
@@ -196,41 +198,10 @@ export const Simulering = ({
   const series = chartOptions.series as SeriesColumnOptions[]
   const aarArray = (chartOptions?.xAxis as XAxisOptions).categories
   const tableData = useTableData(series, aarArray)
+
   const intl = useIntl()
-
-  function generateHtmlTable(): string {
-    const uttakstidspunkt = uttaksalder && formatUttaksalder(intl, uttaksalder)
-    let html = `<h2>Uttakstidspunkt: ${uttakstidspunkt} </h2>
-    <h3>Årlig inntekt og pensjon</h3>
-    <div class="pdf-metadata">Estimert verdi i dagens verdi før skatt</div>
-    <table><thead><tr>`
-    html += '<th>Alder</th><th>Sum (kr)</th>'
-    // Get all unique detail names for header
-    const detailNames = Array.from(
-      new Set(tableData.flatMap((row) => row.detaljer.map((d) => d.name)))
-    )
-    detailNames.forEach((name) => {
-      html += `<th>${name}</th>`
-    })
-    html += '</tr></thead><tbody>'
-
-    tableData.forEach((row) => {
-      html += `<tr><th>${row.alder}</th><td style="text-align: right;">${formatInntekt(row.sum)}</td>`
-      detailNames.forEach((name) => {
-        const detail = row.detaljer.find((d) => d.name === name)
-        const amount =
-          detail && detail.subSum
-            ? `${formatInntekt(detail.subSum).replace(/\u00A0/g, ' ')} kr`
-            : ''
-
-        html += `<td>${amount}</td>`
-      })
-      html += '</tr>'
-    })
-
-    html += '</tbody></table>'
-    return html
-  }
+  // const uttakstidspunkt = uttaksalder && formatUttaksalder(intl, uttaksalder)
+  // const html = `<h2>Uttakstidspunkt: ${uttakstidspunkt} </h2>
 
   useEffect(() => {
     window.addEventListener('beforeprint', () => {
@@ -246,51 +217,33 @@ export const Simulering = ({
   }
 
   const handlePDF = () => {
-    const header = `
-  <table role='presentation' style='width: 100%; margin-bottom: 1em;'>
-    <tr class="header-with-logo">
-      <td style='width: 70%;'>
-        <h1>Pensjonskalkulator, <span style='font-weight: 200;'>${isEnkel ? 'Enkel' : 'Avansert'} beregning</span></h1>
-      </td>
-      <td style='text-align: right; width: 30%;'>
-        <span class='logoContainer' aria-label='NAV Logo'>
-          ${navLogo}
-        </span>
-      </td>
-    </tr>
-  </table>
-`
+    const pdfHeadingWithLogo = getPdfHeadingWithLogo(isEnkel)
 
     const personalInfo = `<div class="pdf-metadata">${person?.navn}, ${foedselsdato}</div>`
 
-    const forbeholdUrl = 'https://nav.no/pensjon/kalkulator/forbehold'
-    const strippedUrl = forbeholdUrl.replace(/^https?:\/\//, '')
-    const forbehold = `<div>
-      <p class="pdf-metadata">
-        <span style="font-weight: 200">Forbehold: </span> 
-        Pensjonen er beregnet med opplysningene vi har om deg og opplysningene du har oppgitt. Beregningen er gjort med gjeldende regelverk. Dette er et foreløpig estimat av hva du kan forvente deg i pensjon. Nav er ikke ansvarlig for beløpene som er hentet inn fra andre. 
-        <a class="pdfLink" data-href-stripped='${strippedUrl}' href='${forbeholdUrl}'
-        aria-label="${strippedUrl}">
-          Alle forbehold
-        </a>
-      </p>
-    </div>`
-    // Generate the HTML table as a string
-    const tableContent = generateHtmlTable()
+    const forbeholdAvsnitt = getForbeholdAvsnitt(intl)
 
-    const htmlContent = header + personalInfo + forbehold + tableContent
+    const chartTableWithHeading = getChartTable({ tableData })
 
-    const documentTitle = document.title
+    const finalPdfContent =
+      pdfHeadingWithLogo +
+      personalInfo +
+      forbeholdAvsnitt +
+      chartTableWithHeading
+
     // Set the print content in the hidden div
-    const pdfContentDiv = document.getElementById('print-content')
-    if (pdfContentDiv) {
-      pdfContentDiv.innerHTML = htmlContent
+    const printContentDiv = document.getElementById('print-content')
+    if (printContentDiv) {
+      printContentDiv.innerHTML = finalPdfContent
     }
 
-    document.title = ''
+    const documentTitle = document.title
+    document.title = '' // Ikke vis document title i print/PDF
+
     window.onafterprint = () => {
-      if (pdfContentDiv) {
-        pdfContentDiv.innerHTML = ''
+      if (printContentDiv) {
+        // Reset to original content after printing
+        printContentDiv.innerHTML = ''
         document.title = documentTitle
       }
     }
