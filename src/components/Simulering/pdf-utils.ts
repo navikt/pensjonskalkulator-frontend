@@ -1,8 +1,21 @@
+import { format } from 'date-fns'
 import { IntlShape } from 'react-intl'
 
+import { DATE_ENDUSER_FORMAT } from '@/utils/dates'
 import { formatInntekt } from '@/utils/inntekt'
 
 import { TableDataRow } from '../TabellVisning/utils'
+import { AlderspensjonDetaljerListe } from './BeregningsdetaljerForOvergangskull/hooks'
+
+export const getCurrentDateTimeFormatted = (): string => {
+  const now = new Date()
+
+  const date = format(now, DATE_ENDUSER_FORMAT)
+  const hours = now.getHours().toString().padStart(2, '0')
+  const minutes = now.getMinutes().toString().padStart(2, '0')
+
+  return `${date}, kl. ${hours}.${minutes}`
+}
 
 const navLogoSVG = `
 <svg width="40" height="12" viewBox="0 0 40 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -36,31 +49,18 @@ export const getPdfLink = ({
 
   return `<a
         class="pdfLink" 
-        data-href-stripped='${strippedUrl}' 
-        href='${url}' 
-        aria-label="${strippedUrl}"
-        style="color: #0067C5 !important;">
+        data-href-stripped='${strippedUrl}'
+        aria-label='${url}'
+        href='${url}'>
         ${displayText}
-    </a>`
+    </a>
+    `
 }
 
-export function generateDetaljerHtmlTable(
-  title: string,
-  detaljer: { tekst: string; verdi: string }[]
+export function getDetaljerHtmlTable(
+  alderspensjonListe: AlderspensjonDetaljerListe[]
 ): string {
-  let html = `<h3>${title}</h3>`
-  html += '<table><tbody>'
-
-  detaljer.forEach((detalj, idx) => {
-    const isSumRow = idx === detaljer.length - 1
-    html += `<tr>
-      <td${isSumRow ? ' style="font-weight:bold;"' : ''}>${isSumRow ? `<strong>${detalj.tekst}:</strong>` : `${detalj.tekst}:`}</td>
-      <td${isSumRow ? ' style="font-weight:bold; text-align:right;"' : ' style="text-align:right;"'}>${isSumRow ? `<strong>${detalj.verdi}</strong>` : detalj.verdi}</td>
-    </tr>`
-  })
-
-  html += '</tbody></table>'
-  return html
+  return ''
 }
 
 export function getForbeholdAvsnitt(intl: IntlShape): string {
@@ -68,7 +68,7 @@ export function getForbeholdAvsnitt(intl: IntlShape): string {
 
   return `<div>
     <p class="pdf-metadata">
-      <span style="font-weight: 200">${intl.formatMessage({ id: 'grunnlag.forbehold.tittel' })}: </span>
+      <span style="font-weight: 200">${intl.formatMessage({ id: 'grunnlag.forbehold.title' })}: </span>
       ${intl.formatMessage({ id: 'grunnlag.forbehold.ingress_1' })}
       ${getPdfLink({ url: forbeholdUrl, displayText: intl.formatMessage({ id: 'grunnlag.forbehold.link' }) })}
     </p>
@@ -93,7 +93,7 @@ export function getChartTable({
   tableHtml += '</tr></thead><tbody>'
 
   tableData.forEach((row) => {
-    tableHtml += `<tr><th>${row.alder}</th><td style="text-align: right;">${formatInntekt(row.sum)}</td>`
+    tableHtml += `<tr><th>${row.alder}</th><td style="text-align: right;">${formatInntekt(row.sum).replace(/\u00A0/g, ' ')}</td>`
     detailNames.forEach((name) => {
       const detail = row.detaljer.find((d) => d.name === name)
       const amount =
@@ -101,7 +101,7 @@ export function getChartTable({
           ? `${formatInntekt(detail.subSum).replace(/\u00A0/g, ' ')} kr`
           : ''
 
-      tableHtml += `<td>${amount}</td>`
+      tableHtml += `<td>${amount.replace(/\u00A0/g, ' ')}</td>`
     })
     tableHtml += '</tr>'
   })

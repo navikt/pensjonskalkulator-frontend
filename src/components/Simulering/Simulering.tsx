@@ -16,6 +16,7 @@ import {
 import { TabellVisning } from '@/components/TabellVisning'
 import {
   useGetPersonQuery,
+  useGetShowDownloadPdfFeatureToggleQuery,
   useOffentligTpQuery,
   usePensjonsavtalerQuery,
 } from '@/state/api/apiSlice'
@@ -40,6 +41,7 @@ import {
 } from '@/state/userInput/selectors'
 
 import { useTableData } from '../TabellVisning/hooks'
+import { useBeregningsdetaljer } from './BeregningsdetaljerForOvergangskull/hooks'
 import { MaanedsbeloepAvansertBeregning } from './MaanedsbeloepAvansertBeregning'
 import { SimuleringEndringBanner } from './SimuleringEndringBanner/SimuleringEndringBanner'
 import { SimuleringGrafNavigation } from './SimuleringGrafNavigation/SimuleringGrafNavigation'
@@ -47,6 +49,8 @@ import { SimuleringPensjonsavtalerAlert } from './SimuleringPensjonsavtalerAlert
 import { useSimuleringChartLocalState } from './hooks'
 import {
   getChartTable,
+  getCurrentDateTimeFormatted,
+  getDetaljerHtmlTable,
   getForbeholdAvsnitt,
   getPdfHeadingWithLogo,
 } from './pdf-utils'
@@ -124,6 +128,7 @@ export const Simulering = ({
       skip: !pensjonsavtalerRequestBody || !harSamtykket || !uttaksalder,
     }
   )
+  const { data: showPDF } = useGetShowDownloadPdfFeatureToggleQuery()
 
   useEffect(() => {
     if (harSamtykket && uttaksalder) {
@@ -203,9 +208,18 @@ export const Simulering = ({
   // const uttakstidspunkt = uttaksalder && formatUttaksalder(intl, uttaksalder)
   // const html = `<h2>Uttakstidspunkt: ${uttakstidspunkt} </h2>
 
+  const { alderspensjonDetaljerListe } = useBeregningsdetaljer(
+    alderspensjonListe,
+    afpPrivatListe,
+    afpOffentligListe,
+    pre2025OffentligAfp
+  )
   useEffect(() => {
     window.addEventListener('beforeprint', () => {
-      handlePDF()
+      const locationUrl = window.location.href
+      if (locationUrl.includes('beregning') && showPDF?.enabled) {
+        handlePDF()
+      }
     })
     return () => {
       window.removeEventListener('beforeprint', handlePDF)
@@ -217,19 +231,38 @@ export const Simulering = ({
   }
 
   const handlePDF = () => {
+    const appContentElement = document.getElementById('app-content')
+    if (appContentElement) {
+      appContentElement.classList.add('hideAppContent')
+    }
+
+    const printContentElement = document.getElementById('print-content')
+    if (printContentElement) {
+      printContentElement.classList.add('showPrintContent')
+    }
     const pdfHeadingWithLogo = getPdfHeadingWithLogo(isEnkel)
 
-    const personalInfo = `<div class="pdf-metadata">${person?.navn}, ${foedselsdato}</div>`
+    const personalInfo = `<div 
+      class="pdf-metadata"
+    >
+      ${person?.navn}
+      <span 
+        style="padding: 0 8px; font-size: 16px; font-weight: 800;"
+      >\u2022</span>
+      Dato opprettet: ${getCurrentDateTimeFormatted()}
+    </div>`
 
     const forbeholdAvsnitt = getForbeholdAvsnitt(intl)
 
     const chartTableWithHeading = getChartTable({ tableData })
 
+    const detaljerTable = getDetaljerHtmlTable(alderspensjonDetaljerListe)
     const finalPdfContent =
       pdfHeadingWithLogo +
       personalInfo +
       forbeholdAvsnitt +
-      chartTableWithHeading
+      chartTableWithHeading +
+      detaljerTable
 
     // Set the print content in the hidden div
     const printContentDiv = document.getElementById('print-content')
@@ -238,7 +271,7 @@ export const Simulering = ({
     }
 
     const documentTitle = document.title
-    document.title = '' // Ikke vis document title i print/PDF
+    document.title = '' // Ikke vis document title i print preview/PDF
 
     window.onafterprint = () => {
       if (printContentDiv) {
@@ -300,7 +333,10 @@ export const Simulering = ({
             options={chartOptions}
           />
 
-          <Button onClick={handlePDF}>Last ned PDF</Button>
+          {showPDF?.enabled && (
+            <Button onClick={handlePDF}>Last ned PDF</Button>
+          )}
+
           {showButtonsAndTable && (
             <BodyShort
               size="small"
