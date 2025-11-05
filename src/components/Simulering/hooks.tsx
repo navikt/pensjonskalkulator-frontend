@@ -36,7 +36,6 @@ import { userInputActions } from '@/state/userInput/userInputSlice'
 import {
   getAlderMinus1Maaned,
   isAlderLikEllerOverAnnenAlder,
-  isAlderOver,
   transformFoedselsdatoToAlder,
 } from '@/utils/alder'
 import { formatInntektToNumber } from '@/utils/inntekt'

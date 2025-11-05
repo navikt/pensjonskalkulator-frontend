@@ -55,9 +55,11 @@ describe('AfpDetaljerGrunnlag', () => {
           { tekst: 'AFP grad', verdi: 100 },
           { tekst: 'Sluttpoengtall', verdi: 6.5 },
         ],
+        afpOffentligSpk: [],
       },
     ],
     alderspensjonColumnsCount: 2,
+    erOffentligTpFoer1963: false,
   }
 
   afterEach(() => {
@@ -133,9 +135,11 @@ describe('AfpDetaljerGrunnlag', () => {
           afpOffentlig: [],
           pre2025OffentligAfp: [],
           opptjeningPre2025OffentligAfp: [],
+          afpOffentligSpk: [],
         },
       ],
       alderspensjonColumnsCount: 0,
+      erOffentligTpFoer1963: false,
     }
 
     render(<AfpDetaljerGrunnlag {...minimalProps} />)
@@ -158,9 +162,11 @@ describe('AfpDetaljerGrunnlag', () => {
           afpOffentlig: [],
           pre2025OffentligAfp: [],
           opptjeningPre2025OffentligAfp: [],
+          afpOffentligSpk: [],
         },
       ],
       alderspensjonColumnsCount: 0,
+      erOffentligTpFoer1963: false,
     }
 
     render(<AfpDetaljerGrunnlag {...emptyProps} />)
@@ -192,11 +198,13 @@ describe('AfpDetaljerGrunnlag', () => {
         {
           afpPrivat: [{ tekst: 'Test AFP privat', verdi: '1000 kr' }],
           afpOffentlig: [],
+          afpOffentligSpk: [],
           pre2025OffentligAfp: [{ tekst: 'Test pre2025', verdi: 100 }],
           opptjeningPre2025OffentligAfp: [],
         },
       ],
       alderspensjonColumnsCount: 1,
+      erOffentligTpFoer1963: false,
     }
 
     render(<AfpDetaljerGrunnlag {...partialProps} />)

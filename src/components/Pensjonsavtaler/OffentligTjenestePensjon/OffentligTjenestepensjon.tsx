@@ -37,7 +37,7 @@ import styles from './OffentligTjenestepensjon.module.scss'
 export const OffentligTjenestepensjon = (props: {
   isLoading: boolean
   isError: boolean
-  erOffentligTpFoer1963: boolean
+  erOffentligTpFoer1963?: boolean
   offentligTp?: OffentligTp | OffentligTpFoer1963
   headingLevel: Exclude<HeadingProps['level'], undefined>
 }) => {
@@ -304,7 +304,7 @@ export const OffentligTjenestepensjon = (props: {
             </Table>
           )}
 
-          {!isOffentligTpFoer1963(erOffentligTpFoer1963, offentligTp) && (
+          {!isOffentligTpFoer1963(erOffentligTpFoer1963!, offentligTp) && (
             <BodyLong size="small">
               <FormattedMessage
                 id={getInfoOmAfpOgBetingetTjenestepensjon(

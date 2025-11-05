@@ -1,6 +1,5 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
-import { M } from 'vitest/dist/chunks/reporters.d.BFLkQcL6.js'
 
 import { Box, Heading, VStack } from '@navikt/ds-react'
 
@@ -8,7 +7,6 @@ import { useAppSelector } from '@/state/hooks'
 import { selectCurrentSimulation } from '@/state/userInput/selectors'
 import { getFormatMessageValues } from '@/utils/translations'
 
-import { useOffentligTpData } from '../hooks'
 import { AfpDetaljer } from './Felles/AfpDetaljer'
 import { AfpDetaljerListe } from './hooks'
 

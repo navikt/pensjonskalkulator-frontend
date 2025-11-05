@@ -2,11 +2,7 @@ import { useMemo } from 'react'
 
 import { useAppSelector } from '@/state/hooks'
 import { selectCurrentSimulation } from '@/state/userInput/selectors'
-import {
-  isAlderOver,
-  isAlderOver67,
-  isAlderOverAnnenAlder,
-} from '@/utils/alder'
+import { isAlderOverAnnenAlder } from '@/utils/alder'
 import { formatDecimalWithComma, formatInntekt } from '@/utils/inntekt'
 
 export interface DetaljRad {
