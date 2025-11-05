@@ -68,7 +68,17 @@ export const apiSlice = createApi({
       }),
       providesTags: ['OffentligTp'],
     }),
-
+    offentligTpFoer1963: builder.query<
+      OffentligTpFoer1963,
+      OffentligTpFoer1963RequestBody | void
+    >({
+      query: (body) => ({
+        url: '/v2/simuler-oftp/foer-1963',
+        method: 'POST',
+        body,
+      }),
+      providesTags: ['OffentligTp'],
+    }),
     tidligstMuligHeltUttak: builder.query<
       Alder,
       TidligstMuligHeltUttakRequestBody | void
@@ -140,6 +150,7 @@ export const {
   useGetOmstillingsstoenadOgGjenlevendeQuery,
   useGetLoependeVedtakQuery,
   useOffentligTpQuery,
+  useOffentligTpFoer1963Query,
   useTidligstMuligHeltUttakQuery,
   useAlderspensjonQuery,
   usePensjonsavtalerQuery,

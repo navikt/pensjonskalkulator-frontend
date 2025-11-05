@@ -165,5 +165,17 @@ function renderAfpDetaljer(afpDetaljForValgtUttak?: AfpDetaljerListe) {
     )
   }
 
+  // AFP fra SPK mellom 65 og 67 år
+  if (afpDetaljForValgtUttak.afpOffentligSpk) {
+    sections.push(
+      renderAfpSection({
+        key: 'afpFraSpk65Til67',
+        data: afpDetaljForValgtUttak.afpOffentligSpk,
+        titleId: 'beregning.detaljer.grunnpensjon.afp.table.title',
+        boldLastItem: true,
+      })
+    )
+  }
+
   return sections
 }

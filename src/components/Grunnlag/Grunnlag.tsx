@@ -41,6 +41,7 @@ import { AfpDetaljerGrunnlag } from '../Simulering/BeregningsdetaljerForOvergang
 import { AlderspensjonDetaljerGrunnlag } from '../Simulering/BeregningsdetaljerForOvergangskull/AlderspensjonDetaljerGrunnlag'
 import { useBeregningsdetaljer } from '../Simulering/BeregningsdetaljerForOvergangskull/hooks'
 import { Pensjonsgivendeinntekt } from '../Simulering/Pensjonsgivendeinntekt'
+import { useOffentligTpData } from '../Simulering/hooks'
 import { GrunnlagAFP } from './GrunnlagAFP'
 import { GrunnlagSection } from './GrunnlagSection'
 import { GrunnlagUtenlandsopphold } from './GrunnlagUtenlandsopphold'
@@ -97,13 +98,20 @@ export const Grunnlag: React.FC<Props> = ({
     [sivilstand]
   )
 
+  const { erOffentligTpFoer1963, erSpkBesteberegning, tpAfpPeriode } =
+    useOffentligTpData()
+
   const { alderspensjonDetaljerListe, afpDetaljerListe } =
     useBeregningsdetaljer(
       alderspensjonListe,
       afpPrivatListe,
       afpOffentligListe,
-      pre2025OffentligAfp
+      pre2025OffentligAfp,
+      tpAfpPeriode,
+      erSpkBesteberegning
     )
+
+  console.log('afpDetaljerListe', afpDetaljerListe)
 
   // Antall kolonner for AP detaljer som bestemmer hvor mange kolonner AFP detaljer skal ha.
   const alderspensjonColumnsCount =
@@ -122,7 +130,8 @@ export const Grunnlag: React.FC<Props> = ({
       (afpDetaljer) =>
         afpDetaljer.afpPrivat.length === 0 &&
         afpDetaljer.afpOffentlig.length === 0 &&
-        afpDetaljer.pre2025OffentligAfp.length === 0
+        afpDetaljer.pre2025OffentligAfp.length === 0 &&
+        afpDetaljer.afpOffentligSpk.length === 0
     )
 
   const handleReadMoreChange = ({
@@ -211,7 +220,16 @@ export const Grunnlag: React.FC<Props> = ({
                 <AfpDetaljerGrunnlag
                   afpDetaljerListe={afpDetaljerListe}
                   alderspensjonColumnsCount={alderspensjonColumnsCount}
+                  erOffentligTpFoer1963={erOffentligTpFoer1963}
                 />
+                {erSpkBesteberegning && (
+                  <FormattedMessage
+                    id="grunnlag.afp.spk.foer1963.text"
+                    values={{
+                      ...getFormatMessageValues(),
+                    }}
+                  />
+                )}
                 {pre2025OffentligAfp &&
                   pre2025OffentligAfp.afpAvkortetTil70Prosent && (
                     <FormattedMessage

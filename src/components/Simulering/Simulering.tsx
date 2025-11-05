@@ -12,6 +12,7 @@ import {
   useOffentligTpQuery,
   usePensjonsavtalerQuery,
 } from '@/state/api/apiSlice'
+import { isOffentligTpFoer1963 } from '@/state/api/typeguards'
 import {
   generateOffentligTpRequestBody,
   generatePensjonsavtalerRequestBody,
@@ -36,7 +37,7 @@ import { MaanedsbeloepAvansertBeregning } from './MaanedsbeloepAvansertBeregning
 import { SimuleringEndringBanner } from './SimuleringEndringBanner/SimuleringEndringBanner'
 import { SimuleringGrafNavigation } from './SimuleringGrafNavigation/SimuleringGrafNavigation'
 import { SimuleringPensjonsavtalerAlert } from './SimuleringPensjonsavtalerAlert/SimuleringPensjonsavtalerAlert'
-import { useSimuleringChartLocalState } from './hooks'
+import { useOffentligTpData, useSimuleringChartLocalState } from './hooks'
 
 import styles from './Simulering.module.scss'
 
@@ -77,28 +78,20 @@ export const Simulering = ({
   const isEndring = useAppSelector(selectIsEndring)
   const epsHarPensjon = useAppSelector(selectEpsHarPensjon)
   const epsHarInntektOver2G = useAppSelector(selectEpsHarInntektOver2G)
-  const erApoteker = useAppSelector(selectErApoteker)
-  const utenlandsperioder = useAppSelector(selectUtenlandsperioder)
   const { uttaksalder, aarligInntektVsaHelPensjon, gradertUttaksperiode } =
     useAppSelector(selectCurrentSimulation)
   const skalBeregneAfpKap19 = useAppSelector(selectSkalBeregneAfpKap19)
   const chartRef = useRef<HighchartsReact.RefObject>(null)
-
-  const [offentligTpRequestBody, setOffentligTpRequestBody] = useState<
-    OffentligTpRequestBody | undefined
-  >(undefined)
 
   const [pensjonsavtalerRequestBody, setPensjonsavtalerRequestBody] = useState<
     PensjonsavtalerRequestBody | undefined
   >(undefined)
 
   const {
-    data: offentligTpData,
-    isFetching: isOffentligTpLoading,
+    data: offentligTp,
+    isLoading: isOffentligTpLoading,
     isError: isOffentligTpError,
-  } = useOffentligTpQuery(offentligTpRequestBody as OffentligTpRequestBody, {
-    skip: !offentligTpRequestBody || !harSamtykket || !uttaksalder,
-  })
+  } = useOffentligTpData()
 
   const {
     data: pensjonsavtalerData,
@@ -114,24 +107,6 @@ export const Simulering = ({
 
   useEffect(() => {
     if (harSamtykket && uttaksalder) {
-      setOffentligTpRequestBody(
-        generateOffentligTpRequestBody({
-          afp,
-          foedselsdato,
-          sivilstand,
-          epsHarPensjon,
-          epsHarInntektOver2G,
-          aarligInntektFoerUttakBeloep: aarligInntektFoerUttakBeloep ?? '0',
-          gradertUttak: gradertUttaksperiode ?? undefined,
-          heltUttak: {
-            uttaksalder,
-            aarligInntektVsaPensjon: aarligInntektVsaHelPensjon,
-          },
-          utenlandsperioder,
-          erApoteker,
-        })
-      )
-
       setPensjonsavtalerRequestBody(
         generatePensjonsavtalerRequestBody({
           ufoeregrad,
@@ -176,7 +151,7 @@ export const Simulering = ({
     },
     offentligTp: {
       isLoading: isOffentligTpLoading,
-      data: offentligTpData,
+      data: offentligTp,
     },
   })
 
@@ -257,7 +232,7 @@ export const Simulering = ({
         }}
         offentligTp={{
           isError: isOffentligTpError,
-          data: offentligTpData,
+          data: offentligTp,
         }}
       />
 
@@ -288,7 +263,7 @@ export const Simulering = ({
             afpOffentligListe={afpOffentligListe}
             pre2025OffentligAfp={pre2025OffentligAfp}
             pensjonsavtaler={pensjonsavtalerData?.avtaler}
-            simulertTjenestepensjon={offentligTpData?.simulertTjenestepensjon}
+            simulertTjenestepensjon={offentligTp?.simulertTjenestepensjon}
           />
         )}
     </section>

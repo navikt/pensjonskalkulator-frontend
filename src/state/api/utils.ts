@@ -317,6 +317,65 @@ export const generatePensjonsavtalerRequestBody = (args: {
   }
 }
 
+export const generateOffentligTpFoer1963RequestBody = (args: {
+  foedselsdato: string | null | undefined
+  sivilstand?: Sivilstand | null | undefined
+  epsHarPensjon: boolean | null
+  epsHarInntektOver2G: boolean | null
+  aarligInntektFoerUttakBeloep: string
+  gradertUttak?: GradertUttak
+  heltUttak?: HeltUttak
+  utenlandsperioder: Utenlandsperiode[]
+}): OffentligTpFoer1963RequestBody | undefined => {
+  const {
+    foedselsdato,
+    aarligInntektFoerUttakBeloep,
+    sivilstand,
+    epsHarPensjon,
+    epsHarInntektOver2G,
+    gradertUttak,
+    heltUttak,
+    utenlandsperioder,
+  } = args
+
+  if (!foedselsdato || !heltUttak) {
+    return undefined
+  }
+
+  return {
+    simuleringstype: 'PRE2025_OFFENTLIG_AFP_ETTERFULGT_AV_ALDERSPENSJON',
+    foedselsdato: format(parseISO(foedselsdato), DATE_BACKEND_FORMAT),
+    aarligInntektFoerUttakBeloep: formatInntektToNumber(
+      aarligInntektFoerUttakBeloep
+    ),
+    gradertUttak: gradertUttak
+      ? {
+          ...gradertUttak,
+          aarligInntektVsaPensjonBeloep: formatInntektToNumber(
+            gradertUttak?.aarligInntektVsaPensjonBeloep
+          ),
+        }
+      : undefined,
+    heltUttak: {
+      ...heltUttak,
+      aarligInntektVsaPensjon: heltUttak.aarligInntektVsaPensjon
+        ? {
+            beloep: formatInntektToNumber(
+              heltUttak.aarligInntektVsaPensjon?.beloep
+            ),
+            sluttAlder: heltUttak.aarligInntektVsaPensjon?.sluttAlder,
+          }
+        : undefined,
+    },
+    utenlandsperiodeListe: transformUtenlandsperioderArray(utenlandsperioder),
+    sivilstand: sivilstand ?? 'UOPPGITT',
+    epsHarInntektOver2G: epsHarInntektOver2G ?? checkHarSamboer(sivilstand),
+    epsHarPensjon: !!epsHarPensjon,
+    afpInntektMaanedFoerUttak: undefined,
+    stillingsprosentOffHeltUttak: '100',
+  }
+}
+
 export const generateOffentligTpRequestBody = (args: {
   afp: AfpRadio | null
   foedselsdato: string | null | undefined

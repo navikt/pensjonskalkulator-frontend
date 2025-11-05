@@ -31,7 +31,7 @@ interface Props {
   }
   offentligTp: {
     isError: boolean
-    data?: OffentligTp
+    data?: OffentligTp | OffentligTpFoer1963
   }
   isPensjonsavtaleFlagVisible: boolean
 }

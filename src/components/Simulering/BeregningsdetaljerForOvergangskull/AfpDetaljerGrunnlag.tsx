@@ -1,5 +1,6 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
+import { M } from 'vitest/dist/chunks/reporters.d.BFLkQcL6.js'
 
 import { Box, Heading, VStack } from '@navikt/ds-react'
 
@@ -7,6 +8,7 @@ import { useAppSelector } from '@/state/hooks'
 import { selectCurrentSimulation } from '@/state/userInput/selectors'
 import { getFormatMessageValues } from '@/utils/translations'
 
+import { useOffentligTpData } from '../hooks'
 import { AfpDetaljer } from './Felles/AfpDetaljer'
 import { AfpDetaljerListe } from './hooks'
 
@@ -32,6 +34,7 @@ const renderAfpHeading = ({ messageId, age, months }: HeadingProps) => (
 interface Props {
   afpDetaljerListe: AfpDetaljerListe[]
   alderspensjonColumnsCount: number
+  erOffentligTpFoer1963: boolean
 }
 
 export const AfpDetaljerGrunnlag: React.FC<Props> = ({
@@ -48,6 +51,8 @@ export const AfpDetaljerGrunnlag: React.FC<Props> = ({
       alderspensjonColumnsCount={alderspensjonColumnsCount}
     />
   )
+
+  console.log('afpDetaljerListe i AfpDetaljerGrunnlag', afpDetaljerListe)
 
   return (
     <VStack
@@ -130,6 +135,14 @@ export const AfpDetaljerGrunnlag: React.FC<Props> = ({
         messageId: 'beregning.detaljer.grunnpensjon.pre2025OffentligAfp.title',
         age: uttaksalder.aar,
         months: uttaksalder.maaneder,
+      })
+    }
+
+    if (afpDetaljForValgtUttak.afpOffentligSpk.length > 0 && uttaksalder?.aar) {
+      return renderAfpHeading({
+        messageId: 'beregning.detaljer.afp_fra_spk.table.title',
+        age: Math.max(65, uttaksalder?.aar ?? 65),
+        months: (uttaksalder?.aar ?? 0) < 65 ? 0 : (uttaksalder?.maaneder ?? 0),
       })
     }
 

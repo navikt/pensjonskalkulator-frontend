@@ -9,6 +9,7 @@ import ekskludertStatusResponse from './data/ekskludert-status.json' with { type
 import erApotekerResponse from './data/er-apoteker.json' with { type: 'json' }
 import inntektResponse from './data/inntekt.json' with { type: 'json' }
 import loependeVedtakResponse from './data/loepende-vedtak.json' with { type: 'json' }
+import offentligTpFoer1963Response from './data/offentlig-tp-foer-1963.json' with { type: 'json' }
 import offentligTpResponse from './data/offentlig-tp.json' with { type: 'json' }
 import omstillingsstoenadOgGjenlevendeResponse from './data/omstillingsstoenad-og-gjenlevende.json' with { type: 'json' }
 import personResponse from './data/person.json' with { type: 'json' }
@@ -176,6 +177,10 @@ export const getHandlers = (baseUrl: string = API_PATH) => [
   http.post(`${baseUrl}/v2/simuler-oftp`, async () => {
     await delay(TEST_DELAY)
     return HttpResponse.json(offentligTpResponse)
+  }),
+  http.post(`${baseUrl}/v2/simuler-oftp/foer-1963`, async () => {
+    await delay(TEST_DELAY)
+    return HttpResponse.json(offentligTpFoer1963Response)
   }),
 
   http.get(`${baseUrl}/v4/vedtak/loepende-vedtak`, async () => {

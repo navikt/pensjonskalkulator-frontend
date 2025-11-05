@@ -13,6 +13,7 @@ import {
 
 import { Divider } from '@/components/common/Divider'
 import { Loader } from '@/components/common/Loader'
+import { isOffentligTpFoer1963 } from '@/state/api/typeguards'
 import { useAppSelector } from '@/state/hooks'
 import { selectAfp } from '@/state/userInput/selectors'
 import {
@@ -36,10 +37,18 @@ import styles from './OffentligTjenestepensjon.module.scss'
 export const OffentligTjenestepensjon = (props: {
   isLoading: boolean
   isError: boolean
-  offentligTp?: OffentligTp
+  erOffentligTpFoer1963: boolean
+  offentligTp?: OffentligTp | OffentligTpFoer1963
   headingLevel: Exclude<HeadingProps['level'], undefined>
 }) => {
-  const { isLoading, isError, offentligTp, headingLevel } = props
+  const {
+    isLoading,
+    isError,
+    offentligTp,
+    headingLevel,
+    erOffentligTpFoer1963,
+  } = props
+
   const { tpLeverandoer, tpNummer } = offentligTp?.simulertTjenestepensjon || {}
   const intl = useIntl()
   const isMobile = useIsMobile()
@@ -294,17 +303,20 @@ export const OffentligTjenestepensjon = (props: {
               </Table.Body>
             </Table>
           )}
-          <BodyLong size="small">
-            <FormattedMessage
-              id={getInfoOmAfpOgBetingetTjenestepensjon(
-                tpNummer,
-                afp,
-                offentligTp.simulertTjenestepensjon?.simuleringsresultat
-                  .betingetTjenestepensjonErInkludert
-              )}
-              values={getFormatMessageValues()}
-            />
-          </BodyLong>
+
+          {!isOffentligTpFoer1963(erOffentligTpFoer1963, offentligTp) && (
+            <BodyLong size="small">
+              <FormattedMessage
+                id={getInfoOmAfpOgBetingetTjenestepensjon(
+                  tpNummer,
+                  afp,
+                  offentligTp.simulertTjenestepensjon?.simuleringsresultat
+                    .betingetTjenestepensjonErInkludert
+                )}
+                values={getFormatMessageValues()}
+              />
+            </BodyLong>
+          )}
         </>
       )}
     </VStack>

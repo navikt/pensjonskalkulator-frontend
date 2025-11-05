@@ -414,6 +414,7 @@ const translations = {
     'Månedlig avtalefestet pensjon (AFP)',
   'beregning.detaljer.OpptjeningDetaljer.pre2025OffentligAfp.table.title':
     'Opptjening avtalefestet pensjon (AFP)',
+  'beregning.detaljer.afp_fra_spk.table.title': 'Ved {alderAar} {alderMd}',
   'beregning.avansert.link.endre_valgene_dine': 'Endre valgene dine',
   'beregning.avansert.link.endre_avanserte_valg': 'Endre avanserte valg',
   'beregning.avansert.link.om_vilkaar_for_afp': 'Om vilkår for uttak av AFP',
@@ -649,6 +650,8 @@ const translations = {
     'Din AFP er redusert fordi den oversteg 70 % av din tidligere inntekt.',
   'grunnlag.afp.avkortet.til.70.prosent':
     'Din AFP er avkortet til 70 prosent av tidligere arbeidsinntekt.',
+  'grunnlag.afp.spk.foer1963.text':
+    'Vi har hentet AFP mellom 65 og 67 år fra SPK.{br}',
   'grunnlag.afp.link.text': 'Om inntekt og AFP på nav.no',
   'grunnlag.forbehold.ingress_1':
     'Pensjonen er beregnet med opplysningene vi har om deg og opplysningene du har oppgitt. Beregningen er gjort med gjeldende regelverk. Dette er et foreløpig estimat på hva du kan forvente deg i pensjon. Nav er ikke ansvarlig for beløpene som er hentet inn fra andre. ',
