@@ -69,11 +69,11 @@ export const apiSlice = createApi({
       providesTags: ['OffentligTp'],
     }),
 
-    getAfpOffentligLivsvarig: builder.query<boolean, void>({
+    getAfpOffentligLivsvarig: builder.query<AfpOffentligLivsvarig, void>({
       query: () => '/v1/afp-offentlig-livsvarig',
-      /* transformResponse: (response: AfpOffentligLivsvarigStatusV1) => {
+      transformResponse: (response: AfpOffentligLivsvarig) => {
         return response
-      }, */
+      },
     }),
 
     tidligstMuligHeltUttak: builder.query<
