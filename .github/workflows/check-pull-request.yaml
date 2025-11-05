@@ -229,6 +229,8 @@ jobs:
 
       - name: Run Firefox tests
         run: npx playwright test --project=firefox --workers=6 --reporter=blob
+        env:
+          HOME: /root
 
       - name: Upload Firefox blob report
         uses: actions/upload-artifact@v4
