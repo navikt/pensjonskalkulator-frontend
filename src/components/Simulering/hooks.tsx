@@ -581,7 +581,7 @@ export const useOffentligTpData = () => {
 
     erSpkBesteberegning =
       navAfp !== undefined && tpAfpPeriode !== undefined
-        ? tpAfpPeriode.aarligUtbetaling > navAfp
+        ? tpAfpPeriode.aarligUtbetaling / 12 > navAfp
         : false
   }
 
