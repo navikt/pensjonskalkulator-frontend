@@ -52,8 +52,6 @@ export const AfpDetaljerGrunnlag: React.FC<Props> = ({
     />
   )
 
-  console.log('afpDetaljerListe i AfpDetaljerGrunnlag', afpDetaljerListe)
-
   return (
     <VStack
       gap="14"

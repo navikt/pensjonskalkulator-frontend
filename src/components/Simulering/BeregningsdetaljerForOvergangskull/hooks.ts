@@ -253,11 +253,11 @@ function getAfpDetaljerListe(
     return [
       {
         tekst: 'AFP fra Statens pensjonskasse (SPK)',
-        verdi: `${formatInntekt(tpAfpData.aarligUtbetaling ?? 0 / 12)} kr`,
+        verdi: `${formatInntekt((tpAfpData.aarligUtbetaling ?? 0) / 12)} kr`,
       },
       {
         tekst: 'Sum AFP',
-        verdi: `${formatInntekt(tpAfpData.aarligUtbetaling ?? 0 / 12)} kr`,
+        verdi: `${formatInntekt((tpAfpData.aarligUtbetaling ?? 0) / 12)} kr`,
       },
     ]
   }

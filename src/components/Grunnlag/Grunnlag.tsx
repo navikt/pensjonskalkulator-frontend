@@ -111,8 +111,6 @@ export const Grunnlag: React.FC<Props> = ({
       erSpkBesteberegning
     )
 
-  console.log('afpDetaljerListe', afpDetaljerListe)
-
   // Antall kolonner for AP detaljer som bestemmer hvor mange kolonner AFP detaljer skal ha.
   const alderspensjonColumnsCount =
     alderspensjonDetaljerListe.length === 0
