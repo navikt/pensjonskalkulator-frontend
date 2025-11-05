@@ -104,6 +104,10 @@ export async function setupInterceptions(
       mockName: 'ekskludert-status.json',
     },
     {
+      url: /\/pensjon\/kalkulator\/api\/v1\/ansatt-id/,
+      jsonResponse: { id: 'mock-ansatt-id' },
+    },
+    {
       url: /\/pensjon\/kalkulator\/api\/v1\/loepende-omstillingsstoenad-eller-gjenlevendeytelse/,
       mockName: 'omstillingsstoenad-og-gjenlevende.json',
     },
@@ -162,6 +166,11 @@ export async function setupInterceptions(
     {
       url: /^https?:\/\/g2by7q6m\.apicdn\.sanity\.io.*forbeholdAvsnitt/,
       mockName: 'sanity-forbehold-avsnitt-data.json',
+    },
+    {
+      url: 'https://www.nav.no/pensjon/selvbetjening/dinpensjon',
+      mockName: 'dinpensjon.html',
+      isHTML: true,
     },
   ]
 

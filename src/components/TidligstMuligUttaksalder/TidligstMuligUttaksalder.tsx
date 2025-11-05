@@ -148,7 +148,11 @@ export const TidligstMuligUttaksalder = ({
             tidligstMuligUttakIngressPre2025OffentligAFP()
           ) : (
             <>
-              <BodyLong size="medium" className={styles.ingress}>
+              <BodyLong
+                size="medium"
+                className={styles.ingress}
+                data-testid="tidligstmuliguttak-ingress"
+              >
                 <FormattedMessage
                   id="tidligstmuliguttak.ingress_1"
                   values={{

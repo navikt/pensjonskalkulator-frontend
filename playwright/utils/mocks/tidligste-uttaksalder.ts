@@ -13,6 +13,7 @@ export const tidligsteUttaksalder = async (
 
   return {
     url: /\/pensjon\/kalkulator\/api\/v2\/tidligste-hel-uttaksalder/,
+    method: 'POST',
     jsonResponse: {
       ...tidligsteUttaksalderMock,
       ...options,

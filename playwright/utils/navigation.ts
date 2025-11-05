@@ -16,6 +16,7 @@ export async function fillOutStegvisning(
     sivilstand: string
     epsHarPensjon: boolean | null
     epsHarInntektOver2G: boolean | null
+    navigateTo?: 'beregning' | 'beregning-detaljert'
   }>
 ) {
   const {
@@ -25,6 +26,7 @@ export async function fillOutStegvisning(
     sivilstand = 'UGIFT',
     epsHarPensjon = null,
     epsHarInntektOver2G = null,
+    navigateTo = 'beregning',
   } = args
 
   await page.waitForFunction(
@@ -71,5 +73,7 @@ export async function fillOutStegvisning(
     { sivilstand, epsHarPensjon, epsHarInntektOver2G }
   )
 
-  await page.evaluate(() => window.router.navigate('/beregning'))
+  await page.evaluate(({ path }) => window.router.navigate(path), {
+    path: `/${navigateTo}`,
+  })
 }
