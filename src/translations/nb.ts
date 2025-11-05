@@ -243,15 +243,25 @@ const translations = {
   'stegvisning.samtykke_offentlig_afp.title':
     'Samtykke til at Nav beregner AFP (avtalefestet pensjon)',
   'stegvisning.samtykke_offentlig_afp.ingress':
-    'Tjenestepensjonsordningen din har ansvar for livsvarig AFP i offentlig sektor. De vil vurdere om du fyller vilkårene og gjør den endelige beregningen når du søker om AFP. Kontakt dem hvis du har spørsmål.{br}{br}Nav vurderer ikke om du har rett til AFP, men kan gi deg en foreløpig beregning på AFP i denne kalkulatoren. ',
+    'Opplysningene om AFP kan påvirke beregningen av når du tidligst kan ta ut alderspensjon. Nav kan sjekke om du har startet å ta ut livsvarig AFP i offentlig sektor. Hvis du ikke har det, kan Nav beregne en forventet AFP for deg. ',
+  'stegvisning.samtykke_offentlig_afp.nav_info.readmore':
+    'Nav sjekker om du har startet å ta ut AFP og henter i så fall inn beløpet',
+  'stegvisning.samtykke_offentlig_afp.nav_info.readmore.ingress':
+    'Hvis Nav finner informasjon om at du har startet å ta ut AFP, henter Nav inn beløpet fra tjenestepensjonsordningen din.{br}{br}Nav bruker opplysningene til å gi en mer presis beregning av alderspensjon i kalkulatoren.',
+  'stegvisning.samtykke_offentlig_afp.tpo_info.readmore':
+    'Nav gjør en foreløpig beregning av AFP hvis du ikke har startet å ta ut AFP',
+  'stegvisning.samtykke_offentlig_afp.tpo_info.readmore.ingress':
+    'Nav vurderer ikke om du har rett til AFP, men kan gi deg en foreløpig beregning på AFP i denne kalkulatoren.{br}{br}Tjenestepensjonsordningen din har ansvar for livsvarig AFP i offentlig sektor. De vil vurdere om du fyller vilkårene og gjør den endelige beregningen når du søker om AFP. Kontakt dem hvis du har spørsmål. ',
   'stegvisning.samtykke_offentlig_afp.radio_label':
-    'Vil du at Nav skal beregne AFP for deg?',
+    'Vil du at Nav skal hente eller beregne din AFP?',
   'stegvisning.samtykke_offentlig_afp.radio_description':
     'Samtykket gjelder bare for beregninger i denne kalkulatoren, frem til du logger ut.',
   'stegvisning.samtykke_offentlig_afp.radio_ja': 'Ja',
   'stegvisning.samtykke_offentlig_afp.radio_nei': 'Nei, fortsett uten',
   'stegvisning.samtykke_offentlig_afp.validation_error':
     'Du må svare på om du vil at Nav skal beregne AFP for deg.',
+  'stegvisning.samtykke_offentlig_afp.alert':
+    'Hvis du har startet uttak av AFP, kan Nav bruke opplysningene til å gi en mer presis beregning av alderspensjon i kalkulatoren. Du kan likevel fortsette uten å samtykke.',
   'stegvisning.sivilstand.title': 'Sivilstand',
   'stegvisning.sivilstand.ingress_ukjent':
     'Bor du sammen med noen? Det kan ha betydning for hva du får i pensjon.',
