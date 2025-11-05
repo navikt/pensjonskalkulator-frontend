@@ -147,12 +147,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     container:
-      image: mcr.microsoft.com/playwright:v1.54.1-noble
-    strategy:
-      fail-fast: false
-      matrix:
-        shardIndex: [1, 2, 3, 4, 5, 6]
-        shardTotal: [6]
+      image: mcr.microsoft.com/playwright:v1.54.1-jammy
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -184,29 +179,23 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
-      - name: Run Chromium tests (shard ${{ matrix.shardIndex }}/${{ matrix.shardTotal }})
-        run: npm run pw:test -- --project=chromium --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} --reporter=blob
+      - name: Run Chromium tests
+        run: npx playwright test --project=chromium --workers=6 --reporter=blob
 
-      - name: Upload Chromium blob report (shard ${{ matrix.shardIndex }})
+      - name: Upload Chromium blob report
         uses: actions/upload-artifact@v4
         if: ${{ always() }}
         with:
-          name: chromium-blob-${{ matrix.shardIndex }}-of-${{ matrix.shardTotal }}
+          name: chromium-blob-report
           path: blob-report
           retention-days: 7
 
-  # Firefox pipeline - 6 shards
   run-playwright-firefox:
     name: Playwright Firefox tests
     runs-on: ubuntu-latest
     needs: build
     container:
-      image: mcr.microsoft.com/playwright:v1.54.1-noble
-    strategy:
-      fail-fast: false
-      matrix:
-        shardIndex: [1, 2, 3, 4, 5, 6]
-        shardTotal: [6]
+      image: mcr.microsoft.com/playwright:v1.54.1-jammy
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -238,31 +227,23 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
-      - name: Run Firefox tests (shard ${{ matrix.shardIndex }}/${{ matrix.shardTotal }})
-        run: npm run pw:test -- --project=firefox --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} --reporter=blob
-        env:
-          HOME: /root
+      - name: Run Firefox tests
+        run: npx playwright test --project=firefox --workers=6 --reporter=blob
 
-      - name: Upload Firefox blob report (shard ${{ matrix.shardIndex }})
+      - name: Upload Firefox blob report
         uses: actions/upload-artifact@v4
         if: ${{ always() }}
         with:
-          name: firefox-blob-${{ matrix.shardIndex }}-of-${{ matrix.shardTotal }}
+          name: firefox-blob-report
           path: blob-report
           retention-days: 7
 
-  # WebKit pipeline - 6 shards
   run-playwright-webkit:
     name: Playwright WebKit tests
     runs-on: ubuntu-latest
     needs: build
     container:
-      image: mcr.microsoft.com/playwright:v1.54.1-noble
-    strategy:
-      fail-fast: false
-      matrix:
-        shardIndex: [1, 2, 3, 4, 5, 6]
-        shardTotal: [6]
+      image: mcr.microsoft.com/playwright:v1.54.1-jammy
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -294,25 +275,24 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
-      - name: Run WebKit tests (shard ${{ matrix.shardIndex }}/${{ matrix.shardTotal }})
-        run: npm run pw:test -- --project=webkit --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} --reporter=blob
+      - name: Run WebKit tests
+        run: npx playwright test --project=webkit --workers=6 --reporter=blob
 
-      - name: Upload WebKit blob report (shard ${{ matrix.shardIndex }})
+      - name: Upload WebKit blob report
         uses: actions/upload-artifact@v4
         if: ${{ always() }}
         with:
-          name: webkit-blob-${{ matrix.shardIndex }}-of-${{ matrix.shardTotal }}
+          name: webkit-blob-report
           path: blob-report
           retention-days: 7
 
-  # Merge all browser reports
   merge-playwright-reports:
     name: Merge Playwright reports
     runs-on: ubuntu-latest
     needs: [run-playwright-chromium, run-playwright-firefox, run-playwright-webkit]
     if: ${{ always() }}
     container:
-      image: mcr.microsoft.com/playwright:v1.54.1-noble
+      image: mcr.microsoft.com/playwright:v1.54.1-jammy
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -341,7 +321,7 @@ jobs:
       - name: Download all Playwright blob reports
         uses: actions/download-artifact@v4
         with:
-          pattern: '*-blob-*'
+          pattern: '*-blob-report'
           path: blob-report
           merge-multiple: true
 
