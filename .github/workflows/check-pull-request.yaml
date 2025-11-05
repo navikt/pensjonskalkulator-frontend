@@ -240,6 +240,8 @@ jobs:
 
       - name: Run Firefox tests (shard ${{ matrix.shardIndex }}/${{ matrix.shardTotal }})
         run: npm run pw:test -- --project=firefox --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} --reporter=blob
+        env:
+          HOME: /root
 
       - name: Upload Firefox blob report (shard ${{ matrix.shardIndex }})
         uses: actions/upload-artifact@v4
