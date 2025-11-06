@@ -71,9 +71,6 @@ export const apiSlice = createApi({
 
     getAfpOffentligLivsvarig: builder.query<AfpOffentligLivsvarig, void>({
       query: () => '/v1/afp-offentlig-livsvarig',
-      transformResponse: (response: AfpOffentligLivsvarig) => {
-        return response
-      },
     }),
 
     tidligstMuligHeltUttak: builder.query<
