@@ -68,6 +68,13 @@ export const apiSlice = createApi({
       }),
       providesTags: ['OffentligTp'],
     }),
+
+    getAfpOffentligLivsvarig: builder.query<AfpOffentligLivsvarig, void>({
+      query: () => '/v1/afp-offentlig-livsvarig',
+      transformResponse: (response: AfpOffentligLivsvarig) => {
+        return response
+      },
+    }),
     offentligTpFoer1963: builder.query<
       OffentligTpFoer1963,
       OffentligTpFoer1963RequestBody | void
@@ -150,6 +157,7 @@ export const {
   useGetOmstillingsstoenadOgGjenlevendeQuery,
   useGetLoependeVedtakQuery,
   useOffentligTpQuery,
+  useGetAfpOffentligLivsvarigQuery,
   useOffentligTpFoer1963Query,
   useTidligstMuligHeltUttakQuery,
   useAlderspensjonQuery,

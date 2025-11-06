@@ -364,6 +364,26 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/api/v1/tpo-afp-offentlig-livsvarig': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Hent loepende livsvarig afp offentlig
+     * @description Henter detaljer om løpende livsvarig AFP offentlig for brukeren
+     */
+    get: operations['hentAfpOffentligLivsvarigDetaljer']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/api/v1/loepende-omstillingsstoenad-eller-gjenlevendeytelse': {
     parameters: {
       query?: never
@@ -1288,6 +1308,8 @@ export interface components {
       grad: number
       /** Format: date */
       fom: string
+      /** Format: date */
+      uttaksgradFom: string
       sisteUtbetaling?: components['schemas']['UtbetalingV4']
       /** @enum {string} */
       sivilstand:
@@ -1391,7 +1413,6 @@ export interface components {
       harFremtidigLoependeVedtak: boolean
       ufoeretrygd: components['schemas']['UfoeretrygdDetaljerV3']
       afpPrivat?: components['schemas']['LoependeFraV3']
-      afpOffentlig?: components['schemas']['LoependeFraV3']
     }
     UfoeretrygdDetaljerV3: {
       /** Format: int32 */
@@ -1418,7 +1439,6 @@ export interface components {
       harFremtidigLoependeVedtak: boolean
       ufoeretrygd: components['schemas']['UfoeretrygdDetaljerV2']
       afpPrivat?: components['schemas']['LoependeFraV2']
-      afpOffentlig?: components['schemas']['LoependeFraV2']
     }
     UfoeretrygdDetaljerV2: {
       /** Format: int32 */
@@ -1458,6 +1478,11 @@ export interface components {
     }
     MedlemskapITjenestepensjonsordningDto: {
       tpLeverandoerListe: string[]
+    }
+    AfpOffentligLivsvarigDto: {
+      afpStatus?: boolean
+      /** Format: int32 */
+      beloep?: number
     }
     BrukerHarLoependeOmstillingsstoenadEllerGjenlevendeYtelse: {
       harLoependeSak: boolean
@@ -2158,6 +2183,26 @@ export interface operations {
         }
         content: {
           '*/*': components['schemas']['MedlemskapITjenestepensjonsordningDto']
+        }
+      }
+    }
+  }
+  hentAfpOffentligLivsvarigDetaljer: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          '*/*': components['schemas']['AfpOffentligLivsvarigDto']
         }
       }
     }

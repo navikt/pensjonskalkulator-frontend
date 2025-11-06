@@ -513,6 +513,7 @@ describe('AvansertSkjema-utils', () => {
       const mockedLoependeVedtakEndring: LoependeVedtak = {
         harLoependeVedtak: true,
         alderspensjon: {
+          uttaksgradFom: '2025-10-01',
           fom: '2025-10-01',
           grad: 100,
           sivilstand: 'UGIFT',
@@ -587,6 +588,7 @@ describe('AvansertSkjema-utils', () => {
           {
             harLoependeVedtak: true,
             alderspensjon: {
+              uttaksgradFom: '2025-10-01',
               fom: '2025-10-01',
               grad: 40,
               sivilstand: 'UGIFT',
