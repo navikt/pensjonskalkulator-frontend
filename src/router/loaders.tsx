@@ -12,6 +12,7 @@ import { store } from '@/state/store'
 import {
   selectAfp,
   selectIsVeileder,
+  selectSamtykkeOffentligAFP,
   selectSkalBeregneAfpKap19,
 } from '@/state/userInput/selectors'
 import {
@@ -445,6 +446,13 @@ export const stepSamtykkePensjonsavtaler = async ({
     return redirect(paths.start)
   }
 
+  // Henter afpOffentligLivsvarig data til senere i bakgrunnen
+  const state = store.getState()
+  const afpOffentligLivsvarig = selectSamtykkeOffentligAFP(state)
+  if (afpOffentligLivsvarig) {
+    store.dispatch(apiSlice.endpoints.getAfpOffentligLivsvarig.initiate())
+  }
+
   const loependeVedtak = await store
     .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
     .unwrap()
@@ -484,9 +492,17 @@ export const beregningEnkelAccessGuard = async () => {
   }
   const state = store.getState()
   const skalBeregneAfpKap19 = selectSkalBeregneAfpKap19(state)
+  const afpOffentligLivsvarig = selectSamtykkeOffentligAFP(state)
+
   const loependeVedtak = await store
     .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
     .unwrap()
+
+  if (afpOffentligLivsvarig) {
+    await store
+      .dispatch(apiSlice.endpoints.getAfpOffentligLivsvarig.initiate())
+      .unwrap()
+  }
 
   if (skalBeregneAfpKap19 || loependeVedtak.alderspensjon) {
     return redirect(paths.beregningAvansert)
