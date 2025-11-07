@@ -70,7 +70,7 @@ export const apiSlice = createApi({
     }),
 
     getAfpOffentligLivsvarig: builder.query<AfpOffentligLivsvarig, void>({
-      query: () => '/v1/afp-offentlig-livsvarig',
+      query: () => '/v1/tpo-afp-offentlig-livsvarig',
     }),
 
     tidligstMuligHeltUttak: builder.query<
