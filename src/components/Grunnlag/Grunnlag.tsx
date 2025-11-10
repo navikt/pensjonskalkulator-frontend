@@ -56,6 +56,7 @@ interface Props {
   alderspensjonListe?: AlderspensjonPensjonsberegning[]
   afpPrivatListe?: AfpPrivatPensjonsberegning[]
   afpOffentligListe?: AfpPensjonsberegning[]
+  afpOffentligLivsvarigDetaljer?: AfpOffentligLivsvarig
   pre2025OffentligAfp?: pre2025OffentligPensjonsberegning
 }
 
@@ -68,6 +69,7 @@ export const Grunnlag: React.FC<Props> = ({
   alderspensjonListe,
   afpPrivatListe,
   afpOffentligListe,
+  afpOffentligLivsvarigDetaljer,
   pre2025OffentligAfp,
 }) => {
   const navigate = useNavigate()
@@ -173,7 +175,9 @@ export const Grunnlag: React.FC<Props> = ({
             loependeVedtak.ufoeretrygd.grad === 100)
         ) && (
           <GrunnlagItem color="purple" data-testid="grunnlag-afp">
-            <GrunnlagAFP />
+            <GrunnlagAFP
+              afpOffentligLivsvarigDetaljer={afpOffentligLivsvarigDetaljer}
+            />
 
             {!shouldHideAfpReadMore && (
               <ReadMore

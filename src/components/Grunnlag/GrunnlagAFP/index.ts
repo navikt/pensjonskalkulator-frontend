@@ -1,1 +1,1 @@
-export { GrunnlagAFP } from './GrunnlagAFP'
+export { GrunnlagAFP, type GrunnlagAFPProps } from './GrunnlagAFP'

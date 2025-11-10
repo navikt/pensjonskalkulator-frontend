@@ -26,7 +26,13 @@ import { generateAfpContent } from './utils'
 
 import styles from '../Grunnlag.module.scss'
 
-export const GrunnlagAFP: React.FC = () => {
+export interface GrunnlagAFPProps {
+  afpOffentligLivsvarigDetaljer?: AfpOffentligLivsvarig
+}
+
+export const GrunnlagAFP: React.FC<GrunnlagAFPProps> = ({
+  afpOffentligLivsvarigDetaljer,
+}) => {
   const intl = useIntl()
   const afp = useAppSelector(selectAfp)
   const afpUtregningValg = useAppSelector(selectAfpUtregningValg)
@@ -46,6 +52,7 @@ export const GrunnlagAFP: React.FC = () => {
       foedselsdato: foedselsdato!,
       samtykkeOffentligAFP: samtykkeOffentligAFP,
       beregningsvalg: beregningsvalg,
+      afpOffentligLivsvarigDetaljer: afpOffentligLivsvarigDetaljer,
     })
   }, [
     intl,
@@ -56,6 +63,7 @@ export const GrunnlagAFP: React.FC = () => {
     ufoeregrad,
     beregningsvalg,
     foedselsdato,
+    afpOffentligLivsvarigDetaljer,
   ])
 
   return (
