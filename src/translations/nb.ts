@@ -241,7 +241,7 @@ const translations = {
   'stegvisning.ufoere.ingress':
     'Du kan få hjelp til å vurdere alternativene dine. Kontakt tjenestepensjonsordningen din hvis du jobber i offentlig sektor. <planleggePensjonLink>Kontakt Nav</planleggePensjonLink> hvis du jobber i privat sektor.',
   'stegvisning.samtykke_offentlig_afp.title':
-    'Samtykke til at Nav beregner AFP (avtalefestet pensjon)',
+    'Samtykke til at Nav sjekker din AFP',
   'stegvisning.samtykke_offentlig_afp.ingress':
     'Opplysningene om AFP kan påvirke beregningen av når du tidligst kan ta ut alderspensjon. Nav kan sjekke om du har startet å ta ut livsvarig AFP i offentlig sektor. Hvis du ikke har det, kan Nav beregne en forventet AFP for deg. ',
   'stegvisning.samtykke_offentlig_afp.nav_info.readmore':
@@ -257,7 +257,7 @@ const translations = {
   'stegvisning.samtykke_offentlig_afp.radio_description':
     'Samtykket gjelder bare for beregninger i denne kalkulatoren, frem til du logger ut.',
   'stegvisning.samtykke_offentlig_afp.radio_ja': 'Ja',
-  'stegvisning.samtykke_offentlig_afp.radio_nei': 'Nei, fortsett uten',
+  'stegvisning.samtykke_offentlig_afp.radio_nei': 'Nei, fortsett uten AFP',
   'stegvisning.samtykke_offentlig_afp.validation_error':
     'Du må svare på om du vil at Nav skal beregne AFP for deg.',
   'stegvisning.samtykke_offentlig_afp.alert':

@@ -159,7 +159,7 @@ export function SamtykkeOffentligAFP({
         </RadioGroup>
 
         {localSamtykke === 'nei' && (
-          <Alert variant="info">
+          <Alert className={styles.alert} variant="info">
             <FormattedMessage id="stegvisning.samtykke_offentlig_afp.alert" />
           </Alert>
         )}
