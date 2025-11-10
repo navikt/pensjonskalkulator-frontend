@@ -3,12 +3,8 @@ import { fillOutStegvisning } from 'utils/navigation'
 
 import { expect, setupInterceptions, test } from '../../../base'
 import { authenticate } from '../../../utils/auth'
-import {
-  apoteker,
-  loependeVedtak,
-  person,
-  tidligsteUttaksalder,
-} from '../../../utils/mocks'
+import { person } from '../../../utils/mocks'
+import { presetStates } from '../../../utils/presetStates'
 
 test.describe('Hovedhistorie', () => {
   const STEGVISNING_NESTE_BUTTON = 'stegvisning-neste-button'
@@ -25,13 +21,6 @@ test.describe('Hovedhistorie', () => {
   const FOEDSELSDATO_1964_04_30 = '1964-04-30'
   const ENDRE_INNTEKT_TEXT = 'Endre inntekt'
   const OPPDATER_INNTEKT_TEXT = 'Oppdater inntekt'
-
-  const buildPersonUnder75 = async () =>
-    await person({
-      alder: { aar: 65, maaneder: 11, dager: 5 },
-    })
-  const buildPersonOver75 = async () =>
-    await person({ alder: { aar: 75, maaneder: 1, dager: 0 } })
 
   const openSivilstandStep = async (page: Page) => {
     await test.step('Open sivilstand step', async () => {
@@ -305,11 +294,7 @@ test.describe('Hovedhistorie', () => {
           page,
         }) => {
           await authenticate(page, [
-            await buildPersonUnder75(),
-            await loependeVedtak({
-              pre2025OffentligAfp: { fom: PRE2025_OFFENTLIG_AFP_FOM },
-            }),
-            await tidligsteUttaksalder({ aar: 62, maaneder: 10 }),
+            ...(await presetStates.brukerUnder75MedPre2025OffentligAfpOgTidligsteUttak()),
           ])
 
           await expect(page.getByText('AFP i offentlig sektor')).toBeVisible()
@@ -326,7 +311,7 @@ test.describe('Hovedhistorie', () => {
       test('forventer jeg å se en startside som sier at jeg dessverre ikke kan beregne pensjon', async ({
         page,
       }) => {
-        await authenticate(page, [await buildPersonOver75()])
+        await authenticate(page, [...(await presetStates.brukerOver75())])
 
         await expect(
           page.getByTestId('start-brukere-fyllt-75-ingress')
@@ -336,7 +321,7 @@ test.describe('Hovedhistorie', () => {
       test('forventer jeg å se og navigere til "kontakte oss" lenke', async ({
         page,
       }) => {
-        await authenticate(page, [await buildPersonOver75()])
+        await authenticate(page, [...(await presetStates.brukerOver75())])
 
         const kontaktLink = page
           .getByTestId('start-brukere-fyllt-75-ingress')
@@ -356,7 +341,7 @@ test.describe('Hovedhistorie', () => {
       })
 
       test('kan jeg navigere til "Din pensjon" side', async ({ page }) => {
-        await authenticate(page, [await buildPersonOver75()])
+        await authenticate(page, [...(await presetStates.brukerOver75())])
 
         const dinPensjonButton = page.getByTestId(
           'start-brukere-fyllt-75-din-pensjon-button'
@@ -368,7 +353,7 @@ test.describe('Hovedhistorie', () => {
       })
 
       test('kan jeg avbryte og navigere til login side', async ({ page }) => {
-        await authenticate(page, [await buildPersonOver75()])
+        await authenticate(page, [...(await presetStates.brukerOver75())])
 
         const avbrytButton = page.getByTestId(
           'start-brukere-fyllt-75-avbryt-button'
@@ -387,10 +372,8 @@ test.describe('Hovedhistorie', () => {
         page,
       }) => {
         await authenticate(page, [
-          await loependeVedtak({
-            fremtidigAlderspensjon: { grad: 100, fom: '2099-01-01' },
-          }),
-          await tidligsteUttaksalder({ aar: 62, maaneder: 10 }),
+          ...(await presetStates.medFremtidigAlderspensjonVedtak()),
+          ...(await presetStates.medTidligsteUttaksalder(62, 10)),
         ])
 
         await expect(
@@ -597,10 +580,10 @@ test.describe('Hovedhistorie', () => {
 
         test('forventer jeg at neste steg er /samtykke', async ({ page }) => {
           await authenticate(page, [
-            await loependeVedtak({
-              pre2025OffentligAfp: { fom: PRE2025_OFFENTLIG_AFP_FOM },
-            }),
-            await tidligsteUttaksalder({ aar: 62, maaneder: 10 }),
+            ...(await presetStates.medPre2025OffentligAfp(
+              PRE2025_OFFENTLIG_AFP_FOM
+            )),
+            ...(await presetStates.medTidligsteUttaksalder(62, 10)),
           ])
 
           await openSivilstandStep(page)
@@ -665,24 +648,12 @@ test.describe('Hovedhistorie', () => {
         test.describe('Som bruker som er 67 år eller eldre', () => {
           test.use({ autoAuth: false })
 
-          const elderlyPerson = async () =>
-            person({
-              navn: 'Aprikos',
-              sivilstand: 'UGIFT',
-              foedselsdato: '1956-04-30',
-              pensjoneringAldre: {
-                normertPensjoneringsalder: { aar: 67, maaneder: 0 },
-                nedreAldersgrense: { aar: 62, maaneder: 0 },
-                oevreAldersgrense: { aar: 75, maaneder: 0 },
-              },
-            })
-
           test('forventer jeg å få informasjon om AFP Privat', async ({
             page,
           }) => {
             await authenticate(page, [
-              await elderlyPerson(),
-              await tidligsteUttaksalder({ aar: 62, maaneder: 10 }),
+              ...(await presetStates.brukerEldreEnn67()),
+              ...(await presetStates.medTidligsteUttaksalder(62, 10)),
             ])
             await goToAfpStep(page)
 
@@ -704,8 +675,8 @@ test.describe('Hovedhistorie', () => {
             page,
           }) => {
             await authenticate(page, [
-              await elderlyPerson(),
-              await tidligsteUttaksalder({ aar: 62, maaneder: 10 }),
+              ...(await presetStates.brukerEldreEnn67()),
+              ...(await presetStates.medTidligsteUttaksalder(62, 10)),
             ])
             await goToAfpStep(page)
 
@@ -733,26 +704,11 @@ test.describe('Hovedhistorie', () => {
         test.describe('Som bruker som er medlem i Pensjonsordningen for apotekervirksomhet', () => {
           test.use({ autoAuth: false })
 
-          const apotekerMedlem = async () => [
-            await person({
-              navn: 'Aprikos',
-              sivilstand: 'UGIFT',
-              foedselsdato: FOEDSELSDATO_1962_04_30,
-              pensjoneringAldre: {
-                normertPensjonsalder: { aar: 67, maaneder: 0 },
-                nedreAldersgrense: { aar: 62, maaneder: 0 },
-                oevreAldersgrense: { aar: 75, maaneder: 0 },
-              },
-            }),
-            await apoteker({ apoteker: true, aarsak: 'ER_APOTEKER' }),
-          ]
-
           test('forventer jeg å bli spurt om jeg ønsker å beregne AFP i offentlig sektor etterfulgt av alderspensjon', async ({
             page,
           }) => {
             await authenticate(page, [
-              ...(await apotekerMedlem()),
-              await tidligsteUttaksalder({ aar: 62, maaneder: 10 }),
+              ...(await presetStates.apotekerMedlemMedTidligsteUttak(62, 10)),
             ])
             await goToAfpStep(page)
 
@@ -881,8 +837,7 @@ test.describe('Hovedhistorie', () => {
           page,
         }) => {
           await authenticate(page, [
-            await apoteker({ apoteker: true, aarsak: 'ER_APOTEKER' }),
-            await tidligsteUttaksalder({ aar: 62, maaneder: 10 }),
+            ...(await presetStates.apotekerMedlemMedTidligsteUttak(62, 10)),
           ])
           await goToSamtykkeStep(page)
 
@@ -908,7 +863,7 @@ test.describe('Hovedhistorie', () => {
                   oevreAldersgrense: { aar: 75, maaneder: 0 },
                 },
               }),
-              await tidligsteUttaksalder({ aar: 62, maaneder: 10 }),
+              ...(await presetStates.medTidligsteUttaksalder(62, 10)),
             ])
 
             await openSivilstandStep(page)
@@ -1068,7 +1023,7 @@ test.describe('Hovedhistorie', () => {
         page,
       }) => {
         await authenticate(page, [
-          await tidligsteUttaksalder({ aar: 62, maaneder: 10 }),
+          ...(await presetStates.medTidligsteUttaksalder(62, 10)),
         ])
 
         const loader = page.getByTestId('uttaksalder-loader')
@@ -1085,17 +1040,8 @@ test.describe('Hovedhistorie', () => {
       test.use({ autoAuth: false })
       test.beforeEach(async ({ page }) => {
         await authenticate(page, [
-          await person({
-            navn: 'Aprikos',
-            sivilstand: 'UGIFT',
-            foedselsdato: FOEDSELSDATO_1963_04_30,
-            pensjoneringAldre: {
-              normertPensjoneringsalder: { aar: 67, maaneder: 0 },
-              nedreAldersgrense: { aar: 62, maaneder: 0 },
-              oevreAldersgrense: { aar: 75, maaneder: 0 },
-            },
-          }),
-          await tidligsteUttaksalder({ aar: 62, maaneder: 10 }),
+          ...(await presetStates.brukerGift1963()),
+          ...(await presetStates.medTidligsteUttaksalder(62, 10)),
         ])
 
         await fillOutStegvisning(page, { samtykke: false })
@@ -1116,17 +1062,8 @@ test.describe('Hovedhistorie', () => {
         page,
       }) => {
         await authenticate(page, [
-          await person({
-            navn: 'Aprikos',
-            sivilstand: 'UGIFT',
-            foedselsdato: FOEDSELSDATO_1963_04_30,
-            pensjoneringAldre: {
-              normertPensjoneringsalder: { aar: 67, maaneder: 0 },
-              nedreAldersgrense: { aar: 62, maaneder: 0 },
-              oevreAldersgrense: { aar: 75, maaneder: 0 },
-            },
-          }),
-          await tidligsteUttaksalder({ aar: 62, maaneder: 10 }),
+          ...(await presetStates.brukerGift1963()),
+          ...(await presetStates.medTidligsteUttaksalder(62, 10)),
         ])
 
         await fillOutStegvisning(page, { samtykke: true })
@@ -1159,7 +1096,7 @@ test.describe('Hovedhistorie', () => {
               oevreAldersgrense: { aar: 75, maaneder: 0 },
             },
           }),
-          await tidligsteUttaksalder({ aar: 62, maaneder: 10 }),
+          ...(await presetStates.medTidligsteUttaksalder(62, 10)),
         ])
 
         await fillOutStegvisning(page, { samtykke: true })
@@ -1216,10 +1153,10 @@ test.describe('Hovedhistorie', () => {
               oevreAldersgrense: { aar: 75, maaneder: 0 },
             },
           }),
-          await loependeVedtak({
-            pre2025OffentligAfp: { fom: PRE2025_OFFENTLIG_AFP_FOM },
-          }),
-          await tidligsteUttaksalder({ aar: 67, maaneder: 0 }),
+          ...(await presetStates.medPre2025OffentligAfp(
+            PRE2025_OFFENTLIG_AFP_FOM
+          )),
+          ...(await presetStates.medTidligsteUttaksalder(67, 0)),
         ])
 
         await fillOutStegvisning(page, { samtykke: true })
@@ -1257,7 +1194,7 @@ test.describe('Hovedhistorie', () => {
               oevreAldersgrense: { aar: 75, maaneder: 0 },
             },
           }),
-          await tidligsteUttaksalder({ aar: 62, maaneder: 10 }),
+          ...(await presetStates.medTidligsteUttaksalder(62, 10)),
         ])
 
         await fillOutStegvisning(page, {})
@@ -1348,7 +1285,7 @@ test.describe('Hovedhistorie', () => {
               oevreAldersgrense: { aar: 75, maaneder: 0 },
             },
           }),
-          await tidligsteUttaksalder({ aar: 62, maaneder: 10 }),
+          ...(await presetStates.medTidligsteUttaksalder(62, 10)),
         ])
 
         await fillOutStegvisning(page, { samtykke: true })
@@ -1394,7 +1331,7 @@ test.describe('Hovedhistorie', () => {
               oevreAldersgrense: { aar: 75, maaneder: 0 },
             },
           }),
-          await tidligsteUttaksalder({ aar: 62, maaneder: 10 }),
+          ...(await presetStates.medTidligsteUttaksalder(62, 10)),
         ])
 
         await fillOutStegvisning(page, { samtykke: true })
