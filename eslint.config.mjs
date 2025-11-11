@@ -125,6 +125,10 @@ export default [
     rules: {
       ...testingLibrary.configs['flat/react'].rules,
       ...vitest.configs.recommended.rules,
+      'vitest/valid-title': 'off',
+      'vitest/expect-expect': 'off',
+      'vitest/no-identical-title': 'off',
+      'vitest/no-commented-out-tests': 'warn',
       '@typescript-eslint/ban-ts-comment': 'off', // Fjern når @ts-ignore ikke lenger er i bruk i testkode
       '@typescript-eslint/require-await': 'off',
       '@typescript-eslint/no-floating-promises': [
