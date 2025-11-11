@@ -44,6 +44,26 @@ const fallback = (
 
 export const routes: RouteObject[] = [
   {
+    // Public routes - no authentication required
+    element: (
+      <PageFramework
+        shouldShowLogo
+        hasWhiteBg
+        shouldRedirectNonAuthenticated={false}
+        noMinHeight={true}
+      >
+        <Outlet />
+      </PageFramework>
+    ),
+    ErrorBoundary: RouteErrorBoundary,
+    children: [
+      {
+        path: paths.forbehold,
+        element: <Forbehold />,
+      },
+    ],
+  },
+  {
     loader: authenticationGuard,
     hydrateFallbackElement: fallback,
     element: (
@@ -66,10 +86,6 @@ export const routes: RouteObject[] = [
         path: paths.login,
         loader: landingPageAccessGuard,
         element: <LandingPage />,
-      },
-      {
-        path: paths.forbehold,
-        element: <Forbehold />,
       },
     ],
   },
