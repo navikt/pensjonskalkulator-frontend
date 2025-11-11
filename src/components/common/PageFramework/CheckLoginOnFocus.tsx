@@ -11,12 +11,14 @@ export const CheckLoginOnFocus: React.FC<{
 }> = ({ shouldRedirectNonAuthenticated, children }) => {
   const dispatch = useDispatch()
 
+  console.log('check login onfocus')
   React.useEffect(() => {
     const onFocus = async () => {
       /* c8 ignore next 3 */
       const res = await fetch(`${HOST_BASEURL}/oauth2/session`)
       dispatch(sessionActions.setLoggedIn(res.ok))
       if (shouldRedirectNonAuthenticated && !res.ok) {
+        console.log('Redirecting to login page on focus...')
         window.open(
           `${HOST_BASEURL}/oauth2/login?redirect=${encodeURIComponent(
             window.location.pathname

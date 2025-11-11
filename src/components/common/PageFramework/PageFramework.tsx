@@ -47,7 +47,9 @@ export const PageFramework: React.FC<{
     window.scrollTo(0, 0)
   }, [pathname])
 
+  console.log(isLoggedIn, shouldRedirectNonAuthenticated)
   if (!isLoggedIn && shouldRedirectNonAuthenticated) {
+    console.log('Redirecting to login page...')
     return <RedirectElement />
   }
 

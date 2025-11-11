@@ -45,7 +45,7 @@ const fallback = (
 export const routes: RouteObject[] = [
   {
     // Public routes - no authentication required
-    path: '/forbehold',
+    path: paths.forbehold,
     element: (
       <PageFramework
         shouldRedirectNonAuthenticated={false}
