@@ -650,6 +650,8 @@ const translations = {
   'grunnlag.afp.link.text': 'Om inntekt og AFP på nav.no',
   'grunnlag.forbehold.ingress_1':
     'Pensjonen er beregnet med opplysningene vi har om deg og opplysningene du har oppgitt. Beregningen er gjort med gjeldende regelverk. Dette er et foreløpig estimat på hva du kan forvente deg i pensjon. Nav er ikke ansvarlig for beløpene som er hentet inn fra andre. ',
+  'grunnlag.forbehold.ingress_2':
+    'Det kan skje endringer i regelverket og i opptjeningen din. Vi anbefaler at du gjør en ny beregning når du nærmer deg ønsket pensjonsalder.',
   'grunnlag.forbehold.link': 'Alle forbehold',
   'grunnlag.forbehold.title': 'Forbehold',
   'om_deg.title': 'Om deg',

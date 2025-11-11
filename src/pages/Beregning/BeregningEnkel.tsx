@@ -1,6 +1,6 @@
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
 import clsx from 'clsx'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useNavigate } from 'react-router'
 
@@ -20,12 +20,8 @@ import {
   apiSlice,
   useAlderspensjonQuery,
   useGetPersonQuery,
-  useTidligstMuligHeltUttakQuery,
 } from '@/state/api/apiSlice'
-import {
-  generateAlderspensjonEnkelRequestBody,
-  generateTidligstMuligHeltUttakRequestBody,
-} from '@/state/api/utils'
+import { generateAlderspensjonEnkelRequestBody } from '@/state/api/utils'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
   selectAarligInntektFoerUttakBeloep,
@@ -44,10 +40,10 @@ import {
   selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
 import {
+  UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP,
   getBrukerensAlderISluttenAvMaaneden,
-  isAlder75MaanedenFylt,
-  isFoedtFoer1964,
 } from '@/utils/alder'
+import { useTidligstMuligUttak } from '@/utils/hooks/useTidligstMuligUttakData'
 import { ALERT_VIST } from '@/utils/loggerConstants'
 import { logger } from '@/utils/logging'
 
@@ -75,24 +71,13 @@ export const BeregningEnkel = () => {
   const epsHarPensjon = useAppSelector(selectEpsHarPensjon)
   const epsHarInntektOver2G = useAppSelector(selectEpsHarInntektOver2G)
 
-  const { isSuccess: isPersonSuccess, data: person } = useGetPersonQuery()
+  const { data: person } = useGetPersonQuery()
 
-  const [
-    tidligstMuligHeltUttakRequestBody,
-    setTidligstMuligHeltUttakRequestBody,
-  ] = useState<TidligstMuligHeltUttakRequestBody | undefined>(undefined)
-  // Hent tidligst mulig uttaksalder
   const {
     data: tidligstMuligUttak,
     isLoading: isTidligstMuligUttakLoading,
     isSuccess: isTidligstMuligUttakSuccess,
-  } = useTidligstMuligHeltUttakQuery(tidligstMuligHeltUttakRequestBody, {
-    skip:
-      !tidligstMuligHeltUttakRequestBody ||
-      Boolean(ufoeregrad) ||
-      Boolean(loependeVedtak.pre2025OffentligAfp),
-  })
-
+  } = useTidligstMuligUttak(ufoeregrad)
   const utenlandsperioder = useAppSelector(selectUtenlandsperioder)
   const { uttaksalder } = useAppSelector(selectCurrentSimulation)
   const [alderspensjonEnkelRequestBody, setAlderspensjonEnkelRequestBody] =
@@ -106,28 +91,6 @@ export const BeregningEnkel = () => {
         uttaksalder === null
     )
   }, [aarligInntektFoerUttakBeloepFraBrukerInput, uttaksalder])
-
-  useEffect(() => {
-    if (!ufoeregrad && !loependeVedtak.pre2025OffentligAfp) {
-      const requestBody = generateTidligstMuligHeltUttakRequestBody({
-        loependeVedtak,
-        afp: afp === 'ja_offentlig' && !harSamtykketOffentligAFP ? null : afp,
-        sivilstand: sivilstand,
-        epsHarPensjon,
-        epsHarInntektOver2G,
-        aarligInntektFoerUttakBeloep: aarligInntektFoerUttakBeloep ?? '0',
-        utenlandsperioder,
-      })
-      setTidligstMuligHeltUttakRequestBody(requestBody)
-    }
-  }, [
-    ufoeregrad,
-    afp,
-    sivilstand,
-    aarligInntektFoerUttakBeloep,
-    epsHarPensjon,
-    epsHarInntektOver2G,
-  ])
 
   useEffect(() => {
     if (uttaksalder) {
@@ -207,10 +170,6 @@ export const BeregningEnkel = () => {
     }
   }, [error])
 
-  const show1963Text = useMemo(() => {
-    return isPersonSuccess && isFoedtFoer1964(person?.foedselsdato)
-  }, [person])
-
   const onRetry = (): void => {
     dispatch(apiSlice.util.invalidateTags(['Alderspensjon']))
     if (alderspensjonEnkelRequestBody) {
@@ -235,16 +194,6 @@ export const BeregningEnkel = () => {
     )
   }
 
-  const tidligstMuligUttakPre2025OffentligAfp = {
-    aar: 67,
-    maaneder: 0,
-  }
-
-  const isOver75AndNoLoependeVedtak =
-    !loependeVedtak.harLoependeVedtak &&
-    !!person?.foedselsdato &&
-    isAlder75MaanedenFylt(person.foedselsdato)
-
   return (
     <>
       {showInntektAlert && (
@@ -268,15 +217,10 @@ export const BeregningEnkel = () => {
               isTidligstMuligUttakSuccess
                 ? tidligstMuligUttak
                 : loependeVedtak.pre2025OffentligAfp
-                  ? tidligstMuligUttakPre2025OffentligAfp
+                  ? UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP
                   : undefined
             }
             ufoeregrad={ufoeregrad}
-            show1963Text={show1963Text}
-            loependeVedtakPre2025OffentligAfp={Boolean(
-              loependeVedtak.pre2025OffentligAfp
-            )}
-            isOver75AndNoLoependeVedtak={isOver75AndNoLoependeVedtak}
           />
         </div>
       </div>
@@ -284,7 +228,7 @@ export const BeregningEnkel = () => {
       {loependeVedtak.pre2025OffentligAfp ? (
         <div className={styles.container}>
           <VelgUttaksalder
-            tidligstMuligUttak={tidligstMuligUttakPre2025OffentligAfp}
+            tidligstMuligUttak={UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP}
           />
         </div>
       ) : (

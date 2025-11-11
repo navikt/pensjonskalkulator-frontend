@@ -15,6 +15,7 @@ import {
 
 import { TabellVisning } from '@/components/TabellVisning'
 import {
+  useGetOmstillingsstoenadOgGjenlevendeQuery,
   useGetPersonQuery,
   useGetShowDownloadPdfFeatureToggleQuery,
   useOffentligTpQuery,
@@ -39,6 +40,11 @@ import {
   selectUfoeregrad,
   selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
+import { formatUttaksalder } from '@/utils/alder'
+import {
+  useTidligstMuligUttak,
+  useTidligstMuligUttakConditions,
+} from '@/utils/hooks/useTidligstMuligUttakData'
 
 import { useTableData } from '../TabellVisning/hooks'
 import { useBeregningsdetaljer } from './BeregningsdetaljerForOvergangskull/hooks'
@@ -52,7 +58,9 @@ import {
   getCurrentDateTimeFormatted,
   getDetaljerHtmlTable,
   getForbeholdAvsnitt,
+  getOmstillingsstoenadAlert,
   getPdfHeadingWithLogo,
+  getTidligstMuligUttakIngressContent,
 } from './pdf-utils'
 
 import styles from './Simulering.module.scss'
@@ -205,8 +213,6 @@ export const Simulering = ({
   const tableData = useTableData(series, aarArray)
 
   const intl = useIntl()
-  // const uttakstidspunkt = uttaksalder && formatUttaksalder(intl, uttaksalder)
-  // const html = `<h2>Uttakstidspunkt: ${uttakstidspunkt} </h2>
 
   const { alderspensjonDetaljerListe } = useBeregningsdetaljer(
     alderspensjonListe,
@@ -214,6 +220,11 @@ export const Simulering = ({
     afpOffentligListe,
     pre2025OffentligAfp
   )
+
+  const { data: tidligstMuligUttak } = useTidligstMuligUttak(ufoeregrad)
+  const { data: omstillingsstoenadOgGjenlevende } =
+    useGetOmstillingsstoenadOgGjenlevendeQuery()
+
   useEffect(() => {
     window.addEventListener('beforeprint', () => {
       const locationUrl = window.location.href
@@ -229,6 +240,15 @@ export const Simulering = ({
   const isSafari = (): boolean => {
     return /^((?!chrome|android).)*safari/i.test(window.navigator.userAgent)
   }
+
+  const {
+    normertPensjonsalder,
+    nedreAldersgrense,
+    loependeVedtakPre2025OffentligAfp,
+    isOver75AndNoLoependeVedtak,
+    show1963Text,
+    hasAFP,
+  } = useTidligstMuligUttakConditions()
 
   const handlePDF = () => {
     const appContentElement = document.getElementById('app-content')
@@ -254,13 +274,33 @@ export const Simulering = ({
 
     const forbeholdAvsnitt = getForbeholdAvsnitt(intl)
 
+    const uttakstidspunkt = uttaksalder && formatUttaksalder(intl, uttaksalder)
+    const helUttaksAlder = `<h2>100% alderspensjon ved ${uttakstidspunkt} </h2>`
     const chartTableWithHeading = getChartTable({ tableData })
 
+    const tidligstMuligUttakIngress = getTidligstMuligUttakIngressContent(
+      intl,
+      normertPensjonsalder,
+      nedreAldersgrense,
+      isOver75AndNoLoependeVedtak,
+      show1963Text,
+      loependeVedtakPre2025OffentligAfp,
+      ufoeregrad,
+      hasAFP,
+      tidligstMuligUttak
+    )
+    const omstillingsstoenadAlert =
+      omstillingsstoenadOgGjenlevende?.harLoependeSak
+        ? getOmstillingsstoenadAlert(intl, normertPensjonsalder)
+        : ''
     const detaljerTable = getDetaljerHtmlTable(alderspensjonDetaljerListe)
     const finalPdfContent =
       pdfHeadingWithLogo +
       personalInfo +
       forbeholdAvsnitt +
+      tidligstMuligUttakIngress +
+      omstillingsstoenadAlert +
+      helUttaksAlder +
       chartTableWithHeading +
       detaljerTable
 
