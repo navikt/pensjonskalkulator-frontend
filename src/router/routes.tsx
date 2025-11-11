@@ -45,6 +45,7 @@ const fallback = (
 export const routes: RouteObject[] = [
   {
     // Public routes - no authentication required
+    path: '/forbehold',
     element: (
       <PageFramework
         shouldShowLogo
@@ -52,16 +53,10 @@ export const routes: RouteObject[] = [
         shouldRedirectNonAuthenticated={false}
         noMinHeight={true}
       >
-        <Outlet />
+        <Forbehold />
       </PageFramework>
     ),
     ErrorBoundary: RouteErrorBoundary,
-    children: [
-      {
-        path: paths.forbehold,
-        element: <Forbehold />,
-      },
-    ],
   },
   {
     loader: authenticationGuard,
