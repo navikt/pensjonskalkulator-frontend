@@ -44,7 +44,6 @@ const fallback = (
 
 export const routes: RouteObject[] = [
   {
-    // Public routes - no authentication required
     path: paths.forbehold,
     element: (
       <PageFramework
