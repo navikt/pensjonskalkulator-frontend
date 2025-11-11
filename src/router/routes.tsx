@@ -67,6 +67,10 @@ export const routes: RouteObject[] = [
         loader: landingPageAccessGuard,
         element: <LandingPage />,
       },
+      {
+        path: paths.forbehold,
+        element: <Forbehold />,
+      },
     ],
   },
   {
@@ -83,10 +87,6 @@ export const routes: RouteObject[] = [
         loader: stepStartAccessGuard,
         path: paths.start,
         element: <StepStart />,
-      },
-      {
-        path: paths.forbehold,
-        element: <Forbehold />,
       },
       {
         loader: stepSivilstandAccessGuard,
