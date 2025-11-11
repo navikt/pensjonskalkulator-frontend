@@ -48,10 +48,9 @@ export const routes: RouteObject[] = [
     path: '/forbehold',
     element: (
       <PageFramework
-        shouldShowLogo
-        hasWhiteBg
         shouldRedirectNonAuthenticated={false}
         noMinHeight={true}
+        showLoader={false}
       >
         <Forbehold />
       </PageFramework>
