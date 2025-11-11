@@ -4,6 +4,9 @@ import { FormattedMessage } from 'react-intl'
 
 import { Alert, Radio, RadioGroup } from '@navikt/ds-react'
 
+import { ALERT_VIST } from '@/utils/loggerConstants'
+import { logger } from '@/utils/logging'
+
 import styles from './AFP.module.scss'
 
 interface AFPRadioGroupProps {
@@ -21,11 +24,20 @@ const AFPRadioGroup: React.FC<AFPRadioGroupProps> = ({
   showApotekerAlert,
   showVetIkkeAlert,
 }) => {
+  if (showApotekerAlert) {
+    logger(ALERT_VIST, {
+      tekst:
+        'Beregning med AFP for apotekvirksomhet (POA) er for øyeblikket feil',
+      variant: 'warning',
+    })
+  }
+
   return (
     <RadioGroup
       className={styles.radiogroup}
       legend={<FormattedMessage id="stegvisning.afp.radio_label" />}
       name="afp"
+      data-testid="afp-radio-group"
       defaultValue={afp}
       onChange={handleRadioChange}
       error={validationError}
@@ -34,7 +46,12 @@ const AFPRadioGroup: React.FC<AFPRadioGroupProps> = ({
         <FormattedMessage id="stegvisning.afp.radio_ja_offentlig" />
       </Radio>
       {showApotekerAlert && (
-        <Alert className={styles.alert} variant="warning" aria-live="polite">
+        <Alert
+          className={styles.alert}
+          variant="warning"
+          aria-live="polite"
+          data-testid="apotekere-warning"
+        >
           <FormattedMessage id="error.apoteker_warning" />
         </Alert>
       )}

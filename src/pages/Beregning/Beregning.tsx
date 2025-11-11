@@ -23,7 +23,11 @@ import {
 import { userInputActions } from '@/state/userInput/userInputSlice'
 import { BeregningVisning } from '@/types/common-types'
 import { isFoedtEtter1963 } from '@/utils/alder'
-import { BUTTON_KLIKK, MODAL_AAPNET } from '@/utils/loggerConstants'
+import {
+  BUTTON_KLIKK,
+  KNAPP_KLIKKET,
+  MODAL_AAPNET,
+} from '@/utils/loggerConstants'
 import { logger } from '@/utils/logging'
 
 import { BeregningAvansert } from './BeregningAvansert'
@@ -76,8 +80,14 @@ export const Beregning: React.FC<Props> = ({ visning }) => {
   React.useEffect(() => {
     let isEventAdded
     const onPopState = () => {
+      // TODO: fjern når amplitude er ikke i bruk lenger
       logger(MODAL_AAPNET, {
+        // eslint-disable-next-line sonarjs/no-duplicate-string
         tekst: 'Modal: Er du sikker på at du vil avslutte avansert beregning?',
+      })
+      logger(MODAL_AAPNET, {
+        modalId: 'bekreftelses-modal',
+        tittel: 'Modal: Er du sikker på at du vil avslutte avansert beregning?',
       })
       avbrytModalRef.current?.showModal()
     }
@@ -118,6 +128,9 @@ export const Beregning: React.FC<Props> = ({ visning }) => {
   }
 
   const onToggleChange = (v: string) => {
+    logger(KNAPP_KLIKKET, {
+      tekst: `Toggle viser fane ${v}`,
+    })
     logger(BUTTON_KLIKK, {
       tekst: `Toggle viser fane ${v}`,
     })
@@ -128,8 +141,13 @@ export const Beregning: React.FC<Props> = ({ visning }) => {
         avansertSkjemaModus === 'resultat' ||
         (avansertSkjemaModus === 'redigering' && uttaksalder))
     ) {
+      // TODO: fjern når amplitude er ikke i bruk lenger
       logger(MODAL_AAPNET, {
         tekst: 'Modal: Er du sikker på at du vil avslutte avansert beregning?',
+      })
+      logger(MODAL_AAPNET, {
+        modalId: 'bekreftelses-modal',
+        tittel: 'Modal: Er du sikker på at du vil avslutte avansert beregning?',
       })
       avbrytModalRef.current?.showModal()
     } else {

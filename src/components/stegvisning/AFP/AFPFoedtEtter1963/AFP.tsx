@@ -53,7 +53,7 @@ export function AFP({ previousAfp, onCancel, onPrevious, onNext }: Props) {
         id: 'stegvisning.afp.validation_error',
       })
       setValidationError(errorMessage)
-      logger('skjema validering feilet', {
+      logger('skjemavalidering feilet', {
         skjemanavn: STEGVISNING_FORM_NAMES.afp,
         data: intl.formatMessage({
           id: 'stegvisning.afp.radio_label',
@@ -65,7 +65,9 @@ export function AFP({ previousAfp, onCancel, onPrevious, onNext }: Props) {
         tekst: 'Rett til AFP',
         valg: afpInput,
       })
-      logger('button klikk', {
+      // TODO: fjern når amplitude er ikke i bruk lenger
+      logger('button klikk', { tekst: `Neste fra ${paths.afp}` })
+      logger('knapp klikket', {
         tekst: `Neste fra ${paths.afp}`,
       })
       onNext(afpInput)
@@ -80,13 +82,6 @@ export function AFP({ previousAfp, onCancel, onPrevious, onNext }: Props) {
       setShowApotekerAlert(true)
     } else {
       setShowApotekerAlert(false)
-    }
-
-    if (value === 'vet_ikke') {
-      logger('alert vist', {
-        tekst: 'Rett til AFP: Vet ikke',
-        variant: 'info',
-      })
     }
   }
 

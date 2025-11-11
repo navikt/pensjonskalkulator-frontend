@@ -64,6 +64,10 @@ export function createMockRequest(
 }
 
 describe('Loaders', () => {
+  beforeEach(() => {
+    sessionStorage.clear()
+  })
+
   afterEach(() => {
     store.dispatch(apiSliceUtils.apiSlice.util.resetApiState())
   })
@@ -99,6 +103,30 @@ describe('Loaders', () => {
       store.getState = vi.fn().mockImplementation(() => mockedState)
       const returnedFromLoader = directAccessGuard()
       expect(returnedFromLoader).toBeUndefined()
+    })
+
+    it('returnerer ingenting når sanity-timeout query parameter er satt', async () => {
+      const originalLocation = window.location
+      const mockLocation = new URL('https://example.com?sanity-timeout=1')
+      Object.defineProperty(window, 'location', {
+        writable: true,
+        value: mockLocation,
+      })
+
+      const mockedState = {
+        api: { queries: {} },
+        userInput: { ...userInputInitialState, samtykke: null },
+      }
+      store.getState = vi.fn().mockImplementation(() => mockedState)
+
+      const returnedFromLoader = directAccessGuard()
+
+      expect(returnedFromLoader).toBeUndefined()
+
+      Object.defineProperty(window, 'location', {
+        writable: true,
+        value: originalLocation,
+      })
     })
   })
 
@@ -533,6 +561,7 @@ describe('Loaders', () => {
             harLoependeVedtak: true,
             alderspensjon: {
               grad: 0,
+              uttaksgradFom: '2020-10-02',
               fom: '2020-10-02',
               sivilstand: 'UGIFT',
             },
@@ -562,6 +591,7 @@ describe('Loaders', () => {
             harLoependeVedtak: true,
             alderspensjon: {
               grad: 0,
+              uttaksgradFom: '2020-10-02',
               fom: '2020-10-02',
               sivilstand: 'UGIFT',
             },
@@ -899,6 +929,7 @@ describe('Loaders', () => {
         harLoependeVedtak: true,
         alderspensjon: {
           grad: 75,
+          uttaksgradFom: '2020-01-01',
           fom: '2020-01-01',
           sivilstand: 'UGIFT',
         },
@@ -1098,6 +1129,7 @@ describe('Loaders', () => {
           ufoeretrygd: { grad: 0 },
           alderspensjon: {
             grad: 100,
+            uttaksgradFom: '2023-01-01',
             fom: '2023-01-01',
             sivilstand: 'GIFT',
           },
@@ -1130,6 +1162,7 @@ describe('Loaders', () => {
           ufoeretrygd: { grad: 0 },
           alderspensjon: {
             grad: 100,
+            uttaksgradFom: '2023-01-01',
             fom: '2023-01-01',
             sivilstand: 'GIFT',
           },
@@ -1170,6 +1203,7 @@ describe('Loaders', () => {
           ufoeretrygd: { grad: 0 },
           alderspensjon: {
             grad: 100,
+            uttaksgradFom: '2023-01-01',
             fom: '2023-01-01',
             sivilstand: 'GIFT',
           },
@@ -1191,6 +1225,7 @@ describe('Loaders', () => {
           ufoeretrygd: { grad: 0 },
           alderspensjon: {
             grad: 100,
+            uttaksgradFom: '2023-01-01',
             fom: '2023-01-01',
             sivilstand: 'GIFT',
           },

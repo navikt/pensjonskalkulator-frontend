@@ -17,6 +17,7 @@ import {
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
 import { formatUttaksalder } from '@/utils/alder'
+import { ALERT_VIST } from '@/utils/loggerConstants'
 import { logger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
 
@@ -61,7 +62,9 @@ export const TidligstMuligUttaksalder = ({
   const goToAvansert: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     e.preventDefault()
     dispatch(userInputActions.flushCurrentSimulation())
-    logger('button klikk', {
+    // TODO: fjern når amplitude er ikke i bruk lenger
+    logger('button klikk', { tekst: 'Grunnlag AFP: Gå til avansert' })
+    logger('knapp klikket', {
       tekst: 'Grunnlag AFP: Gå til avansert',
     })
     navigate(paths.beregningAvansert)
@@ -95,6 +98,13 @@ export const TidligstMuligUttaksalder = ({
   const gradertIngress = hasAFP
     ? 'omufoeretrygd.gradert.ingress.afp'
     : 'omufoeretrygd.gradert.ingress'
+
+  if (omstillingsstoenadOgGjenlevende?.harLoependeSak) {
+    logger(ALERT_VIST, {
+      tekst: 'Bruker har omstillingsstønad og/eller gjenlevende',
+      variant: 'info',
+    })
+  }
 
   return (
     <div className={styles.wrapper} data-testid="tidligst-mulig-uttak">

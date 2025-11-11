@@ -12,13 +12,14 @@ import { DATE_BACKEND_FORMAT, DATE_ENDUSER_FORMAT } from '@/utils/dates'
 import { validateInntekt } from '@/utils/inntekt'
 import { isLoependeVedtakEndring } from '@/utils/loependeVedtak'
 import {
+  NEDTREKKSISTE_VALG_ENDRET,
   RADIOGROUP_VALGT,
   SKJEMA_VALIDERING_FEILET,
-  VALG_AV_UTTAKSALDER_GRADERT,
-  VALG_AV_UTTAKSGRAD,
 } from '@/utils/loggerConstants'
 import { logger } from '@/utils/logging'
 import { ALLE_UTTAKSGRAD_AS_NUMBER } from '@/utils/uttaksgrad'
+
+import { SKJEMA_VALIDERING_FEILET_OLD } from './../../utils/loggerConstants'
 
 const AGEPICKER_VALIDATION_ERROR =
   'beregning.avansert.rediger.agepicker.validation_error.maxAlder'
@@ -73,6 +74,11 @@ const validateAlderForGradertUttak = (
             data: AVANSERT_UTTAKSALDER_GRADERT_DATA,
             tekst,
           })
+          logger(SKJEMA_VALIDERING_FEILET_OLD, {
+            skjemanavn: AVANSERT_FORM_NAMES.form,
+            data: AVANSERT_UTTAKSALDER_GRADERT_DATA,
+            tekst,
+          })
         }
         updateValidationErrorMessage((prevState) => {
           return {
@@ -89,6 +95,11 @@ const validateAlderForGradertUttak = (
       function (tekst) {
         if (tekst) {
           logger(SKJEMA_VALIDERING_FEILET, {
+            skjemanavn: AVANSERT_FORM_NAMES.form,
+            data: AVANSERT_UTTAKSALDER_GRADERT_DATA,
+            tekst,
+          })
+          logger(SKJEMA_VALIDERING_FEILET_OLD, {
             skjemanavn: AVANSERT_FORM_NAMES.form,
             data: AVANSERT_UTTAKSALDER_GRADERT_DATA,
             tekst,
@@ -119,6 +130,11 @@ const validateAlderForGradertUttak = (
         }
       })
       logger(SKJEMA_VALIDERING_FEILET, {
+        skjemanavn: AVANSERT_FORM_NAMES.form,
+        data: AVANSERT_UTTAKSALDER_GRADERT_DATA,
+        tekst: AGEPICKER_VALIDATION_ERROR,
+      })
+      logger(SKJEMA_VALIDERING_FEILET_OLD, {
         skjemanavn: AVANSERT_FORM_NAMES.form,
         data: AVANSERT_UTTAKSALDER_GRADERT_DATA,
         tekst: AGEPICKER_VALIDATION_ERROR,
@@ -167,6 +183,11 @@ const validateEndringGradertUttak = (
         }
       })
       logger(SKJEMA_VALIDERING_FEILET, {
+        skjemanavn: AVANSERT_FORM_NAMES.form,
+        data: 'Avansert - For tidlig endring av gradert uttak',
+        tekst: `Uttaksdato ${uttaksdato} er før ${formatertDato}`, // eslint-disable-line @typescript-eslint/restrict-template-expressions
+      })
+      logger(SKJEMA_VALIDERING_FEILET_OLD, {
         skjemanavn: AVANSERT_FORM_NAMES.form,
         data: 'Avansert - For tidlig endring av gradert uttak',
         tekst: `Uttaksdato ${uttaksdato} er før ${formatertDato}`, // eslint-disable-line @typescript-eslint/restrict-template-expressions
@@ -238,6 +259,11 @@ export const validateAvansertBeregningSkjema = (
             data: 'Avansert - Uttaksalder for helt uttak',
             tekst,
           })
+          logger(SKJEMA_VALIDERING_FEILET_OLD, {
+            skjemanavn: AVANSERT_FORM_NAMES.form,
+            data: 'Avansert - Uttaksalder for helt uttak',
+            tekst,
+          })
         }
         updateValidationErrorMessage((prevState) => {
           return {
@@ -288,6 +314,11 @@ export const validateAvansertBeregningSkjema = (
               data: 'Avansert -  Inntekt vsa. AFP',
               tekst,
             })
+            logger(SKJEMA_VALIDERING_FEILET_OLD, {
+              skjemanavn: AVANSERT_FORM_NAMES.form,
+              data: 'Avansert -  Inntekt vsa. AFP',
+              tekst,
+            })
           }
           updateValidationErrorMessage((prevState) => {
             return {
@@ -315,6 +346,12 @@ export const validateAvansertBeregningSkjema = (
   ) {
     isValid = false
     logger(SKJEMA_VALIDERING_FEILET, {
+      skjemanavn: AVANSERT_FORM_NAMES.form,
+      // eslint-disable-next-line sonarjs/no-duplicate-string
+      data: 'Avansert - Uttaksgrad',
+      tekst: UTTAKSGRAD_VALIDATION_ERROR,
+    })
+    logger(SKJEMA_VALIDERING_FEILET_OLD, {
       skjemanavn: AVANSERT_FORM_NAMES.form,
       data: 'Avansert - Uttaksgrad',
       tekst: UTTAKSGRAD_VALIDATION_ERROR,
@@ -402,6 +439,13 @@ export const validateAvansertBeregningSkjema = (
             skjemanavn: AVANSERT_FORM_NAMES.form,
             data: 'Avansert - Uttaksgrad',
             tekst:
+              // eslint-disable-next-line sonarjs/no-duplicate-string
+              'beregning.avansert.rediger.uttaksgrad.ufoeretrygd.validation_error',
+          })
+          logger(SKJEMA_VALIDERING_FEILET_OLD, {
+            skjemanavn: AVANSERT_FORM_NAMES.form,
+            data: 'Avansert - Uttaksgrad',
+            tekst:
               'beregning.avansert.rediger.uttaksgrad.ufoeretrygd.validation_error',
           })
           updateValidationErrorMessage((prevState) => {
@@ -428,6 +472,13 @@ export const validateAvansertBeregningSkjema = (
       skjemanavn: AVANSERT_FORM_NAMES.form,
       data: 'Avansert - Radio inntekt vsa. helt uttak',
       tekst:
+        // eslint-disable-next-line sonarjs/no-duplicate-string
+        'beregning.avansert.rediger.radio.inntekt_vsa_helt_uttak.description.validation_error',
+    })
+    logger(SKJEMA_VALIDERING_FEILET_OLD, {
+      skjemanavn: AVANSERT_FORM_NAMES.form,
+      data: 'Avansert - Radio inntekt vsa. helt uttak',
+      tekst:
         'beregning.avansert.rediger.radio.inntekt_vsa_helt_uttak.description.validation_error',
     })
     updateValidationErrorMessage((prevState) => {
@@ -446,6 +497,11 @@ export const validateAvansertBeregningSkjema = (
       (tekst: string) => {
         if (tekst) {
           logger(SKJEMA_VALIDERING_FEILET, {
+            skjemanavn: AVANSERT_FORM_NAMES.form,
+            data: 'Avansert -  Inntekt vsa. helt uttak',
+            tekst,
+          })
+          logger(SKJEMA_VALIDERING_FEILET_OLD, {
             skjemanavn: AVANSERT_FORM_NAMES.form,
             data: 'Avansert -  Inntekt vsa. helt uttak',
             tekst,
@@ -477,6 +533,11 @@ export const validateAvansertBeregningSkjema = (
             data: 'Avansert -  Sluttalder inntekt vsa. helt uttak',
             tekst,
           })
+          logger(SKJEMA_VALIDERING_FEILET_OLD, {
+            skjemanavn: AVANSERT_FORM_NAMES.form,
+            data: 'Avansert -  Sluttalder inntekt vsa. helt uttak',
+            tekst,
+          })
         }
         updateValidationErrorMessage((prevState) => {
           return {
@@ -494,6 +555,13 @@ export const validateAvansertBeregningSkjema = (
   if (uttaksgradFormData !== '100 %' && !inntektVsaGradertUttakRadioFormData) {
     isValid = false
     logger(SKJEMA_VALIDERING_FEILET, {
+      skjemanavn: AVANSERT_FORM_NAMES.form,
+      data: 'Avansert -  Radio inntekt vsa. gradert uttak',
+      tekst:
+        // eslint-disable-next-line sonarjs/no-duplicate-string
+        'beregning.avansert.rediger.radio.inntekt_vsa_gradert_uttak.description.validation_error',
+    })
+    logger(SKJEMA_VALIDERING_FEILET_OLD, {
       skjemanavn: AVANSERT_FORM_NAMES.form,
       data: 'Avansert -  Radio inntekt vsa. gradert uttak',
       tekst:
@@ -517,6 +585,11 @@ export const validateAvansertBeregningSkjema = (
       (tekst: string) => {
         if (tekst) {
           logger(SKJEMA_VALIDERING_FEILET, {
+            skjemanavn: AVANSERT_FORM_NAMES.form,
+            data: 'Avansert -  Inntekt vsa. gradert uttak',
+            tekst,
+          })
+          logger(SKJEMA_VALIDERING_FEILET_OLD, {
             skjemanavn: AVANSERT_FORM_NAMES.form,
             data: 'Avansert -  Inntekt vsa. gradert uttak',
             tekst,
@@ -549,7 +622,7 @@ export const validateAvansertBeregningSkjema = (
     loependeVedtak.alderspensjon &&
     !validateEndringGradertUttak(
       loependeVedtak.alderspensjon.grad,
-      loependeVedtak.alderspensjon.fom,
+      loependeVedtak.alderspensjon.uttaksgradFom,
       uttaksgradFormData as string,
       {
         aar: parseInt(gradertUttakAarFormData as string, 10),
@@ -676,12 +749,17 @@ export const onAvansertBeregningSubmit = (
     })
   }
 
-  const uttaksAlderEventName = isKap19Afp
+  const uttaksAlderTekst = isKap19Afp
     ? 'valg av uttaksalder for AFP'
     : 'valg av uttaksalder for 100 % alderspensjon'
 
-  logger(uttaksAlderEventName, {
-    tekst: `${heltUttakAarFormData} år og ${heltUttakMaanederFormData} md.`, // eslint-disable-line @typescript-eslint/no-base-to-string, @typescript-eslint/restrict-template-expressions
+  logger(NEDTREKKSISTE_VALG_ENDRET, {
+    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-base-to-string
+    valgtVerdi: `${heltUttakAarFormData} år og ${heltUttakMaanederFormData} md.`,
+    tekst: uttaksAlderTekst,
+    listeId: isKap19Afp
+      ? AVANSERT_FORM_NAMES.form
+      : AVANSERT_FORM_NAMES.uttaksalderHeltUttak,
   })
 
   if (uttaksgradFormData === '100 %') {
@@ -709,7 +787,7 @@ export const onAvansertBeregningSubmit = (
     })
 
     logger(RADIOGROUP_VALGT, {
-      tekst: 'Forventer inntekt samtidig når AFP er tatt ut',
+      tekst: 'Inntekt vsa. AFP',
       valg: inntektVsaAfpRadioFormData === 'ja' ? 'ja' : 'nei',
     })
 
@@ -737,24 +815,24 @@ export const onAvansertBeregningSubmit = (
       )
     }
   } else {
-    logger(VALG_AV_UTTAKSGRAD, {
-      tekst: `${uttaksgradFormData}`, // eslint-disable-line @typescript-eslint/no-base-to-string, @typescript-eslint/restrict-template-expressions
+    logger(NEDTREKKSISTE_VALG_ENDRET, {
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-base-to-string
+      valgtVerdi: `${uttaksgradFormData}`,
+      tekst: 'valg av uttaksgrad',
+      listeId: AVANSERT_FORM_NAMES.uttaksgrad,
     })
 
-    logger(VALG_AV_UTTAKSALDER_GRADERT, {
-      tekst: `${gradertUttakAarFormData} år og ${gradertUttakMaanederFormData} md.`, // eslint-disable-line @typescript-eslint/no-base-to-string, @typescript-eslint/restrict-template-expressions
+    logger(NEDTREKKSISTE_VALG_ENDRET, {
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-base-to-string
+      valgtVerdi: `${gradertUttakAarFormData} år og ${gradertUttakMaanederFormData} md.`,
+      tekst: 'valg av uttaksalder for gradert alderspensjon',
+      listeId: AVANSERT_FORM_NAMES.uttaksalderGradertUttak,
     })
 
     logger(RADIOGROUP_VALGT, {
       tekst: 'Inntekt vsa. gradert uttak',
       valg: inntektVsaGradertUttakRadioFormData === 'ja' ? 'ja' : 'nei',
     })
-
-    if (inntektVsaGradertUttakFormData) {
-      logger('valg av inntekt vsa. gradert pensjon (antall sifre)', {
-        tekst: `${(inntektVsaGradertUttakFormData as string).replace(/ /g, '').length}`,
-      })
-    }
 
     dispatch(
       userInputActions.setCurrentSimulationGradertUttaksperiode({
@@ -773,12 +851,6 @@ export const onAvansertBeregningSubmit = (
     logger(RADIOGROUP_VALGT, {
       tekst: 'Inntekt vsa. helt uttak',
       valg: inntektVsaHeltUttakRadioFormData === 'ja' ? 'ja' : 'nei',
-    })
-  }
-
-  if (inntektVsaHeltUttakFormData !== null) {
-    logger('valg av inntekt vsa. 100 % pensjon (antall sifre)', {
-      tekst: `${(inntektVsaHeltUttakFormData as string).replace(/ /g, '').length}`,
     })
   }
 
@@ -818,7 +890,13 @@ export const onAvansertBeregningSubmit = (
     !hasVilkaarIkkeOppfylt ||
     (hasVilkaarIkkeOppfylt && harAvansertSkjemaUnsavedChanges)
   ) {
+    // TODO: fjern når amplitude er ikke i bruk lenger
     logger('button klikk', {
+      tekst: harAvansertSkjemaUnsavedChanges
+        ? 'Oppdater avansert pensjon'
+        : 'Beregn avansert pensjon',
+    })
+    logger('knapp klikket', {
       tekst: harAvansertSkjemaUnsavedChanges
         ? 'Oppdater avansert pensjon'
         : 'Beregn avansert pensjon',

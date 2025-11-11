@@ -56,6 +56,13 @@ export const authenticationGuard = async () => {
 }
 
 export const directAccessGuard = (): Response | undefined => {
+  if (typeof window !== 'undefined') {
+    const url = new URL(window.location.href)
+    if (url.searchParams.has('sanity-timeout')) {
+      return undefined
+    }
+  }
+
   const state = store.getState()
   // Dersom ingen kall er registrert i store betyr det at brukeren prøver å aksessere en url direkte
   if (
@@ -97,9 +104,6 @@ export const stepStartAccessGuard = async () => {
     apiSlice.endpoints.getErApoteker.initiate()
   )
 
-  const state = store.getState()
-  const isLoggedIn = selectIsLoggedIn(state)
-
   const [vedlikeholdsmodusFeatureToggle, getLoependeVedtakRes, getPersonRes] =
     await Promise.all([
       vedlikeholdsmodusFeatureToggleQuery,
@@ -116,6 +120,11 @@ export const stepStartAccessGuard = async () => {
   if (vedlikeholdsmodusFeatureToggle.data?.enabled) {
     return redirect(paths.kalkulatorVirkerIkke)
   }
+
+  // Hent state etter at alle kall er fullført
+  // Dette sikrer at vi har den mest oppdaterte tilstanden og dermed logger riktig informasjon til Umami
+  const state = store.getState()
+  const isLoggedIn = selectIsLoggedIn(state)
 
   if (isLoggedIn) {
     if (!getPersonRes.isSuccess) {
@@ -169,13 +178,6 @@ export const stepStartAccessGuard = async () => {
       tekst: 'Født før 1963',
       data: isKap19 ? 'Ja' : 'Nei',
     })
-
-    if (getErApotekerRes.isSuccess) {
-      logger('info', {
-        tekst: 'Er apoteker',
-        data: getErApotekerRes.data ? 'Ja' : 'Nei',
-      })
-    }
 
     logger('info', {
       tekst: 'hent uføregrad',

@@ -32,7 +32,9 @@ export function Ufoere({ onCancel, onPrevious, onNext }: Props) {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
-    logger('button klikk', {
+    // TODO: fjern når amplitude er ikke i bruk lenger
+    logger('button klikk', { tekst: `Neste fra ${paths.ufoeretrygdAFP}` })
+    logger('knapp klikket', {
       tekst: `Neste fra ${paths.ufoeretrygdAFP}`,
     })
     if (onNext) {

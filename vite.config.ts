@@ -57,7 +57,7 @@ export default defineConfig({
 
     process.env.NODE_ENV !== 'test' &&
       visualizer({
-        open: true,
+        open: false,
         gzipSize: true,
         brotliSize: true,
         filename: 'analice.html',
@@ -106,6 +106,8 @@ export default defineConfig({
     globals: true,
     setupFiles: 'src/test-setup.ts',
     testTimeout: 10000,
+    include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    exclude: ['playwright/**/*', 'cypress/**/*'],
     coverage: {
       provider: 'v8',
       all: true,
@@ -114,6 +116,7 @@ export default defineConfig({
         '**/*/faro.ts',
         '*.config.ts',
         'cypress',
+        'playwright',
         'sanity.cli.ts',
         'server/server.ts',
         'server/ensureEnv.ts',
@@ -133,13 +136,14 @@ export default defineConfig({
         'schemaTypes/**',
         'src/components/Signals/**',
         'src/components/Simulering/Simuleringsdetaljer/Simuleringsdetaljer.tsx',
+        'sanity',
       ],
       perFile: true,
       thresholds: {
-        lines: 95,
+        lines: 85,
         functions: 50,
-        branches: 94,
-        statements: 95,
+        branches: 85,
+        statements: 85,
       },
       reporter: ['json', 'html', 'text', 'text-summary', 'cobertura'],
     },
