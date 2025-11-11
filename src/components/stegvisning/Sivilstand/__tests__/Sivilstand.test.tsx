@@ -42,9 +42,9 @@ describe('stegvisning - Sivilstand', () => {
 
     await waitFor(() => {
       expect(selectElement).toBeVisible()
-      expect(selectElement).toHaveValue('')
       expect(screen.queryAllByRole('radio')).toHaveLength(0)
     })
+    expect(selectElement).toHaveValue('')
   })
 
   describe('rendrer slik den skal når sivilstand er oppgitt', async () => {

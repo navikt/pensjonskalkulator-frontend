@@ -68,64 +68,48 @@ describe('AlderspensjonDetaljerGrunnlag', () => {
   })
 
   it('rendrer wrapper med korrekt test id', () => {
-    const { container } = render(
-      <AlderspensjonDetaljerGrunnlag {...defaultProps} />,
-      {
-        preloadedState: defaultPreloadedState,
-      }
-    )
+    render(<AlderspensjonDetaljerGrunnlag {...defaultProps} />, {
+      preloadedState: defaultPreloadedState,
+    })
     // Component renders a VStack wrapper, check that it's rendered
-    expect(container.querySelector('.navds-stack')).toBeInTheDocument()
+    const wrapper = screen.getByTestId('AlderspensjonDetaljer')
+    expect(wrapper).toBeInTheDocument()
   })
 
   it('rendrer både desktop og mobil versjon med riktig CSS klasser', () => {
-    const { container } = render(
-      <AlderspensjonDetaljerGrunnlag {...defaultProps} />,
-      { preloadedState: defaultPreloadedState }
-    )
+    render(<AlderspensjonDetaljerGrunnlag {...defaultProps} />, {
+      preloadedState: defaultPreloadedState,
+    })
 
     // Component only renders a single version, not separate desktop/mobile versions
-    const stackDiv = container.querySelector('.navds-stack')
-    expect(stackDiv).toBeInTheDocument()
+    const aldersWrapper = screen.getByTestId('AlderspensjonDetaljer')
+    expect(aldersWrapper).toBeInTheDocument()
 
     // There are no desktop/mobile specific CSS classes in the actual implementation
-    const desktopDiv = container.querySelector(
-      '[class*="beregningsdetaljerForOvergangskullDesktopOnly"]'
+    expect(aldersWrapper.className).not.toContain(
+      'beregningsdetaljerForOvergangskullDesktopOnly'
     )
-    const mobileDiv = container.querySelector(
-      '[class*="beregningsdetaljerForOvergangskullMobileOnly"]'
+    expect(aldersWrapper.className).not.toContain(
+      'beregningsdetaljerForOvergangskullMobileOnly'
     )
-
-    expect(desktopDiv).not.toBeInTheDocument()
-    expect(mobileDiv).not.toBeInTheDocument()
   })
 
   it('rendrer HStack for desktop versjon', () => {
-    const { container } = render(
-      <AlderspensjonDetaljerGrunnlag {...defaultProps} />,
-      {
-        preloadedState: defaultPreloadedState,
-      }
-    )
+    render(<AlderspensjonDetaljerGrunnlag {...defaultProps} />, {
+      preloadedState: defaultPreloadedState,
+    })
 
-    // Component uses VStack for layout, not HStack and no desktop-specific version
-    const stackContainer = container.querySelector('.navds-stack')
+    const stackContainer = screen.getByTestId('AlderspensjonDetaljer')
     expect(stackContainer).toBeInTheDocument()
-    expect(stackContainer).toHaveClass('navds-stack')
   })
 
   it('rendrer VStack for mobil versjon', () => {
-    const { container } = render(
-      <AlderspensjonDetaljerGrunnlag {...defaultProps} />,
-      {
-        preloadedState: defaultPreloadedState,
-      }
-    )
+    render(<AlderspensjonDetaljerGrunnlag {...defaultProps} />, {
+      preloadedState: defaultPreloadedState,
+    })
 
-    // Component uses VStack for layout and there's no separate mobile version
-    const stackContainer = container.querySelector('.navds-stack')
-    expect(stackContainer).toBeInTheDocument()
-    expect(stackContainer).toHaveClass('navds-stack')
+    const stackContainerMobile = screen.getByTestId('AlderspensjonDetaljer')
+    expect(stackContainerMobile).toBeInTheDocument()
   })
 
   it('rendrer AlderspensjonDetaljer komponenter for hver item i listen', () => {

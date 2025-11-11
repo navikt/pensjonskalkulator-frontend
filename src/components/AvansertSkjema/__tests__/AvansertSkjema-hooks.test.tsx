@@ -1003,10 +1003,10 @@ describe('AvansertSkjema-hooks', () => {
       })
 
       // gradertAgePickerError
-      const gradertAgePickerError = render(
+      const { asFragment: gradertAsFragment } = render(
         result.current.gradertUttakAgePickerError as React.ReactElement
       )
-      expect(gradertAgePickerError.asFragment()).toMatchInlineSnapshot(`
+      expect(gradertAsFragment()).toMatchInlineSnapshot(`
         <DocumentFragment>
           id2 for når du vil ta ut 
           <span
@@ -1019,10 +1019,10 @@ describe('AvansertSkjema-hooks', () => {
       `)
 
       // heltAgePickerError
-      const heltAgePickerError = render(
+      const { asFragment: heltAsFragment } = render(
         result.current.heltUttakAgePickerError as React.ReactElement
       )
-      expect(heltAgePickerError.asFragment()).toMatchInlineSnapshot(`
+      expect(heltAsFragment()).toMatchInlineSnapshot(`
         <DocumentFragment>
           id4
         </DocumentFragment>

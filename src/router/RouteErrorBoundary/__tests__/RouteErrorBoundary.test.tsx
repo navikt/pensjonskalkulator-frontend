@@ -27,7 +27,7 @@ describe('RouteErrorBoundary', () => {
     })
 
     expect(screen.queryByTestId('error-boundary')).not.toBeInTheDocument()
-    expect(screen.queryByTestId('error-page-404')).toBeInTheDocument()
+    expect(screen.getByTestId('error-page-404')).toBeInTheDocument()
   })
 
   it('rendrer feilmelding når det kastes en feil i children', () => {
@@ -47,7 +47,7 @@ describe('RouteErrorBoundary', () => {
         hasRouter: false,
       })
       expect(screen.queryByTestId('error-page-404')).not.toBeInTheDocument()
-      expect(screen.queryByTestId('error-page-unexpected')).toBeInTheDocument()
+      expect(screen.getByTestId('error-page-unexpected')).toBeInTheDocument()
     })
   })
 })

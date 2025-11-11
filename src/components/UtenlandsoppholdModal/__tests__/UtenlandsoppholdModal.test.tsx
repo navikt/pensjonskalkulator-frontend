@@ -148,16 +148,14 @@ describe('UtenlandsoppholdModal', () => {
       )
       modalRef.current?.showModal()
 
-      await act(async () => {
-        fireEvent.change(
-          await screen.findByTestId(
-            utenlandsoppholdModalUtils.UTENLANDSOPPHOLD_FORM_NAMES.land
-          ),
-          {
-            target: { value: 'FRA' },
-          }
-        )
-      })
+      fireEvent.change(
+        await screen.findByTestId(
+          utenlandsoppholdModalUtils.UTENLANDSOPPHOLD_FORM_NAMES.land
+        ),
+        {
+          target: { value: 'FRA' },
+        }
+      )
       await waitFor(() => {
         expect(
           screen.getByText(
@@ -166,13 +164,11 @@ describe('UtenlandsoppholdModal', () => {
         ).toBeVisible()
       })
 
-      await act(async () => {
-        await user.click(
-          screen.getByText(
-            'utenlandsopphold.om_oppholdet_ditt_modal.button.legg_til'
-          )
+      await user.click(
+        screen.getByText(
+          'utenlandsopphold.om_oppholdet_ditt_modal.button.legg_til'
         )
-      })
+      )
 
       expect(
         screen.getByText(

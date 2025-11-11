@@ -35,7 +35,7 @@ describe('veileder - BorgerInformasjon', async () => {
       expect(screen.getByTestId('borger-nullstill')).toBeInTheDocument()
       expect(window.location.href).toBe('before')
       await user.click(screen.getByTestId('borger-nullstill'))
-      expect(window.location.href).toBe(`${BASE_PATH}/veileder`)
     })
+    expect(window.location.href).toBe(`${BASE_PATH}/veileder`)
   })
 })
