@@ -1,6 +1,7 @@
 import eslint from '@eslint/js'
 import vitest from '@vitest/eslint-plugin'
 import importPlugin from 'eslint-plugin-import'
+import jsxA11y from 'eslint-plugin-jsx-a11y'
 import reactPlugin from 'eslint-plugin-react'
 import sonarjsPlugin from 'eslint-plugin-sonarjs'
 import testingLibrary from 'eslint-plugin-testing-library'
@@ -44,13 +45,34 @@ const defaultEslintConfig = tseslint.config(
     ignores: [...ignoredFiles],
   })),
   reactPlugin.configs.flat.recommended,
-  reactPlugin.configs.flat['jsx-runtime']
+  reactPlugin.configs.flat['jsx-runtime'],
+  jsxA11y.flatConfigs.recommended
 )
 
 export default [
   ...defaultEslintConfig,
   {
-    settings: { react: { version: 'detect' } }, // eslint-plugin-react needs this
+    settings: {
+      react: { version: 'detect' },
+      'jsx-a11y': {
+        polymorphicPropName: 'as',
+        components: {
+          Button: 'button',
+          Link: 'a',
+          Heading: 'h2',
+          BodyLong: 'p',
+          BodyShort: 'p',
+          Label: 'label',
+          TextField: 'input',
+          Select: 'select',
+          Checkbox: 'input',
+          Radio: 'input',
+          Alert: 'div',
+          Panel: 'div',
+          Modal: 'dialog',
+        },
+      },
+    },
     languageOptions: {
       globals: {
         ...globals.node,
@@ -99,6 +121,12 @@ export default [
       'sonarjs/no-gratuitous-expressions': 'error',
       'sonarjs/no-inverted-boolean-check': 'warn',
       'sonarjs/prefer-while': 'warn',
+      // jsx-a11y rules
+      // TODO: fjern når alle warns for feil er borte
+      'jsx-a11y/anchor-is-valid': 'warn',
+      'jsx-a11y/click-events-have-key-events': 'warn',
+      'jsx-a11y/no-static-element-interactions': 'warn',
+      'jsx-a11y/label-has-associated-control': 'warn',
     },
   },
   // Test files configuration
