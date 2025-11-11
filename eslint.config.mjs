@@ -2,6 +2,7 @@ import eslint from '@eslint/js'
 import importPlugin from 'eslint-plugin-import'
 import reactPlugin from 'eslint-plugin-react'
 import sonarjsPlugin from 'eslint-plugin-sonarjs'
+import testingLibrary from 'eslint-plugin-testing-library'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
@@ -110,8 +111,14 @@ export default [
       '**/cypress/**/*.tsx',
       '**/*.cy.ts',
       '**/*.cy.tsx',
+      '**/*.spec.ts',
+      '**/*.spec.tsx',
+      '**/playwright/**/*.ts',
+      '**/playwright/**/*.tsx',
     ],
+    ...testingLibrary.configs['flat/react'],
     rules: {
+      ...testingLibrary.configs['flat/react'].rules,
       '@typescript-eslint/ban-ts-comment': 'off', // Fjern når @ts-ignore ikke lenger er i bruk i testkode
       '@typescript-eslint/require-await': 'off',
       '@typescript-eslint/no-floating-promises': [
