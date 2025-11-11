@@ -1,4 +1,5 @@
 import eslint from '@eslint/js'
+import vitest from '@vitest/eslint-plugin'
 import importPlugin from 'eslint-plugin-import'
 import reactPlugin from 'eslint-plugin-react'
 import sonarjsPlugin from 'eslint-plugin-sonarjs'
@@ -117,8 +118,13 @@ export default [
       '**/playwright/**/*.tsx',
     ],
     ...testingLibrary.configs['flat/react'],
+    plugins: {
+      ...testingLibrary.configs['flat/react'].plugins,
+      vitest,
+    },
     rules: {
       ...testingLibrary.configs['flat/react'].rules,
+      ...vitest.configs.recommended.rules,
       '@typescript-eslint/ban-ts-comment': 'off', // Fjern når @ts-ignore ikke lenger er i bruk i testkode
       '@typescript-eslint/require-await': 'off',
       '@typescript-eslint/no-floating-promises': [
@@ -138,6 +144,11 @@ export default [
       'sonarjs/cognitive-complexity': 'off',
       'sonarjs/no-identical-functions': 'off',
       'sonarjs/prefer-immediate-return': 'off',
+    },
+    languageOptions: {
+      globals: {
+        ...vitest.environments.env.globals,
+      },
     },
   },
   // Mock files configuration
