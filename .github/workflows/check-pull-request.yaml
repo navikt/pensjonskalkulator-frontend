@@ -155,7 +155,7 @@ jobs:
         shardTotal: [4]
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Use Node.js v22.16.0
         uses: actions/setup-node@v6
@@ -204,7 +204,7 @@ jobs:
       image: mcr.microsoft.com/playwright:v1.54.1-noble
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Use Node.js v22.16.0
         uses: actions/setup-node@v6
