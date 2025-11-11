@@ -3,6 +3,7 @@ import vitest from '@vitest/eslint-plugin'
 import importPlugin from 'eslint-plugin-import'
 import jsxA11y from 'eslint-plugin-jsx-a11y'
 import reactPlugin from 'eslint-plugin-react'
+import reactHooks from 'eslint-plugin-react-hooks'
 import sonarjsPlugin from 'eslint-plugin-sonarjs'
 import testingLibrary from 'eslint-plugin-testing-library'
 import globals from 'globals'
@@ -46,6 +47,7 @@ const defaultEslintConfig = tseslint.config(
   })),
   reactPlugin.configs.flat.recommended,
   reactPlugin.configs.flat['jsx-runtime'],
+  reactHooks.configs.flat.recommended,
   jsxA11y.flatConfigs.recommended
 )
 
@@ -127,6 +129,17 @@ export default [
       'jsx-a11y/click-events-have-key-events': 'warn',
       'jsx-a11y/no-static-element-interactions': 'warn',
       'jsx-a11y/label-has-associated-control': 'warn',
+      // react-hooks rules
+      // TODO: fjern når alle warns for feil er borte
+      'react-hooks/rules-of-hooks': 'warn',
+      'react-hooks/exhaustive-deps': 'warn',
+      'react-hooks/preserve-manual-memoization': 'warn',
+      'react-hooks/refs': 'warn',
+      'react-hooks/set-state-in-effect': 'warn',
+      'react-hooks/set-state-in-render': 'warn',
+      'react-hooks/use-memo': 'warn',
+      'react-hooks/immutability': 'warn',
+      'react-hooks/purity': 'warn',
     },
   },
   // Test files configuration
