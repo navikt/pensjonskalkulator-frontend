@@ -1,26 +1,25 @@
 import { PortableText } from '@portabletext/react'
 import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { useNavigate } from 'react-router'
 
 import { BodyLong, Heading } from '@navikt/ds-react'
+import { setParams } from '@navikt/nav-dekoratoren-moduler'
 
 import { Card } from '@/components/common/Card'
 import { SanityContext } from '@/context/SanityContext'
-import { useAppSelector } from '@/state/hooks'
-import { selectIsLoggedIn } from '@/state/session/selectors'
+import { externalUrls } from '@/router/constants'
 import { getSanityPortableTextComponents } from '@/utils/sanity'
 
 export function Forbehold() {
   const intl = useIntl()
   const { forbeholdAvsnittData } = React.useContext(SanityContext)
-  const isLoggedIn = useAppSelector(selectIsLoggedIn)
-  const navigate = useNavigate()
 
   React.useEffect(() => {
     document.title = intl.formatMessage({
       id: 'application.title.forbehold',
     })
+    // Set redirect URL in Dekoratoren to Din Pensjon logged-in page
+    setParams({ redirectToUrl: externalUrls.dinPensjonInnlogget })
   }, [])
 
   return (
