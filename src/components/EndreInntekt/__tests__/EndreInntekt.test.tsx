@@ -218,9 +218,7 @@ describe('EndreInntekt', () => {
       screen.getByText('inntekt.endre_inntekt_modal.open.button')
     )
     expect(
-      screen.getByText(
-        /Din siste pensjonsgivende inntekt fra Skatteetaten er/
-      )
+      screen.getByText(/Din siste pensjonsgivende inntekt fra Skatteetaten er/)
     ).toBeInTheDocument()
     expect(
       screen.queryByText('inntekt.endre_inntekt_modal.paragraph')
