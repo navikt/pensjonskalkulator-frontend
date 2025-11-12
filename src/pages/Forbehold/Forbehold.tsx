@@ -7,7 +7,6 @@ import { BodyLong, Heading } from '@navikt/ds-react'
 
 import { Card } from '@/components/common/Card'
 import { SanityContext } from '@/context/SanityContext'
-import { externalUrls } from '@/router/constants'
 import { useAppSelector } from '@/state/hooks'
 import { selectIsLoggedIn } from '@/state/session/selectors'
 import { getSanityPortableTextComponents } from '@/utils/sanity'
@@ -23,12 +22,6 @@ export function Forbehold() {
       id: 'application.title.forbehold',
     })
   }, [])
-
-  React.useEffect(() => {
-    if (isLoggedIn) {
-      navigate(externalUrls.dinPensjonInnlogget)
-    }
-  }, [isLoggedIn, navigate])
 
   return (
     <Card hasLargePadding hasMargin>
