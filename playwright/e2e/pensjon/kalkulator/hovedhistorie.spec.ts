@@ -22,78 +22,6 @@ test.describe('Hovedhistorie', () => {
   const ENDRE_INNTEKT_TEXT = 'Endre inntekt'
   const OPPDATER_INNTEKT_TEXT = 'Oppdater inntekt'
 
-  const openSivilstandStep = async (page: Page) => {
-    await test.step('Open sivilstand step', async () => {
-      const button = page.getByTestId('stegvisning-start-button')
-      await button.click()
-      await expect(page).toHaveURL(/\/pensjon\/kalkulator\/sivilstand$/)
-    })
-  }
-
-  const goToUtenlandsoppholdStep = async (page: Page) => {
-    await test.step('Navigate to utenlandsopphold step', async () => {
-      const currentUrl = page.url()
-      if (!currentUrl.includes('/sivilstand')) {
-        await openSivilstandStep(page)
-      }
-      await clickNeste(page, /\/pensjon\/kalkulator\/utenlandsopphold$/)
-    })
-  }
-
-  const goToAfpStep = async (page: Page) => {
-    await test.step('Navigate to AFP step', async () => {
-      const currentUrl = page.url()
-      if (!currentUrl.includes('/utenlandsopphold')) {
-        await goToUtenlandsoppholdStep(page)
-      }
-      await expect(
-        page.getByRole('heading', { name: /opphold.*norge/i })
-      ).toBeVisible()
-      const neiRadio = page.locator(
-        'input[type="radio"][name="har-utenlandsopphold-radio"][value="nei"]'
-      )
-      await neiRadio.check()
-      await expect(neiRadio).toBeChecked()
-      await waitForValidationErrorsToClear(page)
-      const button = page.getByTestId(STEGVISNING_NESTE_BUTTON)
-      await button.click()
-      try {
-        await expect(page).toHaveURL(/\/pensjon\/kalkulator\/(afp|samtykke)/, {
-          timeout: 20000,
-        })
-      } catch {
-        const finalUrl = page.url()
-        if (finalUrl.includes('/utenlandsopphold')) {
-          throw new Error(
-            `Navigation failed - still on utenlandsopphold: ${finalUrl}`
-          )
-        }
-      }
-      if (page.url().includes('/samtykke')) {
-        return
-      }
-      await expect(page).toHaveURL(/\/pensjon\/kalkulator\/afp/)
-    })
-  }
-
-  const goToSamtykkeStep = async (page: Page) => {
-    await test.step('Navigate to samtykke step', async () => {
-      const currentUrl = page.url()
-      if (currentUrl.includes('/samtykke')) {
-        return
-      }
-      if (!currentUrl.includes('/afp')) {
-        await goToAfpStep(page)
-        if (page.url().includes('/samtykke')) {
-          return
-        }
-      }
-      const vetIkkeRadio = page.getByRole('radio', { name: 'Vet ikke' })
-      await vetIkkeRadio.check()
-      await clickNeste(page, /\/pensjon\/kalkulator\/samtykke$/)
-    })
-  }
-
   const selectSamtykkeRadio = async (
     page: Page,
     option: 'ja' | 'nei' = 'nei'
@@ -386,7 +314,7 @@ test.describe('Hovedhistorie', () => {
       test('forventer jeg informasjon om hvilken sivilstand jeg er registrert med', async ({
         page,
       }) => {
-        await openSivilstandStep(page)
+        await fillOutStegvisning(page, { navigateTo: 'sivilstand' })
 
         await expect(
           page.getByRole('heading', { name: 'Sivilstand' })
@@ -397,7 +325,7 @@ test.describe('Hovedhistorie', () => {
       test('forventer jeg å få muligheten til å endre sivilstand for å få riktig beregning', async ({
         page,
       }) => {
-        await openSivilstandStep(page)
+        await fillOutStegvisning(page, { navigateTo: 'sivilstand' })
 
         const sivilstandSelect = page.locator(SELECT_SIVILSTAND)
         await sivilstandSelect.selectOption('GIFT')
@@ -417,7 +345,7 @@ test.describe('Hovedhistorie', () => {
       })
 
       test(TILBAKE_TIL_FORRIGE_STEG_TEXT, async ({ page }) => {
-        await openSivilstandStep(page)
+        await fillOutStegvisning(page, { navigateTo: 'sivilstand' })
 
         await page.getByRole('button', { name: 'Tilbake' }).click()
         await expect(page).toHaveURL(
@@ -450,7 +378,7 @@ test.describe('Hovedhistorie', () => {
         page,
       }) => {
         await authenticate(page, [await personGift()])
-        await openSivilstandStep(page)
+        await fillOutStegvisning(page, { navigateTo: 'sivilstand' })
 
         await expect(
           page.getByRole('heading', { name: 'Sivilstand' })
@@ -462,7 +390,7 @@ test.describe('Hovedhistorie', () => {
         page,
       }) => {
         await authenticate(page, [await personGift()])
-        await openSivilstandStep(page)
+        await fillOutStegvisning(page, { navigateTo: 'sivilstand' })
 
         await page.locator(SELECT_SIVILSTAND).selectOption('UGIFT')
         await clickNeste(page)
@@ -472,7 +400,7 @@ test.describe('Hovedhistorie', () => {
         page,
       }) => {
         await authenticate(page, [await personGift()])
-        await openSivilstandStep(page)
+        await fillOutStegvisning(page, { navigateTo: 'sivilstand' })
 
         await expect(page.locator(SELECT_SIVILSTAND)).toHaveValue('GIFT')
 
@@ -490,7 +418,7 @@ test.describe('Hovedhistorie', () => {
         page,
       }) => {
         await authenticate(page, [await personGift()])
-        await openSivilstandStep(page)
+        await fillOutStegvisning(page, { navigateTo: 'sivilstand' })
 
         await page
           .locator('input[type="radio"][name="epsHarPensjon"][value="nei"]')
@@ -516,7 +444,7 @@ test.describe('Hovedhistorie', () => {
 
       test(TILBAKE_TIL_FORRIGE_STEG_TEXT, async ({ page }) => {
         await authenticate(page, [await personGift()])
-        await openSivilstandStep(page)
+        await fillOutStegvisning(page, { navigateTo: 'sivilstand' })
 
         await page.getByRole('button', { name: 'Tilbake' }).click()
         await expect(page).toHaveURL(
@@ -533,7 +461,7 @@ test.describe('Hovedhistorie', () => {
       test('forventer jeg å bli spurt om jeg har bodd/jobbet mer enn 5 år utenfor Norge', async ({
         page,
       }) => {
-        await goToUtenlandsoppholdStep(page)
+        await fillOutStegvisning(page, { navigateTo: 'utenlandsopphold' })
 
         await expect(
           page.getByRole('heading', { name: 'Opphold utenfor Norge' })
@@ -548,7 +476,7 @@ test.describe('Hovedhistorie', () => {
       test('forventer jeg å måtte svare ja/nei på spørsmål om tid utenfor Norge', async ({
         page,
       }) => {
-        await goToUtenlandsoppholdStep(page)
+        await fillOutStegvisning(page, { navigateTo: 'utenlandsopphold' })
 
         await clickNeste(page)
         const validationMessage = page.getByText(
@@ -563,7 +491,7 @@ test.describe('Hovedhistorie', () => {
       })
 
       test(TILBAKE_TIL_FORRIGE_STEG_TEXT, async ({ page }) => {
-        await goToUtenlandsoppholdStep(page)
+        await fillOutStegvisning(page, { navigateTo: 'utenlandsopphold' })
 
         await page.getByRole('button', { name: 'Tilbake' }).click()
         await expect(page).toHaveURL(
@@ -586,7 +514,7 @@ test.describe('Hovedhistorie', () => {
             ...(await presetStates.medTidligsteUttaksalder(62, 10)),
           ])
 
-          await openSivilstandStep(page)
+          await fillOutStegvisning(page, { navigateTo: 'sivilstand' })
           await clickNeste(page)
           await page.getByRole('radio').last().check()
           await clickNeste(page)
@@ -601,7 +529,7 @@ test.describe('Hovedhistorie', () => {
         test('forventer jeg å få informasjon om AFP og muligheten for å velge om jeg ønsker å beregne AFP', async ({
           page,
         }) => {
-          await goToAfpStep(page)
+          await fillOutStegvisning(page, { navigateTo: 'afp' })
 
           await expect(
             page.getByRole('heading', { name: 'AFP (avtalefestet pensjon)' })
@@ -613,7 +541,7 @@ test.describe('Hovedhistorie', () => {
         test('forventer jeg å måtte velge om jeg vil beregne med eller uten AFP', async ({
           page,
         }) => {
-          await goToAfpStep(page)
+          await fillOutStegvisning(page, { navigateTo: 'afp' })
 
           await expect(page.getByText('Har du rett til AFP?')).toBeVisible()
           await expect(page.getByLabel('Ja, i offentlig sektor')).toBeVisible()
@@ -633,7 +561,7 @@ test.describe('Hovedhistorie', () => {
         })
 
         test(TILBAKE_TIL_FORRIGE_STEG_TEXT, async ({ page }) => {
-          await goToAfpStep(page)
+          await fillOutStegvisning(page, { navigateTo: 'afp' })
 
           await page.getByRole('button', { name: 'Tilbake' }).click()
           await expect(page).toHaveURL(
@@ -655,7 +583,7 @@ test.describe('Hovedhistorie', () => {
               ...(await presetStates.brukerEldreEnn67()),
               ...(await presetStates.medTidligsteUttaksalder(62, 10)),
             ])
-            await goToAfpStep(page)
+            await fillOutStegvisning(page, { navigateTo: 'afp' })
 
             await expect(page.getByTestId('afp-privat')).toBeVisible()
             await expect(
@@ -678,7 +606,7 @@ test.describe('Hovedhistorie', () => {
               ...(await presetStates.brukerEldreEnn67()),
               ...(await presetStates.medTidligsteUttaksalder(62, 10)),
             ])
-            await goToAfpStep(page)
+            await fillOutStegvisning(page, { navigateTo: 'afp' })
 
             await expect(page.getByTestId('afp-privat')).toBeVisible()
 
@@ -710,7 +638,7 @@ test.describe('Hovedhistorie', () => {
             await authenticate(page, [
               ...(await presetStates.apotekerMedlemMedTidligsteUttak(62, 10)),
             ])
-            await goToAfpStep(page)
+            await fillOutStegvisning(page, { navigateTo: 'afp' })
 
             await page
               .locator('input[type="radio"][value="ja_offentlig"]')
@@ -734,7 +662,7 @@ test.describe('Hovedhistorie', () => {
           test('forventer jeg å bli spurt om samtykke for offentlig AFP', async ({
             page,
           }) => {
-            await goToAfpStep(page)
+            await fillOutStegvisning(page, { navigateTo: 'afp' })
 
             await page
               .locator('input[type="radio"][value="ja_offentlig"]')
@@ -764,7 +692,7 @@ test.describe('Hovedhistorie', () => {
           test('forventer jeg å måtte svare ja/nei på spørsmål om samtykke for å hente mine avtaler eller om jeg ønsker å gå videre med bare alderspensjon', async () => {})
 
           test(TILBAKE_TIL_FORRIGE_STEG_TEXT, async ({ page }) => {
-            await goToAfpStep(page)
+            await fillOutStegvisning(page, { navigateTo: 'afp' })
             const jaOffentligRadio = page.getByRole('radio', {
               name: JA_I_OFFENTLIG_SEKTOR_TEXT,
             })
@@ -789,7 +717,7 @@ test.describe('Hovedhistorie', () => {
       test('forventer jeg å bli spurt om mitt samtykke, og få informasjon om hva samtykket innebærer', async ({
         page,
       }) => {
-        await goToSamtykkeStep(page)
+        await fillOutStegvisning(page, { navigateTo: 'samtykke' })
 
         await expect(
           page.getByRole('heading', { name: 'Pensjonsavtaler' })
@@ -804,7 +732,7 @@ test.describe('Hovedhistorie', () => {
       test('forventer jeg å måtte svare ja/nei på spørsmål om samtykke', async ({
         page,
       }) => {
-        await goToSamtykkeStep(page)
+        await fillOutStegvisning(page, { navigateTo: 'samtykke' })
 
         await clickNeste(page)
         const validationMessage = page.getByText(
@@ -818,7 +746,7 @@ test.describe('Hovedhistorie', () => {
       })
 
       test(TILBAKE_TIL_FORRIGE_STEG_TEXT, async ({ page }) => {
-        await goToSamtykkeStep(page)
+        await fillOutStegvisning(page, { navigateTo: 'samtykke' })
 
         await page.getByRole('button', { name: 'Tilbake' }).click()
         await expect(page).toHaveURL(
@@ -839,7 +767,7 @@ test.describe('Hovedhistorie', () => {
           await authenticate(page, [
             ...(await presetStates.apotekerMedlemMedTidligsteUttak(62, 10)),
           ])
-          await goToSamtykkeStep(page)
+          await fillOutStegvisning(page, { navigateTo: 'samtykke' })
 
           await expect(page.getByTestId('dette_sjekker_vi_OFTP')).toBeVisible()
         })
@@ -866,14 +794,10 @@ test.describe('Hovedhistorie', () => {
               ...(await presetStates.medTidligsteUttaksalder(62, 10)),
             ])
 
-            await openSivilstandStep(page)
-            await goToUtenlandsoppholdStep(page)
-            await goToAfpStep(page)
-
-            const jaOffentligRadio = page.getByRole('radio', {
-              name: JA_I_OFFENTLIG_SEKTOR_TEXT,
+            await fillOutStegvisning(page, {
+              afp: 'ja_offentlig',
+              navigateTo: 'afp',
             })
-            await jaOffentligRadio.check()
 
             await page.waitForSelector(
               '[data-testid="afp-utregning-valg-radiogroup"]',
@@ -882,6 +806,7 @@ test.describe('Hovedhistorie', () => {
             const afpEtterfulgtRadio = page.getByRole('radio', {
               name: 'AFP etterfulgt av alderspensjon fra 67 år',
             })
+            await expect(afpEtterfulgtRadio).toBeVisible()
             await afpEtterfulgtRadio.check()
             await clickNeste(page)
 
@@ -1044,7 +969,7 @@ test.describe('Hovedhistorie', () => {
           ...(await presetStates.medTidligsteUttaksalder(62, 10)),
         ])
 
-        await fillOutStegvisning(page, { samtykke: false })
+        await fillOutStegvisning(page, { navigateTo: 'beregning' })
         await waitForBeregningPageReady(page)
       })
 
@@ -1066,7 +991,10 @@ test.describe('Hovedhistorie', () => {
           ...(await presetStates.medTidligsteUttaksalder(62, 10)),
         ])
 
-        await fillOutStegvisning(page, { samtykke: true })
+        await fillOutStegvisning(page, {
+          samtykke: true,
+          navigateTo: 'beregning',
+        })
         await waitForBeregningPageReady(page)
 
         await expect(
@@ -1099,7 +1027,10 @@ test.describe('Hovedhistorie', () => {
           ...(await presetStates.medTidligsteUttaksalder(62, 10)),
         ])
 
-        await fillOutStegvisning(page, { samtykke: true })
+        await fillOutStegvisning(page, {
+          samtykke: true,
+          navigateTo: 'beregning',
+        })
         await waitForBeregningPageReady(page)
 
         await expect(
@@ -1159,7 +1090,10 @@ test.describe('Hovedhistorie', () => {
           ...(await presetStates.medTidligsteUttaksalder(67, 0)),
         ])
 
-        await fillOutStegvisning(page, { samtykke: true })
+        await fillOutStegvisning(page, {
+          samtykke: true,
+          navigateTo: 'beregning',
+        })
         await waitForBeregningPageReady(page)
 
         const ageButtons = page
@@ -1197,7 +1131,7 @@ test.describe('Hovedhistorie', () => {
           ...(await presetStates.medTidligsteUttaksalder(62, 10)),
         ])
 
-        await fillOutStegvisning(page, {})
+        await fillOutStegvisning(page, { navigateTo: 'beregning' })
       })
 
       test('ønsker jeg en graf som viser utviklingen av total pensjon', async ({
@@ -1288,7 +1222,10 @@ test.describe('Hovedhistorie', () => {
           ...(await presetStates.medTidligsteUttaksalder(62, 10)),
         ])
 
-        await fillOutStegvisning(page, { samtykke: true })
+        await fillOutStegvisning(page, {
+          samtykke: true,
+          navigateTo: 'beregning',
+        })
         await waitForBeregningPageReady(page)
       })
 
@@ -1334,7 +1271,10 @@ test.describe('Hovedhistorie', () => {
           ...(await presetStates.medTidligsteUttaksalder(62, 10)),
         ])
 
-        await fillOutStegvisning(page, { samtykke: true })
+        await fillOutStegvisning(page, {
+          samtykke: true,
+          navigateTo: 'beregning',
+        })
         await waitForBeregningPageReady(page)
       })
 
