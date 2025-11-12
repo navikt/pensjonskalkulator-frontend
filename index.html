@@ -27,7 +27,7 @@
     <div id="decorator-footer"></div>
     <div
       id="decorator-env"
-      data-src="%VITE_DECORATOR_URL%/env?chatbot=false&logoutWarning=true&redirectToUrl=https://www.nav.no/pensjon/kalkulator/start"
+      data-src="%VITE_DECORATOR_URL%/env?chatbot=false&logoutWarning=true"
     ></div>
     <script type="module" src="/src/main.tsx" defer></script>
     <script type="module">
@@ -49,6 +49,20 @@
       }
 
       function loadExternalScripts() {
+        // Set appropriate redirect URL based on current route
+        const currentPath = window.location.pathname
+        let redirectUrl = 'https://www.nav.no/pensjon/kalkulator/start' // default
+
+        if (currentPath === '/forbehold') {
+          redirectUrl = 'https://www.nav.no/pensjon/selvbetjening/dinpensjon'
+        }
+
+        // Update decorator config with dynamic redirect URL
+        const decoratorEnv = document.getElementById('decorator-env')
+        const currentSrc = decoratorEnv.getAttribute('data-src')
+        const newSrc = `${currentSrc}&redirectToUrl=${encodeURIComponent(redirectUrl)}`
+        decoratorEnv.setAttribute('data-src', newSrc)
+
         // Load NAV decorator
         const decoratorScript = document.createElement('script')
         decoratorScript.type = 'text/javascript'

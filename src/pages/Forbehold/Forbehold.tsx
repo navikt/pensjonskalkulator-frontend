@@ -3,11 +3,9 @@ import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 import { BodyLong, Heading } from '@navikt/ds-react'
-import { setParams } from '@navikt/nav-dekoratoren-moduler'
 
 import { Card } from '@/components/common/Card'
 import { SanityContext } from '@/context/SanityContext'
-import { externalUrls } from '@/router/constants'
 import { getSanityPortableTextComponents } from '@/utils/sanity'
 
 export function Forbehold() {
@@ -18,8 +16,6 @@ export function Forbehold() {
     document.title = intl.formatMessage({
       id: 'application.title.forbehold',
     })
-    // Set redirect URL in Dekoratoren to Din Pensjon logged-in page
-    setParams({ redirectToUrl: externalUrls.dinPensjonInnlogget })
   }, [])
 
   return (
