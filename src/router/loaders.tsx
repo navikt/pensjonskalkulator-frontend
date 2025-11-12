@@ -446,10 +446,10 @@ export const stepSamtykkePensjonsavtaler = async ({
     return redirect(paths.start)
   }
 
-  // Henter afpOffentligLivsvarig data til senere i bakgrunnen
   const state = store.getState()
-  const afpOffentligLivsvarig = selectSamtykkeOffentligAFP(state)
-  if (afpOffentligLivsvarig) {
+  //Starter innhenting av afpOffentligLivsvarig data i bakgrunnen hvis brukeren har samtykket
+  const harSamtykketOffentligAFP = selectSamtykkeOffentligAFP(state)
+  if (harSamtykketOffentligAFP) {
     store.dispatch(apiSlice.endpoints.getAfpOffentligLivsvarig.initiate())
   }
 

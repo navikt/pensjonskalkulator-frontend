@@ -379,6 +379,10 @@ const translations = {
   'beregning.title': 'Årlig inntekt og pensjon',
   'beregning.alert.inntekt':
     'Fordi du har endret inntekten din, endres pensjonsopptjeningen din.',
+  'beregning.alert.feil.afp-offentlig-livsvarig':
+    'Vi klarte ikke å sjekke om du har vedtak om livsvarig AFP. Hvis du har det, kan beløpet for AFP og tidspunktet for når du kan ta ut alderspensjon være feil. Prøv igjen senere.',
+  'beregning.alert.success.afp-offentlig-livsvarig':
+    'Du har startet uttak av livsvarig AFP. Vi klarte ikke å hente beløpet ditt for AFP. Tidspunktet for når du kan ta ut alderspensjon kan derfor være feil. Prøv igjen senere.',
   'beregning.highcharts.informasjon_klikk': 'Klikk på søylene for detaljer',
   'beregning.highcharts.title': 'Årlig inntekt og pensjon',
   'beregning.highcharts.ingress': 'Estimerte beløp i dagens verdi før skatt',

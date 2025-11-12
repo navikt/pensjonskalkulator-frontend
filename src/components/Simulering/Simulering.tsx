@@ -9,6 +9,7 @@ import { BodyLong, BodyShort, Heading, HeadingProps } from '@navikt/ds-react'
 
 import { TabellVisning } from '@/components/TabellVisning'
 import {
+  useGetAfpOffentligLivsvarigQuery,
   useOffentligTpQuery,
   usePensjonsavtalerQuery,
 } from '@/state/api/apiSlice'
@@ -26,6 +27,7 @@ import {
   selectFoedselsdato,
   selectIsEndring,
   selectSamtykke,
+  selectSamtykkeOffentligAFP,
   selectSivilstand,
   selectSkalBeregneAfpKap19,
   selectUfoeregrad,
@@ -33,6 +35,7 @@ import {
 } from '@/state/userInput/selectors'
 
 import { MaanedsbeloepAvansertBeregning } from './MaanedsbeloepAvansertBeregning'
+import { SimuleringAfpOffentligAlert } from './SimuleringAfpOffentligAlert/SimuleringAfpOffentligAlert'
 import { SimuleringEndringBanner } from './SimuleringEndringBanner/SimuleringEndringBanner'
 import { SimuleringGrafNavigation } from './SimuleringGrafNavigation/SimuleringGrafNavigation'
 import { SimuleringPensjonsavtalerAlert } from './SimuleringPensjonsavtalerAlert/SimuleringPensjonsavtalerAlert'
@@ -111,6 +114,12 @@ export const Simulering = ({
       skip: !pensjonsavtalerRequestBody || !harSamtykket || !uttaksalder,
     }
   )
+
+  const harSamtykketOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
+  const {
+    isSuccess: isAfpOffentligLivsvarigSuccess,
+    data: afpOffentligLivsvarigData,
+  } = useGetAfpOffentligLivsvarigQuery()
 
   useEffect(() => {
     if (harSamtykket && uttaksalder) {
@@ -259,6 +268,12 @@ export const Simulering = ({
           isError: isOffentligTpError,
           data: offentligTpData,
         }}
+      />
+
+      <SimuleringAfpOffentligAlert
+        harSamtykketOffentligAFP={harSamtykketOffentligAFP}
+        isAfpOffentligLivsvarigSuccess={isAfpOffentligLivsvarigSuccess}
+        afpOffentligLivsvarigData={afpOffentligLivsvarigData}
       />
 
       {showButtonsAndTable && (

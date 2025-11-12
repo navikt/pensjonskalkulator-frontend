@@ -340,6 +340,8 @@ export default {
   'beregning.title': 'MANGLER_TEKST',
   'beregning.alert.inntekt':
     'Because you have changed your income, your pension accrual changes.',
+  'beregning.alert.feil.afp-offentlig-livsvarig': 'MANGLER_TEKST',
+  'beregning.alert.success.afp-offentlig-livsvarig': 'MANGLER_TEKST',
   'beregning.highcharts.informasjon_klikk': 'MANGLER_TEKST',
   'beregning.highcharts.title': 'Calculation',
   'beregning.highcharts.ingress': 'MANGLER_TEKST',

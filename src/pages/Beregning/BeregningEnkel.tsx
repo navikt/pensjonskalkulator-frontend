@@ -19,7 +19,6 @@ import { paths } from '@/router/constants'
 import {
   apiSlice,
   useAlderspensjonQuery,
-  useGetAfpOffentligLivsvarigQuery,
   useGetPersonQuery,
   useTidligstMuligHeltUttakQuery,
 } from '@/state/api/apiSlice'
@@ -77,10 +76,6 @@ export const BeregningEnkel = () => {
   const epsHarInntektOver2G = useAppSelector(selectEpsHarInntektOver2G)
 
   const { isSuccess: isPersonSuccess, data: person } = useGetPersonQuery()
-  const {
-    isSuccess: isAfpOffentligLivsvarigSuccess,
-    data: afpOffentligLivsvarigDetaljer,
-  } = useGetAfpOffentligLivsvarigQuery()
 
   const [
     tidligstMuligHeltUttakRequestBody,
@@ -388,11 +383,6 @@ export const BeregningEnkel = () => {
                 alderspensjonListe={alderspensjon?.alderspensjon}
                 afpPrivatListe={alderspensjon?.afpPrivat}
                 afpOffentligListe={alderspensjon?.afpOffentlig}
-                afpOffentligLivsvarigDetaljer={
-                  isAfpOffentligLivsvarigSuccess
-                    ? afpOffentligLivsvarigDetaljer
-                    : undefined
-                }
                 pre2025OffentligAfp={alderspensjon?.pre2025OffentligAfp}
               />
             </>
