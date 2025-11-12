@@ -50,10 +50,9 @@
 
       function loadExternalScripts() {
         // Set appropriate redirect URL based on current route
-        const currentPath = window.location.pathname
         let redirectUrl = 'https://www.nav.no/pensjon/kalkulator/start' // default
 
-        if (currentPath === '/forbehold') {
+        if (window.location.pathname === '/pensjon/kalkulator/forbehold') {
           redirectUrl = 'https://www.nav.no/pensjon/selvbetjening/dinpensjon'
         }
 
