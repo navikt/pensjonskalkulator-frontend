@@ -44,6 +44,7 @@ const fallback = (
 
 export const routes: RouteObject[] = [
   {
+    loader: authenticationGuard,
     path: paths.forbehold,
     element: (
       <PageFramework
