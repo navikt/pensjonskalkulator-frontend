@@ -339,7 +339,7 @@ export const validateAvansertBeregningSkjema = (
     return isValid
   }
 
-  // * Sjekker at uttaksgrad er fylt ut med en prosent
+  // * Sjekker at uttaksgrad er fylt ut
   if (
     !uttaksgradFormData ||
     !/^(0|100|[1-9][0-9]?)$/.test(uttaksgradFormData as string)
