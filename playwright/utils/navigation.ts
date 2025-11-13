@@ -21,15 +21,15 @@ type NavigationStep =
 
 export async function fillOutStegvisning(
   page: Page,
-  args: Partial<{
-    afp: AfpRadio
-    samtykke: boolean
-    samtykkeAfpOffentlig: boolean
-    sivilstand: Sivilstand
-    epsHarPensjon: boolean | null
-    epsHarInntektOver2G: boolean | null
+  args: {
+    afp?: AfpRadio
+    samtykke?: boolean
+    samtykkeAfpOffentlig?: boolean
+    sivilstand?: Sivilstand
+    epsHarPensjon?: boolean | null
+    epsHarInntektOver2G?: boolean | null
     navigateTo: NavigationStep
-  }> = {}
+  }
 ) {
   const {
     afp,
@@ -38,22 +38,18 @@ export async function fillOutStegvisning(
     sivilstand,
     epsHarPensjon,
     epsHarInntektOver2G,
-    navigateTo = 'beregning',
+    navigateTo,
   } = args
 
   await waitForStoreDispatch(page)
 
-  if (
-    sivilstand !== undefined ||
-    epsHarPensjon !== undefined ||
-    epsHarInntektOver2G !== undefined
-  ) {
+  if (sivilstand !== undefined) {
     await page.evaluate(
       ({ sivilstand: s, epsHarPensjon: epp, epsHarInntektOver2G: epi2g }) =>
         window.store.dispatch({
           type: 'userInputSlice/setSivilstand',
           payload: {
-            sivilstand: s ?? 'UGIFT',
+            sivilstand: s,
             epsHarPensjon: epp ?? null,
             epsHarInntektOver2G: epi2g ?? null,
           },
