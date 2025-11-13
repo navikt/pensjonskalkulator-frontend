@@ -98,7 +98,12 @@ export function SamtykkeOffentligAFP({
         )}
       />
       <form onSubmit={onSubmit}>
-        <Heading level="2" size="medium" spacing>
+        <Heading
+          level="2"
+          size="medium"
+          spacing
+          data-testid="samtykke-offentlig-afp-title"
+        >
           <FormattedMessage id="stegvisning.samtykke_offentlig_afp.title" />
         </Heading>
 
