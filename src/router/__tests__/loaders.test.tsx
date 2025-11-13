@@ -1247,4 +1247,64 @@ describe('Loaders', () => {
     const returnedFromLoader = await beregningEnkelAccessGuard()
     expectRedirectResponse(returnedFromLoader, paths.beregningAvansert)
   })
+
+  it('burde kalle getAfpOffentligLivsvarig når bruker har samtykket til AFP offentlig', async () => {
+    const initiateMock = vi.spyOn(
+      apiSliceUtils.apiSlice.endpoints.getAfpOffentligLivsvarig,
+      'initiate'
+    )
+    const mockedState = {
+      api: { queries: { mock: 'mock' } },
+      userInput: {
+        ...userInputInitialState,
+        samtykkeOffentligAFP: true,
+      },
+    }
+    store.getState = vi.fn().mockImplementation(() => mockedState)
+
+    mockResponse('/v4/vedtak/loepende-vedtak', {
+      status: 200,
+      json: {
+        harLoependeVedtak: false,
+        ufoeretrygd: { grad: 0 },
+      } satisfies LoependeVedtak,
+    })
+
+    mockResponse('/v1/afp-offentlig-livsvarig', {
+      status: 200,
+      json: {
+        afpStatus: false,
+        beloep: 0,
+      } satisfies AfpOffentligLivsvarig,
+    })
+
+    await beregningEnkelAccessGuard()
+    expect(initiateMock).toHaveBeenCalled()
+  })
+
+  it('burde ikke kalle getAfpOffentligLivsvarig når bruker ikke har samtykket til AFP offentlig', async () => {
+    const initiateMock = vi.spyOn(
+      apiSliceUtils.apiSlice.endpoints.getAfpOffentligLivsvarig,
+      'initiate'
+    )
+    const mockedState = {
+      api: { queries: { mock: 'mock' } },
+      userInput: {
+        ...userInputInitialState,
+        samtykkeOffentligAFP: false,
+      },
+    }
+    store.getState = vi.fn().mockImplementation(() => mockedState)
+
+    mockResponse('/v4/vedtak/loepende-vedtak', {
+      status: 200,
+      json: {
+        harLoependeVedtak: false,
+        ufoeretrygd: { grad: 0 },
+      } satisfies LoependeVedtak,
+    })
+
+    await beregningEnkelAccessGuard()
+    expect(initiateMock).not.toHaveBeenCalled()
+  })
 })

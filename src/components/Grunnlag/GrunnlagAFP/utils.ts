@@ -22,6 +22,7 @@ interface IAfpGrunnlagInput {
   foedselsdato: string
   loependeVedtak: LoependeVedtak
   samtykkeOffentligAFP: boolean | null
+  afpOffentligLivsvarigDetaljer?: AfpOffentligLivsvarig
 }
 
 export const afpContentIntl = (intl: IntlShape) => ({
@@ -33,6 +34,11 @@ export const afpContentIntl = (intl: IntlShape) => ({
   afpOffentligOppgitt_2: {
     title: `${getOffentligMessage(intl)}`,
     content: 'grunnlag.afp.ingress.ja_offentlig',
+  },
+
+  afpOffentligTpo: {
+    title: `${getOffentligMessage(intl)} (${getEndringMessage(intl)})`,
+    content: 'grunnlag.afp.ingress.ja_offentlig.tpo',
   },
 
   offentligAfpOgUforeKanIkkeBeregnes_3: {
@@ -95,6 +101,7 @@ export const generateAfpContent =
       loependeVedtak,
       beregningsvalg,
       erApoteker,
+      afpOffentligLivsvarigDetaljer,
     } = input
 
     const hasUfoeregradGreaterThanZero = loependeVedtak?.ufoeretrygd?.grad > 0
@@ -113,9 +120,17 @@ export const generateAfpContent =
     // Personer født før 1963 eller apotekere behandles likt for AFP-formål
     const isKap19OrApoteker = isKap19 || erApoteker
 
+    // AFP offentlig livsvarig fra TPO
+    const hasAfpOffentligLivsvarigWithBeloep =
+      afpOffentligLivsvarigDetaljer?.beloep !== undefined &&
+      afpOffentligLivsvarigDetaljer?.beloep !== null
+
     // Prioritet 1: Håndter eksisterende AFP-vedtak
     if (hasAfpOffentlig) {
       return content.harAfpOffentlig_12
+    }
+    if (hasAfpOffentligLivsvarigWithBeloep) {
+      return content.afpOffentligTpo
     }
     if (hasAfpPrivat) {
       return content.afpPrivatUendret_11
