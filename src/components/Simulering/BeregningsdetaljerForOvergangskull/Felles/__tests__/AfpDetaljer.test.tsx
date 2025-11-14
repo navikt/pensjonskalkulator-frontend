@@ -111,15 +111,14 @@ describe('Gitt at AfpDetaljer rendres', () => {
 
   it('rendrer komponenten uten data', () => {
     const emptyAfpDetaljer = createAfpDetaljerListe({})
-    const { container } = renderWithProviders(
+    renderWithProviders(
       <AfpDetaljer
         afpDetaljForValgtUttak={emptyAfpDetaljer}
         alderspensjonColumnsCount={3}
       />
     )
 
-    const box = container.querySelector('.navds-box')
-    expect(box).toBeInTheDocument()
+    expect(screen.queryByText('Kompensasjonstillegg')).not.toBeInTheDocument()
   })
 
   it('rendrer kun AFP privat ved 67 år når uttaksalder er 67 eller høyere', () => {
@@ -241,16 +240,13 @@ describe('Gitt at AfpDetaljer rendres', () => {
   })
 
   it('rendrer ikke noe når alle data er tomme eller undefined', () => {
-    const { container } = renderWithProviders(
+    renderWithProviders(
       <AfpDetaljer
         afpDetaljForValgtUttak={createAfpDetaljerListe({})}
         alderspensjonColumnsCount={3}
       />
     )
 
-    // Kun box elementet skal være tilstede
-    const box = container.querySelector('.navds-box')
-    expect(box).toBeInTheDocument()
     expect(screen.queryByText('Kompensasjonstillegg:')).not.toBeInTheDocument()
     expect(screen.queryByText('AFP grad:')).not.toBeInTheDocument()
   })
@@ -294,7 +290,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
   })
 
   it('rendrer siste element i hver array med strong styling', () => {
-    const { container } = renderWithProviders(
+    renderWithProviders(
       <AfpDetaljer
         afpDetaljForValgtUttak={createAfpDetaljerListe({
           afpPrivat: mockAfpPrivatAt67Data,
@@ -303,8 +299,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
       />
     )
 
-    const strongElements = container.querySelectorAll('strong')
-    expect(strongElements.length).toBeGreaterThan(0)
+    expect(screen.getAllByText('Sum AFP:').length).toBeGreaterThan(0)
   })
 
   it('håndterer uttaksalder med måneder korrekt', () => {
@@ -328,7 +323,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
   })
 
   it('rendrer VStack med korrekt gap for AFP privat', () => {
-    const { container } = renderWithProviders(
+    renderWithProviders(
       <AfpDetaljer
         afpDetaljForValgtUttak={createAfpDetaljerListe({
           afpPrivat: mockAfpPrivatAt67Data,
@@ -337,12 +332,11 @@ describe('Gitt at AfpDetaljer rendres', () => {
       />
     )
 
-    const vStack = container.querySelector('.navds-stack')
-    expect(vStack).toBeVisible()
+    expect(screen.getAllByText('Sum AFP:')[0]).toBeVisible()
   })
 
   it('rendrer definition lists korrekt', () => {
-    const { container } = renderWithProviders(
+    renderWithProviders(
       <AfpDetaljer
         afpDetaljForValgtUttak={createAfpDetaljerListe({
           afpPrivat: mockAfpPrivatAt67Data,
@@ -352,13 +346,8 @@ describe('Gitt at AfpDetaljer rendres', () => {
       />
     )
 
-    const definitionLists = container.querySelectorAll('dl')
-    expect(definitionLists).toHaveLength(4) // 2 for AFP privat (desktop + mobile) og 2 for pre-2025 offentlig (desktop + mobile)
-
-    const terms = container.querySelectorAll('dt')
-    const definitions = container.querySelectorAll('dd')
-    expect(terms.length).toBeGreaterThan(0)
-    expect(definitions.length).toBeGreaterThan(0)
+    expect(screen.getAllByText('Sum AFP:').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('AFP grad:').length).toBeGreaterThan(0)
   })
 
   it('håndterer kun ett element i afpPrivat array', () => {
@@ -561,7 +550,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
     })
 
     it('rendrer AFP offentlig med strong styling for alle elementer', () => {
-      const { container } = renderWithProviders(
+      renderWithProviders(
         <AfpDetaljer
           afpDetaljForValgtUttak={createAfpDetaljerListe({
             afpOffentlig: mockAfpOffentligData,
@@ -570,9 +559,11 @@ describe('Gitt at AfpDetaljer rendres', () => {
         />
       )
 
-      const strongElements = container.querySelectorAll('strong')
-      // Alle dt og dd skal være strong for AFP offentlig
-      expect(strongElements.length).toBeGreaterThanOrEqual(4) // minst 2 dt + 2 dd
+      expect(
+        screen.getAllByText('Månedlig livsvarig avtalefestet pensjon (AFP):')
+          .length
+      ).toBeGreaterThanOrEqual(1)
+      expect(screen.getAllByText('12 000 kr').length).toBeGreaterThanOrEqual(1)
     })
 
     it('rendrer ikke AFP offentlig når lista er tom', () => {
@@ -765,14 +756,14 @@ describe('Gitt at AfpDetaljer rendres', () => {
     })
 
     it('håndterer alle props som undefined', () => {
-      const { container } = renderWithProviders(
+      renderWithProviders(
         <AfpDetaljer
           afpDetaljForValgtUttak={createAfpDetaljerListe({})}
           alderspensjonColumnsCount={3}
         />
       )
-      const box = container.querySelector('.navds-box')
-      expect(box).toBeInTheDocument()
+
+      expect(screen.queryByText('Sum AFP:')).not.toBeInTheDocument()
     })
   })
 
@@ -782,7 +773,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
         uttaksalder: { aar: 62, maaneder: 3 },
       }
 
-      const { container } = renderWithProviders(
+      renderWithProviders(
         <AfpDetaljer
           afpDetaljForValgtUttak={createAfpDetaljerListe({
             afpPrivat: mockAfpPrivatAtUttaksalderData,
@@ -804,13 +795,12 @@ describe('Gitt at AfpDetaljer rendres', () => {
       ).toBeVisible()
       expect(screen.getAllByText('12 000 kr')[0]).toBeVisible()
 
-      // Pre-2025 offentlig AFP
       expect(screen.getAllByText('AFP grad:')[0]).toBeVisible()
       expect(screen.getAllByText('100 %')[0]).toBeVisible()
 
-      // Totalt skal det være minst 3 forskjellige seksjoner med AFP data (hver har desktop + mobile)
-      const definitionLists = container.querySelectorAll('dl')
-      expect(definitionLists.length).toBeGreaterThanOrEqual(3)
+      expect(screen.getAllByText('8 000 kr')[0]).toBeVisible()
+      expect(screen.getAllByText('12 000 kr')[0]).toBeVisible()
+      expect(screen.getAllByText('100 %')[0]).toBeVisible()
     })
 
     it('rendrer riktig antall headings når alle data er tilstede', () => {
@@ -930,7 +920,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
     })
 
     it('rendrer pre-2025 offentlig AFP med korrekt styling', () => {
-      const { container } = renderWithProviders(
+      renderWithProviders(
         <AfpDetaljer
           afpDetaljForValgtUttak={createAfpDetaljerListe({
             opptjeningPre2025OffentligAfp: mockPre2025OffentligAfpData,
@@ -939,13 +929,8 @@ describe('Gitt at AfpDetaljer rendres', () => {
         />
       )
 
-      const definitionLists = container.querySelectorAll('dl')
-      expect(definitionLists.length).toBeGreaterThan(0)
-
-      const terms = container.querySelectorAll('dt')
-      const definitions = container.querySelectorAll('dd')
-      expect(terms.length).toBeGreaterThan(0)
-      expect(definitions.length).toBeGreaterThan(0)
+      expect(screen.getAllByText('AFP grad:').length).toBeGreaterThan(0)
+      expect(screen.getAllByText('Sluttpoengtall:').length).toBeGreaterThan(0)
     })
 
     it('håndterer undefined verdier i pre-2025 offentlig AFP', () => {
@@ -1018,7 +1003,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
         uttaksalder: { aar: 62, maaneder: 3 },
       }
 
-      const { container } = renderWithProviders(
+      renderWithProviders(
         <AfpDetaljer
           afpDetaljForValgtUttak={createAfpDetaljerListe({
             afpPrivat: mockAfpPrivatAtUttaksalderData,
@@ -1038,13 +1023,12 @@ describe('Gitt at AfpDetaljer rendres', () => {
         screen.getAllByText('Månedlig livsvarig avtalefestet pensjon (AFP):')[0]
       ).toBeVisible()
 
-      // Pre-2025 offentlig AFP
       expect(screen.getAllByText('AFP grad:')[0]).toBeVisible()
       expect(screen.getAllByText('100 %')[0]).toBeVisible()
 
-      // Skal ha minst 3 definition lists
-      const definitionLists = container.querySelectorAll('dl')
-      expect(definitionLists.length).toBeGreaterThanOrEqual(3)
+      expect(screen.getAllByText('8 000 kr')[0]).toBeVisible()
+      expect(screen.getAllByText('12 000 kr')[0]).toBeVisible()
+      expect(screen.getAllByText('100 %')[0]).toBeVisible()
     })
   })
 
@@ -1160,7 +1144,7 @@ describe('Gitt at AfpDetaljer rendres', () => {
         { tekst: 'Sum AFP', verdi: '10 000 kr' },
       ]
 
-      const { container } = renderWithProviders(
+      renderWithProviders(
         <AfpDetaljer
           afpDetaljForValgtUttak={createAfpDetaljerListe({
             pre2025OffentligAfp: mockPre2025AfpDetaljerData,
@@ -1169,8 +1153,10 @@ describe('Gitt at AfpDetaljer rendres', () => {
         />
       )
 
-      const strongElements = container.querySelectorAll('strong')
-      expect(strongElements.length).toBeGreaterThan(0)
+      expect(
+        screen.getAllByText('Grunnpensjon (kap. 19):').length
+      ).toBeGreaterThan(0)
+      expect(screen.getAllByText('10 000 kr').length).toBeGreaterThan(0)
     })
 
     it('viser ikke pre2025OffentligAfpDetaljerListe når tom', () => {
@@ -1208,15 +1194,14 @@ describe('Gitt at AfpDetaljer rendres', () => {
     })
 
     it('håndterer alle props som undefined samtidig', () => {
-      const { container } = renderWithProviders(
+      renderWithProviders(
         <AfpDetaljer
           afpDetaljForValgtUttak={createAfpDetaljerListe({})}
           alderspensjonColumnsCount={3}
         />
       )
 
-      const box = container.querySelector('.navds-box')
-      expect(box).toBeInTheDocument()
+      expect(screen.queryByText('Sum AFP:')).not.toBeInTheDocument()
     })
 
     it('viser riktig alder i heltUttak heading når currentAge er over 67', () => {

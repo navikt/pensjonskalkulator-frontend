@@ -313,11 +313,9 @@ describe('StepStart', () => {
       },
       hasRouter: false,
     })
-    await waitFor(async () => {
-      const startButton = await screen.findByText('stegvisning.start.button')
-      await user.click(startButton)
-      expect(navigateMock).toHaveBeenCalledWith(paths.sivilstand)
-    })
+    const startButton = await screen.findByText('stegvisning.start.button')
+    await user.click(startButton)
+    expect(navigateMock).toHaveBeenCalledWith(paths.sivilstand)
   })
 
   it('sender videre til avansert beregning når brukeren klikker på neste, og har vedtak om 0 % alderspensjon og pre2025OffentligAfp', async () => {
@@ -356,11 +354,9 @@ describe('StepStart', () => {
       },
       hasRouter: false,
     })
-    await waitFor(async () => {
-      const startButton = await screen.findByText('stegvisning.start.button')
-      await user.click(startButton)
-      expect(navigateMock).toHaveBeenCalledWith(paths.beregningAvansert)
-    })
+    const startButton = await screen.findByText('stegvisning.start.button')
+    await user.click(startButton)
+    expect(navigateMock).toHaveBeenCalledWith(paths.beregningAvansert)
   })
 
   describe('Gitt at brukeren er logget på som veileder', async () => {

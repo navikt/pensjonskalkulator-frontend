@@ -1,7 +1,11 @@
 import eslint from '@eslint/js'
+import vitest from '@vitest/eslint-plugin'
 import importPlugin from 'eslint-plugin-import'
+import jsxA11y from 'eslint-plugin-jsx-a11y'
 import reactPlugin from 'eslint-plugin-react'
+import reactHooks from 'eslint-plugin-react-hooks'
 import sonarjsPlugin from 'eslint-plugin-sonarjs'
+import testingLibrary from 'eslint-plugin-testing-library'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
@@ -42,13 +46,35 @@ const defaultEslintConfig = tseslint.config(
     ignores: [...ignoredFiles],
   })),
   reactPlugin.configs.flat.recommended,
-  reactPlugin.configs.flat['jsx-runtime']
+  reactPlugin.configs.flat['jsx-runtime'],
+  reactHooks.configs.flat.recommended,
+  jsxA11y.flatConfigs.recommended
 )
 
 export default [
   ...defaultEslintConfig,
   {
-    settings: { react: { version: 'detect' } }, // eslint-plugin-react needs this
+    settings: {
+      react: { version: 'detect' },
+      'jsx-a11y': {
+        polymorphicPropName: 'as',
+        components: {
+          Button: 'button',
+          Link: 'a',
+          Heading: 'h2',
+          BodyLong: 'p',
+          BodyShort: 'p',
+          Label: 'label',
+          TextField: 'input',
+          Select: 'select',
+          Checkbox: 'input',
+          Radio: 'input',
+          Alert: 'div',
+          Panel: 'div',
+          Modal: 'dialog',
+        },
+      },
+    },
     languageOptions: {
       globals: {
         ...globals.node,
@@ -97,6 +123,23 @@ export default [
       'sonarjs/no-gratuitous-expressions': 'error',
       'sonarjs/no-inverted-boolean-check': 'warn',
       'sonarjs/prefer-while': 'warn',
+      // jsx-a11y rules
+      // TODO: fjern når alle warns for feil er borte
+      'jsx-a11y/anchor-is-valid': 'warn',
+      'jsx-a11y/click-events-have-key-events': 'warn',
+      'jsx-a11y/no-static-element-interactions': 'warn',
+      'jsx-a11y/label-has-associated-control': 'warn',
+      // react-hooks rules
+      // TODO: fjern når alle warns for feil er borte
+      'react-hooks/rules-of-hooks': 'warn',
+      'react-hooks/exhaustive-deps': 'warn',
+      'react-hooks/preserve-manual-memoization': 'warn',
+      'react-hooks/refs': 'warn',
+      'react-hooks/set-state-in-effect': 'warn',
+      'react-hooks/set-state-in-render': 'warn',
+      'react-hooks/use-memo': 'warn',
+      'react-hooks/immutability': 'warn',
+      'react-hooks/purity': 'warn',
     },
   },
   // Test files configuration
@@ -110,8 +153,23 @@ export default [
       '**/cypress/**/*.tsx',
       '**/*.cy.ts',
       '**/*.cy.tsx',
+      '**/*.spec.ts',
+      '**/*.spec.tsx',
+      '**/playwright/**/*.ts',
+      '**/playwright/**/*.tsx',
     ],
+    ...testingLibrary.configs['flat/react'],
+    plugins: {
+      ...testingLibrary.configs['flat/react'].plugins,
+      vitest,
+    },
     rules: {
+      ...testingLibrary.configs['flat/react'].rules,
+      ...vitest.configs.recommended.rules,
+      'vitest/valid-title': 'off',
+      'vitest/expect-expect': 'off',
+      'vitest/no-identical-title': 'off',
+      'vitest/no-commented-out-tests': 'warn',
       '@typescript-eslint/ban-ts-comment': 'off', // Fjern når @ts-ignore ikke lenger er i bruk i testkode
       '@typescript-eslint/require-await': 'off',
       '@typescript-eslint/no-floating-promises': [
@@ -131,6 +189,11 @@ export default [
       'sonarjs/cognitive-complexity': 'off',
       'sonarjs/no-identical-functions': 'off',
       'sonarjs/prefer-immediate-return': 'off',
+    },
+    languageOptions: {
+      globals: {
+        ...vitest.environments.env.globals,
+      },
     },
   },
   // Mock files configuration
