@@ -293,6 +293,10 @@ test.describe('Hovedhistorie', () => {
         const sivilstandSelect = page.locator('select[name="sivilstand"]')
         await sivilstandSelect.selectOption('GIFT')
 
+        await expect(
+          page.getByTestId('stegvisning.sivilstand.radio_epsHarPensjon_label')
+        ).toBeVisible()
+
         await clickNeste(page)
 
         await expect(
