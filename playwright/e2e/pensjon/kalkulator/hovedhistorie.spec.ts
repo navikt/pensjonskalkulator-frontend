@@ -303,11 +303,10 @@ test.describe('Hovedhistorie', () => {
           page.getByTestId('stegvisning.sivilstand.radio_epsHarPensjon_label')
         ).toBeVisible()
 
-        await page.getByRole('radio').first().check()
+        await page.getByRole('radio', { name: /nei/i }).check()
         await waitForValidationErrorsToClear(page)
         await clickNeste(page)
 
-        // Validation error should be cleared after selection
         await expect(
           page.getByTestId('stegvisning.sivilstand.radio_epsHarPensjon_label')
         ).toBeVisible()
