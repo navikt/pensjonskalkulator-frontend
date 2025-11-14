@@ -91,6 +91,12 @@ export async function fillOutStegvisning(
   await page.evaluate(({ path }) => window.router.navigate(path), {
     path: `/${navigateTo}`,
   })
+
+  await page.waitForURL(`**/pensjon/kalkulator/${navigateTo}*`, {
+    timeout: 15000,
+  })
+
+  await page.waitForLoadState('networkidle', { timeout: 15000 })
 }
 
 export async function waitForStoreDispatch(page: Page) {

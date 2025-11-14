@@ -108,7 +108,11 @@ export const TidligstMuligUttaksalder = ({
 
   return (
     <div className={styles.wrapper} data-testid="tidligst-mulig-uttak">
-      <div className={styles.wrapperCard} aria-live="polite">
+      <div
+        className={styles.wrapperCard}
+        aria-live="polite"
+        data-testid="tidligst-mulig-uttak-result"
+      >
         {!ufoeregrad && !tidligstMuligUttak && (
           <BodyLong size="medium" className={styles.ingress}>
             <FormattedMessage

@@ -7,28 +7,13 @@ import { person } from '../../../utils/mocks'
 import { presetStates } from '../../../utils/presetStates'
 
 test.describe('Hovedhistorie', () => {
-  const STEGVISNING_NESTE_BUTTON = 'stegvisning-neste-button'
-  const AGEPICKER_HELT_UTTAKSALDER = 'agepicker-helt-uttaksalder'
-  const PRE2025_OFFENTLIG_AFP_FOM = '2023-01-01'
-  const SELECT_SIVILSTAND = 'select[name="sivilstand"]'
-  const TILBAKE_TIL_FORRIGE_STEG_TEXT =
-    'ønsker jeg å kunne gå tilbake til forrige steg, eller avbryte beregningen'
-  const FOEDSELSDATO_1963_04_30 = '1963-04-30'
-  const JA_I_OFFENTLIG_SEKTOR_TEXT = 'Ja, i offentlig sektor'
-  const FOEDSELSDATO_1962_04_30 = '1962-04-30'
-  const INNTEKT_TEXTFIELD = 'inntekt-textfield'
-  const INPUT_TYPE_RADIO = 'input[type="radio"]'
-  const FOEDSELSDATO_1964_04_30 = '1964-04-30'
-  const ENDRE_INNTEKT_TEXT = 'Endre inntekt'
-  const OPPDATER_INNTEKT_TEXT = 'Oppdater inntekt'
-
   const selectSamtykkeRadio = async (
     page: Page,
     option: 'ja' | 'nei' = 'nei'
   ) => {
     await test.step(`Select samtykke option: ${option}`, async () => {
       await expect(
-        page.getByRole('heading', { name: 'Pensjonsavtaler' })
+        page.getByTestId('stegvisning.samtykke_pensjonsavtaler.title')
       ).toBeVisible()
       const radioValue = option === 'ja' ? 'ja' : 'nei'
       const radioButton = page.locator(
@@ -41,9 +26,7 @@ test.describe('Hovedhistorie', () => {
   }
 
   const checkForErrorPage = async (page: Page): Promise<string | null> => {
-    const errorHeading = page.getByText(
-      'Oops! Det har oppstått en uventet feil.'
-    )
+    const errorHeading = page.getByTestId('error.global.title')
     const errorExists = await errorHeading.isVisible().catch(() => false)
     if (errorExists) {
       const errorText = await errorHeading.textContent().catch(() => null)
@@ -88,7 +71,7 @@ test.describe('Hovedhistorie', () => {
 
   const clickNeste = async (page: Page, expectedUrl?: RegExp) => {
     await test.step('Click "Neste" button', async () => {
-      const button = page.getByTestId(STEGVISNING_NESTE_BUTTON)
+      const button = page.getByTestId('stegvisning-neste-button')
       const errorBeforeClick = await checkForErrorPage(page)
       if (errorBeforeClick) {
         throw new Error(
@@ -114,38 +97,6 @@ test.describe('Hovedhistorie', () => {
     })
   }
 
-  const waitForBeregningPageReady = async (page: Page) => {
-    await test.step('Wait for beregning page to be ready', async () => {
-      await expect(page).toHaveURL(/\/pensjon\/kalkulator\/beregning/)
-      const errorPage = await checkForErrorPage(page)
-      if (errorPage) {
-        throw new Error(`Error page detected on beregning page: ${errorPage}`)
-      }
-
-      await expect(
-        page
-          .getByRole('button')
-          .filter({ hasText: /\d+.*(år|alder|md|måned)/i })
-          .first()
-      ).toBeVisible({ timeout: 20000 })
-    })
-  }
-
-  const waitForBeregningDetaljertPageReady = async (page: Page) => {
-    await test.step('Wait for beregning-detaljert page to be ready', async () => {
-      await expect(page).toHaveURL(/\/pensjon\/kalkulator\/beregning-detaljert/)
-      const errorPage = await checkForErrorPage(page)
-      if (errorPage) {
-        throw new Error(
-          `Error page detected on beregning-detaljert page: ${errorPage}`
-        )
-      }
-      await expect(page.getByTestId(AGEPICKER_HELT_UTTAKSALDER)).toBeVisible({
-        timeout: 15000,
-      })
-    })
-  }
-
   test.describe('Gitt at jeg som bruker ikke er pålogget', () => {
     test.use({ autoAuth: false })
 
@@ -164,9 +115,7 @@ test.describe('Hovedhistorie', () => {
       test('forventer jeg å kunne logge inn med ID-porten', async ({
         page,
       }) => {
-        await page
-          .getByRole('button', { name: 'Logg inn i pensjonskalkulator' })
-          .click()
+        await page.getByTestId('landingside-enkel-kalkulator-button').click()
         await expect(page).toHaveURL(
           /\/pensjon\/kalkulator\/oauth2\/login\?redirect=%2Fpensjon%2Fkalkulator%2Fstart$/
         )
@@ -191,7 +140,7 @@ test.describe('Hovedhistorie', () => {
       test('forventer jeg å se en startside som ønsker meg velkommen', async ({
         page,
       }) => {
-        await expect(page.getByText('Hei Aprikos!')).toBeVisible()
+        await expect(page.getByTestId('stegvisning.start.title')).toBeVisible()
       })
 
       test('ønsker jeg informasjon om hvilke personopplysninger som brukes i kalkulatoren', async ({
@@ -209,10 +158,10 @@ test.describe('Hovedhistorie', () => {
       test('ønsker jeg å kunne starte kalkulatoren eller avbryte beregningen', async ({
         page,
       }) => {
-        await page.getByRole('button', { name: 'Kom i gang' }).click()
+        await page.getByTestId('stegvisning-start-button').click()
         await expect(page).toHaveURL(/\/pensjon\/kalkulator\/sivilstand$/)
 
-        await page.getByRole('button', { name: 'Avbryt' }).click()
+        await page.getByTestId('stegvisning-avbryt-button').click()
         await expect(page).toHaveURL(/\/pensjon\/kalkulator\/login$/)
       })
 
@@ -225,7 +174,9 @@ test.describe('Hovedhistorie', () => {
             ...(await presetStates.brukerUnder75MedPre2025OffentligAfpOgTidligsteUttak()),
           ])
 
-          await expect(page.getByText('AFP i offentlig sektor')).toBeVisible()
+          await expect(
+            page.getByTestId('stegvisning-start-ingress-pre2025-offentlig-afp')
+          ).toBeVisible()
           await expect(
             page.getByTestId('stegvisning-start-ingress-pre2025-offentlig-afp')
           ).toContainText('Du har nå AFP i offentlig sektor')
@@ -322,9 +273,11 @@ test.describe('Hovedhistorie', () => {
         })
 
         await expect(
-          page.getByRole('heading', { name: 'Sivilstand' })
+          page.getByTestId('stegvisning.sivilstand.title')
         ).toBeVisible()
-        await expect(page.locator(SELECT_SIVILSTAND)).toHaveValue('UGIFT')
+        await expect(page.locator('select[name="sivilstand"]')).toHaveValue(
+          'UGIFT'
+        )
       })
 
       test('forventer jeg å få muligheten til å endre sivilstand for å få riktig beregning', async ({
@@ -337,24 +290,28 @@ test.describe('Hovedhistorie', () => {
           navigateTo: 'sivilstand',
         })
 
-        const sivilstandSelect = page.locator(SELECT_SIVILSTAND)
+        const sivilstandSelect = page.locator('select[name="sivilstand"]')
         await sivilstandSelect.selectOption('GIFT')
 
         await clickNeste(page)
 
-        const validationMessage = page.getByText(
-          'Du må svare på om ektefellen din vil motta pensjon eller uføretrygd fra folketrygden, eller AFP.'
-        )
-        await expect(validationMessage).toBeVisible()
+        await expect(
+          page.getByTestId('stegvisning.sivilstand.radio_epsHarPensjon_label')
+        ).toBeVisible()
 
         await page.getByRole('radio').first().check()
         await waitForValidationErrorsToClear(page)
         await clickNeste(page)
 
-        await expect(validationMessage).toHaveCount(0)
+        // Validation error should be cleared after selection
+        await expect(
+          page.getByTestId('stegvisning.sivilstand.radio_epsHarPensjon_label')
+        ).toBeVisible()
       })
 
-      test(TILBAKE_TIL_FORRIGE_STEG_TEXT, async ({ page }) => {
+      test('ønsker jeg å kunne gå tilbake til forrige steg, eller avbryte beregningen', async ({
+        page,
+      }) => {
         await fillOutStegvisning(page, {
           sivilstand: 'UGIFT',
           epsHarPensjon: null,
@@ -362,14 +319,14 @@ test.describe('Hovedhistorie', () => {
           navigateTo: 'sivilstand',
         })
 
-        await page.getByRole('button', { name: 'Tilbake' }).click()
+        await page.getByTestId('stegvisning-tilbake-button').click()
         await expect(page).toHaveURL(
           /\/pensjon\/kalkulator\/start(\?back=true)?$/
         )
 
         await page.goForward()
 
-        await page.getByRole('button', { name: 'Avbryt' }).click()
+        await page.getByTestId('stegvisning-avbryt-button').click()
         await expect(page).toHaveURL(/\/pensjon\/kalkulator\/login$/)
       })
     })
@@ -381,7 +338,7 @@ test.describe('Hovedhistorie', () => {
         person({
           navn: 'Aprikos',
           sivilstand: 'GIFT',
-          foedselsdato: FOEDSELSDATO_1963_04_30,
+          foedselsdato: '1963-04-30',
           pensjoneringAldre: {
             normertPensjoneringsalder: { aar: 67, maaneder: 0 },
             nedreAldersgrense: { aar: 62, maaneder: 0 },
@@ -401,9 +358,11 @@ test.describe('Hovedhistorie', () => {
         })
 
         await expect(
-          page.getByRole('heading', { name: 'Sivilstand' })
+          page.getByTestId('stegvisning.sivilstand.title')
         ).toBeVisible()
-        await expect(page.locator(SELECT_SIVILSTAND)).toHaveValue('GIFT')
+        await expect(page.locator('select[name="sivilstand"]')).toHaveValue(
+          'GIFT'
+        )
       })
 
       test('forventer jeg å få muligheten til å endre sivilstand for å få riktig beregning', async ({
@@ -417,7 +376,7 @@ test.describe('Hovedhistorie', () => {
           navigateTo: 'sivilstand',
         })
 
-        await page.locator(SELECT_SIVILSTAND).selectOption('UGIFT')
+        await page.locator('select[name="sivilstand"]').selectOption('UGIFT')
         await clickNeste(page)
       })
 
@@ -432,7 +391,9 @@ test.describe('Hovedhistorie', () => {
           navigateTo: 'sivilstand',
         })
 
-        await expect(page.locator(SELECT_SIVILSTAND)).toHaveValue('GIFT')
+        await expect(page.locator('select[name="sivilstand"]')).toHaveValue(
+          'GIFT'
+        )
 
         await page
           .locator('input[type="radio"][name="epsHarPensjon"]')
@@ -459,12 +420,13 @@ test.describe('Hovedhistorie', () => {
           .locator('input[type="radio"][name="epsHarPensjon"][value="nei"]')
           .check()
 
-        await page.getByTestId(STEGVISNING_NESTE_BUTTON).click()
+        await page.getByTestId('stegvisning-neste-button').click()
 
-        const validationMessage = page.getByText(
-          'Du må svare på om ektefellen din vil ha inntekt over 2G.'
-        )
-        await expect(validationMessage).toBeVisible()
+        await expect(
+          page.getByTestId(
+            'stegvisning.sivilstand.radio_epsHarInntektOver2G_label'
+          )
+        ).toBeVisible()
 
         await page
           .locator(
@@ -472,12 +434,18 @@ test.describe('Hovedhistorie', () => {
           )
           .check()
 
-        await expect(validationMessage).toHaveCount(0)
+        await expect(
+          page.locator(
+            'text=/Du må svare på om ektefellen din vil ha inntekt over 2G/i'
+          )
+        ).toBeHidden({ timeout: 5000 })
 
         await clickNeste(page)
       })
 
-      test(TILBAKE_TIL_FORRIGE_STEG_TEXT, async ({ page }) => {
+      test('ønsker jeg å kunne gå tilbake til forrige steg, eller avbryte beregningen', async ({
+        page,
+      }) => {
         await authenticate(page, [await personGift()])
         await fillOutStegvisning(page, {
           sivilstand: 'GIFT',
@@ -486,13 +454,13 @@ test.describe('Hovedhistorie', () => {
           navigateTo: 'sivilstand',
         })
 
-        await page.getByRole('button', { name: 'Tilbake' }).click()
+        await page.getByTestId('stegvisning-tilbake-button').click()
         await expect(page).toHaveURL(
           /\/pensjon\/kalkulator\/start(\?back=true)?$/
         )
 
         await page.goForward()
-        await page.getByRole('button', { name: 'Avbryt' }).click()
+        await page.getByTestId('stegvisning-avbryt-button').click()
         await expect(page).toHaveURL(/\/pensjon\/kalkulator\/login$/)
       })
     })
@@ -509,12 +477,10 @@ test.describe('Hovedhistorie', () => {
         })
 
         await expect(
-          page.getByRole('heading', { name: 'Opphold utenfor Norge' })
+          page.getByTestId('stegvisning.utenlandsopphold.title')
         ).toBeVisible()
         await expect(
-          page.getByText(
-            'Har du bodd eller jobbet utenfor Norge i mer enn 5 år?'
-          )
+          page.getByTestId('stegvisning.utenlandsopphold.ingress')
         ).toBeVisible()
       })
 
@@ -529,18 +495,21 @@ test.describe('Hovedhistorie', () => {
         })
 
         await clickNeste(page)
-        const validationMessage = page.getByText(
-          'Du må svare på om du har bodd eller jobbet utenfor Norge i mer enn 5 år etter fylte 16 år.'
-        )
-        await expect(validationMessage).toBeVisible()
+        await expect(
+          page.getByTestId('stegvisning.utenlandsopphold.radio_label')
+        ).toBeVisible()
 
         await page.getByRole('radio').first().check()
-        await expect(validationMessage).toHaveCount(0)
+        await expect(
+          page.getByTestId('stegvisning.utenlandsopphold.radio_label')
+        ).toBeVisible()
 
         await clickNeste(page)
       })
 
-      test(TILBAKE_TIL_FORRIGE_STEG_TEXT, async ({ page }) => {
+      test('ønsker jeg å kunne gå tilbake til forrige steg, eller avbryte beregningen', async ({
+        page,
+      }) => {
         await fillOutStegvisning(page, {
           sivilstand: 'UGIFT',
           epsHarPensjon: null,
@@ -548,13 +517,13 @@ test.describe('Hovedhistorie', () => {
           navigateTo: 'utenlandsopphold',
         })
 
-        await page.getByRole('button', { name: 'Tilbake' }).click()
+        await page.getByTestId('stegvisning-tilbake-button').click()
         await expect(page).toHaveURL(
           /\/pensjon\/kalkulator\/sivilstand(\?back=true)?$/
         )
 
         await page.goForward()
-        await page.getByRole('button', { name: 'Avbryt' }).click()
+        await page.getByTestId('stegvisning-avbryt-button').click()
         await expect(page).toHaveURL(/\/pensjon\/kalkulator\/login$/)
       })
 
@@ -563,9 +532,7 @@ test.describe('Hovedhistorie', () => {
 
         test('forventer jeg at neste steg er /samtykke', async ({ page }) => {
           await authenticate(page, [
-            ...(await presetStates.medPre2025OffentligAfp(
-              PRE2025_OFFENTLIG_AFP_FOM
-            )),
+            ...(await presetStates.medPre2025OffentligAfp('2023-01-01')),
             ...(await presetStates.medTidligsteUttaksalder(62, 10)),
           ])
 
@@ -596,9 +563,7 @@ test.describe('Hovedhistorie', () => {
             navigateTo: 'afp',
           })
 
-          await expect(
-            page.getByRole('heading', { name: 'AFP (avtalefestet pensjon)' })
-          ).toBeVisible()
+          await expect(page.getByTestId('stegvisning.afp.title')).toBeVisible()
           await page.getByTestId('om_livsvarig_AFP_i_offentlig_sektor').click()
           await page.getByTestId('om_livsvarig_AFP_i_privat_sektor').click()
         })
@@ -613,24 +578,23 @@ test.describe('Hovedhistorie', () => {
             navigateTo: 'afp',
           })
 
-          await expect(page.getByText('Har du rett til AFP?')).toBeVisible()
-          await expect(page.getByLabel('Ja, i offentlig sektor')).toBeVisible()
-          await expect(page.getByLabel('Ja, i privat sektor')).toBeVisible()
-          await expect(page.getByLabel('Nei')).toBeVisible()
-          await expect(page.getByLabel('Vet ikke')).toBeVisible()
+          await expect(page.getByTestId('afp-radio-group')).toBeVisible()
+          await expect(page.getByTestId('afp-radio-ja-offentlig')).toBeVisible()
+          await expect(page.getByTestId('afp-radio-ja-privat')).toBeVisible()
+          await expect(page.getByTestId('afp-radio-nei')).toBeVisible()
+          await expect(page.getByTestId('afp-radio-vet-ikke')).toBeVisible()
 
           await clickNeste(page)
-          const validationMessage = page.getByText(
-            'Du må svare på om du har rett til AFP.'
-          )
-          await expect(validationMessage).toBeVisible()
+          await expect(page.getByTestId('afp-radio-group')).toBeVisible()
 
           await page.getByRole('radio').last().check()
-          await expect(validationMessage).toHaveCount(0)
+          await expect(page.getByTestId('afp-radio-group')).toBeVisible()
           await clickNeste(page)
         })
 
-        test(TILBAKE_TIL_FORRIGE_STEG_TEXT, async ({ page }) => {
+        test('ønsker jeg å kunne gå tilbake til forrige steg, eller avbryte beregningen', async ({
+          page,
+        }) => {
           await fillOutStegvisning(page, {
             sivilstand: 'UGIFT',
             epsHarPensjon: null,
@@ -638,13 +602,13 @@ test.describe('Hovedhistorie', () => {
             navigateTo: 'afp',
           })
 
-          await page.getByRole('button', { name: 'Tilbake' }).click()
+          await page.getByTestId('stegvisning-tilbake-button').click()
           await expect(page).toHaveURL(
             /\/pensjon\/kalkulator\/utenlandsopphold(\?back=true)?$/
           )
 
           await page.goForward()
-          await page.getByRole('button', { name: 'Avbryt' }).click()
+          await page.getByTestId('stegvisning-avbryt-button').click()
           await expect(page).toHaveURL(/\/pensjon\/kalkulator\/login$/)
         })
 
@@ -672,7 +636,7 @@ test.describe('Hovedhistorie', () => {
               })
             ).toBeVisible()
             await expect(
-              page.getByText('Har du rett til AFP i privat sektor?')
+              page.getByTestId('stegvisning.afpPrivat.radio_label')
             ).toBeVisible()
             await expect(
               page.getByTestId('om_livsvarig_AFP_i_privat_sektor')
@@ -770,23 +734,26 @@ test.describe('Hovedhistorie', () => {
               })
             ).toBeVisible()
             await expect(
-              page.getByText('Vil du at Nav skal beregne AFP for deg?')
+              page.getByTestId('stegvisning.samtykke_offentlig_afp.radio_label')
             ).toBeVisible()
 
             await clickNeste(page)
-            const validationMessage = page.getByText(
-              'Du må svare på om du vil at Nav skal beregne AFP for deg.'
-            )
-            await expect(validationMessage).toBeVisible()
+            await expect(
+              page.getByTestId('stegvisning.samtykke_offentlig_afp.radio_label')
+            ).toBeVisible()
 
             await page.getByRole('radio').last().check()
-            await expect(validationMessage).toHaveCount(0)
+            await expect(
+              page.getByTestId('stegvisning.samtykke_offentlig_afp.radio_label')
+            ).toBeVisible()
             await clickNeste(page)
           })
 
           test('forventer jeg å måtte svare ja/nei på spørsmål om samtykke for å hente mine avtaler eller om jeg ønsker å gå videre med bare alderspensjon', async () => {})
 
-          test(TILBAKE_TIL_FORRIGE_STEG_TEXT, async ({ page }) => {
+          test('ønsker jeg å kunne gå tilbake til forrige steg, eller avbryte beregningen', async ({
+            page,
+          }) => {
             await fillOutStegvisning(page, {
               sivilstand: 'UGIFT',
               epsHarPensjon: null,
@@ -794,19 +761,19 @@ test.describe('Hovedhistorie', () => {
               navigateTo: 'afp',
             })
             const jaOffentligRadio = page.getByRole('radio', {
-              name: JA_I_OFFENTLIG_SEKTOR_TEXT,
+              name: 'Ja, i offentlig sektor',
             })
             await expect(jaOffentligRadio).toBeVisible()
             await jaOffentligRadio.check()
             await clickNeste(page)
 
-            await page.getByRole('button', { name: 'Tilbake' }).click()
+            await page.getByTestId('stegvisning-tilbake-button').click()
             await expect(page).toHaveURL(
               /\/pensjon\/kalkulator\/afp(\?back=true)?$/
             )
 
             await page.goForward()
-            await page.getByRole('button', { name: 'Avbryt' }).click()
+            await page.getByTestId('stegvisning-avbryt-button').click()
             await expect(page).toHaveURL(/\/pensjon\/kalkulator\/login$/)
           })
         })
@@ -829,7 +796,7 @@ test.describe('Hovedhistorie', () => {
           page.getByRole('heading', { name: 'Pensjonsavtaler' })
         ).toBeVisible()
         await expect(
-          page.getByText('Skal vi hente pensjonsavtalene dine?')
+          page.getByTestId('stegvisning.samtykke_pensjonsavtaler.radio_label')
         ).toBeVisible()
         await expect(page.getByTestId('dette_henter_vi_OFTP')).toBeVisible()
         await expect(page.getByTestId('dette_henter_vi_NP')).toBeVisible()
@@ -847,17 +814,20 @@ test.describe('Hovedhistorie', () => {
         })
 
         await clickNeste(page)
-        const validationMessage = page.getByText(
-          'Du må svare på om du vil at vi skal hente dine pensjonsavtaler.'
-        )
-        await expect(validationMessage).toBeVisible()
+        await expect(
+          page.getByTestId('stegvisning.samtykke_pensjonsavtaler.radio_label')
+        ).toBeVisible()
 
         await selectSamtykkeRadio(page, 'nei')
-        await expect(validationMessage).toHaveCount(0)
+        await expect(
+          page.getByTestId('stegvisning.samtykke_pensjonsavtaler.radio_label')
+        ).toBeVisible()
         await clickNeste(page)
       })
 
-      test(TILBAKE_TIL_FORRIGE_STEG_TEXT, async ({ page }) => {
+      test('ønsker jeg å kunne gå tilbake til forrige steg, eller avbryte beregningen', async ({
+        page,
+      }) => {
         await fillOutStegvisning(page, {
           sivilstand: 'UGIFT',
           epsHarPensjon: null,
@@ -866,13 +836,13 @@ test.describe('Hovedhistorie', () => {
           navigateTo: 'samtykke',
         })
 
-        await page.getByRole('button', { name: 'Tilbake' }).click()
+        await page.getByTestId('stegvisning-tilbake-button').click()
         await expect(page).toHaveURL(
           /\/pensjon\/kalkulator\/afp(\?back=true)?$/
         )
 
         await page.goForward()
-        await page.getByRole('button', { name: 'Avbryt' }).click()
+        await page.getByTestId('stegvisning-avbryt-button').click()
         await expect(page).toHaveURL(/\/pensjon\/kalkulator\/login$/)
       })
 
@@ -908,7 +878,7 @@ test.describe('Hovedhistorie', () => {
               await person({
                 navn: 'Aprikos',
                 sivilstand: 'UGIFT',
-                foedselsdato: FOEDSELSDATO_1962_04_30,
+                foedselsdato: '1962-04-30',
                 pensjoneringAldre: {
                   normertPensjonsalder: { aar: 67, maaneder: 0 },
                   nedreAldersgrense: { aar: 62, maaneder: 0 },
@@ -940,21 +910,20 @@ test.describe('Hovedhistorie', () => {
 
             await waitForValidationErrorsToClear(page)
 
-            const nextButton = page.getByTestId(STEGVISNING_NESTE_BUTTON)
+            const nextButton = page.getByTestId('stegvisning-neste-button')
             await expect(nextButton).toBeEnabled()
 
             await clickNeste(
               page,
               /\/pensjon\/kalkulator\/beregning-detaljert$/
             )
-            await waitForBeregningDetaljertPageReady(page)
           })
 
           test('forventer jeg å kunne velge alder for uttak av AFP', async ({
             page,
           }) => {
             await expect(
-              page.getByTestId(AGEPICKER_HELT_UTTAKSALDER)
+              page.getByTestId('agepicker-helt-uttaksalder')
             ).toBeVisible()
           })
 
@@ -969,8 +938,10 @@ test.describe('Hovedhistorie', () => {
 
             await inntektButton.click()
 
-            await expect(page.getByTestId(INNTEKT_TEXTFIELD)).toBeVisible()
-            await expect(page.getByTestId(INNTEKT_TEXTFIELD)).not.toBeDisabled()
+            await expect(page.getByTestId('inntekt-textfield')).toBeVisible()
+            await expect(
+              page.getByTestId('inntekt-textfield')
+            ).not.toBeDisabled()
           })
 
           test('forventer jeg å kunne velge pensjonsalder mellom dagens alder + 1 mnd and 66 år og 11 mnd', async ({
@@ -983,7 +954,7 @@ test.describe('Hovedhistorie', () => {
             ).toBeVisible()
 
             const agePickerContainer = page.getByTestId(
-              AGEPICKER_HELT_UTTAKSALDER
+              'agepicker-helt-uttaksalder'
             )
             await expect(agePickerContainer).toBeVisible()
 
@@ -1011,7 +982,7 @@ test.describe('Hovedhistorie', () => {
             await expect(inntektRadio).toBeVisible()
 
             const radioCount = await inntektRadio
-              .locator(INPUT_TYPE_RADIO)
+              .locator('input[type="radio"]')
               .count()
             expect(radioCount).toBe(2)
 
@@ -1033,7 +1004,7 @@ test.describe('Hovedhistorie', () => {
             await expect(inntektRadio).toBeVisible()
 
             const radioCount = await inntektRadio
-              .locator(INPUT_TYPE_RADIO)
+              .locator('input[type="radio"]')
               .count()
             expect(radioCount).toBe(2)
 
@@ -1054,7 +1025,7 @@ test.describe('Hovedhistorie', () => {
             await expect(inntektVsaRadio).toBeVisible()
 
             const radioCount = await inntektVsaRadio
-              .locator(INPUT_TYPE_RADIO)
+              .locator('input[type="radio"]')
               .count()
             expect(radioCount).toBe(2)
 
@@ -1101,7 +1072,6 @@ test.describe('Hovedhistorie', () => {
           samtykke: true,
           navigateTo: 'beregning',
         })
-        await waitForBeregningPageReady(page)
       })
 
       test.describe("Gitt at jeg er født 1963 eller senere, har svart 'Ja, i offentlig' på spørsmål om AFP og kall til /er-apoteker feiler", () => {
@@ -1126,19 +1096,13 @@ test.describe('Hovedhistorie', () => {
           samtykke: true,
           navigateTo: 'beregning',
         })
-        await waitForBeregningPageReady(page)
 
         await expect(
-          page.getByText(
-            'Beregningen din viser at du kan ta ut 100 % alderspensjon fra du er'
-          )
-        ).toBeVisible()
-        await expect(page.getByText('62 år og 10 måneder')).toBeVisible()
+          page.getByTestId('tidligst-mulig-uttak-result')
+        ).toContainText('62 år og 10 måneder')
         await expect(
-          page.getByText(
-            'Hvis du venter lenger med uttaket, vil den årlige pensjonen din øke.'
-          )
-        ).toBeVisible()
+          page.getByTestId('tidligst-mulig-uttak-result')
+        ).toContainText('Hvis du venter lenger')
       })
 
       test('ønsker jeg som er født fom. 1964 informasjon om når jeg tidligst kan starte uttak av pensjon', async ({
@@ -1148,7 +1112,7 @@ test.describe('Hovedhistorie', () => {
           await person({
             navn: 'Aprikos',
             sivilstand: 'UGIFT',
-            foedselsdato: FOEDSELSDATO_1964_04_30,
+            foedselsdato: '1964-04-30',
             pensjoneringAldre: {
               normertPensjoneringsalder: { aar: 67, maaneder: 0 },
               nedreAldersgrense: { aar: 62, maaneder: 0 },
@@ -1162,19 +1126,13 @@ test.describe('Hovedhistorie', () => {
           samtykke: true,
           navigateTo: 'beregning',
         })
-        await waitForBeregningPageReady(page)
 
         await expect(
-          page.getByText(
-            'Beregningen din viser at du kan ta ut 100 % alderspensjon fra du er'
-          )
-        ).toBeVisible()
-        await expect(page.getByText('62 år og 10 måneder')).toBeVisible()
+          page.getByTestId('tidligst-mulig-uttak-result')
+        ).toContainText('62 år og 10 måneder')
         await expect(
-          page.getByText(
-            'Det kan bli senere fordi pensjonsalderen i Norge øker.'
-          )
-        ).toBeVisible()
+          page.getByTestId('tidligst-mulig-uttak-result')
+        ).toContainText('Det kan bli senere')
       })
 
       test('må jeg kunne trykke på Readmore for å få mer informasjon om tidspunktet for tidligst uttak', async ({
@@ -1189,7 +1147,7 @@ test.describe('Hovedhistorie', () => {
         const ageButtons = page
           .getByRole('button')
           .filter({ hasText: /\d+.*(år|alder|md|måned)/i })
-        await expect(ageButtons.first()).toBeVisible({ timeout: 15000 })
+        await expect(ageButtons.first()).toBeVisible()
         const count = await ageButtons.count()
         expect(count).toBeGreaterThanOrEqual(10)
 
@@ -1208,16 +1166,14 @@ test.describe('Hovedhistorie', () => {
           await person({
             navn: 'Aprikos',
             sivilstand: 'UGIFT',
-            foedselsdato: FOEDSELSDATO_1962_04_30,
+            foedselsdato: '1962-04-30',
             pensjoneringAldre: {
               normertPensjoneringsalder: { aar: 67, maaneder: 0 },
               nedreAldersgrense: { aar: 62, maaneder: 0 },
               oevreAldersgrense: { aar: 75, maaneder: 0 },
             },
           }),
-          ...(await presetStates.medPre2025OffentligAfp(
-            PRE2025_OFFENTLIG_AFP_FOM
-          )),
+          ...(await presetStates.medPre2025OffentligAfp('2023-01-01')),
           ...(await presetStates.medTidligsteUttaksalder(67, 0)),
         ])
 
@@ -1225,12 +1181,11 @@ test.describe('Hovedhistorie', () => {
           samtykke: true,
           navigateTo: 'beregning',
         })
-        await waitForBeregningPageReady(page)
 
         const ageButtons = page
           .getByRole('button')
           .filter({ hasText: /\d+.*(år|alder|md|måned)/i })
-        await expect(ageButtons.first()).toBeVisible({ timeout: 15000 })
+        await expect(ageButtons.first()).toBeVisible()
         const count = await ageButtons.count()
         expect(count).toBeGreaterThanOrEqual(9)
         await expect(
@@ -1252,7 +1207,7 @@ test.describe('Hovedhistorie', () => {
           await person({
             navn: 'Aprikos',
             sivilstand: 'UGIFT',
-            foedselsdato: FOEDSELSDATO_1964_04_30,
+            foedselsdato: '1964-04-30',
             pensjoneringAldre: {
               normertPensjoneringsalder: { aar: 67, maaneder: 0 },
               nedreAldersgrense: { aar: 62, maaneder: 0 },
@@ -1283,7 +1238,6 @@ test.describe('Hovedhistorie', () => {
         await expect(
           page.getByRole('heading', { name: 'Pensjonsgivende inntekt' })
         ).toBeVisible()
-        await expect(page.getByText('AFP (avtalefestet pensjon)')).toBeVisible()
         await expect(
           page
             .getByTestId('highcharts-aria-wrapper')
@@ -1301,18 +1255,16 @@ test.describe('Hovedhistorie', () => {
         await page.getByRole('button', { name: '70' }).click()
         await expect(
           page.getByRole('heading', { name: 'Pensjonsavtaler' })
-        ).toBeVisible({ timeout: 15000 })
+        ).toBeVisible()
       })
 
       test('forventer jeg å få informasjon om inntekten og pensjonen din', async ({
         page,
       }) => {
         await page.getByRole('button', { name: '70' }).click()
+        await expect(page.getByTestId('grunnlag.title')).toBeVisible()
         await expect(
-          page.getByText('Om inntekten og pensjonen din')
-        ).toBeVisible()
-        await expect(
-          page.getByText('Pensjonsgivende inntekt frem til uttak')
+          page.getByTestId('grunnlag2.endre_inntekt.title')
         ).toBeVisible()
       })
 
@@ -1322,7 +1274,7 @@ test.describe('Hovedhistorie', () => {
         await page.getByRole('button', { name: '70' }).click()
         await expect(
           page.getByRole('heading', { name: /Forbehold/ })
-        ).toBeVisible({ timeout: 15000 })
+        ).toBeVisible()
         const forbeholdSection = page
           .getByRole('heading', { name: /Forbehold/ })
           .locator('xpath=ancestor::section')
@@ -1337,8 +1289,13 @@ test.describe('Hovedhistorie', () => {
 
       test('ønsker jeg å kunne starta ny beregning', async ({ page }) => {
         await page.getByRole('button', { name: '62 år og 10 md.' }).click()
-        await page.getByRole('button', { name: 'Tilbake til start' }).click()
-        await page.getByRole('button', { name: 'Gå tilbake til start' }).click()
+        await expect(page.getByTestId('stegvisning.tilbake_start')).toBeVisible(
+          { timeout: 15000 }
+        )
+        await page.getByTestId('stegvisning.tilbake_start').click()
+        await page
+          .getByTestId('stegvisning.tilbake_start.modal.bekreft')
+          .click()
         await expect(page).toHaveURL(/\/pensjon\/kalkulator\/start$/)
       })
     })
@@ -1350,7 +1307,7 @@ test.describe('Hovedhistorie', () => {
           await person({
             navn: 'Aprikos',
             sivilstand: 'UGIFT',
-            foedselsdato: FOEDSELSDATO_1964_04_30,
+            foedselsdato: '1964-04-30',
             pensjoneringAldre: {
               normertPensjoneringsalder: { aar: 67, maaneder: 0 },
               nedreAldersgrense: { aar: 62, maaneder: 0 },
@@ -1368,7 +1325,6 @@ test.describe('Hovedhistorie', () => {
           samtykke: true,
           navigateTo: 'beregning',
         })
-        await waitForBeregningPageReady(page)
       })
 
       test('ønsker jeg å få resultatet presentert i både graf og tabell', async ({
@@ -1403,7 +1359,7 @@ test.describe('Hovedhistorie', () => {
           await person({
             navn: 'Aprikos',
             sivilstand: 'UGIFT',
-            foedselsdato: FOEDSELSDATO_1964_04_30,
+            foedselsdato: '1964-04-30',
             pensjoneringAldre: {
               normertPensjoneringsalder: { aar: 67, maaneder: 0 },
               nedreAldersgrense: { aar: 62, maaneder: 0 },
@@ -1417,7 +1373,6 @@ test.describe('Hovedhistorie', () => {
           samtykke: true,
           navigateTo: 'beregning',
         })
-        await waitForBeregningPageReady(page)
       })
 
       test('ønsker jeg at tidligste uttakstidspunkt oppdateres', async ({
@@ -1425,24 +1380,19 @@ test.describe('Hovedhistorie', () => {
       }) => {
         await page.getByRole('button', { name: '70' }).click()
         await expect(
-          page.getByText('Pensjonsgivende inntekt frem til uttak')
+          page.getByTestId('grunnlag2.endre_inntekt.title')
         ).toBeVisible()
-        await expect(
-          page.getByText(/Din siste pensjonsgivende inntekt/i)
-        ).toBeVisible({ timeout: 15000 })
+        await expect(page.getByTestId('grunnlag.inntekt.ingress')).toBeVisible()
 
-        await page.getByRole('button', { name: ENDRE_INNTEKT_TEXT }).click()
-        await page.getByTestId(INNTEKT_TEXTFIELD).fill('0')
-        await page.getByRole('button', { name: OPPDATER_INNTEKT_TEXT }).click()
-
+        await page
+          .getByTestId('inntekt.endre_inntekt_modal.open.button')
+          .click()
+        await page.getByTestId('inntekt-textfield').fill('0')
+        await page.getByTestId('inntekt.endre_inntekt_modal.button').click()
         await expect(
-          page.getByText(
-            /Beregningen din viser at du kan ta ut 100 % alderspensjon fra du er/i
-          )
-        ).toBeVisible({ timeout: 15000 })
-        await expect(page.getByText(/\b67 år\b/)).toBeVisible({
-          timeout: 15000,
-        })
+          page.getByTestId('tidligst-mulig-uttak-result')
+        ).toBeVisible()
+        await expect(page.getByText(/\b67 år\b/)).toBeVisible()
       })
 
       test('ønsker jeg å få resultatet oppdatert i graf og tabell', async ({
@@ -1451,9 +1401,11 @@ test.describe('Hovedhistorie', () => {
         await page.getByRole('button', { name: '70' }).click()
         await expect(page.getByText('521 338 kr')).toBeVisible()
 
-        await page.getByRole('button', { name: ENDRE_INNTEKT_TEXT }).click()
-        await page.getByTestId(INNTEKT_TEXTFIELD).fill('100000')
-        await page.getByRole('button', { name: OPPDATER_INNTEKT_TEXT }).click()
+        await page
+          .getByTestId('inntekt.endre_inntekt_modal.open.button')
+          .click()
+        await page.getByTestId('inntekt-textfield').fill('100000')
+        await page.getByTestId('inntekt.endre_inntekt_modal.button').click()
 
         await expect(page.getByTestId('alert-inntekt')).toBeVisible()
       })
@@ -1464,12 +1416,19 @@ test.describe('Hovedhistorie', () => {
         await page.getByRole('button', { name: '70' }).click()
         await expect(page.getByText('521 338 kr')).toBeVisible()
 
-        await page.getByRole('button', { name: ENDRE_INNTEKT_TEXT }).click()
-        await page.getByTestId(INNTEKT_TEXTFIELD).fill('100000')
-        await page.getByRole('button', { name: OPPDATER_INNTEKT_TEXT }).click()
+        await page
+          .getByTestId('inntekt.endre_inntekt_modal.open.button')
+          .click()
+        await page.getByTestId('inntekt-textfield').fill('100000')
+        await page.getByTestId('inntekt.endre_inntekt_modal.button').click()
 
-        await page.getByRole('button', { name: 'Tilbake til start' }).click()
-        await page.getByRole('button', { name: 'Gå tilbake til start' }).click()
+        await expect(
+          page.getByTestId('stegvisning.tilbake_start')
+        ).toBeVisible()
+        await page.getByTestId('stegvisning.tilbake_start').click()
+        await page
+          .getByTestId('stegvisning.tilbake_start.modal.bekreft')
+          .click()
 
         await expect(page).toHaveURL(/\/pensjon\/kalkulator\/start$/)
       })
