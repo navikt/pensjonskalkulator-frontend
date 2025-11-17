@@ -55,7 +55,7 @@ describe('Utland', () => {
               const options = selectElements.find('option')
               expect(options.length).equal(257)
               expect(options.eq(1).text()).equal('Afghanistan')
-              expect(options.eq(256).text()).equal('Åland')
+              expect(options.eq(256).text()).equal('ukjent')
             }
           )
         })
