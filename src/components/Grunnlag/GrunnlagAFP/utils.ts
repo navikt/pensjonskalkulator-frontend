@@ -129,7 +129,11 @@ export const generateAfpContent =
     if (hasAfpOffentlig) {
       return content.harAfpOffentlig_12
     }
-    if (afpValg === 'ja_offentlig' && hasAfpOffentligLivsvarigWithBeloep) {
+    if (
+      afpValg === 'ja_offentlig' &&
+      hasAfpOffentligLivsvarigWithBeloep &&
+      samtykkeOffentligAFP
+    ) {
       return content.afpOffentligTpo
     }
     if (hasAfpPrivat) {
