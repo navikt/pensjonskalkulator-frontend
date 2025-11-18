@@ -52,7 +52,7 @@ export const getPdfLink = ({
 }): string => {
   //const strippedUrl = url.replace(/^(https?:\/\/)?(www\.)?/, '')
 
-  return `<a class="pdfLink" href="${url}">${displayText}</a>`
+  return `<a href="${url}">${displayText}</a>`
 }
 
 export function getDetaljerHtmlTable(
