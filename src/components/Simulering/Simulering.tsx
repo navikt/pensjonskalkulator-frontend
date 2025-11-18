@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import Highcharts, { SeriesColumnOptions, XAxisOptions } from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
-import { useEffect, useRef, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 import { HandFingerIcon } from '@navikt/aksel-icons'
@@ -14,6 +14,7 @@ import {
 } from '@navikt/ds-react'
 
 import { TabellVisning } from '@/components/TabellVisning'
+import { BeregningContext } from '@/pages/Beregning/context'
 import {
   useGetOmstillingsstoenadOgGjenlevendeQuery,
   useGetPersonQuery,
@@ -94,6 +95,7 @@ export const Simulering = ({
   showButtonsAndTable,
   visning,
 }: Props) => {
+  const { showPDFRef, setIsPdfReady } = useContext(BeregningContext)
   const harSamtykket = useAppSelector(selectSamtykke)
   const ufoeregrad = useAppSelector(selectUfoeregrad)
   const afp = useAppSelector(selectAfp)
@@ -328,6 +330,25 @@ export const Simulering = ({
     }
   }
 
+  const handlePDFRef = useRef(handlePDF)
+  
+  useEffect(() => {
+    handlePDFRef.current = handlePDF
+  })
+
+  // Set up the context ref connection
+  useEffect(() => {
+    if (showPDFRef) {
+      showPDFRef.current = {
+        handlePDF: () => handlePDFRef.current(),
+      }
+      setIsPdfReady?.(true)
+    }
+    return () => {
+      setIsPdfReady?.(false)
+    }
+  }, [showPDFRef, setIsPdfReady])
+
   return (
     <section className={styles.section}>
       {!isEndring && (
@@ -372,10 +393,6 @@ export const Simulering = ({
             highcharts={Highcharts}
             options={chartOptions}
           />
-
-          {showPDF?.enabled && (
-            <Button onClick={handlePDF}>Last ned PDF</Button>
-          )}
 
           {showButtonsAndTable && (
             <BodyShort

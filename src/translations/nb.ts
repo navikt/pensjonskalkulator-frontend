@@ -412,6 +412,8 @@ const translations = {
     'Månedlig avtalefestet pensjon (AFP)',
   'beregning.detaljer.OpptjeningDetaljer.pre2025OffentligAfp.table.title':
     'Opptjening avtalefestet pensjon (AFP)',
+  'beregning.pdf.ingress': 'Beregningen din blir ikke lagret hos Nav. Hvis du har behov for å ta vare på eller skrive ut beregningen, kan du laste den ned.',
+  'beregning.pdf.button': 'Last ned beregning som PDF',
   'beregning.avansert.link.endre_valgene_dine': 'Endre valgene dine',
   'beregning.avansert.link.endre_avanserte_valg': 'Endre avanserte valg',
   'beregning.avansert.link.om_vilkaar_for_afp': 'Om vilkår for uttak av AFP',
