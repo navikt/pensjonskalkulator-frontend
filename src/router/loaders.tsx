@@ -507,8 +507,7 @@ export const beregningEnkelAccessGuard = async () => {
     (loependeVedtak.ufoeretrygd.grad === 0 ||
       loependeVedtak.ufoeretrygd.grad === 100)
   ) {
-    await store
-      .dispatch(apiSlice.endpoints.getAfpOffentligLivsvarig.initiate())
+    await store.dispatch(apiSlice.endpoints.getAfpOffentligLivsvarig.initiate())
   }
 
   if (skalBeregneAfpKap19 || loependeVedtak.alderspensjon) {
