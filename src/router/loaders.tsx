@@ -509,7 +509,6 @@ export const beregningEnkelAccessGuard = async () => {
   ) {
     await store
       .dispatch(apiSlice.endpoints.getAfpOffentligLivsvarig.initiate())
-      .unwrap()
   }
 
   if (skalBeregneAfpKap19 || loependeVedtak.alderspensjon) {
