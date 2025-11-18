@@ -8,7 +8,6 @@ import { HandFingerIcon } from '@navikt/aksel-icons'
 import {
   BodyLong,
   BodyShort,
-  Button,
   Heading,
   HeadingProps,
 } from '@navikt/ds-react'
