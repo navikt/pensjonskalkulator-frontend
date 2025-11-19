@@ -24,9 +24,8 @@ import { isAlder75MaanedenFylt, isFoedtFoer1964 } from '@/utils/alder'
  * @returns Common pension calculation values
  */
 export const useTidligstMuligUttakConditions = (
-  loependeVedtak: LoependeVedtak
+  loependeVedtak?: LoependeVedtak
 ) => {
-  //const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const { isSuccess: isPersonSuccess, data: person } = useGetPersonQuery()
   const afp = useAppSelector(selectAfp)
   const samtykkeOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
@@ -37,7 +36,7 @@ export const useTidligstMuligUttakConditions = (
   const hasAFP =
     (afp === 'ja_offentlig' && samtykkeOffentligAFP) || afp === 'ja_privat'
   const isOver75AndNoLoependeVedtak =
-    !loependeVedtak.harLoependeVedtak &&
+    !loependeVedtak?.harLoependeVedtak &&
     !!person?.foedselsdato &&
     isAlder75MaanedenFylt(person.foedselsdato)
 
@@ -46,7 +45,7 @@ export const useTidligstMuligUttakConditions = (
   }, [isPersonSuccess, person?.foedselsdato])
 
   const loependeVedtakPre2025OffentligAfp = Boolean(
-    loependeVedtak.pre2025OffentligAfp
+    loependeVedtak?.pre2025OffentligAfp
   )
   return {
     normertPensjonsalder,
@@ -67,7 +66,7 @@ export const useTidligstMuligUttakConditions = (
  * @returns The data from the API call, loading state, and success state
  */
 export const useTidligstMuligUttak = (
-  loependeVedtak: LoependeVedtak,
+  loependeVedtak?: LoependeVedtak,
   ufoeregrad?: number
 ) => {
   const afp = useAppSelector(selectAfp)
@@ -87,7 +86,7 @@ export const useTidligstMuligUttak = (
 
   // Generate request body when dependencies change
   useEffect(() => {
-    if (!ufoeregrad && !loependeVedtak?.pre2025OffentligAfp) {
+    if (!ufoeregrad && loependeVedtak &&!loependeVedtak?.pre2025OffentligAfp) {
       const requestBody = generateTidligstMuligHeltUttakRequestBody({
         loependeVedtak,
         afp: afp === 'ja_offentlig' && !harSamtykketOffentligAFP ? null : afp,
@@ -123,7 +122,7 @@ export const useTidligstMuligUttak = (
     skip:
       !tidligstMuligHeltUttakRequestBody ||
       Boolean(ufoeregrad) ||
-      Boolean(loependeVedtak.pre2025OffentligAfp),
+      Boolean(loependeVedtak?.pre2025OffentligAfp),
   })
 
   return {
