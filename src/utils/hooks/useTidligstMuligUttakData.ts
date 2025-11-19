@@ -24,7 +24,9 @@ import { isAlder75MaanedenFylt, isFoedtFoer1964 } from '@/utils/alder'
  * Custom hook for pension-related calculations and conditions
  * @returns Common pension calculation values
  */
-export const useTidligstMuligUttakConditions = (loependeVedtak: LoependeVedtak) => {
+export const useTidligstMuligUttakConditions = (
+  loependeVedtak: LoependeVedtak
+) => {
   //const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const { isSuccess: isPersonSuccess, data: person } = useGetPersonQuery()
   const afp = useAppSelector(selectAfp)
@@ -65,8 +67,10 @@ export const useTidligstMuligUttakConditions = (loependeVedtak: LoependeVedtak) 
  * @param ufoeregrad Optional ufoeregrad parameter
  * @returns The data from the API call, loading state, and success state
  */
-export const useTidligstMuligUttak = ( loependeVedtak: LoependeVedtak, ufoeregrad?: number) => {
-
+export const useTidligstMuligUttak = (
+  loependeVedtak: LoependeVedtak,
+  ufoeregrad?: number
+) => {
   const afp = useAppSelector(selectAfp)
   const sivilstand = useAppSelector(selectSivilstand)
   const harSamtykketOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
