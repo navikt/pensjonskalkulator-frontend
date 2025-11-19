@@ -11,7 +11,6 @@ import {
   selectAfp,
   selectEpsHarInntektOver2G,
   selectEpsHarPensjon,
-  selectLoependeVedtak,
   selectNedreAldersgrense,
   selectNormertPensjonsalder,
   selectSamtykkeOffentligAFP,
