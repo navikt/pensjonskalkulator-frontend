@@ -3,6 +3,7 @@ import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useNavigate } from 'react-router'
 
+import { DownloadIcon } from '@navikt/aksel-icons'
 import { BodyLong, Button, Modal, ToggleGroup } from '@navikt/ds-react'
 
 import { InfoOmFremtidigVedtak } from '@/components/InfoOmFremtidigVedtak'
@@ -10,6 +11,7 @@ import { LightBlueFooter } from '@/components/LightBlueFooter'
 import { ApotekereWarning } from '@/components/common/ApotekereWarning/ApotekereWarning'
 import { ShowMoreRef } from '@/components/common/ShowMore/ShowMore'
 import { paths } from '@/router/constants'
+import { useGetShowDownloadPdfFeatureToggleQuery } from '@/state/api/apiSlice'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import { selectHasErApotekerError } from '@/state/session/selectors'
 import {
@@ -35,8 +37,6 @@ import { BeregningEnkel } from './BeregningEnkel'
 import { AvansertBeregningModus, BeregningContext, ShowPDFRef } from './context'
 
 import styles from './Beregning.module.scss'
-import { DownloadIcon } from '@navikt/aksel-icons'
-import { useGetShowDownloadPdfFeatureToggleQuery } from '@/state/api/apiSlice'
 
 interface Props {
   visning: BeregningVisning
@@ -276,19 +276,21 @@ export const Beregning: React.FC<Props> = ({ visning }) => {
         {isPdfReady && showPDF?.enabled && (
           <div className={styles.container}>
             <section className={styles.section}>
-            <BodyLong size="medium" className={styles.text}>{intl.formatMessage({ id: 'beregning.pdf.ingress' })}</BodyLong>
-              <Button 
+              <BodyLong size="medium" className={styles.text}>
+                {intl.formatMessage({ id: 'beregning.pdf.ingress' })}
+              </BodyLong>
+              <Button
                 variant="secondary"
                 icon={<DownloadIcon aria-hidden />}
                 onClick={() => {
                   console.log('Download PDF button clicked')
                   showPDFRef.current?.handlePDF()
-              }}
-            >
-              <FormattedMessage id="beregning.pdf.button" />
-            </Button>
-          </section>
-        </div>
+                }}
+              >
+                <FormattedMessage id="beregning.pdf.button" />
+              </Button>
+            </section>
+          </div>
         )}
 
         <div className={clsx(styles.background, styles.background__lightblue)}>

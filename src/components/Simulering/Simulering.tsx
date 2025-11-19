@@ -5,12 +5,7 @@ import { useContext, useEffect, useRef, useState } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 import { HandFingerIcon } from '@navikt/aksel-icons'
-import {
-  BodyLong,
-  BodyShort,
-  Heading,
-  HeadingProps,
-} from '@navikt/ds-react'
+import { BodyLong, BodyShort, Heading, HeadingProps } from '@navikt/ds-react'
 
 import { TabellVisning } from '@/components/TabellVisning'
 import { BeregningContext } from '@/pages/Beregning/context'
@@ -330,7 +325,7 @@ export const Simulering = ({
   }
 
   const handlePDFRef = useRef(handlePDF)
-  
+
   useEffect(() => {
     handlePDFRef.current = handlePDF
   })
