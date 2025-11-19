@@ -130,27 +130,23 @@ export function getTidligstMuligUttakIngressContent(
     const gradertIngress = hasAFP
       ? 'omufoeretrygd.gradert.ingress.afp'
       : 'omufoeretrygd.gradert.ingress'
-    const formatertNedreAldersgrense = formatUttaksalder(
-      intl,
-      nedreAldersgrense
-    )
-    const formatertNormertPensjonsalder = formatUttaksalder(
-      intl,
-      normertPensjonsalder
-    )
+    const formatertNedreAldersgrense = formatUttaksalder(intl, nedreAldersgrense)
+    const formatertNormertPensjonsalder = formatUttaksalder(intl, normertPensjonsalder)
+
+    const ingressId = ufoeregrad === 100 ? 'omufoeretrygd.hel.ingress' : gradertIngress
+
     const formattedGradertIngress = intl.formatMessage(
-      { id: ufoeregrad === 100 ? 'omufoeretrygd.hel.ingress' : gradertIngress },
+      { id: ingressId },
       {
         ...pdfFormatMessageValues,
+        grad: ufoeregrad,
         nedreAldersgrense: formatertNedreAldersgrense,
         normertPensjonsalder: formatertNormertPensjonsalder,
         link: getPdfLink({
           url: 'https://nav.no/pensjon/kalkulator/beregning-detaljer',
-          displayText: intl.formatMessage({
-            id: 'omufoeretrygd.avansert_link',
-          }),
+          displayText: intl.formatMessage({ id: 'omufoeretrygd.avansert_link' }),
         }),
-      }
+      },
     )
     return `<p>${formattedGradertIngress}</p>`
   }
@@ -160,14 +156,14 @@ export function getTidligstMuligUttakIngressContent(
       return `<p>${intl.formatMessage({ id: 'tidligstmuliguttak.pre2025OffentligAfp.ingress' })}</p>`
     } else {
       const messageId = `tidligstmuliguttak.${show1963Text ? '1963' : '1964'}.ingress_2`
-
-      const under75Ingress = !isOver75AndNoLoependeVedtak
-        ? intl.formatMessage({ id: messageId })
-        : ''
-      const tmuIngress = `<p>${intl.formatMessage({ id: 'tidligstmuliguttak.ingress_1' })}
-                <b>${formatUttaksalder(intl, tidligstMuligUttak)}.</b>${under75Ingress}
-              </p>`
-      return `${tmuIngress}`
+      const under75Ingress =
+        !isOver75AndNoLoependeVedtak
+          ? intl.formatMessage({ id: messageId })
+          : ''
+      const tmuIngress = `<p>${intl.formatMessage(
+        { id: 'tidligstmuliguttak.ingress_1' },
+      )}<b>${formatUttaksalder(intl, tidligstMuligUttak)}.</b>${under75Ingress}</p>`
+      return tmuIngress
     }
   }
 

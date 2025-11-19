@@ -37,7 +37,7 @@ export const useTidligstMuligUttakConditions = (
   const hasAFP =
     (afp === 'ja_offentlig' && samtykkeOffentligAFP) || afp === 'ja_privat'
   const isOver75AndNoLoependeVedtak =
-    !loependeVedtak?.harLoependeVedtak &&
+    !loependeVedtak.harLoependeVedtak &&
     !!person?.foedselsdato &&
     isAlder75MaanedenFylt(person.foedselsdato)
 
@@ -46,7 +46,7 @@ export const useTidligstMuligUttakConditions = (
   }, [isPersonSuccess, person?.foedselsdato])
 
   const loependeVedtakPre2025OffentligAfp = Boolean(
-    loependeVedtak?.pre2025OffentligAfp
+    loependeVedtak.pre2025OffentligAfp
   )
   return {
     normertPensjonsalder,
@@ -87,7 +87,7 @@ export const useTidligstMuligUttak = (
 
   // Generate request body when dependencies change
   useEffect(() => {
-    if (!ufoeregrad && !loependeVedtak.pre2025OffentligAfp) {
+    if (!ufoeregrad && !loependeVedtak?.pre2025OffentligAfp) {
       const requestBody = generateTidligstMuligHeltUttakRequestBody({
         loependeVedtak,
         afp: afp === 'ja_offentlig' && !harSamtykketOffentligAFP ? null : afp,

@@ -9,10 +9,14 @@ import { TelefonLink } from '@/components/common/TelefonLink'
 import { paths } from '@/router/constants'
 import { useGetOmstillingsstoenadOgGjenlevendeQuery } from '@/state/api/apiSlice'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
-import { selectLoependeVedtak } from '@/state/userInput/selectors'
+import {
+  selectAfp,
+  selectNedreAldersgrense,
+  selectNormertPensjonsalder,
+  selectSamtykkeOffentligAFP,
+} from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
 import { formatUttaksalder } from '@/utils/alder'
-import { useTidligstMuligUttakConditions } from '@/utils/hooks/useTidligstMuligUttakData'
 import { ALERT_VIST } from '@/utils/loggerConstants'
 import { logger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
@@ -22,35 +26,38 @@ import styles from './TidligstMuligUttaksalder.module.scss'
 interface Props {
   tidligstMuligUttak?: Alder
   ufoeregrad?: number
+  show1963Text: boolean
+  loependeVedtakPre2025OffentligAfp?: boolean
+  isOver75AndNoLoependeVedtak?: boolean
 }
 
 export const TidligstMuligUttaksalder = ({
   tidligstMuligUttak,
   ufoeregrad,
+  show1963Text,
+  loependeVedtakPre2025OffentligAfp,
+  isOver75AndNoLoependeVedtak,
 }: Props) => {
   const intl = useIntl()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const loependeVedtak = useAppSelector(selectLoependeVedtak)
-  const {
-    nedreAldersgrense,
-    normertPensjonsalder,
-    isOver75AndNoLoependeVedtak,
-    show1963Text,
-    loependeVedtakPre2025OffentligAfp,
-    hasAFP,
-  } = useTidligstMuligUttakConditions(loependeVedtak)
+
   const { data: omstillingsstoenadOgGjenlevende } =
     useGetOmstillingsstoenadOgGjenlevendeQuery()
 
-  // const nedreAldersgrense = useAppSelector(selectNedreAldersgrense)
-  // const normertPensjonsalder = useAppSelector(selectNormertPensjonsalder)
+  const afp = useAppSelector(selectAfp)
+  const nedreAldersgrense = useAppSelector(selectNedreAldersgrense)
+  const normertPensjonsalder = useAppSelector(selectNormertPensjonsalder)
+  const samtykkeOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
 
   const formatertNedreAldersgrense = formatUttaksalder(intl, nedreAldersgrense)
   const formatertNormertPensjonsalder = formatUttaksalder(
     intl,
     normertPensjonsalder
   )
+
+  const hasAFP =
+    (afp === 'ja_offentlig' && samtykkeOffentligAFP) || afp === 'ja_privat'
 
   const goToAvansert: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     e.preventDefault()
