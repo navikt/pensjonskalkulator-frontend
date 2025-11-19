@@ -93,10 +93,8 @@ export async function fillOutStegvisning(
   })
 
   await page.waitForURL(`**/pensjon/kalkulator/${navigateTo}*`, {
-    timeout: 15000,
+    waitUntil: 'domcontentloaded',
   })
-
-  await page.waitForLoadState('networkidle', { timeout: 15000 })
 }
 
 export async function waitForStoreDispatch(page: Page) {
