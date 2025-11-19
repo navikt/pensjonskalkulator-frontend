@@ -24,8 +24,8 @@ import { isAlder75MaanedenFylt, isFoedtFoer1964 } from '@/utils/alder'
  * Custom hook for pension-related calculations and conditions
  * @returns Common pension calculation values
  */
-export const useTidligstMuligUttakConditions = () => {
-  const loependeVedtak = useAppSelector(selectLoependeVedtak)
+export const useTidligstMuligUttakConditions = (loependeVedtak: LoependeVedtak) => {
+  //const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const { isSuccess: isPersonSuccess, data: person } = useGetPersonQuery()
   const afp = useAppSelector(selectAfp)
   const samtykkeOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
@@ -36,7 +36,7 @@ export const useTidligstMuligUttakConditions = () => {
   const hasAFP =
     (afp === 'ja_offentlig' && samtykkeOffentligAFP) || afp === 'ja_privat'
   const isOver75AndNoLoependeVedtak =
-    !loependeVedtak.harLoependeVedtak &&
+    !loependeVedtak?.harLoependeVedtak &&
     !!person?.foedselsdato &&
     isAlder75MaanedenFylt(person.foedselsdato)
 
@@ -45,7 +45,7 @@ export const useTidligstMuligUttakConditions = () => {
   }, [isPersonSuccess, person?.foedselsdato])
 
   const loependeVedtakPre2025OffentligAfp = Boolean(
-    loependeVedtak.pre2025OffentligAfp
+    loependeVedtak?.pre2025OffentligAfp
   )
   return {
     normertPensjonsalder,
@@ -65,8 +65,8 @@ export const useTidligstMuligUttakConditions = () => {
  * @param ufoeregrad Optional ufoeregrad parameter
  * @returns The data from the API call, loading state, and success state
  */
-export const useTidligstMuligUttak = (ufoeregrad?: number) => {
-  const loependeVedtak = useAppSelector(selectLoependeVedtak)
+export const useTidligstMuligUttak = ( loependeVedtak: LoependeVedtak, ufoeregrad?: number) => {
+
   const afp = useAppSelector(selectAfp)
   const sivilstand = useAppSelector(selectSivilstand)
   const harSamtykketOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)

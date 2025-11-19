@@ -29,6 +29,7 @@ import {
   selectErApoteker,
   selectFoedselsdato,
   selectIsEndring,
+  selectLoependeVedtak,
   selectSamtykke,
   selectSivilstand,
   selectSkalBeregneAfpKap19,
@@ -207,7 +208,7 @@ export const Simulering = ({
   const series = chartOptions.series as SeriesColumnOptions[]
   const aarArray = (chartOptions?.xAxis as XAxisOptions).categories
   const tableData = useTableData(series, aarArray)
-
+  const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const intl = useIntl()
 
   const { alderspensjonDetaljerListe } = useBeregningsdetaljer(
@@ -217,7 +218,7 @@ export const Simulering = ({
     pre2025OffentligAfp
   )
 
-  const { data: tidligstMuligUttak } = useTidligstMuligUttak(ufoeregrad)
+  const { data: tidligstMuligUttak } = useTidligstMuligUttak(loependeVedtak, ufoeregrad)
   const { data: omstillingsstoenadOgGjenlevende } =
     useGetOmstillingsstoenadOgGjenlevendeQuery()
 
@@ -244,7 +245,7 @@ export const Simulering = ({
     isOver75AndNoLoependeVedtak,
     show1963Text,
     hasAFP,
-  } = useTidligstMuligUttakConditions()
+  } = useTidligstMuligUttakConditions(loependeVedtak)
 
   const handlePDF = () => {
     const appContentElement = document.getElementById('app-content')

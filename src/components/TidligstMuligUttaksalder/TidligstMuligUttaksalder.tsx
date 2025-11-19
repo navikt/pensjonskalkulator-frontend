@@ -8,7 +8,7 @@ import { SanityReadmore } from '@/components/common/SanityReadmore'
 import { TelefonLink } from '@/components/common/TelefonLink'
 import { paths } from '@/router/constants'
 import { useGetOmstillingsstoenadOgGjenlevendeQuery } from '@/state/api/apiSlice'
-import { useAppDispatch } from '@/state/hooks'
+import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import { userInputActions } from '@/state/userInput/userInputSlice'
 import { formatUttaksalder } from '@/utils/alder'
 import { useTidligstMuligUttakConditions } from '@/utils/hooks/useTidligstMuligUttakData'
@@ -17,6 +17,8 @@ import { logger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
 
 import styles from './TidligstMuligUttaksalder.module.scss'
+import { isLoependeVedtak } from '@/state/api/typeguards'
+import { selectLoependeVedtak } from '@/state/userInput/selectors'
 
 interface Props {
   tidligstMuligUttak?: Alder
@@ -30,6 +32,7 @@ export const TidligstMuligUttaksalder = ({
   const intl = useIntl()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+  const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const {
     nedreAldersgrense,
     normertPensjonsalder,
@@ -37,7 +40,7 @@ export const TidligstMuligUttaksalder = ({
     show1963Text,
     loependeVedtakPre2025OffentligAfp,
     hasAFP,
-  } = useTidligstMuligUttakConditions()
+  } = useTidligstMuligUttakConditions(loependeVedtak)
   const { data: omstillingsstoenadOgGjenlevende } =
     useGetOmstillingsstoenadOgGjenlevendeQuery()
 

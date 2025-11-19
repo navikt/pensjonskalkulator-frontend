@@ -77,7 +77,7 @@ export const BeregningEnkel = () => {
     data: tidligstMuligUttak,
     isLoading: isTidligstMuligUttakLoading,
     isSuccess: isTidligstMuligUttakSuccess,
-  } = useTidligstMuligUttak(ufoeregrad)
+  } = useTidligstMuligUttak(loependeVedtak, ufoeregrad)
   const utenlandsperioder = useAppSelector(selectUtenlandsperioder)
   const { uttaksalder } = useAppSelector(selectCurrentSimulation)
   const [alderspensjonEnkelRequestBody, setAlderspensjonEnkelRequestBody] =
