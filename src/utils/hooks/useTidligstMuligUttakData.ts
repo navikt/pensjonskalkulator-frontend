@@ -86,7 +86,7 @@ export const useTidligstMuligUttak = (
 
   // Generate request body when dependencies change
   useEffect(() => {
-    if (!ufoeregrad && loependeVedtak &&!loependeVedtak?.pre2025OffentligAfp) {
+    if (!ufoeregrad && loependeVedtak && !loependeVedtak?.pre2025OffentligAfp) {
       const requestBody = generateTidligstMuligHeltUttakRequestBody({
         loependeVedtak,
         afp: afp === 'ja_offentlig' && !harSamtykketOffentligAFP ? null : afp,
