@@ -33,7 +33,6 @@ describe('TidligstMuligUttaksalder', () => {
         <TidligstMuligUttaksalder
           tidligstMuligUttak={undefined}
           ufoeregrad={0}
-          show1963Text={false}
         />,
         {
           preloadedState: {
@@ -66,7 +65,6 @@ describe('TidligstMuligUttaksalder', () => {
         <TidligstMuligUttaksalder
           tidligstMuligUttak={{ aar: 62, maaneder: 9 }}
           ufoeregrad={0}
-          show1963Text={false}
         />,
         {
           preloadedState: {
@@ -113,7 +111,6 @@ describe('TidligstMuligUttaksalder', () => {
         <TidligstMuligUttaksalder
           tidligstMuligUttak={{ aar: 62, maaneder: 9 }}
           ufoeregrad={0}
-          show1963Text={true}
         />,
         {
           preloadedState: {
@@ -160,8 +157,6 @@ describe('TidligstMuligUttaksalder', () => {
         <TidligstMuligUttaksalder
           tidligstMuligUttak={{ aar: 62, maaneder: 9 }}
           ufoeregrad={0}
-          show1963Text={false}
-          loependeVedtakPre2025OffentligAfp={true}
         />,
         {
           preloadedState: {
@@ -189,8 +184,6 @@ describe('TidligstMuligUttaksalder', () => {
         <TidligstMuligUttaksalder
           tidligstMuligUttak={{ aar: 62, maaneder: 9 }}
           ufoeregrad={0}
-          show1963Text={true}
-          isOver75AndNoLoependeVedtak={true}
         />,
         {
           preloadedState: {
@@ -238,7 +231,6 @@ describe('TidligstMuligUttaksalder', () => {
         <TidligstMuligUttaksalder
           tidligstMuligUttak={{ aar: 62, maaneder: 9 }}
           ufoeregrad={0}
-          show1963Text={false}
         />,
         {
           preloadedState: {
@@ -271,7 +263,6 @@ describe('TidligstMuligUttaksalder', () => {
         <TidligstMuligUttaksalder
           tidligstMuligUttak={undefined}
           ufoeregrad={100}
-          show1963Text={false}
         />,
         {
           preloadedState: {
@@ -305,7 +296,6 @@ describe('TidligstMuligUttaksalder', () => {
         <TidligstMuligUttaksalder
           tidligstMuligUttak={undefined}
           ufoeregrad={100}
-          show1963Text={false}
         />,
         {
           preloadedState: {
@@ -330,7 +320,6 @@ describe('TidligstMuligUttaksalder', () => {
         <TidligstMuligUttaksalder
           tidligstMuligUttak={undefined}
           ufoeregrad={75}
-          show1963Text={false}
         />,
         {
           preloadedState: {
@@ -357,7 +346,6 @@ describe('TidligstMuligUttaksalder', () => {
         <TidligstMuligUttaksalder
           tidligstMuligUttak={{ aar: 62, maaneder: 9 }}
           ufoeregrad={75}
-          show1963Text={false}
         />,
         {
           preloadedState: {
@@ -388,7 +376,6 @@ describe('TidligstMuligUttaksalder', () => {
         <TidligstMuligUttaksalder
           tidligstMuligUttak={undefined}
           ufoeregrad={75}
-          show1963Text={false}
         />,
         {
           preloadedState: {
