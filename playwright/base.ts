@@ -60,6 +60,26 @@ export async function setupInterceptions(
   ])
 
   const routes: RouteDefinition[] = [
+    {
+      url: /^https?:\/\/cdn\.nav\.no\/personbruker\/decorator-next\/public\/assets\/.*\.(js|css|svg)/,
+      status: 200,
+    },
+    {
+      url: /^https?:\/\/cdn\.nav\.no\/aksel\/fonts\/SourceSans3-normal\.woff2/,
+      status: 200,
+    },
+    {
+      url: /^https?:\/\/dekoratoren\.ekstern\.dev\.nav\.no\/css\/client\.css/,
+      status: 200,
+    },
+    {
+      url: /^https?:\/\/representasjon-banner-frontend-borger-q2\.ekstern\.dev\.nav\.no\/pensjon\/selvbetjening\/representasjon\/banner\.js/,
+      status: 200,
+    },
+    {
+      url: /^https?:\/\/in2\.taskanalytics\.com\/tm\.js/,
+      status: 200,
+    },
     { url: /\/auth\?/, mockFileName: 'decorator-auth.json' },
     { url: 'https://login.ekstern.dev.nav.no/oauth2/session', status: 200 },
     { url: 'https://login.nav.no/oauth2/session', status: 200 },
