@@ -325,6 +325,9 @@ export const generateOffentligTpFoer1963RequestBody = (args: {
   gradertUttak?: GradertUttak
   heltUttak?: HeltUttak
   utenlandsperioder: Utenlandsperiode[]
+  afpInntektMaanedFoerUttak?: boolean | null
+  stillingsprosentOffGradertUttak?: number | null
+  stillingsprosentOffHeltUttak?: number | null
 }): OffentligTpFoer1963RequestBody | undefined => {
   const {
     foedselsdato,
@@ -335,6 +338,9 @@ export const generateOffentligTpFoer1963RequestBody = (args: {
     gradertUttak,
     heltUttak,
     utenlandsperioder,
+    afpInntektMaanedFoerUttak,
+    stillingsprosentOffGradertUttak,
+    stillingsprosentOffHeltUttak,
   } = args
 
   if (!foedselsdato || !heltUttak) {
@@ -370,8 +376,13 @@ export const generateOffentligTpFoer1963RequestBody = (args: {
     sivilstand: sivilstand ?? 'UOPPGITT',
     epsHarInntektOver2G: epsHarInntektOver2G ?? checkHarSamboer(sivilstand),
     epsHarPensjon: !!epsHarPensjon,
-    afpInntektMaanedFoerUttak: undefined,
-    stillingsprosentOffHeltUttak: '100',
+    afpInntektMaanedFoerUttak: afpInntektMaanedFoerUttak ?? undefined,
+    stillingsprosentOffHeltUttak: stillingsprosentOffHeltUttak
+      ? String(stillingsprosentOffHeltUttak)
+      : '0',
+    stillingsprosentOffGradertUttak: stillingsprosentOffGradertUttak
+      ? String(stillingsprosentOffGradertUttak)
+      : undefined,
   }
 }
 

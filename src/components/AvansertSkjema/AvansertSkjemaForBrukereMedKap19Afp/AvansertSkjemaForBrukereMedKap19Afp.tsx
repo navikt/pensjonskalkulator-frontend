@@ -32,7 +32,7 @@ import {
   selectNedreAldersgrense,
   selectNormertPensjonsalder,
   selectSamtykke,
-  selectStillingsprosentVsaPensjon,
+  selectStillingsprosentVsaGradertPensjon,
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
 import { getBrukerensAlderISluttenAvMaaneden } from '@/utils/alder'
@@ -87,7 +87,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
   )
 
   const stillingsprosentVsaPensjon = useAppSelector(
-    selectStillingsprosentVsaPensjon
+    selectStillingsprosentVsaGradertPensjon
   )
 
   const { harAvansertSkjemaUnsavedChanges } = React.useContext(BeregningContext)
@@ -107,7 +107,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
     localGradertUttak,
     localHarInntektVsaGradertUttakRadio,
     localHarAfpInntektMaanedFoerUttakRadio,
-    localStillingsprosentVsaHelPensjon,
+    localStillingsprosentVsaGradertPensjon,
     handlers: {
       setLocalInntektFremTilUttak,
       setLocalHeltUttak,
@@ -115,7 +115,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
       setLocalHarInntektVsaHeltUttakRadio,
       setLocalHarInntektVsaGradertUttakRadio,
       setLocalHarAfpInntektMaanedFoerUttakRadio,
-      setLocalStillingsprosentVsaHelPensjon,
+      setLocalStillingsprosentVsaGradertPensjon,
     },
   } = useFormLocalState({
     isEndring,
@@ -129,8 +129,8 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
     normertPensjonsalder,
     afpInntektMaanedFoerUttak,
     beregningsvalg: null,
-    stillingsprosentVsaHelPensjon: stillingsprosentVsaPensjon,
-    stillingsprosentVsaGradertPensjon: null,
+    stillingsprosentVsaHelPensjon: null,
+    stillingsprosentVsaGradertPensjon: stillingsprosentVsaPensjon,
   })
 
   const {
@@ -196,7 +196,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
       }
     })
     setLocalHarInntektVsaGradertUttakRadio(s === 'ja')
-    if (s === 'nei') setLocalStillingsprosentVsaHelPensjon(null)
+    if (s === 'nei') setLocalStillingsprosentVsaGradertPensjon(null)
   }
 
   const handleInntektVsaGradertUttakChange = (
@@ -219,7 +219,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
     setValidationErrorStillingsprosentVsaAfp('')
-    setLocalStillingsprosentVsaHelPensjon(() => {
+    setLocalStillingsprosentVsaGradertPensjon(() => {
       const value = e.target.value === '' ? null : Number(e.target.value)
       if (value === null) {
         return null
@@ -244,7 +244,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
     setLocalHarInntektVsaGradertUttakRadio(null)
     setLocalHarInntektVsaHeltUttakRadio(null)
     setLocalHarAfpInntektMaanedFoerUttakRadio?.(null)
-    setLocalStillingsprosentVsaHelPensjon(null)
+    setLocalStillingsprosentVsaGradertPensjon(null)
   }
 
   return (
@@ -549,7 +549,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
                   id: 'inntekt.stillingsprosent_vsa_afp.textfield.label',
                 })}
                 name={AVANSERT_FORM_NAMES.stillingsprosentVsaAfp}
-                value={localStillingsprosentVsaHelPensjon ?? ''}
+                value={localStillingsprosentVsaGradertPensjon ?? ''}
                 form={AVANSERT_FORM_NAMES.form}
                 data-testid={AVANSERT_FORM_NAMES.stillingsprosentVsaAfp}
                 className={styles.select}
