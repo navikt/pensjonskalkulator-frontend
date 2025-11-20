@@ -11,13 +11,13 @@ import styles from './SimuleringAfpOffentligAlert.module.scss'
 interface Props {
   harSamtykketOffentligAFP: boolean | null
   isAfpOffentligLivsvarigSuccess: boolean
-  afpOffentligLivsvarigData?: AfpOffentligLivsvarig
+  loependeLivsvarigAfpOffentlig?: AfpOffentligLivsvarig
 }
 
 export const SimuleringAfpOffentligAlert: React.FC<Props> = ({
   harSamtykketOffentligAFP,
   isAfpOffentligLivsvarigSuccess,
-  afpOffentligLivsvarigData,
+  loependeLivsvarigAfpOffentlig,
 }) => {
   const intl = useIntl()
 
@@ -49,7 +49,10 @@ export const SimuleringAfpOffentligAlert: React.FC<Props> = ({
   }
 
   // Kall var vellykket, men beløp er ikke definert - vis success alert
-  if (isAfpOffentligLivsvarigSuccess && !afpOffentligLivsvarigData?.beloep) {
+  if (
+    isAfpOffentligLivsvarigSuccess &&
+    !loependeLivsvarigAfpOffentlig?.beloep
+  ) {
     const alertText = 'beregning.alert.success.afp-offentlig-livsvarig'
     const variant = 'success'
 

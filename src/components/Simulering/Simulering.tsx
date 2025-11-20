@@ -118,7 +118,7 @@ export const Simulering = ({
   const harSamtykketOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
   const {
     isSuccess: isAfpOffentligLivsvarigSuccess,
-    data: afpOffentligLivsvarigData,
+    data: loependeLivsvarigAfpOffentlig,
   } = useGetAfpOffentligLivsvarigQuery()
 
   useEffect(() => {
@@ -179,6 +179,13 @@ export const Simulering = ({
     pre2025OffentligAfp,
     afpPrivatListe,
     afpOffentligListe,
+    loependeLivsvarigAfpOffentlig:
+      loependeLivsvarigAfpOffentlig?.beloep && alderspensjonListe
+        ? alderspensjonListe.map((ap) => ({
+            alder: ap.alder,
+            beloep: loependeLivsvarigAfpOffentlig.beloep!,
+          }))
+        : undefined,
     pensjonsavtaler: {
       isLoading: isPensjonsavtalerLoading,
       data: pensjonsavtalerData,
@@ -273,7 +280,7 @@ export const Simulering = ({
       <SimuleringAfpOffentligAlert
         harSamtykketOffentligAFP={harSamtykketOffentligAFP}
         isAfpOffentligLivsvarigSuccess={isAfpOffentligLivsvarigSuccess}
-        afpOffentligLivsvarigData={afpOffentligLivsvarigData}
+        loependeLivsvarigAfpOffentlig={loependeLivsvarigAfpOffentlig}
       />
 
       {showButtonsAndTable && (

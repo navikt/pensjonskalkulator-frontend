@@ -40,6 +40,7 @@ export const useSimuleringChartLocalState = (initialValues: {
   pre2025OffentligAfp?: AfpEtterfulgtAvAlderspensjon
   afpPrivatListe?: AfpPensjonsberegning[]
   afpOffentligListe?: AfpPensjonsberegning[]
+  loependeLivsvarigAfpOffentlig?: AfpPensjonsberegning[]
   pensjonsavtaler: {
     isLoading: boolean
     data?: {
@@ -68,6 +69,7 @@ export const useSimuleringChartLocalState = (initialValues: {
     pre2025OffentligAfp,
     afpPrivatListe,
     afpOffentligListe,
+    loependeLivsvarigAfpOffentlig,
     pensjonsavtaler,
     offentligTp,
   } = initialValues
@@ -286,7 +288,8 @@ export const useSimuleringChartLocalState = (initialValues: {
                 } as SeriesOptionsType,
               ]
             : []),
-          ...(afpOffentligListe && afpOffentligListe.length > 0
+          ...(loependeLivsvarigAfpOffentlig &&
+          loependeLivsvarigAfpOffentlig.length > 0
             ? [
                 {
                   ...SERIES_DEFAULT.SERIE_AFP,
@@ -297,12 +300,28 @@ export const useSimuleringChartLocalState = (initialValues: {
                   data: processAfpPensjonsberegningArray(
                     isEndring ? startAar : startAar - 1,
                     xAxis.length,
-                    afpOffentligListe,
+                    loependeLivsvarigAfpOffentlig,
                     isEndring
                   ),
                 } as SeriesOptionsType,
               ]
-            : []),
+            : afpOffentligListe && afpOffentligListe.length > 0
+              ? [
+                  {
+                    ...SERIES_DEFAULT.SERIE_AFP,
+                    name: intl.formatMessage({
+                      id: SERIES_DEFAULT.SERIE_AFP.name,
+                    }),
+                    /* c8 ignore next 1 */
+                    data: processAfpPensjonsberegningArray(
+                      isEndring ? startAar : startAar - 1,
+                      xAxis.length,
+                      afpOffentligListe,
+                      isEndring
+                    ),
+                  } as SeriesOptionsType,
+                ]
+              : []),
           ...((pensjonsavtalerData &&
             pensjonsavtalerData?.avtaler.length > 0) ||
           (offentligTpData?.simulertTjenestepensjon?.simuleringsresultat
