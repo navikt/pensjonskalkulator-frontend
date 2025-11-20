@@ -180,7 +180,10 @@ export const Simulering = ({
     afpPrivatListe,
     afpOffentligListe,
     loependeLivsvarigAfpOffentlig:
-      loependeLivsvarigAfpOffentlig?.beloep && alderspensjonListe
+      loependeLivsvarigAfpOffentlig?.beloep &&
+      alderspensjonListe &&
+      ufoeregrad !== 100 &&
+      harSamtykketOffentligAFP
         ? alderspensjonListe.map((ap) => ({
             alder: ap.alder,
             beloep: loependeLivsvarigAfpOffentlig.beloep!,
