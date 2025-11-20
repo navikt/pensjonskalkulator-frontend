@@ -1,6 +1,6 @@
 import Highcharts, { SeriesOptionsType } from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 import { useIntl } from 'react-intl'
 
 import {
@@ -30,13 +30,14 @@ import {
   selectSamtykkeOffentligAFP,
   selectSivilstand,
   selectSkalBeregneAfpKap19,
+  selectStillingsprosentVsaGradertPensjon,
+  selectStillingsprosentVsaPensjon,
   selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
 import {
   getAlderMinus1Maaned,
   isAlderLikEllerOverAnnenAlder,
-  isAlderOver,
   transformFoedselsdatoToAlder,
 } from '@/utils/alder'
 import { formatInntektToNumber } from '@/utils/inntekt'
@@ -412,14 +413,13 @@ export const useOffentligTpData = () => {
   const afpInntektMaanedFoerUttak = useAppSelector(
     selectAfpInntektMaanedFoerUttak
   )
+  const stillingsprosentVsaGradertUttak = useAppSelector(
+    selectStillingsprosentVsaGradertPensjon
+  )
+  const stillingsprosentVsaHelUttak = useAppSelector(
+    selectStillingsprosentVsaPensjon
+  )
   const { data: person } = useGetPersonQuery()
-
-  const [offentligTpRequestBody, setOffentligTpRequestBody] = useState<
-    OffentligTpRequestBody | undefined
-  >(undefined)
-
-  const [offentligTpFoer1963RequestBody, setOffentligTpFoer1963RequestBody] =
-    useState<OffentligTpFoer1963RequestBody | undefined>(undefined)
 
   const alderspensjonRequestBody: AlderspensjonRequestBody | undefined =
     useMemo(() => {
@@ -461,6 +461,79 @@ export const useOffentligTpData = () => {
       afpInntektMaanedFoerUttak,
     ])
 
+  const offentligTpFoer1963RequestBody:
+    | OffentligTpFoer1963RequestBody
+    | undefined = useMemo(() => {
+    if (harSamtykket && uttaksalder && skalBeregneAfpKap19) {
+      return generateOffentligTpFoer1963RequestBody({
+        foedselsdato,
+        sivilstand,
+        epsHarInntektOver2G,
+        epsHarPensjon,
+        aarligInntektFoerUttakBeloep: aarligInntektFoerUttakBeloep ?? '0',
+        gradertUttak: gradertUttaksperiode ? gradertUttaksperiode : undefined,
+        heltUttak: {
+          uttaksalder,
+          aarligInntektVsaPensjon: aarligInntektVsaHelPensjon,
+        },
+        utenlandsperioder,
+        stillingsprosentOffGradertUttak: stillingsprosentVsaGradertUttak,
+        stillingsprosentOffHeltUttak: stillingsprosentVsaHelUttak,
+        afpInntektMaanedFoerUttak: afpInntektMaanedFoerUttak,
+      })
+    }
+  }, [
+    harSamtykket,
+    uttaksalder,
+    skalBeregneAfpKap19,
+    foedselsdato,
+    sivilstand,
+    epsHarInntektOver2G,
+    epsHarPensjon,
+    aarligInntektFoerUttakBeloep,
+    gradertUttaksperiode,
+    aarligInntektVsaHelPensjon,
+    utenlandsperioder,
+    stillingsprosentVsaGradertUttak,
+    stillingsprosentVsaHelUttak,
+    afpInntektMaanedFoerUttak,
+  ])
+
+  const offentligTpRequestBody: OffentligTpRequestBody | undefined =
+    useMemo(() => {
+      if (harSamtykket && uttaksalder && !skalBeregneAfpKap19) {
+        return generateOffentligTpRequestBody({
+          afp,
+          foedselsdato,
+          sivilstand,
+          epsHarInntektOver2G,
+          epsHarPensjon,
+          aarligInntektFoerUttakBeloep: aarligInntektFoerUttakBeloep ?? '0',
+          gradertUttak: gradertUttaksperiode ? gradertUttaksperiode : undefined,
+          heltUttak: {
+            uttaksalder,
+            aarligInntektVsaPensjon: aarligInntektVsaHelPensjon,
+          },
+          utenlandsperioder,
+          erApoteker,
+        })
+      }
+    }, [
+      harSamtykket,
+      uttaksalder,
+      skalBeregneAfpKap19,
+      afp,
+      foedselsdato,
+      sivilstand,
+      epsHarInntektOver2G,
+      epsHarPensjon,
+      aarligInntektFoerUttakBeloep,
+      gradertUttaksperiode,
+      aarligInntektVsaHelPensjon,
+      utenlandsperioder,
+      erApoteker,
+    ])
+
   const alderspensjonQuery = useAlderspensjonQuery(
     alderspensjonRequestBody as AlderspensjonRequestBody,
     { skip: !alderspensjonRequestBody }
@@ -488,58 +561,6 @@ export const useOffentligTpData = () => {
     }
   )
 
-  useEffect(() => {
-    if (harSamtykket && uttaksalder) {
-      if (skalBeregneAfpKap19) {
-        const requestBody = generateOffentligTpFoer1963RequestBody({
-          foedselsdato,
-          sivilstand,
-          epsHarInntektOver2G,
-          epsHarPensjon,
-          aarligInntektFoerUttakBeloep: aarligInntektFoerUttakBeloep ?? '0',
-          gradertUttak: gradertUttaksperiode ? gradertUttaksperiode : undefined,
-          heltUttak: {
-            uttaksalder,
-            aarligInntektVsaPensjon: aarligInntektVsaHelPensjon,
-          },
-          utenlandsperioder,
-        })
-        setOffentligTpFoer1963RequestBody(requestBody)
-      } else {
-        const requestBody = generateOffentligTpRequestBody({
-          afp,
-          foedselsdato,
-          sivilstand,
-          epsHarInntektOver2G,
-          epsHarPensjon,
-          aarligInntektFoerUttakBeloep: aarligInntektFoerUttakBeloep ?? '0',
-          gradertUttak: gradertUttaksperiode ? gradertUttaksperiode : undefined,
-          heltUttak: {
-            uttaksalder,
-            aarligInntektVsaPensjon: aarligInntektVsaHelPensjon,
-          },
-          utenlandsperioder,
-          erApoteker,
-        })
-        setOffentligTpRequestBody(requestBody)
-      }
-    }
-  }, [
-    harSamtykket,
-    uttaksalder,
-    skalBeregneAfpKap19,
-    afp,
-    foedselsdato,
-    sivilstand,
-    epsHarInntektOver2G,
-    epsHarPensjon,
-    aarligInntektFoerUttakBeloep,
-    gradertUttaksperiode,
-    aarligInntektVsaHelPensjon,
-    utenlandsperioder,
-    erApoteker,
-  ])
-
   const data = skalBeregneAfpKap19
     ? offentligTpFoer1963Query.data
     : offentligTpQuery.data
@@ -555,6 +576,34 @@ export const useOffentligTpData = () => {
   const isError = skalBeregneAfpKap19
     ? offentligTpFoer1963Query.isError
     : offentligTpQuery.isError
+
+  const dataUtenAfp = useMemo(() => {
+    if (
+      !data?.simulertTjenestepensjon ||
+      !isOffentligTpFoer1963(
+        (skalBeregneAfpKap19 && harSamtykket) || false,
+        data
+      )
+    ) {
+      return data
+    }
+
+    const utbetalingsperioderUtenAfp =
+      data.simulertTjenestepensjon.simuleringsresultat.utbetalingsperioder.filter(
+        (periode) => periode.ytelsekode !== 'AFP'
+      )
+
+    return {
+      ...data,
+      simulertTjenestepensjon: {
+        ...data.simulertTjenestepensjon,
+        simuleringsresultat: {
+          ...data.simulertTjenestepensjon.simuleringsresultat,
+          utbetalingsperioder: utbetalingsperioderUtenAfp,
+        },
+      },
+    }
+  }, [data, skalBeregneAfpKap19, harSamtykket])
 
   let erSpkBesteberegning = false
   let tpAfpPeriode = undefined
@@ -585,8 +634,10 @@ export const useOffentligTpData = () => {
         : false
   }
 
+  console.log('useOffentligTpData - dataUtenAfp:', dataUtenAfp)
+
   return {
-    data,
+    data: dataUtenAfp,
     isLoading,
     isFetching,
     isError,

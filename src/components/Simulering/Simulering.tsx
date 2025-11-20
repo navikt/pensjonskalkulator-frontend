@@ -8,29 +8,20 @@ import { HandFingerIcon } from '@navikt/aksel-icons'
 import { BodyLong, BodyShort, Heading, HeadingProps } from '@navikt/ds-react'
 
 import { TabellVisning } from '@/components/TabellVisning'
-import {
-  useOffentligTpQuery,
-  usePensjonsavtalerQuery,
-} from '@/state/api/apiSlice'
-import { isOffentligTpFoer1963 } from '@/state/api/typeguards'
-import {
-  generateOffentligTpRequestBody,
-  generatePensjonsavtalerRequestBody,
-} from '@/state/api/utils'
+import { usePensjonsavtalerQuery } from '@/state/api/apiSlice'
+import { generatePensjonsavtalerRequestBody } from '@/state/api/utils'
 import { useAppSelector } from '@/state/hooks'
 import {
   selectAfp,
   selectCurrentSimulation,
   selectEpsHarInntektOver2G,
   selectEpsHarPensjon,
-  selectErApoteker,
   selectFoedselsdato,
   selectIsEndring,
   selectSamtykke,
   selectSivilstand,
   selectSkalBeregneAfpKap19,
   selectUfoeregrad,
-  selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
 
 import { MaanedsbeloepAvansertBeregning } from './MaanedsbeloepAvansertBeregning'

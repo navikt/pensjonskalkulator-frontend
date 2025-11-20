@@ -771,12 +771,13 @@ export const onAvansertBeregningSubmit = (
   const stillingsprosentVsaAfpFormData = data.get(
     AVANSERT_FORM_NAMES.stillingsprosentVsaAfp
   )
-  const stillingsprosentVsaGradertPensjonFormData = data.get(
-    AVANSERT_FORM_NAMES.stillingsprosentVsaGradertPensjon
+  const stillingsprosentVsaGradertPensjonFormData =
+    data.get(AVANSERT_FORM_NAMES.stillingsprosentVsaGradertPensjon) ??
+    stillingsprosentVsaAfpFormData
+
+  const stillingsprosentVsaHelPensjonFormData = data.get(
+    AVANSERT_FORM_NAMES.stillingsprosentVsaHelPensjon
   )
-  const stillingsprosentVsaHelPensjonFormData =
-    data.get(AVANSERT_FORM_NAMES.stillingsprosentVsaHelPensjon) ??
-    data.get(AVANSERT_FORM_NAMES.stillingsprosentVsaAfp)
   if (
     !validateAvansertBeregningSkjema(
       {
@@ -955,11 +956,7 @@ export const onAvansertBeregningSubmit = (
   dispatch(
     userInputActions.setStillingsprosentVsaPensjon(
       stillingsprosentVsaHelPensjonFormData
-        ? parseInt(
-            (stillingsprosentVsaHelPensjonFormData ??
-              stillingsprosentVsaAfpFormData) as string,
-            10
-          )
+        ? parseInt(stillingsprosentVsaHelPensjonFormData as string, 10)
         : null
     )
   )

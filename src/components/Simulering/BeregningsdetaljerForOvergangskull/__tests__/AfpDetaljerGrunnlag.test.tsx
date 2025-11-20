@@ -47,6 +47,10 @@ describe('AfpDetaljerGrunnlag', () => {
           { tekst: 'AFP-tillegg', verdi: '5 000 kr' },
           { tekst: 'Sum AFP', verdi: '15 000 kr' },
         ],
+        afpOffentligSpk: [
+          { tekst: 'AFP SPK', verdi: '3 000 kr' },
+          { tekst: 'Sum AFP SPK', verdi: '8 000 kr' },
+        ],
         pre2025OffentligAfp: [
           { tekst: 'Grunnpensjon (kap. 19)', verdi: '12 000 kr' },
           { tekst: 'Sum alderspensjon', verdi: '28 000 kr' },
@@ -65,14 +69,18 @@ describe('AfpDetaljerGrunnlag', () => {
   })
 
   it('rendrer wrapper med korrekt test id', () => {
-    render(<AfpDetaljerGrunnlag {...defaultProps} />)
+    render(
+      <AfpDetaljerGrunnlag erOffentligTpFoer1963={false} {...defaultProps} />
+    )
     expect(
       screen.getByTestId('beregningsdetaljer-for-overgangskull')
     ).toBeVisible()
   })
 
   it('rendrer både desktop og mobil versjon med riktig CSS klasser', () => {
-    const { container } = render(<AfpDetaljerGrunnlag {...defaultProps} />)
+    const { container } = render(
+      <AfpDetaljerGrunnlag erOffentligTpFoer1963={false} {...defaultProps} />
+    )
 
     // AfpDetaljerGrunnlag doesn't have desktop/mobile classes - AfpDetaljer itself handles this
     const desktopDiv = container.querySelector(
@@ -88,7 +96,9 @@ describe('AfpDetaljerGrunnlag', () => {
   })
 
   it('rendrer HStack for desktop versjon', () => {
-    render(<AfpDetaljerGrunnlag {...defaultProps} />)
+    render(
+      <AfpDetaljerGrunnlag erOffentligTpFoer1963={false} {...defaultProps} />
+    )
 
     // AfpDetaljerGrunnlag doesn't have desktop/mobile structure - that's handled by AfpDetaljer
     const wrapper = screen.getByTestId('beregningsdetaljer-for-overgangskull')
@@ -97,7 +107,9 @@ describe('AfpDetaljerGrunnlag', () => {
   })
 
   it('rendrer VStack for mobil versjon', () => {
-    render(<AfpDetaljerGrunnlag {...defaultProps} />)
+    render(
+      <AfpDetaljerGrunnlag erOffentligTpFoer1963={false} {...defaultProps} />
+    )
 
     // AfpDetaljerGrunnlag doesn't have desktop/mobile structure - that's handled by AfpDetaljer
     const wrapper = screen.getByTestId('beregningsdetaljer-for-overgangskull')
@@ -106,14 +118,18 @@ describe('AfpDetaljerGrunnlag', () => {
   })
 
   it('rendrer AfpDetaljer komponenten', () => {
-    render(<AfpDetaljerGrunnlag {...defaultProps} />)
+    render(
+      <AfpDetaljerGrunnlag erOffentligTpFoer1963={false} {...defaultProps} />
+    )
 
     // AfpDetaljerGrunnlag renders AfpDetaljer once per item in the list
     expect(screen.getAllByTestId('AfpDetaljer')).toHaveLength(1)
   })
 
   it('sender korrekte props til AfpDetaljer', () => {
-    render(<AfpDetaljerGrunnlag {...defaultProps} />)
+    render(
+      <AfpDetaljerGrunnlag erOffentligTpFoer1963={false} {...defaultProps} />
+    )
 
     const afpDetaljerComponents = screen.getAllByTestId('AfpDetaljer')
 
@@ -131,6 +147,7 @@ describe('AfpDetaljerGrunnlag', () => {
         {
           afpPrivat: [],
           afpOffentlig: [],
+          afpOffentligSpk: [],
           pre2025OffentligAfp: [],
           opptjeningPre2025OffentligAfp: [],
         },
@@ -138,7 +155,9 @@ describe('AfpDetaljerGrunnlag', () => {
       alderspensjonColumnsCount: 0,
     }
 
-    render(<AfpDetaljerGrunnlag {...minimalProps} />)
+    render(
+      <AfpDetaljerGrunnlag erOffentligTpFoer1963={false} {...minimalProps} />
+    )
 
     const afpDetaljerComponents = screen.getAllByTestId('AfpDetaljer')
 
@@ -156,6 +175,7 @@ describe('AfpDetaljerGrunnlag', () => {
         {
           afpPrivat: [],
           afpOffentlig: [],
+          afpOffentligSpk: [],
           pre2025OffentligAfp: [],
           opptjeningPre2025OffentligAfp: [],
         },
@@ -163,7 +183,9 @@ describe('AfpDetaljerGrunnlag', () => {
       alderspensjonColumnsCount: 0,
     }
 
-    render(<AfpDetaljerGrunnlag {...emptyProps} />)
+    render(
+      <AfpDetaljerGrunnlag erOffentligTpFoer1963={false} {...emptyProps} />
+    )
 
     const afpDetaljerComponents = screen.getAllByTestId('AfpDetaljer')
 
@@ -176,7 +198,9 @@ describe('AfpDetaljerGrunnlag', () => {
   })
 
   it('rendrer kun AfpDetaljer komponent (ikke andre)', () => {
-    render(<AfpDetaljerGrunnlag {...defaultProps} />)
+    render(
+      <AfpDetaljerGrunnlag erOffentligTpFoer1963={false} {...defaultProps} />
+    )
 
     // Skal bare rendre AfpDetaljer, ikke AlderspensjonDetaljer eller OpptjeningDetaljer
     expect(screen.getAllByTestId('AfpDetaljer')).toHaveLength(1)
@@ -192,6 +216,7 @@ describe('AfpDetaljerGrunnlag', () => {
         {
           afpPrivat: [{ tekst: 'Test AFP privat', verdi: '1000 kr' }],
           afpOffentlig: [],
+          afpOffentligSpk: [],
           pre2025OffentligAfp: [{ tekst: 'Test pre2025', verdi: 100 }],
           opptjeningPre2025OffentligAfp: [],
         },
@@ -199,7 +224,9 @@ describe('AfpDetaljerGrunnlag', () => {
       alderspensjonColumnsCount: 1,
     }
 
-    render(<AfpDetaljerGrunnlag {...partialProps} />)
+    render(
+      <AfpDetaljerGrunnlag erOffentligTpFoer1963={false} {...partialProps} />
+    )
 
     const afpDetaljerComponents = screen.getAllByTestId('AfpDetaljer')
 
