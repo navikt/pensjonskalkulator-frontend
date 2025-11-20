@@ -17,6 +17,7 @@ import {
 } from '@/state/userInput/selectors'
 import {
   AFP_UFOERE_OPPSIGELSESALDER,
+  isAlderOver62,
   isFoedselsdatoOverAlder,
   isFoedtFoer1963,
 } from '@/utils/alder'
@@ -502,8 +503,13 @@ export const beregningEnkelAccessGuard = async () => {
     .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
     .unwrap()
 
+  const person = await store
+    .dispatch(apiSlice.endpoints.getPerson.initiate())
+    .unwrap()
+
   if (
     afpOffentligLivsvarig &&
+    isAlderOver62(person.foedselsdato) &&
     (loependeVedtak.ufoeretrygd.grad === 0 ||
       loependeVedtak.ufoeretrygd.grad === 100)
   ) {

@@ -1262,6 +1262,20 @@ describe('Loaders', () => {
     }
     store.getState = vi.fn().mockImplementation(() => mockedState)
 
+    mockResponse('/v5/person', {
+      status: 200,
+      json: {
+        navn: 'Test Person',
+        sivilstand: 'UGIFT',
+        foedselsdato: '1960-04-30',
+        pensjoneringAldre: {
+          normertPensjoneringsalder: { aar: 67, maaneder: 0 },
+          nedreAldersgrense: { aar: 62, maaneder: 0 },
+          oevreAldersgrense: { aar: 75, maaneder: 0 },
+        },
+      },
+    })
+
     mockResponse('/v4/vedtak/loepende-vedtak', {
       status: 200,
       json: {
@@ -1295,6 +1309,20 @@ describe('Loaders', () => {
       },
     }
     store.getState = vi.fn().mockImplementation(() => mockedState)
+
+    mockResponse('/v5/person', {
+      status: 200,
+      json: {
+        navn: 'Test Person',
+        sivilstand: 'UGIFT',
+        foedselsdato: '1960-04-30',
+        pensjoneringAldre: {
+          normertPensjoneringsalder: { aar: 67, maaneder: 0 },
+          nedreAldersgrense: { aar: 62, maaneder: 0 },
+          oevreAldersgrense: { aar: 75, maaneder: 0 },
+        },
+      },
+    })
 
     mockResponse('/v4/vedtak/loepende-vedtak', {
       status: 200,
