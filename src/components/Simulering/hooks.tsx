@@ -618,7 +618,6 @@ export const useOffentligTpData = () => {
       data?.simulertTjenestepensjon?.simuleringsresultat.utbetalingsperioder.filter(
         (periode) => periode.ytelsekode === 'AFP'
       )
-
     const minsteAlderForAfp: Alder = { aar: 65, maaneder: 0 }
 
     tpAfpPeriode = finnAllePensjonsavtalerVedUttak(
@@ -626,15 +625,24 @@ export const useOffentligTpData = () => {
       isAlderLikEllerOverAnnenAlder(uttaksalder!, minsteAlderForAfp)
         ? uttaksalder!
         : minsteAlderForAfp // Minimum 65 år for AFP fra SPK
-    )[0]
+    ).find(
+      (periode) =>
+        periode.startAlder.aar ===
+          (isAlderLikEllerOverAnnenAlder(uttaksalder!, minsteAlderForAfp)
+            ? uttaksalder!.aar
+            : minsteAlderForAfp.aar) &&
+        periode.startAlder.maaneder ===
+          (isAlderLikEllerOverAnnenAlder(uttaksalder!, minsteAlderForAfp)
+            ? uttaksalder!.maaneder
+            : minsteAlderForAfp.maaneder)
+    )
 
+    console.log('erSpkBesteberegning:', tpAfpPeriode)
     erSpkBesteberegning =
       navAfp !== undefined && tpAfpPeriode !== undefined
         ? tpAfpPeriode.aarligUtbetaling / 12 > navAfp
         : false
   }
-
-  console.log('useOffentligTpData - dataUtenAfp:', dataUtenAfp)
 
   return {
     data: dataUtenAfp,
