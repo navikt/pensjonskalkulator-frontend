@@ -490,6 +490,35 @@ export function resetColumnColors(chart: Chart): void {
   chart.redraw()
 }
 
+export const processLoependeLivsvarigAfpOffentlig = (
+  alderspensjonListe: AlderspensjonPensjonsberegning[],
+  loependeLivsvarigAfpOffentlig: { beloep?: number },
+  gradertUttaksperiode: GradertUttak | null,
+  uttaksalder: Alder | null
+): { alder: number; beloep: number }[] => {
+  return alderspensjonListe.map((ap) => {
+    const baseBeloep = loependeLivsvarigAfpOffentlig.beloep!
+
+    // Calculate reduced amount based on the number of months with uttak
+    let adjustedBeloep = baseBeloep
+
+    if (gradertUttaksperiode?.uttaksalder?.aar === ap.alder) {
+      // Use gradert uttak months if it matches this age
+      adjustedBeloep =
+        (baseBeloep * (12 - (gradertUttaksperiode.uttaksalder.maaneder || 0))) /
+        12
+    } else if (!gradertUttaksperiode && uttaksalder?.aar === ap.alder) {
+      // Use helt uttak months if no gradert uttak and this age matches helt uttak
+      adjustedBeloep = (baseBeloep * (12 - (uttaksalder.maaneder || 0))) / 12
+    }
+
+    return {
+      alder: ap.alder,
+      beloep: adjustedBeloep,
+    }
+  })
+}
+
 export function handleChartScroll(
   event: Event,
   args: {

@@ -40,6 +40,7 @@ import { SimuleringEndringBanner } from './SimuleringEndringBanner/SimuleringEnd
 import { SimuleringGrafNavigation } from './SimuleringGrafNavigation/SimuleringGrafNavigation'
 import { SimuleringPensjonsavtalerAlert } from './SimuleringPensjonsavtalerAlert/SimuleringPensjonsavtalerAlert'
 import { useSimuleringChartLocalState } from './hooks'
+import { processLoependeLivsvarigAfpOffentlig } from './utils'
 
 import styles from './Simulering.module.scss'
 
@@ -184,10 +185,12 @@ export const Simulering = ({
       alderspensjonListe &&
       ufoeregrad !== 100 &&
       harSamtykketOffentligAFP
-        ? alderspensjonListe.map((ap) => ({
-            alder: ap.alder,
-            beloep: loependeLivsvarigAfpOffentlig.beloep!,
-          }))
+        ? processLoependeLivsvarigAfpOffentlig(
+            alderspensjonListe,
+            loependeLivsvarigAfpOffentlig,
+            gradertUttaksperiode,
+            uttaksalder
+          )
         : undefined,
     pensjonsavtaler: {
       isLoading: isPensjonsavtalerLoading,
