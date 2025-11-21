@@ -533,5 +533,7 @@ export function useBeregningsdetaljer(
     pre2025OffentligAfp,
     uttaksalder,
     gradertUttaksperiode,
+    tpAfpPeriode,
+    erSpkBesteberegning,
   ])
 }
