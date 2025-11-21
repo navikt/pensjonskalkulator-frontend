@@ -12,10 +12,12 @@ import { store } from '@/state/store'
 import {
   selectAfp,
   selectIsVeileder,
+  selectSamtykkeOffentligAFP,
   selectSkalBeregneAfpKap19,
 } from '@/state/userInput/selectors'
 import {
   AFP_UFOERE_OPPSIGELSESALDER,
+  isAlderOver62,
   isFoedselsdatoOverAlder,
   isFoedtFoer1963,
 } from '@/utils/alder'
@@ -445,6 +447,7 @@ export const stepSamtykkePensjonsavtaler = async ({
     return redirect(paths.start)
   }
 
+  const state = store.getState()
   const loependeVedtak = await store
     .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
     .unwrap()
@@ -452,6 +455,16 @@ export const stepSamtykkePensjonsavtaler = async ({
   const person = await store
     .dispatch(apiSlice.endpoints.getPerson.initiate())
     .unwrap()
+
+  //Starter innhenting av afpOffentligLivsvarig data i bakgrunnen hvis brukeren har samtykket
+  const harSamtykketOffentligAFP = selectSamtykkeOffentligAFP(state)
+  if (
+    harSamtykketOffentligAFP &&
+    (loependeVedtak.ufoeretrygd.grad === 0 ||
+      loependeVedtak.ufoeretrygd.grad === 100)
+  ) {
+    store.dispatch(apiSlice.endpoints.getAfpOffentligLivsvarig.initiate())
+  }
 
   const erApoteker = await store.dispatch(
     apiSlice.endpoints.getErApoteker.initiate()
@@ -484,9 +497,24 @@ export const beregningEnkelAccessGuard = async () => {
   }
   const state = store.getState()
   const skalBeregneAfpKap19 = selectSkalBeregneAfpKap19(state)
+  const afpOffentligLivsvarig = selectSamtykkeOffentligAFP(state)
+
   const loependeVedtak = await store
     .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
     .unwrap()
+
+  const person = await store
+    .dispatch(apiSlice.endpoints.getPerson.initiate())
+    .unwrap()
+
+  if (
+    afpOffentligLivsvarig &&
+    isAlderOver62(person.foedselsdato) &&
+    (loependeVedtak.ufoeretrygd.grad === 0 ||
+      loependeVedtak.ufoeretrygd.grad === 100)
+  ) {
+    await store.dispatch(apiSlice.endpoints.getAfpOffentligLivsvarig.initiate())
+  }
 
   if (skalBeregneAfpKap19 || loependeVedtak.alderspensjon) {
     return redirect(paths.beregningAvansert)

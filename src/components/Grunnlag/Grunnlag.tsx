@@ -16,6 +16,7 @@ import {
 
 import { AccordionItem } from '@/components/common/AccordionItem'
 import { paths } from '@/router/constants'
+import { useGetAfpOffentligLivsvarigQuery } from '@/state/api/apiSlice'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import { selectHasErApotekerError } from '@/state/session/selectors'
 import {
@@ -86,6 +87,9 @@ export const Grunnlag: React.FC<Props> = ({
   const foedtEtter1963 = isFoedtEtter1963(foedselsdato)
   const hasErApotekerError = useAppSelector(selectHasErApotekerError)
 
+  const { data: loependeLivsvarigAfpOffentlig } =
+    useGetAfpOffentligLivsvarigQuery()
+
   const [isAFPDokumentasjonVisible, setIsAFPDokumentasjonVisible] =
     React.useState<boolean>(false)
 
@@ -102,7 +106,8 @@ export const Grunnlag: React.FC<Props> = ({
       alderspensjonListe,
       afpPrivatListe,
       afpOffentligListe,
-      pre2025OffentligAfp
+      pre2025OffentligAfp,
+      loependeLivsvarigAfpOffentlig
     )
 
   // Antall kolonner for AP detaljer som bestemmer hvor mange kolonner AFP detaljer skal ha.

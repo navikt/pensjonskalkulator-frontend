@@ -237,7 +237,8 @@ function getAfpDetaljerListe(
   afpOffentligListe?: AfpPensjonsberegning[],
   pre2025OffentligAfp?: pre2025OffentligPensjonsberegning,
   uttaksalder?: { aar: number; maaneder?: number } | null,
-  gradertUttaksperiode?: GradertUttak | null
+  gradertUttaksperiode?: GradertUttak | null,
+  loependeLivsvarigAfpOffentlig?: AfpOffentligLivsvarig
 ): AfpDetaljerListe[] {
   const afpDetaljerListe: AfpDetaljerListe[] = []
 
@@ -270,11 +271,17 @@ function getAfpDetaljerListe(
     ].filter((rad) => rad.verdi !== 0)
   }
 
-  const getAfpOffentligDetails = (afpOffentlig: AfpPensjonsberegning) => {
+  const getAfpOffentligDetails = (
+    afpOffentlig: AfpPensjonsberegning,
+    loependeAfpOffentlig?: AfpOffentligLivsvarig
+  ) => {
+    const beloep =
+      loependeAfpOffentlig?.beloep ?? afpOffentlig?.maanedligBeloep ?? 0
+
     return [
       {
         tekst: 'Månedlig livsvarig avtalefestet pensjon (AFP)',
-        verdi: `${formatInntekt(afpOffentlig?.maanedligBeloep ?? 0)} kr`,
+        verdi: `${formatInntekt(beloep)} kr`,
       },
     ]
   }
@@ -431,7 +438,10 @@ function getAfpDetaljerListe(
     if (afpOffentligVedUttak) {
       afpDetaljerListe.push({
         afpPrivat: [],
-        afpOffentlig: getAfpOffentligDetails(afpOffentligVedUttak),
+        afpOffentlig: getAfpOffentligDetails(
+          afpOffentligVedUttak,
+          loependeLivsvarigAfpOffentlig
+        ),
         pre2025OffentligAfp: [],
         opptjeningPre2025OffentligAfp: [],
       })
@@ -456,7 +466,8 @@ export function useBeregningsdetaljer(
   alderspensjonListe?: AlderspensjonPensjonsberegning[],
   afpPrivatListe?: AfpPrivatPensjonsberegning[],
   afpOffentligListe?: AfpPensjonsberegning[],
-  pre2025OffentligAfp?: pre2025OffentligPensjonsberegning
+  pre2025OffentligAfp?: pre2025OffentligPensjonsberegning,
+  loependeLivsvarigAfpOffentlig?: AfpOffentligLivsvarig
 ): BeregningsdetaljerRader {
   const { uttaksalder, gradertUttaksperiode } = useAppSelector(
     selectCurrentSimulation
@@ -479,7 +490,8 @@ export function useBeregningsdetaljer(
       afpOffentligListe,
       pre2025OffentligAfp,
       uttaksalder,
-      gradertUttaksperiode
+      gradertUttaksperiode,
+      loependeLivsvarigAfpOffentlig
     )
 
     return {
@@ -493,5 +505,6 @@ export function useBeregningsdetaljer(
     pre2025OffentligAfp,
     uttaksalder,
     gradertUttaksperiode,
+    loependeLivsvarigAfpOffentlig,
   ])
 }

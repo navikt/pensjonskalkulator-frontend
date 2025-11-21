@@ -143,6 +143,14 @@ beforeEach(() => {
   cy.intercept(
     {
       method: 'GET',
+      url: '/pensjon/kalkulator/api/v1/tpo-afp-offentlig-livsvarig',
+    },
+    { fixture: 'afp-offentlig-livsvarig.json' }
+  ).as('getTpoAfpOffentligLivsvarig')
+
+  cy.intercept(
+    {
+      method: 'GET',
       url: '/pensjon/kalkulator/api/v2/ekskludert',
     },
     { fixture: 'ekskludert-status.json' }

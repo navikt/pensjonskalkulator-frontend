@@ -6,6 +6,7 @@ import { BodyLong, Heading, Link, VStack } from '@navikt/ds-react'
 
 import { BeregningContext } from '@/pages/Beregning/context'
 import { paths } from '@/router/constants'
+import { useGetAfpOffentligLivsvarigQuery } from '@/state/api/apiSlice'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import {
   selectAfp,
@@ -28,6 +29,8 @@ import styles from '../Grunnlag.module.scss'
 
 export const GrunnlagAFP: React.FC = () => {
   const intl = useIntl()
+  const { data: afpOffentligLivsvarigDetaljer } =
+    useGetAfpOffentligLivsvarigQuery()
   const afp = useAppSelector(selectAfp)
   const afpUtregningValg = useAppSelector(selectAfpUtregningValg)
   const erApoteker = useAppSelector(selectErApoteker)
@@ -46,6 +49,7 @@ export const GrunnlagAFP: React.FC = () => {
       foedselsdato: foedselsdato!,
       samtykkeOffentligAFP: samtykkeOffentligAFP,
       beregningsvalg: beregningsvalg,
+      afpOffentligLivsvarigDetaljer: afpOffentligLivsvarigDetaljer,
     })
   }, [
     intl,
@@ -56,6 +60,7 @@ export const GrunnlagAFP: React.FC = () => {
     ufoeregrad,
     beregningsvalg,
     foedselsdato,
+    afpOffentligLivsvarigDetaljer,
   ])
 
   return (

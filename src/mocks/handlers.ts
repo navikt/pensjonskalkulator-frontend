@@ -4,6 +4,7 @@ import { HttpResponse, delay, http, passthrough } from 'msw'
 
 import { API_PATH, HOST_BASEURL } from '@/paths'
 
+import afpOffentligLivsvarigResponse from './data/afp-offentlig-livsvarig.json' with { type: 'json' }
 import ansattIdResponse from './data/ansatt-id.json' with { type: 'json' }
 import ekskludertStatusResponse from './data/ekskludert-status.json' with { type: 'json' }
 import erApotekerResponse from './data/er-apoteker.json' with { type: 'json' }
@@ -134,6 +135,11 @@ export const getHandlers = (baseUrl: string = API_PATH) => [
   http.get(`${baseUrl}/v1/er-apoteker`, async () => {
     await delay(TEST_DELAY)
     return HttpResponse.json(erApotekerResponse)
+  }),
+
+  http.get(`${baseUrl}/v1/tpo-afp-offentlig-livsvarig`, async () => {
+    await delay(TEST_DELAY)
+    return HttpResponse.json(afpOffentligLivsvarigResponse)
   }),
 
   http.get(
