@@ -497,24 +497,24 @@ export const processLoependeLivsvarigAfpOffentlig = (
   uttaksalder: Alder | null
 ): { alder: number; beloep: number }[] => {
   return alderspensjonListe.map((ap) => {
-    const baseBeloep = loependeLivsvarigAfpOffentlig.beloep!
+    const maandeligBeloep = loependeLivsvarigAfpOffentlig.beloep!
 
-    // Calculate reduced amount based on the number of months with uttak
-    let adjustedBeloep = baseBeloep
+    let aarligBeloep: number
 
     if (gradertUttaksperiode?.uttaksalder?.aar === ap.alder) {
-      // Use gradert uttak months if it matches this age
-      adjustedBeloep =
-        (baseBeloep * (12 - (gradertUttaksperiode.uttaksalder.maaneder || 0))) /
-        12
+      const maanederMedAfp =
+        12 - (gradertUttaksperiode.uttaksalder.maaneder || 0)
+      aarligBeloep = maandeligBeloep * maanederMedAfp
     } else if (!gradertUttaksperiode && uttaksalder?.aar === ap.alder) {
-      // Use helt uttak months if no gradert uttak and this age matches helt uttak
-      adjustedBeloep = (baseBeloep * (12 - (uttaksalder.maaneder || 0))) / 12
+      const maanederMedAfp = 12 - (uttaksalder.maaneder || 0)
+      aarligBeloep = maandeligBeloep * maanederMedAfp
+    } else {
+      aarligBeloep = maandeligBeloep * 12
     }
 
     return {
       alder: ap.alder,
-      beloep: adjustedBeloep,
+      beloep: aarligBeloep,
     }
   })
 }
