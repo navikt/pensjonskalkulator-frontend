@@ -161,7 +161,6 @@ export const Beregning: React.FC<Props> = ({ visning }) => {
   const pensjonsavtalerShowMoreRef = React.useRef<ShowMoreRef>(null)
   const showPDFRef = React.useRef<ShowPDFRef>(null)
   const { data: showPDF } = useGetShowDownloadPdfFeatureToggleQuery()
-  console.log('showPDF feature toggle data:', showPDF, showPDFRef)
   return (
     <BeregningContext.Provider
       value={{
@@ -283,7 +282,6 @@ export const Beregning: React.FC<Props> = ({ visning }) => {
                 variant="secondary"
                 icon={<DownloadIcon aria-hidden />}
                 onClick={() => {
-                  console.log('Download PDF button clicked')
                   showPDFRef.current?.handlePDF()
                 }}
               >

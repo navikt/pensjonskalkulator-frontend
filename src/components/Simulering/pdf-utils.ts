@@ -85,7 +85,7 @@ export function getChartTable({
 }: {
   tableData: TableDataRow[]
 }): string {
-  const tableHeading = `<h3>Årlig inntekt og pensjon</h3><div class="pdf-metadata">Estimert verdi i dagens verdi før skatt</div>`
+  const tableHeading = `<h3>Årlig inntekt og pensjon</h3><div class="pdf-metadata">Estimert beløp i dagens verdi før skatt</div>`
 
   let tableHtml = `<table><thead><tr><th>Alder</th><th>Sum (kr)</th>`
 
@@ -115,8 +115,18 @@ export function getChartTable({
   return tableHeading + tableHtml
 }
 
-export function getTidligstMuligUttakIngressContent(
-  intl: IntlShape,
+export function getTidligstMuligUttakIngressContent({
+  intl,
+  normertPensjonsalder,
+  nedreAldersgrense,
+  loependeVedtakPre2025OffentligAfp,
+  isOver75AndNoLoependeVedtak,
+  show1963Text,
+  ufoeregrad,
+  hasAFP,
+  tidligstMuligUttak
+}:
+  {intl: IntlShape,
   normertPensjonsalder: Alder,
   nedreAldersgrense: Alder,
   loependeVedtakPre2025OffentligAfp: boolean,
@@ -125,7 +135,7 @@ export function getTidligstMuligUttakIngressContent(
   ufoeregrad: number,
   hasAFP: boolean,
   tidligstMuligUttak?: Alder
-): string {
+}): string {
   if (ufoeregrad) {
     const gradertIngress = hasAFP
       ? 'omufoeretrygd.gradert.ingress.afp'
@@ -160,9 +170,27 @@ export function getTidligstMuligUttakIngressContent(
     return `<p>${formattedGradertIngress}</p>`
   }
 
+  if(loependeVedtakPre2025OffentligAfp && !tidligstMuligUttak) {
+    tidligstMuligUttak= {
+      aar: 67,
+      maaneder: 0,
+    }
+  }
+
   if (tidligstMuligUttak) {
     if (loependeVedtakPre2025OffentligAfp) {
-      return `<p>${intl.formatMessage({ id: 'tidligstmuliguttak.pre2025OffentligAfp.ingress' })}</p>`
+      return `<p>
+      ${intl.formatMessage(
+        { id: 'tidligstmuliguttak.pre2025OffentligAfp.ingress' },
+        {
+          link: getPdfLink({
+            url: 'https://nav.no/pensjon/kalkulator/beregning-detaljer',
+            displayText: intl.formatMessage({
+              id: 'tidligstmuliguttak.pre2025OffentligAfp.avansert_link',
+            }),
+          }),
+        }
+      )}</p>`
     } else {
       const messageId = `tidligstmuliguttak.${show1963Text ? '1963' : '1964'}.ingress_2`
       const under75Ingress = !isOver75AndNoLoependeVedtak

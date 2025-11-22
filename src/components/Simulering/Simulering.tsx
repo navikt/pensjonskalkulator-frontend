@@ -275,20 +275,20 @@ export const Simulering = ({
     const forbeholdAvsnitt = getForbeholdAvsnitt(intl)
 
     const uttakstidspunkt = uttaksalder && formatUttaksalder(intl, uttaksalder)
-    const helUttaksAlder = `<h2>100% alderspensjon ved ${uttakstidspunkt} </h2>`
+    const helUttaksAlder = `<h2>Beregning av 100% alderspensjon ved ${uttakstidspunkt} </h2>`
     const chartTableWithHeading = getChartTable({ tableData })
 
-    const tidligstMuligUttakIngress = getTidligstMuligUttakIngressContent(
+    const tidligstMuligUttakIngress = getTidligstMuligUttakIngressContent({
       intl,
       normertPensjonsalder,
       nedreAldersgrense,
+      loependeVedtakPre2025OffentligAfp,
       isOver75AndNoLoependeVedtak,
       show1963Text,
-      loependeVedtakPre2025OffentligAfp,
       ufoeregrad,
       hasAFP,
       tidligstMuligUttak
-    )
+  })
     const omstillingsstoenadAlert =
       omstillingsstoenadOgGjenlevende?.harLoependeSak
         ? getOmstillingsstoenadAlert(intl, normertPensjonsalder)
