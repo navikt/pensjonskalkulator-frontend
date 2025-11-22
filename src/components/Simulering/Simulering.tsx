@@ -276,7 +276,7 @@ export const Simulering = ({
 
     const uttakstidspunkt = uttaksalder && formatUttaksalder(intl, uttaksalder)
     const helUttaksAlder = `<h2>Beregning av 100% alderspensjon ved ${uttakstidspunkt} </h2>`
-    const chartTableWithHeading = getChartTable({ tableData })
+    const chartTableWithHeading = getChartTable({ tableData, intl })
 
     const tidligstMuligUttakIngress = getTidligstMuligUttakIngressContent({
       intl,

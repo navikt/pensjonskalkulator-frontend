@@ -82,10 +82,12 @@ export function getForbeholdAvsnitt(intl: IntlShape): string {
 
 export function getChartTable({
   tableData,
+  intl,
 }: {
   tableData: TableDataRow[]
+  intl: IntlShape
 }): string {
-  const tableHeading = `<h3>Årlig inntekt og pensjon</h3><div class="pdf-metadata">Estimert beløp i dagens verdi før skatt</div>`
+  const tableHeading = `<h3>Årlig inntekt og pensjon</h3><div class="pdf-metadata">${intl.formatMessage({ id: 'beregning.intro.description_1.endring' })}</div>`
 
   let tableHtml = `<table><thead><tr><th>Alder</th><th>Sum (kr)</th>`
 
