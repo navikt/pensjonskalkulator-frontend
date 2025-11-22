@@ -124,16 +124,16 @@ export function getTidligstMuligUttakIngressContent({
   show1963Text,
   ufoeregrad,
   hasAFP,
-  tidligstMuligUttak
-}:
-  {intl: IntlShape,
-  normertPensjonsalder: Alder,
-  nedreAldersgrense: Alder,
-  loependeVedtakPre2025OffentligAfp: boolean,
-  isOver75AndNoLoependeVedtak: boolean,
-  show1963Text: boolean,
-  ufoeregrad: number,
-  hasAFP: boolean,
+  tidligstMuligUttak,
+}: {
+  intl: IntlShape
+  normertPensjonsalder: Alder
+  nedreAldersgrense: Alder
+  loependeVedtakPre2025OffentligAfp: boolean
+  isOver75AndNoLoependeVedtak: boolean
+  show1963Text: boolean
+  ufoeregrad: number
+  hasAFP: boolean
   tidligstMuligUttak?: Alder
 }): string {
   if (ufoeregrad) {
@@ -170,8 +170,8 @@ export function getTidligstMuligUttakIngressContent({
     return `<p>${formattedGradertIngress}</p>`
   }
 
-  if(loependeVedtakPre2025OffentligAfp && !tidligstMuligUttak) {
-    tidligstMuligUttak= {
+  if (loependeVedtakPre2025OffentligAfp && !tidligstMuligUttak) {
+    tidligstMuligUttak = {
       aar: 67,
       maaneder: 0,
     }

@@ -287,8 +287,8 @@ export const Simulering = ({
       show1963Text,
       ufoeregrad,
       hasAFP,
-      tidligstMuligUttak
-  })
+      tidligstMuligUttak,
+    })
     const omstillingsstoenadAlert =
       omstillingsstoenadOgGjenlevende?.harLoependeSak
         ? getOmstillingsstoenadAlert(intl, normertPensjonsalder)
