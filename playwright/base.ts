@@ -1,4 +1,4 @@
-import { Page, test as baseTest } from '@playwright/test'
+import { Browser, Page, test as baseTest } from '@playwright/test'
 import { authenticate } from 'utils/auth'
 
 import { loadHTMLMock, loadJSONMock } from './utils/mock'
@@ -9,10 +9,31 @@ type TestOptions = {
   autoAuth: boolean
 }
 
+let sharedBrowser: Browser
+
 export const test = baseTest.extend<TestOptions>({
   autoAuth: [true, { option: true }],
 
-  page: async ({ page, autoAuth }, use) => {
+  browser: [
+    async ({ playwright }, use, workerInfo) => {
+      if (!sharedBrowser) {
+        sharedBrowser = await playwright.chromium.launch(
+          workerInfo.project.use.launchOptions
+        )
+      }
+      await use(sharedBrowser)
+    },
+    { scope: 'worker' },
+  ],
+
+  context: async ({ browser }, use, workerInfo) => {
+    const context = await browser.newContext(workerInfo.project.use)
+    await use(context)
+    await context.close()
+  },
+
+  page: async ({ context, autoAuth }, use) => {
+    const page = await context.newPage()
     if (autoAuth) {
       await authenticate(page)
     }
