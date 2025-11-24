@@ -57,7 +57,7 @@ jobs:
         run: npm run sanity-build
 
       - name: Save build folder
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: dist-sanity
           path: dist-sanity

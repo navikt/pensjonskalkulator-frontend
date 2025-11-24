@@ -50,7 +50,7 @@ jobs:
         run: npm run build
 
       - name: Save build folder
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: dist
           path: dist
@@ -92,7 +92,7 @@ jobs:
         run: npm run test
 
       - name: Archive code coverage results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: code-coverage-report
           path: coverage
@@ -149,7 +149,7 @@ jobs:
         run: npm run cy:test
 
       - name: Archive Cypress artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: failure()
         with:
           name: screenshots
@@ -196,7 +196,7 @@ jobs:
         run: npx playwright test --project=chromium --workers=6 --reporter=blob
 
       - name: Upload Chromium blob report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: ${{ always() }}
         with:
           name: chromium-blob-report
@@ -247,7 +247,7 @@ jobs:
           HOME: /root
 
       - name: Upload Firefox blob report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: ${{ always() }}
         with:
           name: firefox-blob-report
@@ -296,7 +296,7 @@ jobs:
         run: npx playwright test --project=webkit --workers=6 --reporter=blob
 
       - name: Upload WebKit blob report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: ${{ always() }}
         with:
           name: webkit-blob-report
@@ -346,7 +346,7 @@ jobs:
         run: npx playwright merge-reports --reporter html ./blob-report
 
       - name: Upload merged Playwright HTML report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: playwright-report
           path: playwright-report
