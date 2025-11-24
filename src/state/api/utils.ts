@@ -353,7 +353,7 @@ export const generateOffentligTpFoer1963RequestBody = (args: {
   return {
     simuleringstype: skalBeregneKunAlderspensjon
       ? 'ALDERSPENSJON'
-      : 'ALDERSPENSJON_MED_AFP_OFFENTLIG_LIVSVARIG',
+      : 'PRE2025_OFFENTLIG_AFP_ETTERFULGT_AV_ALDERSPENSJON',
     foedselsdato: format(parseISO(foedselsdato), DATE_BACKEND_FORMAT),
     aarligInntektFoerUttakBeloep: formatInntektToNumber(
       aarligInntektFoerUttakBeloep
