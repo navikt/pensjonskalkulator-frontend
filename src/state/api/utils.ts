@@ -328,6 +328,7 @@ export const generateOffentligTpFoer1963RequestBody = (args: {
   afpInntektMaanedFoerUttak?: boolean | null
   stillingsprosentOffGradertUttak?: number | null
   stillingsprosentOffHeltUttak?: number | null
+  skalBeregneKunAlderspensjon: boolean
 }): OffentligTpFoer1963RequestBody | undefined => {
   const {
     foedselsdato,
@@ -341,6 +342,7 @@ export const generateOffentligTpFoer1963RequestBody = (args: {
     afpInntektMaanedFoerUttak,
     stillingsprosentOffGradertUttak,
     stillingsprosentOffHeltUttak,
+    skalBeregneKunAlderspensjon,
   } = args
 
   if (!foedselsdato || !heltUttak) {
@@ -348,7 +350,9 @@ export const generateOffentligTpFoer1963RequestBody = (args: {
   }
 
   return {
-    simuleringstype: 'PRE2025_OFFENTLIG_AFP_ETTERFULGT_AV_ALDERSPENSJON',
+    simuleringstype: skalBeregneKunAlderspensjon
+      ? 'ALDERSPENSJON'
+      : 'ALDERSPENSJON_MED_AFP_OFFENTLIG_LIVSVARIG',
     foedselsdato: format(parseISO(foedselsdato), DATE_BACKEND_FORMAT),
     aarligInntektFoerUttakBeloep: formatInntektToNumber(
       aarligInntektFoerUttakBeloep
@@ -383,6 +387,7 @@ export const generateOffentligTpFoer1963RequestBody = (args: {
     stillingsprosentOffGradertUttak: stillingsprosentOffGradertUttak
       ? String(stillingsprosentOffGradertUttak)
       : undefined,
+    afpOrdning: skalBeregneKunAlderspensjon ? undefined : 'AFPSTAT',
   }
 }
 
