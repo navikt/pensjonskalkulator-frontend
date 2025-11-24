@@ -29,7 +29,7 @@ import styles from '../Grunnlag.module.scss'
 
 export const GrunnlagAFP: React.FC = () => {
   const intl = useIntl()
-  const { data: afpOffentligLivsvarigDetaljer } =
+  const { data: loependeLivsvarigAfpOffentlig } =
     useGetAfpOffentligLivsvarigQuery()
   const afp = useAppSelector(selectAfp)
   const afpUtregningValg = useAppSelector(selectAfpUtregningValg)
@@ -49,7 +49,7 @@ export const GrunnlagAFP: React.FC = () => {
       foedselsdato: foedselsdato!,
       samtykkeOffentligAFP: samtykkeOffentligAFP,
       beregningsvalg: beregningsvalg,
-      afpOffentligLivsvarigDetaljer: afpOffentligLivsvarigDetaljer,
+      loependeLivsvarigAfpOffentlig: loependeLivsvarigAfpOffentlig,
     })
   }, [
     intl,
@@ -60,7 +60,7 @@ export const GrunnlagAFP: React.FC = () => {
     ufoeregrad,
     beregningsvalg,
     foedselsdato,
-    afpOffentligLivsvarigDetaljer,
+    loependeLivsvarigAfpOffentlig,
   ])
 
   return (

@@ -22,7 +22,7 @@ interface IAfpGrunnlagInput {
   foedselsdato: string
   loependeVedtak: LoependeVedtak
   samtykkeOffentligAFP: boolean | null
-  afpOffentligLivsvarigDetaljer?: AfpOffentligLivsvarig
+  loependeLivsvarigAfpOffentlig?: AfpOffentligLivsvarig
 }
 
 export const afpContentIntl = (intl: IntlShape) => ({
@@ -101,7 +101,7 @@ export const generateAfpContent =
       loependeVedtak,
       beregningsvalg,
       erApoteker,
-      afpOffentligLivsvarigDetaljer,
+      loependeLivsvarigAfpOffentlig,
     } = input
 
     const hasUfoeregradGreaterThanZero = loependeVedtak?.ufoeretrygd?.grad > 0
@@ -122,8 +122,8 @@ export const generateAfpContent =
 
     // AFP offentlig livsvarig fra TPO
     const hasAfpOffentligLivsvarigWithBeloep =
-      afpOffentligLivsvarigDetaljer?.beloep !== undefined &&
-      afpOffentligLivsvarigDetaljer?.beloep !== null
+      loependeLivsvarigAfpOffentlig?.beloep !== undefined &&
+      loependeLivsvarigAfpOffentlig?.beloep !== null
 
     // Prioritet 1: Håndter eksisterende AFP-vedtak
     if (hasAfpOffentlig) {
