@@ -47,7 +47,7 @@ describe('PrivatePensjonsavtalerDesktop', () => {
   })
 
   it('rendrer riktig med avtaler som bare har start dato', async () => {
-    const { container } = render(
+    render(
       <PrivatePensjonsavtalerDesktop
         headingLevel="4"
         pensjonsavtaler={avtaler}
@@ -76,7 +76,7 @@ describe('PrivatePensjonsavtalerDesktop', () => {
       )
     ).toBeVisible()
     expect(await screen.findAllByText('12 345 kr')).toHaveLength(2)
-    const rows = container.querySelectorAll('tr')
+    const rows = screen.getAllByRole('row')
     expect(rows?.length).toBe(3)
   })
 
@@ -103,7 +103,7 @@ describe('PrivatePensjonsavtalerDesktop', () => {
       ],
     }
 
-    const { container } = render(
+    render(
       <PrivatePensjonsavtalerDesktop
         headingLevel="4"
         pensjonsavtaler={[avtaleMedStartOgSlutt]}
@@ -132,7 +132,7 @@ describe('PrivatePensjonsavtalerDesktop', () => {
       )
     ).toBeVisible()
     expect(await screen.findAllByText('12 345 kr')).toHaveLength(2)
-    const rows = container.querySelectorAll('tr')
+    const rows = screen.getAllByRole('row')
     expect(rows?.length).toBe(3)
   })
 })

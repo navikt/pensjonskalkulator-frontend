@@ -140,7 +140,7 @@ describe('DesktopPensjonVisning', () => {
       },
     ]
 
-    beforeEach(() => {
+    it('viser kun AFP og Alerdspensjon for pre2025OffentligAfp', () => {
       render(
         <PensjonVisningDesktop
           pensjonsdata={mockPensjonsdataPre2025OffentligAfp}
@@ -148,15 +148,19 @@ describe('DesktopPensjonVisning', () => {
           hentUttaksmaanedOgAar={mockHentUttaksmaanedOgAar}
         />
       )
-    })
-
-    it('viser kun AFP og Alerdspensjon for pre2025OffentligAfp', () => {
       expect(mockSummerYtelser).toHaveBeenCalledTimes(2)
       const sumText = screen.queryByTestId('maanedsbeloep-desktop-sum')
       expect(sumText).not.toBeInTheDocument()
     })
 
     it('viser dato i parantes i tittel for pre2025OffentligAfp', () => {
+      render(
+        <PensjonVisningDesktop
+          pensjonsdata={mockPensjonsdataPre2025OffentligAfp}
+          summerYtelser={mockSummerYtelser}
+          hentUttaksmaanedOgAar={mockHentUttaksmaanedOgAar}
+        />
+      )
       const pre2025OffentligAfpMaanedsBeloepTittelList = screen.getAllByTestId(
         'maanedsbeloep-desktop-title'
       )
@@ -171,6 +175,13 @@ describe('DesktopPensjonVisning', () => {
     })
 
     it('viser bare tidligst uttaks alder for AP i tittel for pre2025OffentligAfp', () => {
+      render(
+        <PensjonVisningDesktop
+          pensjonsdata={mockPensjonsdataPre2025OffentligAfp}
+          summerYtelser={mockSummerYtelser}
+          hentUttaksmaanedOgAar={mockHentUttaksmaanedOgAar}
+        />
+      )
       const afpMaanedsBeloepTittel = screen.getAllByTestId(
         'maanedsbeloep-desktop-title'
       )[1]
