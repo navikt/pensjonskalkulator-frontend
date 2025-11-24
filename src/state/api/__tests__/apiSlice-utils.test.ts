@@ -1199,12 +1199,14 @@ describe('apiSlice - utils', () => {
         generateOffentligTpFoer1963RequestBody({
           ...requestBody,
           foedselsdato: null,
+          skalBeregneKunAlderspensjon: false,
         })
       ).toEqual(undefined)
       expect(
         generateOffentligTpFoer1963RequestBody({
           ...requestBody,
           heltUttak: undefined,
+          skalBeregneKunAlderspensjon: false,
         })
       ).toEqual(undefined)
     })
@@ -1213,6 +1215,7 @@ describe('apiSlice - utils', () => {
       expect(
         generateOffentligTpFoer1963RequestBody({
           ...requestBody,
+          skalBeregneKunAlderspensjon: false,
         })?.simuleringstype
       ).toEqual('PRE2025_OFFENTLIG_AFP_ETTERFULGT_AV_ALDERSPENSJON')
     })
@@ -1221,6 +1224,7 @@ describe('apiSlice - utils', () => {
       expect(
         generateOffentligTpFoer1963RequestBody({
           ...requestBody,
+          skalBeregneKunAlderspensjon: false,
         })?.stillingsprosentOffHeltUttak
       ).toEqual('100')
     })
@@ -1230,6 +1234,7 @@ describe('apiSlice - utils', () => {
         generateOffentligTpFoer1963RequestBody({
           ...requestBody,
           foedselsdato: '1962-04-30',
+          skalBeregneKunAlderspensjon: false,
         })?.foedselsdato
       ).toEqual('1962-04-30')
     })
