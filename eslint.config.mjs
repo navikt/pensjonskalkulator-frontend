@@ -25,6 +25,7 @@ const ignoredFiles = [
   'playwright.config.ts',
   '**/mockServiceWorker.js',
   '**/cypress',
+  'playwright/**',
   'public/src/nais.js',
   'scripts/FetchLandListe.js',
   'sanity.cli.ts',
@@ -46,6 +47,9 @@ const defaultEslintConfig = tseslint.config(
 )
 
 export default [
+  {
+    ignores: ['playwright/**/*'],
+  },
   ...defaultEslintConfig,
   {
     settings: { react: { version: 'detect' } }, // eslint-plugin-react needs this
