@@ -30,7 +30,7 @@ jobs:
       id-token: 'write'
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Use Node.js v22.16.0
         uses: actions/setup-node@v6
@@ -95,7 +95,7 @@ jobs:
       fail-fast: true
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Use Node.js v22.16.0
         uses: actions/setup-node@v6
@@ -135,7 +135,7 @@ jobs:
       fail-fast: true
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Use Node.js v22.16.0
         uses: actions/setup-node@v6
@@ -203,7 +203,7 @@ jobs:
       github.ref == 'refs/heads/main'
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Deploy to staging
         uses: nais/deploy/actions/deploy@v2
@@ -234,7 +234,7 @@ jobs:
       IMAGE: ghcr.io/${{ github.repository }}/pensjonskalkulator-frontend-node:${{ github.sha }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Deploy to sandbox
         uses: nais/deploy/actions/deploy@v2
@@ -263,7 +263,7 @@ jobs:
       github.ref == 'refs/heads/catbox'
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Deploy to catbox
         uses: nais/deploy/actions/deploy@v2
@@ -292,7 +292,7 @@ jobs:
       github.ref == 'refs/heads/magicbox'
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Deploy to magicbox
         uses: nais/deploy/actions/deploy@v2
@@ -321,7 +321,7 @@ jobs:
       github.ref == 'refs/heads/dreambox'
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Deploy to dreambox
         uses: nais/deploy/actions/deploy@v2
@@ -350,7 +350,7 @@ jobs:
       github.ref == 'refs/heads/coffeebox'
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Deploy to coffeebox
         uses: nais/deploy/actions/deploy@v2
@@ -379,7 +379,7 @@ jobs:
       github.ref == 'refs/heads/codebox'
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Deploy to codebox
         uses: nais/deploy/actions/deploy@v2
@@ -407,7 +407,7 @@ jobs:
       github.event.inputs.prod == 'true'
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Deploy to prod-gcp
         uses: nais/deploy/actions/deploy@v2
