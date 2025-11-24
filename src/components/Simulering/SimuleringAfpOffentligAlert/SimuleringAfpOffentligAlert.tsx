@@ -26,19 +26,23 @@ export const SimuleringAfpOffentligAlert: React.FC<Props> = ({
     return null
   }
 
-  // Kall feilet - vis warning alert
+  // Viser ikke alert hvis bruker ikke har vedtak om afp offentlig
+  if (loependeLivsvarigAfpOffentlig?.afpStatus === false) {
+    return null
+  }
+
+  // Kall feilet
   if (!isAfpOffentligLivsvarigSuccess) {
     const alertText = 'beregning.alert.feil.afp-offentlig-livsvarig'
-    const variant = 'warning'
 
     logger(ALERT_VIST, {
       tekst: `AFP Offentlig: ${intl.formatMessage({ id: alertText })}`,
-      variant,
+      variant: 'warning',
     })
 
     return (
       <Alert
-        variant={variant}
+        variant="warning"
         data-testid="alert-afp-offentlig-livsvarig-failed"
         data-intl={alertText}
         className={styles.alert}
@@ -48,22 +52,21 @@ export const SimuleringAfpOffentligAlert: React.FC<Props> = ({
     )
   }
 
-  // Kall var vellykket, men beløp er ikke definert - vis success alert
+  // Kall var vellykket, men beløp er ikke definert
   if (
     isAfpOffentligLivsvarigSuccess &&
     !loependeLivsvarigAfpOffentlig?.beloep
   ) {
     const alertText = 'beregning.alert.success.afp-offentlig-livsvarig'
-    const variant = 'success'
 
     logger(ALERT_VIST, {
       tekst: `AFP Offentlig: ${intl.formatMessage({ id: alertText })}`,
-      variant,
+      variant: 'warning',
     })
 
     return (
       <Alert
-        variant={variant}
+        variant="warning"
         data-testid="alert-afp-offentlig-livsvarig-success"
         data-intl={alertText}
         className={styles.alert}
