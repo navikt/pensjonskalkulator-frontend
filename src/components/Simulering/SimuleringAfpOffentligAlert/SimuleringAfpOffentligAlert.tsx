@@ -21,6 +21,11 @@ export const SimuleringAfpOffentligAlert: React.FC<Props> = ({
 }) => {
   const intl = useIntl()
 
+  // Viser ikke alert hvis kallet aldri ble forsøkt (query ble skippet)
+  if (!isAfpOffentligLivsvarigSuccess && !loependeLivsvarigAfpOffentlig) {
+    return null
+  }
+
   // Viser ikke alert hvis brukeren ikke har samtykket til AFP offentlig
   if (!harSamtykketOffentligAFP) {
     return null
