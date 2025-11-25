@@ -288,7 +288,9 @@ export const useSimuleringChartLocalState = (initialValues: {
                 } as SeriesOptionsType,
               ]
             : []),
-          ...(afpOffentligListe && afpOffentligListe.length > 0
+          ...(!loependeLivsvarigAfpOffentlig &&
+          afpOffentligListe &&
+          afpOffentligListe.length > 0
             ? [
                 {
                   ...SERIES_DEFAULT.SERIE_AFP,
