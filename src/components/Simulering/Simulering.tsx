@@ -38,7 +38,7 @@ import {
   selectUfoeregrad,
   selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
-import { formatUttaksalder } from '@/utils/alder'
+import { formatUttaksalder, isAlderOver62 } from '@/utils/alder'
 import {
   useTidligstMuligUttak,
   useTidligstMuligUttakConditions,
@@ -142,7 +142,12 @@ export const Simulering = ({
   const {
     isSuccess: isAfpOffentligLivsvarigSuccess,
     data: loependeLivsvarigAfpOffentlig,
-  } = useGetAfpOffentligLivsvarigQuery()
+  } = useGetAfpOffentligLivsvarigQuery(undefined, {
+    skip:
+      !harSamtykketOffentligAFP ||
+      !foedselsdato ||
+      !isAlderOver62(foedselsdato),
+  })
 
   useEffect(() => {
     if (harSamtykket && uttaksalder) {

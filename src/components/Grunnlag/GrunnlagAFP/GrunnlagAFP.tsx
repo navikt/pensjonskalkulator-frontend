@@ -19,6 +19,7 @@ import {
   selectUfoeregrad,
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
+import { isAlderOver62 } from '@/utils/alder'
 import { BUTTON_KLIKK, KNAPP_KLIKKET } from '@/utils/loggerConstants'
 import { logger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
@@ -29,13 +30,16 @@ import styles from '../Grunnlag.module.scss'
 
 export const GrunnlagAFP: React.FC = () => {
   const intl = useIntl()
+  const samtykkeOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
+  const foedselsdato = useAppSelector(selectFoedselsdato)
   const { data: loependeLivsvarigAfpOffentlig } =
-    useGetAfpOffentligLivsvarigQuery()
+    useGetAfpOffentligLivsvarigQuery(undefined, {
+      skip:
+        !samtykkeOffentligAFP || !foedselsdato || !isAlderOver62(foedselsdato),
+    })
   const afp = useAppSelector(selectAfp)
   const afpUtregningValg = useAppSelector(selectAfpUtregningValg)
   const erApoteker = useAppSelector(selectErApoteker)
-  const foedselsdato = useAppSelector(selectFoedselsdato)
-  const samtykkeOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
   const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const ufoeregrad = useAppSelector(selectUfoeregrad)
   const { beregningsvalg } = useAppSelector(selectCurrentSimulation)

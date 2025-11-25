@@ -22,6 +22,7 @@ import { selectHasErApotekerError } from '@/state/session/selectors'
 import {
   selectFoedselsdato,
   selectLoependeVedtak,
+  selectSamtykkeOffentligAFP,
   selectSivilstand,
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
@@ -86,9 +87,15 @@ export const Grunnlag: React.FC<Props> = ({
   const foedselsdato = useAppSelector(selectFoedselsdato)
   const foedtEtter1963 = isFoedtEtter1963(foedselsdato)
   const hasErApotekerError = useAppSelector(selectHasErApotekerError)
+  const harSamtykketOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
 
   const { data: loependeLivsvarigAfpOffentlig } =
-    useGetAfpOffentligLivsvarigQuery()
+    useGetAfpOffentligLivsvarigQuery(undefined, {
+      skip:
+        !harSamtykketOffentligAFP ||
+        !foedselsdato ||
+        !isAlderOver62(foedselsdato),
+    })
 
   const [isAFPDokumentasjonVisible, setIsAFPDokumentasjonVisible] =
     React.useState<boolean>(false)
