@@ -42,7 +42,7 @@ export const SimuleringAfpOffentligAlert: React.FC<Props> = ({
   if (
     !isAfpOffentligLivsvarigSuccess ||
     (loependeLivsvarigAfpOffentlig?.afpStatus &&
-      loependeLivsvarigAfpOffentlig?.beloep === 0)
+      loependeLivsvarigAfpOffentlig?.maanedligBeloep === 0)
   ) {
     const alertText = 'beregning.alert.feil.afp-offentlig-livsvarig'
 
@@ -66,7 +66,7 @@ export const SimuleringAfpOffentligAlert: React.FC<Props> = ({
   // Kall var vellykket, men beløp er ikke definert
   if (
     isAfpOffentligLivsvarigSuccess &&
-    !loependeLivsvarigAfpOffentlig?.beloep
+    !loependeLivsvarigAfpOffentlig?.maanedligBeloep
   ) {
     const alertText = 'beregning.alert.success.afp-offentlig-livsvarig'
 

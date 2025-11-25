@@ -204,7 +204,7 @@ export const Simulering = ({
     afpPrivatListe,
     afpOffentligListe,
     loependeLivsvarigAfpOffentlig:
-      loependeLivsvarigAfpOffentlig?.beloep &&
+      loependeLivsvarigAfpOffentlig?.maanedligBeloep &&
       alderspensjonListe &&
       ufoeregrad !== 100 &&
       harSamtykketOffentligAFP

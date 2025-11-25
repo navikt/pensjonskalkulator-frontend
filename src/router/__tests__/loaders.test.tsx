@@ -1288,7 +1288,7 @@ describe('Loaders', () => {
       status: 200,
       json: {
         afpStatus: false,
-        beloep: 0,
+        maanedligBeloep: 0,
       } satisfies AfpOffentligLivsvarig,
     })
 

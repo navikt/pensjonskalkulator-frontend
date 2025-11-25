@@ -1036,8 +1036,6 @@ export interface components {
         | 'KONV_O'
         | 'LONHO'
         | 'NAVO'
-      /** Format: int32 */
-      afpInntektMndForUttak?: number
       stillingsprosentOffHeltUttak: string
       stillingsprosentOffGradertUttak?: string
     }
@@ -1055,24 +1053,24 @@ export interface components {
     }
     SimuleringsresultatFoer1963V2: {
       utbetalingsperioder: components['schemas']['UtbetalingsperiodeFoer1963V2'][]
-      betingetTjenestepensjonErInkludert: boolean
     }
     SimulertTjenestepensjonFoer1963V2: {
-      tpLeverandoer?: string
-      tpNummer?: string
+      tpLeverandoer: string
+      tpNummer: string
       simuleringsresultat: components['schemas']['SimuleringsresultatFoer1963V2']
     }
     UtbetalingsperiodeFoer1963V2: {
-      /** Format: date */
-      datoFom?: string
-      /** Format: date */
-      datoTom?: string
+      startAlder: components['schemas']['Alder']
+      sluttAlder?: components['schemas']['Alder']
+      /** Format: int32 */
+      aarligUtbetaling: number
       /** Format: int32 */
       grad?: number
-      /** Format: double */
-      arligUtbetaling?: number
-      ytelsekode?: string
+      /** @enum {string} */
+      ytelsekode: 'AP' | 'AFP' | 'SERALDER'
       mangelfullSimuleringkode?: string
+      /** Format: int32 */
+      maanedligUtbetaling?: number
     }
     PensjonsavtaleAlderSpecV2: {
       /** Format: int32 */
@@ -1413,7 +1411,6 @@ export interface components {
       harFremtidigLoependeVedtak: boolean
       ufoeretrygd: components['schemas']['UfoeretrygdDetaljerV3']
       afpPrivat?: components['schemas']['LoependeFraV3']
-      afpOffentlig?: components['schemas']['LoependeFraV3']
     }
     UfoeretrygdDetaljerV3: {
       /** Format: int32 */
@@ -1440,7 +1437,6 @@ export interface components {
       harFremtidigLoependeVedtak: boolean
       ufoeretrygd: components['schemas']['UfoeretrygdDetaljerV2']
       afpPrivat?: components['schemas']['LoependeFraV2']
-      afpOffentlig?: components['schemas']['LoependeFraV2']
     }
     UfoeretrygdDetaljerV2: {
       /** Format: int32 */
@@ -1484,7 +1480,7 @@ export interface components {
     AfpOffentligLivsvarigDto: {
       afpStatus?: boolean
       /** Format: int32 */
-      beloep?: number
+      maanedligBeloep?: number
     }
     BrukerHarLoependeOmstillingsstoenadEllerGjenlevendeYtelse: {
       harLoependeSak: boolean

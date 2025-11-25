@@ -276,7 +276,9 @@ function getAfpDetaljerListe(
     loependeAfpOffentlig?: AfpOffentligLivsvarig
   ) => {
     const beloep =
-      loependeAfpOffentlig?.beloep ?? afpOffentlig?.maanedligBeloep ?? 0
+      loependeAfpOffentlig?.maanedligBeloep ??
+      afpOffentlig?.maanedligBeloep ??
+      0
 
     return [
       {

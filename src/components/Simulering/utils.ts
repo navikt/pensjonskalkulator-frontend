@@ -492,24 +492,24 @@ export function resetColumnColors(chart: Chart): void {
 
 export const processLoependeLivsvarigAfpOffentlig = (
   alderspensjonListe: AlderspensjonPensjonsberegning[],
-  loependeLivsvarigAfpOffentlig: { beloep?: number },
+  loependeLivsvarigAfpOffentlig: { maanedligBeloep?: number },
   gradertUttaksperiode: GradertUttak | null,
   uttaksalder: Alder | null
 ): { alder: number; beloep: number }[] => {
   return alderspensjonListe.map((ap) => {
-    const maandeligBeloep = loependeLivsvarigAfpOffentlig.beloep!
+    const maanedligBeloep = loependeLivsvarigAfpOffentlig.maanedligBeloep!
 
     let aarligBeloep: number
 
     if (gradertUttaksperiode?.uttaksalder?.aar === ap.alder) {
       const maanederMedAfp =
         12 - (gradertUttaksperiode.uttaksalder.maaneder || 0)
-      aarligBeloep = maandeligBeloep * maanederMedAfp
+      aarligBeloep = maanedligBeloep * maanederMedAfp
     } else if (!gradertUttaksperiode && uttaksalder?.aar === ap.alder) {
       const maanederMedAfp = 12 - (uttaksalder.maaneder || 0)
-      aarligBeloep = maandeligBeloep * maanederMedAfp
+      aarligBeloep = maanedligBeloep * maanederMedAfp
     } else {
-      aarligBeloep = maandeligBeloep * 12
+      aarligBeloep = maanedligBeloep * 12
     }
 
     return {
