@@ -61,7 +61,6 @@ import {
   getPdfHeadingWithLogo,
   getTidligstMuligUttakIngressContent,
 } from './pdf-utils'
-import { processLoependeLivsvarigAfpOffentlig } from './utils'
 
 import styles from './Simulering.module.scss'
 
@@ -203,18 +202,7 @@ export const Simulering = ({
     pre2025OffentligAfp,
     afpPrivatListe,
     afpOffentligListe,
-    loependeLivsvarigAfpOffentlig:
-      loependeLivsvarigAfpOffentlig?.maanedligBeloep &&
-      alderspensjonListe &&
-      ufoeregrad !== 100 &&
-      harSamtykketOffentligAFP
-        ? processLoependeLivsvarigAfpOffentlig(
-            alderspensjonListe,
-            loependeLivsvarigAfpOffentlig,
-            gradertUttaksperiode,
-            uttaksalder
-          )
-        : undefined,
+    loependeLivsvarigAfpOffentlig,
     pensjonsavtaler: {
       isLoading: isPensjonsavtalerLoading,
       data: pensjonsavtalerData,
