@@ -637,7 +637,7 @@ const translations = {
   'grunnlag.afp.ingress.ja_offentlig':
     'Du har oppgitt AFP i offentlig sektor. For å ha rett til AFP må du oppfylle vilkår både hos Nav og tjenestepensjonsordningen din. Beregningen forutsetter at vilkårene er oppfylt. For mer informasjon, kontakt tjenestepensjonsordningen din.',
   'grunnlag.afp.ingress.ja_offentlig.tpo':
-    'Du har livsvarig AFP i offentlig sektor. Den fortsetter som før selv om du starter eller endrer alderspensjonen din.',
+    'Vi har hentet din livsvarige AFP fra tjenestepensjonsordningen din. Den fortsetter som før selv om du starter eller endrer alderspensjonen din.',
   'grunnlag.afp.ingress.overgangskull':
     'Beregningen av alderspensjon tar høyde for at du mottar AFP. AFP vises ikke i beregningen.',
   'grunnlag.afp.ingress.overgangskull.ufoeretrygd_eller_ap':
