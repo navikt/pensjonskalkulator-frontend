@@ -288,8 +288,7 @@ export const useSimuleringChartLocalState = (initialValues: {
                 } as SeriesOptionsType,
               ]
             : []),
-          ...(!isEndring &&
-          loependeLivsvarigAfpOffentlig &&
+          ...(loependeLivsvarigAfpOffentlig &&
           loependeLivsvarigAfpOffentlig.length > 0
             ? [
                 {
