@@ -27,7 +27,10 @@ export const SimuleringAfpOffentligAlert: React.FC<Props> = ({
   }
 
   // Viser ikke alert hvis bruker ikke har vedtak om afp offentlig
-  if (loependeLivsvarigAfpOffentlig?.afpStatus === false) {
+  if (
+    isAfpOffentligLivsvarigSuccess &&
+    loependeLivsvarigAfpOffentlig?.afpStatus === false
+  ) {
     return null
   }
 

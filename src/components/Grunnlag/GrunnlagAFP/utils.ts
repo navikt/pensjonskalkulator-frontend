@@ -123,8 +123,7 @@ export const generateAfpContent =
     // AFP offentlig livsvarig fra TPO
     const hasAfpOffentligLivsvarigWithBeloep =
       loependeLivsvarigAfpOffentlig?.maanedligBeloep !== undefined &&
-      loependeLivsvarigAfpOffentlig?.maanedligBeloep !== null &&
-      loependeLivsvarigAfpOffentlig?.maanedligBeloep > 0
+      loependeLivsvarigAfpOffentlig?.maanedligBeloep !== null
 
     // Prioritet 1: Håndter eksisterende AFP-vedtak
     if (hasAfpOffentlig) {
