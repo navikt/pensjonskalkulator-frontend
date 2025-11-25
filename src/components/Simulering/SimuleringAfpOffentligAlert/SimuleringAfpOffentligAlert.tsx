@@ -31,8 +31,19 @@ export const SimuleringAfpOffentligAlert: React.FC<Props> = ({
     return null
   }
 
+  if (
+    loependeLivsvarigAfpOffentlig?.afpStatus === null &&
+    loependeLivsvarigAfpOffentlig?.afpStatus === null
+  ) {
+    return null
+  }
+
   // Kall feilet
-  if (!isAfpOffentligLivsvarigSuccess) {
+  if (
+    !isAfpOffentligLivsvarigSuccess ||
+    (loependeLivsvarigAfpOffentlig?.afpStatus &&
+      loependeLivsvarigAfpOffentlig?.beloep === 0)
+  ) {
     const alertText = 'beregning.alert.feil.afp-offentlig-livsvarig'
 
     logger(ALERT_VIST, {

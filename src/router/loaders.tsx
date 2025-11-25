@@ -458,11 +458,8 @@ export const stepSamtykkePensjonsavtaler = async ({
 
   //Starter innhenting av afpOffentligLivsvarig data i bakgrunnen hvis brukeren har samtykket
   const harSamtykketOffentligAFP = selectSamtykkeOffentligAFP(state)
-  if (
-    harSamtykketOffentligAFP &&
-    (loependeVedtak.ufoeretrygd.grad === 0 ||
-      loependeVedtak.ufoeretrygd.grad === 100)
-  ) {
+
+  if (harSamtykketOffentligAFP && isAlderOver62(person.foedselsdato)) {
     store.dispatch(apiSlice.endpoints.getAfpOffentligLivsvarig.initiate())
   }
 
@@ -497,7 +494,7 @@ export const beregningEnkelAccessGuard = async () => {
   }
   const state = store.getState()
   const skalBeregneAfpKap19 = selectSkalBeregneAfpKap19(state)
-  const afpOffentligLivsvarig = selectSamtykkeOffentligAFP(state)
+  const harSamtykketOffentligAFP = selectSamtykkeOffentligAFP(state)
 
   const loependeVedtak = await store
     .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
@@ -507,12 +504,7 @@ export const beregningEnkelAccessGuard = async () => {
     .dispatch(apiSlice.endpoints.getPerson.initiate())
     .unwrap()
 
-  if (
-    afpOffentligLivsvarig &&
-    isAlderOver62(person.foedselsdato) &&
-    (loependeVedtak.ufoeretrygd.grad === 0 ||
-      loependeVedtak.ufoeretrygd.grad === 100)
-  ) {
+  if (harSamtykketOffentligAFP && isAlderOver62(person.foedselsdato)) {
     await store.dispatch(apiSlice.endpoints.getAfpOffentligLivsvarig.initiate())
   }
 
