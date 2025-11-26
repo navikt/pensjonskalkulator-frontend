@@ -57,38 +57,45 @@ export const getPdfLink = ({
   return `<a href="${url}">${displayText}</a>`
 }
 
-export function getAfpDetaljerHtmlTable(
+export function getAfpDetaljerHtmlTable (
   afpDetaljerListe: AfpDetaljerListe[] | undefined,
   intl: IntlShape
 ): string {
   if (!afpDetaljerListe) {
     return ''
   }
-  const htmlParts = afpDetaljerListe.map((afpDetaljForValgtUttak) => {
-    console.log('afpDetaljForValgtUttak', afpDetaljForValgtUttak)
+
+  const sections = afpDetaljerListe.map((afpDetaljForValgtUttak) => {
     if (afpDetaljForValgtUttak.afpPrivat?.length > 0) {
       return ({
-        title: `${intl.formatMessage({ id: 'beregning.detaljer.OpptjeningDetaljer.pre2025OffentligAfp.table.title' })}`,
+        key: 'afpPrivat',
+        title: `${intl.formatMessage({ id: 'beregning.detaljer.OpptjeningDetaljer.afpPrivat.table.title' })}`,
         afpDetaljer: afpDetaljForValgtUttak.afpPrivat,
+        boldLastItem: true,
       })
     }
 
     if (afpDetaljForValgtUttak.afpOffentlig?.length > 0) {
       return ({
+        key: 'afpOffentlig',
         title: 'AFP: Offentlig',
         afpDetaljer: afpDetaljForValgtUttak.afpOffentlig,
+        noBorderBottom: true,
       })
     }
 
     if (afpDetaljForValgtUttak.pre2025OffentligAfp?.length > 0) {
       return ({
+        key: 'pre2025OffentligAfp',
         title: `${intl.formatMessage({ id: 'beregning.detaljer.grunnpensjon.afp.table.title' })}`,
         afpDetaljer: afpDetaljForValgtUttak.pre2025OffentligAfp,
+        boldLastItem: true,
       })
     }
 
     if (afpDetaljForValgtUttak.opptjeningPre2025OffentligAfp?.length > 0) {
       return ({
+        key: 'opptjeningPre2025OffentligAfp',
         title: `${intl.formatMessage({ id: 'beregning.detaljer.OpptjeningDetaljer.pre2025OffentligAfp.table.titles' })}`,
         afpDetaljer: afpDetaljForValgtUttak.opptjeningPre2025OffentligAfp,
       })
@@ -96,24 +103,46 @@ export function getAfpDetaljerHtmlTable(
 
   })
 
-  if(!htmlParts){
-    return ''
-  }
+  // Get only the unique keys from sections to avoid repeating the heading and ingress
+  const afpKey = [...new Set(sections.map((s) => s?.key))][0]
   
-  return htmlParts.map((part) =>
-    getAfpTable({
+  //TODO : Show heading with uttaksalder or gradertUttaksalder
+  const afpSectionHeading = `<h3>AFP: ${afpKey === 'afpPrivat' ? 'Privat' : 'Offentlig'}</h3>`
+  const afpIngress = afpKey === 'afpPrivat' ? 
+  intl.formatMessage({id: 'grunnlag.afp.ingress.ja_privat'}, {
+  afpLink: (chunks: string[]) =>
+      getPdfLink({
+        url: 'https://www.afp.no',
+        displayText: chunks.join('') || 'Fellesordningen for AFP',
+      }),
+  }) 
+  : 
+  intl.formatMessage({id: 'grunnlag.afp.ingress.ja_offentlig'})
+  
+  return `${afpSectionHeading}
+    <p>${afpIngress}</p>
+    ${sections.map((part) => 
+     getAfpTable({
+      key: part?.key ?? '',
       title: part?.title ?? '',
       afpDetaljer: part?.afpDetaljer ?? [],
-    })
-  ).join('')
-}
+      boldLastItem: part?.boldLastItem ?? false,
+      noBorderBottom: part?.noBorderBottom ?? false,
+    })).join('')}`
+  }
 
 function getAfpTable({
+  key,
   title,
   afpDetaljer,
+  boldLastItem,
+  noBorderBottom
 }: {
+  key: string,
   title: string
-  afpDetaljer: { tekst?: string; verdi?: string | number }[]
+  afpDetaljer: { tekst?: string; verdi?: string | number }[],
+  boldLastItem?: boolean,
+  noBorderBottom?: boolean
 }): string {
   if (!Array.isArray(afpDetaljer) || afpDetaljer.length === 0) return ''
 
@@ -121,8 +150,8 @@ function getAfpTable({
     .map((detalj) => {
       const label = detalj?.tekst ?? ''
       const value = detalj?.verdi ?? ''
-
-      return `<tr><td style='text-align:left;'>${escapeHtml(String(label))}</td><td style='text-align:right;'>${escapeHtml(
+      const boldStyle = boldLastItem && detalj === afpDetaljer[afpDetaljer.length - 1] ? 'font-weight: bold;' : ''
+      return `<tr><td style='text-align:left; ${boldStyle}'>${escapeHtml(String(label))}:</td><td style='text-align:right; ${boldStyle}'>${escapeHtml(
         String(value)
       )}</td></tr>`
     })
@@ -132,24 +161,19 @@ function getAfpTable({
       <h4 style='margin:0 0 8px 0;'>
         ${title}
       </h4>
-      <table role='presentation'>${rows}</table>
+      <table style="width: 33%" role='presentation'>${rows}</table>
     </div>`
 }
+
 export function getAldersPensjonDetaljerHtmlTable(
   alderspensjonListe: AlderspensjonDetaljerListe | undefined
 ): string {
   if (!alderspensjonListe) {
     return ''
   }
-  const alderspensjon = Array.isArray(alderspensjonListe.alderspensjon)
-    ? alderspensjonListe.alderspensjon
-    : []
-  const opptjeningKap19 = Array.isArray(alderspensjonListe.opptjeningKap19)
-    ? alderspensjonListe.opptjeningKap19
-    : []
-  const opptjeningKap20 = Array.isArray(alderspensjonListe.opptjeningKap20)
-    ? alderspensjonListe.opptjeningKap20
-    : []
+  const alderspensjon = alderspensjonListe.alderspensjon ?? []
+  const opptjeningKap19 = alderspensjonListe.opptjeningKap19 ?? []
+  const opptjeningKap20 = alderspensjonListe.opptjeningKap20 ?? []
 
   const getTableRows = (arr: { tekst?: string; verdi?: string | number }[]) =>
     arr
@@ -161,8 +185,8 @@ export function getAldersPensjonDetaljerHtmlTable(
       .join('\n')
 
   const tableA = `<table class="pdf-table-type2"><thead><tr><th colspan="2" style='text-align: left;'>Månedlig alderspensjon (Nav)</th></tr></thead><tbody>${getTableRows(alderspensjon)}</tbody></table>`
-  const tableB = `<table><thead><tr><th colspan="2" style='text-align: left;'>Opptjening kapittel 19</th></tr></thead><tbody>${getTableRows(opptjeningKap19)}</tbody></table>`
-  const tableC = `<table><thead><tr><th colspan="2" style='text-align: left;'>Opptjening kapittel 20</th></tr></thead><tbody>${getTableRows(opptjeningKap20)}</tbody></table>`
+  const tableB = `<table><thead><tr><th colspan="2" style='text-align: left;'>Opptjening etter gamle regler</th></tr></thead><tbody>${getTableRows(opptjeningKap19)}</tbody></table>`
+  const tableC = `<table><thead><tr><th colspan="2" style='text-align: left;'>Opptjening etter nye regler</th></tr></thead><tbody>${getTableRows(opptjeningKap20)}</tbody></table>`
 
   return `<table role='presentation' style='width:100%;'>
       <tr class="pdf-table-wrapper-row">
