@@ -1,7 +1,7 @@
 import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 
-import { Alert } from '@navikt/ds-react'
+import { Alert, Link } from '@navikt/ds-react'
 
 import { useAppSelector } from '@/state/hooks'
 import { selectFoedselsdato } from '@/state/userInput/selectors'
@@ -24,6 +24,24 @@ export const SimuleringAfpOffentligAlert: React.FC<Props> = ({
 }) => {
   const intl = useIntl()
   const foedselsdato = useAppSelector(selectFoedselsdato)
+
+  const handleAfpOffentligLinkClick: React.MouseEventHandler<
+    HTMLAnchorElement
+  > = (e): void => {
+    e.preventDefault()
+    const grunnlagAfpElement = document.querySelector(
+      '[data-testid="grunnlag-afp"]'
+    )
+    if (grunnlagAfpElement) {
+      window.scrollTo({
+        top:
+          grunnlagAfpElement.getBoundingClientRect().top +
+          window.pageYOffset -
+          15,
+        behavior: 'smooth',
+      })
+    }
+  }
 
   // Viser ikke alert hvis kallet aldri ble forsøkt (query ble skippet)
   if (
@@ -70,7 +88,21 @@ export const SimuleringAfpOffentligAlert: React.FC<Props> = ({
         data-intl={alertText}
         className={styles.alert}
       >
-        <FormattedMessage id={alertText} />
+        <FormattedMessage
+          id={alertText}
+          values={{
+            // eslint-disable-next-line react/no-unstable-nested-components
+            scrollTo: (chunk) => (
+              <Link
+                href="#"
+                data-testid="afp-offentlig-alert-link"
+                onClick={handleAfpOffentligLinkClick}
+              >
+                {chunk}
+              </Link>
+            ),
+          }}
+        />
       </Alert>
     )
   }
