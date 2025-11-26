@@ -39,13 +39,6 @@ export const SimuleringAfpOffentligAlert: React.FC<Props> = ({
     return null
   }
 
-  if (
-    loependeLivsvarigAfpOffentlig?.afpStatus === null &&
-    loependeLivsvarigAfpOffentlig?.afpStatus === null
-  ) {
-    return null
-  }
-
   // Vellykket kall
   if (
     loependeLivsvarigAfpOffentlig?.afpStatus &&
@@ -74,6 +67,8 @@ export const SimuleringAfpOffentligAlert: React.FC<Props> = ({
   // Kall feilet
   if (
     !isAfpOffentligLivsvarigSuccess ||
+    (loependeLivsvarigAfpOffentlig?.afpStatus === null &&
+      loependeLivsvarigAfpOffentlig?.maanedligBeloep === null) ||
     (loependeLivsvarigAfpOffentlig?.afpStatus &&
       loependeLivsvarigAfpOffentlig?.maanedligBeloep === 0)
   ) {
