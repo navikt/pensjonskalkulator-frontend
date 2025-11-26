@@ -22,6 +22,7 @@ import {
 } from '@/state/api/utils'
 import { useAppSelector } from '@/state/hooks'
 import {
+  selectAarligInntektFoerUttakBeloepFraSkatt,
   selectAfp,
   selectCurrentSimulation,
   selectEpsHarInntektOver2G,
@@ -52,10 +53,10 @@ import { useSimuleringChartLocalState } from './hooks'
 import {
   getChartTable,
   getCurrentDateTimeFormatted,
-  getDetaljerHtmlTable,
   getForbeholdAvsnitt,
   getOmstillingsstoenadAlert,
   getPdfHeadingWithLogo,
+  getPdfPage2Ingress,
   getTidligstMuligUttakIngressContent,
 } from './pdf-utils'
 
@@ -211,12 +212,13 @@ export const Simulering = ({
   const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const intl = useIntl()
 
-  const { alderspensjonDetaljerListe } = useBeregningsdetaljer(
-    alderspensjonListe,
-    afpPrivatListe,
-    afpOffentligListe,
-    pre2025OffentligAfp
-  )
+  const { alderspensjonDetaljerListe, afpDetaljerListe } =
+    useBeregningsdetaljer(
+      alderspensjonListe,
+      afpPrivatListe,
+      afpOffentligListe,
+      pre2025OffentligAfp
+    )
 
   const { data: tidligstMuligUttak } = useTidligstMuligUttak(
     loependeVedtak,
@@ -250,6 +252,10 @@ export const Simulering = ({
     hasAFP,
   } = useTidligstMuligUttakConditions(loependeVedtak)
 
+  const aarligInntektFoerUttakBeloepFraSkatt = useAppSelector(
+    selectAarligInntektFoerUttakBeloepFraSkatt
+  )
+
   const handlePDF = () => {
     const appContentElement = document.getElementById('app-content')
     if (appContentElement) {
@@ -275,7 +281,7 @@ export const Simulering = ({
     const forbeholdAvsnitt = getForbeholdAvsnitt(intl)
 
     const uttakstidspunkt = uttaksalder && formatUttaksalder(intl, uttaksalder)
-    const helUttaksAlder = `<h2>Beregning av 100% alderspensjon ved ${uttakstidspunkt} </h2>`
+    const helUttaksAlder = `<h2>Beregning av 100 % alderspensjon ved ${uttakstidspunkt} </h2>`
     const chartTableWithHeading = getChartTable({ tableData, intl })
 
     const tidligstMuligUttakIngress = getTidligstMuligUttakIngressContent({
@@ -293,7 +299,13 @@ export const Simulering = ({
       omstillingsstoenadOgGjenlevende?.harLoependeSak
         ? getOmstillingsstoenadAlert(intl, normertPensjonsalder)
         : ''
-    const detaljerTable = getDetaljerHtmlTable(alderspensjonDetaljerListe)
+    const pdfPage2Ingress = getPdfPage2Ingress({
+      intl,
+      alderspensjonDetaljerListe: alderspensjonDetaljerListe[0],
+      aarligInntektFoerUttakBeloepFraSkatt,
+      afpDetaljerListe,
+    })
+
     const finalPdfContent =
       pdfHeadingWithLogo +
       personalInfo +
@@ -302,7 +314,7 @@ export const Simulering = ({
       omstillingsstoenadAlert +
       helUttaksAlder +
       chartTableWithHeading +
-      detaljerTable
+      pdfPage2Ingress
 
     // Set the print content in the hidden div
     const printContentDiv = document.getElementById('print-content')

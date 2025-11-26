@@ -6,8 +6,12 @@ import { DATE_ENDUSER_FORMAT } from '@/utils/dates'
 import { formatInntekt } from '@/utils/inntekt'
 
 import { TableDataRow } from '../TabellVisning/utils'
-import { AlderspensjonDetaljerListe } from './BeregningsdetaljerForOvergangskull/hooks'
+import {
+  AfpDetaljerListe,
+  AlderspensjonDetaljerListe,
+} from './BeregningsdetaljerForOvergangskull/hooks'
 
+const DIN_PENSJON_OPPTJENING_URL = 'https://www.nav.no/pensjon/opptjening'
 export const getCurrentDateTimeFormatted = (): string => {
   const now = new Date()
 
@@ -50,16 +54,68 @@ export const getPdfLink = ({
   url: string
   displayText: string
 }): string => {
-  //const strippedUrl = url.replace(/^(https?:\/\/)?(www\.)?/, '')
-
   return `<a href="${url}">${displayText}</a>`
 }
 
-export function getDetaljerHtmlTable(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  alderspensjonListe: AlderspensjonDetaljerListe[]
+export function getAfpDetaljerHtmlTable(
+  afpDetaljerListe: AfpDetaljerListe[] | undefined
 ): string {
-  return ''
+  if (!afpDetaljerListe) {
+    return ''
+  }
+  afpDetaljerListe.map((afpDetaljForValgtUttak, index) => {
+    console.log('afpDetaljForValgtUttak', afpDetaljForValgtUttak)
+  })
+
+  return 'string'
+}
+
+export function getAldersPensjonDetaljerHtmlTable(
+  alderspensjonListe: AlderspensjonDetaljerListe | undefined
+): string {
+  if (!alderspensjonListe) {
+    return ''
+  }
+  const alderspensjon = Array.isArray(alderspensjonListe.alderspensjon)
+    ? alderspensjonListe.alderspensjon
+    : []
+  const opptjeningKap19 = Array.isArray(alderspensjonListe.opptjeningKap19)
+    ? alderspensjonListe.opptjeningKap19
+    : []
+  const opptjeningKap20 = Array.isArray(alderspensjonListe.opptjeningKap20)
+    ? alderspensjonListe.opptjeningKap20
+    : []
+
+  const getTableRows = (arr: { tekst?: string; verdi?: string | number }[]) =>
+    arr
+      .map((item) => {
+        const label = item?.tekst ?? ''
+        const value = item?.verdi != null ? String(item.verdi) : ''
+        return `<tr><td style='text-align: left;'>${escapeHtml(label)}:</td><td style="text-align: right;">${escapeHtml(value)}</td></tr>`
+      })
+      .join('\n')
+
+  const tableA = `<table class="pdf-table-type2"><thead><tr><th colspan="2" style='text-align: left;'>Månedlig alderspensjon (Nav)</th></tr></thead><tbody>${getTableRows(alderspensjon)}</tbody></table>`
+  const tableB = `<table><thead><tr><th colspan="2" style='text-align: left;'>Opptjening kapittel 19</th></tr></thead><tbody>${getTableRows(opptjeningKap19)}</tbody></table>`
+  const tableC = `<table><thead><tr><th colspan="2" style='text-align: left;'>Opptjening kapittel 20</th></tr></thead><tbody>${getTableRows(opptjeningKap20)}</tbody></table>`
+
+  return `<table role='presentation' style='width:100%;'>
+      <tr class="pdf-table-wrapper-row">
+        <td class="pdf-td-type2">${tableA}</td>
+        <td class="pdf-td-type2" style='padding-left: 8px;'>${tableB}</td>
+        <td class="pdf-td-type2">${tableC}</td>
+      </tr>
+    </table>`
+}
+
+function escapeHtml(input: string): string {
+  if (input === null || input === undefined) return ''
+  return String(input)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
 }
 
 export function getForbeholdAvsnitt(intl: IntlShape): string {
@@ -198,10 +254,9 @@ export function getTidligstMuligUttakIngressContent({
       const under75Ingress = !isOver75AndNoLoependeVedtak
         ? intl.formatMessage({ id: messageId })
         : ''
-      const tmuIngress = `<p>${intl.formatMessage({
+      return `<p>${intl.formatMessage({
         id: 'tidligstmuliguttak.ingress_1',
       })}<b>${formatUttaksalder(intl, tidligstMuligUttak)}.</b>${under75Ingress}</p>`
-      return tmuIngress
     }
   }
 
@@ -209,7 +264,7 @@ export function getTidligstMuligUttakIngressContent({
 }
 
 const pdfFormatMessageValues = {
-  br: '<br/>',
+  br: () => '<br/>',
   strong: (chunks: string[]) => `<strong>${chunks.join('')}</strong>`,
   nowrap: (chunks: string[]) =>
     `<span class="nowrap">${chunks.join('')}</span>`,
@@ -247,4 +302,66 @@ export function getOmstillingsstoenadAlert(
       </td>
     </tr>
   </table>`
+}
+
+export function getPdfPage2Ingress({
+  intl,
+  alderspensjonDetaljerListe,
+  aarligInntektFoerUttakBeloepFraSkatt,
+  afpDetaljerListe,
+}: {
+  intl: IntlShape
+  alderspensjonDetaljerListe: AlderspensjonDetaljerListe
+  afpDetaljerListe: AfpDetaljerListe[]
+  aarligInntektFoerUttakBeloepFraSkatt?: {
+    beloep: string
+    aar: number
+  }
+}): string {
+  const beloepRaw = aarligInntektFoerUttakBeloepFraSkatt?.beloep
+  const aarRaw = aarligInntektFoerUttakBeloepFraSkatt?.aar
+
+  const beloepFormatted = beloepRaw
+    ? formatInntekt(String(beloepRaw)).replace(/\u00A0/g, ' ')
+    : ''
+  const aarFormatted = aarRaw != null ? String(aarRaw) : ''
+
+  const inntektBeloepOgÅr = intl.formatMessage(
+    { id: 'grunnlag.inntekt.ingress' },
+    {
+      ...pdfFormatMessageValues,
+      beloep: beloepFormatted,
+      aar: aarFormatted,
+      dinPensjonBeholdningLink: (chunks: string[]) =>
+        getPdfLink({
+          url: DIN_PENSJON_OPPTJENING_URL,
+          displayText: chunks.join('') || 'Din pensjonsopptjening',
+        }),
+    }
+  )
+  return `<h2>${intl.formatMessage({ id: 'grunnlag.title' })}</h2>
+  <h3>${intl.formatMessage({ id: 'grunnlag2.endre_inntekt.title' })}</h3>
+  <p>${inntektBeloepOgÅr} avansert kalkulator.</p>
+  <h3>Alderspensjon (Nav)</h3>
+  <p>
+    ${intl.formatMessage(
+      { id: 'grunnlag.alderspensjon.ingress' },
+      {
+        avansert: getPdfLink({
+          url: 'https://www.nav.no/pensjon/kalkulator/beregning-detaljert',
+          displayText: 'avansert',
+        }),
+      }
+    )}
+  </p>
+  <div>${getPdfLink({
+    url: 'https://www.nav.no/alderspensjon#beregning',
+    displayText: 'Om reglene for alderspensjon ',
+  })}</div>
+  <div>${getPdfLink({
+    url: DIN_PENSJON_OPPTJENING_URL,
+    displayText: 'Din pensjonsopptjening',
+  })}</div>
+  ${getAldersPensjonDetaljerHtmlTable(alderspensjonDetaljerListe)}
+  ${getAfpDetaljerHtmlTable(afpDetaljerListe)}`
 }
