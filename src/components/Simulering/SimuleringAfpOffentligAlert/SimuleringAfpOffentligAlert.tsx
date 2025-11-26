@@ -3,6 +3,9 @@ import { FormattedMessage, useIntl } from 'react-intl'
 
 import { Alert } from '@navikt/ds-react'
 
+import { useAppSelector } from '@/state/hooks'
+import { selectFoedselsdato } from '@/state/userInput/selectors'
+import { isAlderOver62 } from '@/utils/alder'
 import { ALERT_VIST } from '@/utils/loggerConstants'
 import { logger } from '@/utils/logging'
 
@@ -20,14 +23,14 @@ export const SimuleringAfpOffentligAlert: React.FC<Props> = ({
   loependeLivsvarigAfpOffentlig,
 }) => {
   const intl = useIntl()
+  const foedselsdato = useAppSelector(selectFoedselsdato)
 
   // Viser ikke alert hvis kallet aldri ble forsøkt (query ble skippet)
-  if (!isAfpOffentligLivsvarigSuccess && !loependeLivsvarigAfpOffentlig) {
-    return null
-  }
-
-  // Viser ikke alert hvis brukeren ikke har samtykket til AFP offentlig
-  if (!harSamtykketOffentligAFP) {
+  if (
+    !harSamtykketOffentligAFP ||
+    !foedselsdato ||
+    !isAlderOver62(foedselsdato)
+  ) {
     return null
   }
 
