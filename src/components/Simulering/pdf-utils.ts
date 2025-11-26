@@ -57,7 +57,7 @@ export const getPdfLink = ({
   return `<a href="${url}">${displayText}</a>`
 }
 
-export function getAfpDetaljerHtmlTable (
+export function getAfpDetaljerHtmlTable(
   afpDetaljerListe: AfpDetaljerListe[] | undefined,
   intl: IntlShape
 ): string {
@@ -67,81 +67,86 @@ export function getAfpDetaljerHtmlTable (
 
   const sections = afpDetaljerListe.map((afpDetaljForValgtUttak) => {
     if (afpDetaljForValgtUttak.afpPrivat?.length > 0) {
-      return ({
+      return {
         key: 'afpPrivat',
         title: `${intl.formatMessage({ id: 'beregning.detaljer.OpptjeningDetaljer.afpPrivat.table.title' })}`,
         afpDetaljer: afpDetaljForValgtUttak.afpPrivat,
         boldLastItem: true,
-      })
+      }
     }
 
     if (afpDetaljForValgtUttak.afpOffentlig?.length > 0) {
-      return ({
+      return {
         key: 'afpOffentlig',
         title: 'AFP: Offentlig',
         afpDetaljer: afpDetaljForValgtUttak.afpOffentlig,
         noBorderBottom: true,
-      })
+      }
     }
 
     if (afpDetaljForValgtUttak.pre2025OffentligAfp?.length > 0) {
-      return ({
+      return {
         key: 'pre2025OffentligAfp',
         title: `${intl.formatMessage({ id: 'beregning.detaljer.grunnpensjon.afp.table.title' })}`,
         afpDetaljer: afpDetaljForValgtUttak.pre2025OffentligAfp,
         boldLastItem: true,
-      })
+      }
     }
 
     if (afpDetaljForValgtUttak.opptjeningPre2025OffentligAfp?.length > 0) {
-      return ({
+      return {
         key: 'opptjeningPre2025OffentligAfp',
         title: `${intl.formatMessage({ id: 'beregning.detaljer.OpptjeningDetaljer.pre2025OffentligAfp.table.titles' })}`,
         afpDetaljer: afpDetaljForValgtUttak.opptjeningPre2025OffentligAfp,
-      })
+      }
     }
-
   })
 
   // Get only the unique keys from sections to avoid repeating the heading and ingress
   const afpKey = [...new Set(sections.map((s) => s?.key))][0]
-  
+
   //TODO : Show heading with uttaksalder or gradertUttaksalder
   const afpSectionHeading = `<h3>AFP: ${afpKey === 'afpPrivat' ? 'Privat' : 'Offentlig'}</h3>`
-  const afpIngress = afpKey === 'afpPrivat' ? 
-  intl.formatMessage({id: 'grunnlag.afp.ingress.ja_privat'}, {
-  afpLink: (chunks: string[]) =>
-      getPdfLink({
-        url: 'https://www.afp.no',
-        displayText: chunks.join('') || 'Fellesordningen for AFP',
-      }),
-  }) 
-  : 
-  intl.formatMessage({id: 'grunnlag.afp.ingress.ja_offentlig'})
-  
+  const afpIngress =
+    afpKey === 'afpPrivat'
+      ? intl.formatMessage(
+          { id: 'grunnlag.afp.ingress.ja_privat' },
+          {
+            afpLink: (chunks: string[]) =>
+              getPdfLink({
+                url: 'https://www.afp.no',
+                displayText: chunks.join('') || 'Fellesordningen for AFP',
+              }),
+          }
+        )
+      : intl.formatMessage({ id: 'grunnlag.afp.ingress.ja_offentlig' })
+
   return `${afpSectionHeading}
     <p>${afpIngress}</p>
-    ${sections.map((part) => 
-     getAfpTable({
-      key: part?.key ?? '',
-      title: part?.title ?? '',
-      afpDetaljer: part?.afpDetaljer ?? [],
-      boldLastItem: part?.boldLastItem ?? false,
-      noBorderBottom: part?.noBorderBottom ?? false,
-    })).join('')}`
-  }
+    ${sections
+      .map((part) =>
+        getAfpTable({
+          key: part?.key ?? '',
+          title: part?.title ?? '',
+          afpDetaljer: part?.afpDetaljer ?? [],
+          boldLastItem: part?.boldLastItem ?? false,
+          noBorderBottom: part?.noBorderBottom ?? false,
+        })
+      )
+      .join('')}`
+}
 
 function getAfpTable({
   key,
   title,
   afpDetaljer,
   boldLastItem,
-  noBorderBottom
+  noBorderBottom,
 }: {
-  key: string,
+  key: string
   title: string
-  afpDetaljer: { tekst?: string; verdi?: string | number }[],
-  boldLastItem?: boolean,
+  afpDetaljer: { tekst?: string; verdi?: string | number }[]
+  boldLastItem?: boolean
   noBorderBottom?: boolean
 }): string {
   if (!Array.isArray(afpDetaljer) || afpDetaljer.length === 0) return ''
@@ -150,7 +155,10 @@ function getAfpTable({
     .map((detalj) => {
       const label = detalj?.tekst ?? ''
       const value = detalj?.verdi ?? ''
-      const boldStyle = boldLastItem && detalj === afpDetaljer[afpDetaljer.length - 1] ? 'font-weight: bold;' : ''
+      const boldStyle =
+        boldLastItem && detalj === afpDetaljer[afpDetaljer.length - 1]
+          ? 'font-weight: bold;'
+          : ''
       return `<tr><td style='text-align:left; ${boldStyle}'>${escapeHtml(String(label))}:</td><td style='text-align:right; ${boldStyle}'>${escapeHtml(
         String(value)
       )}</td></tr>`
