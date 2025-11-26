@@ -208,7 +208,7 @@ describe('AFP', () => {
         cy.contains('button', '70').click()
         cy.contains('Om inntekten og pensjonen din').should('exist')
         cy.contains('AFP: Offentlig').should('exist')
-        cy.get('[data-intl="grunnlag.afp.ingress.ja_offentlig.tpo"]').should(
+        cy.get('[data-intl="grunnlag.afp.ingress.ja_offentlig"]').should(
           'exist'
         )
       })
