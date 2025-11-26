@@ -209,8 +209,7 @@ export const useSimuleringChartLocalState = (initialValues: {
         !loependeLivsvarigAfpOffentlig ||
         loependeLivsvarigAfpOffentlig.afpStatus === false ||
         (loependeLivsvarigAfpOffentlig.afpStatus === true &&
-          (!loependeLivsvarigAfpOffentlig.maanedligBeloep ||
-            loependeLivsvarigAfpOffentlig.maanedligBeloep === 0)) ||
+          loependeLivsvarigAfpOffentlig.maanedligBeloep === 0) ||
         (loependeLivsvarigAfpOffentlig.afpStatus === null &&
           loependeLivsvarigAfpOffentlig.maanedligBeloep === null)
 
