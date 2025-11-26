@@ -31,8 +31,17 @@ export const SimuleringAfpOffentligAlert: React.FC<Props> = ({
     e.preventDefault()
     const afpOffentligHeader = document.getElementById('afp-offentlig-heading')
     if (afpOffentligHeader) {
+      // Get absolute position from top of document
+      let element = afpOffentligHeader
+      let offsetTop = 0
+
+      while (element) {
+        offsetTop += element.offsetTop
+        element = element.offsetParent as HTMLElement
+      }
+
       window.scrollTo({
-        top: afpOffentligHeader.offsetTop - 15,
+        top: offsetTop - 15,
         behavior: 'smooth',
       })
     }
