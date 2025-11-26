@@ -2,6 +2,7 @@ import { RouterProvider, createMemoryRouter } from 'react-router'
 import { describe, expect, it, vi } from 'vitest'
 
 import {
+  fulfilledGetAfpOffentligLivsvarigFalse,
   fulfilledGetInntekt,
   fulfilledGetLoependeVedtak0Ufoeregrad,
   fulfilledGetLoependeVedtak75Ufoeregrad,
@@ -344,6 +345,7 @@ describe('BeregningEnkel', () => {
               ...fulfilledGetPerson,
               ...fulfilledGetInntekt,
               ...fulfilledGetLoependeVedtak0Ufoeregrad,
+              ...fulfilledGetAfpOffentligLivsvarigFalse,
             },
           },
           userInput: {

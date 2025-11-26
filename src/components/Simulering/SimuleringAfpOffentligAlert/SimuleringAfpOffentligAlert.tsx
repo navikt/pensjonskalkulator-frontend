@@ -46,6 +46,31 @@ export const SimuleringAfpOffentligAlert: React.FC<Props> = ({
     return null
   }
 
+  // Vellykket kall
+  if (
+    loependeLivsvarigAfpOffentlig?.afpStatus &&
+    loependeLivsvarigAfpOffentlig?.maanedligBeloep &&
+    loependeLivsvarigAfpOffentlig?.maanedligBeloep > 0
+  ) {
+    const alertText = 'beregning.alert.info.afp-offentlig-livsvarig'
+
+    logger(ALERT_VIST, {
+      tekst: `AFP Offentlig: ${intl.formatMessage({ id: alertText })}`,
+      variant: 'info',
+    })
+
+    return (
+      <Alert
+        variant="info"
+        data-testid="alert-afp-offentlig-livsvarig-info"
+        data-intl={alertText}
+        className={styles.alert}
+      >
+        <FormattedMessage id={alertText} />
+      </Alert>
+    )
+  }
+
   // Kall feilet
   if (
     !isAfpOffentligLivsvarigSuccess ||

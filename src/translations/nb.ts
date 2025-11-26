@@ -379,6 +379,8 @@ const translations = {
   'beregning.title': 'Årlig inntekt og pensjon',
   'beregning.alert.inntekt':
     'Fordi du har endret inntekten din, endres pensjonsopptjeningen din.',
+  'beregning.alert.info.afp-offentlig-livsvarig':
+    'Vi har hentet din livsvarige AFP. Beløpet vises ikke i graf og tabell. Se detaljer under AFP: Offentlig.',
   'beregning.alert.feil.afp-offentlig-livsvarig':
     'Vi klarte ikke å sjekke om du har vedtak om livsvarig AFP. Hvis du har det, kan beløpet for AFP og tidspunktet for når du kan ta ut alderspensjon være feil. Prøv igjen senere.',
   'beregning.alert.success.afp-offentlig-livsvarig':
