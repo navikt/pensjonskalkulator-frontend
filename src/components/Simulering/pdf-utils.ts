@@ -58,18 +58,83 @@ export const getPdfLink = ({
 }
 
 export function getAfpDetaljerHtmlTable(
-  afpDetaljerListe: AfpDetaljerListe[] | undefined
+  afpDetaljerListe: AfpDetaljerListe[] | undefined,
+  intl: IntlShape
 ): string {
   if (!afpDetaljerListe) {
     return ''
   }
-  afpDetaljerListe.map((afpDetaljForValgtUttak, index) => {
+  const htmlParts = afpDetaljerListe.map((afpDetaljForValgtUttak) => {
     console.log('afpDetaljForValgtUttak', afpDetaljForValgtUttak)
+    if (afpDetaljForValgtUttak.afpPrivat?.length > 0) {
+      return ({
+        title: `${intl.formatMessage({ id: 'beregning.detaljer.OpptjeningDetaljer.pre2025OffentligAfp.table.title' })}`,
+        afpDetaljer: afpDetaljForValgtUttak.afpPrivat,
+      })
+    }
+
+    if (afpDetaljForValgtUttak.afpOffentlig?.length > 0) {
+      return ({
+        title: 'AFP: Offentlig',
+        afpDetaljer: afpDetaljForValgtUttak.afpOffentlig,
+      })
+    }
+
+    if (afpDetaljForValgtUttak.pre2025OffentligAfp?.length > 0) {
+      return ({
+        title: `${intl.formatMessage({ id: 'beregning.detaljer.grunnpensjon.afp.table.title' })}`,
+        afpDetaljer: afpDetaljForValgtUttak.pre2025OffentligAfp,
+      })
+    }
+
+    if (afpDetaljForValgtUttak.opptjeningPre2025OffentligAfp?.length > 0) {
+      return ({
+        title: `${intl.formatMessage({ id: 'beregning.detaljer.OpptjeningDetaljer.pre2025OffentligAfp.table.titles' })}`,
+        afpDetaljer: afpDetaljForValgtUttak.opptjeningPre2025OffentligAfp,
+      })
+    }
+
   })
 
-  return 'string'
+  if(!htmlParts){
+    return ''
+  }
+  
+  return htmlParts.map((part) =>
+    getAfpTable({
+      title: part?.title ?? '',
+      afpDetaljer: part?.afpDetaljer ?? [],
+    })
+  ).join('')
 }
 
+function getAfpTable({
+  title,
+  afpDetaljer,
+}: {
+  title: string
+  afpDetaljer: { tekst?: string; verdi?: string | number }[]
+}): string {
+  if (!Array.isArray(afpDetaljer) || afpDetaljer.length === 0) return ''
+
+  const rows = afpDetaljer
+    .map((detalj) => {
+      const label = detalj?.tekst ?? ''
+      const value = detalj?.verdi ?? ''
+
+      return `<tr><td style='text-align:left;'>${escapeHtml(String(label))}</td><td style='text-align:right;'>${escapeHtml(
+        String(value)
+      )}</td></tr>`
+    })
+    .join('\n')
+
+  return `<div style='margin:0 0 12px 0;'>
+      <h4 style='margin:0 0 8px 0;'>
+        ${title}
+      </h4>
+      <table role='presentation'>${rows}</table>
+    </div>`
+}
 export function getAldersPensjonDetaljerHtmlTable(
   alderspensjonListe: AlderspensjonDetaljerListe | undefined
 ): string {
@@ -363,5 +428,6 @@ export function getPdfPage2Ingress({
     displayText: 'Din pensjonsopptjening',
   })}</div>
   ${getAldersPensjonDetaljerHtmlTable(alderspensjonDetaljerListe)}
-  ${getAfpDetaljerHtmlTable(afpDetaljerListe)}`
+  ${getAfpDetaljerHtmlTable(afpDetaljerListe, intl)}
+  `
 }
