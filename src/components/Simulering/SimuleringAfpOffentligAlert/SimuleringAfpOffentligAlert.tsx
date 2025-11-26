@@ -29,15 +29,10 @@ export const SimuleringAfpOffentligAlert: React.FC<Props> = ({
     HTMLAnchorElement
   > = (e): void => {
     e.preventDefault()
-    const grunnlagAfpElement = document.querySelector(
-      '[data-testid="grunnlag-afp"]'
-    )
-    if (grunnlagAfpElement) {
+    const afpOffentligHeader = document.getElementById('afp-offentlig-heading')
+    if (afpOffentligHeader) {
       window.scrollTo({
-        top:
-          grunnlagAfpElement.getBoundingClientRect().top +
-          window.pageYOffset -
-          15,
+        top: afpOffentligHeader.offsetTop - 15,
         behavior: 'smooth',
       })
     }
