@@ -979,7 +979,7 @@ describe('Hovedhistorie', () => {
         cy.intercept(
           {
             method: 'POST',
-            url: '/pensjon/kalkulator/api/v8/alderspensjon/simulering',
+            url: '/pensjon/kalkulator/api/v9/alderspensjon/simulering',
           },
           { fixture: 'alderspensjon.json' }
         ).as('getAlderspensjon')

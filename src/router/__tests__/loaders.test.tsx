@@ -1284,11 +1284,13 @@ describe('Loaders', () => {
       } satisfies LoependeVedtak,
     })
 
-    mockResponse('/v1/afp-offentlig-livsvarig', {
+    mockResponse('/v2/tpo-livsvarig-offentlig-afp', {
       status: 200,
       json: {
         afpStatus: false,
         maanedligBeloep: 0,
+        virkningFom: '2023-01-01',
+        sistBenyttetGrunnbeloep: 118620,
       } satisfies AfpOffentligLivsvarig,
     })
 

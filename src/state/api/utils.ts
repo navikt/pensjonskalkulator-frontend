@@ -125,6 +125,7 @@ export const generateAlderspensjonRequestBody = (args: {
   utenlandsperioder: Utenlandsperiode[]
   beregningsvalg?: Beregningsvalg | null
   afpInntektMaanedFoerUttak?: boolean | null
+  loependeLivsvarigAfpOffentlig?: AfpOffentligLivsvarig | null
 }): AlderspensjonRequestBody | undefined => {
   const {
     loependeVedtak,
@@ -140,6 +141,7 @@ export const generateAlderspensjonRequestBody = (args: {
     utenlandsperioder,
     beregningsvalg,
     afpInntektMaanedFoerUttak,
+    loependeLivsvarigAfpOffentlig,
   } = args
 
   if (!foedselsdato || !heltUttak) {
@@ -181,6 +183,14 @@ export const generateAlderspensjonRequestBody = (args: {
     },
     utenlandsperiodeListe: transformUtenlandsperioderArray(utenlandsperioder),
     afpInntektMaanedFoerUttak: afpInntektMaanedFoerUttak ?? undefined,
+    innvilgetLivsvarigOffentligAfp: 
+      loependeLivsvarigAfpOffentlig?.afpStatus && loependeLivsvarigAfpOffentlig?.maanedligBeloep && loependeLivsvarigAfpOffentlig?.virkningFom
+        ? [{
+            aarligBruttoBeloep: loependeLivsvarigAfpOffentlig.maanedligBeloep * 12,
+            uttakFom: loependeLivsvarigAfpOffentlig.virkningFom,
+            sistRegulertGrunnbeloep: loependeLivsvarigAfpOffentlig.sistBenyttetGrunnbeloep,
+          }]
+        : undefined,
   }
 }
 

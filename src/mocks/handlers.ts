@@ -138,7 +138,7 @@ export const getHandlers = (baseUrl: string = API_PATH) => [
     return HttpResponse.json(erApotekerResponse)
   }),
 
-  http.get(`${baseUrl}/v1/tpo-afp-offentlig-livsvarig`, async () => {
+  http.get(`${baseUrl}/v2/tpo-livsvarig-offentlig-afp`, async () => {
     await delay(TEST_DELAY)
     return HttpResponse.json(afpOffentligLivsvarigResponse)
   }),
@@ -204,7 +204,7 @@ export const getHandlers = (baseUrl: string = API_PATH) => [
     return HttpResponse.json(data.default as object)
   }),
 
-  http.post(`${baseUrl}/v8/alderspensjon/simulering`, async ({ request }) => {
+  http.post(`${baseUrl}/v9/alderspensjon/simulering`, async ({ request }) => {
     await delay(TEST_DELAY)
     const body = await request.json()
     const aar = (body as AlderspensjonRequestBody).heltUttak.uttaksalder.aar

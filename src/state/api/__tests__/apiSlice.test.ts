@@ -286,7 +286,7 @@ describe('apiSlice', () => {
 
     it('returnerer undefined ved feilende query', async () => {
       const storeRef = setupStore(undefined, true)
-      mockErrorResponse('/v8/alderspensjon/simulering', {
+      mockErrorResponse('/v9/alderspensjon/simulering', {
         method: 'post',
       })
       return storeRef

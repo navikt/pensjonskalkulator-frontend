@@ -583,7 +583,7 @@ export const fulfilledGetAfpOffentligLivsvarigFalse = {
     endpointName: 'getAfpOffentligLivsvarig',
     requestId: 'xTaE6mOydr5ZI75UXq4Wi',
     startedTimeStamp: 1688046411971,
-    data: { afpStatus: false, maanedligBeloep: null },
+    data: { afpStatus: false, maanedligBeloep: null, virkningFom: undefined, sistBenyttetGrunnbeloep: undefined },
     fulfilledTimeStamp: 1688046412103,
   },
 }

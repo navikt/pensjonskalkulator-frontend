@@ -70,7 +70,7 @@ export const apiSlice = createApi({
     }),
 
     getAfpOffentligLivsvarig: builder.query<AfpOffentligLivsvarig, void>({
-      query: () => '/v1/tpo-afp-offentlig-livsvarig',
+      query: () => '/v2/tpo-livsvarig-offentlig-afp',
     }),
 
     tidligstMuligHeltUttak: builder.query<
@@ -111,7 +111,7 @@ export const apiSlice = createApi({
       AlderspensjonRequestBody
     >({
       query: (body) => ({
-        url: '/v8/alderspensjon/simulering',
+        url: '/v9/alderspensjon/simulering',
         method: 'POST',
         body,
       }),

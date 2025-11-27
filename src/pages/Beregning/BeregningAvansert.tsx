@@ -20,6 +20,7 @@ import { paths } from '@/router/constants'
 import {
   apiSlice,
   useAlderspensjonQuery,
+  useGetAfpOffentligLivsvarigQuery,
   useGetPersonQuery,
 } from '@/state/api/apiSlice'
 import { generateAlderspensjonRequestBody } from '@/state/api/utils'

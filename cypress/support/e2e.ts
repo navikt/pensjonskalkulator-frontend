@@ -143,7 +143,7 @@ beforeEach(() => {
   cy.intercept(
     {
       method: 'GET',
-      url: '/pensjon/kalkulator/api/v1/tpo-afp-offentlig-livsvarig',
+      url: '/pensjon/kalkulator/api/v2/tpo-livsvarig-offentlig-afp',
     },
     { fixture: 'afp-offentlig-livsvarig.json' }
   ).as('getTpoAfpOffentligLivsvarig')
@@ -203,7 +203,7 @@ beforeEach(() => {
   cy.intercept(
     {
       method: 'POST',
-      url: '/pensjon/kalkulator/api/v8/alderspensjon/simulering',
+      url: '/pensjon/kalkulator/api/v9/alderspensjon/simulering',
     },
     { fixture: 'alderspensjon.json' }
   ).as('fetchAlderspensjon')

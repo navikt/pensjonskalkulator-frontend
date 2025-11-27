@@ -322,7 +322,7 @@ describe('AFP vs uføretrygd', () => {
           cy.intercept(
             {
               method: 'POST',
-              url: '/pensjon/kalkulator/api/v8/alderspensjon/simulering',
+              url: '/pensjon/kalkulator/api/v9/alderspensjon/simulering',
             },
             {
               alderspensjon: [],
@@ -367,7 +367,7 @@ describe('AFP vs uføretrygd', () => {
           cy.intercept(
             {
               method: 'POST',
-              url: '/pensjon/kalkulator/api/v8/alderspensjon/simulering',
+              url: '/pensjon/kalkulator/api/v9/alderspensjon/simulering',
             },
             {
               alderspensjon: [],
@@ -413,7 +413,7 @@ describe('AFP vs uføretrygd', () => {
           cy.intercept(
             {
               method: 'POST',
-              url: '/pensjon/kalkulator/api/v8/alderspensjon/simulering',
+              url: '/pensjon/kalkulator/api/v9/alderspensjon/simulering',
             },
             {
               alderspensjon: [],
