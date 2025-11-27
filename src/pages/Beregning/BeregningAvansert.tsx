@@ -32,6 +32,7 @@ import {
   selectCurrentSimulation,
   selectEpsHarInntektOver2G,
   selectEpsHarPensjon,
+  selectFoedselsdato,
   selectIsEndring,
   selectLoependeVedtak,
   selectNormertPensjonsalder,
@@ -40,7 +41,7 @@ import {
   selectSkalBeregneAfpKap19,
   selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
-import { formatUttaksalder } from '@/utils/alder'
+import { formatUttaksalder, isAlderOver62 } from '@/utils/alder'
 import { ALERT_VIST } from '@/utils/loggerConstants'
 import { logger } from '@/utils/logging'
 import { getFormatMessageValues } from '@/utils/translations'
@@ -68,6 +69,16 @@ export const BeregningAvansert = () => {
   const epsHarInntektOver2G = useAppSelector(selectEpsHarInntektOver2G)
   const sivilstand = useAppSelector(selectSivilstand)
   const { data: person } = useGetPersonQuery()
+  const foedselsdato = useAppSelector(selectFoedselsdato)
+  const {
+    isSuccess: isAfpOffentligLivsvarigSuccess,
+    data: loependeLivsvarigAfpOffentlig,
+  } = useGetAfpOffentligLivsvarigQuery(undefined, {
+    skip:
+      !harSamtykketOffentligAFP ||
+      !foedselsdato ||
+      !isAlderOver62(foedselsdato),
+  })
   const afpInntektMaanedFoerUttak = useAppSelector(
     selectAfpInntektMaanedFoerUttak
   )
@@ -105,6 +116,9 @@ export const BeregningAvansert = () => {
           utenlandsperioder,
           beregningsvalg,
           afpInntektMaanedFoerUttak: afpInntektMaanedFoerUttak,
+          loependeLivsvarigAfpOffentlig: isAfpOffentligLivsvarigSuccess
+            ? loependeLivsvarigAfpOffentlig
+            : null,
         })
       }
     }, [
@@ -116,6 +130,8 @@ export const BeregningAvansert = () => {
       epsHarPensjon,
       epsHarInntektOver2G,
       beregningsvalg,
+      isAfpOffentligLivsvarigSuccess,
+      loependeLivsvarigAfpOffentlig,
     ])
 
   // Hent alderspensjon + AFP
