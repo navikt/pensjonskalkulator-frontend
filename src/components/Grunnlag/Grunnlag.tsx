@@ -135,7 +135,9 @@ export const Grunnlag: React.FC<Props> = ({
         afpDetaljer.afpPrivat.length === 0 &&
         afpDetaljer.afpOffentlig.length === 0 &&
         afpDetaljer.pre2025OffentligAfp.length === 0
-    )
+    ) ||
+    (loependeLivsvarigAfpOffentlig?.afpStatus &&
+      !loependeLivsvarigAfpOffentlig?.maanedligBeloep)
 
   const handleReadMoreChange = ({
     isOpen,
