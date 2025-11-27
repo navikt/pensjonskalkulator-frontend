@@ -183,13 +183,19 @@ export const generateAlderspensjonRequestBody = (args: {
     },
     utenlandsperiodeListe: transformUtenlandsperioderArray(utenlandsperioder),
     afpInntektMaanedFoerUttak: afpInntektMaanedFoerUttak ?? undefined,
-    innvilgetLivsvarigOffentligAfp: 
-      loependeLivsvarigAfpOffentlig?.afpStatus && loependeLivsvarigAfpOffentlig?.maanedligBeloep && loependeLivsvarigAfpOffentlig?.virkningFom
-        ? [{
-            aarligBruttoBeloep: loependeLivsvarigAfpOffentlig.maanedligBeloep * 12,
-            uttakFom: loependeLivsvarigAfpOffentlig.virkningFom,
-            sistRegulertGrunnbeloep: loependeLivsvarigAfpOffentlig.sistBenyttetGrunnbeloep,
-          }]
+    innvilgetLivsvarigOffentligAfp:
+      loependeLivsvarigAfpOffentlig?.afpStatus &&
+      loependeLivsvarigAfpOffentlig?.maanedligBeloep &&
+      loependeLivsvarigAfpOffentlig?.virkningFom
+        ? [
+            {
+              aarligBruttoBeloep:
+                loependeLivsvarigAfpOffentlig.maanedligBeloep * 12,
+              uttakFom: loependeLivsvarigAfpOffentlig.virkningFom,
+              sistRegulertGrunnbeloep:
+                loependeLivsvarigAfpOffentlig.sistBenyttetGrunnbeloep,
+            },
+          ]
         : undefined,
   }
 }

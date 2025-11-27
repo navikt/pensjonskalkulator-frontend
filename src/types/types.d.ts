@@ -56,7 +56,8 @@ declare global {
   type ApotekerStatusV1 = components['schemas']['ApotekerStatusV1']
 
   // /v2/tpo-livsvarig-offentlig-afp
-  type AfpOffentligLivsvarig = components['schemas']['LivsvarigOffentligAfpResultV2']
+  type AfpOffentligLivsvarig =
+    components['schemas']['LivsvarigOffentligAfpResultV2']
 
   // /loepende-omstillingsstoenad-eller-gjenlevendeytelse
   type OmstillingsstoenadOgGjenlevende =
