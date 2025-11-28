@@ -56,9 +56,11 @@ export const getPdfLink = ({
 }
 
 export function getDetaljerHtmlTable(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   alderspensjonListe: AlderspensjonDetaljerListe[]
 ): string {
+  if(!alderspensjonListe.length) {
+    return ''
+  }
   return ''
 }
 
