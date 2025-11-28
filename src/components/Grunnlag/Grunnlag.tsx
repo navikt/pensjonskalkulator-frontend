@@ -128,6 +128,10 @@ export const Grunnlag: React.FC<Props> = ({
         ].filter((arr) => arr.length > 0).length
 
   // Når det ikke er noen detaljer for AFP, så er "Les mer" lenken skjult.
+  const hasAfpOffentligLivsvarigWithBeloep =
+    loependeLivsvarigAfpOffentlig?.maanedligBeloep !== undefined &&
+    loependeLivsvarigAfpOffentlig?.maanedligBeloep !== null
+
   const shouldHideAfpReadMore =
     afpDetaljerListe.length === 0 ||
     afpDetaljerListe.every(
@@ -137,7 +141,7 @@ export const Grunnlag: React.FC<Props> = ({
         afpDetaljer.pre2025OffentligAfp.length === 0
     ) ||
     (loependeLivsvarigAfpOffentlig?.afpStatus &&
-      !loependeLivsvarigAfpOffentlig?.maanedligBeloep)
+      hasAfpOffentligLivsvarigWithBeloep)
 
   const handleReadMoreChange = ({
     isOpen,
