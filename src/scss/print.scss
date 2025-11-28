@@ -61,18 +61,20 @@
 
   th,
   tr,
-  h2, .afp-grunnlag-title {
+  h2,
+  .afp-grunnlag-title {
     border-bottom: 1px solid rgb(128 128 128);
   }
 
-  .pdf-table-wrapper-row, .pdf-table-type2 tbody > tr:last-child{
+  .pdf-table-wrapper-row,
+  .pdf-table-type2 tbody > tr:last-child {
     border-bottom: none;
   }
 
   .pdf-table-type2 tbody > tr:last-child {
     font-weight: bold;
   }
-  
+
   th,
   td {
     padding: 12px 8px;
