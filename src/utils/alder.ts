@@ -155,7 +155,6 @@ export const isAlderOverAnnenAlder = (
 }
 
 export const isAlderLikEllerOverAnnenAlder = (
-  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
   stoersteAlder: Alder | Partial<Alder>,
   minsteAlder: Alder
 ): boolean => {
