@@ -227,7 +227,6 @@ export const Simulering = ({
     )
 
   const { data: tidligstMuligUttak } = useTidligstMuligUttak(
-    loependeVedtak,
     ufoeregrad
   )
   const { data: omstillingsstoenadOgGjenlevende } =
@@ -255,7 +254,7 @@ export const Simulering = ({
     isOver75AndNoLoependeVedtak,
     show1963Text,
     hasAFP,
-  } = useTidligstMuligUttakConditions(loependeVedtak)
+  } = useTidligstMuligUttakConditions()
 
   const { title, content } = React.useMemo(() => {
     return generateAfpContent(intl)({
