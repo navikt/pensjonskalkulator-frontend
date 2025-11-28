@@ -77,7 +77,8 @@ export const generateTidligstMuligHeltUttakRequestBody = (args: {
   epsHarPensjon: boolean | null
   aarligInntektFoerUttakBeloep: string
   aarligInntektVsaPensjon?: { beloep: string; sluttAlder: Alder }
-  utenlandsperioder: Utenlandsperiode[]
+  utenlandsperioder: Utenlandsperiode[],
+  loependeLivsvarigAfpOffentlig: AfpOffentligLivsvarig | null
 }): TidligstMuligHeltUttakRequestBody => {
   const {
     loependeVedtak,
@@ -88,6 +89,7 @@ export const generateTidligstMuligHeltUttakRequestBody = (args: {
     aarligInntektFoerUttakBeloep,
     aarligInntektVsaPensjon,
     utenlandsperioder,
+    loependeLivsvarigAfpOffentlig
   } = args
 
   return {
@@ -108,6 +110,20 @@ export const generateTidligstMuligHeltUttakRequestBody = (args: {
         }
       : undefined,
     utenlandsperiodeListe: transformUtenlandsperioderArray(utenlandsperioder),
+    innvilgetLivsvarigOffentligAfp:
+      loependeLivsvarigAfpOffentlig?.afpStatus &&
+      loependeLivsvarigAfpOffentlig?.maanedligBeloep &&
+      loependeLivsvarigAfpOffentlig?.virkningFom
+        ? [
+            {
+              aarligBruttoBeloep:
+                loependeLivsvarigAfpOffentlig.maanedligBeloep * 12,
+              uttakFom: loependeLivsvarigAfpOffentlig.virkningFom,
+              sistRegulertGrunnbeloep:
+                loependeLivsvarigAfpOffentlig.sistBenyttetGrunnbeloep,
+            },
+          ]
+        : undefined,
   }
 }
 

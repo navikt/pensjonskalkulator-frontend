@@ -157,7 +157,7 @@ describe('BeregningEnkel', () => {
 
     describe('Når kallet til TMU feiler,', () => {
       beforeEach(() => {
-        mockErrorResponse('/v2/tidligste-hel-uttaksalder', {
+        mockErrorResponse('/v3/tidligste-hel-uttaksalder', {
           method: 'post',
         })
         mockResponse('/v9/alderspensjon/simulering', {
@@ -797,7 +797,7 @@ describe('BeregningEnkel', () => {
           harForLiteTrygdetid: false,
         },
       })
-      mockErrorResponse('/v2/tidligste-hel-uttaksalder', {
+      mockErrorResponse('/v3/tidligste-hel-uttaksalder', {
         method: 'post',
       })
       render(<BeregningEnkel />, {

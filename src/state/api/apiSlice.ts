@@ -78,7 +78,7 @@ export const apiSlice = createApi({
       TidligstMuligHeltUttakRequestBody | void
     >({
       query: (body) => ({
-        url: '/v2/tidligste-hel-uttaksalder',
+        url: '/v3/tidligste-hel-uttaksalder',
         method: 'POST',
         body,
       }),

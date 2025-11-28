@@ -44,6 +44,26 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/api/v3/tidligste-hel-uttaksalder': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Tidligst mulige uttaksalder ved helt uttak
+     * @description Finn tidligst mulige uttaksalder for innlogget bruker ved helt (100 %) uttak.
+     */
+    post: operations['finnTidligsteHelUttaksalderV3']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/api/v3/pensjonsavtaler': {
     parameters: {
       query?: never
@@ -138,26 +158,6 @@ export interface paths {
      * @description Henter pensjonsavtalene til den innloggede/angitte brukeren. I request må verdi av 'maaneder' være 0..11.
      */
     post: operations['fetchAvtalerV2']
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  '/api/v1/tidligste-hel-uttaksalder': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    /**
-     * Første mulige uttaksalder ved helt uttak
-     * @description Finn første mulige uttaksalder for innlogget bruker ved helt (100 %) uttak. Feltet 'harEps' brukes til å angi om brukeren har ektefelle/partner/samboer eller ei
-     */
-    post: operations['finnTidligsteHelUttaksalderV1']
     delete?: never
     options?: never
     head?: never
@@ -1047,6 +1047,76 @@ export interface components {
       vilkaarErOppfylt: boolean
       alternativ?: components['schemas']['PersonligSimuleringAlternativResultV8']
     }
+    PersonligSimuleringInnvilgetLivsvarigOffentligAfpSpecV3: {
+      /** Format: double */
+      aarligBruttoBeloep: number
+      /** Format: date */
+      uttakFom: string
+      /** Format: int32 */
+      sistRegulertGrunnbeloep?: number
+    }
+    UttaksalderAlderSpecV3: {
+      /** Format: int32 */
+      aar: number
+      /** Format: int32 */
+      maaneder: number
+    }
+    UttaksalderInntektSpecV3: {
+      /** Format: int32 */
+      beloep: number
+      sluttAlder?: components['schemas']['UttaksalderAlderSpecV3']
+    }
+    UttaksalderSpecV3: {
+      /** @enum {string} */
+      simuleringstype?:
+        | 'ALDERSPENSJON'
+        | 'PRE2025_OFFENTLIG_AFP_ETTERFULGT_AV_ALDERSPENSJON'
+        | 'ALDERSPENSJON_MED_AFP_PRIVAT'
+        | 'ALDERSPENSJON_MED_AFP_OFFENTLIG_LIVSVARIG'
+        | 'ENDRING_ALDERSPENSJON'
+        | 'ENDRING_ALDERSPENSJON_MED_AFP_PRIVAT'
+        | 'ENDRING_ALDERSPENSJON_MED_AFP_OFFENTLIG_LIVSVARIG'
+      /** Format: int32 */
+      aarligInntektFoerUttakBeloep?: number
+      aarligInntektVsaPensjon?: components['schemas']['UttaksalderInntektSpecV3']
+      utenlandsperiodeListe?: components['schemas']['UttaksalderUtenlandsperiodeSpecV3'][]
+      /** @enum {string} */
+      sivilstand?:
+        | 'UNKNOWN'
+        | 'UOPPGITT'
+        | 'UGIFT'
+        | 'GIFT'
+        | 'ENKE_ELLER_ENKEMANN'
+        | 'SKILT'
+        | 'SEPARERT'
+        | 'REGISTRERT_PARTNER'
+        | 'SEPARERT_PARTNER'
+        | 'SKILT_PARTNER'
+        | 'GJENLEVENDE_PARTNER'
+        | 'SAMBOER'
+      epsHarInntektOver2G: boolean
+      epsHarPensjon: boolean
+      innvilgetLivsvarigOffentligAfp?: components['schemas']['PersonligSimuleringInnvilgetLivsvarigOffentligAfpSpecV3'][]
+    }
+    UttaksalderUtenlandsperiodeSpecV3: {
+      /** Format: date */
+      fom: string
+      /** Format: date */
+      tom?: string
+      landkode: string
+      arbeidetUtenlands: boolean
+    }
+    UttaksalderError: {
+      /** @enum {string} */
+      errorCode: 'AFP_IKKE_I_VILKAARSPROEVING'
+      cause?: string
+    }
+    UttaksalderResultV3: {
+      /** Format: int32 */
+      aar: number
+      /** Format: int32 */
+      maaneder: number
+    }
     PensjonsavtaleAlderSpecV3: {
       /** Format: int32 */
       aar: number
@@ -1167,11 +1237,6 @@ export interface components {
       tom?: string
       landkode: string
       arbeidetUtenlands: boolean
-    }
-    UttaksalderError: {
-      /** @enum {string} */
-      errorCode: 'AFP_IKKE_I_VILKAARSPROEVING'
-      cause?: string
     }
     UttaksalderResultV2: {
       /** Format: int32 */
@@ -1391,61 +1456,6 @@ export interface components {
     SelskapV2: {
       navn: string
       heltUtilgjengelig: boolean
-    }
-    IngressUttaksalderAlderV1: {
-      /** Format: int32 */
-      aar: number
-      /** Format: int32 */
-      maaneder: number
-    }
-    IngressUttaksalderInntektV1: {
-      /** Format: int32 */
-      beloep: number
-      sluttAlder?: components['schemas']['IngressUttaksalderAlderV1']
-    }
-    IngressUttaksalderSpecForHeltUttakV1: {
-      /** @enum {string} */
-      simuleringstype?:
-        | 'ALDERSPENSJON'
-        | 'PRE2025_OFFENTLIG_AFP_ETTERFULGT_AV_ALDERSPENSJON'
-        | 'ALDERSPENSJON_MED_AFP_PRIVAT'
-        | 'ALDERSPENSJON_MED_AFP_OFFENTLIG_LIVSVARIG'
-        | 'ENDRING_ALDERSPENSJON'
-        | 'ENDRING_ALDERSPENSJON_MED_AFP_PRIVAT'
-        | 'ENDRING_ALDERSPENSJON_MED_AFP_OFFENTLIG_LIVSVARIG'
-      /** @enum {string} */
-      sivilstand?:
-        | 'UNKNOWN'
-        | 'UOPPGITT'
-        | 'UGIFT'
-        | 'GIFT'
-        | 'ENKE_ELLER_ENKEMANN'
-        | 'SKILT'
-        | 'SEPARERT'
-        | 'REGISTRERT_PARTNER'
-        | 'SEPARERT_PARTNER'
-        | 'SKILT_PARTNER'
-        | 'GJENLEVENDE_PARTNER'
-        | 'SAMBOER'
-      harEps?: boolean
-      /** Format: int32 */
-      aarligInntektFoerUttakBeloep?: number
-      aarligInntektVsaPensjon?: components['schemas']['IngressUttaksalderInntektV1']
-      utenlandsperiodeListe?: components['schemas']['UttaksalderUtenlandsperiodeSpecV1'][]
-    }
-    UttaksalderUtenlandsperiodeSpecV1: {
-      /** Format: date */
-      fom: string
-      /** Format: date */
-      tom?: string
-      landkode: string
-      arbeidetUtenlands: boolean
-    }
-    AlderDto: {
-      /** Format: int32 */
-      aar: number
-      /** Format: int32 */
-      maaneder: number
     }
     AnonymSimuleringAlderV1: {
       /** Format: int32 */
@@ -1827,13 +1837,15 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          /** @example {
+          /**
+           * @example {
            *       "timestamp": "2023-09-12T10:37:47.056+00:00",
            *       "status": 503,
            *       "error": "Service Unavailable",
            *       "message": "En feil inntraff",
            *       "path": "/api/ressurs"
-           *     } */
+           *     }
+           */
           '*/*': unknown
         }
       }
@@ -1867,14 +1879,49 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          /** @example {
+          /**
+           * @example {
            *       "timestamp": "2023-09-12T10:37:47.056+00:00",
            *       "status": 503,
            *       "error": "Service Unavailable",
            *       "message": "En feil inntraff",
            *       "path": "/api/ressurs"
-           *     } */
+           *     }
+           */
           '*/*': unknown
+        }
+      }
+    }
+  }
+  finnTidligsteHelUttaksalderV3: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UttaksalderSpecV3']
+      }
+    }
+    responses: {
+      /** @description Søk etter uttaksalder utført. I resultatet er verdi av 'maaneder' 0..11. */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          '*/*': components['schemas']['UttaksalderResultV3']
+        }
+      }
+      /** @description Søk etter uttaksalder kunne ikke utføres av tekniske årsaker */
+      503: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          '*/*': components['schemas']['UttaksalderError']
         }
       }
     }
@@ -1907,13 +1954,15 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          /** @example {
+          /**
+           * @example {
            *       "timestamp": "2023-09-12T10:37:47.056+00:00",
            *       "status": 503,
            *       "error": "Service Unavailable",
            *       "message": "En feil inntraff",
            *       "path": "/api/ressurs"
-           *     } */
+           *     }
+           */
           '*/*': unknown
         }
       }
@@ -2028,53 +2077,15 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          /** @example {
+          /**
+           * @example {
            *       "timestamp": "2023-09-12T10:37:47.056+00:00",
            *       "status": 503,
            *       "error": "Service Unavailable",
            *       "message": "En feil inntraff",
            *       "path": "/api/ressurs"
-           *     } */
-          '*/*': unknown
-        }
-      }
-    }
-  }
-  finnTidligsteHelUttaksalderV1: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['IngressUttaksalderSpecForHeltUttakV1']
-      }
-    }
-    responses: {
-      /** @description Søk etter uttaksalder utført. I resultatet er verdi av 'maaneder' 0..11. */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          '*/*': components['schemas']['AlderDto']
-        }
-      }
-      /** @description Søk etter uttaksalder kunne ikke utføres av tekniske årsaker */
-      503: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          /** @example {
-           *       "timestamp": "2023-09-12T10:37:47.056+00:00",
-           *       "status": 503,
-           *       "error": "Service Unavailable",
-           *       "message": "En feil inntraff",
-           *       "path": "/api/ressurs"
-           *     } */
+           *     }
+           */
           '*/*': unknown
         }
       }
@@ -2108,13 +2119,15 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          /** @example {
+          /**
+           * @example {
            *       "timestamp": "2023-09-12T10:37:47.056+00:00",
            *       "status": 503,
            *       "error": "Service Unavailable",
            *       "message": "En feil inntraff",
            *       "path": "/api/ressurs"
-           *     } */
+           *     }
+           */
           '*/*': unknown
         }
       }
@@ -2186,13 +2199,15 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          /** @example {
+          /**
+           * @example {
            *       "timestamp": "2023-09-12T10:37:47.056+00:00",
            *       "status": 503,
            *       "error": "Service Unavailable",
            *       "message": "En feil inntraff",
            *       "path": "/api/ressurs"
-           *     } */
+           *     }
+           */
           '*/*': unknown
         }
       }
@@ -2222,13 +2237,15 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          /** @example {
+          /**
+           * @example {
            *       "timestamp": "2023-09-12T10:37:47.056+00:00",
            *       "status": 503,
            *       "error": "Service Unavailable",
            *       "message": "En feil inntraff",
            *       "path": "/api/ressurs"
-           *     } */
+           *     }
+           */
           '*/*': unknown
         }
       }
@@ -2267,13 +2284,15 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          /** @example {
+          /**
+           * @example {
            *       "timestamp": "2023-09-12T10:37:47.056+00:00",
            *       "status": 503,
            *       "error": "Service Unavailable",
            *       "message": "En feil inntraff",
            *       "path": "/api/ressurs"
-           *     } */
+           *     }
+           */
           '*/*': unknown
         }
       }
@@ -2303,13 +2322,15 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          /** @example {
+          /**
+           * @example {
            *       "timestamp": "2023-09-12T10:37:47.056+00:00",
            *       "status": 503,
            *       "error": "Service Unavailable",
            *       "message": "En feil inntraff",
            *       "path": "/api/ressurs"
-           *     } */
+           *     }
+           */
           '*/*': unknown
         }
       }
@@ -2339,13 +2360,15 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          /** @example {
+          /**
+           * @example {
            *       "timestamp": "2023-09-12T10:37:47.056+00:00",
            *       "status": 503,
            *       "error": "Service Unavailable",
            *       "message": "En feil inntraff",
            *       "path": "/api/ressurs"
-           *     } */
+           *     }
+           */
           '*/*': unknown
         }
       }
@@ -2404,13 +2427,15 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          /** @example {
+          /**
+           * @example {
            *       "timestamp": "2023-09-12T10:37:47.056+00:00",
            *       "status": 503,
            *       "error": "Service Unavailable",
            *       "message": "En feil inntraff",
            *       "path": "/api/ressurs"
-           *     } */
+           *     }
+           */
           '*/*': unknown
         }
       }
@@ -2440,13 +2465,15 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          /** @example {
+          /**
+           * @example {
            *       "timestamp": "2023-09-12T10:37:47.056+00:00",
            *       "status": 503,
            *       "error": "Service Unavailable",
            *       "message": "En feil inntraff",
            *       "path": "/api/ressurs"
-           *     } */
+           *     }
+           */
           '*/*': unknown
         }
       }
@@ -2476,13 +2503,15 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          /** @example {
+          /**
+           * @example {
            *       "timestamp": "2023-09-12T10:37:47.056+00:00",
            *       "status": 503,
            *       "error": "Service Unavailable",
            *       "message": "En feil inntraff",
            *       "path": "/api/ressurs"
-           *     } */
+           *     }
+           */
           '*/*': unknown
         }
       }
@@ -2552,13 +2581,15 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          /** @example {
+          /**
+           * @example {
            *       "timestamp": "2023-09-12T10:37:47.056+00:00",
            *       "status": 503,
            *       "error": "Service Unavailable",
            *       "message": "En feil inntraff",
            *       "path": "/api/ressurs"
-           *     } */
+           *     }
+           */
           '*/*': unknown
         }
       }
@@ -2588,13 +2619,15 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          /** @example {
+          /**
+           * @example {
            *       "timestamp": "2023-09-12T10:37:47.056+00:00",
            *       "status": 503,
            *       "error": "Service Unavailable",
            *       "message": "En feil inntraff",
            *       "path": "/api/ressurs"
-           *     } */
+           *     }
+           */
           '*/*': unknown
         }
       }
@@ -2624,13 +2657,15 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          /** @example {
+          /**
+           * @example {
            *       "timestamp": "2023-09-12T10:37:47.056+00:00",
            *       "status": 503,
            *       "error": "Service Unavailable",
            *       "message": "En feil inntraff",
            *       "path": "/api/ressurs"
-           *     } */
+           *     }
+           */
           '*/*': unknown
         }
       }
@@ -2660,13 +2695,15 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          /** @example {
+          /**
+           * @example {
            *       "timestamp": "2023-09-12T10:37:47.056+00:00",
            *       "status": 503,
            *       "error": "Service Unavailable",
            *       "message": "En feil inntraff",
            *       "path": "/api/ressurs"
-           *     } */
+           *     }
+           */
           '*/*': unknown
         }
       }
@@ -2696,13 +2733,15 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          /** @example {
+          /**
+           * @example {
            *       "timestamp": "2023-09-12T10:37:47.056+00:00",
            *       "status": 503,
            *       "error": "Service Unavailable",
            *       "message": "En feil inntraff",
            *       "path": "/api/ressurs"
-           *     } */
+           *     }
+           */
           '*/*': unknown
         }
       }
@@ -2772,13 +2811,15 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          /** @example {
+          /**
+           * @example {
            *       "timestamp": "2023-09-12T10:37:47.056+00:00",
            *       "status": 503,
            *       "error": "Service Unavailable",
            *       "message": "En feil inntraff",
            *       "path": "/api/ressurs"
-           *     } */
+           *     }
+           */
           '*/*': unknown
         }
       }
@@ -2808,13 +2849,15 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          /** @example {
+          /**
+           * @example {
            *       "timestamp": "2023-09-12T10:37:47.056+00:00",
            *       "status": 503,
            *       "error": "Service Unavailable",
            *       "message": "En feil inntraff",
            *       "path": "/api/ressurs"
-           *     } */
+           *     }
+           */
           '*/*': unknown
         }
       }
@@ -2846,13 +2889,15 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          /** @example {
+          /**
+           * @example {
            *       "timestamp": "2023-09-12T10:37:47.056+00:00",
            *       "status": 503,
            *       "error": "Service Unavailable",
            *       "message": "En feil inntraff",
            *       "path": "/api/ressurs"
-           *     } */
+           *     }
+           */
           '*/*': unknown
         }
       }

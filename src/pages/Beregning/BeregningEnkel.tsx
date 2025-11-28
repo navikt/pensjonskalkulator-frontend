@@ -130,6 +130,9 @@ export const BeregningEnkel = () => {
         epsHarInntektOver2G,
         aarligInntektFoerUttakBeloep: aarligInntektFoerUttakBeloep ?? '0',
         utenlandsperioder,
+        loependeLivsvarigAfpOffentlig: isAfpOffentligLivsvarigSuccess
+          ? loependeLivsvarigAfpOffentlig
+          : null,
       })
       setTidligstMuligHeltUttakRequestBody(requestBody)
     }
