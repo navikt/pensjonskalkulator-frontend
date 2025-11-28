@@ -275,11 +275,15 @@ function getAfpDetaljerListe(
     afpOffentlig: AfpPensjonsberegning,
     loependeAfpOffentlig?: AfpOffentligLivsvarig
   ) => {
-    const beloep =
+    let beloep = afpOffentlig?.maanedligBeloep ?? 0
+
+    if (
       loependeAfpOffentlig?.maanedligBeloep &&
-      loependeAfpOffentlig.maanedligBeloep > 0
-        ? loependeAfpOffentlig.maanedligBeloep
-        : (afpOffentlig?.maanedligBeloep ?? 0)
+      loependeAfpOffentlig.maanedligBeloep > 0 &&
+      loependeAfpOffentlig.afpStatus
+    ) {
+      beloep = loependeAfpOffentlig.maanedligBeloep
+    }
 
     return [
       {

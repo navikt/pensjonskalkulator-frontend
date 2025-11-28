@@ -120,17 +120,15 @@ export const generateAfpContent =
     // Personer født før 1963 eller apotekere behandles likt for AFP-formål
     const isKap19OrApoteker = isKap19 || erApoteker
 
-    // AFP offentlig livsvarig fra TPO
-    const hasAfpOffentligLivsvarigWithBeloep =
-      loependeLivsvarigAfpOffentlig?.maanedligBeloep !== undefined &&
-      loependeLivsvarigAfpOffentlig?.maanedligBeloep !== null &&
-      loependeLivsvarigAfpOffentlig?.maanedligBeloep > 0
-
     // Prioritet 1: Håndter eksisterende AFP-vedtak
     if (hasAfpOffentlig) {
       return content.harAfpOffentlig_12
     }
-    if (hasAfpOffentligLivsvarigWithBeloep && samtykkeOffentligAFP) {
+    if (
+      loependeLivsvarigAfpOffentlig?.afpStatus &&
+      loependeLivsvarigAfpOffentlig?.maanedligBeloep !== 0 &&
+      samtykkeOffentligAFP
+    ) {
       return content.afpOffentligTpo
     }
     if (hasAfpPrivat) {
