@@ -133,13 +133,6 @@ export const generateAfpContent =
     if (hasAfpOffentligLivsvarigWithBeloep && samtykkeOffentligAFP) {
       return content.afpOffentligTpo
     }
-    if (
-      loependeLivsvarigAfpOffentlig?.afpStatus &&
-      !loependeLivsvarigAfpOffentlig?.maanedligBeloep &&
-      samtykkeOffentligAFP
-    ) {
-      return content.afpOffentligTpo
-    }
     if (hasAfpPrivat) {
       return content.afpPrivatUendret_11
     }
