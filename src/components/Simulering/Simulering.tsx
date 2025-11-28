@@ -10,6 +10,7 @@ import { BodyLong, BodyShort, Heading, HeadingProps } from '@navikt/ds-react'
 import { TabellVisning } from '@/components/TabellVisning'
 import { BeregningContext } from '@/pages/Beregning/context'
 import {
+  useGetAfpOffentligLivsvarigQuery,
   useGetOmstillingsstoenadOgGjenlevendeQuery,
   useGetPersonQuery,
   useGetShowDownloadPdfFeatureToggleQuery,
@@ -31,12 +32,13 @@ import {
   selectIsEndring,
   selectLoependeVedtak,
   selectSamtykke,
+  selectSamtykkeOffentligAFP,
   selectSivilstand,
   selectSkalBeregneAfpKap19,
   selectUfoeregrad,
   selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
-import { formatUttaksalder } from '@/utils/alder'
+import { formatUttaksalder, isAlderOver62 } from '@/utils/alder'
 import {
   useTidligstMuligUttak,
   useTidligstMuligUttakConditions,
@@ -45,6 +47,7 @@ import {
 import { useTableData } from '../TabellVisning/hooks'
 import { useBeregningsdetaljer } from './BeregningsdetaljerForOvergangskull/hooks'
 import { MaanedsbeloepAvansertBeregning } from './MaanedsbeloepAvansertBeregning'
+import { SimuleringAfpOffentligAlert } from './SimuleringAfpOffentligAlert/SimuleringAfpOffentligAlert'
 import { SimuleringEndringBanner } from './SimuleringEndringBanner/SimuleringEndringBanner'
 import { SimuleringGrafNavigation } from './SimuleringGrafNavigation/SimuleringGrafNavigation'
 import { SimuleringPensjonsavtalerAlert } from './SimuleringPensjonsavtalerAlert/SimuleringPensjonsavtalerAlert'
@@ -135,6 +138,17 @@ export const Simulering = ({
   )
   const { data: showPDF } = useGetShowDownloadPdfFeatureToggleQuery()
 
+  const harSamtykketOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
+  const {
+    isSuccess: isAfpOffentligLivsvarigSuccess,
+    data: loependeLivsvarigAfpOffentlig,
+  } = useGetAfpOffentligLivsvarigQuery(undefined, {
+    skip:
+      !harSamtykketOffentligAFP ||
+      !foedselsdato ||
+      !isAlderOver62(foedselsdato),
+  })
+
   useEffect(() => {
     if (harSamtykket && uttaksalder) {
       setOffentligTpRequestBody(
@@ -193,6 +207,7 @@ export const Simulering = ({
     pre2025OffentligAfp,
     afpPrivatListe,
     afpOffentligListe,
+    loependeLivsvarigAfpOffentlig,
     pensjonsavtaler: {
       isLoading: isPensjonsavtalerLoading,
       data: pensjonsavtalerData,
@@ -425,6 +440,12 @@ export const Simulering = ({
           isError: isOffentligTpError,
           data: offentligTpData,
         }}
+      />
+
+      <SimuleringAfpOffentligAlert
+        harSamtykketOffentligAFP={harSamtykketOffentligAFP}
+        isAfpOffentligLivsvarigSuccess={isAfpOffentligLivsvarigSuccess}
+        loependeLivsvarigAfpOffentlig={loependeLivsvarigAfpOffentlig}
       />
 
       {showButtonsAndTable && (

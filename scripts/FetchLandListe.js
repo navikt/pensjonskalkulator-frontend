@@ -1,7 +1,7 @@
 import fs from 'fs'
 import prettier from 'prettier'
 
-fetch(`https://pensjonskalkulator-backend.intern.dev.nav.no/api/v1/land-liste`)
+fetch(`https://pensjonskalkulator-backend.intern.dev.nav.no/api/v1/land-liste`, { timeout: 30000 })
   .then((response) => response.text())
   .then(async (body) => {
     const formattedJson = await prettier.format(

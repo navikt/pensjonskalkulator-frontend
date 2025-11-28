@@ -246,7 +246,7 @@ describe('apiSlice', () => {
 
     it('returnerer undefined ved feilende query', async () => {
       const storeRef = setupStore(undefined, true)
-      mockErrorResponse('/v2/tidligste-hel-uttaksalder', {
+      mockErrorResponse('/v3/tidligste-hel-uttaksalder', {
         status: 500,
         method: 'post',
       })
@@ -286,7 +286,7 @@ describe('apiSlice', () => {
 
     it('returnerer undefined ved feilende query', async () => {
       const storeRef = setupStore(undefined, true)
-      mockErrorResponse('/v8/alderspensjon/simulering', {
+      mockErrorResponse('/v9/alderspensjon/simulering', {
         method: 'post',
       })
       return storeRef
