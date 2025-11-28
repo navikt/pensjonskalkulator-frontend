@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import Highcharts, { SeriesColumnOptions, XAxisOptions } from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
-import { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 import { HandFingerIcon } from '@navikt/aksel-icons'
@@ -24,6 +24,7 @@ import { useAppSelector } from '@/state/hooks'
 import {
   selectAarligInntektFoerUttakBeloepFraSkatt,
   selectAfp,
+  selectAfpUtregningValg,
   selectCurrentSimulation,
   selectEpsHarInntektOver2G,
   selectEpsHarPensjon,
@@ -32,6 +33,7 @@ import {
   selectIsEndring,
   selectLoependeVedtak,
   selectSamtykke,
+  selectSamtykkeOffentligAFP,
   selectSivilstand,
   selectSkalBeregneAfpKap19,
   selectUfoeregrad,
@@ -43,6 +45,7 @@ import {
   useTidligstMuligUttakConditions,
 } from '@/utils/hooks/useTidligstMuligUttakData'
 
+import { generateAfpContent } from '../Grunnlag/GrunnlagAFP/utils'
 import { useTableData } from '../TabellVisning/hooks'
 import { useBeregningsdetaljer } from './BeregningsdetaljerForOvergangskull/hooks'
 import { MaanedsbeloepAvansertBeregning } from './MaanedsbeloepAvansertBeregning'
@@ -56,7 +59,7 @@ import {
   getForbeholdAvsnitt,
   getOmstillingsstoenadAlert,
   getPdfHeadingWithLogo,
-  getPdfPage2Ingress,
+  getGrunnlagIngress,
   getTidligstMuligUttakIngressContent,
 } from './pdf-utils'
 
@@ -106,6 +109,9 @@ export const Simulering = ({
     useAppSelector(selectCurrentSimulation)
   const skalBeregneAfpKap19 = useAppSelector(selectSkalBeregneAfpKap19)
   const chartRef = useRef<HighchartsReact.RefObject>(null)
+  const samtykkeOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
+  const afpUtregningValg = useAppSelector(selectAfpUtregningValg)
+  const { beregningsvalg } = useAppSelector(selectCurrentSimulation)
 
   const [offentligTpRequestBody, setOffentligTpRequestBody] = useState<
     OffentligTpRequestBody | undefined
@@ -226,7 +232,6 @@ export const Simulering = ({
   )
   const { data: omstillingsstoenadOgGjenlevende } =
     useGetOmstillingsstoenadOgGjenlevendeQuery()
-
   useEffect(() => {
     window.addEventListener('beforeprint', () => {
       const locationUrl = window.location.href
@@ -252,6 +257,28 @@ export const Simulering = ({
     hasAFP,
   } = useTidligstMuligUttakConditions(loependeVedtak)
 
+  const { title, content } = React.useMemo(() => {
+    return generateAfpContent(intl)({
+      afpUtregning: afpUtregningValg,
+      erApoteker: erApoteker ?? false,
+      loependeVedtak: loependeVedtak,
+      afpValg: afp,
+      foedselsdato: foedselsdato!,
+      samtykkeOffentligAFP: samtykkeOffentligAFP,
+      beregningsvalg: beregningsvalg,
+    })
+  }, [
+    intl,
+    afp,
+    afpUtregningValg,
+    erApoteker,
+    loependeVedtak,
+    ufoeregrad,
+    beregningsvalg,
+    foedselsdato,
+  ])
+
+  
   const aarligInntektFoerUttakBeloepFraSkatt = useAppSelector(
     selectAarligInntektFoerUttakBeloepFraSkatt
   )
@@ -299,11 +326,13 @@ export const Simulering = ({
       omstillingsstoenadOgGjenlevende?.harLoependeSak
         ? getOmstillingsstoenadAlert(intl, normertPensjonsalder)
         : ''
-    const pdfPage2Ingress = getPdfPage2Ingress({
+    const grunnlagIngress = getGrunnlagIngress({
       intl,
       alderspensjonDetaljerListe: alderspensjonDetaljerListe[0],
       aarligInntektFoerUttakBeloepFraSkatt,
       afpDetaljerListe,
+      title,
+      content,
     })
 
     const finalPdfContent =
@@ -314,7 +343,7 @@ export const Simulering = ({
       omstillingsstoenadAlert +
       helUttaksAlder +
       chartTableWithHeading +
-      pdfPage2Ingress
+      grunnlagIngress
 
     // Set the print content in the hidden div
     const printContentDiv = document.getElementById('print-content')

@@ -11,6 +11,8 @@ import {
   AlderspensjonDetaljerListe,
 } from './BeregningsdetaljerForOvergangskull/hooks'
 
+import { AfpSectionConfig, getAfpSectionsToRender } from './BeregningsdetaljerForOvergangskull/Felles/AfpDetaljer'
+
 const DIN_PENSJON_OPPTJENING_URL = 'https://www.nav.no/pensjon/opptjening'
 export const getCurrentDateTimeFormatted = (): string => {
   const now = new Date()
@@ -51,10 +53,34 @@ export const getPdfLink = ({
   url,
   displayText,
 }: {
-  url: string
+  url?: string
   displayText: string
 }): string => {
+  if(!url) return displayText
   return `<a href="${url}">${displayText}</a>`
+}
+
+function getAfpIngress(
+  intl: IntlShape,
+  title: string,
+  content: string
+): string {
+  return `
+  <h3>${intl.formatMessage({ id: 'grunnlag.afp.title' })}: ${title}</h3>
+  <p>${intl.formatMessage({ id: content },
+      {
+        afpLink: (chunks: string[]) =>
+          getPdfLink({
+            url: 'https://www.afp.no',
+            displayText: chunks.join('') || 'Fellesordningen for AFP',
+          }),
+        goToAFP: (chunks: string[]) =>  getPdfLink({
+            displayText: chunks.join('') || 'AFP (avtalefestet pensjon)',
+          }),
+        goToAvansert: () => '',
+      }
+    )}
+  </p>`
 }
 
 export function getAfpDetaljerHtmlTable(
@@ -65,111 +91,40 @@ export function getAfpDetaljerHtmlTable(
     return ''
   }
 
-  const sections = afpDetaljerListe.map((afpDetaljForValgtUttak) => {
-    if (afpDetaljForValgtUttak.afpPrivat?.length > 0) {
-      return {
-        key: 'afpPrivat',
-        title: `${intl.formatMessage({ id: 'beregning.detaljer.OpptjeningDetaljer.afpPrivat.table.title' })}`,
-        afpDetaljer: afpDetaljForValgtUttak.afpPrivat,
-        boldLastItem: true,
-      }
-    }
-
-    if (afpDetaljForValgtUttak.afpOffentlig?.length > 0) {
-      return {
-        key: 'afpOffentlig',
-        title: 'AFP: Offentlig',
-        afpDetaljer: afpDetaljForValgtUttak.afpOffentlig,
-        noBorderBottom: true,
-      }
-    }
-
-    if (afpDetaljForValgtUttak.pre2025OffentligAfp?.length > 0) {
-      return {
-        key: 'pre2025OffentligAfp',
-        title: `${intl.formatMessage({ id: 'beregning.detaljer.grunnpensjon.afp.table.title' })}`,
-        afpDetaljer: afpDetaljForValgtUttak.pre2025OffentligAfp,
-        boldLastItem: true,
-      }
-    }
-
-    if (afpDetaljForValgtUttak.opptjeningPre2025OffentligAfp?.length > 0) {
-      return {
-        key: 'opptjeningPre2025OffentligAfp',
-        title: `${intl.formatMessage({ id: 'beregning.detaljer.OpptjeningDetaljer.pre2025OffentligAfp.table.titles' })}`,
-        afpDetaljer: afpDetaljForValgtUttak.opptjeningPre2025OffentligAfp,
-      }
-    }
-  })
-
-  // Get only the unique keys from sections to avoid repeating the heading and ingress
-  const afpKey = [...new Set(sections.map((s) => s?.key))][0]
-
-  //TODO : Show heading with uttaksalder or gradertUttaksalder
-  const afpSectionHeading = `<h3>AFP: ${afpKey === 'afpPrivat' ? 'Privat' : 'Offentlig'}</h3>`
-  const afpIngress =
-    afpKey === 'afpPrivat'
-      ? intl.formatMessage(
-          { id: 'grunnlag.afp.ingress.ja_privat' },
-          {
-            afpLink: (chunks: string[]) =>
-              getPdfLink({
-                url: 'https://www.afp.no',
-                displayText: chunks.join('') || 'Fellesordningen for AFP',
-              }),
-          }
-        )
-      : intl.formatMessage({ id: 'grunnlag.afp.ingress.ja_offentlig' })
-
-  return `${afpSectionHeading}
-    <p>${afpIngress}</p>
+  const sections = getAfpSectionsToRender(afpDetaljerListe[0])
+  return `
     ${sections
-      .map((part) =>
-        getAfpTable({
-          key: part?.key ?? '',
-          title: part?.title ?? '',
-          afpDetaljer: part?.afpDetaljer ?? [],
-          boldLastItem: part?.boldLastItem ?? false,
-          noBorderBottom: part?.noBorderBottom ?? false,
-        })
+      .map((afpSection) => {
+        afpSection.titleId = afpSection.titleId ? intl.formatMessage({ id: afpSection.titleId }) : ''
+        return getAfpTable(afpSection)}
       )
       .join('')}`
 }
 
-function getAfpTable({
-  key,
-  title,
-  afpDetaljer,
-  boldLastItem,
-  noBorderBottom,
-}: {
-  key: string
-  title: string
-  afpDetaljer: { tekst?: string; verdi?: string | number }[]
-  boldLastItem?: boolean
-  noBorderBottom?: boolean
-}): string {
-  if (!Array.isArray(afpDetaljer) || afpDetaljer.length === 0) return ''
+function getAfpTable(afpSection: AfpSectionConfig): string {
+  if (!Array.isArray(afpSection.data) || afpSection.data.length === 0) return ''
 
-  const rows = afpDetaljer
+  const { titleId, boldLastItem, data, noBorderBottom, allItemsBold } = afpSection
+  const rows = afpSection.data
     .map((detalj) => {
+      const lastItem = detalj === data[data.length - 1]
       const label = detalj?.tekst ?? ''
       const value = detalj?.verdi ?? ''
-      const boldStyle =
-        boldLastItem && detalj === afpDetaljer[afpDetaljer.length - 1]
+      const boldStyle = allItemsBold || (boldLastItem && lastItem)
           ? 'font-weight: bold;'
           : ''
-      return `<tr><td style='text-align:left; ${boldStyle}'>${escapeHtml(String(label))}:</td><td style='text-align:right; ${boldStyle}'>${escapeHtml(
+      const noBorderBottomStyle = noBorderBottom || lastItem
+          ? 'border-bottom: none;'
+          : ''
+      return `<tr style='${noBorderBottomStyle}'><td style='text-align:left; ${boldStyle}'>${escapeHtml(String(label))}:</td><td style='text-align:right; ${boldStyle}'>${escapeHtml(
         String(value)
       )}</td></tr>`
     })
     .join('\n')
 
-  return `<div style='margin:0 0 12px 0;'>
-      <h4 style='margin:0 0 8px 0;'>
-        ${title}
-      </h4>
-      <table style="width: 33%" role='presentation'>${rows}</table>
+  return `<div style='margin:0 0 12px 0; width: 33%'>
+        <h4 class="afp-grunnlag-title">${titleId}</h4>
+      <table role='presentation'>${rows}</table>
     </div>`
 }
 
@@ -314,12 +269,7 @@ export function getTidligstMuligUttakIngressContent({
         grad: ufoeregrad,
         nedreAldersgrense: formatertNedreAldersgrense,
         normertPensjonsalder: formatertNormertPensjonsalder,
-        link: getPdfLink({
-          url: 'https://nav.no/pensjon/kalkulator/beregning-detaljer',
-          displayText: intl.formatMessage({
-            id: 'omufoeretrygd.avansert_link',
-          }),
-        }),
+        link: '',
       }
     )
     return `<p>${formattedGradertIngress}</p>`
@@ -401,11 +351,13 @@ export function getOmstillingsstoenadAlert(
   </table>`
 }
 
-export function getPdfPage2Ingress({
+export function getGrunnlagIngress({
   intl,
   alderspensjonDetaljerListe,
   aarligInntektFoerUttakBeloepFraSkatt,
   afpDetaljerListe,
+  title,
+  content,
 }: {
   intl: IntlShape
   alderspensjonDetaljerListe: AlderspensjonDetaljerListe
@@ -413,7 +365,9 @@ export function getPdfPage2Ingress({
   aarligInntektFoerUttakBeloepFraSkatt?: {
     beloep: string
     aar: number
-  }
+  },
+  title?: string,
+  content?: string,
 }): string {
   const beloepRaw = aarligInntektFoerUttakBeloepFraSkatt?.beloep
   const aarRaw = aarligInntektFoerUttakBeloepFraSkatt?.aar
@@ -444,14 +398,12 @@ export function getPdfPage2Ingress({
     ${intl.formatMessage(
       { id: 'grunnlag.alderspensjon.ingress' },
       {
-        avansert: getPdfLink({
-          url: 'https://www.nav.no/pensjon/kalkulator/beregning-detaljert',
-          displayText: 'avansert',
-        }),
+        avansert: '',
       }
     )}
   </p>
-  <div>${getPdfLink({
+  ${getAldersPensjonDetaljerHtmlTable(alderspensjonDetaljerListe)}
+    <div>${getPdfLink({
     url: 'https://www.nav.no/alderspensjon#beregning',
     displayText: 'Om reglene for alderspensjon ',
   })}</div>
@@ -459,7 +411,7 @@ export function getPdfPage2Ingress({
     url: DIN_PENSJON_OPPTJENING_URL,
     displayText: 'Din pensjonsopptjening',
   })}</div>
-  ${getAldersPensjonDetaljerHtmlTable(alderspensjonDetaljerListe)}
+  ${getAfpIngress(intl, title || '', content || '')}
   ${getAfpDetaljerHtmlTable(afpDetaljerListe, intl)}
   `
 }
