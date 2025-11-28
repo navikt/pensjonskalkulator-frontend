@@ -160,7 +160,6 @@ export function getAfpSectionsToRender(
   }
 
   return sections
-
 }
 
 function renderAfpDetaljer(afpDetaljForValgtUttak?: AfpDetaljerListe) {

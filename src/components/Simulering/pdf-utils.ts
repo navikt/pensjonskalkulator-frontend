@@ -7,11 +7,13 @@ import { formatInntekt } from '@/utils/inntekt'
 
 import { TableDataRow } from '../TabellVisning/utils'
 import {
+  AfpSectionConfig,
+  getAfpSectionsToRender,
+} from './BeregningsdetaljerForOvergangskull/Felles/AfpDetaljer'
+import {
   AfpDetaljerListe,
   AlderspensjonDetaljerListe,
 } from './BeregningsdetaljerForOvergangskull/hooks'
-
-import { AfpSectionConfig, getAfpSectionsToRender } from './BeregningsdetaljerForOvergangskull/Felles/AfpDetaljer'
 
 const DIN_PENSJON_OPPTJENING_URL = 'https://www.nav.no/pensjon/opptjening'
 export const getCurrentDateTimeFormatted = (): string => {
@@ -56,7 +58,7 @@ export const getPdfLink = ({
   url?: string
   displayText: string
 }): string => {
-  if(!url) return displayText
+  if (!url) return displayText
   return `<a href="${url}">${displayText}</a>`
 }
 
@@ -67,19 +69,21 @@ function getAfpIngress(
 ): string {
   return `
   <h3>${intl.formatMessage({ id: 'grunnlag.afp.title' })}: ${title}</h3>
-  <p>${intl.formatMessage({ id: content },
-      {
-        afpLink: (chunks: string[]) =>
-          getPdfLink({
-            url: 'https://www.afp.no',
-            displayText: chunks.join('') || 'Fellesordningen for AFP',
-          }),
-        goToAFP: (chunks: string[]) =>  getPdfLink({
-            displayText: chunks.join('') || 'AFP (avtalefestet pensjon)',
-          }),
-        goToAvansert: () => '',
-      }
-    )}
+  <p>${intl.formatMessage(
+    { id: content },
+    {
+      afpLink: (chunks: string[]) =>
+        getPdfLink({
+          url: 'https://www.afp.no',
+          displayText: chunks.join('') || 'Fellesordningen for AFP',
+        }),
+      goToAFP: (chunks: string[]) =>
+        getPdfLink({
+          displayText: chunks.join('') || 'AFP (avtalefestet pensjon)',
+        }),
+      goToAvansert: () => '',
+    }
+  )}
   </p>`
 }
 
@@ -95,27 +99,28 @@ export function getAfpDetaljerHtmlTable(
   return `
     ${sections
       .map((afpSection) => {
-        afpSection.titleId = afpSection.titleId ? intl.formatMessage({ id: afpSection.titleId }) : ''
-        return getAfpTable(afpSection)}
-      )
+        afpSection.titleId = afpSection.titleId
+          ? intl.formatMessage({ id: afpSection.titleId })
+          : ''
+        return getAfpTable(afpSection)
+      })
       .join('')}`
 }
 
 function getAfpTable(afpSection: AfpSectionConfig): string {
   if (!Array.isArray(afpSection.data) || afpSection.data.length === 0) return ''
 
-  const { titleId, boldLastItem, data, noBorderBottom, allItemsBold } = afpSection
+  const { titleId, boldLastItem, data, noBorderBottom, allItemsBold } =
+    afpSection
   const rows = afpSection.data
     .map((detalj) => {
       const lastItem = detalj === data[data.length - 1]
       const label = detalj?.tekst ?? ''
       const value = detalj?.verdi ?? ''
-      const boldStyle = allItemsBold || (boldLastItem && lastItem)
-          ? 'font-weight: bold;'
-          : ''
-      const noBorderBottomStyle = noBorderBottom || lastItem
-          ? 'border-bottom: none;'
-          : ''
+      const boldStyle =
+        allItemsBold || (boldLastItem && lastItem) ? 'font-weight: bold;' : ''
+      const noBorderBottomStyle =
+        noBorderBottom || lastItem ? 'border-bottom: none;' : ''
       return `<tr style='${noBorderBottomStyle}'><td style='text-align:left; ${boldStyle}'>${escapeHtml(String(label))}:</td><td style='text-align:right; ${boldStyle}'>${escapeHtml(
         String(value)
       )}</td></tr>`
@@ -365,9 +370,9 @@ export function getGrunnlagIngress({
   aarligInntektFoerUttakBeloepFraSkatt?: {
     beloep: string
     aar: number
-  },
-  title?: string,
-  content?: string,
+  }
+  title?: string
+  content?: string
 }): string {
   const beloepRaw = aarligInntektFoerUttakBeloepFraSkatt?.beloep
   const aarRaw = aarligInntektFoerUttakBeloepFraSkatt?.aar
@@ -404,9 +409,9 @@ export function getGrunnlagIngress({
   </p>
   ${getAldersPensjonDetaljerHtmlTable(alderspensjonDetaljerListe)}
     <div>${getPdfLink({
-    url: 'https://www.nav.no/alderspensjon#beregning',
-    displayText: 'Om reglene for alderspensjon ',
-  })}</div>
+      url: 'https://www.nav.no/alderspensjon#beregning',
+      displayText: 'Om reglene for alderspensjon ',
+    })}</div>
   <div>${getPdfLink({
     url: DIN_PENSJON_OPPTJENING_URL,
     displayText: 'Din pensjonsopptjening',

@@ -57,9 +57,9 @@ import {
   getChartTable,
   getCurrentDateTimeFormatted,
   getForbeholdAvsnitt,
+  getGrunnlagIngress,
   getOmstillingsstoenadAlert,
   getPdfHeadingWithLogo,
-  getGrunnlagIngress,
   getTidligstMuligUttakIngressContent,
 } from './pdf-utils'
 
@@ -278,7 +278,6 @@ export const Simulering = ({
     foedselsdato,
   ])
 
-  
   const aarligInntektFoerUttakBeloepFraSkatt = useAppSelector(
     selectAarligInntektFoerUttakBeloepFraSkatt
   )
