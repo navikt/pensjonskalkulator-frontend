@@ -49,9 +49,9 @@ export const AlderspensjonDetaljerGrunnlag: React.FC<Props> = ({
   function renderHeading(index: number = 0) {
     const isGradertUttak = Boolean(
       gradertUttaksperiode &&
-      !hasPre2025OffentligAfpUttaksalder &&
-      gradertUttaksperiode?.uttaksalder.aar !== uttaksalder?.aar &&
-      gradertUttaksperiode.grad > 0
+        !hasPre2025OffentligAfpUttaksalder &&
+        gradertUttaksperiode?.uttaksalder.aar !== uttaksalder?.aar &&
+        gradertUttaksperiode.grad > 0
     )
 
     return index === 0 && isGradertUttak ? (
