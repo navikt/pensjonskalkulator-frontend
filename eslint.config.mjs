@@ -91,6 +91,7 @@ export default [
       'import/no-extraneous-dependencies': 'error',
       'import/no-duplicates': 'error',
       // SonarJS rules
+      'sonarjs/no-duplicate-string': 'warn',
       'sonarjs/no-identical-functions': 'error',
       'sonarjs/no-redundant-boolean': 'warn',
       'sonarjs/no-unused-collection': 'error',
