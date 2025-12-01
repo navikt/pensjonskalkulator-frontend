@@ -190,7 +190,7 @@ export const getHandlers = (baseUrl: string = API_PATH) => [
     return HttpResponse.json(loependeVedtakResponse)
   }),
 
-  http.post(`${baseUrl}/v2/tidligste-hel-uttaksalder`, async () => {
+  http.post(`${baseUrl}/v3/tidligste-hel-uttaksalder`, async () => {
     await delay(TEST_DELAY)
     return HttpResponse.json(tidligstMuligHeltUttakResponse)
   }),

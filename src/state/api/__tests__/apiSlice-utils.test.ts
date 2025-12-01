@@ -224,6 +224,7 @@ describe('apiSlice - utils', () => {
       epsHarInntektOver2G: null,
       aarligInntektFoerUttakBeloep: '0',
       utenlandsperioder: [],
+      loependeLivsvarigAfpOffentlig: null,
     }
     it('returnerer riktig simuleringstype', () => {
       expect(

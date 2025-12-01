@@ -84,7 +84,7 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/api/v2/tidligste-hel-uttaksalder': {
+  '/api/v3/tidligste-hel-uttaksalder': {
     parameters: {
       query?: never
       header?: never

@@ -32,6 +32,7 @@ export type SafeLoaderFunction<T> = (
 export type Reason =
   | 'INSUFFICIENT_LEVEL_OF_ASSURANCE'
   | 'INVALID_REPRESENTASJON'
+  | 'AFP_IKKE_I_VILKAARSPROEVING'
 
 interface ErrorData {
   reason?: Reason
