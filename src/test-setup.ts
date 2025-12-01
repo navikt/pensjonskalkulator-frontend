@@ -40,7 +40,6 @@ if (!('supports' in window.CSS)) {
 }
 
 vi.mock(
-  // eslint-disable-next-line sonarjs/no-duplicate-string
   '@navikt/nav-dekoratoren-moduler',
   async (): Promise<typeof import('@navikt/nav-dekoratoren-moduler')> => {
     const mod = await vi.importActual<{
