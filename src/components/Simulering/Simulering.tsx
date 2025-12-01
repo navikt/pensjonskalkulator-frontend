@@ -226,9 +226,7 @@ export const Simulering = ({
       pre2025OffentligAfp
     )
 
-  const { data: tidligstMuligUttak } = useTidligstMuligUttak(
-    ufoeregrad
-  )
+  const { data: tidligstMuligUttak } = useTidligstMuligUttak(ufoeregrad)
   const { data: omstillingsstoenadOgGjenlevende } =
     useGetOmstillingsstoenadOgGjenlevendeQuery()
   useEffect(() => {

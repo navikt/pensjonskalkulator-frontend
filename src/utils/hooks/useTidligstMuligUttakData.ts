@@ -64,9 +64,7 @@ export const useTidligstMuligUttakConditions = () => {
  * @param ufoeregrad Optional ufoeregrad parameter
  * @returns The data from the API call, loading state, and success state
  */
-export const useTidligstMuligUttak = (
-  ufoeregrad?: number
-) => {
+export const useTidligstMuligUttak = (ufoeregrad?: number) => {
   const afp = useAppSelector(selectAfp)
   const sivilstand = useAppSelector(selectSivilstand)
   const harSamtykketOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
