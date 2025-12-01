@@ -58,7 +58,7 @@ export const getPdfLink = ({
 export function getDetaljerHtmlTable(
   alderspensjonListe: AlderspensjonDetaljerListe[]
 ): string {
-  if(!alderspensjonListe.length) {
+  if (!alderspensjonListe.length) {
     return ''
   }
   return ''
@@ -200,10 +200,9 @@ export function getTidligstMuligUttakIngressContent({
       const under75Ingress = !isOver75AndNoLoependeVedtak
         ? intl.formatMessage({ id: messageId })
         : ''
-      const tmuIngress = `<p>${intl.formatMessage({
+      return `<p>${intl.formatMessage({
         id: 'tidligstmuliguttak.ingress_1',
       })}<b>${formatUttaksalder(intl, tidligstMuligUttak)}.</b>${under75Ingress}</p>`
-      return tmuIngress
     }
   }
 

@@ -77,7 +77,7 @@ export const generateTidligstMuligHeltUttakRequestBody = (args: {
   epsHarPensjon: boolean | null
   aarligInntektFoerUttakBeloep: string
   aarligInntektVsaPensjon?: { beloep: string; sluttAlder: Alder }
-  utenlandsperioder: Utenlandsperiode[],
+  utenlandsperioder: Utenlandsperiode[]
   loependeLivsvarigAfpOffentlig: AfpOffentligLivsvarig | null
 }): TidligstMuligHeltUttakRequestBody => {
   const {
@@ -89,7 +89,7 @@ export const generateTidligstMuligHeltUttakRequestBody = (args: {
     aarligInntektFoerUttakBeloep,
     aarligInntektVsaPensjon,
     utenlandsperioder,
-    loependeLivsvarigAfpOffentlig
+    loependeLivsvarigAfpOffentlig,
   } = args
 
   return {

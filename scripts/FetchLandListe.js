@@ -1,11 +1,11 @@
 import fs from 'fs'
 import prettier from 'prettier'
 
-const isCI = process.env.CI === "true";
+const isCI = process.env.CI === 'true'
 if (isCI) {
   // Output a mock land list and exit early in CI
-  console.log(JSON.stringify([{ name: "MockLand", code: "XX" }]));
-  process.exit(0);
+  console.log(JSON.stringify([{ name: 'MockLand', code: 'XX' }]))
+  process.exit(0)
 }
 
 fetch(`https://pensjonskalkulator-backend.intern.dev.nav.no/api/v1/land-liste`)

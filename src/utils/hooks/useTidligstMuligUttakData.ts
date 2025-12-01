@@ -19,7 +19,11 @@ import {
   selectSivilstand,
   selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
-import { isAlder75MaanedenFylt, isAlderOver62, isFoedtFoer1964 } from '@/utils/alder'
+import {
+  isAlder75MaanedenFylt,
+  isAlderOver62,
+  isFoedtFoer1964,
+} from '@/utils/alder'
 
 /**
  * Custom hook for pension-related calculations and conditions
