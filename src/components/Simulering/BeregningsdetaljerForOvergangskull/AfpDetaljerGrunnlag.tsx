@@ -76,26 +76,23 @@ export const AfpDetaljerGrunnlag: React.FC<Props> = ({
       ))}
     </VStack>
   )
-
 }
 
 export function getAfpHeading({
-  afpDetaljForValgtUttak, 
+  afpDetaljForValgtUttak,
   index,
   uttaksalder,
   gradertUttaksperiode,
-}:{
-  afpDetaljForValgtUttak: AfpDetaljerListe,
-  index: number,
-  uttaksalder: Alder | null,
+}: {
+  afpDetaljForValgtUttak: AfpDetaljerListe
+  index: number
+  uttaksalder: Alder | null
   gradertUttaksperiode: GradertUttak | null
 }) {
-
   // For AFP Privat - håndter både gradert uttak og 67-års overskrifter
   if (afpDetaljForValgtUttak.afpPrivat.length > 0) {
     // Bestem første alder (yngste mellom gradert uttak og helt uttak)
-    const firstAge =
-      gradertUttaksperiode?.uttaksalder?.aar ?? uttaksalder?.aar
+    const firstAge = gradertUttaksperiode?.uttaksalder?.aar ?? uttaksalder?.aar
     const firstMonths =
       gradertUttaksperiode?.uttaksalder?.maaneder ?? uttaksalder?.maaneder
 

@@ -6,6 +6,7 @@ import { DATE_ENDUSER_FORMAT } from '@/utils/dates'
 import { formatInntekt } from '@/utils/inntekt'
 
 import { TableDataRow } from '../TabellVisning/utils'
+import { getAfpHeading } from './BeregningsdetaljerForOvergangskull/AfpDetaljerGrunnlag'
 import { getAlderspensjonHeading } from './BeregningsdetaljerForOvergangskull/AlderspensjonDetaljerGrunnlag'
 import {
   AfpSectionConfig,
@@ -15,7 +16,6 @@ import {
   AfpDetaljerListe,
   AlderspensjonDetaljerListe,
 } from './BeregningsdetaljerForOvergangskull/hooks'
-import { getAfpHeading } from './BeregningsdetaljerForOvergangskull/AfpDetaljerGrunnlag'
 
 const DIN_PENSJON_OPPTJENING_URL = 'https://www.nav.no/pensjon/opptjening'
 export const getCurrentDateTimeFormatted = (): string => {
@@ -93,11 +93,11 @@ export function getAfpDetaljerHtmlTable({
   afpDetaljerListe,
   intl,
   uttaksalder,
-  gradertUttaksperiode
-}:{
-  afpDetaljerListe: AfpDetaljerListe[] | undefined,
-  intl: IntlShape,
-  uttaksalder: Alder | null,
+  gradertUttaksperiode,
+}: {
+  afpDetaljerListe: AfpDetaljerListe[] | undefined
+  intl: IntlShape
+  uttaksalder: Alder | null
   gradertUttaksperiode: GradertUttak | null
 }): string {
   if (!afpDetaljerListe) {
@@ -117,8 +117,12 @@ export function getAfpDetaljerHtmlTable({
       const headingHtml = afpHeading
         ? `<h4>${intl.formatMessage(
             { id: afpHeading.messageId },
-            { alderAar: `${afpHeading.age} år`,
-              alderMd: afpHeading.months && afpHeading.months > 0 ? `og ${afpHeading.months} måneder` : ''
+            {
+              alderAar: `${afpHeading.age} år`,
+              alderMd:
+                afpHeading.months && afpHeading.months > 0
+                  ? `og ${afpHeading.months} måneder`
+                  : '',
             }
           )}</h4>`
         : ''
@@ -480,6 +484,6 @@ export function getGrunnlagIngress({
     displayText: 'Din pensjonsopptjening',
   })}</div>
   ${getAfpIngress(intl, title || '', content || '')}
-  ${getAfpDetaljerHtmlTable({afpDetaljerListe, intl, uttaksalder, gradertUttaksperiode})}
+  ${getAfpDetaljerHtmlTable({ afpDetaljerListe, intl, uttaksalder, gradertUttaksperiode })}
   `
 }
