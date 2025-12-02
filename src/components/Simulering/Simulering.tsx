@@ -324,11 +324,14 @@ export const Simulering = ({
         : ''
     const grunnlagIngress = getGrunnlagIngress({
       intl,
-      alderspensjonDetaljerListe: alderspensjonDetaljerListe[0],
+      alderspensjonDetaljerListe: alderspensjonDetaljerListe,
       aarligInntektFoerUttakBeloepFraSkatt,
       afpDetaljerListe,
       title,
       content,
+      hasPre2025OffentligAfpUttaksalder: Boolean(pre2025OffentligAfp),
+      uttaksalder,
+      gradertUttaksperiode,
     })
 
     const finalPdfContent =

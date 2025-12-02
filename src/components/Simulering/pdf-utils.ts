@@ -6,6 +6,7 @@ import { DATE_ENDUSER_FORMAT } from '@/utils/dates'
 import { formatInntekt } from '@/utils/inntekt'
 
 import { TableDataRow } from '../TabellVisning/utils'
+import { getAlderspensjonHeading } from './BeregningsdetaljerForOvergangskull/AlderspensjonDetaljerGrunnlag'
 import {
   AfpSectionConfig,
   getAfpSectionsToRender,
@@ -363,9 +364,12 @@ export function getGrunnlagIngress({
   afpDetaljerListe,
   title,
   content,
+  hasPre2025OffentligAfpUttaksalder,
+  uttaksalder,
+  gradertUttaksperiode,
 }: {
   intl: IntlShape
-  alderspensjonDetaljerListe: AlderspensjonDetaljerListe
+  alderspensjonDetaljerListe: AlderspensjonDetaljerListe[]
   afpDetaljerListe: AfpDetaljerListe[]
   aarligInntektFoerUttakBeloepFraSkatt?: {
     beloep: string
@@ -373,6 +377,9 @@ export function getGrunnlagIngress({
   }
   title?: string
   content?: string
+  hasPre2025OffentligAfpUttaksalder: boolean
+  uttaksalder: Alder | null
+  gradertUttaksperiode: GradertUttak | null
 }): string {
   const beloepRaw = aarligInntektFoerUttakBeloepFraSkatt?.beloep
   const aarRaw = aarligInntektFoerUttakBeloepFraSkatt?.aar
@@ -407,11 +414,35 @@ export function getGrunnlagIngress({
       }
     )}
   </p>
-  ${getAldersPensjonDetaljerHtmlTable(alderspensjonDetaljerListe)}
-    <div>${getPdfLink({
-      url: 'https://www.nav.no/alderspensjon#beregning',
-      displayText: 'Om reglene for alderspensjon ',
-    })}</div>
+  
+  ${alderspensjonDetaljerListe
+    .map((alderspensjonVedUttaksValg, index) => {
+      const apHeading = getAlderspensjonHeading({
+        index,
+        hasPre2025OffentligAfpUttaksalder,
+        uttaksalder,
+        gradertUttaksperiode,
+      })
+      const headingHtml = `<h4>${intl.formatMessage(
+        {
+          id: apHeading.messageId,
+        },
+        {
+          alderAar: apHeading.age,
+          alderMd: apHeading.months,
+          grad: apHeading.grad,
+        }
+      )}
+    </h4>`
+      return `${headingHtml}${getAldersPensjonDetaljerHtmlTable(alderspensjonVedUttaksValg)}`
+    })
+    .join('')}
+  
+  <div>${getPdfLink({
+    url: 'https://www.nav.no/alderspensjon#beregning',
+    displayText: 'Om reglene for alderspensjon ',
+  })}
+  </div>
   <div>${getPdfLink({
     url: DIN_PENSJON_OPPTJENING_URL,
     displayText: 'Din pensjonsopptjening',
