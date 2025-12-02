@@ -15,6 +15,7 @@ import {
   AfpDetaljerListe,
   AlderspensjonDetaljerListe,
 } from './BeregningsdetaljerForOvergangskull/hooks'
+import { getAfpHeading } from './BeregningsdetaljerForOvergangskull/AfpDetaljerGrunnlag'
 
 const DIN_PENSJON_OPPTJENING_URL = 'https://www.nav.no/pensjon/opptjening'
 export const getCurrentDateTimeFormatted = (): string => {
@@ -88,24 +89,55 @@ function getAfpIngress(
   </p>`
 }
 
-export function getAfpDetaljerHtmlTable(
+export function getAfpDetaljerHtmlTable({
+  afpDetaljerListe,
+  intl,
+  uttaksalder,
+  gradertUttaksperiode
+}:{
   afpDetaljerListe: AfpDetaljerListe[] | undefined,
-  intl: IntlShape
-): string {
+  intl: IntlShape,
+  uttaksalder: Alder | null,
+  gradertUttaksperiode: GradertUttak | null
+}): string {
   if (!afpDetaljerListe) {
     return ''
   }
 
-  const sections = getAfpSectionsToRender(afpDetaljerListe[0])
-  return `
-    ${sections
-      .map((afpSection) => {
-        afpSection.titleId = afpSection.titleId
-          ? intl.formatMessage({ id: afpSection.titleId })
-          : ''
-        return getAfpTable(afpSection)
+  // For each AfpDetaljer entry, render its sections and concatenate HTML
+  return afpDetaljerListe
+    .map((afpDetaljForValgtUttak, index) => {
+      const afpHeading = getAfpHeading({
+        afpDetaljForValgtUttak,
+        index,
+        uttaksalder,
+        gradertUttaksperiode,
       })
-      .join('')}`
+
+      const headingHtml = afpHeading
+        ? `<h4>${intl.formatMessage(
+            { id: afpHeading.messageId },
+            { alderAar: `${afpHeading.age} år`,
+              alderMd: afpHeading.months && afpHeading.months > 0 ? `og ${afpHeading.months} måneder` : ''
+            }
+          )}</h4>`
+        : ''
+      const sections = getAfpSectionsToRender(afpDetaljForValgtUttak)
+      const sectionHtml = sections
+        .map((afpSection) => {
+          const sectionWithTitle: AfpSectionConfig = {
+            ...afpSection,
+            titleId: afpSection.titleId
+              ? intl.formatMessage({ id: afpSection.titleId })
+              : '',
+          }
+          return getAfpTable(sectionWithTitle)
+        })
+        .join('')
+
+      return `${headingHtml}${sectionHtml}`
+    })
+    .join('')
 }
 
 function getAfpTable(afpSection: AfpSectionConfig): string {
@@ -448,6 +480,6 @@ export function getGrunnlagIngress({
     displayText: 'Din pensjonsopptjening',
   })}</div>
   ${getAfpIngress(intl, title || '', content || '')}
-  ${getAfpDetaljerHtmlTable(afpDetaljerListe, intl)}
+  ${getAfpDetaljerHtmlTable({afpDetaljerListe, intl, uttaksalder, gradertUttaksperiode})}
   `
 }
