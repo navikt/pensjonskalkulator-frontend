@@ -9,7 +9,7 @@ import ekskludertStatusResponse from './data/ekskludert-status.json' with { type
 import erApotekerResponse from './data/er-apoteker.json' with { type: 'json' }
 import inntektResponse from './data/inntekt.json' with { type: 'json' }
 import loependeVedtakResponse from './data/loepende-vedtak.json' with { type: 'json' }
-import offentligTpFoer1963Response from './data/offentlig-tp-foer-1963.json' with { type: 'json' }
+import offentligTpFoer1963Response from './data/offentlig-tp-foer-1963-feil.json' with { type: 'json' }
 import offentligTpResponse from './data/offentlig-tp.json' with { type: 'json' }
 import omstillingsstoenadOgGjenlevendeResponse from './data/omstillingsstoenad-og-gjenlevende.json' with { type: 'json' }
 import personResponse from './data/person.json' with { type: 'json' }

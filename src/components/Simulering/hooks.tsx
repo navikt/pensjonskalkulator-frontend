@@ -54,6 +54,7 @@ import {
   processPensjonsberegningArray,
   processPensjonsberegningArrayForKap19,
   processPre2025OffentligAfpPensjonsberegningArray,
+  processPre2025OffentligAfpWithSpkPerioder,
 } from './utils'
 import { getChartOptions, onPointUnclick } from './utils-highcharts'
 
@@ -73,6 +74,7 @@ export const useSimuleringChartLocalState = (initialValues: {
   pre2025OffentligAfp?: AfpEtterfulgtAvAlderspensjon
   afpPrivatListe?: AfpPensjonsberegning[]
   afpOffentligListe?: AfpPensjonsberegning[]
+  afpPerioderFom65aar?: UtbetalingsperiodeFoer1963[]
   pensjonsavtaler: {
     isLoading: boolean
     data?: {
@@ -101,6 +103,7 @@ export const useSimuleringChartLocalState = (initialValues: {
     pre2025OffentligAfp,
     afpPrivatListe,
     afpOffentligListe,
+    afpPerioderFom65aar,
     pensjonsavtaler,
     offentligTp,
   } = initialValues
@@ -294,11 +297,18 @@ export const useSimuleringChartLocalState = (initialValues: {
                     id: SERIES_DEFAULT.SERIE_AFP.name,
                   }),
                   /* c8 ignore next 1 */
-                  data: processPre2025OffentligAfpPensjonsberegningArray(
-                    pre2025OffentligAfpListe.length - 1,
-                    pre2025OffentligAfpListe,
-                    isEndring
-                  ),
+                  data: afpPerioderFom65aar
+                    ? processPre2025OffentligAfpWithSpkPerioder(
+                        isEndring ? startAar : startAar - 1,
+                        xAxis.length,
+                        pre2025OffentligAfpListe,
+                        afpPerioderFom65aar
+                      )
+                    : processPre2025OffentligAfpPensjonsberegningArray(
+                        pre2025OffentligAfpListe.length - 1,
+                        pre2025OffentligAfpListe,
+                        isEndring
+                      ),
                 } as SeriesOptionsType,
               ]
             : []),
@@ -424,7 +434,9 @@ export const useOffentligTpData = () => {
     selectSkalBeregneKunAlderspensjon
   )
   const { data: person } = useGetPersonQuery()
-
+  const erOffentligTpFoer1963 =
+    ((skalBeregneAfpKap19 || skalBeregneKunAlderspensjon) && harSamtykket) ||
+    false
   const alderspensjonRequestBody: AlderspensjonRequestBody | undefined =
     useMemo(() => {
       if (uttaksalder) {
@@ -629,58 +641,60 @@ export const useOffentligTpData = () => {
     }
   }, [data, skalBeregneAfpKap19, harSamtykket, skalBeregneKunAlderspensjon])
 
-  let erSpkBesteberegning = false
+  let erSpkBesteberegning: boolean | undefined = false
   let tpAfpPeriode = undefined
+  let afpPerioderFom65aar: UtbetalingsperiodeFoer1963[] | undefined = undefined
 
   if (
     !isError &&
     !isFetching &&
-    isOffentligTpFoer1963(
-      ((skalBeregneAfpKap19 || skalBeregneKunAlderspensjon) && harSamtykket) ||
-        false,
-      data!
-    )
+    isOffentligTpFoer1963(erOffentligTpFoer1963, data!)
   ) {
     const navAfp = alderspensjonQuery.data?.pre2025OffentligAfp?.totaltAfpBeloep
-    const tpAfpPerioder =
+
+    const afpPerioder =
       data?.simulertTjenestepensjon?.simuleringsresultat.utbetalingsperioder.filter(
-        (periode) => periode.ytelsekode === 'AFP'
-      )
+        (p) => p.ytelsekode === 'AFP'
+      ) || []
+
     const minsteAlderForAfp: Alder = { aar: 65, maaneder: 0 }
 
-    tpAfpPeriode = finnAllePensjonsavtalerVedUttak(
-      tpAfpPerioder || [],
-      isAlderLikEllerOverAnnenAlder(uttaksalder!, minsteAlderForAfp)
-        ? uttaksalder!
-        : minsteAlderForAfp // Minimum 65 år for AFP fra SPK
-    ).find(
-      (periode) =>
-        periode.startAlder.aar ===
-          (isAlderLikEllerOverAnnenAlder(uttaksalder!, minsteAlderForAfp)
-            ? uttaksalder!.aar
-            : minsteAlderForAfp.aar) &&
-        periode.startAlder.maaneder ===
-          (isAlderLikEllerOverAnnenAlder(uttaksalder!, minsteAlderForAfp)
-            ? uttaksalder!.maaneder
-            : minsteAlderForAfp.maaneder)
+    const kanTaUtAfpVedUttak = isAlderLikEllerOverAnnenAlder(
+      uttaksalder!,
+      minsteAlderForAfp
     )
 
-    console.log('erSpkBesteberegning:', tpAfpPeriode)
-    erSpkBesteberegning =
-      navAfp !== undefined && tpAfpPeriode !== undefined
-        ? tpAfpPeriode.aarligUtbetaling / 12 > navAfp
-        : false
-  }
+    const uttaksAlderEller65 = kanTaUtAfpVedUttak
+      ? uttaksalder!
+      : minsteAlderForAfp
 
+    tpAfpPeriode = finnAllePensjonsavtalerVedUttak(
+      afpPerioder,
+      uttaksAlderEller65
+    ).find(
+      (periode) =>
+        periode.startAlder.aar === uttaksAlderEller65.aar &&
+        periode.startAlder.maaneder === uttaksAlderEller65.maaneder
+    )
+
+    afpPerioderFom65aar = afpPerioder.filter((periode) =>
+      isAlderLikEllerOverAnnenAlder(periode.startAlder, minsteAlderForAfp)
+    )
+
+    erSpkBesteberegning = erOffentligTpFoer1963
+      ? navAfp !== undefined &&
+        tpAfpPeriode !== undefined &&
+        tpAfpPeriode.aarligUtbetaling / 12 > navAfp
+      : undefined
+  }
   return {
     data: dataUtenAfp,
     isLoading,
     isFetching,
     isError,
-    erOffentligTpFoer1963:
-      ((skalBeregneAfpKap19 || skalBeregneKunAlderspensjon) && harSamtykket) ||
-      false,
-    erSpkBesteberegning: erSpkBesteberegning,
+    erOffentligTpFoer1963,
+    erSpkBesteberegning,
     tpAfpPeriode,
+    afpPerioder: erSpkBesteberegning ? afpPerioderFom65aar : undefined,
   }
 }

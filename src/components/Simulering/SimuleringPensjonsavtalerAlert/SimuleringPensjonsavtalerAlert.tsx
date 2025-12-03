@@ -4,10 +4,12 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { Alert, Link } from '@navikt/ds-react'
 
 import { BeregningContext } from '@/pages/Beregning/context'
+import { isOffentligTpFoer1963 } from '@/state/api/typeguards'
 import { useAppSelector } from '@/state/hooks'
 import { selectIsEndring } from '@/state/userInput/selectors'
 import { ALERT_VIST } from '@/utils/loggerConstants'
 import { logger } from '@/utils/logging'
+import { getFormatMessageValues } from '@/utils/translations'
 
 import styles from './SimuleringPensjonsavtalerAlert.module.scss'
 
@@ -33,6 +35,7 @@ interface Props {
     isError: boolean
     data?: OffentligTp | OffentligTpFoer1963
   }
+  erOffentligTpFoer1963: boolean
   isPensjonsavtaleFlagVisible: boolean
 }
 
@@ -40,6 +43,7 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
   pensjonsavtaler,
   offentligTp,
   isPensjonsavtaleFlagVisible,
+  erOffentligTpFoer1963,
 }) => {
   const intl = useIntl()
   const { pensjonsavtalerShowMoreRef } = React.useContext(BeregningContext)
@@ -56,6 +60,23 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
     variant: AlertVariant
     text: string
   }> = []
+
+  if (
+    offentligTpData &&
+    isOffentligTpFoer1963(erOffentligTpFoer1963, offentligTpData) &&
+    offentligTpData.feilkode === 'OPPFYLLER_IKKE_INNGANGSVILKAAR'
+  ) {
+    const text = 'beregning.pensjonsavtaler.alert.afp_offentlig.error'
+    const variant = ALERT_VARIANTS.WARNING
+    logger(ALERT_VIST, {
+      tekst: `Pensjonsavtaler: ${intl.formatMessage({ id: text })}`,
+      variant,
+    })
+    alertsList.push({
+      variant,
+      text,
+    })
+  }
 
   // Varselet om at avtaler starter tidligere enn uttakstidspunkt skal være øverst av varslene
   if (!isPensjonsavtalerLoading && isPensjonsavtaleFlagVisible) {
@@ -220,6 +241,7 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
           <FormattedMessage
             id={alert.text}
             values={{
+              ...getFormatMessageValues(),
               // eslint-disable-next-line react/no-unstable-nested-components
               scrollTo: (chunk) => (
                 <Link

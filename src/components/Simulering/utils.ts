@@ -225,6 +225,67 @@ export const processPre2025OffentligAfpPensjonsberegningArray = (
   return dataArray
 }
 
+export const processPre2025OffentligAfpWithSpkPerioder = (
+  xAxisStartAar: number,
+  xAxisLength: number,
+  pre2025OffentligAfpListe: AfpPensjonsberegning[] = [],
+  afpPerioderFom65aar: UtbetalingsperiodeFoer1963[] | undefined
+): number[] => {
+  if (pre2025OffentligAfpListe.length === 0) {
+    return []
+  }
+  const sluttAlder = xAxisStartAar + xAxisLength - 1
+  const result = new Array<number>(sluttAlder - xAxisStartAar + 1).fill(0)
+
+  console.log('pre2025OffentligAfpListe', pre2025OffentligAfpListe)
+  console.log('afpPerioderFom65aar', afpPerioderFom65aar)
+
+  if (afpPerioderFom65aar && afpPerioderFom65aar.length > 0) {
+    afpPerioderFom65aar.forEach((periode) => {
+      const periodeStartYear = Math.max(xAxisStartAar, periode.startAlder.aar)
+      const periodeEndYear = periode.sluttAlder
+        ? Math.min(sluttAlder, periode.sluttAlder.aar)
+        : sluttAlder
+
+      for (let year = periodeStartYear; year <= periodeEndYear; year++) {
+        if (year >= xAxisStartAar) {
+          const antallMaanederMedPensjon = getAntallMaanederMedPensjon(
+            year,
+            periode.startAlder,
+            periode.sluttAlder
+          )
+
+          const allocatedAmount =
+            (periode.aarligUtbetaling * Math.max(0, antallMaanederMedPensjon)) /
+            12
+          result[year - xAxisStartAar] += allocatedAmount
+        }
+      }
+    })
+  }
+
+  // For years before age 65 where SPK AFP wasn't applied, use pre2025 NAV AFP
+  // pre2025OffentligAfpListe contains beloep for each age starting from pre2025OffentligAfp.alderAar
+  pre2025OffentligAfpListe.forEach((pensjonsberegning) => {
+    const currentYear = pensjonsberegning.alder
+    const resultIndex = currentYear - xAxisStartAar
+
+    // Only fill in NAV AFP if this year doesn't already have SPK AFP and is before age 65
+    if (
+      resultIndex >= 0 &&
+      resultIndex < result.length &&
+      result[resultIndex] === 0 &&
+      currentYear < 65
+    ) {
+      result[resultIndex] = pensjonsberegning.beloep
+    }
+  })
+
+  console.log('result', result)
+
+  return result
+}
+
 export const processAfpPensjonsberegningArray = (
   xAxisStartAar: number, // uttaksaar, (uttaksaar minus 1 for førstegangsøkere)
   xAxisLength: number,

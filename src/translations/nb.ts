@@ -362,6 +362,8 @@ const translations = {
     'Beregningen viser kanskje ikke alt. Du kan ha rett til offentlig tjenestepensjon. Les mer under <scrollTo>pensjonsavtaler</scrollTo>.',
   'beregning.pensjonsavtaler.alert.privat.error':
     'Beregningen viser kanskje ikke alt. Noe gikk galt ved henting av pensjonsavtaler i privat sektor. Les mer under <scrollTo>pensjonsavtaler</scrollTo>.',
+  'beregning.pensjonsavtaler.alert.afp_offentlig.error':
+    'Du har fått en foreløpig beregning av AFP fra Nav. Vi fikk ikke hentet beregning av AFP fra Statens pensjonskasse (SPK). Du må kontakte <spkLink>SPK</spkLink> for mer informasjon om vilkårene for AFP.',
   'beregning.pensjonsavtaler.alert.offentlig.error':
     'Beregningen viser kanskje ikke alt. Noe gikk galt ved henting av pensjonsavtaler i offentlig sektor. Les mer under <scrollTo>pensjonsavtaler</scrollTo>.',
   'beregning.pensjonsavtaler.alert.privat_og_offentlig.error':
