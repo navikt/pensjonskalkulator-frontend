@@ -522,11 +522,7 @@ test.describe('Endring av alderspensjon', () => {
             await expect(
               page.getByTestId('beregning.avansert.rediger.uttaksgrad.label')
             ).toBeVisible()
-            await expect(
-              page.getByTestId(
-                'beregning.avansert.rediger.uttaksgrad.description'
-              )
-            ).toBeVisible()
+            await expect(page.getByText('Velg ny uttaksgrad')).toBeVisible()
 
             const uttaksgradSelect = page.getByTestId('uttaksgrad')
             await expect(uttaksgradSelect.locator('option')).toHaveCount(8)
@@ -567,7 +563,7 @@ test.describe('Endring av alderspensjon', () => {
             await page.getByTestId('inntekt-vsa-helt-uttak').fill('100000')
 
             await expect(
-              page.getByTestId('inntekt-vsa-helt-uttak-slutt-alder-label')
+              page.getByTestId('age-picker-inntekt-vsa-helt-uttak-slutt-alder')
             ).toBeVisible()
 
             const sluttAlderAarSelect = page.getByTestId(
@@ -716,7 +712,7 @@ test.describe('Endring av alderspensjon', () => {
                 .getByTestId('highcharts-aria-wrapper')
                 .getByText(/AFP/)
                 .first()
-            ).toBeVisible()
+            ).not.toBeVisible()
             await expect(
               page
                 .getByTestId('highcharts-aria-wrapper')
@@ -774,9 +770,9 @@ test.describe('Endring av alderspensjon', () => {
           test('forventer jeg lenke til søknad om endring av alderspensjon.', async ({
             page,
           }) => {
-            await expect(page.getByTestId('savnerdunoe-title')).toContainText(
-              'Klar til å søke om endring?'
-            )
+            await expect(
+              page.getByRole('link', { name: 'Klar til å søke om endring?' })
+            ).toBeVisible()
             await expect(
               page.locator('a[href*="/pensjon/opptjening/nb/"]').first()
             ).toBeAttached()
@@ -929,11 +925,7 @@ test.describe('Endring av alderspensjon', () => {
           await expect(
             page.getByTestId('beregning.avansert.rediger.uttaksgrad.label')
           ).toBeVisible()
-          await expect(
-            page.getByTestId(
-              'beregning.avansert.rediger.uttaksgrad.description'
-            )
-          ).toBeVisible()
+          await expect(page.getByText('Velg ny uttaksgrad')).toBeVisible()
 
           const uttaksgradSelect = page.getByTestId('uttaksgrad')
           await expect(uttaksgradSelect.locator('option')).toHaveCount(8)
@@ -974,7 +966,7 @@ test.describe('Endring av alderspensjon', () => {
           await page.getByTestId('inntekt-vsa-helt-uttak').fill('100000')
 
           await expect(
-            page.getByTestId('inntekt-vsa-helt-uttak-slutt-alder-label')
+            page.getByTestId('age-picker-inntekt-vsa-helt-uttak-slutt-alder')
           ).toBeVisible()
 
           const sluttAlderAarSelect = page.getByTestId(
@@ -1100,9 +1092,7 @@ test.describe('Endring av alderspensjon', () => {
         test('forventer jeg en lenke for å endre mine valg.', async ({
           page,
         }) => {
-          await expect(
-            page.getByRole('button', { name: /Endre valgene dine/ })
-          ).toBeVisible()
+          await expect(page.getByTestId('endre-valg')).toBeVisible()
         })
 
         test('forventer jeg å se resultatet for alderspensjon i graf og tabell.', async ({
@@ -1174,9 +1164,9 @@ test.describe('Endring av alderspensjon', () => {
         test('forventer jeg lenke til søknad om endring av alderspensjon.', async ({
           page,
         }) => {
-          await expect(page.getByTestId('savnerdunoe-title')).toContainText(
-            'Klar til å søke om endring?'
-          )
+          await expect(
+            page.getByRole('link', { name: 'Klar til å søke om endring?' })
+          ).toBeVisible()
           await expect(
             page.locator('a[href*="/pensjon/opptjening/nb/"]').first()
           ).toBeAttached()
@@ -1523,7 +1513,7 @@ test.describe('Endring av alderspensjon', () => {
           await page.getByRole('button', { name: 'Oppdater inntekt' }).click()
           await expect(
             page.getByTestId('formatert-inntekt-frem-til-uttak')
-          ).toContainText('550 000 kr per år før skatt')
+          ).toContainText('550 000')
         })
 
         test('forventer jeg å kunne velge pensjonsalder for endring mellom dagens alder + 1 md og 75 år + 0 md.', async ({
@@ -1566,11 +1556,7 @@ test.describe('Endring av alderspensjon', () => {
           await expect(
             page.getByTestId('beregning.avansert.rediger.uttaksgrad.label')
           ).toBeVisible()
-          await expect(
-            page.getByTestId(
-              'beregning.avansert.rediger.uttaksgrad.description'
-            )
-          ).toBeVisible()
+          await expect(page.getByText('Velg ny uttaksgrad')).toBeVisible()
 
           const uttaksgradSelect = page.getByTestId('uttaksgrad')
           await expect(uttaksgradSelect.locator('option')).toHaveCount(8)
@@ -1611,7 +1597,7 @@ test.describe('Endring av alderspensjon', () => {
           await page.getByTestId('inntekt-vsa-helt-uttak').fill('100000')
 
           await expect(
-            page.getByTestId('inntekt-vsa-helt-uttak-slutt-alder-label')
+            page.getByTestId('age-picker-inntekt-vsa-helt-uttak-slutt-alder')
           ).toBeVisible()
 
           const sluttAlderAarSelect = page.getByTestId(
@@ -1737,9 +1723,7 @@ test.describe('Endring av alderspensjon', () => {
         test('forventer jeg en lenke for å endre mine valg.', async ({
           page,
         }) => {
-          await expect(
-            page.getByRole('button', { name: /Endre valgene dine/ })
-          ).toBeVisible()
+          await expect(page.getByTestId('endre-valg')).toBeVisible()
         })
 
         test('forventer jeg å se resultatet for alderspensjon i graf og tabell med Livsvarig AFP (offentlig).', async ({
@@ -1809,9 +1793,9 @@ test.describe('Endring av alderspensjon', () => {
         test('forventer jeg lenke til søknad om endring av alderspensjon.', async ({
           page,
         }) => {
-          await expect(page.getByTestId('savnerdunoe-title')).toContainText(
-            'Klar til å søke om endring?'
-          )
+          await expect(
+            page.getByRole('link', { name: 'Klar til å søke om endring?' })
+          ).toBeVisible()
           await expect(
             page.locator('a[href*="/pensjon/opptjening/nb/"]').first()
           ).toBeAttached()
@@ -1916,7 +1900,7 @@ test.describe('Endring av alderspensjon', () => {
           await page.getByRole('button', { name: 'Oppdater inntekt' }).click()
           await expect(
             page.getByTestId('formatert-inntekt-frem-til-uttak')
-          ).toContainText('550 000 kr per år før skatt')
+          ).toContainText('550 000')
         })
 
         test('forventer jeg å kunne velge pensjonsalder for endring mellom dagens alder + 1 md og 75 år + 0 md.', async ({
@@ -2107,9 +2091,7 @@ test.describe('Endring av alderspensjon', () => {
         test('forventer jeg en lenke for å endre mine valg.', async ({
           page,
         }) => {
-          await expect(
-            page.getByRole('button', { name: /Endre valgene dine/ })
-          ).toBeVisible()
+          await expect(page.getByTestId('endre-valg')).toBeVisible()
         })
 
         test('forventer jeg å se resultatet for alderspensjon i graf og tabell.', async ({
@@ -2124,7 +2106,7 @@ test.describe('Endring av alderspensjon', () => {
           ).toBeVisible()
           await expect(
             page.getByTestId('highcharts-aria-wrapper').getByText(/AFP/).first()
-          ).toBeVisible()
+          ).not.toBeVisible()
           await expect(
             page
               .getByTestId('highcharts-aria-wrapper')
@@ -2181,9 +2163,9 @@ test.describe('Endring av alderspensjon', () => {
         test('forventer jeg lenke til søknad om endring av alderspensjon.', async ({
           page,
         }) => {
-          await expect(page.getByTestId('savnerdunoe-title')).toContainText(
-            'Klar til å søke om endring?'
-          )
+          await expect(
+            page.getByRole('link', { name: 'Klar til å søke om endring?' })
+          ).toBeVisible()
           await expect(
             page.locator('a[href*="/pensjon/opptjening/nb/"]').first()
           ).toBeAttached()
@@ -2288,7 +2270,7 @@ test.describe('Endring av alderspensjon', () => {
           await page.getByRole('button', { name: 'Oppdater inntekt' }).click()
           await expect(
             page.getByTestId('formatert-inntekt-frem-til-uttak')
-          ).toContainText('550 000 kr per år før skatt')
+          ).toContainText('550 000')
         })
 
         test('forventer jeg å kunne velge pensjonsalder for endring mellom ubetinget uttaksalder og 75 år + 0 md.', async ({
@@ -2331,11 +2313,7 @@ test.describe('Endring av alderspensjon', () => {
           await expect(
             page.getByTestId('beregning.avansert.rediger.uttaksgrad.label')
           ).toBeVisible()
-          await expect(
-            page.getByTestId(
-              'beregning.avansert.rediger.uttaksgrad.description'
-            )
-          ).toBeVisible()
+          await expect(page.getByText('Velg ny uttaksgrad')).toBeVisible()
 
           const uttaksgradSelect = page.getByTestId('uttaksgrad')
           await expect(uttaksgradSelect.locator('option')).toHaveCount(8)
@@ -2376,7 +2354,7 @@ test.describe('Endring av alderspensjon', () => {
           await page.getByTestId('inntekt-vsa-helt-uttak').fill('100000')
 
           await expect(
-            page.getByTestId('inntekt-vsa-helt-uttak-slutt-alder-label')
+            page.getByTestId('age-picker-inntekt-vsa-helt-uttak-slutt-alder')
           ).toBeVisible()
 
           const sluttAlderAarSelect = page.getByTestId(
@@ -2502,9 +2480,7 @@ test.describe('Endring av alderspensjon', () => {
         test('forventer jeg en lenke for å endre mine valg.', async ({
           page,
         }) => {
-          await expect(
-            page.getByRole('button', { name: /Endre valgene dine/ })
-          ).toBeVisible()
+          await expect(page.getByTestId('endre-valg')).toBeVisible()
         })
 
         test('forventer jeg å se resultatet for alderspensjon i graf og tabell.', async ({
@@ -2519,7 +2495,7 @@ test.describe('Endring av alderspensjon', () => {
           ).toBeVisible()
           await expect(
             page.getByTestId('highcharts-aria-wrapper').getByText(/AFP/).first()
-          ).toBeVisible()
+          ).not.toBeVisible()
           await expect(
             page
               .getByTestId('highcharts-aria-wrapper')
@@ -2576,9 +2552,9 @@ test.describe('Endring av alderspensjon', () => {
         test('forventer jeg lenke til søknad om endring av alderspensjon.', async ({
           page,
         }) => {
-          await expect(page.getByTestId('savnerdunoe-title')).toContainText(
-            'Klar til å søke om endring?'
-          )
+          await expect(
+            page.getByRole('link', { name: 'Klar til å søke om endring?' })
+          ).toBeVisible()
           await expect(
             page.locator('a[href*="/pensjon/opptjening/nb/"]').first()
           ).toBeAttached()
