@@ -35,7 +35,7 @@ interface Props {
     isError: boolean
     data?: OffentligTp | OffentligTpFoer1963
   }
-  erOffentligTpFoer1963: boolean
+  erOffentligTpFoer1963?: boolean
   isPensjonsavtaleFlagVisible: boolean
 }
 
@@ -63,6 +63,7 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
 
   if (
     offentligTpData &&
+    erOffentligTpFoer1963 &&
     isOffentligTpFoer1963(erOffentligTpFoer1963, offentligTpData) &&
     offentligTpData.feilkode === 'OPPFYLLER_IKKE_INNGANGSVILKAAR'
   ) {
