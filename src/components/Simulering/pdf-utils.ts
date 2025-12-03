@@ -42,7 +42,7 @@ export const getPdfHeadingWithLogo = (isEnkel: boolean): string => {
   return `<table role='presentation' style='width: 100%; margin-bottom: 1em;'>
     <tr class="header-with-logo">
       <td style='width: 70%;'>
-        <h1>Pensjonskalkulator, <span style='font-weight: 200;'>${isEnkel ? 'Enkel' : 'Avansert'} beregning</span></h1>
+        <h1>Pensjonskalkulator: <span style='font-weight: 200;'>${isEnkel ? 'Enkel' : 'Avansert'} beregning</span></h1>
       </td>
       <td style='text-align: right; width: 30%;'>
         <span class='logoContainer'>
@@ -240,15 +240,15 @@ export function getForbeholdAvsnitt(intl: IntlShape): string {
   const kalkulatorUrl = 'https://nav.no/pensjon/kalkulator'
 
   return `<div>
-    <p class="pdf-metadata">
-      <b>${intl.formatMessage({ id: 'grunnlag.forbehold.title' })}: </b>
-      ${intl.formatMessage({ id: 'grunnlag.forbehold.ingress_1' })}
-      <br/>${getPdfLink({ url: forbeholdUrl, displayText: intl.formatMessage({ id: 'grunnlag.forbehold.link' }) })}
-    </p>
     <p>
       <b>NB: </b>
       ${intl.formatMessage({ id: 'grunnlag.forbehold.ingress_2' })}
       ${getPdfLink({ url: kalkulatorUrl, displayText: 'Gå til pensjonskalkulator' })}
+    </p>
+    <p class="pdf-metadata">
+      <b>${intl.formatMessage({ id: 'grunnlag.forbehold.title' })}: </b>
+      ${intl.formatMessage({ id: 'grunnlag.forbehold.ingress_1' })}
+      <br/>${getPdfLink({ url: forbeholdUrl, displayText: intl.formatMessage({ id: 'grunnlag.forbehold.link' }) })}
     </p>
   </div>`
 }
