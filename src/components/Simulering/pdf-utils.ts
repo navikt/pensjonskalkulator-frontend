@@ -335,8 +335,8 @@ export function getTidligstMuligUttakIngressContent({
         nedreAldersgrense: formatertNedreAldersgrense,
         normertPensjonsalder: formatertNormertPensjonsalder,
         link: getPdfLink({
-            displayText: 'Avansert',
-          }),
+          displayText: 'Avansert',
+        }),
       }
     )
     return `<p>${formattedGradertIngress}</p>`
