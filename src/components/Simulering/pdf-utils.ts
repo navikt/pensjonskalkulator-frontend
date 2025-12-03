@@ -198,9 +198,10 @@ export function getTidligstMuligUttakIngressContent({
       const under75Ingress = !isOver75AndNoLoependeVedtak
         ? intl.formatMessage({ id: messageId })
         : ''
-      return `<p>${intl.formatMessage({
+      const tmuIngress = `<p>${intl.formatMessage({
         id: 'tidligstmuliguttak.ingress_1',
       })}<b>${formatUttaksalder(intl, tidligstMuligUttak)}.</b>${under75Ingress}</p>`
+      return tmuIngress
     }
   }
 
