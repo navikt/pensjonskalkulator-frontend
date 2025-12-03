@@ -74,6 +74,7 @@ function getAfpIngress(
   <p>${intl.formatMessage(
     { id: content },
     {
+      ...pdfFormatMessageValues,
       afpLink: (chunks: string[]) =>
         getPdfLink({
           url: 'https://www.afp.no',
@@ -333,7 +334,9 @@ export function getTidligstMuligUttakIngressContent({
         grad: ufoeregrad,
         nedreAldersgrense: formatertNedreAldersgrense,
         normertPensjonsalder: formatertNormertPensjonsalder,
-        link: '',
+        link: getPdfLink({
+            displayText: 'Avansert',
+          }),
       }
     )
     return `<p>${formattedGradertIngress}</p>`
@@ -352,8 +355,8 @@ export function getTidligstMuligUttakIngressContent({
       ${intl.formatMessage(
         { id: 'tidligstmuliguttak.pre2025OffentligAfp.ingress' },
         {
+          ...pdfFormatMessageValues,
           link: getPdfLink({
-            url: 'https://nav.no/pensjon/kalkulator/beregning-detaljer',
             displayText: intl.formatMessage({
               id: 'tidligstmuliguttak.pre2025OffentligAfp.avansert_link',
             }),
