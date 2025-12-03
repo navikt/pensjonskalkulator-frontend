@@ -82,6 +82,8 @@ export const Simulering = ({
     data: offentligTp,
     isLoading: isOffentligTpLoading,
     isError: isOffentligTpError,
+    afpPerioder,
+    erOffentligTpFoer1963,
   } = useOffentligTpData()
 
   const {
@@ -95,7 +97,6 @@ export const Simulering = ({
       skip: !pensjonsavtalerRequestBody || !harSamtykket || !uttaksalder,
     }
   )
-
   useEffect(() => {
     if (harSamtykket && uttaksalder) {
       setPensjonsavtalerRequestBody(
@@ -136,6 +137,7 @@ export const Simulering = ({
     pre2025OffentligAfp,
     afpPrivatListe,
     afpOffentligListe,
+    afpPerioderFom65aar: afpPerioder,
     pensjonsavtaler: {
       isLoading: isPensjonsavtalerLoading,
       data: pensjonsavtalerData,
@@ -225,6 +227,7 @@ export const Simulering = ({
           isError: isOffentligTpError,
           data: offentligTp,
         }}
+        erOffentligTpFoer1963={erOffentligTpFoer1963}
       />
 
       {showButtonsAndTable && (

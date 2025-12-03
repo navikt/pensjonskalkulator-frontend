@@ -225,6 +225,67 @@ export const processPre2025OffentligAfpPensjonsberegningArray = (
   return dataArray
 }
 
+export const processPre2025OffentligAfpWithSpkPerioder = (
+  xAxisStartAar: number,
+  xAxisLength: number,
+  pre2025OffentligAfpListe: AfpPensjonsberegning[] = [],
+  afpPerioderFom65aar: UtbetalingsperiodeFoer1963[] | undefined,
+  isEndring: boolean
+): number[] => {
+  if (pre2025OffentligAfpListe.length === 0) {
+    return []
+  }
+  const sluttAlder = xAxisStartAar + xAxisLength - 1
+  const result = new Array<number>(sluttAlder - xAxisStartAar + 1).fill(0)
+
+  if (afpPerioderFom65aar && afpPerioderFom65aar.length > 0) {
+    afpPerioderFom65aar.forEach((periode) => {
+      const periodeStartYear = Math.max(xAxisStartAar, periode.startAlder.aar)
+      const periodeEndYear = periode.sluttAlder
+        ? Math.min(sluttAlder, periode.sluttAlder.aar)
+        : sluttAlder
+
+      for (let year = periodeStartYear; year <= periodeEndYear; year++) {
+        if (year >= xAxisStartAar) {
+          const antallMaanederMedPensjon = getAntallMaanederMedPensjon(
+            year,
+            periode.startAlder,
+            periode.sluttAlder,
+            true
+          )
+
+          const allocatedAmount =
+            (periode.aarligUtbetaling * Math.max(0, antallMaanederMedPensjon)) /
+            12
+          result[year - xAxisStartAar] += allocatedAmount
+        }
+      }
+    })
+  }
+  console.log('result before pre2025', result)
+  // For years before age 65 where SPK AFP wasn't applied, use pre2025 NAV AFP
+  // pre2025OffentligAfpListe contains beloep for each age starting from pre2025OffentligAfp.alderAar
+  const startIndex = isEndring ? 0 : 1
+  const arrayLength = Math.min(
+    result.length,
+    65 - xAxisStartAar // Only process until age 65
+  )
+
+  for (let index = isEndring ? 0 : 1; index < arrayLength; index++) {
+    if (startIndex <= index && result[index] === 0) {
+      const pensjonsBeregningAtIndex =
+        pre2025OffentligAfpListe[index - startIndex]
+      if (pensjonsBeregningAtIndex) {
+        result[index] = pensjonsBeregningAtIndex.beloep
+      }
+    }
+  }
+
+  console.log('result', result)
+
+  return result
+}
+
 export const processAfpPensjonsberegningArray = (
   xAxisStartAar: number, // uttaksaar, (uttaksaar minus 1 for førstegangsøkere)
   xAxisLength: number,
@@ -266,7 +327,8 @@ export const processAfpPensjonsberegningArray = (
 export const getAntallMaanederMedPensjon = (
   year: number,
   utbetalingsperiodeStartAlder: Alder,
-  utbetalingsperiodeSluttAlder?: Alder
+  utbetalingsperiodeSluttAlder?: Alder,
+  erAfp?: boolean
 ) => {
   // Hvis vi viser første år av avtalen, tar vi høyde for startMaaned, hvis ikke teller avtalen fra måned 0 (fult år)
   const periodStartMonth =
@@ -280,7 +342,7 @@ export const getAntallMaanederMedPensjon = (
       ? utbetalingsperiodeSluttAlder.maaneder
       : 11
 
-  return periodEndMonth - periodStartMonth + 1
+  return periodEndMonth - periodStartMonth + (erAfp ? 0 : 1)
 }
 
 export const processPensjonsavtalerArray = (
