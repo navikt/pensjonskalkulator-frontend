@@ -236,7 +236,6 @@ export const useSimuleringChartLocalState = (initialValues: {
       : gradertUttaksperiode
         ? gradertUttaksperiode.uttaksalder.maaneder
         : uttaksalder?.maaneder
-
     if (startAar && startMaaned !== undefined && alderspensjonListe) {
       setChartOptions({
         ...getChartDefaults(xAxis),
@@ -302,7 +301,8 @@ export const useSimuleringChartLocalState = (initialValues: {
                         isEndring ? startAar : startAar - 1,
                         xAxis.length,
                         pre2025OffentligAfpListe,
-                        afpPerioderFom65aar
+                        afpPerioderFom65aar,
+                        isEndring
                       )
                     : processPre2025OffentligAfpPensjonsberegningArray(
                         pre2025OffentligAfpListe.length - 1,
@@ -644,14 +644,16 @@ export const useOffentligTpData = () => {
   let erSpkBesteberegning: boolean | undefined = false
   let tpAfpPeriode = undefined
   let afpPerioderFom65aar: UtbetalingsperiodeFoer1963[] | undefined = undefined
+  let offentligTpFoer1963Data = undefined
 
   if (
     !isError &&
     !isFetching &&
     isOffentligTpFoer1963(erOffentligTpFoer1963, data!)
   ) {
-    const navAfp = alderspensjonQuery.data?.pre2025OffentligAfp?.totaltAfpBeloep
+    offentligTpFoer1963Data = data
 
+    const navAfp = alderspensjonQuery.data?.pre2025OffentligAfp?.totaltAfpBeloep
     const afpPerioder =
       data?.simulertTjenestepensjon?.simuleringsresultat.utbetalingsperioder.filter(
         (p) => p.ytelsekode === 'AFP'
@@ -695,6 +697,9 @@ export const useOffentligTpData = () => {
     erOffentligTpFoer1963,
     erSpkBesteberegning,
     tpAfpPeriode,
-    afpPerioder: erSpkBesteberegning ? afpPerioderFom65aar : undefined,
+    afpPerioder:
+      erSpkBesteberegning && !offentligTpFoer1963Data?.feilkode
+        ? afpPerioderFom65aar
+        : undefined,
   }
 }

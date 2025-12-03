@@ -69,7 +69,7 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
     const text = 'beregning.pensjonsavtaler.alert.afp_offentlig.error'
     const variant = ALERT_VARIANTS.WARNING
     logger(ALERT_VIST, {
-      tekst: `Pensjonsavtaler: ${intl.formatMessage({ id: text })}`,
+      tekst: `Pensjonsavtaler:`,
       variant,
     })
     alertsList.push({
