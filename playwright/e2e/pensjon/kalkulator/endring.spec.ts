@@ -284,11 +284,11 @@ test.describe('Endring av alderspensjon', () => {
               .getByRole('button', { name: 'Opphold utenfor Norge' })
               .click()
             await expect(
-              page.getByText(
-                'Beregningen bruker trygdetiden du har i Norge fra vedtaket ditt om alderspensjon.'
-              )
+              page.getByTestId('grunnlag.opphold.ingress.endring')
             ).toBeVisible()
-            await expect(page.getByText('AFP: Offentlig')).toBeVisible()
+            await expect(page.getByTestId('grunnlag.afp.title')).toContainText(
+              'Offentlig'
+            )
           })
         })
       })
@@ -357,11 +357,13 @@ test.describe('Endring av alderspensjon', () => {
             .getByRole('button', { name: 'Opphold utenfor Norge' })
             .click()
           await expect(
-            page.getByText(
-              'Beregningen bruker trygdetiden du har i Norge fra vedtaket ditt om alderspensjon.'
-            )
-          ).toBeVisible()
-          await expect(page.getByText('AFP: Privat')).toBeVisible()
+            page.getByTestId('grunnlag.opphold.ingress.endring')
+          ).toContainText(
+            'Beregningen bruker trygdetiden du har i Norge fra vedtaket ditt om alderspensjon.'
+          )
+          await expect(page.getByTestId('grunnlag.afp.title')).toContainText(
+            'Privat'
+          )
         })
       })
 
@@ -429,11 +431,13 @@ test.describe('Endring av alderspensjon', () => {
             .getByRole('button', { name: 'Opphold utenfor Norge' })
             .click()
           await expect(
-            page.getByText(
-              'Beregningen bruker trygdetiden du har i Norge fra vedtaket ditt om alderspensjon.'
-            )
-          ).toBeVisible()
-          await expect(page.getByText('AFP: Vet ikke')).toBeVisible()
+            page.getByTestId('grunnlag.opphold.ingress.endring')
+          ).toContainText(
+            'Beregningen bruker trygdetiden du har i Norge fra vedtaket ditt om alderspensjon.'
+          )
+          await expect(page.getByTestId('grunnlag.afp.title')).toContainText(
+            'Vet ikke'
+          )
         })
       })
 
@@ -518,7 +522,11 @@ test.describe('Endring av alderspensjon', () => {
             await expect(
               page.getByTestId('beregning.avansert.rediger.uttaksgrad.label')
             ).toBeVisible()
-            await expect(page.getByText('Velg ny uttaksgrad')).toBeVisible()
+            await expect(
+              page.getByTestId(
+                'beregning.avansert.rediger.uttaksgrad.description'
+              )
+            ).toBeVisible()
 
             const uttaksgradSelect = page.getByTestId('uttaksgrad')
             await expect(uttaksgradSelect.locator('option')).toHaveCount(8)
@@ -559,7 +567,7 @@ test.describe('Endring av alderspensjon', () => {
             await page.getByTestId('inntekt-vsa-helt-uttak').fill('100000')
 
             await expect(
-              page.getByText('Til hvilken alder forventer du å ha inntekten?')
+              page.getByTestId('inntekt-vsa-helt-uttak-slutt-alder-label')
             ).toBeVisible()
 
             const sluttAlderAarSelect = page.getByTestId(
@@ -703,7 +711,12 @@ test.describe('Endring av alderspensjon', () => {
                 .getByText('Pensjonsgivende inntekt')
             ).toBeVisible()
 
-            await expect(page.getByText(/AFP/).first()).toBeVisible()
+            await expect(
+              page
+                .getByTestId('highcharts-aria-wrapper')
+                .getByText(/AFP/)
+                .first()
+            ).toBeVisible()
             await expect(
               page
                 .getByTestId('highcharts-aria-wrapper')
@@ -753,15 +766,17 @@ test.describe('Endring av alderspensjon', () => {
             await expect(
               page.getByTestId('grunnlag.opphold.ingress.endring')
             ).toBeVisible()
-            await expect(page.getByText('AFP: Nei')).toBeVisible()
+            await expect(page.getByTestId('grunnlag.afp.title')).toContainText(
+              'Nei'
+            )
           })
 
           test('forventer jeg lenke til søknad om endring av alderspensjon.', async ({
             page,
           }) => {
-            await expect(
-              page.getByText('Klar til å søke om endring?')
-            ).toBeVisible()
+            await expect(page.getByTestId('savnerdunoe-title')).toContainText(
+              'Klar til å søke om endring?'
+            )
             await expect(
               page.locator('a[href*="/pensjon/opptjening/nb/"]').first()
             ).toBeAttached()
@@ -914,7 +929,11 @@ test.describe('Endring av alderspensjon', () => {
           await expect(
             page.getByTestId('beregning.avansert.rediger.uttaksgrad.label')
           ).toBeVisible()
-          await expect(page.getByText('Velg ny uttaksgrad')).toBeVisible()
+          await expect(
+            page.getByTestId(
+              'beregning.avansert.rediger.uttaksgrad.description'
+            )
+          ).toBeVisible()
 
           const uttaksgradSelect = page.getByTestId('uttaksgrad')
           await expect(uttaksgradSelect.locator('option')).toHaveCount(8)
@@ -955,7 +974,7 @@ test.describe('Endring av alderspensjon', () => {
           await page.getByTestId('inntekt-vsa-helt-uttak').fill('100000')
 
           await expect(
-            page.getByText('Til hvilken alder forventer du å ha inntekten?')
+            page.getByTestId('inntekt-vsa-helt-uttak-slutt-alder-label')
           ).toBeVisible()
 
           const sluttAlderAarSelect = page.getByTestId(
@@ -1060,8 +1079,10 @@ test.describe('Endring av alderspensjon', () => {
           page,
         }) => {
           await expect(
-            page.getByText('Du har i dag 80 % alderspensjon.')
-          ).toBeVisible()
+            page.locator(
+              '[data-intl="beregning.endring.rediger.vedtak_grad_status"]'
+            )
+          ).toContainText('Du har i dag 80 % alderspensjon.')
         })
 
         test('forventer jeg informasjon om hva siste månedlige utbetaling var og hva månedlig alderspensjon vil bli de månedene jeg har valgt å endre fra.', async ({
@@ -1079,7 +1100,9 @@ test.describe('Endring av alderspensjon', () => {
         test('forventer jeg en lenke for å endre mine valg.', async ({
           page,
         }) => {
-          await expect(page.getByText('Endre valgene dine')).toBeVisible()
+          await expect(
+            page.getByRole('button', { name: /Endre valgene dine/ })
+          ).toBeVisible()
         })
 
         test('forventer jeg å se resultatet for alderspensjon i graf og tabell.', async ({
@@ -1087,54 +1110,73 @@ test.describe('Endring av alderspensjon', () => {
         }) => {
           await expect(page.getByTestId('beregning-heading')).toBeVisible()
           await expect(
-            page.getByText('Pensjonsgivende inntekt').first()
+            page
+              .getByTestId('highcharts-aria-wrapper')
+              .getByText('Pensjonsgivende inntekt')
+              .first()
           ).toBeVisible()
-          await expect(page.getByText(/AFP/).first()).toBeVisible()
           await expect(
-            page.getByText('Pensjonsavtaler (arbeidsgivere m.m.)')
+            page.getByTestId('highcharts-aria-wrapper').getByText(/AFP/).first()
+          ).toBeVisible()
+          await expect(
+            page
+              .getByTestId('highcharts-aria-wrapper')
+              .getByText('Pensjonsavtaler (arbeidsgivere m.m.)')
           ).not.toBeVisible()
           await expect(
-            page.getByText('Alderspensjon (Nav)').first()
+            page
+              .getByTestId('highcharts-aria-wrapper')
+              .getByText('Alderspensjon (Nav)')
+              .first()
           ).toBeVisible()
           await expect(
-            page.getByText(/Tusen kroner|Kroner/).first()
+            page
+              .getByTestId('highcharts-aria-wrapper')
+              .getByText(/Tusen kroner|Kroner/)
+              .first()
           ).toBeVisible()
-          await expect(page.getByText('65').first()).toBeVisible()
-          await expect(page.getByText('77+').first()).toBeVisible()
+          await expect(
+            page.getByTestId('highcharts-aria-wrapper').getByText('65').first()
+          ).toBeVisible()
+          await expect(
+            page.getByTestId('highcharts-aria-wrapper').getByText('77+').first()
+          ).toBeVisible()
         })
 
         test('forventer jeg informasjon om at pensjonsavtaler ikke er med i beregningen.', async ({
           page,
         }) => {
-          await expect(
-            page.getByText(
-              'Pensjonsavtaler fra arbeidsgivere og egen sparing er ikke med i beregningen.'
-            )
-          ).toBeVisible()
+          await expect(page.getByTestId('pensjonsavtaler-alert')).toContainText(
+            'Pensjonsavtaler fra arbeidsgivere og egen sparing er ikke med i beregningen.'
+          )
         })
 
         test('forventer jeg tilpasset informasjon i grunnlag: at opphold utenfor Norge er hentet fra vedtak og at AFP Privat er uendret ', async ({
           page,
         }) => {
           await expect(page.getByTestId('beregning-heading')).toBeVisible()
-          await expect(page.getByText('Om pensjonen din')).toBeVisible()
-          await page.getByText('Sivilstand:').click()
-          await page.getByText('Opphold utenfor Norge:').click()
-          await expect(page.getByText('Fra vedtak').first()).toBeVisible()
+          await expect(page.getByTestId('grunnlag.title')).toBeVisible()
+          await page.getByRole('button', { name: /Sivilstand/ }).click()
+          await page
+            .getByRole('button', { name: /Opphold utenfor Norge/ })
+            .click()
           await expect(
-            page.getByText(
-              'Beregningen bruker trygdetiden du har i Norge fra vedtaket ditt om alderspensjon.'
-            )
+            page.getByTestId('grunnlag.opphold.value.endring')
           ).toBeVisible()
-          await expect(page.getByText('AFP: Privat (uendret)')).toBeVisible()
+          await expect(
+            page.getByTestId('grunnlag.opphold.ingress.endring')
+          ).toBeVisible()
+          await expect(page.getByTestId('grunnlag.afp.title')).toContainText(
+            'Privat (uendret)'
+          )
         })
 
         test('forventer jeg lenke til søknad om endring av alderspensjon.', async ({
           page,
         }) => {
-          await expect(
-            page.getByText('Klar til å søke om endring?')
-          ).toBeVisible()
+          await expect(page.getByTestId('savnerdunoe-title')).toContainText(
+            'Klar til å søke om endring?'
+          )
           await expect(
             page.locator('a[href*="/pensjon/opptjening/nb/"]').first()
           ).toBeAttached()
@@ -1402,12 +1444,14 @@ test.describe('Endring av alderspensjon', () => {
       test('forventer jeg informasjon på startsiden om at jeg har alderspensjon og AFP privat og hvilken uttaksgrad.', async ({
         page,
       }) => {
-        await expect(page.getByText('Hei Aprikos!')).toBeVisible()
+        await expect(page.getByTestId('stegvisning.start.title')).toHaveText(
+          'Hei Aprikos!'
+        )
         await expect(
-          page.getByText(
-            'Du har nå 80 % alderspensjon og AFP i offentlig sektor'
-          )
-        ).toBeVisible()
+          page.getByTestId('stegvisning-start-ingress-endring')
+        ).toContainText(
+          'Du har nå 80 % alderspensjon og AFP i offentlig sektor'
+        )
       })
 
       test('forventer jeg å kunne gå videre ved å trykke kom i gang ', async ({
@@ -1470,22 +1514,24 @@ test.describe('Endring av alderspensjon', () => {
           page,
         }) => {
           await expect(
-            page.getByText('Pensjonsgivende årsinntekt frem til endring')
-          ).toBeVisible()
+            page.getByTestId(
+              'beregning.avansert.rediger.inntekt_frem_til_endring.label'
+            )
+          ).toContainText('Pensjonsgivende årsinntekt frem til endring')
           await page.getByRole('button', { name: 'Endre inntekt' }).click()
           await page.getByTestId('inntekt-textfield').fill('550000')
           await page.getByRole('button', { name: 'Oppdater inntekt' }).click()
           await expect(
-            page.getByText('550 000 kr per år før skatt')
-          ).toBeVisible()
+            page.getByTestId('formatert-inntekt-frem-til-uttak')
+          ).toContainText('550 000 kr per år før skatt')
         })
 
         test('forventer jeg å kunne velge pensjonsalder for endring mellom dagens alder + 1 md og 75 år + 0 md.', async ({
           page,
         }) => {
           await expect(
-            page.getByText('Når vil du endre alderspensjonen din?')
-          ).toBeVisible()
+            page.getByTestId('velguttaksalder.endring.title')
+          ).toContainText('Når vil du endre alderspensjonen din?')
 
           const yearSelect = page.getByTestId(
             'age-picker-uttaksalder-helt-uttak-aar'
@@ -1518,9 +1564,13 @@ test.describe('Endring av alderspensjon', () => {
           page,
         }) => {
           await expect(
-            page.getByText('Hvor mye alderspensjon vil du ta ut?')
+            page.getByTestId('beregning.avansert.rediger.uttaksgrad.label')
           ).toBeVisible()
-          await expect(page.getByText('Velg ny uttaksgrad')).toBeVisible()
+          await expect(
+            page.getByTestId(
+              'beregning.avansert.rediger.uttaksgrad.description'
+            )
+          ).toBeVisible()
 
           const uttaksgradSelect = page.getByTestId('uttaksgrad')
           await expect(uttaksgradSelect.locator('option')).toHaveCount(8)
@@ -1561,7 +1611,7 @@ test.describe('Endring av alderspensjon', () => {
           await page.getByTestId('inntekt-vsa-helt-uttak').fill('100000')
 
           await expect(
-            page.getByText('Til hvilken alder forventer du å ha inntekten?')
+            page.getByTestId('inntekt-vsa-helt-uttak-slutt-alder-label')
           ).toBeVisible()
 
           const sluttAlderAarSelect = page.getByTestId(
@@ -1666,8 +1716,10 @@ test.describe('Endring av alderspensjon', () => {
           page,
         }) => {
           await expect(
-            page.getByText('Du har i dag 80 % alderspensjon.')
-          ).toBeVisible()
+            page.locator(
+              '[data-intl="beregning.endring.rediger.vedtak_grad_status"]'
+            )
+          ).toContainText('Du har i dag 80 % alderspensjon.')
         })
 
         test('forventer jeg informasjon om hva siste månedlige utbetaling var og hva månedlig alderspensjon vil bli de månedene jeg har valgt å endre fra.', async ({
@@ -1685,7 +1737,9 @@ test.describe('Endring av alderspensjon', () => {
         test('forventer jeg en lenke for å endre mine valg.', async ({
           page,
         }) => {
-          await expect(page.getByText('Endre valgene dine')).toBeVisible()
+          await expect(
+            page.getByRole('button', { name: /Endre valgene dine/ })
+          ).toBeVisible()
         })
 
         test('forventer jeg å se resultatet for alderspensjon i graf og tabell med Livsvarig AFP (offentlig).', async ({
@@ -1693,54 +1747,71 @@ test.describe('Endring av alderspensjon', () => {
         }) => {
           await expect(page.getByTestId('beregning-heading')).toBeVisible()
           await expect(
-            page.getByText('Pensjonsgivende inntekt').first()
+            page
+              .getByTestId('highcharts-aria-wrapper')
+              .getByText('Pensjonsgivende inntekt')
+              .first()
           ).toBeVisible()
 
           await expect(
-            page.getByText('Pensjonsavtaler (arbeidsgivere m.m.)')
+            page
+              .getByTestId('highcharts-aria-wrapper')
+              .getByText('Pensjonsavtaler (arbeidsgivere m.m.)')
           ).not.toBeVisible()
           await expect(
-            page.getByText('Alderspensjon (Nav)').first()
+            page
+              .getByTestId('highcharts-aria-wrapper')
+              .getByText('Alderspensjon (Nav)')
+              .first()
           ).toBeVisible()
           await expect(
-            page.getByText(/Tusen kroner|Kroner/).first()
+            page
+              .getByTestId('highcharts-aria-wrapper')
+              .getByText(/Tusen kroner|Kroner/)
+              .first()
           ).toBeVisible()
-          await expect(page.getByText('65').first()).toBeVisible()
-          await expect(page.getByText('77+').first()).toBeVisible()
+          await expect(
+            page.getByTestId('highcharts-aria-wrapper').getByText('65').first()
+          ).toBeVisible()
+          await expect(
+            page.getByTestId('highcharts-aria-wrapper').getByText('77+').first()
+          ).toBeVisible()
         })
 
         test('forventer jeg informasjon om at pensjonsavtaler ikke er med i beregningen.', async ({
           page,
         }) => {
-          await expect(
-            page.getByText(
-              'Pensjonsavtaler fra arbeidsgivere og egen sparing er ikke med i beregningen.'
-            )
-          ).toBeVisible()
+          await expect(page.getByTestId('pensjonsavtaler-alert')).toContainText(
+            'Pensjonsavtaler fra arbeidsgivere og egen sparing er ikke med i beregningen.'
+          )
         })
 
         test('forventer jeg tilpasset informasjon i grunnlag: at opphold utenfor Norge er hentet fra vedtak og at AFP Offentlig er uendret.', async ({
           page,
         }) => {
           await expect(page.getByTestId('beregning-heading')).toBeVisible()
-          await expect(page.getByText('Om pensjonen din')).toBeVisible()
-          await page.getByText('Sivilstand:').click()
-          await page.getByText('Opphold utenfor Norge:').click()
-          await expect(page.getByText('Fra vedtak').first()).toBeVisible()
+          await expect(page.getByTestId('grunnlag.title')).toBeVisible()
+          await page.getByRole('button', { name: /Sivilstand/ }).click()
+          await page
+            .getByRole('button', { name: /Opphold utenfor Norge/ })
+            .click()
           await expect(
-            page.getByText(
-              'Beregningen bruker trygdetiden du har i Norge fra vedtaket ditt om alderspensjon.'
-            )
+            page.getByTestId('grunnlag.opphold.value.endring')
           ).toBeVisible()
-          await expect(page.getByText('AFP: Offentlig')).toBeVisible()
+          await expect(
+            page.getByTestId('grunnlag.opphold.ingress.endring')
+          ).toBeVisible()
+          await expect(page.getByTestId('grunnlag.afp.title')).toContainText(
+            'Offentlig'
+          )
         })
 
         test('forventer jeg lenke til søknad om endring av alderspensjon.', async ({
           page,
         }) => {
-          await expect(
-            page.getByText('Klar til å søke om endring?')
-          ).toBeVisible()
+          await expect(page.getByTestId('savnerdunoe-title')).toContainText(
+            'Klar til å søke om endring?'
+          )
           await expect(
             page.locator('a[href*="/pensjon/opptjening/nb/"]').first()
           ).toBeAttached()
@@ -1769,10 +1840,12 @@ test.describe('Endring av alderspensjon', () => {
       test('forventer jeg informasjon på startsiden om at jeg har alderspensjon og uføetrygd og hvilken uttaksgrad.', async ({
         page,
       }) => {
-        await expect(page.getByText('Hei Aprikos!')).toBeVisible()
+        await expect(page.getByTestId('stegvisning.start.title')).toHaveText(
+          'Hei Aprikos!'
+        )
         await expect(
-          page.getByText('Du har nå 50 % alderspensjon og 50 % uføretrygd')
-        ).toBeVisible()
+          page.getByTestId('stegvisning-start-ingress-endring')
+        ).toContainText('Du har nå 50 % alderspensjon og 50 % uføretrygd')
       })
 
       test('forventer jeg å kunne gå videre ved å trykke kom i gang ', async ({
@@ -1834,22 +1907,24 @@ test.describe('Endring av alderspensjon', () => {
           page,
         }) => {
           await expect(
-            page.getByText('Pensjonsgivende årsinntekt frem til endring')
-          ).toBeVisible()
+            page.getByTestId(
+              'beregning.avansert.rediger.inntekt_frem_til_endring.label'
+            )
+          ).toContainText('Pensjonsgivende årsinntekt frem til endring')
           await page.getByRole('button', { name: 'Endre inntekt' }).click()
           await page.getByTestId('inntekt-textfield').fill('550000')
           await page.getByRole('button', { name: 'Oppdater inntekt' }).click()
           await expect(
-            page.getByText('550 000 kr per år før skatt')
-          ).toBeVisible()
+            page.getByTestId('formatert-inntekt-frem-til-uttak')
+          ).toContainText('550 000 kr per år før skatt')
         })
 
         test('forventer jeg å kunne velge pensjonsalder for endring mellom dagens alder + 1 md og 75 år + 0 md.', async ({
           page,
         }) => {
           await expect(
-            page.getByText('Når vil du endre alderspensjonen din?')
-          ).toBeVisible()
+            page.getByTestId('velguttaksalder.endring.title')
+          ).toContainText('Når vil du endre alderspensjonen din?')
 
           const yearSelect = page.getByTestId(
             'age-picker-uttaksalder-helt-uttak-aar'
@@ -2011,8 +2086,10 @@ test.describe('Endring av alderspensjon', () => {
           page,
         }) => {
           await expect(
-            page.getByText('Du har i dag 50 % alderspensjon.')
-          ).toBeVisible()
+            page.locator(
+              '[data-intl="beregning.endring.rediger.vedtak_grad_status"]'
+            )
+          ).toContainText('Du har i dag 50 % alderspensjon.')
         })
 
         test('forventer jeg informasjon om hva siste månedlige utbetaling var og hva månedlig alderspensjon vil bli de månedene jeg har valgt å endre fra.', async ({
@@ -2030,7 +2107,9 @@ test.describe('Endring av alderspensjon', () => {
         test('forventer jeg en lenke for å endre mine valg.', async ({
           page,
         }) => {
-          await expect(page.getByText('Endre valgene dine')).toBeVisible()
+          await expect(
+            page.getByRole('button', { name: /Endre valgene dine/ })
+          ).toBeVisible()
         })
 
         test('forventer jeg å se resultatet for alderspensjon i graf og tabell.', async ({
@@ -2038,54 +2117,73 @@ test.describe('Endring av alderspensjon', () => {
         }) => {
           await expect(page.getByTestId('beregning-heading')).toBeVisible()
           await expect(
-            page.getByText('Pensjonsgivende inntekt').first()
+            page
+              .getByTestId('highcharts-aria-wrapper')
+              .getByText('Pensjonsgivende inntekt')
+              .first()
           ).toBeVisible()
-          await expect(page.getByText(/AFP/).first()).toBeVisible()
           await expect(
-            page.getByText('Pensjonsavtaler (arbeidsgivere m.m.)')
+            page.getByTestId('highcharts-aria-wrapper').getByText(/AFP/).first()
+          ).toBeVisible()
+          await expect(
+            page
+              .getByTestId('highcharts-aria-wrapper')
+              .getByText('Pensjonsavtaler (arbeidsgivere m.m.)')
           ).not.toBeVisible()
           await expect(
-            page.getByText('Alderspensjon (Nav)').first()
+            page
+              .getByTestId('highcharts-aria-wrapper')
+              .getByText('Alderspensjon (Nav)')
+              .first()
           ).toBeVisible()
           await expect(
-            page.getByText(/Tusen kroner|Kroner/).first()
+            page
+              .getByTestId('highcharts-aria-wrapper')
+              .getByText(/Tusen kroner|Kroner/)
+              .first()
           ).toBeVisible()
-          await expect(page.getByText('65').first()).toBeVisible()
-          await expect(page.getByText('77+').first()).toBeVisible()
+          await expect(
+            page.getByTestId('highcharts-aria-wrapper').getByText('65').first()
+          ).toBeVisible()
+          await expect(
+            page.getByTestId('highcharts-aria-wrapper').getByText('77+').first()
+          ).toBeVisible()
         })
 
         test('forventer jeg informasjon om at pensjonsavtaler ikke er med i beregningen.', async ({
           page,
         }) => {
-          await expect(
-            page.getByText(
-              'Pensjonsavtaler fra arbeidsgivere og egen sparing er ikke med i beregningen.'
-            )
-          ).toBeVisible()
+          await expect(page.getByTestId('pensjonsavtaler-alert')).toContainText(
+            'Pensjonsavtaler fra arbeidsgivere og egen sparing er ikke med i beregningen.'
+          )
         })
 
         test('forventer jeg tilpasset informasjon i grunnlag: at opphold utenfor Norge er hentet fra vedtak', async ({
           page,
         }) => {
           await expect(page.getByTestId('beregning-heading')).toBeVisible()
-          await expect(page.getByText('Om pensjonen din')).toBeVisible()
-          await page.getByText('Sivilstand:').click()
-          await page.getByText('Opphold utenfor Norge:').click()
-          await expect(page.getByText('Fra vedtak').first()).toBeVisible()
+          await expect(page.getByTestId('grunnlag.title')).toBeVisible()
+          await page.getByRole('button', { name: /Sivilstand/ }).click()
+          await page
+            .getByRole('button', { name: /Opphold utenfor Norge/ })
+            .click()
           await expect(
-            page.getByText(
-              'Beregningen bruker trygdetiden du har i Norge fra vedtaket ditt om alderspensjon.'
-            )
+            page.getByTestId('grunnlag.opphold.value.endring')
           ).toBeVisible()
-          await expect(page.getByText('AFP: Nei')).toBeVisible()
+          await expect(
+            page.getByTestId('grunnlag.opphold.ingress.endring')
+          ).toBeVisible()
+          await expect(page.getByTestId('grunnlag.afp.title')).toContainText(
+            'Nei'
+          )
         })
 
         test('forventer jeg lenke til søknad om endring av alderspensjon.', async ({
           page,
         }) => {
-          await expect(
-            page.getByText('Klar til å søke om endring?')
-          ).toBeVisible()
+          await expect(page.getByTestId('savnerdunoe-title')).toContainText(
+            'Klar til å søke om endring?'
+          )
           await expect(
             page.locator('a[href*="/pensjon/opptjening/nb/"]').first()
           ).toBeAttached()
@@ -2114,10 +2212,12 @@ test.describe('Endring av alderspensjon', () => {
       test('forventer jeg informasjon på startsiden om at jeg har 0% alderspensjon og 100 % uføretrygd.', async ({
         page,
       }) => {
-        await expect(page.getByText('Hei Aprikos!')).toBeVisible()
+        await expect(page.getByTestId('stegvisning.start.title')).toHaveText(
+          'Hei Aprikos!'
+        )
         await expect(
-          page.getByText('Du har nå 0 % alderspensjon og 100 % uføretrygd')
-        ).toBeVisible()
+          page.getByTestId('stegvisning-start-ingress-endring')
+        ).toContainText('Du har nå 0 % alderspensjon og 100 % uføretrygd')
       })
 
       test('forventer jeg å kunne gå videre ved å trykke kom i gang ', async ({
@@ -2179,22 +2279,24 @@ test.describe('Endring av alderspensjon', () => {
           page,
         }) => {
           await expect(
-            page.getByText('Pensjonsgivende årsinntekt frem til endring')
-          ).toBeVisible()
+            page.getByTestId(
+              'beregning.avansert.rediger.inntekt_frem_til_endring.label'
+            )
+          ).toContainText('Pensjonsgivende årsinntekt frem til endring')
           await page.getByRole('button', { name: 'Endre inntekt' }).click()
           await page.getByTestId('inntekt-textfield').fill('550000')
           await page.getByRole('button', { name: 'Oppdater inntekt' }).click()
           await expect(
-            page.getByText('550 000 kr per år før skatt')
-          ).toBeVisible()
+            page.getByTestId('formatert-inntekt-frem-til-uttak')
+          ).toContainText('550 000 kr per år før skatt')
         })
 
         test('forventer jeg å kunne velge pensjonsalder for endring mellom ubetinget uttaksalder og 75 år + 0 md.', async ({
           page,
         }) => {
           await expect(
-            page.getByText('Når vil du endre alderspensjonen din?')
-          ).toBeVisible()
+            page.getByTestId('velguttaksalder.endring.title')
+          ).toContainText('Når vil du endre alderspensjonen din?')
 
           const yearSelect = page.getByTestId(
             'age-picker-uttaksalder-helt-uttak-aar'
@@ -2227,9 +2329,13 @@ test.describe('Endring av alderspensjon', () => {
           page,
         }) => {
           await expect(
-            page.getByText('Hvor mye alderspensjon vil du ta ut?')
+            page.getByTestId('beregning.avansert.rediger.uttaksgrad.label')
           ).toBeVisible()
-          await expect(page.getByText('Velg ny uttaksgrad')).toBeVisible()
+          await expect(
+            page.getByTestId(
+              'beregning.avansert.rediger.uttaksgrad.description'
+            )
+          ).toBeVisible()
 
           const uttaksgradSelect = page.getByTestId('uttaksgrad')
           await expect(uttaksgradSelect.locator('option')).toHaveCount(8)
@@ -2270,7 +2376,7 @@ test.describe('Endring av alderspensjon', () => {
           await page.getByTestId('inntekt-vsa-helt-uttak').fill('100000')
 
           await expect(
-            page.getByText('Til hvilken alder forventer du å ha inntekten?')
+            page.getByTestId('inntekt-vsa-helt-uttak-slutt-alder-label')
           ).toBeVisible()
 
           const sluttAlderAarSelect = page.getByTestId(
@@ -2375,8 +2481,10 @@ test.describe('Endring av alderspensjon', () => {
           page,
         }) => {
           await expect(
-            page.getByText('Du har i dag 0 % alderspensjon.')
-          ).toBeVisible()
+            page.locator(
+              '[data-intl="beregning.endring.rediger.vedtak_grad_status"]'
+            )
+          ).toContainText('Du har i dag 0 % alderspensjon.')
         })
 
         test('forventer jeg informasjon om hva siste månedlige utbetaling var og hva månedlig alderspensjon vil bli de månedene jeg har valgt å endre fra.', async ({
@@ -2394,7 +2502,9 @@ test.describe('Endring av alderspensjon', () => {
         test('forventer jeg en lenke for å endre mine valg.', async ({
           page,
         }) => {
-          await expect(page.getByText('Endre valgene dine')).toBeVisible()
+          await expect(
+            page.getByRole('button', { name: /Endre valgene dine/ })
+          ).toBeVisible()
         })
 
         test('forventer jeg å se resultatet for alderspensjon i graf og tabell.', async ({
@@ -2402,54 +2512,73 @@ test.describe('Endring av alderspensjon', () => {
         }) => {
           await expect(page.getByTestId('beregning-heading')).toBeVisible()
           await expect(
-            page.getByText('Pensjonsgivende inntekt').first()
+            page
+              .getByTestId('highcharts-aria-wrapper')
+              .getByText('Pensjonsgivende inntekt')
+              .first()
           ).toBeVisible()
-          await expect(page.getByText(/AFP/).first()).toBeVisible()
           await expect(
-            page.getByText('Pensjonsavtaler (arbeidsgivere m.m.)')
+            page.getByTestId('highcharts-aria-wrapper').getByText(/AFP/).first()
+          ).toBeVisible()
+          await expect(
+            page
+              .getByTestId('highcharts-aria-wrapper')
+              .getByText('Pensjonsavtaler (arbeidsgivere m.m.)')
           ).not.toBeVisible()
           await expect(
-            page.getByText('Alderspensjon (Nav)').first()
+            page
+              .getByTestId('highcharts-aria-wrapper')
+              .getByText('Alderspensjon (Nav)')
+              .first()
           ).toBeVisible()
           await expect(
-            page.getByText(/Tusen kroner|Kroner/).first()
+            page
+              .getByTestId('highcharts-aria-wrapper')
+              .getByText(/Tusen kroner|Kroner/)
+              .first()
           ).toBeVisible()
-          await expect(page.getByText('65').first()).toBeVisible()
-          await expect(page.getByText('77+').first()).toBeVisible()
+          await expect(
+            page.getByTestId('highcharts-aria-wrapper').getByText('65').first()
+          ).toBeVisible()
+          await expect(
+            page.getByTestId('highcharts-aria-wrapper').getByText('77+').first()
+          ).toBeVisible()
         })
 
         test('forventer jeg informasjon om at pensjonsavtaler ikke er med i beregningen.', async ({
           page,
         }) => {
-          await expect(
-            page.getByText(
-              'Pensjonsavtaler fra arbeidsgivere og egen sparing er ikke med i beregningen.'
-            )
-          ).toBeVisible()
+          await expect(page.getByTestId('pensjonsavtaler-alert')).toContainText(
+            'Pensjonsavtaler fra arbeidsgivere og egen sparing er ikke med i beregningen.'
+          )
         })
 
         test('forventer jeg tilpasset informasjon i grunnlag: at opphold utenfor Norge er hentet fra vedtak og at AFP: Nei vises', async ({
           page,
         }) => {
           await expect(page.getByTestId('beregning-heading')).toBeVisible()
-          await expect(page.getByText('Om pensjonen din')).toBeVisible()
-          await page.getByText('Sivilstand:').click()
-          await page.getByText('Opphold utenfor Norge:').click()
-          await expect(page.getByText('Fra vedtak').first()).toBeVisible()
+          await expect(page.getByTestId('grunnlag.title')).toBeVisible()
+          await page.getByRole('button', { name: /Sivilstand/ }).click()
+          await page
+            .getByRole('button', { name: /Opphold utenfor Norge/ })
+            .click()
           await expect(
-            page.getByText(
-              'Beregningen bruker trygdetiden du har i Norge fra vedtaket ditt om alderspensjon.'
-            )
+            page.getByTestId('grunnlag.opphold.value.endring')
           ).toBeVisible()
-          await expect(page.getByText('AFP: Nei')).toBeVisible()
+          await expect(
+            page.getByTestId('grunnlag.opphold.ingress.endring')
+          ).toBeVisible()
+          await expect(page.getByTestId('grunnlag.afp.title')).toContainText(
+            'Nei'
+          )
         })
 
         test('forventer jeg lenke til søknad om endring av alderspensjon.', async ({
           page,
         }) => {
-          await expect(
-            page.getByText('Klar til å søke om endring?')
-          ).toBeVisible()
+          await expect(page.getByTestId('savnerdunoe-title')).toContainText(
+            'Klar til å søke om endring?'
+          )
           await expect(
             page.locator('a[href*="/pensjon/opptjening/nb/"]').first()
           ).toBeAttached()
