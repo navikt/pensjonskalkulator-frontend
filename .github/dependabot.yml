@@ -14,7 +14,8 @@ updates:
       - npm-github
     schedule:
       interval: daily
-    default-days: 7
+    cooldown:
+      default-days: 7
     versioning-strategy: increase
     groups:
       designsystemet:
