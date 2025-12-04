@@ -23,31 +23,35 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
-
-      - name: Use Node.js v22
+        uses: actions/checkout@v6
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: '22.16.0'
           registry-url: 'https://npm.pkg.github.com'
+          cache: 'pnpm'
 
-      - name: Cache node modules
-        id: cache-node
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      # - name: Cache node modules
+      #   id: cache-node
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: |
+      #       node_modules
+      #       ~/.npm
+      #     key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install dependencies
-        if: steps.cache-node.outputs.cache-hit != 'true'
-        run: npm ci
+        # if: steps.cache-node.outputs.cache-hit != 'true'
+        run: pnpm install --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
       - name: Build application
-        run: npm run build
+        run: pnpm run build
 
       - name: Save build folder
         uses: actions/upload-artifact@v4
@@ -65,31 +69,35 @@ jobs:
       fail-fast: true
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
-
-      - name: Use Node.js v22.16.0
+        uses: actions/checkout@v6
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: '22.16.0'
           registry-url: 'https://npm.pkg.github.com'
+          cache: 'pnpm'
 
-      - name: Cache node modules
-        id: cache-node
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      # - name: Cache node modules
+      #   id: cache-node
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: |
+      #       node_modules
+      #       ~/.npm
+      #     key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install dependencies
-        if: steps.cache-node.outputs.cache-hit != 'true'
-        run: npm ci
+        # if: steps.cache-node.outputs.cache-hit != 'true'
+        run: pnpm install --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
       - name: Run unit tests
-        run: npm run test
+        run: pnpm run test
 
       - name: Archive code coverage results
         uses: actions/upload-artifact@v4
@@ -105,22 +113,32 @@ jobs:
       fail-fast: true
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
-
-      - name: Use Node.js v22.16.0
+        uses: actions/checkout@v6
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: '22.16.0'
           registry-url: 'https://npm.pkg.github.com'
+          cache: 'pnpm'
 
-      - name: Cache node modules
-        id: cache-node
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      # - name: Cache node modules
+      #   id: cache-node
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: |
+      #       node_modules
+      #       ~/.npm
+      #     key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies
+        # if: steps.cache-node.outputs.cache-hit != 'true'
+        run: pnpm install --frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
       - name: Cache Cypress binary
         id: cache-cypress
@@ -137,7 +155,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.cache-node.outputs.cache-hit != 'true'
-        run: npm ci
+        run: pnpm install --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
@@ -146,7 +164,7 @@ jobs:
         run: npx cypress install
 
       - name: Run integration tests
-        run: npm run cy:test
+        run: pnpm run cy:test
 
       - name: Archive Cypress artifacts
         uses: actions/upload-artifact@v4
@@ -163,22 +181,26 @@ jobs:
       image: mcr.microsoft.com/playwright:v1.57.0-jammy
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Use Node.js v22.16.0
+        uses: actions/checkout@v6
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: '22.16.0'
           registry-url: 'https://npm.pkg.github.com'
+          cache: 'pnpm'
 
-      - name: Cache node modules
-        id: cache-node
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      # - name: Cache node modules
+      #   id: cache-node
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: |
+      #       node_modules
+      #       ~/.npm
+      #     key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
       - name: Download the build folders
         uses: actions/download-artifact@v4
@@ -187,8 +209,8 @@ jobs:
           path: dist
 
       - name: Install dependencies
-        if: steps.cache-node.outputs.cache-hit != 'true'
-        run: npm ci
+        #if: steps.cache-node.outputs.cache-hit != 'true'
+        run: pnpm install --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
@@ -212,22 +234,26 @@ jobs:
       image: mcr.microsoft.com/playwright:v1.57.0-jammy
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Use Node.js v22.16.0
+        uses: actions/checkout@v6
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: '22.16.0'
           registry-url: 'https://npm.pkg.github.com'
+          cache: 'pnpm'
 
-      - name: Cache node modules
-        id: cache-node
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      # - name: Cache node modules
+      #   id: cache-node
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: |
+      #       node_modules
+      #       ~/.npm
+      #     key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
       - name: Download the build folders
         uses: actions/download-artifact@v4
@@ -236,8 +262,8 @@ jobs:
           path: dist
 
       - name: Install dependencies
-        if: steps.cache-node.outputs.cache-hit != 'true'
-        run: npm ci
+      # if: steps.cache-node.outputs.cache-hit != 'true'
+        run: pnpm install --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
@@ -263,22 +289,26 @@ jobs:
       image: mcr.microsoft.com/playwright:v1.57.0-jammy
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Use Node.js v22.16.0
+        uses: actions/checkout@v6
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: '22.16.0'
           registry-url: 'https://npm.pkg.github.com'
+          cache: 'pnpm'
 
-      - name: Cache node modules
-        id: cache-node
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      # - name: Cache node modules
+      #   id: cache-node
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: |
+      #       node_modules
+      #       ~/.npm
+      #     key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
       - name: Download the build folders
         uses: actions/download-artifact@v4
@@ -287,8 +317,8 @@ jobs:
           path: dist
 
       - name: Install dependencies
-        if: steps.cache-node.outputs.cache-hit != 'true'
-        run: npm ci
+      # if: steps.cache-node.outputs.cache-hit != 'true'
+        run: pnpm install --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
@@ -312,26 +342,30 @@ jobs:
       image: mcr.microsoft.com/playwright:v1.57.0-jammy
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Use Node.js v22.16.0
+        uses: actions/checkout@v6
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: '22.16.0'
           registry-url: 'https://npm.pkg.github.com'
+          cache: 'pnpm'
 
-      - name: Cache node modules
-        id: cache-node
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      # - name: Cache node modules
+      #   id: cache-node
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: |
+      #       node_modules
+      #       ~/.npm
+      #     key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install dependencies
-        if: steps.cache-node.outputs.cache-hit != 'true'
-        run: npm ci
+      # if: steps.cache-node.outputs.cache-hit != 'true'
+        run: pnpm install --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
@@ -350,4 +384,5 @@ jobs:
         with:
           name: playwright-report
           path: playwright-report
-          retention-days: 30
+          retention-days: 30ys: 30
+ys: 30

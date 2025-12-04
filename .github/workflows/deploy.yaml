@@ -49,7 +49,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.cache-node.outputs.cache-hit != 'true'
-        run: npm ci
+        run: pnpm install --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
@@ -57,18 +57,18 @@ jobs:
         run: npx openapi-typescript ${{ github.event.inputs.prod == 'true' && 'https://www.nav.no/pensjon/kalkulator/v3/api-docs/current' || 'https://staging.ekstern.dev.nav.no/pensjon/kalkulator/v3/api-docs/current' }} -o ./src/types/schema.d.ts
 
       - name: Format backend scheme
-        run: npm run format:types
+        run: pnpm run format:types
 
       - name: Build staging application
         if: github.event.inputs.prod != 'true'
-        run: npm run build
+        run: pnpm run build
 
       - name: Build production application
         if: github.event.inputs.prod == 'true'
-        run: npm run build:production
+        run: pnpm run build:production
 
       - name: Build backend for frontend
-        run: npm run build:server
+        run: pnpm run build:server
 
       - name: Save build folder
         uses: actions/upload-artifact@v4
@@ -114,12 +114,12 @@ jobs:
 
       - name: Install dependencies
         if: steps.cache-node.outputs.cache-hit != 'true'
-        run: npm ci
+        run: pnpm install --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
       - name: Run unit tests
-        run: npm run test
+        run: pnpm run test
 
       - name: Archive code coverage results
         uses: actions/upload-artifact@v4
@@ -167,7 +167,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.cache-node.outputs.cache-hit != 'true'
-        run: npm ci
+        run: pnpm install --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
@@ -177,11 +177,11 @@ jobs:
 
       - name: Run integration tests on staging application
         if: github.event.inputs.prod  != 'true'
-        run: npm run cy:test
+        run: pnpm run cy:test
 
       - name: Run integration tests on production application
         if: github.event.inputs.prod  == 'true'
-        run: npm run cy:test:production
+        run: pnpm run cy:test:production
 
       - name: Archive Cypress artifacts
         uses: actions/upload-artifact@v4
