@@ -599,7 +599,7 @@ describe('Typeguards', () => {
 
   describe('isPerson', () => {
     const validPerson = {
-      navn: 'Ola',
+      fornavn: 'Ola',
       sivilstand: 'GIFT',
       foedselsdato: '1963-04-30',
       pensjoneringAldre: {
@@ -624,9 +624,11 @@ describe('Typeguards', () => {
         })
       })
 
-      describe('navn validation', () => {
-        it('returnerer false når navn mangler', () => {
-          expect(isPerson({ ...validPerson, navn: undefined })).toEqual(false)
+      describe('fornavn validation', () => {
+        it('returnerer false når fornavn mangler', () => {
+          expect(isPerson({ ...validPerson, fornavn: undefined })).toEqual(
+            false
+          )
         })
       })
 

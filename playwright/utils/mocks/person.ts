@@ -10,6 +10,7 @@ type PersonMockOptions = {
   foedselsdato?: string
   sivilstand?: string
   navn?: string
+  fornavn?: string
   pensjoneringAldre?: Record<string, unknown>
 }
 
@@ -53,8 +54,8 @@ export const person = async (
     personMock.sivilstand = options.sivilstand
   }
 
-  if (options.navn) {
-    personMock.navn = options.navn
+  if (options.fornavn) {
+    personMock.fornavn = options.fornavn
   }
 
   if (options.pensjoneringAldre) {

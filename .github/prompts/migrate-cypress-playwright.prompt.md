@@ -398,7 +398,7 @@ await expect(page.getByRole('heading', { name: 'Kom i gang' })).toBeVisible()
 All standard endpoints are mocked by default in `playwright/base.ts`:
 
 - Authentication endpoints
-- Person data (`/api/v5/person`)
+- Person data (`/api/v6/person`)
 - Income (`/api/inntekt`)
 - Pension agreements (`/api/v3/pensjonsavtaler`)
 - Simulation (`/api/v8/alderspensjon/simulering`)
