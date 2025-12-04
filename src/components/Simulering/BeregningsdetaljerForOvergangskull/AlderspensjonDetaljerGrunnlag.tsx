@@ -90,9 +90,9 @@ export function getAlderspensjonHeading({
 }): ApHeadingProps {
   const isGradertUttak = Boolean(
     gradertUttaksperiode &&
-    !hasPre2025OffentligAfpUttaksalder &&
-    gradertUttaksperiode?.uttaksalder.aar !== uttaksalder?.aar &&
-    gradertUttaksperiode.grad > 0
+      !hasPre2025OffentligAfpUttaksalder &&
+      gradertUttaksperiode?.uttaksalder.aar !== uttaksalder?.aar &&
+      gradertUttaksperiode.grad > 0
   )
 
   if (index === 0 && isGradertUttak) {
