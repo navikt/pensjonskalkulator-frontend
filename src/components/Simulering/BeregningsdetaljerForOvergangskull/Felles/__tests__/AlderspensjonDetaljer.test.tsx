@@ -129,23 +129,25 @@ describe('Gitt at AlderspensjonDetaljer rendres', () => {
       opptjeningKap20: [],
     }
 
-    renderWithProviders(
+    const { container } = renderWithProviders(
       <AlderspensjonDetaljer alderspensjonDetaljForValgtUttak={emptyData} />
     )
 
     // Komponenten skal fortsatt rendre, men uten data
-    const box = screen.getByTestId('beregningsdetaljer-for-overgangskull')
+    const box = container.querySelector(
+      '[data-testid="beregningsdetaljer-for-overgangskull"]'
+    )
     expect(box).toBeInTheDocument()
   })
 
   it('rendrer siste element i alderspensjon array med strong styling', () => {
-    renderWithProviders(
+    const { container } = renderWithProviders(
       <AlderspensjonDetaljer
         alderspensjonDetaljForValgtUttak={mockHeltUttakData}
       />
     )
 
-    const strongElements = screen.getAllByText('Sum alderspensjon:')
+    const strongElements = container.querySelectorAll('strong')
     expect(strongElements.length).toBeGreaterThan(0)
   })
 
@@ -170,27 +172,30 @@ describe('Gitt at AlderspensjonDetaljer rendres', () => {
   })
 
   it('rendrer VStack med korrekt gap', () => {
-    renderWithProviders(
+    const { container } = renderWithProviders(
       <AlderspensjonDetaljer
         alderspensjonDetaljForValgtUttak={mockHeltUttakData}
       />
     )
 
-    expect(
-      screen.getAllByText('Grunnpensjon (kap. 19):').length
-    ).toBeGreaterThan(0)
+    const vStack = container.querySelector('.navds-stack')
+    expect(vStack).toBeInTheDocument()
   })
 
   it('rendrer definition lists korrekt', () => {
-    renderWithProviders(
+    const { container } = renderWithProviders(
       <AlderspensjonDetaljer
         alderspensjonDetaljForValgtUttak={mockHeltUttakData}
       />
     )
 
-    expect(
-      screen.getAllByText('Grunnpensjon (kap. 19):').length
-    ).toBeGreaterThan(0)
+    const definitionLists = container.querySelectorAll('dl')
+    expect(definitionLists.length).toBeGreaterThan(0)
+
+    const terms = container.querySelectorAll('dt')
+    const definitions = container.querySelectorAll('dd')
+    expect(terms.length).toBeGreaterThan(0)
+    expect(definitions.length).toBeGreaterThan(0)
   })
 
   it('rendrer sections med korrekte titler', () => {
@@ -201,8 +206,7 @@ describe('Gitt at AlderspensjonDetaljer rendres', () => {
     )
 
     // Check that section titles are rendered (these come from FormattedMessage)
-    expect(
-      screen.getAllByText('Grunnpensjon (kap. 19):').length
-    ).toBeGreaterThan(0)
+    const dlElements = document.querySelectorAll('dl')
+    expect(dlElements.length).toBe(6) // alderspensjon, opptjeningKap19, opptjeningKap20 x2 (desktop + mobile)
   })
 })

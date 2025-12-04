@@ -107,7 +107,7 @@ describe('Grunnlag', () => {
     it('vises i enkel visning', async () => {
       renderGrunnlagMedPreloadedState('2', 'enkel')
       expect(
-        screen.getByText('grunnlag2.endre_inntekt.title')
+        screen.queryByText('grunnlag2.endre_inntekt.title')
       ).toBeInTheDocument()
     })
 
@@ -264,7 +264,9 @@ describe('Grunnlag', () => {
       mockErrorResponse('/v5/person')
       renderGrunnlagMedPreloadedState('2', 'enkel')
 
-      expect(screen.getByText('grunnlag.sivilstand.title')).toBeInTheDocument()
+      expect(
+        screen.queryByText('grunnlag.sivilstand.title')
+      ).toBeInTheDocument()
       const buttons = screen.getAllByRole('button')
 
       await user.click(buttons[3])

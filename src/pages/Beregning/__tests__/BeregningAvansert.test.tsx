@@ -470,7 +470,7 @@ describe('BeregningAvansert', () => {
           'initiate'
         )
 
-        render(
+        const { container } = render(
           <BeregningContext.Provider
             value={{
               ...contextMockedValues,
@@ -504,7 +504,9 @@ describe('BeregningAvansert', () => {
         expect(screen.getByText('beregning.intro.title')).toBeVisible()
         expect(screen.getByText('beregning.intro.description_1')).toBeVisible()
         expect(screen.getByText('pensjonsavtaler.title')).toBeVisible()
-        expect(document.querySelectorAll('.highcharts-loading')).toHaveLength(1)
+        expect(
+          container.getElementsByClassName('highcharts-loading')
+        ).toHaveLength(1)
         await waitFor(async () => {
           expect(
             screen.queryByTestId('uttaksalder-loader')
@@ -582,8 +584,8 @@ describe('BeregningAvansert', () => {
         await waitFor(() => {
           expect(initiateMock).toHaveBeenCalledTimes(1)
           expect(setAvansertSkjemaModusMock).toHaveBeenCalledTimes(1)
+          expect(setAvansertSkjemaModusMock).toHaveBeenCalledWith('redigering')
         })
-        expect(setAvansertSkjemaModusMock).toHaveBeenCalledWith('redigering')
         expect(loggerSpy).toHaveBeenCalledWith('alert vist', {
           tekst: 'Beregning avansert: Ikke høy nok opptjening',
           variant: 'warning',
@@ -698,7 +700,7 @@ describe('BeregningAvansert', () => {
         'initiate'
       )
 
-      render(
+      const { container } = render(
         <BeregningContext.Provider
           value={{
             ...contextMockedValues,
@@ -743,7 +745,9 @@ describe('BeregningAvansert', () => {
         screen.queryByText('pensjonsavtaler.title')
       ).not.toBeInTheDocument()
 
-      expect(document.querySelectorAll('.highcharts-loading')).toHaveLength(1)
+      expect(
+        container.getElementsByClassName('highcharts-loading')
+      ).toHaveLength(1)
       await waitFor(async () => {
         expect(
           screen.queryByTestId('uttaksalder-loader')
@@ -773,7 +777,7 @@ describe('BeregningAvansert', () => {
         'initiate'
       )
 
-      render(
+      const { container } = render(
         <BeregningContext.Provider
           value={{
             ...contextMockedValues,
@@ -811,7 +815,9 @@ describe('BeregningAvansert', () => {
         expect(initiateMock).toHaveBeenCalledTimes(1)
       })
 
-      expect(document.querySelectorAll('.highcharts-loading')).toHaveLength(1)
+      expect(
+        container.getElementsByClassName('highcharts-loading')
+      ).toHaveLength(1)
       await waitFor(async () => {
         expect(
           screen.queryByTestId('uttaksalder-loader')
@@ -870,7 +876,7 @@ describe('BeregningAvansert', () => {
         })
       ).toBeInTheDocument()
       expect(
-        screen.getByRole('columnheader', {
+        screen.queryByRole('columnheader', {
           name: 'beregning.highcharts.serie.afp.name',
         })
       ).toBeInTheDocument()

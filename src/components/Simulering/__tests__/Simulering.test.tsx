@@ -54,7 +54,7 @@ describe('Simulering', () => {
   })
 
   it('Når alderspensjon laster så vises det en spinner, og deretter heading på riktig nivå', async () => {
-    render(
+    const { container } = render(
       <Simulering
         isLoading={true}
         headingLevel="3"
@@ -80,10 +80,12 @@ describe('Simulering', () => {
       await new Promise((r) => setTimeout(r, 500))
     })
 
-    const chartContainers = document.querySelectorAll('.highcharts-container')
-    const chartLoading = document.querySelectorAll('.highcharts-loading')
-    expect(chartContainers).toHaveLength(1)
-    expect(chartLoading).toHaveLength(1)
+    expect(
+      container.getElementsByClassName('highcharts-container')
+    ).toHaveLength(1)
+    expect(container.getElementsByClassName('highcharts-loading')).toHaveLength(
+      1
+    )
     const heading = screen.getByRole('heading', { level: 3 })
     expect(heading).toHaveTextContent('beregning.highcharts.title')
   })
@@ -145,7 +147,7 @@ describe('Simulering', () => {
         apiSliceUtils,
         'usePensjonsavtalerQuery'
       )
-      render(
+      const { container } = render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -180,8 +182,12 @@ describe('Simulering', () => {
         await new Promise((r) => setTimeout(r, 500))
       })
 
-      expect(document.querySelectorAll('.highcharts-container')).toHaveLength(1)
-      const legendItems = document.querySelectorAll('.highcharts-legend-item')
+      expect(
+        container.getElementsByClassName('highcharts-container')
+      ).toHaveLength(1)
+      const legendItems = container.getElementsByClassName(
+        'highcharts-legend-item'
+      )
       const SVGlegendItems = Array.from(legendItems).filter(
         (item) => item.tagName === 'g'
       )
@@ -189,7 +195,7 @@ describe('Simulering', () => {
     })
 
     it('Når brukeren velger AFP-privat, viser inntekt, alderspensjon og AFP', async () => {
-      render(
+      const { container } = render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -223,8 +229,12 @@ describe('Simulering', () => {
         await new Promise((r) => setTimeout(r, 500))
       })
 
-      expect(document.querySelectorAll('.highcharts-container')).toHaveLength(1)
-      const legendItems = document.querySelectorAll('.highcharts-legend-item')
+      expect(
+        container.getElementsByClassName('highcharts-container')
+      ).toHaveLength(1)
+      const legendItems = container.getElementsByClassName(
+        'highcharts-legend-item'
+      )
       const SVGlegendItems = Array.from(legendItems).filter(
         (item) => item.tagName === 'g'
       )
@@ -232,7 +242,7 @@ describe('Simulering', () => {
     })
 
     it('Når brukeren velger AFP-offentlig, viser inntekt, alderspensjon og AFP', async () => {
-      render(
+      const { container } = render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -266,8 +276,12 @@ describe('Simulering', () => {
         await new Promise((r) => setTimeout(r, 500))
       })
 
-      expect(document.querySelectorAll('.highcharts-container')).toHaveLength(1)
-      const legendItems = document.querySelectorAll('.highcharts-legend-item')
+      expect(
+        container.getElementsByClassName('highcharts-container')
+      ).toHaveLength(1)
+      const legendItems = container.getElementsByClassName(
+        'highcharts-legend-item'
+      )
       const SVGlegendItems = Array.from(legendItems).filter(
         (item) => item.tagName === 'g'
       )
@@ -275,7 +289,7 @@ describe('Simulering', () => {
     })
 
     it('Når brukeren velger uttaksagrad 67 år, vises årene i grafen fra 66 år til 77+', async () => {
-      render(
+      const { container } = render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -307,16 +321,16 @@ describe('Simulering', () => {
         await new Promise((r) => setTimeout(r, 500))
       })
 
-      const xAxisLabels = document
-        .querySelectorAll('.highcharts-xaxis-labels')[0]
-        ?.querySelectorAll('text')
+      const xAxisLabels = container
+        .getElementsByClassName('highcharts-xaxis-labels')[0]
+        .querySelectorAll('text')
       expect(xAxisLabels).toHaveLength(13)
-      expect(xAxisLabels?.[0]).toHaveTextContent('66')
-      expect(xAxisLabels?.[12]).toHaveTextContent('77+')
+      expect(xAxisLabels[0]).toHaveTextContent('66')
+      expect(xAxisLabels[12]).toHaveTextContent('77+')
     })
 
     it('Når brukeren velger gradert pensjon med uttaksgrad 62 år, vises årene i grafen fra 61 år til 77+', async () => {
-      render(
+      const { container } = render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -347,12 +361,12 @@ describe('Simulering', () => {
         await new Promise((r) => setTimeout(r, 500))
       })
 
-      const xAxisLabels = document
-        .querySelectorAll('.highcharts-xaxis-labels')[0]
-        ?.querySelectorAll('text')
+      const xAxisLabels = container
+        .getElementsByClassName('highcharts-xaxis-labels')[0]
+        .querySelectorAll('text')
       expect(xAxisLabels).toHaveLength(18)
-      expect(xAxisLabels?.[0]).toHaveTextContent('61')
-      expect(xAxisLabels?.[17]).toHaveTextContent('77+')
+      expect(xAxisLabels[0]).toHaveTextContent('61')
+      expect(xAxisLabels[17]).toHaveTextContent('77+')
     })
 
     it('Når brukeren har vedtak om alderspensjon, vises det riktig infomelding for tp-ordning', async () => {
@@ -394,7 +408,7 @@ describe('Simulering', () => {
         apiSliceUtils,
         'usePensjonsavtalerQuery'
       )
-      render(
+      const { container } = render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -442,8 +456,11 @@ describe('Simulering', () => {
       await act(async () => {
         await new Promise((r) => setTimeout(r, 500))
       })
-      expect(document.querySelectorAll('.highcharts-container')).toHaveLength(1)
-      const legendContainer = document.querySelectorAll('.highcharts-legend')
+      expect(
+        container.getElementsByClassName('highcharts-container')
+      ).toHaveLength(1)
+      const legendContainer =
+        container.getElementsByClassName('highcharts-legend')
       const legendItems = (
         legendContainer[0] as HTMLElement
       ).getElementsByClassName('highcharts-legend-item')
@@ -467,7 +484,7 @@ describe('Simulering', () => {
         apiSliceUtils,
         'usePensjonsavtalerQuery'
       )
-      render(
+      const { container } = render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -518,8 +535,11 @@ describe('Simulering', () => {
         await new Promise((r) => setTimeout(r, 500))
       })
 
-      expect(document.querySelectorAll('.highcharts-container')).toHaveLength(1)
-      const legendContainer = document.querySelectorAll('.highcharts-legend')
+      expect(
+        container.getElementsByClassName('highcharts-container')
+      ).toHaveLength(1)
+      const legendContainer =
+        container.getElementsByClassName('highcharts-legend')
       const legendItems = (
         legendContainer[0] as HTMLElement
       ).getElementsByClassName('highcharts-legend-item')
@@ -531,7 +551,7 @@ describe('Simulering', () => {
         apiSliceUtils,
         'usePensjonsavtalerQuery'
       )
-      render(
+      const { container } = render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -581,8 +601,11 @@ describe('Simulering', () => {
         { skip: false }
       )
 
-      expect(document.querySelectorAll('.highcharts-container')).toHaveLength(1)
-      const legendContainer = document.querySelectorAll('.highcharts-legend')
+      expect(
+        container.getElementsByClassName('highcharts-container')
+      ).toHaveLength(1)
+      const legendContainer =
+        container.getElementsByClassName('highcharts-legend')
       const legendItems = (
         legendContainer[0] as HTMLElement
       ).getElementsByClassName('highcharts-legend-item')
@@ -594,7 +617,7 @@ describe('Simulering', () => {
         apiSliceUtils,
         'usePensjonsavtalerQuery'
       )
-      render(
+      const { container } = render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -644,8 +667,11 @@ describe('Simulering', () => {
       await act(async () => {
         await new Promise((r) => setTimeout(r, 500))
       })
-      expect(document.querySelectorAll('.highcharts-container')).toHaveLength(1)
-      const legendContainer = document.querySelectorAll('.highcharts-legend')
+      expect(
+        container.getElementsByClassName('highcharts-container')
+      ).toHaveLength(1)
+      const legendContainer =
+        container.getElementsByClassName('highcharts-legend')
       const legendItems = (
         legendContainer[0] as HTMLElement
       ).getElementsByClassName('highcharts-legend-item')
@@ -669,7 +695,7 @@ describe('Simulering', () => {
         apiSliceUtils,
         'usePensjonsavtalerQuery'
       )
-      render(
+      const { container } = render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -718,8 +744,11 @@ describe('Simulering', () => {
       await act(async () => {
         await new Promise((r) => setTimeout(r, 500))
       })
-      expect(document.querySelectorAll('.highcharts-container')).toHaveLength(1)
-      const legendContainer = document.querySelectorAll('.highcharts-legend')
+      expect(
+        container.getElementsByClassName('highcharts-container')
+      ).toHaveLength(1)
+      const legendContainer =
+        container.getElementsByClassName('highcharts-legend')
       const legendItems = (
         legendContainer[0] as HTMLElement
       ).getElementsByClassName('highcharts-legend-item')
@@ -757,7 +786,7 @@ describe('Simulering', () => {
         method: 'post',
       })
 
-      render(
+      const { container } = render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -790,8 +819,11 @@ describe('Simulering', () => {
         await new Promise((r) => setTimeout(r, 500))
       })
 
-      expect(document.querySelectorAll('.highcharts-container')).toHaveLength(1)
-      const legendContainer = document.querySelectorAll('.highcharts-legend')
+      expect(
+        container.getElementsByClassName('highcharts-container')
+      ).toHaveLength(1)
+      const legendContainer =
+        container.getElementsByClassName('highcharts-legend')
       const legendItems = (
         legendContainer[0] as HTMLElement
       ).getElementsByClassName('highcharts-legend-item')
@@ -806,7 +838,7 @@ describe('Simulering', () => {
         method: 'post',
       })
 
-      render(
+      const { container } = render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -837,8 +869,11 @@ describe('Simulering', () => {
       await act(async () => {
         await new Promise((r) => setTimeout(r, 500))
       })
-      expect(document.querySelectorAll('.highcharts-container')).toHaveLength(1)
-      const legendContainer = document.querySelectorAll('.highcharts-legend')
+      expect(
+        container.getElementsByClassName('highcharts-container')
+      ).toHaveLength(1)
+      const legendContainer =
+        container.getElementsByClassName('highcharts-legend')
       const legendItems = (
         legendContainer[0] as HTMLElement
       ).getElementsByClassName('highcharts-legend-item')
@@ -879,7 +914,7 @@ describe('Simulering', () => {
         method: 'post',
       })
 
-      render(
+      const { container } = render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -910,8 +945,11 @@ describe('Simulering', () => {
       await act(async () => {
         await new Promise((r) => setTimeout(r, 500))
       })
-      expect(document.querySelectorAll('.highcharts-container')).toHaveLength(1)
-      const legendContainer = document.querySelectorAll('.highcharts-legend')
+      expect(
+        container.getElementsByClassName('highcharts-container')
+      ).toHaveLength(1)
+      const legendContainer =
+        container.getElementsByClassName('highcharts-legend')
       const legendItems = (
         legendContainer[0] as HTMLElement
       ).getElementsByClassName('highcharts-legend-item')
@@ -946,7 +984,7 @@ describe('Simulering', () => {
         method: 'post',
       })
 
-      render(
+      const { container } = render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -977,8 +1015,11 @@ describe('Simulering', () => {
       await act(async () => {
         await new Promise((r) => setTimeout(r, 500))
       })
-      expect(document.querySelectorAll('.highcharts-container')).toHaveLength(1)
-      const legendContainer = document.querySelectorAll('.highcharts-legend')
+      expect(
+        container.getElementsByClassName('highcharts-container')
+      ).toHaveLength(1)
+      const legendContainer =
+        container.getElementsByClassName('highcharts-legend')
       const legendItems = (
         legendContainer[0] as HTMLElement
       ).getElementsByClassName('highcharts-legend-item')
@@ -999,7 +1040,7 @@ describe('Simulering', () => {
         method: 'post',
       })
 
-      render(
+      const { container } = render(
         <Simulering
           isLoading={false}
           headingLevel="3"
@@ -1030,8 +1071,11 @@ describe('Simulering', () => {
       await act(async () => {
         await new Promise((r) => setTimeout(r, 500))
       })
-      expect(document.querySelectorAll('.highcharts-container')).toHaveLength(1)
-      const legendContainer = document.querySelectorAll('.highcharts-legend')
+      expect(
+        container.getElementsByClassName('highcharts-container')
+      ).toHaveLength(1)
+      const legendContainer =
+        container.getElementsByClassName('highcharts-legend')
       const legendItems = (
         legendContainer[0] as HTMLElement
       ).getElementsByClassName('highcharts-legend-item')

@@ -133,7 +133,7 @@ describe('OffentligTjenestepensjon', () => {
     it('Når simuleringen er vellykket og brukeren er på desktop, viser riktig informasjon og liste over offentlige avtaler.', async () => {
       vi.spyOn(useIsMobileUtils, 'useIsMobile').mockReturnValue(false)
 
-      render(
+      const { container } = render(
         <OffentligTjenestepensjon
           isLoading={false}
           isError={false}
@@ -187,13 +187,13 @@ describe('OffentligTjenestepensjon', () => {
         await screen.findByText('alder.livsvarig 75 alder.aar')
       ).toBeVisible()
       expect(await screen.findAllByText('48 900 kr')).toHaveLength(1)
-      const rows = screen.getAllByRole('row')
+      const rows = container.querySelectorAll('tr')
       expect(rows?.length).toBe(4)
     })
 
     it('Når simuleringen er vellykket og brukeren er på mobil, viser riktig informasjon og liste over offentlige avtaler.', async () => {
       vi.spyOn(useIsMobileUtils, 'useIsMobile').mockReturnValue(true)
-      render(
+      const { container } = render(
         <OffentligTjenestepensjon
           isLoading={false}
           isError={false}
@@ -246,7 +246,7 @@ describe('OffentligTjenestepensjon', () => {
       expect(
         await screen.findAllByText('48 900 pensjonsavtaler_mobil.kr_pr_aar')
       ).toHaveLength(1)
-      const rows = screen.getAllByRole('row')
+      const rows = container.querySelectorAll('tr')
       expect(rows?.length).toBe(3)
     })
 

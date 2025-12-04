@@ -17,8 +17,7 @@ const WrappedGrunnlagInntekt = (
 describe('GrunnlagInntekt', () => {
   describe('Gitt at brukeren har inntekt hentet fra Skatteetaten', () => {
     const user = userEvent.setup()
-
-    it('viser riktig tittel med formatert inntekt og tekst', async () => {
+    beforeEach(async () => {
       const { store } = render(
         <WrappedGrunnlagInntekt goToAvansert={vi.fn()} />
       )
@@ -26,7 +25,9 @@ describe('GrunnlagInntekt', () => {
       expect(await screen.findByText('grunnlag.inntekt.title')).toBeVisible()
       expect(await screen.findAllByText('521 338 kr')).toHaveLength(2)
       await user.click(await screen.findByTestId('accordion-header'))
+    })
 
+    it('viser riktig tittel med formatert inntekt og tekst', async () => {
       expect(
         await screen.findByText(
           'Din siste pensjonsgivende inntekt fra Skatteetaten er',
@@ -37,14 +38,6 @@ describe('GrunnlagInntekt', () => {
     })
 
     it('brukeren kan overskrive den, og det vises riktig tittel med formatert inntekt og tekst', async () => {
-      const { store } = render(
-        <WrappedGrunnlagInntekt goToAvansert={vi.fn()} />
-      )
-      await store.dispatch(apiSlice.endpoints.getInntekt.initiate())
-      expect(await screen.findByText('grunnlag.inntekt.title')).toBeVisible()
-      expect(await screen.findAllByText('521 338 kr')).toHaveLength(2)
-      await user.click(await screen.findByTestId('accordion-header'))
-
       await user.click(
         await screen.findByText('inntekt.endre_inntekt_modal.open.button')
       )
@@ -70,14 +63,6 @@ describe('GrunnlagInntekt', () => {
     })
 
     it('brukeren kan gå ut av modulen og la inntekt uendret', async () => {
-      const { store } = render(
-        <WrappedGrunnlagInntekt goToAvansert={vi.fn()} />
-      )
-      await store.dispatch(apiSlice.endpoints.getInntekt.initiate())
-      expect(await screen.findByText('grunnlag.inntekt.title')).toBeVisible()
-      expect(await screen.findAllByText('521 338 kr')).toHaveLength(2)
-      await user.click(await screen.findByTestId('accordion-header'))
-
       await user.click(
         await screen.findByText('inntekt.endre_inntekt_modal.open.button')
       )

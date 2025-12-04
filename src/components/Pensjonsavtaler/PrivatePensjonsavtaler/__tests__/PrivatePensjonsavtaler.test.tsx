@@ -77,7 +77,7 @@ describe('PrivatePensjonsavtaler', () => {
         'pensjonsavtaler.private.ingress.error.pensjonsavtaler.partial'
       )
     ).toBeVisible()
-    expect(screen.getByTestId('private-pensjonsavtaler')).toBeInTheDocument()
+    expect(screen.queryByTestId('private-pensjonsavtaler')).toBeInTheDocument()
     expect(
       await screen.findByText('Avtaler fra privat sektor hentes fra ', {
         exact: false,

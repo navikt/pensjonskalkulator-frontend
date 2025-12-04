@@ -290,7 +290,7 @@ describe('BeregningEnkel', () => {
   describe('Når brukeren velger uttaksalder', () => {
     it('viser en loader mens beregning av alderspensjon pågår, oppdaterer valgt knapp og tegner graph og viser tabell, Pensjonsavtaler, Grunnlag og Forbehold, gitt at beregning av alderspensjon var vellykket', async () => {
       const user = userEvent.setup()
-      render(<BeregningEnkel />, {
+      const { container } = render(<BeregningEnkel />, {
         preloadedState: {
           api: {
             // @ts-ignore
@@ -309,7 +309,9 @@ describe('BeregningEnkel', () => {
       await user.click(await screen.findByText('68 alder.aar'))
       const buttons = await screen.findAllByRole('button', { pressed: true })
       expect(buttons[0]).toHaveTextContent('68 alder.aar')
-      expect(document.querySelectorAll('.highcharts-loading')).toHaveLength(1)
+      expect(
+        container.getElementsByClassName('highcharts-loading')
+      ).toHaveLength(1)
       await waitFor(() => {
         expect(
           screen.queryByTestId('uttaksalder-loader')
@@ -415,7 +417,7 @@ describe('BeregningEnkel', () => {
         })
       ).toBeInTheDocument()
       expect(
-        screen.getByRole('columnheader', {
+        screen.queryByRole('columnheader', {
           name: 'beregning.highcharts.serie.afp.name',
         })
       ).toBeInTheDocument()
@@ -695,7 +697,7 @@ describe('BeregningEnkel', () => {
         })
       ).toBeInTheDocument()
       expect(
-        screen.getByRole('columnheader', {
+        screen.queryByRole('columnheader', {
           name: 'beregning.highcharts.serie.afp.name',
         })
       ).toBeInTheDocument()
@@ -907,7 +909,7 @@ describe('BeregningEnkel', () => {
   describe('Gitt at brukeren har vedtak om alderspensjon,', () => {
     it('viser en loader mens beregning av alderspensjon pågår, oppdaterer valgt knapp og tegner graph og viser tabell, Pensjonsavtaler, Grunnlag og Forbehold, gitt at beregning av alderspensjon var vellykket', async () => {
       const user = userEvent.setup()
-      render(<BeregningEnkel />, {
+      const { container } = render(<BeregningEnkel />, {
         preloadedState: {
           api: {
             // @ts-ignore
@@ -926,7 +928,9 @@ describe('BeregningEnkel', () => {
       await user.click(await screen.findByText('68 alder.aar'))
       const buttons = await screen.findAllByRole('button', { pressed: true })
       expect(buttons[0]).toHaveTextContent('68 alder.aar')
-      expect(document.querySelectorAll('.highcharts-loading')).toHaveLength(1)
+      expect(
+        container.getElementsByClassName('highcharts-loading')
+      ).toHaveLength(1)
       await waitFor(() => {
         expect(
           screen.queryByTestId('uttaksalder-loader')
@@ -1038,7 +1042,7 @@ describe('BeregningEnkel', () => {
         })
       ).toBeInTheDocument()
       expect(
-        screen.getByRole('columnheader', {
+        screen.queryByRole('columnheader', {
           name: 'beregning.highcharts.serie.afp.name',
         })
       ).toBeInTheDocument()

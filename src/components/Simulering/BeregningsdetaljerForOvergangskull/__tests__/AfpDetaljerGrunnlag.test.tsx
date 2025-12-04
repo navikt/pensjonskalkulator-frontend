@@ -72,18 +72,19 @@ describe('AfpDetaljerGrunnlag', () => {
   })
 
   it('rendrer både desktop og mobil versjon med riktig CSS klasser', () => {
-    render(<AfpDetaljerGrunnlag {...defaultProps} />)
+    const { container } = render(<AfpDetaljerGrunnlag {...defaultProps} />)
 
     // AfpDetaljerGrunnlag doesn't have desktop/mobile classes - AfpDetaljer itself handles this
-    const wrapper = screen.getByTestId('beregningsdetaljer-for-overgangskull')
+    const desktopDiv = container.querySelector(
+      '[class*="beregningsdetaljerForOvergangskullDesktopOnly"]'
+    )
+    const mobileDiv = container.querySelector(
+      '[class*="beregningsdetaljerForOvergangskullMobileOnly"]'
+    )
 
     // The CSS classes should be inside the AfpDetaljer component, not in the wrapper
-    expect(wrapper.className).not.toContain(
-      'beregningsdetaljerForOvergangskullDesktopOnly'
-    )
-    expect(wrapper.className).not.toContain(
-      'beregningsdetaljerForOvergangskullMobileOnly'
-    )
+    expect(desktopDiv).not.toBeInTheDocument()
+    expect(mobileDiv).not.toBeInTheDocument()
   })
 
   it('rendrer HStack for desktop versjon', () => {

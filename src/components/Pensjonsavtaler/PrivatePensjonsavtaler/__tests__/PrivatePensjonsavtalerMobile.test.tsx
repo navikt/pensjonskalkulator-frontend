@@ -44,7 +44,7 @@ describe('PrivatePensjonsavtalerMobile', () => {
   })
 
   it('rendrer riktig med avtaler som bare har start dato', async () => {
-    render(
+    const { container } = render(
       <PrivatePensjonsavtalerMobile
         headingLevel="4"
         pensjonsavtaler={avtaler}
@@ -65,7 +65,7 @@ describe('PrivatePensjonsavtalerMobile', () => {
     expect(
       await screen.findAllByText('12 345 pensjonsavtaler_mobil.kr_pr_aar')
     ).toHaveLength(2)
-    const rows = screen.getAllByRole('row')
+    const rows = container.querySelectorAll('tr')
     expect(rows?.length).toBe(2)
   })
 
@@ -92,7 +92,7 @@ describe('PrivatePensjonsavtalerMobile', () => {
       ],
     }
 
-    render(
+    const { container } = render(
       <PrivatePensjonsavtalerMobile
         headingLevel="4"
         pensjonsavtaler={[avtaleMedStartOgSlutt]}
@@ -114,7 +114,7 @@ describe('PrivatePensjonsavtalerMobile', () => {
     expect(
       await screen.findAllByText('12 345 pensjonsavtaler_mobil.kr_pr_aar')
     ).toHaveLength(2)
-    const rows = screen.getAllByRole('row')
+    const rows = container.querySelectorAll('tr')
     expect(rows?.length).toBe(2)
   })
 })

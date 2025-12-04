@@ -112,7 +112,7 @@ describe('stegvisning - AFP - født etter 1963', () => {
     await user.click(radioButtons[3])
 
     expect(
-      screen.getByText('stegvisning.afp.alert_vet_ikke')
+      screen.queryByText('stegvisning.afp.alert_vet_ikke')
     ).toBeInTheDocument()
   })
 

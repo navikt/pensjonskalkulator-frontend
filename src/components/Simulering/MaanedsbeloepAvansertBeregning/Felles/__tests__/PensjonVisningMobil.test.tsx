@@ -172,7 +172,7 @@ describe('MobilePensjonVisning', () => {
       },
     ]
 
-    it('viser kun AFP og Alerdspensjon for pre2025OffentligAfp', () => {
+    beforeEach(() => {
       render(
         <PensjonVisningMobil
           pensjonsdata={mockPensjonsdataPre2025OffentligAfp}
@@ -181,6 +181,9 @@ describe('MobilePensjonVisning', () => {
           harGradering={true}
         />
       )
+    })
+
+    it('viser kun AFP og Alerdspensjon for pre2025OffentligAfp', () => {
       expect(mockHentUttaksmaanedOgAar).toHaveBeenCalledWith({
         aar: 65,
         maaneder: 3,
@@ -191,14 +194,6 @@ describe('MobilePensjonVisning', () => {
     })
 
     it('viser dato i parantes i tittel for pre2025OffentligAfp', () => {
-      render(
-        <PensjonVisningMobil
-          pensjonsdata={mockPensjonsdataPre2025OffentligAfp}
-          summerYtelser={mockSummerYtelser}
-          hentUttaksmaanedOgAar={mockHentUttaksmaanedOgAar}
-          harGradering={true}
-        />
-      )
       const readMoreElements = screen.getAllByRole('button')
 
       expect(readMoreElements[0]).toContainElement(
@@ -207,14 +202,6 @@ describe('MobilePensjonVisning', () => {
     })
 
     it('viser bare tidligst uttaks alder for AP i tittel for pre2025OffentligAfp', () => {
-      render(
-        <PensjonVisningMobil
-          pensjonsdata={mockPensjonsdataPre2025OffentligAfp}
-          summerYtelser={mockSummerYtelser}
-          hentUttaksmaanedOgAar={mockHentUttaksmaanedOgAar}
-          harGradering={true}
-        />
-      )
       const readMoreElements = screen.getAllByRole('button')
 
       expect(readMoreElements[1].getAttribute('aria-expanded')).toBe('false')
