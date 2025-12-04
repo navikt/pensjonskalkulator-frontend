@@ -383,7 +383,7 @@ export function getTidligstMuligUttakIngressContent({
 }
 
 const pdfFormatMessageValues = {
-  br: () => '<br/>',
+  br: '<br/>',
   strong: (chunks: string[]) => `<strong>${chunks.join('')}</strong>`,
   nowrap: (chunks: string[]) =>
     `<span class="nowrap">${chunks.join('')}</span>`,
