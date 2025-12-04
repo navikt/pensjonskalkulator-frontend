@@ -257,7 +257,7 @@ export const BeregningAvansert = () => {
 
         {isError ? (
           <>
-            <Heading level="2" size="medium">
+            <Heading level="2" size="medium" data-testid="beregning-heading">
               <FormattedMessage id="beregning.title" />
             </Heading>
 
@@ -272,7 +272,12 @@ export const BeregningAvansert = () => {
                 [styles.intro__endring]: isEndring,
               })}
             >
-              <Heading level="2" size="medium" className={styles.introTitle}>
+              <Heading
+                level="2"
+                size="medium"
+                className={styles.introTitle}
+                data-testid="beregning-heading"
+              >
                 <FormattedMessage
                   id={
                     isEndring
