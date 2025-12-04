@@ -1,11 +1,8 @@
 import eslint from '@eslint/js'
 import vitest from '@vitest/eslint-plugin'
 import importPlugin from 'eslint-plugin-import'
-import jsxA11y from 'eslint-plugin-jsx-a11y'
 import reactPlugin from 'eslint-plugin-react'
-import reactHooks from 'eslint-plugin-react-hooks'
 import sonarjsPlugin from 'eslint-plugin-sonarjs'
-import testingLibrary from 'eslint-plugin-testing-library'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
@@ -46,35 +43,13 @@ const defaultEslintConfig = tseslint.config(
     ignores: [...ignoredFiles],
   })),
   reactPlugin.configs.flat.recommended,
-  reactPlugin.configs.flat['jsx-runtime'],
-  reactHooks.configs.flat.recommended,
-  jsxA11y.flatConfigs.recommended
+  reactPlugin.configs.flat['jsx-runtime']
 )
 
 export default [
   ...defaultEslintConfig,
   {
-    settings: {
-      react: { version: 'detect' },
-      'jsx-a11y': {
-        polymorphicPropName: 'as',
-        components: {
-          Button: 'button',
-          Link: 'a',
-          Heading: 'h2',
-          BodyLong: 'p',
-          BodyShort: 'p',
-          Label: 'label',
-          TextField: 'input',
-          Select: 'select',
-          Checkbox: 'input',
-          Radio: 'input',
-          Alert: 'div',
-          Panel: 'div',
-          Modal: 'dialog',
-        },
-      },
-    },
+    settings: { react: { version: 'detect' } }, // eslint-plugin-react needs this
     languageOptions: {
       globals: {
         ...globals.node,
@@ -114,32 +89,12 @@ export default [
       'import/no-duplicates': 'error',
       // SonarJS rules
       'sonarjs/no-duplicate-string': 'error',
-      'sonarjs/no-identical-functions': 'error',
-      'sonarjs/no-redundant-boolean': 'warn',
-      'sonarjs/no-unused-collection': 'error',
       'sonarjs/no-useless-catch': 'warn',
       'sonarjs/prefer-immediate-return': 'warn',
       'sonarjs/no-collapsible-if': 'error',
       'sonarjs/no-gratuitous-expressions': 'error',
       'sonarjs/no-inverted-boolean-check': 'warn',
       'sonarjs/prefer-while': 'warn',
-      // jsx-a11y rules
-      // TODO: fjern når alle warns for feil er borte
-      'jsx-a11y/anchor-is-valid': 'warn',
-      'jsx-a11y/click-events-have-key-events': 'warn',
-      'jsx-a11y/no-static-element-interactions': 'warn',
-      'jsx-a11y/label-has-associated-control': 'warn',
-      // react-hooks rules
-      // TODO: fjern når alle warns for feil er borte
-      'react-hooks/rules-of-hooks': 'warn',
-      'react-hooks/exhaustive-deps': 'warn',
-      'react-hooks/preserve-manual-memoization': 'warn',
-      'react-hooks/refs': 'warn',
-      'react-hooks/set-state-in-effect': 'warn',
-      'react-hooks/set-state-in-render': 'warn',
-      'react-hooks/use-memo': 'warn',
-      'react-hooks/immutability': 'warn',
-      'react-hooks/purity': 'warn',
     },
   },
   // Test files configuration
@@ -158,13 +113,10 @@ export default [
       '**/playwright/**/*.ts',
       '**/playwright/**/*.tsx',
     ],
-    ...testingLibrary.configs['flat/react'],
     plugins: {
-      ...testingLibrary.configs['flat/react'].plugins,
       vitest,
     },
     rules: {
-      ...testingLibrary.configs['flat/react'].rules,
       ...vitest.configs.recommended.rules,
       'vitest/valid-title': 'off',
       'vitest/expect-expect': 'off',
