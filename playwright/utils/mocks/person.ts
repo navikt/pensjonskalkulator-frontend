@@ -63,7 +63,7 @@ export const person = async (
   }
 
   return {
-    url: /\/pensjon\/kalkulator\/api\/v5\/person/,
+    url: /\/pensjon\/kalkulator\/api\/v6\/person/,
     overrideJsonResponse: personMock,
   }
 }

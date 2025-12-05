@@ -425,8 +425,8 @@ await authenticate(page, [
 // ❌ Avoid - Direct JSON response overrides (not readable)
 await setupInterceptions(page, [
   {
-    url: /\/api\/v5\/person/,
-    overrideJsonResponse: { navn: 'Custom', foedselsdato: '1960-01-01' },
+    url: /\/api\/v6\/person/,
+    overrideJsonResponse: { fornavn: 'Custom', navn: 'Custom Navn', foedselsdato: '1960-01-01' },
   },
 ])
 ```
