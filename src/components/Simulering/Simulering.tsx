@@ -336,6 +336,7 @@ export const Simulering = ({
       omstillingsstoenadOgGjenlevende?.harLoependeSak
         ? getOmstillingsstoenadAlert(intl, normertPensjonsalder)
         : ''
+    const shouldHideAfpHeading = Boolean(afpDetaljerListe.length > 0 && loependeLivsvarigAfpOffentlig?.afpStatus && loependeLivsvarigAfpOffentlig?.maanedligBeloep)
     const grunnlagIngress = getGrunnlagIngress({
       intl,
       alderspensjonDetaljerListe: alderspensjonDetaljerListe,
@@ -346,6 +347,7 @@ export const Simulering = ({
       hasPre2025OffentligAfpUttaksalder: Boolean(pre2025OffentligAfp),
       uttaksalder,
       gradertUttaksperiode,
+      shouldHideAfpHeading,
     })
 
     const finalPdfContent =

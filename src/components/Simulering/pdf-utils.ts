@@ -100,11 +100,13 @@ export function getAfpDetaljerHtmlTable({
   intl,
   uttaksalder,
   gradertUttaksperiode,
+  shouldHideAfpHeading,
 }: {
   afpDetaljerListe: AfpDetaljerListe[] | undefined
   intl: IntlShape
   uttaksalder: Alder | null
   gradertUttaksperiode: GradertUttak | null
+  shouldHideAfpHeading: boolean
 }): string {
   if (!afpDetaljerListe) {
     return ''
@@ -113,7 +115,7 @@ export function getAfpDetaljerHtmlTable({
   // For each AfpDetaljer entry, render its sections and concatenate HTML
   return afpDetaljerListe
     .map((afpDetaljForValgtUttak, index) => {
-      const afpHeading = getAfpHeading({
+      const afpHeading = !shouldHideAfpHeading && getAfpHeading({
         afpDetaljForValgtUttak,
         index,
         uttaksalder,
@@ -433,6 +435,7 @@ export function getGrunnlagIngress({
   hasPre2025OffentligAfpUttaksalder,
   uttaksalder,
   gradertUttaksperiode,
+  shouldHideAfpHeading
 }: {
   intl: IntlShape
   alderspensjonDetaljerListe: AlderspensjonDetaljerListe[]
@@ -445,7 +448,8 @@ export function getGrunnlagIngress({
   content?: string
   hasPre2025OffentligAfpUttaksalder: boolean
   uttaksalder: Alder | null
-  gradertUttaksperiode: GradertUttak | null
+  gradertUttaksperiode: GradertUttak | null,
+  shouldHideAfpHeading: boolean
 }): string {
   const beloepRaw = aarligInntektFoerUttakBeloepFraSkatt?.beloep
   const aarRaw = aarligInntektFoerUttakBeloepFraSkatt?.aar
@@ -514,6 +518,6 @@ export function getGrunnlagIngress({
     displayText: 'Din pensjonsopptjening',
   })}</div>
   ${getAfpIngress(intl, title || '', content || '')}
-  ${getAfpDetaljerHtmlTable({ afpDetaljerListe, intl, uttaksalder, gradertUttaksperiode })}
+  ${getAfpDetaljerHtmlTable({ afpDetaljerListe, intl, uttaksalder, gradertUttaksperiode, shouldHideAfpHeading })}
   `
 }
