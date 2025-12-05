@@ -256,8 +256,10 @@ export const Simulering = ({
             afpPrivatListe={afpPrivatListe}
             afpOffentligListe={afpOffentligListe}
             pre2025OffentligAfp={pre2025OffentligAfp}
+            offentligAfpFraTpOrdning={afpPerioder}
             pensjonsavtaler={pensjonsavtalerData?.avtaler}
             simulertTjenestepensjon={offentligTp?.simulertTjenestepensjon}
+            skalViseNullOffentligTjenestepensjon={true}
           />
         )}
     </section>
