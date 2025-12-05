@@ -673,11 +673,7 @@ export const useOffentligTpData = () => {
     tpAfpPeriode = finnAllePensjonsavtalerVedUttak(
       afpPerioder,
       uttaksAlderEller65
-    ).find(
-      (periode) =>
-        periode.startAlder.aar === uttaksAlderEller65.aar &&
-        periode.startAlder.maaneder === uttaksAlderEller65.maaneder
-    )
+    ).find((periode) => periode.startAlder.aar >= 65)
 
     afpPerioderFom65aar = afpPerioder.filter((periode) =>
       isAlderLikEllerOverAnnenAlder(periode.startAlder, minsteAlderForAfp)

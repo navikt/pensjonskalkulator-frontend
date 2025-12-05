@@ -247,16 +247,14 @@ export const processPre2025OffentligAfpWithSpkPerioder = (
 
       for (let year = periodeStartYear; year <= periodeEndYear; year++) {
         if (year >= xAxisStartAar) {
-          const antallMaanederMedPensjon = getAntallMaanederMedPensjon(
+          const antallMaanederMedAfp = getAntallMaanederMedAfp(
             year,
             periode.startAlder,
-            periode.sluttAlder,
-            true
+            periode.sluttAlder
           )
 
           const allocatedAmount =
-            (periode.aarligUtbetaling * Math.max(0, antallMaanederMedPensjon)) /
-            12
+            (periode.aarligUtbetaling * Math.max(0, antallMaanederMedAfp)) / 12
           result[year - xAxisStartAar] += allocatedAmount
         }
       }
@@ -327,8 +325,7 @@ export const processAfpPensjonsberegningArray = (
 export const getAntallMaanederMedPensjon = (
   year: number,
   utbetalingsperiodeStartAlder: Alder,
-  utbetalingsperiodeSluttAlder?: Alder,
-  erAfp?: boolean
+  utbetalingsperiodeSluttAlder?: Alder
 ) => {
   // Hvis vi viser første år av avtalen, tar vi høyde for startMaaned, hvis ikke teller avtalen fra måned 0 (fult år)
   const periodStartMonth =
@@ -342,7 +339,27 @@ export const getAntallMaanederMedPensjon = (
       ? utbetalingsperiodeSluttAlder.maaneder
       : 11
 
-  return periodEndMonth - periodStartMonth + (erAfp ? 0 : 1)
+  return periodEndMonth - periodStartMonth + 1
+}
+
+export const getAntallMaanederMedAfp = (
+  year: number,
+  utbetalingsperiodeStartAlder: Alder,
+  utbetalingsperiodeSluttAlder?: Alder
+) => {
+  // Hvis vi viser første år av avtalen, tar vi høyde for startMaaned, hvis ikke teller avtalen fra måned 0 (fult år)
+  const periodStartMonth =
+    utbetalingsperiodeStartAlder.aar === year
+      ? utbetalingsperiodeStartAlder.maaneder
+      : 0
+
+  // Hvis avtalen har en sluttdato og at vi viser siste av avtalen, tar vi høyde for sluttMaaned, hvis ikke teller avtalen til måned 11 (fult år)
+  const periodEndMonth =
+    utbetalingsperiodeSluttAlder && year === utbetalingsperiodeSluttAlder?.aar
+      ? utbetalingsperiodeSluttAlder.maaneder
+      : 12
+
+  return periodEndMonth - periodStartMonth
 }
 
 export const processPensjonsavtalerArray = (
