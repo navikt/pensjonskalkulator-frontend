@@ -272,23 +272,12 @@ function getAfpDetaljerListe(
   }
 
   const getAfpOffentligDetails = (
-    afpOffentlig: AfpPensjonsberegning,
-    loependeAfpOffentlig?: AfpOffentligLivsvarig
+    afpOffentlig: AfpPensjonsberegning | AfpOffentligLivsvarig
   ) => {
-    let beloep = afpOffentlig?.maanedligBeloep ?? 0
-
-    if (
-      loependeAfpOffentlig?.maanedligBeloep &&
-      loependeAfpOffentlig.maanedligBeloep > 0 &&
-      loependeAfpOffentlig.afpStatus
-    ) {
-      beloep = loependeAfpOffentlig.maanedligBeloep
-    }
-
     return [
       {
         tekst: 'Månedlig livsvarig avtalefestet pensjon (AFP)',
-        verdi: `${formatInntekt(beloep)} kr`,
+        verdi: `${formatInntekt(afpOffentlig?.maanedligBeloep ?? 0)} kr`,
       },
     ]
   }
@@ -438,17 +427,15 @@ function getAfpDetaljerListe(
       gradertUttaksperiode?.uttaksalder.aar ?? Infinity
     )
 
-    const afpOffentligVedUttak = afpOffentligListe.find(
-      (it) => it.alder >= afpAar
-    )
+    const afpOffentligVedUttak =
+      loependeLivsvarigAfpOffentlig && loependeLivsvarigAfpOffentlig.afpStatus
+        ? loependeLivsvarigAfpOffentlig
+        : afpOffentligListe.find((it) => it.alder >= afpAar)
 
     if (afpOffentligVedUttak) {
       afpDetaljerListe.push({
         afpPrivat: [],
-        afpOffentlig: getAfpOffentligDetails(
-          afpOffentligVedUttak,
-          loependeLivsvarigAfpOffentlig
-        ),
+        afpOffentlig: getAfpOffentligDetails(afpOffentligVedUttak),
         pre2025OffentligAfp: [],
         opptjeningPre2025OffentligAfp: [],
       })
