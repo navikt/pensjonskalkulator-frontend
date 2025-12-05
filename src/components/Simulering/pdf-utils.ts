@@ -249,15 +249,15 @@ export function getForbeholdAvsnitt(intl: IntlShape): string {
   const kalkulatorUrl = 'https://nav.no/pensjon/kalkulator'
 
   return `<div>
-    <p>
-      <b>NB: </b>
-      ${intl.formatMessage({ id: 'grunnlag.forbehold.ingress_2' })}
-      ${getPdfLink({ url: kalkulatorUrl, displayText: 'Gå til pensjonskalkulator' })}
-    </p>
     <p class="pdf-metadata">
       <b>${intl.formatMessage({ id: 'grunnlag.forbehold.title' })}: </b>
       ${intl.formatMessage({ id: 'grunnlag.forbehold.ingress_1' })}
       <br/>${getPdfLink({ url: forbeholdUrl, displayText: intl.formatMessage({ id: 'grunnlag.forbehold.link' }) })}
+    </p>
+    <p>
+      <b>NB: </b>
+      ${intl.formatMessage({ id: 'grunnlag.forbehold.ingress_2' })}
+      ${getPdfLink({ url: kalkulatorUrl, displayText: 'Gå til pensjonskalkulator' })}
     </p>
   </div>`
 }
@@ -509,16 +509,15 @@ export function getGrunnlagIngress({
       return `${headingHtml}${getAldersPensjonDetaljerHtmlTable(alderspensjonVedUttaksValg)}`
     })
     .join('')}
-  
+  <div>${getPdfLink({
+    url: DIN_PENSJON_OPPTJENING_URL,
+    displayText: 'Din pensjonsopptjening',
+  })}</div>
   <div>${getPdfLink({
     url: 'https://www.nav.no/alderspensjon#beregning',
     displayText: 'Om reglene for alderspensjon ',
   })}
   </div>
-  <div>${getPdfLink({
-    url: DIN_PENSJON_OPPTJENING_URL,
-    displayText: 'Din pensjonsopptjening',
-  })}</div>
   ${getAfpIngress(intl, title || '', content || '')}
   ${getAfpDetaljerHtmlTable({ afpDetaljerListe, intl, uttaksalder, gradertUttaksperiode, shouldHideAfpHeading })}
   `
