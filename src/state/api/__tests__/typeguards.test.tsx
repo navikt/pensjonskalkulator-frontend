@@ -599,6 +599,7 @@ describe('Typeguards', () => {
 
   describe('isPerson', () => {
     const validPerson = {
+      navn: 'Ola Nordmann',
       fornavn: 'Ola',
       sivilstand: 'GIFT',
       foedselsdato: '1963-04-30',
