@@ -96,7 +96,8 @@ export const AfpDetaljerGrunnlag: React.FC<Props> = ({
       {afpDetaljerListe.map((afpDetaljForValgtUttak, index) => (
         <Box key={index}>
           <VStack gap="4 8" width="100%" marginBlock="6 4">
-            {shouldRenderHeading(afpDetaljForValgtUttak) && renderAfpHeading(afpDetaljForValgtUttak, index)}
+            {shouldRenderHeading(afpDetaljForValgtUttak) &&
+              renderAfpHeading(afpDetaljForValgtUttak, index)}
             {renderDetaljer(afpDetaljForValgtUttak)}
           </VStack>
         </Box>

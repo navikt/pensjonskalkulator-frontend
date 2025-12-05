@@ -1268,7 +1268,7 @@ describe('Loaders', () => {
     }
     store.getState = vi.fn().mockImplementation(() => mockedState)
 
-    mockResponse('/v5/person', {
+    mockResponse('/v6/person', {
       status: 200,
       json: {
         navn: 'Test Person',
@@ -1318,10 +1318,11 @@ describe('Loaders', () => {
     }
     store.getState = vi.fn().mockImplementation(() => mockedState)
 
-    mockResponse('/v5/person', {
+    mockResponse('/v6/person', {
       status: 200,
       json: {
         navn: 'Test Person',
+        fornavn: 'Test',
         sivilstand: 'UGIFT',
         foedselsdato: '1960-04-30',
         pensjoneringAldre: {
