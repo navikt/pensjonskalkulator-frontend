@@ -278,6 +278,7 @@ export const Simulering = ({
       foedselsdato: foedselsdato!,
       samtykkeOffentligAFP: samtykkeOffentligAFP,
       beregningsvalg: beregningsvalg,
+      loependeLivsvarigAfpOffentlig: loependeLivsvarigAfpOffentlig,
     })
   }, [
     intl,
