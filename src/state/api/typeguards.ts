@@ -172,6 +172,8 @@ export const isPerson = (data?: any): data is Person => {
       'SKILT_PARTNER',
       'GJENLEVENDE_PARTNER',
     ].includes(data?.sivilstand) &&
+    data.navn &&
+    typeof data.navn === 'string' &&
     data.fornavn &&
     typeof data.fornavn === 'string' &&
     data.foedselsdato &&
