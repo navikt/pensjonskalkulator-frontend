@@ -336,7 +336,11 @@ export const Simulering = ({
       omstillingsstoenadOgGjenlevende?.harLoependeSak
         ? getOmstillingsstoenadAlert(intl, normertPensjonsalder)
         : ''
-    const shouldHideAfpHeading = Boolean(afpDetaljerListe.length > 0 && loependeLivsvarigAfpOffentlig?.afpStatus && loependeLivsvarigAfpOffentlig?.maanedligBeloep)
+    const shouldHideAfpHeading = Boolean(
+      afpDetaljerListe.length > 0 &&
+      loependeLivsvarigAfpOffentlig?.afpStatus &&
+      loependeLivsvarigAfpOffentlig?.maanedligBeloep
+    )
     const grunnlagIngress = getGrunnlagIngress({
       intl,
       alderspensjonDetaljerListe: alderspensjonDetaljerListe,

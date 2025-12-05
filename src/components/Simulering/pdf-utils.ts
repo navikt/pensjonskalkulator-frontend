@@ -115,12 +115,14 @@ export function getAfpDetaljerHtmlTable({
   // For each AfpDetaljer entry, render its sections and concatenate HTML
   return afpDetaljerListe
     .map((afpDetaljForValgtUttak, index) => {
-      const afpHeading = !shouldHideAfpHeading && getAfpHeading({
-        afpDetaljForValgtUttak,
-        index,
-        uttaksalder,
-        gradertUttaksperiode,
-      })
+      const afpHeading =
+        !shouldHideAfpHeading &&
+        getAfpHeading({
+          afpDetaljForValgtUttak,
+          index,
+          uttaksalder,
+          gradertUttaksperiode,
+        })
 
       const headingHtml = afpHeading
         ? `<h4>${intl.formatMessage(
@@ -435,7 +437,7 @@ export function getGrunnlagIngress({
   hasPre2025OffentligAfpUttaksalder,
   uttaksalder,
   gradertUttaksperiode,
-  shouldHideAfpHeading
+  shouldHideAfpHeading,
 }: {
   intl: IntlShape
   alderspensjonDetaljerListe: AlderspensjonDetaljerListe[]
@@ -448,7 +450,7 @@ export function getGrunnlagIngress({
   content?: string
   hasPre2025OffentligAfpUttaksalder: boolean
   uttaksalder: Alder | null
-  gradertUttaksperiode: GradertUttak | null,
+  gradertUttaksperiode: GradertUttak | null
   shouldHideAfpHeading: boolean
 }): string {
   const beloepRaw = aarligInntektFoerUttakBeloepFraSkatt?.beloep
