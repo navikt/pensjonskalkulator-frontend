@@ -9,6 +9,7 @@ import { BodyLong, BodyShort, Heading, HeadingProps } from '@navikt/ds-react'
 
 import { TabellVisning } from '@/components/TabellVisning'
 import { usePensjonsavtalerQuery } from '@/state/api/apiSlice'
+import { isOffentligTpFoer1963 } from '@/state/api/typeguards'
 import { generatePensjonsavtalerRequestBody } from '@/state/api/utils'
 import { useAppSelector } from '@/state/hooks'
 import {
@@ -259,7 +260,12 @@ export const Simulering = ({
             offentligAfpFraTpOrdning={afpPerioder}
             pensjonsavtaler={pensjonsavtalerData?.avtaler}
             simulertTjenestepensjon={offentligTp?.simulertTjenestepensjon}
-            skalViseNullOffentligTjenestepensjon={true}
+            skalViseNullOffentligTjenestepensjon={
+              offentligTp &&
+              erOffentligTpFoer1963 &&
+              isOffentligTpFoer1963(erOffentligTpFoer1963, offentligTp) &&
+              offentligTp.feilkode === 'BEREGNING_GIR_NULL_UTBETALING'
+            }
           />
         )}
     </section>
