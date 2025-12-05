@@ -237,7 +237,8 @@ export const Simulering = ({
       alderspensjonListe,
       afpPrivatListe,
       afpOffentligListe,
-      pre2025OffentligAfp
+      pre2025OffentligAfp,
+      loependeLivsvarigAfpOffentlig
     )
 
   const { data: tidligstMuligUttak } = useTidligstMuligUttak(ufoeregrad)
