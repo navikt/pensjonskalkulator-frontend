@@ -19,6 +19,7 @@ interface Props {
   summerYtelser: (data: Pensjonsdata) => number
   hentUttaksmaanedOgAar: (alder: Alder) => string
   harGradering?: boolean
+  skalViseNullOffentligTjenestepensjon?: boolean
 }
 
 export const PensjonVisningDesktop: React.FC<Props> = ({
@@ -26,6 +27,7 @@ export const PensjonVisningDesktop: React.FC<Props> = ({
   summerYtelser,
   hentUttaksmaanedOgAar,
   harGradering,
+  skalViseNullOffentligTjenestepensjon,
 }) => {
   const intl = useIntl()
 
@@ -94,6 +96,9 @@ export const PensjonVisningDesktop: React.FC<Props> = ({
                 summerYtelser={summerYtelser}
                 hentUttaksMaanedOgAar={hentUttaksmaanedOgAar}
                 harGradering={harGradering}
+                skalViseNullOffentligTjenestepensjon={
+                  skalViseNullOffentligTjenestepensjon
+                }
               />
               <div className={styles.dividerWrapper}>
                 <Divider mediumMargin noMarginBottom />
