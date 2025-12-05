@@ -13,10 +13,7 @@ import {
   validateToken,
 } from '@navikt/oasis'
 
-import type { components } from '../src/types/schema.d.ts'
 import { ensureEnv } from './ensureEnv.js'
-
-type Person = components['schemas']['PersonV2']
 
 const isDevelopment = process.env.NODE_ENV?.startsWith('development')
 const unleashUrl = process.env.UNLEASH_SERVER_API_URL
