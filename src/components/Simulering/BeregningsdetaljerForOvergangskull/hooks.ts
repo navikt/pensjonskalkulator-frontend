@@ -428,7 +428,9 @@ function getAfpDetaljerListe(
     )
 
     const afpOffentligVedUttak =
-      loependeLivsvarigAfpOffentlig && loependeLivsvarigAfpOffentlig.afpStatus
+      loependeLivsvarigAfpOffentlig?.maanedligBeloep &&
+      loependeLivsvarigAfpOffentlig.afpStatus &&
+      loependeLivsvarigAfpOffentlig?.maanedligBeloep > 0
         ? loependeLivsvarigAfpOffentlig
         : afpOffentligListe.find((it) => it.alder >= afpAar)
 
