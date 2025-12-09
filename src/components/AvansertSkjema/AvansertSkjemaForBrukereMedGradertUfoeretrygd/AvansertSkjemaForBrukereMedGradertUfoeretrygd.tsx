@@ -452,7 +452,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                 {validationErrors[
                   AVANSERT_FORM_NAMES.endringAlertFremtidigDato
                 ] && (
-                  <Alert variant="warning">
+                  <Alert variant="warning" role="alert">
                     <FormattedMessage
                       id="beregning.endring.alert.uttaksdato"
                       values={{
