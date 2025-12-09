@@ -103,7 +103,12 @@ export const PrivatePensjonsavtaler: React.FC<PrivatePensjonsavtalerProps> = ({
       {
         // Når private pensjonsavtaler er partial med noen avtaler
         partialPrivatePensjonsavtaler && (
-          <Alert inline variant="warning" className={styles.alert__margin} role="alert">
+          <Alert
+            inline
+            variant="warning"
+            className={styles.alert__margin}
+            role="alert"
+          >
             <FormattedMessage id="pensjonsavtaler.private.ingress.error.pensjonsavtaler.partial" />
           </Alert>
         )

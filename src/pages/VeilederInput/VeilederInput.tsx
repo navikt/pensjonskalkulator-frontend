@@ -136,7 +136,11 @@ export const VeilederInput = () => {
             </Heading>
             <VStack gap="6">
               {hasTimedOut && (
-                <Alert variant="warning" data-testid="inaktiv-alert" role="alert">
+                <Alert
+                  variant="warning"
+                  data-testid="inaktiv-alert"
+                  role="alert"
+                >
                   Du var for lenge inaktiv og sesjonen for bruker har derfor
                   løpt ut.
                   <br /> Logg inn på bruker på nytt.
