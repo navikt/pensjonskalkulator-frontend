@@ -415,7 +415,7 @@ export const Simulering = ({
   const hideAFP =
     loependeLivsvarigAfpOffentlig?.afpStatus &&
     (loependeLivsvarigAfpOffentlig?.maanedligBeloep === null ||
-    loependeLivsvarigAfpOffentlig?.maanedligBeloep === undefined)
+      loependeLivsvarigAfpOffentlig?.maanedligBeloep === undefined)
 
   return (
     <section className={styles.section}>
