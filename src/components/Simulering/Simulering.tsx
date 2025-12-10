@@ -412,10 +412,10 @@ export const Simulering = ({
     }
   }, [showPDFRef, setIsPdfReady])
 
-  const showAFP =
+  const hideAFP =
     loependeLivsvarigAfpOffentlig?.afpStatus &&
-    loependeLivsvarigAfpOffentlig?.maanedligBeloep !== null &&
-    loependeLivsvarigAfpOffentlig?.maanedligBeloep !== undefined
+    loependeLivsvarigAfpOffentlig?.maanedligBeloep === null &&
+    loependeLivsvarigAfpOffentlig?.maanedligBeloep === undefined
 
   return (
     <section className={styles.section}>
@@ -527,7 +527,7 @@ export const Simulering = ({
           <MaanedsbeloepAvansertBeregning
             alderspensjonMaanedligVedEndring={alderspensjonMaanedligVedEndring}
             afpPrivatListe={afpPrivatListe}
-            afpOffentligListe={showAFP ? afpOffentligListe : undefined}
+            afpOffentligListe={hideAFP ? undefined : afpOffentligListe}
             pre2025OffentligAfp={pre2025OffentligAfp}
             pensjonsavtaler={pensjonsavtalerData?.avtaler}
             simulertTjenestepensjon={offentligTpData?.simulertTjenestepensjon}
