@@ -412,7 +412,10 @@ export const Simulering = ({
     }
   }, [showPDFRef, setIsPdfReady])
 
-  const showAFP = loependeLivsvarigAfpOffentlig?.afpStatus && (loependeLivsvarigAfpOffentlig?.maanedligBeloep !== null && loependeLivsvarigAfpOffentlig?.maanedligBeloep !== undefined)
+  const showAFP =
+    loependeLivsvarigAfpOffentlig?.afpStatus &&
+    loependeLivsvarigAfpOffentlig?.maanedligBeloep !== null &&
+    loependeLivsvarigAfpOffentlig?.maanedligBeloep !== undefined
 
   return (
     <section className={styles.section}>
