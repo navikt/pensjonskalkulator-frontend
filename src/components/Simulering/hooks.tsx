@@ -4,12 +4,19 @@ import React from 'react'
 import { useIntl } from 'react-intl'
 
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
+import {
+  selectFoedselsdato,
+  selectIsEndring,
+} from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
 import {
   getAlderMinus1Maaned,
+  isAlderOver62,
   transformFoedselsdatoToAlder,
 } from '@/utils/alder'
 import { formatInntektToNumber } from '@/utils/inntekt'
+import { ALERT_VIST } from '@/utils/loggerConstants'
+import { logger } from '@/utils/logging'
 
 import { SERIES_DEFAULT } from './constants'
 import {
@@ -34,10 +41,41 @@ export type PensjonsavtalerResponse = {
   }
 }
 
+export interface PensjonsAvtalerAlertProps {
+  pensjonsavtaler: {
+    isLoading: boolean
+    isSuccess: boolean
+    isError: boolean
+    data?: {
+      avtaler: Pensjonsavtale[]
+      partialResponse: boolean
+    }
+  }
+  offentligTp: {
+    isError: boolean
+    data?: OffentligTp
+  }
+  isPensjonsavtaleFlagVisible: boolean
+}
+
 export type OffentligTpResponse = {
   isLoading: boolean
   data?: OffentligTp
 }
+
+interface AfpOffentligAlertProps {
+  harSamtykketOffentligAFP: boolean | null
+  isAfpOffentligLivsvarigSuccess: boolean
+  loependeLivsvarigAfpOffentlig?: AfpOffentligLivsvarig
+}
+
+type AlertVariant = (typeof ALERT_VARIANTS)[keyof typeof ALERT_VARIANTS]
+
+const ALERT_VARIANTS = {
+  INFO: 'info',
+  WARNING: 'warning',
+  INLINE_INFO: 'inline-info',
+} as const
 
 export const useSimuleringChartLocalState = (initialValues: {
   styles: Partial<typeof globalClassNames>
@@ -372,4 +410,237 @@ export const useSimuleringChartLocalState = (initialValues: {
     showVisFlereAarButton,
     isPensjonsavtaleFlagVisible,
   ] as const
+}
+
+export const usePensjonsavtalerAlerts = ({
+  pensjonsavtaler,
+  offentligTp,
+  isPensjonsavtaleFlagVisible,
+}: PensjonsAvtalerAlertProps) => {
+  const intl = useIntl()
+  const isEndring = useAppSelector(selectIsEndring)
+  const {
+    isLoading: isPensjonsavtalerLoading,
+    isSuccess: isPensjonsavtalerSuccess,
+    isError: isPensjonsavtalerError,
+    data: pensjonsavtalerData,
+  } = pensjonsavtaler
+  const { isError: isOffentligTpError, data: offentligTpData } = offentligTp
+
+  const alertsList: Array<{
+    variant: AlertVariant
+    text: string
+  }> = []
+
+  // Varselet om at avtaler starter tidligere enn uttakstidspunkt skal være øverst av varslene
+  if (!isPensjonsavtalerLoading && isPensjonsavtaleFlagVisible) {
+    const text = 'beregning.pensjonsavtaler.alert.avtaler_foer_alder'
+    const variant = ALERT_VARIANTS.INLINE_INFO
+    logger(ALERT_VIST, {
+      tekst: `Pensjonsavtaler: ${intl.formatMessage({ id: text })}`,
+      variant,
+    })
+    alertsList.push({
+      variant,
+      text,
+    })
+  }
+
+  const pensjonsavtaleAlert = React.useMemo(():
+    | { variant: AlertVariant; text: string }
+    | undefined => {
+    const isPartialWith0Avtaler =
+      pensjonsavtalerData?.partialResponse &&
+      pensjonsavtalerData?.avtaler.length === 0
+
+    const isOffentligTpUkomplett =
+      offentligTpData?.simuleringsresultatStatus ===
+        'TOM_SIMULERING_FRA_TP_ORDNING' ||
+      offentligTpData?.simuleringsresultatStatus === 'TEKNISK_FEIL'
+
+    const isOffentligTpOK =
+      offentligTpData &&
+      (offentligTpData.simuleringsresultatStatus === 'OK' ||
+        offentligTpData.simuleringsresultatStatus ===
+          'BRUKER_ER_IKKE_MEDLEM_AV_TP_ORDNING')
+
+    if (isEndring) {
+      const text = 'beregning.pensjonsavtaler.alert.endring'
+      const variant = ALERT_VARIANTS.INLINE_INFO
+      return {
+        variant,
+        text,
+      }
+    }
+
+    // Offentlig-TP OK + Private pensjonsavtaler FEIL/UKOMPLETT
+    if (isOffentligTpOK && (isPensjonsavtalerError || isPartialWith0Avtaler)) {
+      const text = 'beregning.pensjonsavtaler.alert.privat.error'
+      const variant = ALERT_VARIANTS.WARNING
+      logger(ALERT_VIST, {
+        tekst: `Pensjonsavtaler: ${intl.formatMessage({ id: text })}`,
+        variant,
+      })
+      return {
+        variant,
+        text,
+      }
+    }
+
+    // Offentlig-TP FEIL/UKOMPLETT eller at TP_ORDNING støttes ikke + Private pensjonsavtaler FEIL/UKOMPLETT
+    if (
+      (isOffentligTpError ||
+        isOffentligTpUkomplett ||
+        offentligTpData?.simuleringsresultatStatus ===
+          'TP_ORDNING_STOETTES_IKKE') &&
+      (isPensjonsavtalerError || isPartialWith0Avtaler)
+    ) {
+      const text = 'beregning.pensjonsavtaler.alert.privat_og_offentlig.error'
+      const variant = ALERT_VARIANTS.WARNING
+      logger(ALERT_VIST, {
+        tekst: `Pensjonsavtaler: ${intl.formatMessage({ id: text })}`,
+        variant,
+      })
+      return {
+        variant,
+        text,
+      }
+    }
+
+    // Offentlig-TP FEIL/UKOMPLETT + Private pensjonsavtaler OK
+    if (
+      (isOffentligTpError || isOffentligTpUkomplett) &&
+      isPensjonsavtalerSuccess
+    ) {
+      const text = 'beregning.pensjonsavtaler.alert.offentlig.error'
+      const variant = ALERT_VARIANTS.WARNING
+      logger(ALERT_VIST, {
+        tekst: `Pensjonsavtaler: ${intl.formatMessage({ id: text })}`,
+        variant,
+      })
+      return {
+        variant,
+        text,
+      }
+    }
+
+    // Offentlig-TP OK + Ordning støttes ikke
+    if (
+      offentligTpData &&
+      offentligTpData.simuleringsresultatStatus === 'TP_ORDNING_STOETTES_IKKE'
+    ) {
+      const text = 'beregning.pensjonsavtaler.alert.stoettes_ikke'
+      const variant = ALERT_VARIANTS.INFO
+      logger(ALERT_VIST, {
+        tekst: `Pensjonsavtaler: ${intl.formatMessage({ id: text })}`,
+        variant,
+      })
+      return {
+        variant,
+        text,
+      }
+    }
+  }, [
+    isPensjonsavtaleFlagVisible,
+    isPensjonsavtalerSuccess,
+    isPensjonsavtalerError,
+    pensjonsavtalerData,
+    isOffentligTpError,
+    offentligTpData,
+  ])
+
+  if (pensjonsavtaleAlert) {
+    alertsList.push(pensjonsavtaleAlert)
+  }
+
+  return alertsList
+}
+
+export const useAfpOffentligAlerts = ({
+  harSamtykketOffentligAFP,
+  isAfpOffentligLivsvarigSuccess,
+  loependeLivsvarigAfpOffentlig,
+}: AfpOffentligAlertProps) => {
+  const intl = useIntl()
+  const foedselsdato = useAppSelector(selectFoedselsdato)
+
+  // Viser ikke alert hvis kallet aldri ble forsøkt (query ble skippet)
+  if (
+    !harSamtykketOffentligAFP ||
+    !foedselsdato ||
+    !isAlderOver62(foedselsdato)
+  ) {
+    return null
+  }
+
+  // Viser ikke alert hvis bruker ikke har vedtak om afp offentlig
+  if (
+    isAfpOffentligLivsvarigSuccess &&
+    loependeLivsvarigAfpOffentlig?.afpStatus === false
+  ) {
+    return null
+  }
+
+  // Viser ikke alert hvis bruker ikke har løpende livsvarig afp offentlig
+  if (
+    loependeLivsvarigAfpOffentlig?.afpStatus === null &&
+    loependeLivsvarigAfpOffentlig?.maanedligBeloep === null
+  ) {
+    return null
+  }
+
+  // Vellykket kall
+  if (
+    loependeLivsvarigAfpOffentlig?.afpStatus &&
+    loependeLivsvarigAfpOffentlig?.maanedligBeloep &&
+    loependeLivsvarigAfpOffentlig?.maanedligBeloep > 0
+  ) {
+    const alertText = 'beregning.alert.info.afp-offentlig-livsvarig'
+
+    logger(ALERT_VIST, {
+      tekst: `AFP Offentlig: ${intl.formatMessage({ id: alertText })}`,
+      variant: 'info',
+    })
+
+    return {
+      variant: 'info' as AlertVariant,
+      text: alertText,
+    }
+  }
+
+  // Kall feilet
+  if (
+    !isAfpOffentligLivsvarigSuccess ||
+    (loependeLivsvarigAfpOffentlig?.afpStatus &&
+      loependeLivsvarigAfpOffentlig?.maanedligBeloep === 0)
+  ) {
+    const alertText = 'beregning.alert.feil.afp-offentlig-livsvarig'
+
+    logger(ALERT_VIST, {
+      tekst: `AFP Offentlig: ${intl.formatMessage({ id: alertText })}`,
+      variant: 'warning',
+    })
+
+    return {
+      variant: 'warning' as AlertVariant,
+      text: alertText,
+    }
+  }
+
+  // Kall var vellykket, men beløp er ikke definert
+  if (
+    isAfpOffentligLivsvarigSuccess &&
+    !loependeLivsvarigAfpOffentlig?.maanedligBeloep
+  ) {
+    const alertText = 'beregning.alert.success.afp-offentlig-livsvarig'
+
+    logger(ALERT_VIST, {
+      tekst: `AFP Offentlig: ${intl.formatMessage({ id: alertText })}`,
+      variant: 'warning',
+    })
+    return {
+      variant: 'warning' as AlertVariant,
+      text: alertText,
+    }
+  }
 }

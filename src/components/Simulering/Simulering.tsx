@@ -55,7 +55,7 @@ import { SimuleringAfpOffentligAlert } from './SimuleringAfpOffentligAlert/Simul
 import { SimuleringEndringBanner } from './SimuleringEndringBanner/SimuleringEndringBanner'
 import { SimuleringGrafNavigation } from './SimuleringGrafNavigation/SimuleringGrafNavigation'
 import { SimuleringPensjonsavtalerAlert } from './SimuleringPensjonsavtalerAlert/SimuleringPensjonsavtalerAlert'
-import { useSimuleringChartLocalState } from './hooks'
+import { usePensjonsavtalerAlerts, useSimuleringChartLocalState } from './hooks'
 import {
   getChartTable,
   getCurrentDateTimeFormatted,
@@ -343,11 +343,13 @@ export const Simulering = ({
       omstillingsstoenadOgGjenlevende?.harLoependeSak
         ? getOmstillingsstoenadAlert(intl, normertPensjonsalder)
         : ''
+
     const shouldHideAfpHeading = Boolean(
       afpDetaljerListe.length > 0 &&
       loependeLivsvarigAfpOffentlig?.afpStatus &&
       loependeLivsvarigAfpOffentlig?.maanedligBeloep
     )
+
     const grunnlagIngress = getGrunnlagIngress({
       intl,
       alderspensjonDetaljerListe: alderspensjonDetaljerListe,
@@ -373,6 +375,7 @@ export const Simulering = ({
         data: offentligTpData,
       },
     })
+
     const finalPdfContent =
       pdfHeadingWithLogo +
       personalInfo +
