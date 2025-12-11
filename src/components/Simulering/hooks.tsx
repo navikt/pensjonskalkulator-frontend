@@ -26,6 +26,19 @@ import { getChartOptions, onPointUnclick } from './utils-highcharts'
 
 import globalClassNames from './Simulering.module.scss'
 
+export type PensjonsavtalerResponse = {
+  isLoading: boolean
+  data?: {
+    avtaler: Pensjonsavtale[]
+    partialResponse: boolean
+  }
+}
+
+export type OffentligTpResponse = {
+  isLoading: boolean
+  data?: OffentligTp
+}
+
 export const useSimuleringChartLocalState = (initialValues: {
   styles: Partial<typeof globalClassNames>
   chartRef: React.RefObject<HighchartsReact.RefObject | null>
@@ -41,17 +54,8 @@ export const useSimuleringChartLocalState = (initialValues: {
   afpPrivatListe?: AfpPensjonsberegning[]
   afpOffentligListe?: AfpPensjonsberegning[]
   loependeLivsvarigAfpOffentlig?: AfpOffentligLivsvarig
-  pensjonsavtaler: {
-    isLoading: boolean
-    data?: {
-      avtaler: Pensjonsavtale[]
-      partialResponse: boolean
-    }
-  }
-  offentligTp: {
-    isLoading: boolean
-    data?: OffentligTp
-  }
+  pensjonsavtaler: PensjonsavtalerResponse
+  offentligTp: OffentligTpResponse
 }) => {
   const dispatch = useAppDispatch()
   const xAxis = useAppSelector((state) => state.userInput.xAxis)

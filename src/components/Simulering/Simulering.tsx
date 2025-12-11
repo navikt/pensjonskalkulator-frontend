@@ -47,6 +47,7 @@ import {
 } from '@/utils/hooks/useTidligstMuligUttakData'
 
 import { generateAfpContent } from '../Grunnlag/GrunnlagAFP/utils'
+import { groupPensjonsavtalerByType } from '../Pensjonsavtaler/utils'
 import { useTableData } from '../TabellVisning/hooks'
 import { useBeregningsdetaljer } from './BeregningsdetaljerForOvergangskull/hooks'
 import { MaanedsbeloepAvansertBeregning } from './MaanedsbeloepAvansertBeregning'
@@ -62,6 +63,7 @@ import {
   getGrunnlagIngress,
   getOmstillingsstoenadAlert,
   getPdfHeadingWithLogo,
+  getPensjonsavtaler,
   getTidligstMuligUttakIngressContent,
 } from './pdf-utils'
 
@@ -359,6 +361,18 @@ export const Simulering = ({
       shouldHideAfpHeading,
     })
 
+    const gruppertePensjonsavtaler =
+      pensjonsavtalerData?.avtaler &&
+      groupPensjonsavtalerByType(pensjonsavtalerData?.avtaler)
+
+    const pensjonsavtaler = getPensjonsavtaler({
+      intl,
+      privatePensjonsAvtaler: gruppertePensjonsavtaler,
+      offentligTp: {
+        isLoading: isOffentligTpLoading,
+        data: offentligTpData,
+      },
+    })
     const finalPdfContent =
       pdfHeadingWithLogo +
       personalInfo +
@@ -367,7 +381,8 @@ export const Simulering = ({
       omstillingsstoenadAlert +
       helUttaksAlder +
       chartTableWithHeading +
-      grunnlagIngress
+      grunnlagIngress +
+      pensjonsavtaler
 
     // Set the print content in the hidden div
     const printContentDiv = document.getElementById('print-content')
