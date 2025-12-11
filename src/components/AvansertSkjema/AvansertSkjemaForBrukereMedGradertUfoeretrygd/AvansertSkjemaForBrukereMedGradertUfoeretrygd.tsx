@@ -448,7 +448,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
 
               <Divider noMargin />
 
-              <div className={styles.alertWrapper} aria-live="polite">
+              <div className={styles.alertWrapper}>
                 {validationErrors[
                   AVANSERT_FORM_NAMES.endringAlertFremtidigDato
                 ] && (
@@ -466,7 +466,7 @@ export const AvansertSkjemaForBrukereMedGradertUfoeretrygd: React.FC<{
                 )}
               </div>
 
-              <div className={styles.alertWrapper} aria-live="polite">
+              <div className={styles.alertWrapper}>
                 {vilkaarsproeving &&
                   !vilkaarsproeving.vilkaarErOppfylt &&
                   uttaksalder &&

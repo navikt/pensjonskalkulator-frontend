@@ -268,7 +268,7 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
 
           <Divider noMargin />
 
-          <div className={styles.alertWrapper} aria-live="polite">
+          <div className={styles.alertWrapper}>
             {vilkaarsproeving &&
               !vilkaarsproeving?.vilkaarErOppfylt &&
               uttaksalder && (
