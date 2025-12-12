@@ -1,4 +1,4 @@
 declare const classNames: {
-  readonly description: "description";
-};
-export = classNames;
+  readonly description: 'description'
+}
+export = classNames

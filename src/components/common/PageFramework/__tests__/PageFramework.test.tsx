@@ -18,6 +18,7 @@ describe('PageFramework', () => {
     window.scrollTo = () => vi.fn()
   })
 
+  // eslint-disable-next-line vitest/no-disabled-tests
   it.skip('viser loader mens loaderen fetcher data', async () => {
     const user = userEvent.setup()
     const router = createMemoryRouter(routes, {

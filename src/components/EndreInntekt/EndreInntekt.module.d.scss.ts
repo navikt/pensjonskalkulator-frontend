@@ -1,4 +1,4 @@
 declare const classNames: {
-  readonly textfield: "textfield";
-};
-export = classNames;
+  readonly textfield: 'textfield'
+}
+export = classNames
