@@ -55,7 +55,11 @@ import { SimuleringAfpOffentligAlert } from './SimuleringAfpOffentligAlert/Simul
 import { SimuleringEndringBanner } from './SimuleringEndringBanner/SimuleringEndringBanner'
 import { SimuleringGrafNavigation } from './SimuleringGrafNavigation/SimuleringGrafNavigation'
 import { SimuleringPensjonsavtalerAlert } from './SimuleringPensjonsavtalerAlert/SimuleringPensjonsavtalerAlert'
-import { usePensjonsavtalerAlerts, useSimuleringChartLocalState } from './hooks'
+import {
+  useAfpOffentligAlerts,
+  usePensjonsavtalerAlerts,
+  useSimuleringChartLocalState,
+} from './hooks'
 import {
   getChartTable,
   getCurrentDateTimeFormatted,
@@ -64,6 +68,7 @@ import {
   getOmstillingsstoenadAlert,
   getPdfHeadingWithLogo,
   getPensjonsavtaler,
+  getPensjonsavtalerAlertsText,
   getTidligstMuligUttakIngressContent,
 } from './pdf-utils'
 
@@ -234,6 +239,26 @@ export const Simulering = ({
   const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const intl = useIntl()
 
+  const pensjonsavtalerAlertsList = usePensjonsavtalerAlerts({
+    pensjonsavtaler: {
+      data: pensjonsavtalerData,
+      isLoading: isPensjonsavtalerLoading,
+      isSuccess: isPensjonsavtalerSuccess,
+      isError: isPensjonsavtalerError,
+    },
+    offentligTp: {
+      data: offentligTpData,
+      isError: isOffentligTpError,
+    },
+    isPensjonsavtaleFlagVisible,
+  })
+
+  const afpAvtalerAlertsList = useAfpOffentligAlerts({
+    loependeLivsvarigAfpOffentlig,
+    isAfpOffentligLivsvarigSuccess,
+    harSamtykketOffentligAFP,
+  })
+
   const { alderspensjonDetaljerListe, afpDetaljerListe } =
     useBeregningsdetaljer(
       alderspensjonListe,
@@ -367,6 +392,18 @@ export const Simulering = ({
       pensjonsavtalerData?.avtaler &&
       groupPensjonsavtalerByType(pensjonsavtalerData?.avtaler)
 
+    const pensjonsavtaleAlertsText = getPensjonsavtalerAlertsText({
+      pensjonsavtalerAlertsList,
+      intl,
+    })
+
+    const afpAvtalerAlertsText = afpAvtalerAlertsList
+      ? getPensjonsavtalerAlertsText({
+          pensjonsavtalerAlertsList: [afpAvtalerAlertsList],
+          intl,
+        })
+      : ''
+
     const pensjonsavtaler = getPensjonsavtaler({
       intl,
       privatePensjonsAvtaler: gruppertePensjonsavtaler,
@@ -385,6 +422,8 @@ export const Simulering = ({
       helUttaksAlder +
       chartTableWithHeading +
       grunnlagIngress +
+      pensjonsavtaleAlertsText +
+      afpAvtalerAlertsText +
       pensjonsavtaler
 
     // Set the print content in the hidden div

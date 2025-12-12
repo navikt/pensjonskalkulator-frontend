@@ -21,7 +21,7 @@ import {
   AfpDetaljerListe,
   AlderspensjonDetaljerListe,
 } from './BeregningsdetaljerForOvergangskull/hooks'
-import { OffentligTpResponse } from './hooks'
+import { AlertVariant, OffentligTpResponse } from './hooks'
 
 const DIN_PENSJON_OPPTJENING_URL = 'https://www.nav.no/pensjon/opptjening'
 const NORSK_PENSJON_URL = 'https://norskpensjon.no/'
@@ -44,6 +44,12 @@ const navLogoSVG = `
 const informationSquareIcon = `
 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M9.70996 1.57788C9.91106 1.57788 10.0742 1.74103 10.0742 1.94214V9.70972C10.0742 9.91082 9.91106 10.074 9.70996 10.074H1.94238C1.74128 10.074 1.57812 9.91082 1.57812 9.70972V1.94214C1.57812 1.74103 1.74128 1.57788 1.94238 1.57788H9.70996ZM5.09766 4.85522C4.89679 4.85548 4.73344 5.01857 4.7334 5.21948C4.73355 5.4203 4.89686 5.58349 5.09766 5.58374H5.46191V7.52515H5.09766C4.89682 7.5254 4.73349 7.68853 4.7334 7.8894C4.7334 8.09035 4.89677 8.25341 5.09766 8.25366H6.55469C6.75564 8.25348 6.91895 8.09039 6.91895 7.8894C6.91886 7.68849 6.75558 7.52533 6.55469 7.52515H6.19043V5.21948C6.19039 5.01844 6.02721 4.85527 5.82617 4.85522H5.09766ZM5.82617 3.2771C5.55827 3.27726 5.34098 3.49455 5.34082 3.76245C5.34082 4.03049 5.55817 4.24764 5.82617 4.2478C6.09427 4.24776 6.31152 4.03056 6.31152 3.76245C6.31136 3.49448 6.09417 3.27715 5.82617 3.2771Z" fill="#236B7D"/>
+</svg>
+`
+
+const alertTriangleIcon = `
+<svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M8.49973 1.5C8.69315 1.5 8.87128 1.59893 8.96478 1.75829L15.7126 13.2583C15.8034 13.4132 15.8006 13.6017 15.705 13.7541C15.6095 13.9065 15.4355 14 15.2475 14H1.75195C1.56396 14 1.38997 13.9065 1.29443 13.7541C1.19888 13.6017 1.19602 13.4132 1.28691 13.2583L8.03469 1.75829C8.12819 1.59893 8.30632 1.5 8.49973 1.5ZM8.50049 5.83333C8.79389 5.83333 9.03174 6.05719 9.03174 6.33333V9C9.03174 9.27614 8.79389 9.5 8.50049 9.5C8.20709 9.5 7.96924 9.27614 7.96924 9V6.33333C7.96924 6.05719 8.20709 5.83333 8.50049 5.83333ZM7.79215 11C7.79215 10.6318 8.10929 10.3333 8.50049 10.3333C8.89169 10.3333 9.20882 10.6318 9.20882 11C9.20882 11.3682 8.89169 11.6667 8.50049 11.6667C8.10929 11.6667 7.79215 11.3682 7.79215 11Z" fill="#C77300"/>
 </svg>
 `
 export const getPdfHeadingWithLogo = (isEnkel: boolean): string => {
@@ -640,20 +646,21 @@ function getPrivatePensjonsAvtaler(
     if (
       !Array.isArray(pensjonsAvtalerGruppe) ||
       pensjonsAvtalerGruppe.length === 0
-    )
-      return
-
-    html += `<h3>${escapeHtml(capitalize(groupKey))}</h3>`
-    let rows = ''
-    pensjonsAvtalerGruppe.forEach((pensjonsavtale: Pensjonsavtale) => {
-      rows += getPensjonsAvtalerTableRows({
-        utbetalingsperioder: pensjonsavtale.utbetalingsperioder ?? [],
-        pensjonsleverandor: pensjonsavtale.produktbetegnelse,
-        intl,
+    ) {
+      html += ''
+    } else {
+      html += `<h3>${escapeHtml(capitalize(groupKey))}</h3>`
+      let rows = ''
+      pensjonsAvtalerGruppe.forEach((pensjonsavtale: Pensjonsavtale) => {
+        rows += getPensjonsAvtalerTableRows({
+          utbetalingsperioder: pensjonsavtale.utbetalingsperioder ?? [],
+          pensjonsleverandor: pensjonsavtale.produktbetegnelse,
+          intl,
+        })
       })
-    })
 
-    html += `<table class="pdf-table-type2" style="width: 60%"><thead><tr><th style='text-align:left;'>Avtale</th><th style='text-align:left;'>Perioder</th><th style='text-align:right;'>Årlig Beløp</th></tr></thead><tbody>${rows}</tbody></table>`
+      html += `<table class="pdf-table-type2" style="width: 60%"><thead><tr><th style='text-align:left;'>Avtale</th><th style='text-align:left;'>Perioder</th><th style='text-align:right;'>Årlig Beløp</th></tr></thead><tbody>${rows}</tbody></table>`
+    }
   })
 
   html += `<p>${intl.formatMessage(
@@ -685,7 +692,10 @@ export function getPensjonsavtaler({
     | undefined
   offentligTp: OffentligTpResponse
 }): string {
-  console.log('offentligTp', offentligTp)
+  if (!privatePensjonsAvtaler && !offentligTp.data) {
+    return ''
+  }
+
   const privatePensjonsAvtalerTable = getPrivatePensjonsAvtaler(
     privatePensjonsAvtaler,
     intl
@@ -697,4 +707,48 @@ export function getPensjonsavtaler({
   return `<h3>Pensjonsavtaler (arbeidsgivere m.m.)</h3>
         ${privatePensjonsAvtalerTable}
         ${offentligTpTable}`
+}
+
+export function getPensjonsavtalerAlertsText({
+  pensjonsavtalerAlertsList,
+  intl,
+}: {
+  pensjonsavtalerAlertsList: {
+    variant: AlertVariant
+    text: string
+  }[]
+  intl: IntlShape
+}): string {
+  const html = pensjonsavtalerAlertsList.length
+    ? pensjonsavtalerAlertsList.map((alert) => {
+        return `<table role='presentation' class='alert-box' style='width: 100%; margin-bottom: 1em;'>
+    <tr>
+      <td style='width: 20px; vertical-align: top; padding: 16px 8px 16px 16px; margin: 0; border: none;'>
+        <span class='infoIconContainer'>
+          ${alertTriangleIcon}
+        </span>
+      </td>
+      <td style='vertical-align: top; padding: 16px 16px 16px 8px; margin: 0; text-align: left; border: none;'>
+        <p style='margin: 0; padding: 0;'>${intl.formatMessage(
+          { id: alert.text },
+          {
+            ...pdfFormatMessageValues,
+            norskPensjonLink: (chunks: string[]) =>
+              getPdfLink({
+                url: NORSK_PENSJON_URL,
+                displayText: chunks.join('') || 'Norsk Pensjon',
+              }),
+            scrollTo: (chunks: string[]) =>
+              getPdfLink({
+                displayText: chunks.join('') || 'pensjonsavtaler',
+              }),
+          }
+        )}</p>
+      </td>
+    </tr>
+  </table>`
+      })
+    : []
+
+  return html.join('')
 }

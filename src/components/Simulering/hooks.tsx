@@ -69,7 +69,7 @@ interface AfpOffentligAlertProps {
   loependeLivsvarigAfpOffentlig?: AfpOffentligLivsvarig
 }
 
-type AlertVariant = (typeof ALERT_VARIANTS)[keyof typeof ALERT_VARIANTS]
+export type AlertVariant = (typeof ALERT_VARIANTS)[keyof typeof ALERT_VARIANTS]
 
 const ALERT_VARIANTS = {
   INFO: 'info',
