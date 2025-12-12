@@ -55,6 +55,12 @@ export const OffentligTjenestepensjon = (props: {
   const afp = useAppSelector(selectAfp)
   const loggedStatusesRef = React.useRef<Set<string>>(new Set())
   const isErrorLogRef = React.useRef(false)
+  const offentligTpGirNullIUtbetaling = isOffentligTpFoer1963(
+    erOffentligTpFoer1963,
+    offentligTp
+  )
+    ? offentligTp.feilkode === 'BEREGNING_GIR_NULL_UTBETALING'
+    : false
 
   useEffect(() => {
     const status = offentligTp?.simuleringsresultatStatus
@@ -221,7 +227,8 @@ export const OffentligTjenestepensjon = (props: {
                               )
                             : formaterLivsvarigString(
                                 intl,
-                                utbetalingsperiode.startAlder
+                                utbetalingsperiode.startAlder,
+                                offentligTpGirNullIUtbetaling
                               )}
                         </th>
                         <td align="right" className={styles.valueCell}>
@@ -287,7 +294,8 @@ export const OffentligTjenestepensjon = (props: {
                               )
                             : formaterLivsvarigString(
                                 intl,
-                                utbetalingsperiode.startAlder
+                                utbetalingsperiode.startAlder,
+                                offentligTpGirNullIUtbetaling
                               )}
                         </Table.DataCell>
                         <Table.DataCell

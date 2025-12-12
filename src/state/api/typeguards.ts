@@ -353,7 +353,7 @@ export const isAnchorTag = (target?: any): target is HTMLAnchorElement => {
 
 export const isOffentligTpFoer1963 = (
   erOffentligTpFoer1963: boolean,
-  offentligTp: OffentligTp | OffentligTpFoer1963
+  offentligTp?: OffentligTp | OffentligTpFoer1963
 ): offentligTp is OffentligTpFoer1963 => {
   return erOffentligTpFoer1963
 }

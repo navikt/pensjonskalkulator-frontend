@@ -18,7 +18,9 @@ import {
   selectFoedselsdato,
   selectIsEndring,
   selectLoependeVedtak,
+  selectSamtykke,
   selectSkalBeregneAfpKap19,
+  selectSkalBeregneKunAlderspensjon,
 } from '@/state/userInput/selectors'
 import { userInputActions } from '@/state/userInput/userInputSlice'
 import { BeregningVisning } from '@/types/common-types'
@@ -58,6 +60,10 @@ export const Beregning: React.FC<Props> = ({ visning }) => {
   const isEndring = useAppSelector(selectIsEndring)
   const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const skalBeregneAfpKap19 = useAppSelector(selectSkalBeregneAfpKap19)
+  const harSamtykketPensjonsavtaler = useAppSelector(selectSamtykke)
+  const skalBeregneKunAlderspensjon = useAppSelector(
+    selectSkalBeregneKunAlderspensjon
+  )
   const afp = useAppSelector(selectAfp)
   const foedselsdato = useAppSelector(selectFoedselsdato)
   const foedtEtter1963 = isFoedtEtter1963(foedselsdato)
@@ -238,29 +244,31 @@ export const Beregning: React.FC<Props> = ({ visning }) => {
           </div>
         </div>
 
-        {!isEndring && !skalBeregneAfpKap19 && (
-          <div className={styles.toggle}>
-            <div className={styles.container} data-testid="toggle-avansert">
-              <ToggleGroup
-                value={visning}
-                variant="neutral"
-                onChange={onToggleChange}
-              >
-                <ToggleGroup.Item value="enkel">
-                  {intl.formatMessage({
-                    id: 'beregning.toggle.enkel',
-                  })}
-                </ToggleGroup.Item>
+        {!isEndring &&
+          !skalBeregneAfpKap19 &&
+          !(skalBeregneKunAlderspensjon && harSamtykketPensjonsavtaler) && (
+            <div className={styles.toggle}>
+              <div className={styles.container} data-testid="toggle-avansert">
+                <ToggleGroup
+                  value={visning}
+                  variant="neutral"
+                  onChange={onToggleChange}
+                >
+                  <ToggleGroup.Item value="enkel">
+                    {intl.formatMessage({
+                      id: 'beregning.toggle.enkel',
+                    })}
+                  </ToggleGroup.Item>
 
-                <ToggleGroup.Item value="avansert">
-                  {intl.formatMessage({
-                    id: 'beregning.toggle.avansert',
-                  })}
-                </ToggleGroup.Item>
-              </ToggleGroup>
+                  <ToggleGroup.Item value="avansert">
+                    {intl.formatMessage({
+                      id: 'beregning.toggle.avansert',
+                    })}
+                  </ToggleGroup.Item>
+                </ToggleGroup>
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
         {visning === 'enkel' && <BeregningEnkel />}
 

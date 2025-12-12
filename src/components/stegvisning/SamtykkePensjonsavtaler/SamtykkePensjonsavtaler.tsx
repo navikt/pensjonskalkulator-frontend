@@ -183,7 +183,12 @@ export function SamtykkePensjonsavtaler({
               variant="info"
               size="medium"
             >
-              <FormattedMessage id="stegvisning.samtykke_pensjonsavtaler.alert" />
+              <FormattedMessage
+                id="stegvisning.samtykke_pensjonsavtaler.alert"
+                values={{
+                  ...getFormatMessageValues(),
+                }}
+              />
             </Alert>
           )}
 

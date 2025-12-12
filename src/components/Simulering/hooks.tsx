@@ -649,7 +649,7 @@ export const useOffentligTpData = () => {
   if (
     !isError &&
     !isFetching &&
-    isOffentligTpFoer1963(erOffentligTpFoer1963, data!)
+    isOffentligTpFoer1963(erOffentligTpFoer1963, data)
   ) {
     offentligTpFoer1963Data = data
 

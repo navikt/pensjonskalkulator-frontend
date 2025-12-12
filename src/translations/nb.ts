@@ -204,7 +204,7 @@ const translations = {
   'stegvisning.samtykke_pensjonsavtaler.validation_error':
     'Du må svare på om du vil at vi skal hente dine pensjonsavtaler.',
   'stegvisning.samtykke_pensjonsavtaler.alert':
-    'Du har valgt AFP i offentlig sektor.  Er du medlem av Statens pensjonskasse, kan du få en mer fullstendig beregning av AFP hvis du samtykker.',
+    'Du har valgt AFP i offentlig sektor. Hvis du er medlem av Statens pensjonskasse (SPK), kan du få en mer fullstendig beregning hvis vi henter pensjonsavtalene dine. {br}{br} Du kan likevel fortsette uten å samtykke. Beregningen vil da bare vise folketrygdberegnet AFP.',
   'stegvisning.afp.title': 'AFP (avtalefestet pensjon)',
   'stegvisning.afpPrivat.title': 'AFP (avtalefestet pensjon) i privat sektor',
   'stegvisning.afp.ingress':
@@ -296,6 +296,7 @@ const translations = {
   'alder.maaneder': 'måneder',
   'alder.aar': 'år',
   'alder.aar_livsvarig': 'år (livsvarig)',
+  'alder.fra': 'Fra',
   'afp.offentlig': 'Offentlig',
   'afp.privat': 'Privat',
   'afp.nei': 'Nei',
