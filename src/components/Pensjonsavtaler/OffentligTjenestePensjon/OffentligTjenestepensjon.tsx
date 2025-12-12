@@ -58,7 +58,7 @@ export const OffentligTjenestepensjon = (props: {
   const offentligTpGirNullIUtbetaling =
     erOffentligTpFoer1963 &&
     isOffentligTpFoer1963(erOffentligTpFoer1963, offentligTp)
-      ? offentligTp.feilkode === 'BEREGNING_GIR_NULL_UTBETALING'
+      ? offentligTp?.feilkode === 'BEREGNING_GIR_NULL_UTBETALING'
       : false
 
   useEffect(() => {

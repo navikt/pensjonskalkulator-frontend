@@ -355,5 +355,5 @@ export const isOffentligTpFoer1963 = (
   erOffentligTpFoer1963: boolean,
   offentligTp?: OffentligTp | OffentligTpFoer1963
 ): offentligTp is OffentligTpFoer1963 => {
-  return erOffentligTpFoer1963
+  return offentligTp !== undefined && erOffentligTpFoer1963
 }
