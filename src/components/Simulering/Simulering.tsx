@@ -47,6 +47,7 @@ import {
 } from '@/utils/hooks/useTidligstMuligUttakData'
 
 import { generateAfpContent } from '../Grunnlag/GrunnlagAFP/utils'
+import { groupPensjonsavtalerByType } from '../Pensjonsavtaler/utils'
 import { useTableData } from '../TabellVisning/hooks'
 import { useBeregningsdetaljer } from './BeregningsdetaljerForOvergangskull/hooks'
 import { MaanedsbeloepAvansertBeregning } from './MaanedsbeloepAvansertBeregning'
@@ -54,7 +55,11 @@ import { SimuleringAfpOffentligAlert } from './SimuleringAfpOffentligAlert/Simul
 import { SimuleringEndringBanner } from './SimuleringEndringBanner/SimuleringEndringBanner'
 import { SimuleringGrafNavigation } from './SimuleringGrafNavigation/SimuleringGrafNavigation'
 import { SimuleringPensjonsavtalerAlert } from './SimuleringPensjonsavtalerAlert/SimuleringPensjonsavtalerAlert'
-import { useSimuleringChartLocalState } from './hooks'
+import {
+  useAfpOffentligAlerts,
+  usePensjonsavtalerAlerts,
+  useSimuleringChartLocalState,
+} from './hooks'
 import {
   getChartTable,
   getCurrentDateTimeFormatted,
@@ -62,6 +67,8 @@ import {
   getGrunnlagIngress,
   getOmstillingsstoenadAlert,
   getPdfHeadingWithLogo,
+  getPensjonsavtaler,
+  getPensjonsavtalerAlertsText,
   getTidligstMuligUttakIngressContent,
 } from './pdf-utils'
 
@@ -232,6 +239,26 @@ export const Simulering = ({
   const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const intl = useIntl()
 
+  const pensjonsavtalerAlertsList = usePensjonsavtalerAlerts({
+    pensjonsavtaler: {
+      data: pensjonsavtalerData,
+      isLoading: isPensjonsavtalerLoading,
+      isSuccess: isPensjonsavtalerSuccess,
+      isError: isPensjonsavtalerError,
+    },
+    offentligTp: {
+      data: offentligTpData,
+      isError: isOffentligTpError,
+    },
+    isPensjonsavtaleFlagVisible,
+  })
+
+  const afpAvtalerAlertsList = useAfpOffentligAlerts({
+    loependeLivsvarigAfpOffentlig,
+    isAfpOffentligLivsvarigSuccess,
+    harSamtykketOffentligAFP,
+  })
+
   const { alderspensjonDetaljerListe, afpDetaljerListe } =
     useBeregningsdetaljer(
       alderspensjonListe,
@@ -341,11 +368,13 @@ export const Simulering = ({
       omstillingsstoenadOgGjenlevende?.harLoependeSak
         ? getOmstillingsstoenadAlert(intl, normertPensjonsalder)
         : ''
+
     const shouldHideAfpHeading = Boolean(
       afpDetaljerListe.length > 0 &&
       loependeLivsvarigAfpOffentlig?.afpStatus &&
       loependeLivsvarigAfpOffentlig?.maanedligBeloep
     )
+
     const grunnlagIngress = getGrunnlagIngress({
       intl,
       alderspensjonDetaljerListe: alderspensjonDetaljerListe,
@@ -359,6 +388,31 @@ export const Simulering = ({
       shouldHideAfpHeading,
     })
 
+    const gruppertePensjonsavtaler =
+      pensjonsavtalerData?.avtaler &&
+      groupPensjonsavtalerByType(pensjonsavtalerData?.avtaler)
+
+    const pensjonsavtaleAlertsText = getPensjonsavtalerAlertsText({
+      pensjonsavtalerAlertsList,
+      intl,
+    })
+
+    const afpAvtalerAlertsText = afpAvtalerAlertsList
+      ? getPensjonsavtalerAlertsText({
+          pensjonsavtalerAlertsList: [afpAvtalerAlertsList],
+          intl,
+        })
+      : ''
+
+    const pensjonsavtaler = getPensjonsavtaler({
+      intl,
+      privatePensjonsAvtaler: gruppertePensjonsavtaler,
+      offentligTp: {
+        isLoading: isOffentligTpLoading,
+        data: offentligTpData,
+      },
+    })
+
     const finalPdfContent =
       pdfHeadingWithLogo +
       personalInfo +
@@ -367,7 +421,10 @@ export const Simulering = ({
       omstillingsstoenadAlert +
       helUttaksAlder +
       chartTableWithHeading +
-      grunnlagIngress
+      grunnlagIngress +
+      pensjonsavtaleAlertsText +
+      afpAvtalerAlertsText +
+      pensjonsavtaler
 
     // Set the print content in the hidden div
     const printContentDiv = document.getElementById('print-content')
