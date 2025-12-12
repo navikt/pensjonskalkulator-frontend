@@ -3,9 +3,12 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "packageManager": "pnpm@10.25.0",
   "scripts": {
+    "reinstall": "rm -rf node_modules && pnpm install",
+    "reinstall:full": "rm -rf node_modules pnpm-lock.yaml && pnpm install",
     "start": "vite",
-    "start:q2": "concurrently \"NODE_ENV=development npm run start\" \"nodemon --watch server/ --exec 'npm run build:server && NODE_ENV=development node dist/server/server.js'\"",
+    "start:q2": "concurrently \"NODE_ENV=development pnpm run start\" \"nodemon --watch server/ --exec 'pnpm run build:server && NODE_ENV=development node dist/server/server.js'\"",
     "start:production": "vite --mode production",
     "sanity-dev": "sanity dev -- --port 3333",
     "sanity-start": "sanity start dist-sanity/",
@@ -14,9 +17,9 @@
     "fetch-land-liste": "node --experimental-fetch ./scripts/FetchLandListe.js",
     "fetch-sanity-data": "node --experimental-fetch ./scripts/FetchSanityData.js",
     "fetch-dev-types": "openapi-typescript https://pensjonskalkulator-backend.intern.dev.nav.no/v3/api-docs/current -o ./src/types/schema.d.ts",
-    "postfetch-dev-types": "npm run format:types",
+    "postfetch-dev-types": "pnpm run format:types",
     "format:types": "prettier --write ./src/types/schema.d.ts && eslint ./src/types/schema.d.ts --fix",
-    "prebuild": "npm run fetch-land-liste && npm run fetch-sanity-data && npm run eslint:check && npm run prettier:check && npm run stylelint:check",
+    "prebuild": "pnpm run fetch-land-liste && pnpm run fetch-sanity-data && pnpm run eslint:check && pnpm run prettier:check && pnpm run stylelint:check",
     "build": "tsc && vite build --mode staging",
     "build:server": "tsc -p tsconfig.server.json",
     "build:production": "tsc && vite build --mode production",
@@ -66,6 +69,7 @@
     "@navikt/aksel-icons": "^7.31.0",
     "@navikt/ds-css": "^7.31.0",
     "@navikt/ds-react": "^7.31.0",
+    "@navikt/ds-tokens": "^7.35.2",
     "@navikt/nav-dekoratoren-moduler": "^3.4.0",
     "@playwright/test": "^1.57.0",
     "@reduxjs/toolkit": "^2.8.2",
@@ -145,6 +149,15 @@
     "**/*.{cjs,js,jsx,ts,tsx}": [
       "prettier",
       "eslint"
+    ]
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "cypress",
+      "esbuild",
+      "msw",
+      "protobufjs"
     ]
   }
 }

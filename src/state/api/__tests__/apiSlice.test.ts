@@ -259,11 +259,10 @@ describe('apiSlice', () => {
         .dispatch(apiSlice.endpoints.tidligstMuligHeltUttak.initiate())
         .then((result) => {
           expect(result.status).toBe('rejected')
-          if (result.error && 'data' in result.error) {
-            expect((result.error.data as { reason: Reason }).reason).toBe(
-              'AFP_IKKE_I_VILKAARSPROEVING'
-            )
-          }
+          expect(result.error).toBeDefined()
+          expect(
+            (result.error as { data: { reason: Reason } }).data.reason
+          ).toBe('AFP_IKKE_I_VILKAARSPROEVING')
         })
     })
   })
