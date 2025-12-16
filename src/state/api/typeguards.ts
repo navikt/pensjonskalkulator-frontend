@@ -354,8 +354,35 @@ export const isAnchorTag = (target?: any): target is HTMLAnchorElement => {
 }
 
 export const isOffentligTpFoer1963 = (
-  erOffentligTpFoer1963: boolean,
   offentligTp?: OffentligTp | OffentligTpFoer1963
 ): offentligTp is OffentligTpFoer1963 => {
-  return offentligTp !== undefined && erOffentligTpFoer1963
+  if (!offentligTp || typeof offentligTp !== 'object') {
+    return false
+  }
+
+  // OffentligTpFoer1963 har et 'feilkode' felt på rot-nivå
+  if ('feilkode' in offentligTp) {
+    return true
+  }
+
+  // UtbetalingsperiodeFoer1963V2 har feltet 'ytelsekode'
+
+  if (
+    offentligTp.simulertTjenestepensjon?.simuleringsresultat
+      ?.utbetalingsperioder &&
+    Array.isArray(
+      offentligTp.simulertTjenestepensjon.simuleringsresultat
+        .utbetalingsperioder
+    ) &&
+    offentligTp.simulertTjenestepensjon.simuleringsresultat.utbetalingsperioder
+      .length > 0
+  ) {
+    return (
+      'ytelsekode' in
+      offentligTp.simulertTjenestepensjon.simuleringsresultat
+        .utbetalingsperioder[0]
+    )
+  }
+
+  return false
 }

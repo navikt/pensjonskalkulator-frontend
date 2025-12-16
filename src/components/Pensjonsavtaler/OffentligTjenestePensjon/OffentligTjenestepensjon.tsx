@@ -56,8 +56,7 @@ export const OffentligTjenestepensjon = (props: {
   const loggedStatusesRef = React.useRef<Set<string>>(new Set())
   const isErrorLogRef = React.useRef(false)
   const offentligTpGirNullIUtbetaling =
-    erOffentligTpFoer1963 &&
-    isOffentligTpFoer1963(erOffentligTpFoer1963, offentligTp)
+    erOffentligTpFoer1963 && isOffentligTpFoer1963(offentligTp)
       ? offentligTp?.feilkode === 'BEREGNING_GIR_NULL_UTBETALING'
       : false
 
@@ -310,7 +309,7 @@ export const OffentligTjenestepensjon = (props: {
               </Table.Body>
             </Table>
           )}
-          {isOffentligTpFoer1963(erOffentligTpFoer1963, offentligTp) &&
+          {isOffentligTpFoer1963(offentligTp) &&
             (offentligTp.simulertTjenestepensjon?.simuleringsresultat
               .utbetalingsperioder.length ?? 0) > 0 && (
               <BodyLong size="small">
@@ -321,7 +320,7 @@ export const OffentligTjenestepensjon = (props: {
               </BodyLong>
             )}
 
-          {!isOffentligTpFoer1963(erOffentligTpFoer1963, offentligTp) && (
+          {!isOffentligTpFoer1963(offentligTp) && (
             <BodyLong size="small">
               <FormattedMessage
                 id={getInfoOmAfpOgBetingetTjenestepensjon(

@@ -317,8 +317,8 @@ export const Simulering = ({
         : ''
     const shouldHideAfpHeading = Boolean(
       afpDetaljerListe.length > 0 &&
-      loependeLivsvarigAfpOffentlig?.afpStatus &&
-      loependeLivsvarigAfpOffentlig?.maanedligBeloep
+        loependeLivsvarigAfpOffentlig?.afpStatus &&
+        loependeLivsvarigAfpOffentlig?.maanedligBeloep
     )
     const grunnlagIngress = getGrunnlagIngress({
       intl,
@@ -516,7 +516,7 @@ export const Simulering = ({
             erTpFoer1963={
               offentligTp &&
               erOffentligTpFoer1963 &&
-              isOffentligTpFoer1963(erOffentligTpFoer1963, offentligTp)
+              isOffentligTpFoer1963(offentligTp)
             }
           />
         )}

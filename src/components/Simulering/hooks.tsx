@@ -641,15 +641,7 @@ export const useOffentligTpData = () => {
       : offentligTpQuery.isError
 
   const dataUtenAfp = useMemo(() => {
-    if (
-      !data?.simulertTjenestepensjon ||
-      !isOffentligTpFoer1963(
-        ((skalBeregneAfpKap19 || skalBeregneKunAlderspensjon) &&
-          harSamtykket) ||
-          false,
-        data
-      )
-    ) {
+    if (!data?.simulertTjenestepensjon || !isOffentligTpFoer1963(data)) {
       return data
     }
 
@@ -675,11 +667,7 @@ export const useOffentligTpData = () => {
   let afpPerioderFom65aar: UtbetalingsperiodeFoer1963[] | undefined = undefined
   let offentligTpFoer1963Data = undefined
 
-  if (
-    !isError &&
-    !isFetching &&
-    isOffentligTpFoer1963(erOffentligTpFoer1963, data)
-  ) {
+  if (!isError && !isFetching && isOffentligTpFoer1963(data)) {
     offentligTpFoer1963Data = data
 
     const navAfp = alderspensjonQuery.data?.pre2025OffentligAfp?.totaltAfpBeloep
