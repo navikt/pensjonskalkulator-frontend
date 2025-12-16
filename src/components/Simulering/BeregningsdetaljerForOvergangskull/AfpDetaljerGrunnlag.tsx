@@ -188,6 +188,5 @@ export function getAfpHeading({
       months: (uttaksalder?.aar ?? 0) < 65 ? 0 : (uttaksalder?.maaneder ?? 0),
     }
   }
-
   return null
 }
