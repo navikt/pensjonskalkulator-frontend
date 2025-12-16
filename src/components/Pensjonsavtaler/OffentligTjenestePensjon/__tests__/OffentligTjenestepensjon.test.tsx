@@ -218,7 +218,9 @@ describe('OffentligTjenestepensjon', () => {
       expect(
         await screen.findByText('pensjonsavtaler.offentligtp.title')
       ).toBeVisible()
-      expect(screen.queryByTestId('tpo-subheading-Statens pensjonskasse')).toBeInTheDocument()
+      expect(
+        screen.queryByTestId('tpo-subheading-Statens pensjonskasse')
+      ).toBeInTheDocument()
       expect(
         await screen.findByText('pensjonsavtaler.offentligtp.subtitle.spk')
       ).toBeVisible()

@@ -106,7 +106,12 @@ export const OffentligTjenestepensjon = (props: {
         <>
           {isMobile ? (
             <>
-              <Heading id="tpo-subheading" level={headingLevel} size="xsmall" data-testid={`tpo-subheading-${tpLeverandoer}`}>
+              <Heading
+                id="tpo-subheading"
+                level={headingLevel}
+                size="xsmall"
+                data-testid={`tpo-subheading-${tpLeverandoer}`}
+              >
                 {getLeverandoerHeading(intl, tpNummer, tpLeverandoer)}
               </Heading>
               <table
