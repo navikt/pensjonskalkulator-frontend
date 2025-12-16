@@ -1196,6 +1196,7 @@ describe('apiSlice - utils', () => {
       epsHarPensjon: null,
       epsHarInntektOver2G: null,
       skalBeregneKunAlderspensjon: false,
+      skalBeregneAfpKap19: true,
     }
 
     it('returnerer undefined når foedselsdato eller heltUttak ikke er oppgitt', () => {

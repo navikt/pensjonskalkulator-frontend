@@ -41,6 +41,7 @@ import {
   getAlderMinus1Maaned,
   isAlderLikEllerOverAnnenAlder,
   isAlderOver62,
+  isFoedtFoer1963,
   transformFoedselsdatoToAlder,
 } from '@/utils/alder'
 import { formatInntektToNumber } from '@/utils/inntekt'
@@ -448,6 +449,7 @@ export const useOffentligTpData = () => {
   const skalBeregneKunAlderspensjon = useAppSelector(
     selectSkalBeregneKunAlderspensjon
   )
+  const erFoedtFoer1963 = isFoedtFoer1963(foedselsdato || '')
   const { data: person } = useGetPersonQuery()
 
   const {
@@ -460,9 +462,7 @@ export const useOffentligTpData = () => {
       !isAlderOver62(foedselsdato),
   })
 
-  const erOffentligTpFoer1963 =
-    ((skalBeregneAfpKap19 || skalBeregneKunAlderspensjon) && harSamtykket) ||
-    false
+  const erOffentligTpFoer1963 = (erFoedtFoer1963 && harSamtykket) || false
   const alderspensjonRequestBody: AlderspensjonRequestBody | undefined =
     useMemo(() => {
       if (uttaksalder) {
@@ -505,16 +505,13 @@ export const useOffentligTpData = () => {
       loependeVedtak,
       afpInntektMaanedFoerUttak,
       skalBeregneKunAlderspensjon,
+      erFoedtFoer1963,
     ])
 
   const offentligTpFoer1963RequestBody:
     | OffentligTpFoer1963RequestBody
     | undefined = useMemo(() => {
-    if (
-      harSamtykket &&
-      uttaksalder &&
-      (skalBeregneAfpKap19 || skalBeregneKunAlderspensjon)
-    ) {
+    if (harSamtykket && uttaksalder && erFoedtFoer1963) {
       return generateOffentligTpFoer1963RequestBody({
         foedselsdato,
         sivilstand,
@@ -530,7 +527,7 @@ export const useOffentligTpData = () => {
         stillingsprosentOffGradertUttak: stillingsprosentVsaGradertUttak,
         stillingsprosentOffHeltUttak: stillingsprosentVsaHelUttak,
         afpInntektMaanedFoerUttak: afpInntektMaanedFoerUttak,
-        skalBeregneKunAlderspensjon: skalBeregneKunAlderspensjon!,
+        skalBeregneAfpKap19: skalBeregneAfpKap19 || false,
       })
     }
   }, [
@@ -549,16 +546,12 @@ export const useOffentligTpData = () => {
     stillingsprosentVsaHelUttak,
     afpInntektMaanedFoerUttak,
     skalBeregneKunAlderspensjon,
+    erFoedtFoer1963,
   ])
 
   const offentligTpRequestBody: OffentligTpRequestBody | undefined =
     useMemo(() => {
-      if (
-        harSamtykket &&
-        uttaksalder &&
-        !skalBeregneAfpKap19 &&
-        !skalBeregneKunAlderspensjon
-      ) {
+      if (harSamtykket && uttaksalder && !erFoedtFoer1963) {
         return generateOffentligTpRequestBody({
           afp,
           foedselsdato,
@@ -590,6 +583,7 @@ export const useOffentligTpData = () => {
       utenlandsperioder,
       erApoteker,
       skalBeregneKunAlderspensjon,
+      erFoedtFoer1963,
     ])
 
   const alderspensjonQuery = useAlderspensjonQuery(
@@ -601,7 +595,7 @@ export const useOffentligTpData = () => {
     offentligTpFoer1963RequestBody as OffentligTpFoer1963RequestBody,
     {
       skip:
-        (!skalBeregneKunAlderspensjon && !skalBeregneAfpKap19) ||
+        !erFoedtFoer1963 ||
         !offentligTpFoer1963RequestBody ||
         !harSamtykket ||
         !uttaksalder,
@@ -612,33 +606,28 @@ export const useOffentligTpData = () => {
     offentligTpRequestBody as OffentligTpRequestBody,
     {
       skip:
-        skalBeregneKunAlderspensjon ||
-        skalBeregneAfpKap19 ||
+        erFoedtFoer1963 ||
         !offentligTpRequestBody ||
         !harSamtykket ||
         !uttaksalder,
     }
   )
 
-  const data =
-    skalBeregneAfpKap19 || skalBeregneKunAlderspensjon
-      ? offentligTpFoer1963Query.data
-      : offentligTpQuery.data
+  const data = erFoedtFoer1963
+    ? offentligTpFoer1963Query.data
+    : offentligTpQuery.data
 
-  const isLoading =
-    skalBeregneAfpKap19 || skalBeregneKunAlderspensjon
-      ? offentligTpFoer1963Query.isLoading
-      : offentligTpQuery.isLoading
+  const isLoading = erFoedtFoer1963
+    ? offentligTpFoer1963Query.isLoading
+    : offentligTpQuery.isLoading
 
-  const isFetching =
-    skalBeregneAfpKap19 || skalBeregneKunAlderspensjon
-      ? offentligTpFoer1963Query.isFetching
-      : offentligTpQuery.isFetching
+  const isFetching = erFoedtFoer1963
+    ? offentligTpFoer1963Query.isFetching
+    : offentligTpQuery.isFetching
 
-  const isError =
-    skalBeregneAfpKap19 || skalBeregneKunAlderspensjon
-      ? offentligTpFoer1963Query.isError
-      : offentligTpQuery.isError
+  const isError = erFoedtFoer1963
+    ? offentligTpFoer1963Query.isError
+    : offentligTpQuery.isError
 
   const dataUtenAfp = useMemo(() => {
     if (!data?.simulertTjenestepensjon || !isOffentligTpFoer1963(data)) {
@@ -660,7 +649,7 @@ export const useOffentligTpData = () => {
         },
       },
     }
-  }, [data, skalBeregneAfpKap19, harSamtykket, skalBeregneKunAlderspensjon])
+  }, [data, erFoedtFoer1963, harSamtykket])
 
   let erSpkBesteberegning: boolean | undefined = false
   let tpAfpPeriode = undefined

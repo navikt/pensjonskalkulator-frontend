@@ -376,7 +376,7 @@ export const generateOffentligTpFoer1963RequestBody = (args: {
   afpInntektMaanedFoerUttak?: boolean | null
   stillingsprosentOffGradertUttak?: number | null
   stillingsprosentOffHeltUttak?: number | null
-  skalBeregneKunAlderspensjon: boolean
+  skalBeregneAfpKap19: boolean
 }): OffentligTpFoer1963RequestBody | undefined => {
   const {
     foedselsdato,
@@ -390,7 +390,7 @@ export const generateOffentligTpFoer1963RequestBody = (args: {
     afpInntektMaanedFoerUttak,
     stillingsprosentOffGradertUttak,
     stillingsprosentOffHeltUttak,
-    skalBeregneKunAlderspensjon,
+    skalBeregneAfpKap19,
   } = args
 
   if (!foedselsdato || !heltUttak) {
@@ -398,9 +398,9 @@ export const generateOffentligTpFoer1963RequestBody = (args: {
   }
 
   return {
-    simuleringstype: skalBeregneKunAlderspensjon
-      ? 'ALDERSPENSJON'
-      : 'PRE2025_OFFENTLIG_AFP_ETTERFULGT_AV_ALDERSPENSJON',
+    simuleringstype: skalBeregneAfpKap19
+      ? 'PRE2025_OFFENTLIG_AFP_ETTERFULGT_AV_ALDERSPENSJON'
+      : 'ALDERSPENSJON',
     foedselsdato: format(parseISO(foedselsdato), DATE_BACKEND_FORMAT),
     aarligInntektFoerUttakBeloep: formatInntektToNumber(
       aarligInntektFoerUttakBeloep
@@ -435,7 +435,7 @@ export const generateOffentligTpFoer1963RequestBody = (args: {
     stillingsprosentOffGradertUttak: stillingsprosentOffGradertUttak
       ? String(stillingsprosentOffGradertUttak)
       : undefined,
-    afpOrdning: skalBeregneKunAlderspensjon ? undefined : 'AFPSTAT',
+    afpOrdning: skalBeregneAfpKap19 ? 'AFPSTAT' : undefined,
   }
 }
 
