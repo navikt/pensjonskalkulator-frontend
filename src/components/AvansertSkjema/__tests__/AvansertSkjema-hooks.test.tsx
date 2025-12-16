@@ -207,13 +207,7 @@ describe('AvansertSkjema-hooks', () => {
         // muligeUttaksgrad
         expect(result.current.muligeUttaksgrad).toHaveLength(7)
         expect(result.current.muligeUttaksgrad).toStrictEqual([
-          '0 %',
-          '20 %',
-          '40 %',
-          '50 %',
-          '60 %',
-          '80 %',
-          '100 %',
+          0, 20, 40, 50, 60, 80, 100,
         ])
       })
     })
@@ -795,10 +789,7 @@ describe('AvansertSkjema-hooks', () => {
 
           // muligeUttaksgrad
           expect(result.current.muligeUttaksgrad).toHaveLength(2)
-          expect(result.current.muligeUttaksgrad).toStrictEqual([
-            '20 %',
-            '40 %',
-          ])
+          expect(result.current.muligeUttaksgrad).toStrictEqual([20, 40])
         })
 
         it('Når beregningsvalg=med_afp avgrenses ikke muligeUttaksgrad selv om uttaksalder endres til en alder før normert pensjonsalder', async () => {
@@ -828,12 +819,7 @@ describe('AvansertSkjema-hooks', () => {
           // muligeUttaksgrad
           expect(result.current.muligeUttaksgrad).toHaveLength(6)
           expect(result.current.muligeUttaksgrad).toStrictEqual([
-            '20 %',
-            '40 %',
-            '50 %',
-            '60 %',
-            '80 %',
-            '100 %',
+            20, 40, 50, 60, 80, 100,
           ])
         })
 
@@ -863,11 +849,7 @@ describe('AvansertSkjema-hooks', () => {
 
           // muligeUttaksgrad
           expect(result.current.muligeUttaksgrad).toHaveLength(3)
-          expect(result.current.muligeUttaksgrad).toStrictEqual([
-            '0 %',
-            '20 %',
-            '40 %',
-          ])
+          expect(result.current.muligeUttaksgrad).toStrictEqual([0, 20, 40])
         })
 
         it('Når uttaksgrad er allerede valgt og uttaksalder endres til en alder før normert pensjonsalder som gjør denne uttaksgraden ugyldig, oppdateres ikke muligeUttaksgrad', async () => {

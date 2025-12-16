@@ -100,7 +100,7 @@ describe('routes', () => {
       })
 
       it('Når brukeren er pålogget og kall til /person feiler, viser pålogget landingssiden', async () => {
-        mockErrorResponse('/v5/person')
+        mockErrorResponse('/v6/person')
         const router = createMemoryRouter(routes, {
           basename: BASE_PATH,
           initialEntries: [`${BASE_PATH}${paths.login}`],
@@ -159,9 +159,7 @@ describe('routes', () => {
     })
 
     describe(`${BASE_PATH}${paths.forbehold}`, () => {
-      it('sjekker påloggingstatus og redirigerer til ID-porten hvis brukeren ikke er pålogget', async () => {
-        const open = vi.fn()
-        vi.stubGlobal('open', open)
+      it('viser forbehold siden for ikke innloggede bruker', async () => {
         mockErrorResponse('/oauth2/session', {
           baseUrl: `${HOST_BASEURL}`,
         })
@@ -175,13 +173,9 @@ describe('routes', () => {
             session: { isLoggedIn: false, hasErApotekerError: false },
           },
         })
-        await waitFor(() => {
-          expect(open).toHaveBeenCalledWith(
-            'http://localhost:8088/pensjon/kalkulator/oauth2/login?redirect=%2F',
-            '_self'
-          )
-        })
+        expect(await screen.findByText('forbehold.title')).toBeInTheDocument()
       })
+
       it('viser forbehold siden', async () => {
         const router = createMemoryRouter(routes, {
           basename: BASE_PATH,

@@ -31,13 +31,13 @@ const env = ensureEnv({
   detaljertKalkulatorUrl: 'DETALJERT_KALKULATOR_URL',
 })
 
-const isFoedtFoer1963 = (foedselsdato: string): boolean => {
-  const LAST_DAY_1962 = new Date(1962, 11, 31)
-  return (
-    isBefore(new Date(foedselsdato), LAST_DAY_1962) ||
-    isSameDay(new Date(foedselsdato), LAST_DAY_1962)
-  )
-}
+// const isFoedtFoer1963 = (foedselsdato: string): boolean => {
+//   const LAST_DAY_1962 = new Date(1962, 11, 31)
+//   return (
+//     isBefore(new Date(foedselsdato), LAST_DAY_1962) ||
+//     isSameDay(new Date(foedselsdato), LAST_DAY_1962)
+//   )
+// }
 
 const unleash = initialize({
   disableAutoStart: !(unleashToken && unleashUrl && unleashEnv),

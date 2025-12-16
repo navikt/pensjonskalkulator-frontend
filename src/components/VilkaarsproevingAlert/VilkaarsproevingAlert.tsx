@@ -58,10 +58,19 @@ export const VilkaarsproevingAlert = ({
   const altUttaksgrad = alternativ?.uttaksgrad
 
   if (withAFP) {
-    logger(ALERT_VIST, {
-      tekst: 'Beregning med AFP',
-      variant: 'warning',
-    })
+    if (!alternativ) {
+      logger(ALERT_VIST, {
+        tekst: intl.formatMessage({
+          id: 'beregning.vilkaarsproeving.alternativer.medAFP.ikkeNokOpptjening',
+        }),
+        variant: 'warning',
+      })
+    } else {
+      logger(ALERT_VIST, {
+        tekst: 'Beregning med AFP',
+        variant: 'warning',
+      })
+    }
 
     return (
       <Alert variant="warning">
