@@ -84,6 +84,10 @@ export const apiSlice = createApi({
       query: () => '/v2/tpo-livsvarig-offentlig-afp',
     }),
 
+    getAfpOffentligLivsvarig: builder.query<AfpOffentligLivsvarig, void>({
+      query: () => '/v2/tpo-livsvarig-offentlig-afp',
+    }),
+
     tidligstMuligHeltUttak: builder.query<
       Alder,
       TidligstMuligHeltUttakRequestBody | void

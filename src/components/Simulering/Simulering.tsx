@@ -211,7 +211,8 @@ export const Simulering = ({
       alderspensjonListe,
       afpPrivatListe,
       afpOffentligListe,
-      pre2025OffentligAfp
+      pre2025OffentligAfp,
+      loependeLivsvarigAfpOffentlig
     )
 
   const { data: tidligstMuligUttak } = useTidligstMuligUttak(ufoeregrad)
@@ -316,8 +317,8 @@ export const Simulering = ({
         : ''
     const shouldHideAfpHeading = Boolean(
       afpDetaljerListe.length > 0 &&
-      loependeLivsvarigAfpOffentlig?.afpStatus &&
-      loependeLivsvarigAfpOffentlig?.maanedligBeloep
+        loependeLivsvarigAfpOffentlig?.afpStatus &&
+        loependeLivsvarigAfpOffentlig?.maanedligBeloep
     )
     const grunnlagIngress = getGrunnlagIngress({
       intl,
@@ -469,6 +470,12 @@ export const Simulering = ({
           data: offentligTp,
         }}
         erOffentligTpFoer1963={erOffentligTpFoer1963}
+      />
+
+      <SimuleringAfpOffentligAlert
+        harSamtykketOffentligAFP={harSamtykketOffentligAFP}
+        isAfpOffentligLivsvarigSuccess={isAfpOffentligLivsvarigSuccess}
+        loependeLivsvarigAfpOffentlig={loependeLivsvarigAfpOffentlig}
       />
 
       <SimuleringAfpOffentligAlert

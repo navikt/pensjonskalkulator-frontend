@@ -239,7 +239,7 @@ function getAfpDetaljerListe(
   afpOffentligListe?: AfpPensjonsberegning[],
   pre2025OffentligAfp?: pre2025OffentligPensjonsberegning,
   tpAfpPeriode?: UtbetalingsperiodeFoer1963,
-  uttaksalder?: Alder | null,
+  uttaksalder?: { aar: number; maaneder?: number } | null,
   gradertUttaksperiode?: GradertUttak | null,
   erSpkBesteberegning?: boolean,
 
@@ -469,7 +469,10 @@ function getAfpDetaljerListe(
   if (
     pre2025OffentligAfp &&
     ((erSpkBesteberegning &&
-      isAlderOverAnnenAlder({ aar: 65, maaneder: 0 }, uttaksalder!)) ||
+      isAlderOverAnnenAlder(
+        { aar: 65, maaneder: 0 },
+        { aar: uttaksalder!.aar, maaneder: uttaksalder!.maaneder ?? 0 }
+      )) ||
       !erSpkBesteberegning)
   ) {
     afpDetaljerListe.push({
