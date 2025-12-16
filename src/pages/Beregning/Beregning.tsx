@@ -239,16 +239,17 @@ export const Beregning: React.FC<Props> = ({ visning }) => {
           <InfoOmFremtidigVedtak loependeVedtak={loependeVedtak} />
         </div>
 
-        <div className={styles.container}>
-          <div className={styles.alert}>
-            <ApotekereWarning
-              showWarning={Boolean(
-                afp === 'ja_offentlig' && hasErApotekerError && foedtEtter1963
-              )}
-            />
+        {afp === 'ja_offentlig' && hasErApotekerError && foedtEtter1963 && (
+          <div className={styles.container}>
+            <div className={styles.alert}>
+              <ApotekereWarning
+                showWarning={Boolean(
+                  afp === 'ja_offentlig' && hasErApotekerError && foedtEtter1963
+                )}
+              />
+            </div>
           </div>
-        </div>
-
+        )}
         {!isEndring &&
           !skalBeregneAfpKap19 &&
           !(skalBeregneKunAlderspensjon && harSamtykketPensjonsavtaler) && (
@@ -274,11 +275,8 @@ export const Beregning: React.FC<Props> = ({ visning }) => {
               </div>
             </div>
           )}
-
         {visning === 'enkel' && <BeregningEnkel />}
-
         {visning === 'avansert' && <BeregningAvansert />}
-
         {isPdfReady && showPDF?.enabled && (
           <div className={styles.container}>
             <section className={styles.section}>
@@ -297,7 +295,6 @@ export const Beregning: React.FC<Props> = ({ visning }) => {
             </section>
           </div>
         )}
-
         <div className={clsx(styles.background, styles.background__lightblue)}>
           <div className={styles.container}>
             <LightBlueFooter />
