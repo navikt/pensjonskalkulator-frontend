@@ -20,6 +20,7 @@ interface Props {
   hentUttaksmaanedOgAar: (alder: Alder) => string
   harGradering?: boolean
   skalViseNullOffentligTjenestepensjon?: boolean
+  erTpFoer1963?: boolean
 }
 
 export const PensjonVisningDesktop: React.FC<Props> = ({
@@ -28,6 +29,7 @@ export const PensjonVisningDesktop: React.FC<Props> = ({
   hentUttaksmaanedOgAar,
   harGradering,
   skalViseNullOffentligTjenestepensjon,
+  erTpFoer1963,
 }) => {
   const intl = useIntl()
 
@@ -39,13 +41,15 @@ export const PensjonVisningDesktop: React.FC<Props> = ({
         const harPre2025OffentligAFP =
           data.pre2025OffentligAfp && data.alderspensjon
 
-        const uttaksAlder = harPre2025OffentligAFP
-          ? UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP
-          : data.alder
+        const uttaksAlder =
+          harPre2025OffentligAFP || (erTpFoer1963 && index === 1)
+            ? UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP
+            : data.alder
 
-        const formattedUttaksalder = harPre2025OffentligAFP
-          ? `${uttaksAlder.aar} år`
-          : formatUttaksalder(intl, uttaksAlder)
+        const formattedUttaksalder =
+          harPre2025OffentligAFP || (erTpFoer1963 && index === 1)
+            ? `${uttaksAlder.aar} år`
+            : formatUttaksalder(intl, uttaksAlder)
 
         const harKunAPOgPre2025OffentligAFP =
           harPre2025OffentligAFP && !data.afp && !data.pensjonsavtale

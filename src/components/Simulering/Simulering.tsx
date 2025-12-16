@@ -513,11 +513,10 @@ export const Simulering = ({
             offentligAfpFraTpOrdning={afpPerioder}
             pensjonsavtaler={pensjonsavtalerData?.avtaler}
             simulertTjenestepensjon={offentligTp?.simulertTjenestepensjon}
-            skalViseNullOffentligTjenestepensjon={
+            erTpFoer1963={
               offentligTp &&
               erOffentligTpFoer1963 &&
-              isOffentligTpFoer1963(erOffentligTpFoer1963, offentligTp) &&
-              offentligTp.feilkode === 'BEREGNING_GIR_NULL_UTBETALING'
+              isOffentligTpFoer1963(erOffentligTpFoer1963, offentligTp)
             }
           />
         )}

@@ -310,6 +310,16 @@ export const OffentligTjenestepensjon = (props: {
               </Table.Body>
             </Table>
           )}
+          {isOffentligTpFoer1963(erOffentligTpFoer1963, offentligTp) &&
+            (offentligTp.simulertTjenestepensjon?.simuleringsresultat
+              .utbetalingsperioder.length ?? 0) > 0 && (
+              <BodyLong size="small">
+                <FormattedMessage
+                  id="pensjonsavtaler.offentligtp.foer1963.info"
+                  values={{ ...getFormatMessageValues() }}
+                />
+              </BodyLong>
+            )}
 
           {!isOffentligTpFoer1963(erOffentligTpFoer1963, offentligTp) && (
             <BodyLong size="small">

@@ -17,6 +17,7 @@ interface Props {
   pensjonsavtaler?: Pensjonsavtale[]
   simulertTjenestepensjon?: SimulertTjenestepensjon
   skalViseNullOffentligTjenestepensjon?: boolean
+  erTpFoer1963?: boolean
 }
 
 export const MaanedsbeloepAvansertBeregning: React.FC<Props> = (props) => {
@@ -44,6 +45,7 @@ export const MaanedsbeloepAvansertBeregning: React.FC<Props> = (props) => {
           summerYtelser={summerYtelser}
           hentUttaksmaanedOgAar={hentUttaksmaanedOgAar}
           harGradering={harGradering}
+          erTpFoer1963={props.erTpFoer1963}
           skalViseNullOffentligTjenestepensjon={
             props.skalViseNullOffentligTjenestepensjon
           }
