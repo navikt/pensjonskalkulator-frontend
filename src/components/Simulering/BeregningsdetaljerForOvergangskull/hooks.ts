@@ -544,6 +544,7 @@ export function useBeregningsdetaljer(
     afpOffentligListe,
     pre2025OffentligAfp,
     uttaksalder,
+    tpAfpPeriode,
     gradertUttaksperiode,
     loependeLivsvarigAfpOffentlig,
   ])
