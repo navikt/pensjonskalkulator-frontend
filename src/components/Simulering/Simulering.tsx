@@ -518,6 +518,10 @@ export const Simulering = ({
               erOffentligTpFoer1963 &&
               isOffentligTpFoer1963(offentligTp)
             }
+            skalViseNullOffentligTjenestepensjon={
+              isOffentligTpFoer1963(offentligTp) &&
+              offentligTp?.feilkode === 'BEREGNING_GIR_NULL_UTBETALING'
+            }
           />
         )}
     </section>
