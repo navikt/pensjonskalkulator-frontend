@@ -47,6 +47,10 @@ import {
 } from '@/utils/hooks/useTidligstMuligUttakData'
 
 import { generateAfpContent } from '../Grunnlag/GrunnlagAFP/utils'
+import {
+  useOffentligTjenestePensjonAlertList,
+  usePrivatePensjonsAvtalerAlertList,
+} from '../Pensjonsavtaler/hooks'
 import { groupPensjonsavtalerByType } from '../Pensjonsavtaler/utils'
 import { useTableData } from '../TabellVisning/hooks'
 import { useBeregningsdetaljer } from './BeregningsdetaljerForOvergangskull/hooks'
@@ -55,20 +59,17 @@ import { SimuleringAfpOffentligAlert } from './SimuleringAfpOffentligAlert/Simul
 import { SimuleringEndringBanner } from './SimuleringEndringBanner/SimuleringEndringBanner'
 import { SimuleringGrafNavigation } from './SimuleringGrafNavigation/SimuleringGrafNavigation'
 import { SimuleringPensjonsavtalerAlert } from './SimuleringPensjonsavtalerAlert/SimuleringPensjonsavtalerAlert'
-import {
-  useAfpOffentligAlerts,
-  usePensjonsavtalerAlerts,
-  useSimuleringChartLocalState,
-} from './hooks'
+import { useSimuleringChartLocalState } from './hooks'
 import {
   getChartTable,
   getCurrentDateTimeFormatted,
   getForbeholdAvsnitt,
   getGrunnlagIngress,
+  getOffentligTjenestePensjonAlertsText,
   getOmstillingsstoenadAlert,
   getPdfHeadingWithLogo,
   getPensjonsavtaler,
-  getPensjonsavtalerAlertsText,
+  getPrivatePensjonsavtalerAlertsText,
   getTidligstMuligUttakIngressContent,
 } from './pdf-utils'
 
@@ -239,26 +240,6 @@ export const Simulering = ({
   const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const intl = useIntl()
 
-  const pensjonsavtalerAlertsList = usePensjonsavtalerAlerts({
-    pensjonsavtaler: {
-      data: pensjonsavtalerData,
-      isLoading: isPensjonsavtalerLoading,
-      isSuccess: isPensjonsavtalerSuccess,
-      isError: isPensjonsavtalerError,
-    },
-    offentligTp: {
-      data: offentligTpData,
-      isError: isOffentligTpError,
-    },
-    isPensjonsavtaleFlagVisible,
-  })
-
-  const afpAvtalerAlertsList = useAfpOffentligAlerts({
-    loependeLivsvarigAfpOffentlig,
-    isAfpOffentligLivsvarigSuccess,
-    harSamtykketOffentligAFP,
-  })
-
   const { alderspensjonDetaljerListe, afpDetaljerListe } =
     useBeregningsdetaljer(
       alderspensjonListe,
@@ -322,6 +303,19 @@ export const Simulering = ({
     selectAarligInntektFoerUttakBeloepFraSkatt
   )
 
+  const privatPensjonsAvtalerAlertsList = usePrivatePensjonsAvtalerAlertList({
+    isPartialResponse: pensjonsavtalerData?.partialResponse || false,
+    isError: isPensjonsavtalerError,
+    isSuccess: isPensjonsavtalerSuccess,
+    headingLevel,
+    privatePensjonsavtaler: pensjonsavtalerData?.avtaler,
+  })
+
+  const offentligTjenestePensjonsAvtalerAlertsList =
+    useOffentligTjenestePensjonAlertList({
+      isError: isOffentligTpError,
+      offentligTp: offentligTpData,
+    })
   const handlePDF = () => {
     const appContentElement = document.getElementById('app-content')
     if (appContentElement) {
@@ -392,26 +386,29 @@ export const Simulering = ({
       pensjonsavtalerData?.avtaler &&
       groupPensjonsavtalerByType(pensjonsavtalerData?.avtaler)
 
-    const pensjonsavtaleAlertsText = getPensjonsavtalerAlertsText({
-      pensjonsavtalerAlertsList,
-      intl,
-    })
+    const privatePensjonsavtalerAlertsMessage =
+      getPrivatePensjonsavtalerAlertsText({
+        pensjonsavtalerAlertsList: privatPensjonsAvtalerAlertsList,
+        intl,
+      })
 
-    const afpAvtalerAlertsText = afpAvtalerAlertsList
-      ? getPensjonsavtalerAlertsText({
-          pensjonsavtalerAlertsList: [afpAvtalerAlertsList],
+    const offentligTjenestePensjonAlertsMessage =
+      getOffentligTjenestePensjonAlertsText({
+        offentligTpAlertsList: offentligTjenestePensjonsAvtalerAlertsList,
+        offentligTp: offentligTpData,
+        intl,
+      })
+
+    const pensjonsavtaler = harSamtykket
+      ? getPensjonsavtaler({
           intl,
+          privatePensjonsAvtaler: gruppertePensjonsavtaler,
+          offentligTp: {
+            isLoading: isOffentligTpLoading,
+            data: offentligTpData,
+          },
         })
-      : ''
-
-    const pensjonsavtaler = getPensjonsavtaler({
-      intl,
-      privatePensjonsAvtaler: gruppertePensjonsavtaler,
-      offentligTp: {
-        isLoading: isOffentligTpLoading,
-        data: offentligTpData,
-      },
-    })
+      : `<h3>Pensjonsavtaler (arbeidsgivere m.m.)</h3>${intl.formatMessage({ id: 'pensjonsavtaler.ingress.error.samtykke_ingress' })}`
 
     const finalPdfContent =
       pdfHeadingWithLogo +
@@ -422,9 +419,9 @@ export const Simulering = ({
       helUttaksAlder +
       chartTableWithHeading +
       grunnlagIngress +
-      pensjonsavtaleAlertsText +
-      afpAvtalerAlertsText +
-      pensjonsavtaler
+      pensjonsavtaler +
+      privatePensjonsavtalerAlertsMessage +
+      offentligTjenestePensjonAlertsMessage
 
     // Set the print content in the hidden div
     const printContentDiv = document.getElementById('print-content')

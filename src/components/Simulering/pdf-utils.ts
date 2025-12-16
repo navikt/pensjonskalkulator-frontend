@@ -10,6 +10,11 @@ import { DATE_ENDUSER_FORMAT } from '@/utils/dates'
 import { formatInntekt } from '@/utils/inntekt'
 import { capitalize } from '@/utils/string'
 
+import { formatLeverandoerList } from '../Pensjonsavtaler/OffentligTjenestePensjon/utils'
+import {
+  OffentligTpAlert,
+  privatePensjonsavtalerAlert,
+} from '../Pensjonsavtaler/hooks'
 import { TableDataRow } from '../TabellVisning/utils'
 import { getAfpHeading } from './BeregningsdetaljerForOvergangskull/AfpDetaljerGrunnlag'
 import { getAlderspensjonHeading } from './BeregningsdetaljerForOvergangskull/AlderspensjonDetaljerGrunnlag'
@@ -21,7 +26,7 @@ import {
   AfpDetaljerListe,
   AlderspensjonDetaljerListe,
 } from './BeregningsdetaljerForOvergangskull/hooks'
-import { AlertVariant, OffentligTpResponse } from './hooks'
+import { OffentligTpResponse } from './hooks'
 
 const DIN_PENSJON_OPPTJENING_URL = 'https://www.nav.no/pensjon/opptjening'
 const NORSK_PENSJON_URL = 'https://norskpensjon.no/'
@@ -692,10 +697,6 @@ export function getPensjonsavtaler({
     | undefined
   offentligTp: OffentligTpResponse
 }): string {
-  if (!privatePensjonsAvtaler && !offentligTp.data) {
-    return ''
-  }
-
   const privatePensjonsAvtalerTable = getPrivatePensjonsAvtaler(
     privatePensjonsAvtaler,
     intl
@@ -709,19 +710,17 @@ export function getPensjonsavtaler({
         ${offentligTpTable}`
 }
 
-export function getPensjonsavtalerAlertsText({
+export function getPrivatePensjonsavtalerAlertsText({
   pensjonsavtalerAlertsList,
   intl,
 }: {
-  pensjonsavtalerAlertsList: {
-    variant: AlertVariant
-    text: string
-  }[]
+  pensjonsavtalerAlertsList: privatePensjonsavtalerAlert[]
   intl: IntlShape
 }): string {
   const html = pensjonsavtalerAlertsList.length
     ? pensjonsavtalerAlertsList.map((alert) => {
-        return `<table role='presentation' class='alert-box' style='width: 100%; margin-bottom: 1em;'>
+        return `${alert.headingId ? `<h4>${intl.formatMessage({ id: alert.headingId })}</h4>` : ''}
+        <table role='presentation' class='alert-box' style='width: 100%; margin-bottom: 1em;'>
     <tr>
       <td style='width: 20px; vertical-align: top; padding: 16px 8px 16px 16px; margin: 0; border: none;'>
         <span class='infoIconContainer'>
@@ -730,18 +729,58 @@ export function getPensjonsavtalerAlertsText({
       </td>
       <td style='vertical-align: top; padding: 16px 16px 16px 8px; margin: 0; text-align: left; border: none;'>
         <p style='margin: 0; padding: 0;'>${intl.formatMessage(
-          { id: alert.text },
+          { id: alert.alertTextId },
           {
             ...pdfFormatMessageValues,
-            norskPensjonLink: (chunks: string[]) =>
-              getPdfLink({
-                url: NORSK_PENSJON_URL,
-                displayText: chunks.join('') || 'Norsk Pensjon',
-              }),
-            scrollTo: (chunks: string[]) =>
-              getPdfLink({
-                displayText: chunks.join('') || 'pensjonsavtaler',
-              }),
+            // norskPensjonLink: (chunks: string[]) =>
+            //   getPdfLink({
+            //     url: NORSK_PENSJON_URL,
+            //     displayText: chunks.join('') || 'Norsk Pensjon',
+            //   }),
+            // scrollTo: (chunks: string[]) =>
+            //   getPdfLink({
+            //     displayText: chunks.join('') || 'pensjonsavtaler',
+            //   }),
+          }
+        )}</p>
+      </td>
+    </tr>
+  </table>`
+      })
+    : []
+
+  return html.join('')
+}
+
+export function getOffentligTjenestePensjonAlertsText({
+  offentligTpAlertsList,
+  offentligTp,
+  intl,
+}: {
+  offentligTpAlertsList: OffentligTpAlert[]
+  offentligTp?: OffentligTp
+  intl: IntlShape
+}): string {
+  const html = offentligTpAlertsList.length
+    ? offentligTpAlertsList.map((alert) => {
+        const leverandoerList = offentligTp?.muligeTpLeverandoerListe
+        const chunk =
+          alert.hasLeverandoerList && leverandoerList
+            ? formatLeverandoerList(intl.locale, leverandoerList)
+            : undefined
+        return `<h4>${intl.formatMessage({ id: 'pensjonsavtaler.offentligtp.title' }, { chunk: chunk ? chunk : undefined })}</h4>
+        <table role='presentation' class='alert-box' style='width: 100%; margin-bottom: 1em;'>
+    <tr>
+      <td style='width: 20px; vertical-align: top; padding: 16px 8px 16px 16px; margin: 0; border: none;'>
+        <span class='infoIconContainer'>
+          ${alertTriangleIcon}
+        </span>
+      </td>
+      <td style='vertical-align: top; padding: 16px 16px 16px 8px; margin: 0; text-align: left; border: none;'>
+        <p style='margin: 0; padding: 0;'>${intl.formatMessage(
+          { id: alert.alertTextId },
+          {
+            ...pdfFormatMessageValues,
           }
         )}</p>
       </td>
