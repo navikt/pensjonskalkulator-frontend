@@ -243,17 +243,27 @@ const translations = {
   'stegvisning.ufoere.ingress':
     'Du kan få hjelp til å vurdere alternativene dine. Kontakt tjenestepensjonsordningen din hvis du jobber i offentlig sektor. <planleggePensjonLink>Kontakt Nav</planleggePensjonLink> hvis du jobber i privat sektor.',
   'stegvisning.samtykke_offentlig_afp.title':
-    'Samtykke til at Nav beregner AFP (avtalefestet pensjon)',
+    'Samtykke til at Nav sjekker din AFP',
   'stegvisning.samtykke_offentlig_afp.ingress':
-    'Tjenestepensjonsordningen din har ansvar for livsvarig AFP i offentlig sektor. De vil vurdere om du fyller vilkårene og gjør den endelige beregningen når du søker om AFP. Kontakt dem hvis du har spørsmål.{br}{br}Nav vurderer ikke om du har rett til AFP, men kan gi deg en foreløpig beregning på AFP i denne kalkulatoren. ',
+    'Opplysningene om AFP kan påvirke beregningen av når du tidligst kan ta ut alderspensjon. Nav kan sjekke om du har startet å ta ut livsvarig AFP i offentlig sektor. Hvis du ikke har det, kan Nav beregne en forventet AFP for deg. ',
+  'stegvisning.samtykke_offentlig_afp.nav_info.readmore':
+    'Nav sjekker om du har startet å ta ut AFP og henter i så fall inn beløpet',
+  'stegvisning.samtykke_offentlig_afp.nav_info.readmore.ingress':
+    'Hvis Nav finner informasjon om at du har startet å ta ut AFP, henter Nav inn beløpet fra tjenestepensjonsordningen din.{br}{br}Nav bruker opplysningene til å gi en mer presis beregning av alderspensjon i kalkulatoren.',
+  'stegvisning.samtykke_offentlig_afp.tpo_info.readmore':
+    'Nav gjør en foreløpig beregning av AFP hvis du ikke har startet å ta ut AFP',
+  'stegvisning.samtykke_offentlig_afp.tpo_info.readmore.ingress':
+    'Nav vurderer ikke om du har rett til AFP, men kan gi deg en foreløpig beregning på AFP i denne kalkulatoren.{br}{br}Tjenestepensjonsordningen din har ansvar for livsvarig AFP i offentlig sektor. De vil vurdere om du fyller vilkårene og gjør den endelige beregningen når du søker om AFP. Kontakt dem hvis du har spørsmål. ',
   'stegvisning.samtykke_offentlig_afp.radio_label':
-    'Vil du at Nav skal beregne AFP for deg?',
+    'Vil du at Nav skal hente eller beregne din AFP?',
   'stegvisning.samtykke_offentlig_afp.radio_description':
     'Samtykket gjelder bare for beregninger i denne kalkulatoren, frem til du logger ut.',
   'stegvisning.samtykke_offentlig_afp.radio_ja': 'Ja',
-  'stegvisning.samtykke_offentlig_afp.radio_nei': 'Nei, fortsett uten',
+  'stegvisning.samtykke_offentlig_afp.radio_nei': 'Nei, fortsett uten AFP',
   'stegvisning.samtykke_offentlig_afp.validation_error':
     'Du må svare på om du vil at Nav skal beregne AFP for deg.',
+  'stegvisning.samtykke_offentlig_afp.alert':
+    'Hvis du har startet uttak av AFP, kan Nav bruke opplysningene til å gi en mer presis beregning av alderspensjon i kalkulatoren. Du kan likevel fortsette uten å samtykke.',
   'stegvisning.sivilstand.title': 'Sivilstand',
   'stegvisning.sivilstand.ingress_ukjent':
     'Bor du sammen med noen? Det kan ha betydning for hva du får i pensjon.',
@@ -374,6 +384,12 @@ const translations = {
   'beregning.title': 'Årlig inntekt og pensjon',
   'beregning.alert.inntekt':
     'Fordi du har endret inntekten din, endres pensjonsopptjeningen din.',
+  'beregning.alert.info.afp-offentlig-livsvarig':
+    'Vi har hentet din livsvarige AFP. Beløpet vises ikke i graf og tabell. Se detaljer under <scrollTo>AFP: Offentlig</scrollTo>.',
+  'beregning.alert.feil.afp-offentlig-livsvarig':
+    'Vi klarte ikke å sjekke om du har vedtak om livsvarig AFP. Hvis du har det, kan beløpet for AFP og tidspunktet for når du kan ta ut alderspensjon være feil. Prøv igjen senere.',
+  'beregning.alert.success.afp-offentlig-livsvarig':
+    'Du har startet uttak av livsvarig AFP. Vi klarte ikke å hente beløpet ditt for AFP. Tidspunktet for når du kan ta ut alderspensjon kan derfor være feil. Prøv igjen senere.',
   'beregning.highcharts.informasjon_klikk': 'Klikk på søylene for detaljer',
   'beregning.highcharts.title': 'Årlig inntekt og pensjon',
   'beregning.highcharts.ingress': 'Estimerte beløp i dagens verdi før skatt',
@@ -410,14 +426,17 @@ const translations = {
   'beregning.detaljer.afpOffentlig.uttak.title': 'Ved {alderAar} {alderMd}',
   'beregning.detaljer.OpptjeningDetaljer.table.title': 'Opptjening',
   'beregning.detaljer.OpptjeningDetaljer.kap19.table.title':
-    'Opptjening kapittel 19',
+    'Opptjening etter gamle regler',
   'beregning.detaljer.OpptjeningDetaljer.kap20.table.title':
-    'Opptjening kapittel 20',
+    'Opptjening etter nye regler',
   'beregning.detaljer.OpptjeningDetaljer.afpPrivat.table.title':
     'Månedlig avtalefestet pensjon (AFP)',
   'beregning.detaljer.OpptjeningDetaljer.pre2025OffentligAfp.table.title':
     'Opptjening avtalefestet pensjon (AFP)',
   'beregning.detaljer.afp_fra_spk.table.title': 'Ved {alderAar} {alderMd}',
+  'beregning.pdf.ingress':
+    'Beregningen din blir ikke lagret hos Nav. Hvis du har behov for å ta vare på eller skrive ut beregningen, kan du laste den ned.',
+  'beregning.pdf.button': 'Last ned beregningen som PDF',
   'beregning.avansert.link.endre_valgene_dine': 'Endre valgene dine',
   'beregning.avansert.link.endre_avanserte_valg': 'Endre avanserte valg',
   'beregning.avansert.link.om_vilkaar_for_afp': 'Om vilkår for uttak av AFP',
@@ -624,7 +643,9 @@ const translations = {
   'grunnlag.afp.endring': 'uendret',
   'grunnlag.afp.ingress.null': '-',
   'grunnlag.afp.ingress.ja_offentlig':
-    'Du har oppgitt AFP i offentlig sektor. Nav har ikke vurdert om du fyller alle vilkårene for AFP, men forutsetter at du gjør det. For mer informasjon om vilkårene, sjekk tjenestepensjonsordningen din.',
+    'Du har oppgitt AFP i offentlig sektor. For å ha rett til AFP må du oppfylle vilkår både hos Nav og tjenestepensjonsordningen din. Beregningen forutsetter at vilkårene er oppfylt. For mer informasjon, kontakt tjenestepensjonsordningen din.',
+  'grunnlag.afp.ingress.ja_offentlig.tpo':
+    'Vi har hentet din livsvarige AFP fra tjenestepensjonsordningen din. Den fortsetter som før selv om du starter eller endrer alderspensjonen din.',
   'grunnlag.afp.ingress.overgangskull':
     'Beregningen av alderspensjon tar høyde for at du mottar AFP. AFP vises ikke i beregningen.',
   'grunnlag.afp.ingress.overgangskull.ufoeretrygd_eller_ap':
@@ -658,6 +679,8 @@ const translations = {
   'grunnlag.afp.link.text': 'Om inntekt og AFP på nav.no',
   'grunnlag.forbehold.ingress_1':
     'Pensjonen er beregnet med opplysningene vi har om deg og opplysningene du har oppgitt. Beregningen er gjort med gjeldende regelverk. Dette er et foreløpig estimat på hva du kan forvente deg i pensjon. Nav er ikke ansvarlig for beløpene som er hentet inn fra andre. ',
+  'grunnlag.forbehold.ingress_2':
+    'Det kan skje endringer i regelverket og i opptjeningen din. Vi anbefaler at du gjør en ny beregning når du nærmer deg ønsket pensjonsalder.',
   'grunnlag.forbehold.link': 'Alle forbehold',
   'grunnlag.forbehold.title': 'Forbehold',
   'om_deg.title': 'Om deg',

@@ -41,9 +41,9 @@ export const PensjonDataVisning: React.FC<Props> = ({
   const harKunAlderspensjon = alderspensjon && !afp && !skalVisePensjonsavtaler
   const harAFP = Boolean(
     afp ||
-      (pre2025OffentligAfp && !alderspensjon) ||
-      (skalViseNullOffentligTjenestepensjon &&
-        !isAlderOverAnnenAlder(alder, { aar: 67, maaneder: 0 }))
+    (pre2025OffentligAfp && !alderspensjon) ||
+    (skalViseNullOffentligTjenestepensjon &&
+      !isAlderOverAnnenAlder(alder, { aar: 67, maaneder: 0 }))
   )
   const harPre2025OffentligAfpOgPensjonsavtale = Boolean(
     pre2025OffentligAfp && pensjonsavtale

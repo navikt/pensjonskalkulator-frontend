@@ -62,6 +62,7 @@ describe('AfpDetaljerGrunnlag', () => {
       },
     ],
     alderspensjonColumnsCount: 2,
+    erOffentligTpFoer1963: false,
   }
 
   afterEach(() => {
@@ -141,6 +142,7 @@ describe('AfpDetaljerGrunnlag', () => {
         },
       ],
       alderspensjonColumnsCount: 0,
+      erOffentligTpFoer1963: false,
     }
 
     render(<AfpDetaljerGrunnlag {...minimalProps} />)
@@ -167,6 +169,7 @@ describe('AfpDetaljerGrunnlag', () => {
         },
       ],
       alderspensjonColumnsCount: 0,
+      erOffentligTpFoer1963: false,
     }
 
     render(<AfpDetaljerGrunnlag {...emptyProps} />)
@@ -204,6 +207,7 @@ describe('AfpDetaljerGrunnlag', () => {
         },
       ],
       alderspensjonColumnsCount: 1,
+      erOffentligTpFoer1963: false,
     }
 
     render(<AfpDetaljerGrunnlag {...partialProps} />)

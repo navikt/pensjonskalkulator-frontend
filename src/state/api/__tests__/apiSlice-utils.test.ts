@@ -225,6 +225,7 @@ describe('apiSlice - utils', () => {
       epsHarInntektOver2G: null,
       aarligInntektFoerUttakBeloep: '0',
       utenlandsperioder: [],
+      loependeLivsvarigAfpOffentlig: null,
     }
     it('returnerer riktig simuleringstype', () => {
       expect(
@@ -265,6 +266,7 @@ describe('apiSlice - utils', () => {
             harLoependeVedtak: true,
             alderspensjon: {
               grad: 50,
+              uttaksgradFom: '2012-12-12',
               fom: '2012-12-12',
               sivilstand: 'UGIFT',
             },
@@ -280,6 +282,7 @@ describe('apiSlice - utils', () => {
             harLoependeVedtak: true,
             alderspensjon: {
               grad: 50,
+              uttaksgradFom: '2012-12-12',
               fom: '2012-12-12',
               sivilstand: 'UGIFT',
             },
@@ -412,6 +415,7 @@ describe('apiSlice - utils', () => {
       uttaksalder: { aar: 68, maaneder: 3 },
       uttaksgrad: 100,
       utenlandsperioder: [],
+      loependeLivsvarigAfpOffentlig: null,
     }
     it('returnerer undefined når foedselsdato, eller startAlder er null', () => {
       expect(
@@ -479,6 +483,7 @@ describe('apiSlice - utils', () => {
             harLoependeVedtak: true,
             alderspensjon: {
               grad: 50,
+              uttaksgradFom: '2012-12-12',
               fom: '2012-12-12',
               sivilstand: 'UGIFT',
             },
@@ -493,6 +498,7 @@ describe('apiSlice - utils', () => {
             harLoependeVedtak: true,
             alderspensjon: {
               grad: 50,
+              uttaksgradFom: '2012-12-12',
               fom: '2012-12-12',
               sivilstand: 'UGIFT',
             },
@@ -508,6 +514,7 @@ describe('apiSlice - utils', () => {
             harLoependeVedtak: true,
             alderspensjon: {
               grad: 50,
+              uttaksgradFom: '2012-12-12',
               fom: '2012-12-12',
               sivilstand: 'UGIFT',
             },
@@ -609,6 +616,7 @@ describe('apiSlice - utils', () => {
         },
       },
       utenlandsperioder: [],
+      loependeLivsvarigAfpOffentlig: null,
     }
     it('returnerer undefined når foedselsdato, eller heltUttak er null/undefined', () => {
       expect(
@@ -676,7 +684,12 @@ describe('apiSlice - utils', () => {
           ...args,
           loependeVedtak: {
             harLoependeVedtak: true,
-            alderspensjon: { grad: 60, fom: '2010-10-10', sivilstand: 'UGIFT' },
+            alderspensjon: {
+              grad: 60,
+              uttaksgradFom: '2020-10-10',
+              fom: '2010-10-10',
+              sivilstand: 'UGIFT',
+            },
             ufoeretrygd: { grad: 0 },
           },
         })?.simuleringstype
@@ -687,7 +700,12 @@ describe('apiSlice - utils', () => {
           afp: null,
           loependeVedtak: {
             harLoependeVedtak: true,
-            alderspensjon: { grad: 60, fom: '2010-10-10', sivilstand: 'UGIFT' },
+            alderspensjon: {
+              grad: 60,
+              uttaksgradFom: '2010-10-10',
+              fom: '2010-10-10',
+              sivilstand: 'UGIFT',
+            },
             ufoeretrygd: { grad: 0 },
           },
         })?.simuleringstype
@@ -1177,6 +1195,7 @@ describe('apiSlice - utils', () => {
       utenlandsperioder: [],
       epsHarPensjon: null,
       epsHarInntektOver2G: null,
+      skalBeregneKunAlderspensjon: false,
     }
 
     it('returnerer undefined når foedselsdato eller heltUttak ikke er oppgitt', () => {

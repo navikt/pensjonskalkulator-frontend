@@ -5,6 +5,7 @@ import { useIntl } from 'react-intl'
 
 import {
   useAlderspensjonQuery,
+  useGetAfpOffentligLivsvarigQuery,
   useGetPersonQuery,
   useOffentligTpFoer1963Query,
   useOffentligTpQuery,
@@ -39,6 +40,7 @@ import { userInputActions } from '@/state/userInput/userInputSlice'
 import {
   getAlderMinus1Maaned,
   isAlderLikEllerOverAnnenAlder,
+  isAlderOver62,
   transformFoedselsdatoToAlder,
 } from '@/utils/alder'
 import { formatInntektToNumber } from '@/utils/inntekt'
@@ -75,6 +77,7 @@ export const useSimuleringChartLocalState = (initialValues: {
   afpPrivatListe?: AfpPensjonsberegning[]
   afpOffentligListe?: AfpPensjonsberegning[]
   afpPerioderFom65aar?: UtbetalingsperiodeFoer1963[]
+  loependeLivsvarigAfpOffentlig?: AfpOffentligLivsvarig
   pensjonsavtaler: {
     isLoading: boolean
     data?: {
@@ -104,6 +107,7 @@ export const useSimuleringChartLocalState = (initialValues: {
     afpPrivatListe,
     afpOffentligListe,
     afpPerioderFom65aar,
+    loependeLivsvarigAfpOffentlig,
     pensjonsavtaler,
     offentligTp,
   } = initialValues
@@ -237,6 +241,15 @@ export const useSimuleringChartLocalState = (initialValues: {
         ? gradertUttaksperiode.uttaksalder.maaneder
         : uttaksalder?.maaneder
     if (startAar && startMaaned !== undefined && alderspensjonListe) {
+      // Sjekk om vi skal vise simulert offentlig AFP når løpende offentlig AFP er definert
+      const shouldShowAfpOffentlig =
+        !loependeLivsvarigAfpOffentlig ||
+        loependeLivsvarigAfpOffentlig.afpStatus === false ||
+        (loependeLivsvarigAfpOffentlig.afpStatus === true &&
+          loependeLivsvarigAfpOffentlig.maanedligBeloep === 0) ||
+        (loependeLivsvarigAfpOffentlig.afpStatus === null &&
+          loependeLivsvarigAfpOffentlig.maanedligBeloep === null)
+
       setChartOptions({
         ...getChartDefaults(xAxis),
         series: [
@@ -329,7 +342,9 @@ export const useSimuleringChartLocalState = (initialValues: {
                 } as SeriesOptionsType,
               ]
             : []),
-          ...(afpOffentligListe && afpOffentligListe.length > 0
+          ...(shouldShowAfpOffentlig &&
+          afpOffentligListe &&
+          afpOffentligListe.length > 0
             ? [
                 {
                   ...SERIES_DEFAULT.SERIE_AFP,
@@ -434,6 +449,17 @@ export const useOffentligTpData = () => {
     selectSkalBeregneKunAlderspensjon
   )
   const { data: person } = useGetPersonQuery()
+
+  const {
+    isSuccess: isAfpOffentligLivsvarigSuccess,
+    data: loependeLivsvarigAfpOffentlig,
+  } = useGetAfpOffentligLivsvarigQuery(undefined, {
+    skip:
+      !harSamtykketOffentligAFP ||
+      !foedselsdato ||
+      !isAlderOver62(foedselsdato),
+  })
+
   const erOffentligTpFoer1963 =
     ((skalBeregneAfpKap19 || skalBeregneKunAlderspensjon) && harSamtykket) ||
     false
@@ -457,6 +483,9 @@ export const useOffentligTpData = () => {
           utenlandsperioder,
           beregningsvalg,
           afpInntektMaanedFoerUttak: afpInntektMaanedFoerUttak,
+          loependeLivsvarigAfpOffentlig: isAfpOffentligLivsvarigSuccess
+            ? loependeLivsvarigAfpOffentlig
+            : null,
         })
       }
     }, [

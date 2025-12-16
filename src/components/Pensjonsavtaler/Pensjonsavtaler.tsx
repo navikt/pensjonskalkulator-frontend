@@ -116,7 +116,12 @@ export const Pensjonsavtaler = ({
 
   return (
     <VStack gap="1">
-      <Heading id="pensjonsavtaler-heading" level={headingLevel} size="small">
+      <Heading
+        id="pensjonsavtaler-heading"
+        level={headingLevel}
+        size="small"
+        data-testid="pensjonsavtaler-heading"
+      >
         {intl.formatMessage({ id: 'pensjonsavtaler.title' })}
       </Heading>
 

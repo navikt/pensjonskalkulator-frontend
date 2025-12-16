@@ -241,7 +241,9 @@ function getAfpDetaljerListe(
   tpAfpPeriode?: UtbetalingsperiodeFoer1963,
   uttaksalder?: Alder | null,
   gradertUttaksperiode?: GradertUttak | null,
-  erSpkBesteberegning?: boolean
+  erSpkBesteberegning?: boolean,
+
+  loependeLivsvarigAfpOffentlig?: AfpOffentligLivsvarig
 ): AfpDetaljerListe[] {
   const afpDetaljerListe: AfpDetaljerListe[] = []
 
@@ -287,7 +289,9 @@ function getAfpDetaljerListe(
     ].filter((rad) => rad.verdi !== 0)
   }
 
-  const getAfpOffentligDetails = (afpOffentlig: AfpPensjonsberegning) => {
+  const getAfpOffentligDetails = (
+    afpOffentlig: AfpPensjonsberegning | AfpOffentligLivsvarig
+  ) => {
     return [
       {
         tekst: 'Månedlig livsvarig avtalefestet pensjon (AFP)',
@@ -444,9 +448,12 @@ function getAfpDetaljerListe(
       gradertUttaksperiode?.uttaksalder.aar ?? Infinity
     )
 
-    const afpOffentligVedUttak = afpOffentligListe.find(
-      (it) => it.alder >= afpAar
-    )
+    const afpOffentligVedUttak =
+      loependeLivsvarigAfpOffentlig?.maanedligBeloep &&
+      loependeLivsvarigAfpOffentlig.afpStatus &&
+      loependeLivsvarigAfpOffentlig?.maanedligBeloep > 0
+        ? loependeLivsvarigAfpOffentlig
+        : afpOffentligListe.find((it) => it.alder >= afpAar)
 
     if (afpOffentligVedUttak) {
       afpDetaljerListe.push({
@@ -493,6 +500,7 @@ export function useBeregningsdetaljer(
   afpPrivatListe?: AfpPrivatPensjonsberegning[],
   afpOffentligListe?: AfpPensjonsberegning[],
   pre2025OffentligAfp?: pre2025OffentligPensjonsberegning,
+  loependeLivsvarigAfpOffentlig?: AfpOffentligLivsvarig,
   tpAfpPeriode?: UtbetalingsperiodeFoer1963,
   erSpkBesteberegning?: boolean
 ): BeregningsdetaljerRader {
@@ -519,7 +527,8 @@ export function useBeregningsdetaljer(
       tpAfpPeriode,
       uttaksalder,
       gradertUttaksperiode,
-      erSpkBesteberegning
+      erSpkBesteberegning,
+      loependeLivsvarigAfpOffentlig
     )
 
     return {
@@ -533,5 +542,6 @@ export function useBeregningsdetaljer(
     pre2025OffentligAfp,
     uttaksalder,
     gradertUttaksperiode,
+    loependeLivsvarigAfpOffentlig,
   ])
 }

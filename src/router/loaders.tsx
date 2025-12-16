@@ -13,11 +13,13 @@ import {
   selectAfp,
   selectIsVeileder,
   selectSamtykke,
+  selectSamtykkeOffentligAFP,
   selectSkalBeregneAfpKap19,
   selectSkalBeregneKunAlderspensjon,
 } from '@/state/userInput/selectors'
 import {
   AFP_UFOERE_OPPSIGELSESALDER,
+  isAlderOver62,
   isFoedselsdatoOverAlder,
   isFoedtFoer1963,
 } from '@/utils/alder'
@@ -32,6 +34,7 @@ export type SafeLoaderFunction<T> = (
 export type Reason =
   | 'INSUFFICIENT_LEVEL_OF_ASSURANCE'
   | 'INVALID_REPRESENTASJON'
+  | 'AFP_IKKE_I_VILKAARSPROEVING'
 
 interface ErrorData {
   reason?: Reason
@@ -447,6 +450,7 @@ export const stepSamtykkePensjonsavtaler = async ({
     return redirect(paths.start)
   }
 
+  const state = store.getState()
   const loependeVedtak = await store
     .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
     .unwrap()
@@ -454,6 +458,13 @@ export const stepSamtykkePensjonsavtaler = async ({
   const person = await store
     .dispatch(apiSlice.endpoints.getPerson.initiate())
     .unwrap()
+
+  //Starter innhenting av afpOffentligLivsvarig data i bakgrunnen hvis brukeren har samtykket
+  const harSamtykketOffentligAFP = selectSamtykkeOffentligAFP(state)
+
+  if (harSamtykketOffentligAFP && isAlderOver62(person.foedselsdato)) {
+    store.dispatch(apiSlice.endpoints.getAfpOffentligLivsvarig.initiate())
+  }
 
   const erApoteker = await store.dispatch(
     apiSlice.endpoints.getErApoteker.initiate()
@@ -488,9 +499,19 @@ export const beregningEnkelAccessGuard = async () => {
   const skalBeregneAfpKap19 = selectSkalBeregneAfpKap19(state)
   const skalBeregneKunAlderspensjon = selectSkalBeregneKunAlderspensjon(state)
   const harSamtykketPensjonsavtaler = selectSamtykke(state)
+  const harSamtykketOffentligAFP = selectSamtykkeOffentligAFP(state)
+
   const loependeVedtak = await store
     .dispatch(apiSlice.endpoints.getLoependeVedtak.initiate())
     .unwrap()
+
+  const person = await store
+    .dispatch(apiSlice.endpoints.getPerson.initiate())
+    .unwrap()
+
+  if (harSamtykketOffentligAFP && isAlderOver62(person.foedselsdato)) {
+    await store.dispatch(apiSlice.endpoints.getAfpOffentligLivsvarig.initiate())
+  }
 
   if (
     skalBeregneAfpKap19 ||

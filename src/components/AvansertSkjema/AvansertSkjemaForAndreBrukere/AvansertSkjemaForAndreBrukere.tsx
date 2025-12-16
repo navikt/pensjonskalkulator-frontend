@@ -108,8 +108,8 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
     React.useState<boolean>(
       Boolean(
         uttaksalder &&
-          uttaksalder?.aar < UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP.aar &&
-          loependeVedtak.pre2025OffentligAfp
+        uttaksalder?.aar < UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP.aar &&
+        loependeVedtak.pre2025OffentligAfp
       )
     )
 
@@ -181,9 +181,9 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
       setShowPre2025OffentligAfpAlert(
         Boolean(
           alder &&
-            alder.aar !== undefined &&
-            alder.aar < UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP.aar &&
-            loependeVedtak.pre2025OffentligAfp
+          alder.aar !== undefined &&
+          alder.aar < UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP.aar &&
+          loependeVedtak.pre2025OffentligAfp
         )
       )
       logShowPre2025OffentligAfpAlert()
@@ -216,9 +216,9 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
     setShowPre2025OffentligAfpAlert(
       Boolean(
         alder &&
-          alder.aar !== undefined &&
-          alder.aar < UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP.aar &&
-          loependeVedtak.pre2025OffentligAfp
+        alder.aar !== undefined &&
+        alder.aar < UTTAKSALDER_FOR_AP_VED_PRE2025_OFFENTLIG_AFP.aar &&
+        loependeVedtak.pre2025OffentligAfp
       )
     )
     logShowPre2025OffentligAfpAlert()
@@ -255,15 +255,9 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
         [AVANSERT_FORM_NAMES.stillingsprosentVsaHelPensjon]: '',
       }
     })
-    const avansertBeregningFormatertUttaksgradAsNumber = parseInt(
-      e.target.value.match(/\d+/)?.[0] as string,
-      10
-    )
+    const uttaksgradAsNumber = parseInt(e.target.value, 10)
 
-    if (
-      avansertBeregningFormatertUttaksgradAsNumber === 100 ||
-      isNaN(avansertBeregningFormatertUttaksgradAsNumber)
-    ) {
+    if (uttaksgradAsNumber === 100 || isNaN(uttaksgradAsNumber)) {
       const prevUttaksalder = localGradertUttak?.uttaksalder
         ? { ...localGradertUttak?.uttaksalder }
         : undefined
@@ -299,7 +293,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
             previous?.uttaksalder === undefined
               ? localHeltUttak?.uttaksalder
               : previous?.uttaksalder,
-          grad: avansertBeregningFormatertUttaksgradAsNumber,
+          grad: uttaksgradAsNumber,
         }
       })
     }
@@ -512,6 +506,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
               <AgePicker
                 form={AVANSERT_FORM_NAMES.form}
                 name={AVANSERT_FORM_NAMES.uttaksalderGradertUttak}
+                testId="velguttaksalder.endring.title"
                 label={
                   <FormattedMessage
                     id={
@@ -530,6 +525,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
               <AgePicker
                 form={AVANSERT_FORM_NAMES.form}
                 name={AVANSERT_FORM_NAMES.uttaksalderHeltUttak}
+                testId="velguttaksalder.endring.title"
                 label={
                   <FormattedMessage
                     id={
@@ -565,7 +561,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
             </Alert>
           )}
 
-          <div>
+          <div data-testid="beregning.avansert.rediger.uttaksgrad.label">
             <Select
               form={AVANSERT_FORM_NAMES.form}
               name={AVANSERT_FORM_NAMES.uttaksgrad}
@@ -581,7 +577,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
               })}
               value={
                 localGradertUttak?.grad !== undefined
-                  ? `${localGradertUttak.grad} %`
+                  ? localGradertUttak.grad.toString()
                   : ''
               }
               onChange={handleUttaksgradChange}
@@ -604,7 +600,7 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
               </option>
               {muligeUttaksgrad.map((grad) => (
                 <option key={grad} value={grad}>
-                  {grad}
+                  {grad} %
                 </option>
               ))}
             </Select>

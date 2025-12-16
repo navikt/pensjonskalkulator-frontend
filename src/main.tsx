@@ -11,8 +11,9 @@ import { routes } from '@/router/routes'
 import { store } from './state/store'
 import { applyGoogleTranslateFix } from './utils/googleTranslateWorkaround'
 
-import './scss/designsystem.scss'
 import '@/utils/logging'
+import './scss/designsystem.scss'
+import './scss/print.scss'
 
 // Create MSW ready signal for external scripts
 if (process.env.NODE_ENV === 'development') {
@@ -59,7 +60,7 @@ ReactDOM.createRoot(root).render(
   </React.StrictMode>
 )
 
-if (window.Cypress) {
+if (window.Cypress || window.Playwright) {
   window.store = store
   window.router = router
 }

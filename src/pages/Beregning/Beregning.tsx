@@ -1,15 +1,17 @@
 import clsx from 'clsx'
 import React from 'react'
-import { useIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { useNavigate } from 'react-router'
 
-import { Button, Modal, ToggleGroup } from '@navikt/ds-react'
+import { DownloadIcon } from '@navikt/aksel-icons'
+import { BodyLong, Button, Modal, ToggleGroup } from '@navikt/ds-react'
 
 import { InfoOmFremtidigVedtak } from '@/components/InfoOmFremtidigVedtak'
 import { LightBlueFooter } from '@/components/LightBlueFooter'
 import { ApotekereWarning } from '@/components/common/ApotekereWarning/ApotekereWarning'
 import { ShowMoreRef } from '@/components/common/ShowMore/ShowMore'
 import { paths } from '@/router/constants'
+import { useGetShowDownloadPdfFeatureToggleQuery } from '@/state/api/apiSlice'
 import { useAppDispatch, useAppSelector } from '@/state/hooks'
 import { selectHasErApotekerError } from '@/state/session/selectors'
 import {
@@ -34,7 +36,7 @@ import { logger } from '@/utils/logging'
 
 import { BeregningAvansert } from './BeregningAvansert'
 import { BeregningEnkel } from './BeregningEnkel'
-import { AvansertBeregningModus, BeregningContext } from './context'
+import { AvansertBeregningModus, BeregningContext, ShowPDFRef } from './context'
 
 import styles from './Beregning.module.scss'
 
@@ -56,6 +58,7 @@ export const Beregning: React.FC<Props> = ({ visning }) => {
     React.useState<AvansertBeregningModus>('redigering')
   const [harAvansertSkjemaUnsavedChanges, setHarAvansertSkjemaUnsavedChanges] =
     React.useState<boolean>(false)
+  const [isPdfReady, setIsPdfReady] = React.useState(false)
 
   const isEndring = useAppSelector(selectIsEndring)
   const loependeVedtak = useAppSelector(selectLoependeVedtak)
@@ -88,7 +91,6 @@ export const Beregning: React.FC<Props> = ({ visning }) => {
     const onPopState = () => {
       // TODO: fjern når amplitude er ikke i bruk lenger
       logger(MODAL_AAPNET, {
-        // eslint-disable-next-line sonarjs/no-duplicate-string
         tekst: 'Modal: Er du sikker på at du vil avslutte avansert beregning?',
       })
       logger(MODAL_AAPNET, {
@@ -162,7 +164,8 @@ export const Beregning: React.FC<Props> = ({ visning }) => {
   }
 
   const pensjonsavtalerShowMoreRef = React.useRef<ShowMoreRef>(null)
-
+  const showPDFRef = React.useRef<ShowPDFRef>(null)
+  const { data: showPDF } = useGetShowDownloadPdfFeatureToggleQuery()
   return (
     <BeregningContext.Provider
       value={{
@@ -171,6 +174,8 @@ export const Beregning: React.FC<Props> = ({ visning }) => {
         harAvansertSkjemaUnsavedChanges,
         setHarAvansertSkjemaUnsavedChanges,
         pensjonsavtalerShowMoreRef,
+        showPDFRef,
+        setIsPdfReady,
       }}
     >
       <Modal
@@ -273,6 +278,25 @@ export const Beregning: React.FC<Props> = ({ visning }) => {
         {visning === 'enkel' && <BeregningEnkel />}
 
         {visning === 'avansert' && <BeregningAvansert />}
+
+        {isPdfReady && showPDF?.enabled && (
+          <div className={styles.container}>
+            <section className={styles.section}>
+              <BodyLong size="medium" className={styles.text}>
+                {intl.formatMessage({ id: 'beregning.pdf.ingress' })}
+              </BodyLong>
+              <Button
+                variant="secondary"
+                icon={<DownloadIcon aria-hidden />}
+                onClick={() => {
+                  showPDFRef.current?.handlePDF()
+                }}
+              >
+                <FormattedMessage id="beregning.pdf.button" />
+              </Button>
+            </section>
+          </div>
+        )}
 
         <div className={clsx(styles.background, styles.background__lightblue)}>
           <div className={styles.container}>
