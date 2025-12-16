@@ -516,7 +516,7 @@ export const Simulering = ({
             erTpFoer1963={
               offentligTp &&
               erOffentligTpFoer1963 &&
-              isOffentligTpFoer1963(erOffentligTpFoer1963, offentligTp)
+              isOffentligTpFoer1963(offentligTp)
             }
           />
         )}

@@ -1195,7 +1195,7 @@ describe('apiSlice - utils', () => {
       utenlandsperioder: [],
       epsHarPensjon: null,
       epsHarInntektOver2G: null,
-      skalBeregneKunAlderspensjon: false,
+      skalBeregneAfpKap19: true,
     }
 
     it('returnerer undefined når foedselsdato eller heltUttak ikke er oppgitt', () => {
@@ -1203,14 +1203,14 @@ describe('apiSlice - utils', () => {
         generateOffentligTpFoer1963RequestBody({
           ...requestBody,
           foedselsdato: null,
-          skalBeregneKunAlderspensjon: false,
+          skalBeregneAfpKap19: false,
         })
       ).toEqual(undefined)
       expect(
         generateOffentligTpFoer1963RequestBody({
           ...requestBody,
           heltUttak: undefined,
-          skalBeregneKunAlderspensjon: false,
+          skalBeregneAfpKap19: false,
         })
       ).toEqual(undefined)
     })
@@ -1219,7 +1219,7 @@ describe('apiSlice - utils', () => {
       expect(
         generateOffentligTpFoer1963RequestBody({
           ...requestBody,
-          skalBeregneKunAlderspensjon: false,
+          skalBeregneAfpKap19: false,
         })?.simuleringstype
       ).toEqual('PRE2025_OFFENTLIG_AFP_ETTERFULGT_AV_ALDERSPENSJON')
     })
@@ -1228,7 +1228,7 @@ describe('apiSlice - utils', () => {
       expect(
         generateOffentligTpFoer1963RequestBody({
           ...requestBody,
-          skalBeregneKunAlderspensjon: false,
+          skalBeregneAfpKap19: false,
         })?.stillingsprosentOffHeltUttak
       ).toEqual('100')
     })
@@ -1238,7 +1238,7 @@ describe('apiSlice - utils', () => {
         generateOffentligTpFoer1963RequestBody({
           ...requestBody,
           foedselsdato: '1962-04-30',
-          skalBeregneKunAlderspensjon: false,
+          skalBeregneAfpKap19: false,
         })?.foedselsdato
       ).toEqual('1962-04-30')
     })

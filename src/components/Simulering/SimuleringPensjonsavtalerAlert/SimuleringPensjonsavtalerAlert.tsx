@@ -64,7 +64,7 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
   if (
     offentligTpData &&
     erOffentligTpFoer1963 &&
-    isOffentligTpFoer1963(erOffentligTpFoer1963, offentligTpData) &&
+    isOffentligTpFoer1963(offentligTpData) &&
     offentligTpData.feilkode === 'OPPFYLLER_IKKE_INNGANGSVILKAAR'
   ) {
     const text = 'beregning.pensjonsavtaler.alert.afp_offentlig.error'
