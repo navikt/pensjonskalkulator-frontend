@@ -317,8 +317,8 @@ export const Simulering = ({
         : ''
     const shouldHideAfpHeading = Boolean(
       afpDetaljerListe.length > 0 &&
-        loependeLivsvarigAfpOffentlig?.afpStatus &&
-        loependeLivsvarigAfpOffentlig?.maanedligBeloep
+      loependeLivsvarigAfpOffentlig?.afpStatus &&
+      loependeLivsvarigAfpOffentlig?.maanedligBeloep
     )
     const grunnlagIngress = getGrunnlagIngress({
       intl,
