@@ -1227,7 +1227,7 @@ describe('apiSlice - utils', () => {
         generateOffentligTpFoer1963RequestBody({
           ...requestBody,
         })?.stillingsprosentOffHeltUttak
-      ).toEqual('100')
+      ).toEqual('0')
     })
 
     it('formaterer foedselsdato korrekt', () => {

@@ -126,6 +126,17 @@ export class PensjonsavtalerIntercepts {
         muligeTpLeverandoerListe: providers,
       }
     ).as('fetchOffentligTp')
+    // Also intercept the før-1963 endpoint
+    cy.intercept(
+      {
+        method: 'POST',
+        url: '/pensjon/kalkulator/api/v2/simuler-oftp/foer-1963',
+      },
+      {
+        simuleringsresultatStatus: 'TP_ORDNING_STOETTES_IKKE',
+        muligeTpLeverandoerListe: providers,
+      }
+    ).as('fetchOffentligTpFoer1963')
   }
 
   /**
@@ -142,6 +153,17 @@ export class PensjonsavtalerIntercepts {
         muligeTpLeverandoerListe: [],
       }
     ).as('fetchOffentligTp')
+    // Also intercept the før-1963 endpoint
+    cy.intercept(
+      {
+        method: 'POST',
+        url: '/pensjon/kalkulator/api/v2/simuler-oftp/foer-1963',
+      },
+      {
+        simuleringsresultatStatus: 'BRUKER_ER_IKKE_MEDLEM_AV_TP_ORDNING',
+        muligeTpLeverandoerListe: [],
+      }
+    ).as('fetchOffentligTpFoer1963')
   }
 
   /**

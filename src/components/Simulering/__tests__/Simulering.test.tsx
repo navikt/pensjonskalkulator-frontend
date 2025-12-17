@@ -64,6 +64,13 @@ describe('Simulering', () => {
       />,
       {
         preloadedState: {
+          api: {
+            // @ts-ignore
+            queries: {
+              ...preloadedQueries,
+              ...fulfilledGetLoependeVedtak0Ufoeregrad,
+            },
+          },
           userInput: {
             ...userInputInitialState,
             samtykke: false,
@@ -340,6 +347,13 @@ describe('Simulering', () => {
         />,
         {
           preloadedState: {
+            api: {
+              // @ts-ignore
+              queries: {
+                ...preloadedQueries,
+                ...fulfilledGetLoependeVedtak0Ufoeregrad,
+              },
+            },
             userInput: {
               ...userInputInitialState,
               samtykke: false,
@@ -421,6 +435,7 @@ describe('Simulering', () => {
             api: {
               /* @ts-ignore */
               queries: {
+                ...fulfilledGetLoependeVedtak0Ufoeregrad,
                 ...fulfilledGetPerson,
               },
             },
@@ -498,6 +513,7 @@ describe('Simulering', () => {
             api: {
               /* @ts-ignore */
               queries: {
+                ...fulfilledGetLoependeVedtak0Ufoeregrad,
                 ...fulfilledGetPerson,
               },
             },
@@ -565,6 +581,7 @@ describe('Simulering', () => {
             api: {
               /* @ts-ignore */
               queries: {
+                ...fulfilledGetLoependeVedtak0Ufoeregrad,
                 ...fulfilledGetPerson,
               },
             },
@@ -630,6 +647,7 @@ describe('Simulering', () => {
             api: {
               /* @ts-ignore */
               queries: {
+                ...fulfilledGetLoependeVedtak0Ufoeregrad,
                 ...fakeApiCallUfoere,
                 ...fulfilledGetPerson,
               },
@@ -708,6 +726,7 @@ describe('Simulering', () => {
             api: {
               /* @ts-ignore */
               queries: {
+                ...fulfilledGetLoependeVedtak0Ufoeregrad,
                 ...fakeApiCallUfoere,
                 ...fulfilledGetPerson,
               },
@@ -799,6 +818,7 @@ describe('Simulering', () => {
             api: {
               /* @ts-ignore */
               queries: {
+                ...fulfilledGetLoependeVedtak0Ufoeregrad,
                 ...fulfilledGetPerson,
               },
             },
@@ -851,6 +871,7 @@ describe('Simulering', () => {
             api: {
               /* @ts-ignore */
               queries: {
+                ...fulfilledGetLoependeVedtak0Ufoeregrad,
                 ...fulfilledGetPerson,
               },
             },
@@ -927,6 +948,7 @@ describe('Simulering', () => {
             api: {
               /* @ts-ignore */
               queries: {
+                ...fulfilledGetLoependeVedtak0Ufoeregrad,
                 ...fulfilledGetPerson,
               },
             },
@@ -997,6 +1019,7 @@ describe('Simulering', () => {
             api: {
               /* @ts-ignore */
               queries: {
+                ...fulfilledGetLoependeVedtak0Ufoeregrad,
                 ...fulfilledGetPerson,
               },
             },
@@ -1053,6 +1076,7 @@ describe('Simulering', () => {
             api: {
               /* @ts-ignore */
               queries: {
+                ...fulfilledGetLoependeVedtak0Ufoeregrad,
                 ...fulfilledGetPerson,
               },
             },
@@ -1101,7 +1125,8 @@ describe('Simulering', () => {
           api: {
             /* @ts-ignore */
             queries: {
-              ...fulfilledGetPerson,
+              ...preloadedQueries,
+              ...fulfilledGetLoependeVedtak0Ufoeregrad,
             },
           },
           userInput: {
@@ -1136,6 +1161,7 @@ describe('Simulering', () => {
             api: {
               /* @ts-ignore */
               queries: {
+                ...fulfilledGetLoependeVedtak0Ufoeregrad,
                 ...fulfilledGetPerson,
               },
             },
@@ -1169,6 +1195,7 @@ describe('Simulering', () => {
             api: {
               /* @ts-ignore */
               queries: {
+                ...fulfilledGetLoependeVedtak0Ufoeregrad,
                 ...fulfilledGetPerson,
               },
             },
