@@ -744,6 +744,8 @@ const translations = {
     'Livsvarig AFP eller eventuell betinget tjenestepensjon er ikke inkludert i dette beløpet. Sjekk <klpLink>KLP</klpLink> for detaljer om pensjonsavtalen din.',
   'pensjonsavtaler.offentligtp.foer1963.info':
     'Sjekk <spkLink>SPK</spkLink> for detaljer.',
+  'pensjonsavtaler.offentligtp.foer1963.info_ikke_afp':
+    'Nav er ikke ansvarlig for beløpene som er hentet inn fra andre. ',
   'pensjonsavtaler.offentligtp.klp.afp_nei+vetikke':
     'Du har ikke oppgitt at du har rett til livsvarig AFP. Eventuell livsvarig AFP eller betinget tjenestepensjon er ikke inkludert i dette beløpet. Sjekk <klpLink>KLP</klpLink> for detaljer om pensjonsavtalen din.',
   'inntekt.endre_inntekt_modal.open.button': 'Endre inntekt',

@@ -16,7 +16,11 @@ import { Divider } from '@/components/common/Divider'
 import { Loader } from '@/components/common/Loader'
 import { isOffentligTpFoer1963 } from '@/state/api/typeguards'
 import { useAppSelector } from '@/state/hooks'
-import { selectAfp } from '@/state/userInput/selectors'
+import {
+  selectAfp,
+  selectSkalBeregneAfpKap19,
+  selectSkalBeregneKunAlderspensjon,
+} from '@/state/userInput/selectors'
 import {
   formaterLivsvarigString,
   formaterSluttAlderString,
@@ -54,6 +58,10 @@ export const OffentligTjenestepensjon = (props: {
   const intl = useIntl()
   const isMobile = useIsMobile()
   const afp = useAppSelector(selectAfp)
+  const skalBeregneAfpKap19 = useAppSelector(selectSkalBeregneAfpKap19)
+  const skalBeregneKunAlderspensjon = useAppSelector(
+    selectSkalBeregneKunAlderspensjon
+  )
   const loggedStatusesRef = React.useRef<Set<string>>(new Set())
   const isErrorLogRef = React.useRef(false)
   const offentligTpGirNullIUtbetaling =
@@ -82,6 +90,10 @@ export const OffentligTjenestepensjon = (props: {
       })
     }
   }
+
+  const tekstInfoIkkeAfP = intl.formatMessage({
+    id: 'pensjonsavtaler.offentligtp.foer1963.info_ikke_afp',
+  })
 
   useEffect(() => {
     const status = offentligTp?.simuleringsresultatStatus
@@ -338,6 +350,9 @@ export const OffentligTjenestepensjon = (props: {
             !offentligTp.feilkode && (
               <>
                 <BodyLong size="small">
+                  {!skalBeregneAfpKap19 &&
+                    !skalBeregneKunAlderspensjon &&
+                    tekstInfoIkkeAfP}
                   <FormattedMessage
                     id="pensjonsavtaler.offentligtp.foer1963.info"
                     values={{ ...getFormatMessageValues() }}
