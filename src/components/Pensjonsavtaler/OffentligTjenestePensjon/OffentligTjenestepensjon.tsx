@@ -7,6 +7,7 @@ import {
   BodyLong,
   Heading,
   HeadingProps,
+  Link,
   Table,
   VStack,
 } from '@navikt/ds-react'
@@ -59,6 +60,28 @@ export const OffentligTjenestepensjon = (props: {
     erOffentligTpFoer1963 && isOffentligTpFoer1963(offentligTp)
       ? offentligTp?.feilkode === 'BEREGNING_GIR_NULL_UTBETALING'
       : false
+
+  const handleAfpOffentligLinkClick: React.MouseEventHandler<
+    HTMLAnchorElement
+  > = (e): void => {
+    e.preventDefault()
+    const afpOffentligHeader = document.getElementById('afp-offentlig-heading')
+    if (afpOffentligHeader) {
+      // Get absolute position from top of document
+      let element = afpOffentligHeader
+      let offsetTop = 0
+
+      while (element) {
+        offsetTop += element.offsetTop
+        element = element.offsetParent as HTMLElement
+      }
+
+      window.scrollTo({
+        top: offsetTop - 15,
+        behavior: 'smooth',
+      })
+    }
+  }
 
   useEffect(() => {
     const status = offentligTp?.simuleringsresultatStatus
@@ -311,13 +334,41 @@ export const OffentligTjenestepensjon = (props: {
           )}
           {isOffentligTpFoer1963(offentligTp) &&
             (offentligTp.simulertTjenestepensjon?.simuleringsresultat
-              .utbetalingsperioder.length ?? 0) > 0 && (
-              <BodyLong size="small">
-                <FormattedMessage
-                  id="pensjonsavtaler.offentligtp.foer1963.info"
-                  values={{ ...getFormatMessageValues() }}
-                />
-              </BodyLong>
+              .utbetalingsperioder.length ?? 0) > 0 &&
+            !offentligTp.feilkode && (
+              <>
+                <BodyLong size="small">
+                  <FormattedMessage
+                    id="pensjonsavtaler.offentligtp.foer1963.info"
+                    values={{ ...getFormatMessageValues() }}
+                  />
+                </BodyLong>
+                <Heading level={subHeadingLevel} size="xsmall">
+                  <FormattedMessage
+                    id="pensjonsavtaler.offentligtp.subtitle.afp_fra_spk"
+                    values={{
+                      ...getFormatMessageValues(),
+                    }}
+                  />
+                </Heading>
+                <BodyLong size="small">
+                  <FormattedMessage
+                    id="pensjonsavtaler.offentligtp.text.afp_fra_spk"
+                    values={{
+                      // eslint-disable-next-line react/no-unstable-nested-components
+                      scrollTo: (chunk) => (
+                        <Link
+                          href="#"
+                          data-testid="afp-offentlig-alert-link"
+                          onClick={handleAfpOffentligLinkClick}
+                        >
+                          {chunk}
+                        </Link>
+                      ),
+                    }}
+                  />
+                </BodyLong>
+              </>
             )}
 
           {!isOffentligTpFoer1963(offentligTp) && (

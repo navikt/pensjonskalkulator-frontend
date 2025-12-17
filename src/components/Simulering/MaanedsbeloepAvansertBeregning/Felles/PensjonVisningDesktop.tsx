@@ -56,7 +56,8 @@ export const PensjonVisningDesktop: React.FC<Props> = ({
 
         // Vis kalender maaned når det er bare en ytelse eller gammel AFP med AP
         const showKalenderMaaned =
-          (harKunAPOgPre2025OffentligAFP && !erTpFoer1963) ||
+          harKunAPOgPre2025OffentligAFP ||
+          erTpFoer1963 ||
           [
             data.alderspensjon,
             data.afp,

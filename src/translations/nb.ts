@@ -726,6 +726,10 @@ const translations = {
     'Vi fikk ikke svar fra din offentlige tjenestepensjonsordning.',
   'pensjonsavtaler.offentligtp.subtitle.spk':
     'Alderspensjon fra Statens pensjonskasse (SPK)',
+  'pensjonsavtaler.offentligtp.subtitle.afp_fra_spk':
+    'AFP fra Statens pensjonskasse (SPK)',
+  'pensjonsavtaler.offentligtp.text.afp_fra_spk':
+    'For eventuell AFP fra SPK, se detaljer under <scrollTo>AFP: Offentlig.</scrollTo>',
   'pensjonsavtaler.offentligtp.subtitle.klp':
     'Alderspensjon fra Kommunal Landspensjonskasse (KLP)',
   'pensjonsavtaler.offentligtp.spk.afp_ja':
