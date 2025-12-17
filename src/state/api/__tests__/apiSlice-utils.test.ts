@@ -1230,7 +1230,7 @@ describe('apiSlice - utils', () => {
           ...requestBody,
           skalBeregneAfpKap19: false,
         })?.stillingsprosentOffHeltUttak
-      ).toEqual('100')
+      ).toEqual('0')
     })
 
     it('formaterer foedselsdato korrekt', () => {
