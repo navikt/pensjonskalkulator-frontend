@@ -31,6 +31,7 @@ import {
   selectEpsHarPensjon,
   selectErApoteker,
   selectFoedselsdato,
+  selectHarUtenlandsopphold,
   selectIsEndring,
   selectLoependeVedtak,
   selectSamtykke,
@@ -45,8 +46,13 @@ import {
   useTidligstMuligUttak,
   useTidligstMuligUttakConditions,
 } from '@/utils/hooks/useTidligstMuligUttakData'
+import { formatSivilstand } from '@/utils/sivilstand'
 
 import { generateAfpContent } from '../Grunnlag/GrunnlagAFP/utils'
+import {
+  useOppholdUtenforNorge,
+  useSortedUtenlandsperioder,
+} from '../Grunnlag/GrunnlagUtenlandsopphold/hooks'
 import {
   useOffentligTjenestePensjonAlertList,
   usePrivatePensjonsAvtalerAlertList,
@@ -70,7 +76,9 @@ import {
   getPdfHeadingWithLogo,
   getPensjonsavtaler,
   getPrivatePensjonsavtalerAlertsText,
+  getSivilstandIngress,
   getTidligstMuligUttakIngressContent,
+  getUtenlandsOppholdIngress,
 } from './pdf-utils'
 
 import styles from './Simulering.module.scss'
@@ -88,6 +96,7 @@ interface Props {
   detaljer?: {
     trygdetid?: number
     opptjeningsgrunnlag?: SimulertOpptjeningGrunnlag[]
+    harForLiteTrygdetid?: boolean
   }
   visning?: BeregningVisning
 }
@@ -101,6 +110,7 @@ export const Simulering = ({
   afpPrivatListe,
   afpOffentligListe,
   alderspensjonMaanedligVedEndring,
+  detaljer,
   showButtonsAndTable,
   visning,
 }: Props) => {
@@ -115,6 +125,10 @@ export const Simulering = ({
   const epsHarInntektOver2G = useAppSelector(selectEpsHarInntektOver2G)
   const erApoteker = useAppSelector(selectErApoteker)
   const utenlandsperioder = useAppSelector(selectUtenlandsperioder)
+  const harUtenlandsopphold = useAppSelector(selectHarUtenlandsopphold)
+  const sortedUtenlandsperioder = harUtenlandsopphold
+    ? useSortedUtenlandsperioder(utenlandsperioder)
+    : []
   const { uttaksalder, aarligInntektVsaHelPensjon, gradertUttaksperiode } =
     useAppSelector(selectCurrentSimulation)
   const skalBeregneAfpKap19 = useAppSelector(selectSkalBeregneAfpKap19)
@@ -122,7 +136,9 @@ export const Simulering = ({
   const samtykkeOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
   const afpUtregningValg = useAppSelector(selectAfpUtregningValg)
   const { beregningsvalg } = useAppSelector(selectCurrentSimulation)
-
+  const oppholdUtenforNorge = useOppholdUtenforNorge({
+    harForLiteTrygdetid: detaljer?.harForLiteTrygdetid,
+  })
   const [offentligTpRequestBody, setOffentligTpRequestBody] = useState<
     OffentligTpRequestBody | undefined
   >(undefined)
@@ -316,6 +332,12 @@ export const Simulering = ({
       isError: isOffentligTpError,
       offentligTp: offentligTpData,
     })
+
+  const formatertSivilstand = React.useMemo(
+    () => formatSivilstand(intl, sivilstand!),
+    [sivilstand]
+  )
+
   const handlePDF = () => {
     const appContentElement = document.getElementById('app-content')
     if (appContentElement) {
@@ -410,6 +432,10 @@ export const Simulering = ({
         })
       : `<h3>Pensjonsavtaler (arbeidsgivere m.m.)</h3>${intl.formatMessage({ id: 'pensjonsavtaler.ingress.error.samtykke_ingress' })}`
 
+    const omDegIngress = `<h2>${intl.formatMessage({ id: 'om_deg.title' })}</h2>
+        ${getSivilstandIngress({ intl, formatertSivilstand })}
+        ${getUtenlandsOppholdIngress({ intl, oppholdUtenforNorge, sortedUtenlandsperioder })}`
+
     const finalPdfContent =
       pdfHeadingWithLogo +
       personalInfo +
@@ -421,7 +447,8 @@ export const Simulering = ({
       grunnlagIngress +
       pensjonsavtaler +
       privatePensjonsavtalerAlertsMessage +
-      offentligTjenestePensjonAlertsMessage
+      offentligTjenestePensjonAlertsMessage +
+      omDegIngress
 
     // Set the print content in the hidden div
     const printContentDiv = document.getElementById('print-content')

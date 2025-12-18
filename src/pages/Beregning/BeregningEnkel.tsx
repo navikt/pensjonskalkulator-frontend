@@ -390,6 +390,7 @@ export const BeregningEnkel = () => {
                         trygdetid: alderspensjon?.trygdetid,
                         opptjeningsgrunnlag:
                           alderspensjon?.opptjeningGrunnlagListe,
+                        harForLiteTrygdetid: alderspensjon?.harForLiteTrygdetid,
                       }
                     : undefined
                 }
