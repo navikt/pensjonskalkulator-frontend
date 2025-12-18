@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import Highcharts, { SeriesColumnOptions, XAxisOptions } from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
-import { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 import { HandFingerIcon } from '@navikt/aksel-icons'
@@ -10,6 +10,7 @@ import { BodyLong, BodyShort, Heading, HeadingProps } from '@navikt/ds-react'
 import { TabellVisning } from '@/components/TabellVisning'
 import { BeregningContext } from '@/pages/Beregning/context'
 import {
+  useGetAfpOffentligLivsvarigQuery,
   useGetOmstillingsstoenadOgGjenlevendeQuery,
   useGetPersonQuery,
   useGetShowDownloadPdfFeatureToggleQuery,
@@ -22,7 +23,9 @@ import {
 } from '@/state/api/utils'
 import { useAppSelector } from '@/state/hooks'
 import {
+  selectAarligInntektFoerUttakBeloepFraSkatt,
   selectAfp,
+  selectAfpUtregningValg,
   selectCurrentSimulation,
   selectEpsHarInntektOver2G,
   selectEpsHarPensjon,
@@ -31,20 +34,23 @@ import {
   selectIsEndring,
   selectLoependeVedtak,
   selectSamtykke,
+  selectSamtykkeOffentligAFP,
   selectSivilstand,
   selectSkalBeregneAfpKap19,
   selectUfoeregrad,
   selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
-import { formatUttaksalder } from '@/utils/alder'
+import { formatUttaksalder, isAlderOver62 } from '@/utils/alder'
 import {
   useTidligstMuligUttak,
   useTidligstMuligUttakConditions,
 } from '@/utils/hooks/useTidligstMuligUttakData'
 
+import { generateAfpContent } from '../Grunnlag/GrunnlagAFP/utils'
 import { useTableData } from '../TabellVisning/hooks'
 import { useBeregningsdetaljer } from './BeregningsdetaljerForOvergangskull/hooks'
 import { MaanedsbeloepAvansertBeregning } from './MaanedsbeloepAvansertBeregning'
+import { SimuleringAfpOffentligAlert } from './SimuleringAfpOffentligAlert/SimuleringAfpOffentligAlert'
 import { SimuleringEndringBanner } from './SimuleringEndringBanner/SimuleringEndringBanner'
 import { SimuleringGrafNavigation } from './SimuleringGrafNavigation/SimuleringGrafNavigation'
 import { SimuleringPensjonsavtalerAlert } from './SimuleringPensjonsavtalerAlert/SimuleringPensjonsavtalerAlert'
@@ -52,8 +58,8 @@ import { useSimuleringChartLocalState } from './hooks'
 import {
   getChartTable,
   getCurrentDateTimeFormatted,
-  getDetaljerHtmlTable,
   getForbeholdAvsnitt,
+  getGrunnlagIngress,
   getOmstillingsstoenadAlert,
   getPdfHeadingWithLogo,
   getTidligstMuligUttakIngressContent,
@@ -105,6 +111,9 @@ export const Simulering = ({
     useAppSelector(selectCurrentSimulation)
   const skalBeregneAfpKap19 = useAppSelector(selectSkalBeregneAfpKap19)
   const chartRef = useRef<HighchartsReact.RefObject>(null)
+  const samtykkeOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
+  const afpUtregningValg = useAppSelector(selectAfpUtregningValg)
+  const { beregningsvalg } = useAppSelector(selectCurrentSimulation)
 
   const [offentligTpRequestBody, setOffentligTpRequestBody] = useState<
     OffentligTpRequestBody | undefined
@@ -134,6 +143,17 @@ export const Simulering = ({
     }
   )
   const { data: showPDF } = useGetShowDownloadPdfFeatureToggleQuery()
+
+  const harSamtykketOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
+  const {
+    isSuccess: isAfpOffentligLivsvarigSuccess,
+    data: loependeLivsvarigAfpOffentlig,
+  } = useGetAfpOffentligLivsvarigQuery(undefined, {
+    skip:
+      !harSamtykketOffentligAFP ||
+      !foedselsdato ||
+      !isAlderOver62(foedselsdato),
+  })
 
   useEffect(() => {
     if (harSamtykket && uttaksalder) {
@@ -193,6 +213,7 @@ export const Simulering = ({
     pre2025OffentligAfp,
     afpPrivatListe,
     afpOffentligListe,
+    loependeLivsvarigAfpOffentlig,
     pensjonsavtaler: {
       isLoading: isPensjonsavtalerLoading,
       data: pensjonsavtalerData,
@@ -211,20 +232,18 @@ export const Simulering = ({
   const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const intl = useIntl()
 
-  const { alderspensjonDetaljerListe } = useBeregningsdetaljer(
-    alderspensjonListe,
-    afpPrivatListe,
-    afpOffentligListe,
-    pre2025OffentligAfp
-  )
+  const { alderspensjonDetaljerListe, afpDetaljerListe } =
+    useBeregningsdetaljer(
+      alderspensjonListe,
+      afpPrivatListe,
+      afpOffentligListe,
+      pre2025OffentligAfp,
+      loependeLivsvarigAfpOffentlig
+    )
 
-  const { data: tidligstMuligUttak } = useTidligstMuligUttak(
-    loependeVedtak,
-    ufoeregrad
-  )
+  const { data: tidligstMuligUttak } = useTidligstMuligUttak(ufoeregrad)
   const { data: omstillingsstoenadOgGjenlevende } =
     useGetOmstillingsstoenadOgGjenlevendeQuery()
-
   useEffect(() => {
     window.addEventListener('beforeprint', () => {
       const locationUrl = window.location.href
@@ -248,7 +267,33 @@ export const Simulering = ({
     isOver75AndNoLoependeVedtak,
     show1963Text,
     hasAFP,
-  } = useTidligstMuligUttakConditions(loependeVedtak)
+  } = useTidligstMuligUttakConditions()
+
+  const { title, content } = React.useMemo(() => {
+    return generateAfpContent(intl)({
+      afpUtregning: afpUtregningValg,
+      erApoteker: erApoteker ?? false,
+      loependeVedtak: loependeVedtak,
+      afpValg: afp,
+      foedselsdato: foedselsdato!,
+      samtykkeOffentligAFP: samtykkeOffentligAFP,
+      beregningsvalg: beregningsvalg,
+      loependeLivsvarigAfpOffentlig: loependeLivsvarigAfpOffentlig,
+    })
+  }, [
+    intl,
+    afp,
+    afpUtregningValg,
+    erApoteker,
+    loependeVedtak,
+    ufoeregrad,
+    beregningsvalg,
+    foedselsdato,
+  ])
+
+  const aarligInntektFoerUttakBeloepFraSkatt = useAppSelector(
+    selectAarligInntektFoerUttakBeloepFraSkatt
+  )
 
   const handlePDF = () => {
     const appContentElement = document.getElementById('app-content')
@@ -275,25 +320,45 @@ export const Simulering = ({
     const forbeholdAvsnitt = getForbeholdAvsnitt(intl)
 
     const uttakstidspunkt = uttaksalder && formatUttaksalder(intl, uttaksalder)
-    const helUttaksAlder = `<h2>Beregning av 100% alderspensjon ved ${uttakstidspunkt} </h2>`
+    const helUttaksAlder = `<h2>Beregning av 100 % alderspensjon ved ${uttakstidspunkt} </h2>`
     const chartTableWithHeading = getChartTable({ tableData, intl })
 
-    const tidligstMuligUttakIngress = getTidligstMuligUttakIngressContent({
-      intl,
-      normertPensjonsalder,
-      nedreAldersgrense,
-      loependeVedtakPre2025OffentligAfp,
-      isOver75AndNoLoependeVedtak,
-      show1963Text,
-      ufoeregrad,
-      hasAFP,
-      tidligstMuligUttak,
-    })
+    const tidligstMuligUttakIngress = isEnkel
+      ? getTidligstMuligUttakIngressContent({
+          intl,
+          normertPensjonsalder,
+          nedreAldersgrense,
+          loependeVedtakPre2025OffentligAfp,
+          isOver75AndNoLoependeVedtak,
+          show1963Text,
+          ufoeregrad,
+          hasAFP,
+          tidligstMuligUttak,
+        })
+      : ''
+
     const omstillingsstoenadAlert =
       omstillingsstoenadOgGjenlevende?.harLoependeSak
         ? getOmstillingsstoenadAlert(intl, normertPensjonsalder)
         : ''
-    const detaljerTable = getDetaljerHtmlTable(alderspensjonDetaljerListe)
+    const shouldHideAfpHeading = Boolean(
+      afpDetaljerListe.length > 0 &&
+      loependeLivsvarigAfpOffentlig?.afpStatus &&
+      loependeLivsvarigAfpOffentlig?.maanedligBeloep
+    )
+    const grunnlagIngress = getGrunnlagIngress({
+      intl,
+      alderspensjonDetaljerListe: alderspensjonDetaljerListe,
+      aarligInntektFoerUttakBeloepFraSkatt,
+      afpDetaljerListe,
+      title,
+      content,
+      hasPre2025OffentligAfpUttaksalder: Boolean(pre2025OffentligAfp),
+      uttaksalder,
+      gradertUttaksperiode,
+      shouldHideAfpHeading,
+    })
+
     const finalPdfContent =
       pdfHeadingWithLogo +
       personalInfo +
@@ -302,7 +367,7 @@ export const Simulering = ({
       omstillingsstoenadAlert +
       helUttaksAlder +
       chartTableWithHeading +
-      detaljerTable
+      grunnlagIngress
 
     // Set the print content in the hidden div
     const printContentDiv = document.getElementById('print-content')
@@ -346,6 +411,11 @@ export const Simulering = ({
       setIsPdfReady?.(false)
     }
   }, [showPDFRef, setIsPdfReady])
+
+  const hideAFP =
+    loependeLivsvarigAfpOffentlig?.afpStatus &&
+    (loependeLivsvarigAfpOffentlig?.maanedligBeloep === null ||
+      loependeLivsvarigAfpOffentlig?.maanedligBeloep === undefined)
 
   return (
     <section className={styles.section}>
@@ -427,6 +497,12 @@ export const Simulering = ({
         }}
       />
 
+      <SimuleringAfpOffentligAlert
+        harSamtykketOffentligAFP={harSamtykketOffentligAFP}
+        isAfpOffentligLivsvarigSuccess={isAfpOffentligLivsvarigSuccess}
+        loependeLivsvarigAfpOffentlig={loependeLivsvarigAfpOffentlig}
+      />
+
       {showButtonsAndTable && (
         <TabellVisning
           series={chartOptions.series as SeriesColumnOptions[]}
@@ -451,7 +527,7 @@ export const Simulering = ({
           <MaanedsbeloepAvansertBeregning
             alderspensjonMaanedligVedEndring={alderspensjonMaanedligVedEndring}
             afpPrivatListe={afpPrivatListe}
-            afpOffentligListe={afpOffentligListe}
+            afpOffentligListe={hideAFP ? undefined : afpOffentligListe}
             pre2025OffentligAfp={pre2025OffentligAfp}
             pensjonsavtaler={pensjonsavtalerData?.avtaler}
             simulertTjenestepensjon={offentligTpData?.simulertTjenestepensjon}

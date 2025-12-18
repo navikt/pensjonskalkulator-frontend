@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 
 import {
+  useGetAfpOffentligLivsvarigQuery,
   useGetPersonQuery,
   useTidligstMuligHeltUttakQuery,
 } from '@/state/api/apiSlice'
@@ -11,28 +12,32 @@ import {
   selectAfp,
   selectEpsHarInntektOver2G,
   selectEpsHarPensjon,
+  selectFoedselsdato,
+  selectLoependeVedtak,
   selectNedreAldersgrense,
   selectNormertPensjonsalder,
   selectSamtykkeOffentligAFP,
   selectSivilstand,
   selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
-import { isAlder75MaanedenFylt, isFoedtFoer1964 } from '@/utils/alder'
+import {
+  isAlder75MaanedenFylt,
+  isAlderOver62,
+  isFoedtFoer1964,
+} from '@/utils/alder'
 
 /**
  * Custom hook for pension-related calculations and conditions
  * @returns Common pension calculation values
  */
-export const useTidligstMuligUttakConditions = (
-  loependeVedtak?: LoependeVedtak
-) => {
+export const useTidligstMuligUttakConditions = () => {
   const { isSuccess: isPersonSuccess, data: person } = useGetPersonQuery()
   const afp = useAppSelector(selectAfp)
   const samtykkeOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
 
   const nedreAldersgrense = useAppSelector(selectNedreAldersgrense)
   const normertPensjonsalder = useAppSelector(selectNormertPensjonsalder)
-
+  const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const hasAFP =
     (afp === 'ja_offentlig' && samtykkeOffentligAFP) || afp === 'ja_privat'
   const isOver75AndNoLoependeVedtak =
@@ -65,10 +70,7 @@ export const useTidligstMuligUttakConditions = (
  * @param ufoeregrad Optional ufoeregrad parameter
  * @returns The data from the API call, loading state, and success state
  */
-export const useTidligstMuligUttak = (
-  loependeVedtak?: LoependeVedtak,
-  ufoeregrad?: number
-) => {
+export const useTidligstMuligUttak = (ufoeregrad?: number) => {
   const afp = useAppSelector(selectAfp)
   const sivilstand = useAppSelector(selectSivilstand)
   const harSamtykketOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
@@ -77,8 +79,18 @@ export const useTidligstMuligUttak = (
   const aarligInntektFoerUttakBeloep = useAppSelector(
     selectAarligInntektFoerUttakBeloep
   )
+  const loependeVedtak = useAppSelector(selectLoependeVedtak)
   const utenlandsperioder = useAppSelector(selectUtenlandsperioder)
-
+  const foedselsdato = useAppSelector(selectFoedselsdato)
+  const {
+    isSuccess: isAfpOffentligLivsvarigSuccess,
+    data: loependeLivsvarigAfpOffentlig,
+  } = useGetAfpOffentligLivsvarigQuery(undefined, {
+    skip:
+      !harSamtykketOffentligAFP ||
+      !foedselsdato ||
+      !isAlderOver62(foedselsdato),
+  })
   const [
     tidligstMuligHeltUttakRequestBody,
     setTidligstMuligHeltUttakRequestBody,
@@ -95,6 +107,9 @@ export const useTidligstMuligUttak = (
         epsHarInntektOver2G,
         aarligInntektFoerUttakBeloep: aarligInntektFoerUttakBeloep ?? '0',
         utenlandsperioder,
+        loependeLivsvarigAfpOffentlig: isAfpOffentligLivsvarigSuccess
+          ? loependeLivsvarigAfpOffentlig
+          : null,
       })
       setTidligstMuligHeltUttakRequestBody(requestBody)
     } else {
