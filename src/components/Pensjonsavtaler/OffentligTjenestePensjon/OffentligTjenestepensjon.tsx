@@ -19,7 +19,6 @@ import { useAppSelector } from '@/state/hooks'
 import {
   selectAfp,
   selectSkalBeregneAfpKap19,
-  selectSkalBeregneKunAlderspensjon,
 } from '@/state/userInput/selectors'
 import {
   formaterLivsvarigString,
@@ -59,9 +58,6 @@ export const OffentligTjenestepensjon = (props: {
   const isMobile = useIsMobile()
   const afp = useAppSelector(selectAfp)
   const skalBeregneAfpKap19 = useAppSelector(selectSkalBeregneAfpKap19)
-  const skalBeregneKunAlderspensjon = useAppSelector(
-    selectSkalBeregneKunAlderspensjon
-  )
   const loggedStatusesRef = React.useRef<Set<string>>(new Set())
   const isErrorLogRef = React.useRef(false)
   const offentligTpGirNullIUtbetaling =
@@ -350,39 +346,41 @@ export const OffentligTjenestepensjon = (props: {
             !offentligTp.feilkode && (
               <>
                 <BodyLong size="small">
-                  {!skalBeregneAfpKap19 &&
-                    !skalBeregneKunAlderspensjon &&
-                    tekstInfoIkkeAfP}
+                  {tekstInfoIkkeAfP}
                   <FormattedMessage
                     id="pensjonsavtaler.offentligtp.foer1963.info"
                     values={{ ...getFormatMessageValues() }}
                   />
                 </BodyLong>
-                <Heading level={subHeadingLevel} size="xsmall">
-                  <FormattedMessage
-                    id="pensjonsavtaler.offentligtp.subtitle.afp_fra_spk"
-                    values={{
-                      ...getFormatMessageValues(),
-                    }}
-                  />
-                </Heading>
-                <BodyLong size="small">
-                  <FormattedMessage
-                    id="pensjonsavtaler.offentligtp.text.afp_fra_spk"
-                    values={{
-                      // eslint-disable-next-line react/no-unstable-nested-components
-                      scrollTo: (chunk) => (
-                        <Link
-                          href="#"
-                          data-testid="afp-offentlig-alert-link"
-                          onClick={handleAfpOffentligLinkClick}
-                        >
-                          {chunk}
-                        </Link>
-                      ),
-                    }}
-                  />
-                </BodyLong>
+                {skalBeregneAfpKap19 && (
+                  <>
+                    <Heading level={subHeadingLevel} size="xsmall">
+                      <FormattedMessage
+                        id="pensjonsavtaler.offentligtp.subtitle.afp_fra_spk"
+                        values={{
+                          ...getFormatMessageValues(),
+                        }}
+                      />
+                    </Heading>
+                    <BodyLong size="medium">
+                      <FormattedMessage
+                        id="pensjonsavtaler.offentligtp.text.afp_fra_spk"
+                        values={{
+                          // eslint-disable-next-line react/no-unstable-nested-components
+                          scrollTo: (chunk) => (
+                            <Link
+                              href="#"
+                              data-testid="afp-offentlig-alert-link"
+                              onClick={handleAfpOffentligLinkClick}
+                            >
+                              {chunk}
+                            </Link>
+                          ),
+                        }}
+                      />
+                    </BodyLong>
+                  </>
+                )}
               </>
             )}
 
