@@ -74,9 +74,6 @@ export const AvansertSkjemaInntekt = ({
           }}
         />
       </div>
-
-      <div className={clsx(styles.spacer, styles.spacer__small)} />
-
       <SanityReadmore id="om_pensjonsgivende_inntekt" />
     </div>
   )

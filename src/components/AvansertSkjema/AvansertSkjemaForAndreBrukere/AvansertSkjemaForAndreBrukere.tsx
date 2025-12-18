@@ -404,10 +404,8 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
 
           <Divider noMargin />
 
-          <div className={styles.alertWrapper} aria-live="polite">
-            {validationErrors[
-              AVANSERT_FORM_NAMES.endringAlertFremtidigDato
-            ] && (
+          {validationErrors[AVANSERT_FORM_NAMES.endringAlertFremtidigDato] && (
+            <div className={styles.alertWrapper} aria-live="polite">
               <Alert variant="warning">
                 <FormattedMessage
                   id="beregning.endring.alert.uttaksdato"
@@ -419,19 +417,19 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
                   }}
                 />
               </Alert>
-            )}
-          </div>
+            </div>
+          )}
 
-          <div className={styles.alertWrapper} aria-live="polite">
-            {vilkaarsproeving &&
-              !vilkaarsproeving?.vilkaarErOppfylt &&
-              uttaksalder && (
+          {vilkaarsproeving &&
+            !vilkaarsproeving?.vilkaarErOppfylt &&
+            uttaksalder && (
+              <div className={styles.alertWrapper} aria-live="polite">
                 <VilkaarsproevingAlert
                   alternativ={vilkaarsproeving?.alternativ}
                   uttaksalder={uttaksalder}
                 />
-              )}
-          </div>
+              </div>
+            )}
 
           <div>
             {localGradertUttak?.grad !== undefined &&
