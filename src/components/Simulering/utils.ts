@@ -260,14 +260,9 @@ export const processPre2025OffentligAfpWithSpkPerioder = (
       }
     })
   }
-  console.log('result before pre2025', result)
-  // For years before age 65 where SPK AFP wasn't applied, use pre2025 NAV AFP
-  // pre2025OffentligAfpListe contains beloep for each age starting from pre2025OffentligAfp.alderAar
+
   const startIndex = isEndring ? 0 : 1
-  const arrayLength = Math.min(
-    result.length,
-    65 - xAxisStartAar // Only process until age 65
-  )
+  const arrayLength = Math.min(result.length, 65 - xAxisStartAar)
 
   for (let index = isEndring ? 0 : 1; index < arrayLength; index++) {
     if (startIndex <= index && result[index] === 0) {
@@ -278,8 +273,6 @@ export const processPre2025OffentligAfpWithSpkPerioder = (
       }
     }
   }
-
-  console.log('result', result)
 
   return result
 }
