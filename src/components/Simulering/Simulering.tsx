@@ -478,12 +478,6 @@ export const Simulering = ({
         loependeLivsvarigAfpOffentlig={loependeLivsvarigAfpOffentlig}
       />
 
-      <SimuleringAfpOffentligAlert
-        harSamtykketOffentligAFP={harSamtykketOffentligAFP}
-        isAfpOffentligLivsvarigSuccess={isAfpOffentligLivsvarigSuccess}
-        loependeLivsvarigAfpOffentlig={loependeLivsvarigAfpOffentlig}
-      />
-
       {showButtonsAndTable && (
         <TabellVisning
           series={chartOptions.series as SeriesColumnOptions[]}
