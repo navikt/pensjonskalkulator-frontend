@@ -31,7 +31,7 @@ export class PensjonsavtalerIntercepts {
     cy.intercept(
       {
         method: 'POST',
-        url: '/pensjon/kalkulator/api/v2/simuler-oftp',
+        url: '/pensjon/kalkulator/api/v2/simuler-oftp/etter-1963',
       },
       {
         simuleringsresultatStatus: 'OK',
@@ -74,7 +74,7 @@ export class PensjonsavtalerIntercepts {
     cy.intercept(
       {
         method: 'POST',
-        url: '/pensjon/kalkulator/api/v2/simuler-oftp',
+        url: '/pensjon/kalkulator/api/v2/simuler-oftp/etter-1963',
       },
       {
         simuleringsresultatStatus: 'OK',
@@ -119,7 +119,7 @@ export class PensjonsavtalerIntercepts {
     cy.intercept(
       {
         method: 'POST',
-        url: '/pensjon/kalkulator/api/v2/simuler-oftp',
+        url: '/pensjon/kalkulator/api/v2/simuler-oftp/etter-1963',
       },
       {
         simuleringsresultatStatus: 'TP_ORDNING_STOETTES_IKKE',
@@ -146,7 +146,7 @@ export class PensjonsavtalerIntercepts {
     cy.intercept(
       {
         method: 'POST',
-        url: '/pensjon/kalkulator/api/v2/simuler-oftp',
+        url: '/pensjon/kalkulator/api/v2/simuler-oftp/etter-1963',
       },
       {
         simuleringsresultatStatus: 'BRUKER_ER_IKKE_MEDLEM_AV_TP_ORDNING',
@@ -173,7 +173,7 @@ export class PensjonsavtalerIntercepts {
     cy.intercept(
       {
         method: 'POST',
-        url: '/pensjon/kalkulator/api/v2/simuler-oftp',
+        url: '/pensjon/kalkulator/api/v2/simuler-oftp/etter-1963',
       },
       {
         simuleringsresultatStatus: 'TEKNISK_FEIL',
@@ -189,7 +189,7 @@ export class PensjonsavtalerIntercepts {
     cy.intercept(
       {
         method: 'POST',
-        url: '/pensjon/kalkulator/api/v2/simuler-oftp',
+        url: '/pensjon/kalkulator/api/v2/simuler-oftp/etter-1963',
       },
       {
         simuleringsresultatStatus: 'TOM_SIMULERING_FRA_TP_ORDNING',
@@ -202,7 +202,7 @@ export class PensjonsavtalerIntercepts {
    * Set up intercept for offentlig tjenestepensjon with server error (503)
    */
   static offentligTpServerError(): void {
-    cy.intercept('POST', '/pensjon/kalkulator/api/v2/simuler-oftp', {
+    cy.intercept('POST', '/pensjon/kalkulator/api/v2/simuler-oftp/etter-1963', {
       statusCode: 503,
     }).as('fetchOffentligTp')
   }

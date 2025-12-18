@@ -952,7 +952,7 @@ export interface components {
       stillingsprosentOffHeltUttak: string
       stillingsprosentOffGradertUttak?: string
     }
-    OffentligTjenestepensjonSimuleringFoer1963ResultV2: {
+    OffentligTjenestepensjonSimuleringFoer1963ResultV1: {
       /** @enum {string} */
       simuleringsresultatStatus:
         | 'OK'
@@ -961,7 +961,7 @@ export interface components {
         | 'TOM_SIMULERING_FRA_TP_ORDNING'
         | 'TEKNISK_FEIL'
       muligeTpLeverandoerListe: string[]
-      simulertTjenestepensjon?: components['schemas']['SimulertTjenestepensjonFoer1963V2']
+      simulertTjenestepensjon?: components['schemas']['SimulertTjenestepensjonFoer1963V1']
       serviceData?: string[]
       /** @enum {string} */
       feilkode?:
@@ -971,15 +971,15 @@ export interface components {
         | 'TP_ORDNING_STOETTES_IKKE'
         | 'OPPFYLLER_IKKE_INNGANGSVILKAAR'
     }
-    SimuleringsresultatFoer1963V2: {
-      utbetalingsperioder: components['schemas']['UtbetalingsperiodeFoer1963V2'][]
+    SimuleringsresultatFoer1963V1: {
+      utbetalingsperioder: components['schemas']['UtbetalingsperiodeFoer1963V1'][]
     }
-    SimulertTjenestepensjonFoer1963V2: {
+    SimulertTjenestepensjonFoer1963V1: {
       tpLeverandoer: string
       tpNummer: string
-      simuleringsresultat: components['schemas']['SimuleringsresultatFoer1963V2']
+      simuleringsresultat: components['schemas']['SimuleringsresultatFoer1963V1']
     }
-    UtbetalingsperiodeFoer1963V2: {
+    UtbetalingsperiodeFoer1963V1: {
       startAlder: components['schemas']['Alder']
       sluttAlder?: components['schemas']['Alder']
       /** Format: int32 */
@@ -1410,7 +1410,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          '*/*': components['schemas']['OffentligTjenestepensjonSimuleringFoer1963ResultV2']
+          '*/*': components['schemas']['OffentligTjenestepensjonSimuleringFoer1963ResultV1']
         }
       }
     }
