@@ -64,7 +64,7 @@ describe('Med samtykke', () => {
         cy.intercept(
           {
             method: 'POST',
-            url: '/pensjon/kalkulator/api/v2/simuler-oftp/etter-1963',
+            url: '/pensjon/kalkulator/api/v2/simuler-oftp/fra-1963',
           },
           {
             simuleringsresultatStatus: 'TEKNISK_FEIL',
@@ -121,7 +121,7 @@ describe('Med samtykke', () => {
         cy.intercept(
           {
             method: 'POST',
-            url: '/pensjon/kalkulator/api/v2/simuler-oftp/etter-1963',
+            url: '/pensjon/kalkulator/api/v2/simuler-oftp/fra-1963',
           },
           {
             simuleringsresultatStatus: 'TOM_SIMULERING_FRA_TP_ORDNING',
@@ -179,7 +179,7 @@ describe('Med samtykke', () => {
       cy.intercept(
         {
           method: 'POST',
-          url: '/pensjon/kalkulator/api/v2/simuler-oftp/etter-1963',
+          url: '/pensjon/kalkulator/api/v2/simuler-oftp/fra-1963',
         },
         {
           simuleringsresultatStatus: 'BRUKER_ER_IKKE_MEDLEM_AV_TP_ORDNING',
@@ -241,7 +241,7 @@ describe('Med samtykke', () => {
       cy.intercept(
         {
           method: 'POST',
-          url: '/pensjon/kalkulator/api/v2/simuler-oftp/etter-1963',
+          url: '/pensjon/kalkulator/api/v2/simuler-oftp/fra-1963',
         },
         {
           simuleringsresultatStatus: 'TP_ORDNING_STOETTES_IKKE',

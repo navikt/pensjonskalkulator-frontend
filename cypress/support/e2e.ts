@@ -185,7 +185,7 @@ beforeEach(() => {
   cy.intercept(
     {
       method: 'POST',
-      url: '/pensjon/kalkulator/api/v2/simuler-oftp/etter-1963',
+      url: '/pensjon/kalkulator/api/v2/simuler-oftp/fra-1963',
     },
     { fixture: 'offentlig-tp.json' }
   ).as('fetchOffentligTp')

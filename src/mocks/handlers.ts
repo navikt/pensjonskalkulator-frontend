@@ -181,7 +181,7 @@ export const getHandlers = (baseUrl: string = API_PATH) => [
     return HttpResponse.json(ansattIdResponse)
   }),
 
-  http.post(`${baseUrl}/v2/simuler-oftp/etter-1963`, async () => {
+  http.post(`${baseUrl}/v2/simuler-oftp/fra-1963`, async () => {
     await delay(TEST_DELAY)
     return HttpResponse.json(offentligTpResponse)
   }),
