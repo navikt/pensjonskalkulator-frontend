@@ -353,7 +353,7 @@ export const OffentligTjenestepensjon = (props: {
                   />
                 </BodyLong>
                 {skalBeregneAfpKap19 && (
-                  <>
+                  <div>
                     <Heading level={subHeadingLevel} size="xsmall">
                       <FormattedMessage
                         id="pensjonsavtaler.offentligtp.subtitle.afp_fra_spk"
@@ -379,7 +379,7 @@ export const OffentligTjenestepensjon = (props: {
                         }}
                       />
                     </BodyLong>
-                  </>
+                  </div>
                 )}
               </>
             )}
