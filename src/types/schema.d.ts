@@ -104,26 +104,6 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/api/v2/pensjonsavtaler': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    /**
-     * Simuler offentlig tjenestepensjon hos TP-leverandør bruker er medlem av
-     * @description Simulerer offentlig tjenestepensjon hos TP-leverandør som har ansvar for brukers tjenestepensjon
-     */
-    post: operations['fetchAvtalerV2']
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
   '/api/v1/encrypt': {
     parameters: {
       query?: never
@@ -165,26 +145,6 @@ export interface paths {
     trace?: never
   }
   '/api/v6/person': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /**
-     * Hent personinformasjon
-     * @description Henter informasjon om personen hvis person-ID er angitt enten i bearer-tokenet eller som fnr-header.
-     */
-    get: operations['personV6']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  '/api/v5/person': {
     parameters: {
       query?: never
       header?: never
@@ -316,26 +276,6 @@ export interface paths {
      * @description Henter både aktive og inaktive medlemskap til brukeren i offentlige tjenestepensjonsordninger
      */
     get: operations['hentMedlemskapITjenestepensjonsordninger']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  '/api/v1/tpo-afp-offentlig-livsvarig': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /**
-     * Hent loepende livsvarig afp offentlig
-     * @description Henter detaljer om løpende livsvarig AFP offentlig for brukeren
-     */
-    get: operations['hentAfpOffentligLivsvarigDetaljer']
     put?: never
     post?: never
     delete?: never
@@ -980,9 +920,9 @@ export interface components {
       foedselsdato: string
       /** Format: int32 */
       aarligInntektFoerUttakBeloep?: number
-      gradertUttak?: components['schemas']['PersonligSimuleringGradertUttakSpecV8']
-      heltUttak: components['schemas']['PersonligSimuleringHeltUttakSpecV8']
-      utenlandsperiodeListe?: components['schemas']['PersonligSimuleringUtenlandsperiodeSpecV8'][]
+      gradertUttak?: components['schemas']['PersonligSimuleringGradertUttakSpecV9']
+      heltUttak: components['schemas']['PersonligSimuleringHeltUttakSpecV9']
+      utenlandsperiodeListe?: components['schemas']['PersonligSimuleringUtenlandsperiodeSpecV9'][]
       /** @enum {string} */
       sivilstand?:
         | 'UNKNOWN'
@@ -1012,7 +952,7 @@ export interface components {
       stillingsprosentOffHeltUttak: string
       stillingsprosentOffGradertUttak?: string
     }
-    OffentligTjenestepensjonSimuleringFoer1963ResultV2: {
+    OffentligTjenestepensjonSimuleringFoer1963ResultV1: {
       /** @enum {string} */
       simuleringsresultatStatus:
         | 'OK'
@@ -1021,28 +961,25 @@ export interface components {
         | 'TOM_SIMULERING_FRA_TP_ORDNING'
         | 'TEKNISK_FEIL'
       muligeTpLeverandoerListe: string[]
-      simulertTjenestepensjon?: components['schemas']['SimulertTjenestepensjonFoer1963V2']
+      simulertTjenestepensjon?: components['schemas']['SimulertTjenestepensjonFoer1963V1']
       serviceData?: string[]
       /** @enum {string} */
       feilkode?:
-        | 'KUNNE_IKKE_SIMULERE'
-        | 'UKJENT_PRODUKT'
-        | 'MIDLERTIDIG_TEKNISK_FEIL'
+        | 'TEKNISK_FEIL'
         | 'BEREGNING_GIR_NULL_UTBETALING'
         | 'BRUKER_IKKE_MEDLEM_AV_TP_ORDNING'
         | 'TP_ORDNING_STOETTES_IKKE'
         | 'OPPFYLLER_IKKE_INNGANGSVILKAAR'
-        | 'ANNEN_FEIL'
     }
-    SimuleringsresultatFoer1963V2: {
-      utbetalingsperioder: components['schemas']['UtbetalingsperiodeFoer1963V2'][]
+    SimuleringsresultatFoer1963V1: {
+      utbetalingsperioder: components['schemas']['UtbetalingsperiodeFoer1963V1'][]
     }
-    SimulertTjenestepensjonFoer1963V2: {
+    SimulertTjenestepensjonFoer1963V1: {
       tpLeverandoer: string
       tpNummer: string
-      simuleringsresultat: components['schemas']['SimuleringsresultatFoer1963V2']
+      simuleringsresultat: components['schemas']['SimuleringsresultatFoer1963V1']
     }
-    UtbetalingsperiodeFoer1963V2: {
+    UtbetalingsperiodeFoer1963V1: {
       startAlder: components['schemas']['Alder']
       sluttAlder?: components['schemas']['Alder']
       /** Format: int32 */
@@ -1054,72 +991,6 @@ export interface components {
       mangelfullSimuleringkode?: string
       /** Format: int32 */
       maanedligUtbetaling?: number
-    }
-    PensjonsavtaleAlderSpecV2: {
-      /** Format: int32 */
-      aar: number
-      /** Format: int32 */
-      maaneder: number
-    }
-    PensjonsavtaleInntektSpecV2: {
-      /** Format: int32 */
-      beloep: number
-      sluttAlder?: components['schemas']['PensjonsavtaleAlderSpecV2']
-    }
-    PensjonsavtaleOppholdSpecV2: {
-      /** Format: date */
-      fom: string
-      /** Format: date */
-      tom?: string
-    }
-    PensjonsavtaleSpecV2: {
-      /** Format: int32 */
-      aarligInntektFoerUttakBeloep: number
-      uttaksperioder: components['schemas']['PensjonsavtaleUttaksperiodeSpecV2'][]
-      harAfp?: boolean
-      harEpsPensjon?: boolean
-      harEpsPensjonsgivendeInntektOver2G?: boolean
-      /** Format: int32 */
-      antallAarIUtlandetEtter16?: number
-      utenlandsperioder?: components['schemas']['PensjonsavtaleOppholdSpecV2'][]
-      /** @enum {string} */
-      sivilstand?:
-        | 'UNKNOWN'
-        | 'UOPPGITT'
-        | 'UGIFT'
-        | 'GIFT'
-        | 'ENKE_ELLER_ENKEMANN'
-        | 'SKILT'
-        | 'SEPARERT'
-        | 'REGISTRERT_PARTNER'
-        | 'SEPARERT_PARTNER'
-        | 'SKILT_PARTNER'
-        | 'GJENLEVENDE_PARTNER'
-        | 'SAMBOER'
-    }
-    PensjonsavtaleUttaksperiodeSpecV2: {
-      startAlder: components['schemas']['PensjonsavtaleAlderSpecV2']
-      /** Format: int32 */
-      grad: number
-      aarligInntektVsaPensjon?: components['schemas']['PensjonsavtaleInntektSpecV2']
-    }
-    PensjonsavtaleResultV2: {
-      avtaler: components['schemas']['PensjonsavtaleV2'][]
-      utilgjengeligeSelskap: components['schemas']['SelskapV2'][]
-    }
-    PensjonsavtaleV2: {
-      produktbetegnelse: string
-      /** @enum {string} */
-      kategori: 'UNKNOWN' | 'INDIVIDUELL_ORDNING' | 'PRIVAT_TJENESTEPENSJON'
-      /** Format: int32 */
-      startAar: number
-      /** Format: int32 */
-      sluttAar?: number
-      utbetalingsperioder: components['schemas']['UtbetalingsperiodeV2'][]
-    }
-    SelskapV2: {
-      navn: string
-      heltUtilgjengelig: boolean
     }
     AnonymSimuleringAlderV1: {
       /** Format: int32 */
@@ -1230,32 +1101,6 @@ export interface components {
         | 'GJENLEVENDE_PARTNER'
       pensjoneringAldre: components['schemas']['PersonPensjonsaldreV6']
     }
-    PersonAlderV5: {
-      /** Format: int32 */
-      aar: number
-      /** Format: int32 */
-      maaneder: number
-    }
-    PersonResultV6: {
-      navn: string
-      fornavn: string
-      /** Format: date */
-      foedselsdato: string
-      /** @enum {string} */
-      sivilstand:
-        | 'UNKNOWN'
-        | 'UOPPGITT'
-        | 'UGIFT'
-        | 'GIFT'
-        | 'ENKE_ELLER_ENKEMANN'
-        | 'SKILT'
-        | 'SEPARERT'
-        | 'REGISTRERT_PARTNER'
-        | 'SEPARERT_PARTNER'
-        | 'SKILT_PARTNER'
-        | 'GJENLEVENDE_PARTNER'
-      pensjoneringAldre: components['schemas']['PersonPensjonsaldreV6']
-    }
     AlderspensjonDetaljerV4: {
       /** Format: int32 */
       grad: number
@@ -1341,11 +1186,6 @@ export interface components {
     }
     MedlemskapITjenestepensjonsordningDto: {
       tpLeverandoerListe: string[]
-    }
-    AfpOffentligLivsvarigDto: {
-      afpStatus?: boolean
-      /** Format: int32 */
-      maanedligBeloep?: number
     }
     BrukerHarLoependeOmstillingsstoenadEllerGjenlevendeYtelse: {
       harLoependeSak: boolean
@@ -1570,47 +1410,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          '*/*': components['schemas']['OffentligTjenestepensjonSimuleringFoer1963ResultV2']
-        }
-      }
-    }
-  }
-  fetchAvtalerV2: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['SimuleringOffentligTjenestepensjonFoer1963SpecV2']
-      }
-    }
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          '*/*': components['schemas']['PensjonsavtaleResultV2']
-        }
-      }
-      /** @description Henting av pensjonsavtaler kunne ikke utføres av tekniske årsaker */
-      503: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          /** @example {
-           *       "timestamp": "2023-09-12T10:37:47.056+00:00",
-           *       "status": 503,
-           *       "error": "Service Unavailable",
-           *       "message": "En feil inntraff",
-           *       "path": "/api/ressurs"
-           *     } */
-          '*/*': unknown
+          '*/*': components['schemas']['OffentligTjenestepensjonSimuleringFoer1963ResultV1']
         }
       }
     }
@@ -1691,51 +1491,6 @@ export interface operations {
     }
   }
   personV6: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description Henting av personinformasjon utført. */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          '*/*': components['schemas']['PersonResultV6']
-        }
-      }
-      /** @description Personen ble ikke funnet. */
-      404: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          '*/*': components['schemas']['PersonResultV6']
-        }
-      }
-      /** @description Henting av personinformasjon kunne ikke utføres av tekniske årsaker. */
-      503: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          /** @example {
-           *       "timestamp": "2023-09-12T10:37:47.056+00:00",
-           *       "status": 503,
-           *       "error": "Service Unavailable",
-           *       "message": "En feil inntraff",
-           *       "path": "/api/ressurs"
-           *     } */
-          '*/*': unknown
-        }
-      }
-    }
-  }
-  personV5: {
     parameters: {
       query?: never
       header?: never
@@ -1952,26 +1707,6 @@ export interface operations {
         }
         content: {
           '*/*': components['schemas']['MedlemskapITjenestepensjonsordningDto']
-        }
-      }
-    }
-  }
-  hentAfpOffentligLivsvarigDetaljer: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description OK */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          '*/*': components['schemas']['AfpOffentligLivsvarigDto']
         }
       }
     }
