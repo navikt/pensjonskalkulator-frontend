@@ -143,7 +143,7 @@ declare global {
     | components['schemas']['SimulertTjenestepensjonFoer1963V2']
   // /simuler-oftp/foer-1963
   type OffentligTpFoer1963RequestBody =
-    components['schemas']['SimuleringOffentligTjenestepensjonFoer1963SpecV2']
+    components['schemas']['SimuleringOffentligTjenestepensjonFoer1963SpecV1']
   type OffentligTpFoer1963 =
     components['schemas']['OffentligTjenestepensjonSimuleringFoer1963ResultV2']
   // Union type for both offentlig tp responses
