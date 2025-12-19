@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import React from 'react'
 import { useIntl } from 'react-intl'
 
-import { BodyShort, ErrorMessage, Label, Select } from '@navikt/ds-react'
+import { BodyShort, ErrorMessage, Select } from '@navikt/ds-react'
 
 import { Alert as AlertDashBorder } from '@/components/common/Alert'
 import { useGetPersonQuery } from '@/state/api/apiSlice'
