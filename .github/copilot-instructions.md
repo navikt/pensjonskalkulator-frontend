@@ -1,114 +1,186 @@
-# Pensjonskalkulator Frontend Coding Guidelines
+# Pensjonskalkulator Frontend - Copilot Instructions
 
-This document provides guidelines for Copilot to follow when suggesting code for this project.
+These repository instructions define how GitHub Copilot should assist developers working on this codebase.  
+They describe the project's context, architecture, conventions, and tone.  
+Copilot must follow these rules for every suggestion, explanation, and chat response.
 
-## Project Overview
+---
 
-- Frontend application for pension calculator for users born 1963 or later
-- React-based SPA using TypeScript, Vite, React Router, React-Intl for translations
-- Uses NAV design system (@navikt/ds-react and @navikt/ds-css)
+## Project Context
 
-## File Structure
+- **Purpose:** Deliver pension estimates and guidance for Norwegian citizens and advisors.  
+- **Stack:** React 19, TypeScript, Vite.  
+- **Routing:** React Router v7 data router (`createBrowserRouter`).  
+- **Internationalization:** `react-intl` with locale bundles in `src/translations`.  
+- **Design system:** NAV Aksel (`@navikt/ds-react`, `@navikt/ds-css`, `@navikt/aksel-icons`).  
+- **State & Data:** Redux Toolkit + RTK Query (`src/state`), React Context (LanguageProvider, SanityContext), MSW for mocks.  
+- **Content:** Sanity CMS via GROQ queries inside `LanguageProvider`.  
+- **Testing:** Vitest + React Testing Library, Cypress for end-to-end coverage.  
+- **Tooling:** ESLint (flat config), Prettier (sorted imports), Stylelint for SCSS, Vite plugins for linting/style checks.
 
-- Each component should be in its own directory (`ComponentName/`)
-- Component files should follow this pattern:
-  - `ComponentName/ComponentName.tsx` - Main component file
-  - `ComponentName/index.ts` - Exports component(s)
-  - `ComponentName/ComponentName.module.scss` - Component styles (if needed)
-  - `ComponentName/__tests__/ComponentName.test.tsx` - Component tests
-- Group related components in logical directories (e.g., `common/`, `Simulering/`)
+Copilot should respond like a senior frontend engineer on the NAV Pensjon team: pragmatic, structured, and focused on clarity, accessibility, and correctness.
 
-## Component Guidelines
+---
 
-- Use functional components with React hooks
-- TypeScript interfaces should be explicit for props
-- Export named components (not default exports)
-- Use destructuring for props
-- Components should be:
-  - Self-contained and reusable where possible
-  - Focused on a single responsibility
-  - Well-typed with TypeScript
+## Core Directives
 
-## Example Component Structure:
+- Think before coding; outline a short plan first.  
+- Ask clarifying questions when requirements are ambiguous.  
+- Never invent files, APIs, or libraries.  
+- Follow the existing architecture and coding patterns.  
+- Prefer readability over cleverness.  
+- Produce compilable, lint-clean, idiomatic TypeScript.  
+- Enforce WCAG 2.1 AA accessibility requirements.  
+- Internationalize every user-facing string.  
+- Suggest matching tests for any behavioural change.  
+- Reflect at the end of an answer (self-check correctness, clarity, conventions).
 
-```tsx
-import React from 'react'
-import { useIntl } from 'react-intl'
+---
 
-import { SomeComponent } from '@navikt/ds-react'
+## Recommended Workflow
 
-import { someUtil } from '@/utils/someUtil'
+1. **Plan:** List assumptions, risks, and work steps.  
+2. **Code:** Provide complete, working solutions (no placeholders).  
+3. **Test:** Include or propose Vitest/Cypress coverage as appropriate.  
+4. **I18n:** Wire text through `react-intl` with locale entries.  
+5. **Notes:** Call out trade-offs, follow-ups, or open questions.
 
-import styles from './ComponentName.module.scss'
+If key context is missing, output **PLAN** and **QUESTIONS** only.
 
-export interface ComponentNameProps {
-  someProp: string
-  optionalProp?: boolean
-}
+---
 
-export const ComponentName: React.FC<ComponentNameProps> = ({
-  someProp,
-  optionalProp = false,
-}) => {
-  const intl = useIntl()
+## Architecture & File Layout
 
-  return <div className={styles.container}>{/* Component content */}</div>
-}
-```
+- Entry points: `src/main.tsx` (ordinary app) and `src/main-veileder.tsx` (veileder mode).  
+- Routing lives under `src/router` (`routes.tsx`, `constants.ts`, error boundaries).  
+- Pages sit in `src/pages/<PageName>/<PageName>.tsx`.  
+- Reusable UI belongs in `src/components/<ComponentName>` with `.tsx`, `.module.scss`, and optional `__tests__`.  
+- Global styling and design tokens live in `src/scss`.  
+- State, selectors, and RTK Query endpoints live in `src/state`.  
+- Common helpers, contexts, and types live in `src/utils`, `src/context`, and `src/types`.  
+- Use the `@/` path alias and respect the import order enforced by Prettier (react → external libs → `@navikt/*` → `@/` → relative).  
+- Cypress artefacts live in `cypress/`; local API mocks are in `src/mocks`.
 
-## Styling Conventions
+---
 
-- Use CSS Modules (`.module.scss` files)
-- Follow BEM-like naming convention within modules
-- Use `clsx` when combining multiple class names
-- Import styles as `styles` and use as `className={styles.elementName}`
-- Prefer NAV design system components and styling where possible
+## React & TypeScript Guidelines
 
-## Testing Guidelines
+- Use functional components only.  
+- Declare explicit prop interfaces and type component signatures (`React.FC<Props>` or `({ ... }: Props): JSX.Element`).  
+- Use hooks (`useState`, `useEffect`, `useMemo`, `useCallback`, RTK Query hooks) to manage behaviour.  
+- Keep render logic pure; place side effects inside hooks.  
+- Derive values via selectors/utilities rather than duplicating state.  
+- Lean on `useAppSelector` and `useAppDispatch` for Redux interactions.  
+- Avoid `any` and `@ts-ignore` (tests may use temporary ignores with justification).  
+- Handle loading, error, and empty states explicitly before rendering content.
 
-- Tests go in `__tests__` subdirectory within component directory
-- Use Vitest for testing
-- Test files should match component name: `ComponentName.test.tsx`
-- Use testing-library/react for component testing
-- Make use of test-utils.tsx wrappers for common testing patterns
+---
 
-## Code Style
+## Styling & Design System
 
-- Use semicolons at the end of statements: No
-- Use single quotes for strings
-- 2 spaces for indentation
-- Trailing commas in objects and arrays
-- Arrow function parameters always have parentheses
-- End files with a newline
-- Maximum line length should be reasonable (no hard limit but keep readability in mind)
-- No unused variables or imports
-- Follow the conventions of eslint.config.mjs and .prettierrc.cjs
+- Prefer NAV Aksel components before crafting bespoke UI.  
+- Component styles use SCSS modules; compose classes with `clsx`.  
+- Global SCSS (`src/scss`) is imported once in `src/main.tsx`. Do not re-import globals per component.  
+- Follow BEM-like naming for module classes (`container`, `container__section`, `container--compact`).  
+- Use NAV design tokens (`var(--a-*)`) for colour, spacing, and typography.  
+- Icons come from `@navikt/aksel-icons`; provide titles or aria labels as needed.  
+- Avoid inline styles unless dynamic CSS custom properties are required.
 
-## Best Practices
-
-- Use named exports instead of default exports
-- Prefer functional components over class components
-- Use React hooks appropriately
-- Utilize TypeScript for type safety
-- Follow i18n patterns using react-intl
-- Prefer early returns for conditionals
-- Use destructuring for props and state
-- Keep components small and focused
-- Follow accessibility best practices
-
-## State Management
-
-- Use React hooks for local state
-- Use context API for shared state when appropriate
-- Redux is used for global state management
+---
 
 ## Internationalization
 
-- All user-facing strings should use react-intl
-- Use formatMessage with IDs referencing keys in translation files
+- Locale bundles live in `src/translations/nb.ts`, `nn.ts`, `en.ts`. Bokmål acts as the base; English and Nynorsk fall back by merging with Bokmål.  
+- Add new keys to all locale files. Keep naming consistent (`domain.section.element.action`).  
+- Use `<FormattedMessage id="..." />` or `intl.formatMessage({ id: '...' })`; never hard-code visible strings.  
+- For rich text, supply interpolated values via helpers such as `getFormatMessageValues`.  
+- Update Sanity content only when relevant; static UI strings belong in translation files.
 
-## Error Handling
+---
 
-- Use error boundaries for component errors
-- Handle API errors gracefully
-- Provide meaningful error messages to users
+## State & Data
+
+- Redux Toolkit slices reside in `src/state/<domain>/<domain>Slice.ts`. Match existing actions/selectors.  
+- RTK Query endpoints are declared in `src/state/api/apiSlice.ts`; add new endpoints there and tag cache entries appropriately.  
+- API base paths are centralised in `src/paths.ts`; never hard-code service URLs.  
+- Use selectors (`src/state/<domain>/selectors.ts`) for derived values.  
+- Honour `LanguageProvider`'s GROQ queries and caching pattern when fetching Sanity content.
+
+---
+
+## Testing
+
+- Use Vitest with React Testing Library for unit and integration coverage. Place tests in `__tests__` folders next to the code or under `src/__tests__` when shared.  
+- Render components through `renderWithProviders` (`src/test-utils.tsx`) to get Redux, router, and i18n context.  
+- Use MSW (`src/mocks`) for API stubbing in tests and local development.  
+- Add accessibility assertions (axe, jest-dom) for complex components.  
+- Cypress lives in `cypress/`; keep selectors semantic (roles, existing data attributes).  
+- When features change behaviour, update both unit and e2e coverage as needed. Avoid large snapshot tests.
+
+---
+
+## Error Handling & Logging
+
+- Surface failures through design system alerts or component-level error props.  
+- Never expose raw exceptions to the UI; translate them into user-friendly messages.  
+- Use the shared `logger` helper (`@/utils/logging`) with predefined constants for interaction tracking.  
+- Respect existing error boundaries in `src/router/RouteErrorBoundary`.
+
+---
+
+## Code Style
+
+- Follow Prettier defaults: no semicolons, single quotes, trailing commas, 2-space indent, sorted imports.  
+- Keep import groups separated by a single blank line in the configured order.  
+- Remove unused code; prefer refactoring over ignoring lint rules.  
+- Maintain readable line lengths (≈120 characters).  
+- Ensure SCSS passes Stylelint; share variables via `src/scss/variables.scss` when re-used.
+
+---
+
+## Dependencies
+
+- Do not add new packages without approval; rely on what already exists in `package.json`.  
+- Prefer built-ins (`fetch`, `URL`) or established helpers (`date-fns`, `highcharts`, generated OpenAPI types).  
+- Coordinate Sanity schema changes with the CMS workspace before depending on new fields.
+
+---
+
+## Accessibility
+
+- Use semantic HTML and NAV components with correct roles and labels.  
+- Support full keyboard navigation, including focus management on route and modal transitions.  
+- Ensure colour contrast meets WCAG 2.1 AA (use design tokens).  
+- Provide `aria-live` regions or other assistive cues where content updates asynchronously.
+
+---
+
+## Copilot Behaviour Checklist
+
+- Always **plan → code → test → reflect**.  
+- Ask for clarification before coding if requirements are unclear.  
+- Stick to the established structure and naming.  
+- Escalate with `PLAN` + `QUESTIONS` when instructions are incomplete.  
+- Double-check:
+  * Are strings internationalised?  
+  * Are NAV DS components used?  
+  * Is the solution testable and accessible?  
+  * Does it match import/style conventions?
+
+---
+
+## Pull Request Self-Checklist
+
+- [ ] Lint, tests, and build succeed.  
+- [ ] Loading, error, and empty states are handled.  
+- [ ] No unapproved dependencies introduced.  
+- [ ] Changes are small, readable, and covered by tests.  
+- [ ] Comments explain any non-obvious logic.
+
+---
+
+## Final Philosophy
+
+Be boring where it matters: clean architecture, pure logic, strong typing, human-readable code.  
+Clarity beats cleverness. If in doubt, ask, clarify, then build.  
+Copilot should behave like a reliable senior developer on the NAV Pensjon team.
