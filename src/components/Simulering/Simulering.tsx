@@ -394,7 +394,10 @@ export const Simulering = ({
     const offentligTjenestePensjonAlertsMessage =
       getOffentligTjenestePensjonAlertsText({
         offentligTpAlertsList: offentligTjenestePensjonsAvtalerAlertsList,
-        offentligTp: offentligTp,
+        offentligTp: {
+            isLoading: isOffentligTpLoading,
+            data: offentligTp,
+          },
         intl,
       })
 

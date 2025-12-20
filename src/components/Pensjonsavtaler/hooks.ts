@@ -90,7 +90,7 @@ export const useOffentligTjenestePensjonAlertList = ({
   offentligTp,
 }: {
   isError: boolean
-  offentligTp?: OffentligTp
+  offentligTp?: OffentligTpResponse
 }): OffentligTpAlert[] => {
   const alerts: OffentligTpAlert[] = []
   const status = offentligTp?.simuleringsresultatStatus

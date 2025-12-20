@@ -590,15 +590,15 @@ function getOffentligTpTable({
   offentligTp,
   intl,
 }: {
-  offentligTp?: OffentligTp
+  offentligTp?: OffentligTpResponse
   intl: IntlShape
 }): string {
-  if (!offentligTp || !offentligTp.simulertTjenestepensjon) {
+  if (!offentligTp || !offentligTp.data?.simulertTjenestepensjon) {
     return ''
   }
 
   const { simuleringsresultat, tpLeverandoer } =
-    offentligTp.simulertTjenestepensjon
+    offentligTp.data.simulertTjenestepensjon
   const { utbetalingsperioder } = simuleringsresultat
   let rows = ''
   let html = '<h3>Offentlig tjenestepensjon</h3>'
@@ -707,7 +707,7 @@ export function getPensjonsavtaler({
     intl
   )
   const offentligTpTable = getOffentligTpTable({
-    offentligTp: offentligTp.data,
+    offentligTp,
     intl,
   })
   return `<h3>Pensjonsavtaler (arbeidsgivere m.m.)</h3>
@@ -763,12 +763,12 @@ export function getOffentligTjenestePensjonAlertsText({
   intl,
 }: {
   offentligTpAlertsList: OffentligTpAlert[]
-  offentligTp?: OffentligTp
+  offentligTp?: OffentligTpResponse
   intl: IntlShape
 }): string {
   const html = offentligTpAlertsList.length
     ? offentligTpAlertsList.map((alert) => {
-        const leverandoerList = offentligTp?.muligeTpLeverandoerListe
+        const leverandoerList = offentligTp?.data?.muligeTpLeverandoerListe
         const chunk =
           alert.hasLeverandoerList && leverandoerList
             ? formatLeverandoerList(intl.locale, leverandoerList)
