@@ -51,11 +51,11 @@ export default defineConfig({
         plugins: ['@babel/plugin-syntax-import-attributes'],
       },
     }),
-    process.env.NODE_ENV !== 'test' && eslint(),
-    process.env.NODE_ENV !== 'test' && stylelint({ fix: true }),
-    process.env.NODE_ENV !== 'test' && sassDts(),
+    process.env.NODE_ENV !== 'test' && !process.env.VITEST && eslint(),
+    process.env.NODE_ENV !== 'test' && !process.env.VITEST && stylelint({ fix: true }),
+    process.env.NODE_ENV !== 'test' && !process.env.VITEST && sassDts(),
 
-    process.env.NODE_ENV !== 'test' &&
+    process.env.NODE_ENV !== 'test' && !process.env.VITEST &&
       visualizer({
         open: false,
         gzipSize: true,
@@ -64,7 +64,7 @@ export default defineConfig({
       }),
 
     // Custom plugin to set Service-Worker-Allowed header for MSW in development
-    process.env.NODE_ENV !== 'test' && {
+    process.env.NODE_ENV !== 'test' && !process.env.VITEST && {
       name: 'msw-service-worker-allowed',
       configureServer(server) {
         server.middlewares.use((req, res, next) => {
