@@ -14,13 +14,10 @@ import {
   useGetOmstillingsstoenadOgGjenlevendeQuery,
   useGetPersonQuery,
   useGetShowDownloadPdfFeatureToggleQuery,
-  useOffentligTpQuery,
   usePensjonsavtalerQuery,
 } from '@/state/api/apiSlice'
-import {
-  generateOffentligTpRequestBody,
-  generatePensjonsavtalerRequestBody,
-} from '@/state/api/utils'
+import { isOffentligTpFoer1963 } from '@/state/api/typeguards'
+import { generatePensjonsavtalerRequestBody } from '@/state/api/utils'
 import { useAppSelector } from '@/state/hooks'
 import {
   selectAarligInntektFoerUttakBeloepFraSkatt,
@@ -65,7 +62,7 @@ import { SimuleringAfpOffentligAlert } from './SimuleringAfpOffentligAlert/Simul
 import { SimuleringEndringBanner } from './SimuleringEndringBanner/SimuleringEndringBanner'
 import { SimuleringGrafNavigation } from './SimuleringGrafNavigation/SimuleringGrafNavigation'
 import { SimuleringPensjonsavtalerAlert } from './SimuleringPensjonsavtalerAlert/SimuleringPensjonsavtalerAlert'
-import { useSimuleringChartLocalState } from './hooks'
+import { useOffentligTpData, useSimuleringChartLocalState } from './hooks'
 import {
   getChartTable,
   getCurrentDateTimeFormatted,
@@ -123,7 +120,6 @@ export const Simulering = ({
   const isEndring = useAppSelector(selectIsEndring)
   const epsHarPensjon = useAppSelector(selectEpsHarPensjon)
   const epsHarInntektOver2G = useAppSelector(selectEpsHarInntektOver2G)
-  const erApoteker = useAppSelector(selectErApoteker)
   const utenlandsperioder = useAppSelector(selectUtenlandsperioder)
   const harUtenlandsopphold = useAppSelector(selectHarUtenlandsopphold)
   const sortedUtenlandsperioder = harUtenlandsopphold
@@ -131,6 +127,7 @@ export const Simulering = ({
     : []
   const { uttaksalder, aarligInntektVsaHelPensjon, gradertUttaksperiode } =
     useAppSelector(selectCurrentSimulation)
+  const erApoteker = useAppSelector(selectErApoteker)
   const skalBeregneAfpKap19 = useAppSelector(selectSkalBeregneAfpKap19)
   const chartRef = useRef<HighchartsReact.RefObject>(null)
   const samtykkeOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
@@ -139,21 +136,18 @@ export const Simulering = ({
   const oppholdUtenforNorge = useOppholdUtenforNorge({
     harForLiteTrygdetid: detaljer?.harForLiteTrygdetid,
   })
-  const [offentligTpRequestBody, setOffentligTpRequestBody] = useState<
-    OffentligTpRequestBody | undefined
-  >(undefined)
 
   const [pensjonsavtalerRequestBody, setPensjonsavtalerRequestBody] = useState<
     PensjonsavtalerRequestBody | undefined
   >(undefined)
 
   const {
-    data: offentligTpData,
-    isFetching: isOffentligTpLoading,
+    data: offentligTp,
+    isLoading: isOffentligTpLoading,
     isError: isOffentligTpError,
-  } = useOffentligTpQuery(offentligTpRequestBody as OffentligTpRequestBody, {
-    skip: !offentligTpRequestBody || !harSamtykket || !uttaksalder,
-  })
+    afpPerioder,
+    erOffentligTpFoer1963,
+  } = useOffentligTpData()
 
   const {
     data: pensjonsavtalerData,
@@ -181,24 +175,6 @@ export const Simulering = ({
 
   useEffect(() => {
     if (harSamtykket && uttaksalder) {
-      setOffentligTpRequestBody(
-        generateOffentligTpRequestBody({
-          afp,
-          foedselsdato,
-          sivilstand,
-          epsHarPensjon,
-          epsHarInntektOver2G,
-          aarligInntektFoerUttakBeloep: aarligInntektFoerUttakBeloep ?? '0',
-          gradertUttak: gradertUttaksperiode ?? undefined,
-          heltUttak: {
-            uttaksalder,
-            aarligInntektVsaPensjon: aarligInntektVsaHelPensjon,
-          },
-          utenlandsperioder,
-          erApoteker,
-        })
-      )
-
       setPensjonsavtalerRequestBody(
         generatePensjonsavtalerRequestBody({
           ufoeregrad,
@@ -237,6 +213,7 @@ export const Simulering = ({
     pre2025OffentligAfp,
     afpPrivatListe,
     afpOffentligListe,
+    afpPerioderFom65aar: afpPerioder,
     loependeLivsvarigAfpOffentlig,
     pensjonsavtaler: {
       isLoading: isPensjonsavtalerLoading,
@@ -244,7 +221,7 @@ export const Simulering = ({
     },
     offentligTp: {
       isLoading: isOffentligTpLoading,
-      data: offentligTpData,
+      data: offentligTp,
     },
   })
 
@@ -330,7 +307,7 @@ export const Simulering = ({
   const offentligTjenestePensjonsAvtalerAlertsList =
     useOffentligTjenestePensjonAlertList({
       isError: isOffentligTpError,
-      offentligTp: offentligTpData,
+      offentligTp: offentligTp,
     })
 
   const formatertSivilstand = React.useMemo(
@@ -417,7 +394,7 @@ export const Simulering = ({
     const offentligTjenestePensjonAlertsMessage =
       getOffentligTjenestePensjonAlertsText({
         offentligTpAlertsList: offentligTjenestePensjonsAvtalerAlertsList,
-        offentligTp: offentligTpData,
+        offentligTp: offentligTp,
         intl,
       })
 
@@ -427,7 +404,7 @@ export const Simulering = ({
           privatePensjonsAvtaler: gruppertePensjonsavtaler,
           offentligTp: {
             isLoading: isOffentligTpLoading,
-            data: offentligTpData,
+            data: offentligTp,
           },
         })
       : `<h3>Pensjonsavtaler (arbeidsgivere m.m.)</h3>${intl.formatMessage({ id: 'pensjonsavtaler.ingress.error.samtykke_ingress' })}`
@@ -574,8 +551,9 @@ export const Simulering = ({
         }}
         offentligTp={{
           isError: isOffentligTpError,
-          data: offentligTpData,
+          data: offentligTp,
         }}
+        erOffentligTpFoer1963={erOffentligTpFoer1963}
       />
 
       <SimuleringAfpOffentligAlert
@@ -610,8 +588,18 @@ export const Simulering = ({
             afpPrivatListe={afpPrivatListe}
             afpOffentligListe={hideAFP ? undefined : afpOffentligListe}
             pre2025OffentligAfp={pre2025OffentligAfp}
+            offentligAfpFraTpOrdning={afpPerioder}
             pensjonsavtaler={pensjonsavtalerData?.avtaler}
-            simulertTjenestepensjon={offentligTpData?.simulertTjenestepensjon}
+            simulertTjenestepensjon={offentligTp?.simulertTjenestepensjon}
+            erTpFoer1963={
+              offentligTp &&
+              erOffentligTpFoer1963 &&
+              isOffentligTpFoer1963(offentligTp)
+            }
+            skalViseNullOffentligTjenestepensjon={
+              isOffentligTpFoer1963(offentligTp) &&
+              offentligTp?.feilkode === 'BEREGNING_GIR_NULL_UTBETALING'
+            }
           />
         )}
     </section>

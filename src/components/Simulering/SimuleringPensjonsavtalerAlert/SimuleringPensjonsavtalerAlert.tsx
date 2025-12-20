@@ -4,6 +4,7 @@ import { FormattedMessage } from 'react-intl'
 import { Alert, Link } from '@navikt/ds-react'
 
 import { BeregningContext } from '@/pages/Beregning/context'
+import { getFormatMessageValues } from '@/utils/translations'
 
 import { PensjonsAvtalerAlertProps, usePensjonsavtalerAlerts } from '../hooks'
 
@@ -17,13 +18,19 @@ const ALERT_VARIANTS = {
 
 export const SimuleringPensjonsavtalerAlert: React.FC<
   PensjonsAvtalerAlertProps
-> = ({ pensjonsavtaler, offentligTp, isPensjonsavtaleFlagVisible }) => {
+> = ({
+  pensjonsavtaler,
+  offentligTp,
+  isPensjonsavtaleFlagVisible,
+  erOffentligTpFoer1963,
+}) => {
   const { pensjonsavtalerShowMoreRef } = React.useContext(BeregningContext)
 
   const alertsList = usePensjonsavtalerAlerts({
     pensjonsavtaler,
     offentligTp,
     isPensjonsavtaleFlagVisible,
+    erOffentligTpFoer1963,
   })
 
   const handlePensjonsavtalerLinkClick: React.MouseEventHandler<
@@ -64,10 +71,12 @@ export const SimuleringPensjonsavtalerAlert: React.FC<
           className={styles.alert}
           {...(index === 1 && { style: { margin: '16px 0' } })}
           inline={alert.variant === ALERT_VARIANTS.INLINE_INFO}
+          role="alert"
         >
           <FormattedMessage
             id={alert.text}
             values={{
+              ...getFormatMessageValues(),
               // eslint-disable-next-line react/no-unstable-nested-components
               scrollTo: (chunk) => (
                 <Link
