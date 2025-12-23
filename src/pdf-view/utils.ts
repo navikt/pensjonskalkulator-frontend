@@ -1,5 +1,6 @@
-import { DATE_ENDUSER_FORMAT } from '@/utils/dates'
 import { format } from 'date-fns'
+
+import { DATE_ENDUSER_FORMAT } from '@/utils/dates'
 
 export const getCurrentDateTimeFormatted = (): string => {
   const now = new Date()

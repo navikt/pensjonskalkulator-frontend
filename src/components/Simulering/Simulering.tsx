@@ -10,6 +10,19 @@ import { BodyLong, BodyShort, Heading, HeadingProps } from '@navikt/ds-react'
 import { TabellVisning } from '@/components/TabellVisning'
 import { BeregningContext } from '@/pages/Beregning/context'
 import {
+  getOffentligTjenestePensjonAlertsText,
+  getOmstillingsstoenadAlert,
+  getPrivatePensjonsavtalerAlertsText,
+} from '@/pdf-view/alerts'
+import { getChartTable } from '@/pdf-view/chartTable'
+import { getForbeholdAvsnitt } from '@/pdf-view/forbehold'
+import { getGrunnlagIngress } from '@/pdf-view/grunnlag'
+import { getPdfHeader } from '@/pdf-view/header'
+import { getUtenlandsOppholdIngress } from '@/pdf-view/opphold'
+import { getPensjonsavtaler } from '@/pdf-view/pensjonsavtaler'
+import { getSivilstandIngress } from '@/pdf-view/sivilstand'
+import { getTidligstMuligUttakIngress } from '@/pdf-view/tidligtMuligUttak'
+import {
   useGetAfpOffentligLivsvarigQuery,
   useGetOmstillingsstoenadOgGjenlevendeQuery,
   useGetPersonQuery,
@@ -63,20 +76,6 @@ import { SimuleringEndringBanner } from './SimuleringEndringBanner/SimuleringEnd
 import { SimuleringGrafNavigation } from './SimuleringGrafNavigation/SimuleringGrafNavigation'
 import { SimuleringPensjonsavtalerAlert } from './SimuleringPensjonsavtalerAlert/SimuleringPensjonsavtalerAlert'
 import { useOffentligTpData, useSimuleringChartLocalState } from './hooks'
-import {
-  getChartTable,
-  getCurrentDateTimeFormatted,
-  getForbeholdAvsnitt,
-  getGrunnlagIngress,
-  getOffentligTjenestePensjonAlertsText,
-  getOmstillingsstoenadAlert,
-  getPdfHeadingWithLogo,
-  getPensjonsavtaler,
-  getPrivatePensjonsavtalerAlertsText,
-  getSivilstandIngress,
-  getTidligstMuligUttakIngressContent,
-  getUtenlandsOppholdIngress,
-} from './pdf-utils'
 
 import styles from './Simulering.module.scss'
 
@@ -307,7 +306,7 @@ export const Simulering = ({
   const offentligTjenestePensjonsAvtalerAlertsList =
     useOffentligTjenestePensjonAlertList({
       isError: isOffentligTpError,
-      offentligTp: offentligTp,
+      offentligTp,
     })
 
   const formatertSivilstand = React.useMemo(
@@ -325,17 +324,7 @@ export const Simulering = ({
     if (printContentElement) {
       printContentElement.classList.add('showPrintContent')
     }
-    const pdfHeadingWithLogo = getPdfHeadingWithLogo(isEnkel)
-
-    const personalInfo = `<div 
-      class="pdf-metadata"
-    >
-      ${person?.navn}
-      <span 
-        style="padding: 0 8px; font-size: 16px; font-weight: 800;"
-      >\u2022</span>
-      Dato opprettet: ${getCurrentDateTimeFormatted()}
-    </div>`
+    const pdfHeader = getPdfHeader({ isEnkel, person })
 
     const forbeholdAvsnitt = getForbeholdAvsnitt(intl)
 
@@ -344,7 +333,7 @@ export const Simulering = ({
     const chartTableWithHeading = getChartTable({ tableData, intl })
 
     const tidligstMuligUttakIngress = isEnkel
-      ? getTidligstMuligUttakIngressContent({
+      ? getTidligstMuligUttakIngress({
           intl,
           normertPensjonsalder,
           nedreAldersgrense,
@@ -394,10 +383,7 @@ export const Simulering = ({
     const offentligTjenestePensjonAlertsMessage =
       getOffentligTjenestePensjonAlertsText({
         offentligTpAlertsList: offentligTjenestePensjonsAvtalerAlertsList,
-        offentligTp: {
-          isLoading: isOffentligTpLoading,
-          data: offentligTp,
-        },
+        offentligTp,
         intl,
       })
 
@@ -405,10 +391,7 @@ export const Simulering = ({
       ? getPensjonsavtaler({
           intl,
           privatePensjonsAvtaler: gruppertePensjonsavtaler,
-          offentligTp: {
-            isLoading: isOffentligTpLoading,
-            data: offentligTp,
-          },
+          offentligTp,
         })
       : `<h3>Pensjonsavtaler (arbeidsgivere m.m.)</h3>${intl.formatMessage({ id: 'pensjonsavtaler.ingress.error.samtykke_ingress' })}`
 
@@ -417,8 +400,7 @@ export const Simulering = ({
         ${getUtenlandsOppholdIngress({ intl, oppholdUtenforNorge, sortedUtenlandsperioder })}`
 
     const finalPdfContent =
-      pdfHeadingWithLogo +
-      personalInfo +
+      pdfHeader +
       forbeholdAvsnitt +
       tidligstMuligUttakIngress +
       omstillingsstoenadAlert +
