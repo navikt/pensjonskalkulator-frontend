@@ -10,6 +10,19 @@ import { BodyLong, BodyShort, Heading, HeadingProps } from '@navikt/ds-react'
 import { TabellVisning } from '@/components/TabellVisning'
 import { BeregningContext } from '@/pages/Beregning/context'
 import {
+  getOffentligTjenestePensjonAlertsText,
+  getOmstillingsstoenadAlert,
+  getPrivatePensjonsavtalerAlertsText,
+} from '@/pdf-view/alerts'
+import { getChartTable } from '@/pdf-view/chartTable'
+import { getForbeholdAvsnitt } from '@/pdf-view/forbehold'
+import { getGrunnlagIngress } from '@/pdf-view/grunnlag'
+import { getPdfHeader } from '@/pdf-view/header'
+import { getUtenlandsOppholdIngress } from '@/pdf-view/opphold'
+import { getPensjonsavtaler } from '@/pdf-view/pensjonsavtaler'
+import { getSivilstandIngress } from '@/pdf-view/sivilstand'
+import { getTidligstMuligUttakIngress } from '@/pdf-view/tidligtMuligUttak'
+import {
   useGetAfpOffentligLivsvarigQuery,
   useGetOmstillingsstoenadOgGjenlevendeQuery,
   useGetPersonQuery,
@@ -28,6 +41,7 @@ import {
   selectEpsHarPensjon,
   selectErApoteker,
   selectFoedselsdato,
+  selectHarUtenlandsopphold,
   selectIsEndring,
   selectLoependeVedtak,
   selectSamtykke,
@@ -35,14 +49,25 @@ import {
   selectSivilstand,
   selectSkalBeregneAfpKap19,
   selectUfoeregrad,
+  selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
 import { formatUttaksalder, isAlderOver62 } from '@/utils/alder'
 import {
   useTidligstMuligUttak,
   useTidligstMuligUttakConditions,
 } from '@/utils/hooks/useTidligstMuligUttakData'
+import { formatSivilstand } from '@/utils/sivilstand'
 
 import { generateAfpContent } from '../Grunnlag/GrunnlagAFP/utils'
+import {
+  useOppholdUtenforNorge,
+  useSortedUtenlandsperioder,
+} from '../Grunnlag/GrunnlagUtenlandsopphold/hooks'
+import {
+  useOffentligTjenestePensjonAlertList,
+  usePrivatePensjonsAvtalerAlertList,
+} from '../Pensjonsavtaler/hooks'
+import { groupPensjonsavtalerByType } from '../Pensjonsavtaler/utils'
 import { useTableData } from '../TabellVisning/hooks'
 import { useBeregningsdetaljer } from './BeregningsdetaljerForOvergangskull/hooks'
 import { MaanedsbeloepAvansertBeregning } from './MaanedsbeloepAvansertBeregning'
@@ -51,15 +76,6 @@ import { SimuleringEndringBanner } from './SimuleringEndringBanner/SimuleringEnd
 import { SimuleringGrafNavigation } from './SimuleringGrafNavigation/SimuleringGrafNavigation'
 import { SimuleringPensjonsavtalerAlert } from './SimuleringPensjonsavtalerAlert/SimuleringPensjonsavtalerAlert'
 import { useOffentligTpData, useSimuleringChartLocalState } from './hooks'
-import {
-  getChartTable,
-  getCurrentDateTimeFormatted,
-  getForbeholdAvsnitt,
-  getGrunnlagIngress,
-  getOmstillingsstoenadAlert,
-  getPdfHeadingWithLogo,
-  getTidligstMuligUttakIngressContent,
-} from './pdf-utils'
 
 import styles from './Simulering.module.scss'
 
@@ -76,6 +92,7 @@ interface Props {
   detaljer?: {
     trygdetid?: number
     opptjeningsgrunnlag?: SimulertOpptjeningGrunnlag[]
+    harForLiteTrygdetid?: boolean
   }
   visning?: BeregningVisning
 }
@@ -89,6 +106,7 @@ export const Simulering = ({
   afpPrivatListe,
   afpOffentligListe,
   alderspensjonMaanedligVedEndring,
+  detaljer,
   showButtonsAndTable,
   visning,
 }: Props) => {
@@ -101,6 +119,11 @@ export const Simulering = ({
   const isEndring = useAppSelector(selectIsEndring)
   const epsHarPensjon = useAppSelector(selectEpsHarPensjon)
   const epsHarInntektOver2G = useAppSelector(selectEpsHarInntektOver2G)
+  const utenlandsperioder = useAppSelector(selectUtenlandsperioder)
+  const harUtenlandsopphold = useAppSelector(selectHarUtenlandsopphold)
+  const sortedUtenlandsperioder = harUtenlandsopphold
+    ? useSortedUtenlandsperioder(utenlandsperioder)
+    : []
   const { uttaksalder, aarligInntektVsaHelPensjon, gradertUttaksperiode } =
     useAppSelector(selectCurrentSimulation)
   const erApoteker = useAppSelector(selectErApoteker)
@@ -109,6 +132,9 @@ export const Simulering = ({
   const samtykkeOffentligAFP = useAppSelector(selectSamtykkeOffentligAFP)
   const afpUtregningValg = useAppSelector(selectAfpUtregningValg)
   const { beregningsvalg } = useAppSelector(selectCurrentSimulation)
+  const oppholdUtenforNorge = useOppholdUtenforNorge({
+    harForLiteTrygdetid: detaljer?.harForLiteTrygdetid,
+  })
 
   const [pensjonsavtalerRequestBody, setPensjonsavtalerRequestBody] = useState<
     PensjonsavtalerRequestBody | undefined
@@ -269,6 +295,25 @@ export const Simulering = ({
     selectAarligInntektFoerUttakBeloepFraSkatt
   )
 
+  const privatPensjonsAvtalerAlertsList = usePrivatePensjonsAvtalerAlertList({
+    isPartialResponse: pensjonsavtalerData?.partialResponse || false,
+    isError: isPensjonsavtalerError,
+    isSuccess: isPensjonsavtalerSuccess,
+    headingLevel,
+    privatePensjonsavtaler: pensjonsavtalerData?.avtaler,
+  })
+
+  const offentligTjenestePensjonsAvtalerAlertsList =
+    useOffentligTjenestePensjonAlertList({
+      isError: isOffentligTpError,
+      offentligTp,
+    })
+
+  const formatertSivilstand = React.useMemo(
+    () => formatSivilstand(intl, sivilstand!),
+    [sivilstand]
+  )
+
   const handlePDF = () => {
     const appContentElement = document.getElementById('app-content')
     if (appContentElement) {
@@ -279,17 +324,7 @@ export const Simulering = ({
     if (printContentElement) {
       printContentElement.classList.add('showPrintContent')
     }
-    const pdfHeadingWithLogo = getPdfHeadingWithLogo(isEnkel)
-
-    const personalInfo = `<div 
-      class="pdf-metadata"
-    >
-      ${person?.navn}
-      <span 
-        style="padding: 0 8px; font-size: 16px; font-weight: 800;"
-      >\u2022</span>
-      Dato opprettet: ${getCurrentDateTimeFormatted()}
-    </div>`
+    const pdfHeader = getPdfHeader({ isEnkel, person })
 
     const forbeholdAvsnitt = getForbeholdAvsnitt(intl)
 
@@ -298,7 +333,7 @@ export const Simulering = ({
     const chartTableWithHeading = getChartTable({ tableData, intl })
 
     const tidligstMuligUttakIngress = isEnkel
-      ? getTidligstMuligUttakIngressContent({
+      ? getTidligstMuligUttakIngress({
           intl,
           normertPensjonsalder,
           nedreAldersgrense,
@@ -315,11 +350,13 @@ export const Simulering = ({
       omstillingsstoenadOgGjenlevende?.harLoependeSak
         ? getOmstillingsstoenadAlert(intl, normertPensjonsalder)
         : ''
+
     const shouldHideAfpHeading = Boolean(
       afpDetaljerListe.length > 0 &&
       loependeLivsvarigAfpOffentlig?.afpStatus &&
       loependeLivsvarigAfpOffentlig?.maanedligBeloep
     )
+
     const grunnlagIngress = getGrunnlagIngress({
       intl,
       alderspensjonDetaljerListe: alderspensjonDetaljerListe,
@@ -333,15 +370,47 @@ export const Simulering = ({
       shouldHideAfpHeading,
     })
 
+    const gruppertePensjonsavtaler =
+      pensjonsavtalerData?.avtaler &&
+      groupPensjonsavtalerByType(pensjonsavtalerData?.avtaler)
+
+    const privatePensjonsavtalerAlertsMessage =
+      getPrivatePensjonsavtalerAlertsText({
+        pensjonsavtalerAlertsList: privatPensjonsAvtalerAlertsList,
+        intl,
+      })
+
+    const offentligTjenestePensjonAlertsMessage =
+      getOffentligTjenestePensjonAlertsText({
+        offentligTpAlertsList: offentligTjenestePensjonsAvtalerAlertsList,
+        offentligTp,
+        intl,
+      })
+
+    const pensjonsavtaler = harSamtykket
+      ? getPensjonsavtaler({
+          intl,
+          privatePensjonsAvtaler: gruppertePensjonsavtaler,
+          offentligTp,
+        })
+      : `<h3>Pensjonsavtaler (arbeidsgivere m.m.)</h3>${intl.formatMessage({ id: 'pensjonsavtaler.ingress.error.samtykke_ingress' })}`
+
+    const omDegIngress = `<h2>${intl.formatMessage({ id: 'om_deg.title' })}</h2>
+        ${getSivilstandIngress({ intl, formatertSivilstand })}
+        ${getUtenlandsOppholdIngress({ intl, oppholdUtenforNorge, sortedUtenlandsperioder })}`
+
     const finalPdfContent =
-      pdfHeadingWithLogo +
-      personalInfo +
+      pdfHeader +
       forbeholdAvsnitt +
       tidligstMuligUttakIngress +
       omstillingsstoenadAlert +
       helUttaksAlder +
       chartTableWithHeading +
-      grunnlagIngress
+      grunnlagIngress +
+      pensjonsavtaler +
+      privatePensjonsavtalerAlertsMessage +
+      offentligTjenestePensjonAlertsMessage +
+      omDegIngress
 
     // Set the print content in the hidden div
     const printContentDiv = document.getElementById('print-content')
