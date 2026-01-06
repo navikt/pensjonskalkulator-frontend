@@ -541,7 +541,7 @@ describe('OffentligTjenestepensjon', () => {
       )
 
       expect(
-        screen.getByTestId('tpo-subheading-Kommunal Landspensjonskasse')
+        screen.getByTestId('tpo-subheading-Kommunal-Landspensjonskasse')
       ).toBeVisible()
     })
 
