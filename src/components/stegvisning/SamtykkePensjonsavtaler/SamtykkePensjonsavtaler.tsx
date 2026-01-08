@@ -1,7 +1,13 @@
 import { FormEvent, useState } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 
-import { BodyLong, Heading, LocalAlert, Radio, RadioGroup } from '@navikt/ds-react'
+import {
+  BodyLong,
+  Heading,
+  LocalAlert,
+  Radio,
+  RadioGroup,
+} from '@navikt/ds-react'
 
 import { ApotekereWarning } from '@/components/common/ApotekereWarning/ApotekereWarning'
 import { Card } from '@/components/common/Card'

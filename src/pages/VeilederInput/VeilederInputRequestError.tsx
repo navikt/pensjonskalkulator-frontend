@@ -14,13 +14,10 @@ export const VeilederInputRequestError = ({ personError }: Props) => {
     switch (personError.status) {
       case 403:
         return (
-          <LocalAlert
-            status="warning"
-            data-testid="alert-ikke-tilgang"
-          >
+          <LocalAlert status="warning" data-testid="alert-ikke-tilgang">
             <LocalAlert.Content>
-              Du har ikke tilgang til brukeren eller pensjonskalkulatoren. Hvis du
-              mener du skal ha tilgang, kontakt din lokale IT-ansvarlig.
+              Du har ikke tilgang til brukeren eller pensjonskalkulatoren. Hvis
+              du mener du skal ha tilgang, kontakt din lokale IT-ansvarlig.
             </LocalAlert.Content>
           </LocalAlert>
         )
@@ -35,18 +32,14 @@ export const VeilederInputRequestError = ({ personError }: Props) => {
       default:
         return (
           <LocalAlert status="warning" data-testid="alert-annet">
-            <LocalAlert.Content>
-              Feil ved henting av person.
-            </LocalAlert.Content>
+            <LocalAlert.Content>Feil ved henting av person.</LocalAlert.Content>
           </LocalAlert>
         )
     }
   } else {
     return (
       <LocalAlert status="warning" data-testid="alert-annet">
-        <LocalAlert.Content>
-          Feil ved henting av person.
-        </LocalAlert.Content>
+        <LocalAlert.Content>Feil ved henting av person.</LocalAlert.Content>
       </LocalAlert>
     )
   }

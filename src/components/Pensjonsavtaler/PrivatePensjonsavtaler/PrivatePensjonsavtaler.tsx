@@ -1,7 +1,12 @@
 import React, { useEffect } from 'react'
 import { FormattedMessage } from 'react-intl'
 
-import { BodyLong, Heading, HeadingProps, InlineMessage } from '@navikt/ds-react'
+import {
+  BodyLong,
+  Heading,
+  HeadingProps,
+  InlineMessage,
+} from '@navikt/ds-react'
 
 import { ALERT_VIST } from '@/utils/loggerConstants'
 import { logger } from '@/utils/logging'

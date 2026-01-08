@@ -2,7 +2,13 @@ import clsx from 'clsx'
 import React, { useEffect } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 
-import { LocalAlert, Radio, RadioGroup, Select, TextField } from '@navikt/ds-react'
+import {
+  LocalAlert,
+  Radio,
+  RadioGroup,
+  Select,
+  TextField,
+} from '@navikt/ds-react'
 
 import { VilkaarsproevingAlert } from '@/components/VilkaarsproevingAlert'
 import { AgePicker } from '@/components/common/AgePicker'

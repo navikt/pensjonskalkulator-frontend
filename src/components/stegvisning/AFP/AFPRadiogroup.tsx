@@ -67,7 +67,11 @@ const AFPRadioGroup: React.FC<AFPRadioGroupProps> = ({
         <FormattedMessage id="stegvisning.afp.radio_vet_ikke" />
       </Radio>
       {showVetIkkeAlert && (
-        <LocalAlert className={styles.alert} status="announcement" aria-live="polite">
+        <LocalAlert
+          className={styles.alert}
+          status="announcement"
+          aria-live="polite"
+        >
           <LocalAlert.Content>
             <FormattedMessage id="stegvisning.afp.alert_vet_ikke" />
           </LocalAlert.Content>

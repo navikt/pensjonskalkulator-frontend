@@ -136,10 +136,7 @@ export const VeilederInput = () => {
             </Heading>
             <VStack gap="6">
               {hasTimedOut && (
-                <LocalAlert
-                  status="warning"
-                  data-testid="inaktiv-alert"
-                >
+                <LocalAlert status="warning" data-testid="inaktiv-alert">
                   <LocalAlert.Content>
                     Du var for lenge inaktiv og sesjonen for bruker har derfor
                     løpt ut.
