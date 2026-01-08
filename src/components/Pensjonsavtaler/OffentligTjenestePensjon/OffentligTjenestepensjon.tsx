@@ -63,7 +63,7 @@ export const OffentligTjenestepensjon = (props: {
   const afp = useAppSelector(selectAfp)
   const skalBeregneAfpKap19 = useAppSelector(selectSkalBeregneAfpKap19)
   const loggedStatusesRef = React.useRef<Set<string>>(new Set())
-  //const isErrorLogRef = React.useRef(false)
+
   const offentligTpGirNullIUtbetaling =
     erOffentligTpFoer1963 && isOffentligTpFoer1963(offentligTp)
       ? offentligTp?.feilkode === 'BEREGNING_GIR_NULL_UTBETALING'
