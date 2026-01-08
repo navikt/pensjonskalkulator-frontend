@@ -1,7 +1,7 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
 
-import { Alert, BodyLong, Heading } from '@navikt/ds-react'
+import { BodyLong, Heading, LocalAlert } from '@navikt/ds-react'
 
 import { ApotekereWarning } from '@/components/common/ApotekereWarning/ApotekereWarning'
 import { Card } from '@/components/common/Card'
@@ -55,17 +55,19 @@ export function Ufoere({ onCancel, onPrevious, onNext }: Props) {
           <FormattedMessage id="stegvisning.ufoere.title" />
         </Heading>
 
-        <Alert
+        <LocalAlert
           data-testid="ufoere-info"
           className={styles.alert}
-          variant="info"
+          status="announcement"
           aria-live="polite"
         >
-          <FormattedMessage
-            id="stegvisning.ufoere.info"
-            values={{ ...getFormatMessageValues() }}
-          />
-        </Alert>
+          <LocalAlert.Content>
+            <FormattedMessage
+              id="stegvisning.ufoere.info"
+              values={{ ...getFormatMessageValues() }}
+            />
+          </LocalAlert.Content>
+        </LocalAlert>
 
         <SanityReadmore id="om_UT_AFP" className={styles.readmore1} />
 

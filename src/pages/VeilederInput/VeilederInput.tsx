@@ -2,12 +2,12 @@ import React from 'react'
 import { RouterProvider, createBrowserRouter } from 'react-router'
 
 import {
-  Alert,
   BodyLong,
   Button,
   HStack,
   Heading,
   InternalHeader,
+  LocalAlert,
   Spacer,
   TextField,
   VStack,
@@ -136,20 +136,23 @@ export const VeilederInput = () => {
             </Heading>
             <VStack gap="6">
               {hasTimedOut && (
-                <Alert
-                  variant="warning"
+                <LocalAlert
+                  status="warning"
                   data-testid="inaktiv-alert"
-                  role="alert"
                 >
-                  Du var for lenge inaktiv og sesjonen for bruker har derfor
-                  løpt ut.
-                  <br /> Logg inn på bruker på nytt.
-                </Alert>
+                  <LocalAlert.Content>
+                    Du var for lenge inaktiv og sesjonen for bruker har derfor
+                    løpt ut.
+                    <br /> Logg inn på bruker på nytt.
+                  </LocalAlert.Content>
+                </LocalAlert>
               )}
               {encryptedRequestLoading === 'ERROR' && (
-                <Alert variant="error" data-testid="error-alert" role="alert">
-                  Feil ved kryptering av fødselsnummer
-                </Alert>
+                <LocalAlert status="error" data-testid="error-alert">
+                  <LocalAlert.Content>
+                    Feil ved kryptering av fødselsnummer
+                  </LocalAlert.Content>
+                </LocalAlert>
               )}
               <VeilederInputRequestError personError={personError} />
               <BodyLong>

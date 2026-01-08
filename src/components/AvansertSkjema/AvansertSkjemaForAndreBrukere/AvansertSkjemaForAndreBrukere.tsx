@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import React, { useEffect } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 
-import { Alert, Radio, RadioGroup, Select, TextField } from '@navikt/ds-react'
+import { LocalAlert, Radio, RadioGroup, Select, TextField } from '@navikt/ds-react'
 
 import { VilkaarsproevingAlert } from '@/components/VilkaarsproevingAlert'
 import { AgePicker } from '@/components/common/AgePicker'
@@ -473,17 +473,19 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
 
           {validationErrors[AVANSERT_FORM_NAMES.endringAlertFremtidigDato] && (
             <div className={styles.alertWrapper}>
-              <Alert variant="warning" role="alert">
-                <FormattedMessage
-                  id="beregning.endring.alert.uttaksdato"
-                  values={{
-                    ...getFormatMessageValues(),
-                    dato: validationErrors[
-                      AVANSERT_FORM_NAMES.endringAlertFremtidigDato
-                    ],
-                  }}
-                />
-              </Alert>
+              <LocalAlert status="warning">
+                <LocalAlert.Content>
+                  <FormattedMessage
+                    id="beregning.endring.alert.uttaksdato"
+                    values={{
+                      ...getFormatMessageValues(),
+                      dato: validationErrors[
+                        AVANSERT_FORM_NAMES.endringAlertFremtidigDato
+                      ],
+                    }}
+                  />
+                </LocalAlert.Content>
+              </LocalAlert>
             </div>
           )}
 
@@ -549,14 +551,16 @@ export const AvansertSkjemaForAndreBrukere: React.FC<{
           </div>
 
           {showPre2025OffentligAfpAlert && (
-            <Alert
+            <LocalAlert
               data-testid="pre2025OffentligAfp-alert"
-              variant="info"
+              status="announcement"
               aria-live="polite"
               style={{ marginTop: '-1rem' }}
             >
-              <FormattedMessage id="beregning.avansert.rediger.pre2025_offentlig_afp.alert" />
-            </Alert>
+              <LocalAlert.Content>
+                <FormattedMessage id="beregning.avansert.rediger.pre2025_offentlig_afp.alert" />
+              </LocalAlert.Content>
+            </LocalAlert>
           )}
 
           <div data-testid="beregning.avansert.rediger.uttaksgrad.label">

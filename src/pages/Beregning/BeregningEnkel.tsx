@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useNavigate } from 'react-router'
 
-import { Alert, Heading } from '@navikt/ds-react'
+import { Heading, LocalAlert } from '@navikt/ds-react'
 
 import { Grunnlag } from '@/components/Grunnlag'
 import { GrunnlagForbehold } from '@/components/GrunnlagForbehold'
@@ -270,16 +270,18 @@ export const BeregningEnkel = () => {
     <>
       {showInntektAlert && (
         <div className={styles.container}>
-          <Alert
+          <LocalAlert
             data-testid="alert-inntekt"
             className={styles.alert}
-            variant="info"
-            closeButton={true}
-            onClose={dismissAlert}
-            role="alert"
+            status="announcement"
           >
-            <FormattedMessage id="beregning.alert.inntekt" />
-          </Alert>
+            <LocalAlert.Header>
+              <LocalAlert.CloseButton onClick={dismissAlert} />
+            </LocalAlert.Header>
+            <LocalAlert.Content>
+              <FormattedMessage id="beregning.alert.inntekt" />
+            </LocalAlert.Content>
+          </LocalAlert>
         </div>
       )}
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 
-import { Alert, Link } from '@navikt/ds-react'
+import { InlineMessage, Link, LocalAlert } from '@navikt/ds-react'
 
 import { BeregningContext } from '@/pages/Beregning/context'
 import { isOffentligTpFoer1963 } from '@/state/api/typeguards'
@@ -17,7 +17,7 @@ import { getFormatMessageValues } from '@/utils/translations'
 import styles from './SimuleringPensjonsavtalerAlert.module.scss'
 
 const ALERT_VARIANTS = {
-  INFO: 'info',
+  ANNOUNCEMENT: 'announcement',
   WARNING: 'warning',
   INLINE_INFO: 'inline-info',
 } as const
@@ -189,7 +189,7 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
       offentligTpData.simuleringsresultatStatus === 'TP_ORDNING_STOETTES_IKKE'
     ) {
       const text = 'beregning.pensjonsavtaler.alert.stoettes_ikke'
-      const variant = ALERT_VARIANTS.INFO
+      const variant = ALERT_VARIANTS.ANNOUNCEMENT
       logger(ALERT_VIST, {
         tekst: `Pensjonsavtaler: ${intl.formatMessage({ id: text })}`,
         variant,
@@ -239,39 +239,63 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
 
   return (
     <>
-      {alertsList.map((alert, index) => (
-        <Alert
-          key={`${alert.text}-${alert.variant}-${index}`}
-          variant={
-            alert.variant === ALERT_VARIANTS.INLINE_INFO
-              ? ALERT_VARIANTS.INFO
-              : alert.variant
-          }
-          data-testid="pensjonsavtaler-alert"
-          data-intl={alert.text}
-          className={styles.alert}
-          {...(index === 1 && { style: { margin: '16px 0' } })}
-          inline={alert.variant === ALERT_VARIANTS.INLINE_INFO}
-          role="alert"
-        >
-          <FormattedMessage
-            id={alert.text}
-            values={{
-              ...getFormatMessageValues(),
-              // eslint-disable-next-line react/no-unstable-nested-components
-              scrollTo: (chunk) => (
-                <Link
-                  href="#"
-                  data-testid="pensjonsavtaler-alert-link"
-                  onClick={handlePensjonsavtalerLinkClick}
-                >
-                  {chunk}
-                </Link>
-              ),
-            }}
-          />
-        </Alert>
-      ))}
+      {alertsList.map((alert, index) =>
+        alert.variant === ALERT_VARIANTS.INLINE_INFO ? (
+          <InlineMessage
+            key={`${alert.text}-${alert.variant}-${index}`}
+            status="info"
+            data-testid="pensjonsavtaler-alert"
+            data-intl={alert.text}
+            className={styles.alert}
+            {...(index === 1 && { style: { margin: '16px 0' } })}
+          >
+            <FormattedMessage
+              id={alert.text}
+              values={{
+                ...getFormatMessageValues(),
+                // eslint-disable-next-line react/no-unstable-nested-components
+                scrollTo: (chunk) => (
+                  <Link
+                    href="#"
+                    data-testid="pensjonsavtaler-alert-link"
+                    onClick={handlePensjonsavtalerLinkClick}
+                  >
+                    {chunk}
+                  </Link>
+                ),
+              }}
+            />
+          </InlineMessage>
+        ) : (
+          <LocalAlert
+            key={`${alert.text}-${alert.variant}-${index}`}
+            status={alert.variant}
+            data-testid="pensjonsavtaler-alert"
+            data-intl={alert.text}
+            className={styles.alert}
+            {...(index === 1 && { style: { margin: '16px 0' } })}
+          >
+            <LocalAlert.Content>
+              <FormattedMessage
+                id={alert.text}
+                values={{
+                  ...getFormatMessageValues(),
+                  // eslint-disable-next-line react/no-unstable-nested-components
+                  scrollTo: (chunk) => (
+                    <Link
+                      href="#"
+                      data-testid="pensjonsavtaler-alert-link"
+                      onClick={handlePensjonsavtalerLinkClick}
+                    >
+                      {chunk}
+                    </Link>
+                  ),
+                }}
+              />
+            </LocalAlert.Content>
+          </LocalAlert>
+        )
+      )}
     </>
   )
 }

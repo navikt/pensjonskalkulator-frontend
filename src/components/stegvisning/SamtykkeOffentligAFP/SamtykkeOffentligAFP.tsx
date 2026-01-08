@@ -2,9 +2,9 @@ import { FormEvent, useState } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 import {
-  Alert,
   BodyLong,
   Heading,
+  LocalAlert,
   Radio,
   RadioGroup,
   ReadMore,
@@ -165,9 +165,11 @@ export function SamtykkeOffentligAFP({
         </RadioGroup>
 
         {localSamtykke === 'nei' && (
-          <Alert className={styles.alert} variant="info">
-            <FormattedMessage id="stegvisning.samtykke_offentlig_afp.alert" />
-          </Alert>
+          <LocalAlert className={styles.alert} status="announcement">
+            <LocalAlert.Content>
+              <FormattedMessage id="stegvisning.samtykke_offentlig_afp.alert" />
+            </LocalAlert.Content>
+          </LocalAlert>
         )}
 
         <Navigation onPrevious={onPrevious} onCancel={onCancel} />

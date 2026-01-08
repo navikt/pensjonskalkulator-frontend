@@ -2,7 +2,7 @@ import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useNavigate } from 'react-router'
 
-import { Alert, BodyLong, Link } from '@navikt/ds-react'
+import { BodyLong, Link, LocalAlert } from '@navikt/ds-react'
 
 import { SanityReadmore } from '@/components/common/SanityReadmore'
 import { TelefonLink } from '@/components/common/TelefonLink'
@@ -185,16 +185,18 @@ export const TidligstMuligUttaksalder = ({
           ))}
 
         {omstillingsstoenadOgGjenlevende?.harLoependeSak && (
-          <Alert className={styles.alert} variant="info" aria-live="polite">
-            <FormattedMessage
-              id="tidligstmuliguttak.info_omstillingsstoenad_og_gjenlevende"
-              values={{
-                ...getFormatMessageValues(),
-                normertPensjonsalder: formatertNormertPensjonsalder,
-                link: <TelefonLink />,
-              }}
-            />
-          </Alert>
+          <LocalAlert className={styles.alert} status="announcement" aria-live="polite">
+            <LocalAlert.Content>
+              <FormattedMessage
+                id="tidligstmuliguttak.info_omstillingsstoenad_og_gjenlevende"
+                values={{
+                  ...getFormatMessageValues(),
+                  normertPensjonsalder: formatertNormertPensjonsalder,
+                  link: <TelefonLink />,
+                }}
+              />
+            </LocalAlert.Content>
+          </LocalAlert>
         )}
 
         {ufoeregrad ? (

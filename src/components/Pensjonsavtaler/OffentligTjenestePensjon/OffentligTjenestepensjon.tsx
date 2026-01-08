@@ -3,10 +3,10 @@ import React, { useEffect } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 import {
-  Alert,
   BodyLong,
   Heading,
   HeadingProps,
+  InlineMessage,
   Link,
   Table,
   VStack,
@@ -160,30 +160,28 @@ export const OffentligTjenestepensjon = (props: {
       {
         // Ved feil når /simuler-oftp kalles
         isError && (
-          <Alert inline variant="warning" role="alert">
+          <InlineMessage status="warning">
             <FormattedMessage id="pensjonsavtaler.offentligtp.error" />
-          </Alert>
+          </InlineMessage>
         )
       }
       {
         // Når brukeren ikke er medlem av noe offentlig tp-ordning
         offentligTp?.simuleringsresultatStatus ===
           'BRUKER_ER_IKKE_MEDLEM_AV_TP_ORDNING' && (
-          <Alert
-            inline
-            variant="info"
+          <InlineMessage
+            status="info"
             data-testid="ingen-pensjonsavtaler-alert"
-            role="alert"
           >
             <FormattedMessage id="pensjonsavtaler.ingress.ingen" />
-          </Alert>
+          </InlineMessage>
         )
       }
       {
         // Når brukeren er medlem av en annen ordning
         offentligTp?.simuleringsresultatStatus ===
           'TP_ORDNING_STOETTES_IKKE' && (
-          <Alert inline variant="warning" role="alert">
+          <InlineMessage status="warning">
             <FormattedMessage
               id="pensjonsavtaler.offentligtp.er_medlem_annen_ordning"
               values={{
@@ -193,13 +191,13 @@ export const OffentligTjenestepensjon = (props: {
                 ),
               }}
             />
-          </Alert>
+          </InlineMessage>
         )
       }
       {
         // Ved feil hos TP-leverandør
         offentligTp?.simuleringsresultatStatus === 'TEKNISK_FEIL' && (
-          <Alert inline variant="warning" role="alert">
+          <InlineMessage status="warning">
             <FormattedMessage
               id="pensjonsavtaler.offentligtp.teknisk_feil"
               values={{
@@ -209,19 +207,19 @@ export const OffentligTjenestepensjon = (props: {
                 ),
               }}
             />
-          </Alert>
+          </InlineMessage>
         )
       }
       {
         // Ved tomt svar fra TP-leverandør
         offentligTp?.simuleringsresultatStatus ===
           'TOM_SIMULERING_FRA_TP_ORDNING' && (
-          <Alert inline variant="warning" role="alert">
+          <InlineMessage status="warning">
             <FormattedMessage
               id="pensjonsavtaler.offentligtp.empty"
               values={getFormatMessageValues()}
             />
-          </Alert>
+          </InlineMessage>
         )
       }
 

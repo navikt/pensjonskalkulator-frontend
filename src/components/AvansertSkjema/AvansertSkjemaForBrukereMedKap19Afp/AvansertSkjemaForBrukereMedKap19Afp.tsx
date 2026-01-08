@@ -4,9 +4,9 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { useNavigate } from 'react-router'
 
 import {
-  Alert,
   Heading,
   Link,
+  LocalAlert,
   Radio,
   RadioGroup,
   Select,
@@ -400,56 +400,57 @@ export const AvansertSkjemaForBrukereMedKap19Afp: React.FC<{
               </Radio>
 
               {localHarAfpInntektMaanedFoerUttakRadio === false && (
-                <Alert
-                  variant="info"
+                <LocalAlert
+                  status="announcement"
                   data-testid="afp-etterfulgt-ap-informasjon"
-                  role="alert"
                 >
-                  <FormattedMessage
-                    id="beregning.avansert.alert.afp_inntekt_maaned_foer_uttak"
-                    values={{
-                      ...getFormatMessageValues(),
-                      grunnbeloepstekst: grunnbeloep
-                        ? `på minst ${formatInntekt(Math.ceil(grunnbeloep / 12))} kr den siste måneden før du tar ut AFP`
-                        : 'den siste måneden før du tar ut AFP som tilsvarer en årsinntekt på minst 1G',
-                      alderspensjonUtenAFP: (
-                        <Link
-                          href="#"
-                          onClick={(e) => {
-                            e.preventDefault()
-                            dispatch(
-                              userInputActions.setAfpInntektMaanedFoerUttak(
-                                null
+                  <LocalAlert.Content>
+                    <FormattedMessage
+                      id="beregning.avansert.alert.afp_inntekt_maaned_foer_uttak"
+                      values={{
+                        ...getFormatMessageValues(),
+                        grunnbeloepstekst: grunnbeloep
+                          ? `på minst ${formatInntekt(Math.ceil(grunnbeloep / 12))} kr den siste måneden før du tar ut AFP`
+                          : 'den siste måneden før du tar ut AFP som tilsvarer en årsinntekt på minst 1G',
+                        alderspensjonUtenAFP: (
+                          <Link
+                            href="#"
+                            onClick={(e) => {
+                              e.preventDefault()
+                              dispatch(
+                                userInputActions.setAfpInntektMaanedFoerUttak(
+                                  null
+                                )
                               )
-                            )
-                            dispatch(
-                              userInputActions.setCurrentSimulationGradertUttaksperiode(
-                                null
+                              dispatch(
+                                userInputActions.setCurrentSimulationGradertUttaksperiode(
+                                  null
+                                )
                               )
-                            )
-                            dispatch(
-                              userInputActions.setCurrentSimulationUttaksalder(
-                                null
+                              dispatch(
+                                userInputActions.setCurrentSimulationUttaksalder(
+                                  null
+                                )
                               )
-                            )
-                            // TODO: fjern når amplitude er ikke i bruk lenger
-                            logger('button klikk', {
-                              tekst: 'Grunnlag AFP: Gå til AFP',
-                            })
-                            logger('knapp klikket', {
-                              tekst: 'Grunnlag AFP: Gå til AFP',
-                            })
-                            navigate(paths.afp)
-                          }}
-                        >
-                          {intl.formatMessage({
-                            id: 'beregning.avansert.alert.afp_inntekt_maaned_foer_uttak.link.text',
-                          })}
-                        </Link>
-                      ),
-                    }}
-                  />
-                </Alert>
+                              // TODO: fjern når amplitude er ikke i bruk lenger
+                              logger('button klikk', {
+                                tekst: 'Grunnlag AFP: Gå til AFP',
+                              })
+                              logger('knapp klikket', {
+                                tekst: 'Grunnlag AFP: Gå til AFP',
+                              })
+                              navigate(paths.afp)
+                            }}
+                          >
+                            {intl.formatMessage({
+                              id: 'beregning.avansert.alert.afp_inntekt_maaned_foer_uttak.link.text',
+                            })}
+                          </Link>
+                        ),
+                      }}
+                    />
+                  </LocalAlert.Content>
+                </LocalAlert>
               )}
             </RadioGroup>
           </div>

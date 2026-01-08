@@ -1,7 +1,7 @@
 import { SerializedError } from '@reduxjs/toolkit'
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
 
-import { Alert } from '@navikt/ds-react'
+import { LocalAlert } from '@navikt/ds-react'
 
 interface Props {
   personError: FetchBaseQueryError | SerializedError | undefined
@@ -14,33 +14,40 @@ export const VeilederInputRequestError = ({ personError }: Props) => {
     switch (personError.status) {
       case 403:
         return (
-          <Alert
-            variant="warning"
+          <LocalAlert
+            status="warning"
             data-testid="alert-ikke-tilgang"
-            role="alert"
           >
-            Du har ikke tilgang til brukeren eller pensjonskalkulatoren. Hvis du
-            mener du skal ha tilgang, kontakt din lokale IT-ansvarlig.
-          </Alert>
+            <LocalAlert.Content>
+              Du har ikke tilgang til brukeren eller pensjonskalkulatoren. Hvis du
+              mener du skal ha tilgang, kontakt din lokale IT-ansvarlig.
+            </LocalAlert.Content>
+          </LocalAlert>
         )
       case 404:
         return (
-          <Alert variant="warning" data-testid="alert-ikke-gyldig" role="alert">
-            Fødselsnummeret er ikke gyldig.
-          </Alert>
+          <LocalAlert status="warning" data-testid="alert-ikke-gyldig">
+            <LocalAlert.Content>
+              Fødselsnummeret er ikke gyldig.
+            </LocalAlert.Content>
+          </LocalAlert>
         )
       default:
         return (
-          <Alert variant="warning" data-testid="alert-annet" role="alert">
-            Feil ved henting av person.
-          </Alert>
+          <LocalAlert status="warning" data-testid="alert-annet">
+            <LocalAlert.Content>
+              Feil ved henting av person.
+            </LocalAlert.Content>
+          </LocalAlert>
         )
     }
   } else {
     return (
-      <Alert variant="warning" data-testid="alert-annet" role="alert">
-        Feil ved henting av person.
-      </Alert>
+      <LocalAlert status="warning" data-testid="alert-annet">
+        <LocalAlert.Content>
+          Feil ved henting av person.
+        </LocalAlert.Content>
+      </LocalAlert>
     )
   }
 }

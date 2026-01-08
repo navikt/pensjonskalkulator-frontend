@@ -1,7 +1,7 @@
 import { FormEvent, useState } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 
-import { Alert, BodyLong, Heading, Radio, RadioGroup } from '@navikt/ds-react'
+import { BodyLong, Heading, LocalAlert, Radio, RadioGroup } from '@navikt/ds-react'
 
 import { ApotekereWarning } from '@/components/common/ApotekereWarning/ApotekereWarning'
 import { Card } from '@/components/common/Card'
@@ -183,19 +183,21 @@ export function SamtykkePensjonsavtaler({
         {!loependeVedtak?.harLoependeVedtak &&
           skalBeregneAfpKap19 &&
           jaPensjonsavtaler === false && (
-            <Alert
+            <LocalAlert
               data-testid="samtykke-pensjonsavtaler-alert"
               className={styles.pensjonsavtaleAlert as string}
-              variant="info"
+              status="announcement"
               size="medium"
             >
-              <FormattedMessage
-                id="stegvisning.samtykke_pensjonsavtaler.alert"
-                values={{
-                  ...getFormatMessageValues(),
-                }}
-              />
-            </Alert>
+              <LocalAlert.Content>
+                <FormattedMessage
+                  id="stegvisning.samtykke_pensjonsavtaler.alert"
+                  values={{
+                    ...getFormatMessageValues(),
+                  }}
+                />
+              </LocalAlert.Content>
+            </LocalAlert>
           )}
 
         <Navigation onPrevious={onPrevious} onCancel={onCancel} />

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { FormattedMessage } from 'react-intl'
 
-import { Alert, BodyLong, Heading, HeadingProps } from '@navikt/ds-react'
+import { BodyLong, Heading, HeadingProps, InlineMessage } from '@navikt/ds-react'
 
 import { ALERT_VIST } from '@/utils/loggerConstants'
 import { logger } from '@/utils/logging'
@@ -78,9 +78,9 @@ export const PrivatePensjonsavtaler: React.FC<PrivatePensjonsavtalerProps> = ({
               <FormattedMessage id="pensjonsavtaler.private.title.ingen" />
             </Heading>
 
-            <Alert inline variant="info" role="alert">
+            <InlineMessage status="info">
               <FormattedMessage id="pensjonsavtaler.ingress.ingen" />
-            </Alert>
+            </InlineMessage>
           </>
         )
       }
@@ -93,9 +93,9 @@ export const PrivatePensjonsavtaler: React.FC<PrivatePensjonsavtalerProps> = ({
               <FormattedMessage id="pensjonsavtaler.private.title.ingen" />
             </Heading>
 
-            <Alert inline variant="warning" role="alert">
+            <InlineMessage status="warning">
               <FormattedMessage id="pensjonsavtaler.private.ingress.error.pensjonsavtaler" />
-            </Alert>
+            </InlineMessage>
           </>
         )
       }
@@ -103,14 +103,9 @@ export const PrivatePensjonsavtaler: React.FC<PrivatePensjonsavtalerProps> = ({
       {
         // Når private pensjonsavtaler er partial med noen avtaler
         partialPrivatePensjonsavtaler && (
-          <Alert
-            inline
-            variant="warning"
-            className={styles.alert__margin}
-            role="alert"
-          >
+          <InlineMessage status="warning" className={styles.alert__margin}>
             <FormattedMessage id="pensjonsavtaler.private.ingress.error.pensjonsavtaler.partial" />
-          </Alert>
+          </InlineMessage>
         )
       }
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 
-import { Alert, Link } from '@navikt/ds-react'
+import { Link, LocalAlert } from '@navikt/ds-react'
 
 import { useAppSelector } from '@/state/hooks'
 import { selectFoedselsdato } from '@/state/userInput/selectors'
@@ -88,28 +88,30 @@ export const SimuleringAfpOffentligAlert: React.FC<Props> = ({
     })
 
     return (
-      <Alert
-        variant="info"
+      <LocalAlert
+        status="announcement"
         data-testid="alert-afp-offentlig-livsvarig-info"
         data-intl={alertText}
         className={styles.alert}
       >
-        <FormattedMessage
-          id={alertText}
-          values={{
-            // eslint-disable-next-line react/no-unstable-nested-components
-            scrollTo: (chunk) => (
-              <Link
-                href="#"
-                data-testid="afp-offentlig-alert-link"
-                onClick={handleAfpOffentligLinkClick}
-              >
-                {chunk}
-              </Link>
-            ),
-          }}
-        />
-      </Alert>
+        <LocalAlert.Content>
+          <FormattedMessage
+            id={alertText}
+            values={{
+              // eslint-disable-next-line react/no-unstable-nested-components
+              scrollTo: (chunk) => (
+                <Link
+                  href="#"
+                  data-testid="afp-offentlig-alert-link"
+                  onClick={handleAfpOffentligLinkClick}
+                >
+                  {chunk}
+                </Link>
+              ),
+            }}
+          />
+        </LocalAlert.Content>
+      </LocalAlert>
     )
   }
 
@@ -127,14 +129,16 @@ export const SimuleringAfpOffentligAlert: React.FC<Props> = ({
     })
 
     return (
-      <Alert
-        variant="warning"
+      <LocalAlert
+        status="warning"
         data-testid="alert-afp-offentlig-livsvarig-failed"
         data-intl={alertText}
         className={styles.alert}
       >
-        <FormattedMessage id={alertText} />
-      </Alert>
+        <LocalAlert.Content>
+          <FormattedMessage id={alertText} />
+        </LocalAlert.Content>
+      </LocalAlert>
     )
   }
 
@@ -151,14 +155,16 @@ export const SimuleringAfpOffentligAlert: React.FC<Props> = ({
     })
 
     return (
-      <Alert
-        variant="warning"
+      <LocalAlert
+        status="warning"
         data-testid="alert-afp-offentlig-livsvarig-success"
         data-intl={alertText}
         className={styles.alert}
       >
-        <FormattedMessage id={alertText} />
-      </Alert>
+        <LocalAlert.Content>
+          <FormattedMessage id={alertText} />
+        </LocalAlert.Content>
+      </LocalAlert>
     )
   }
 

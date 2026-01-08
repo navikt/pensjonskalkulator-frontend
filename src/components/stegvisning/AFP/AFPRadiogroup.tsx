@@ -2,7 +2,7 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
 
-import { Alert, Radio, RadioGroup } from '@navikt/ds-react'
+import { LocalAlert, Radio, RadioGroup } from '@navikt/ds-react'
 
 import { ALERT_VIST } from '@/utils/loggerConstants'
 import { logger } from '@/utils/logging'
@@ -46,14 +46,16 @@ const AFPRadioGroup: React.FC<AFPRadioGroupProps> = ({
         <FormattedMessage id="stegvisning.afp.radio_ja_offentlig" />
       </Radio>
       {showApotekerAlert && (
-        <Alert
+        <LocalAlert
           className={styles.alert}
-          variant="warning"
+          status="warning"
           aria-live="polite"
           data-testid="apotekere-warning"
         >
-          <FormattedMessage id="error.apoteker_warning" />
-        </Alert>
+          <LocalAlert.Content>
+            <FormattedMessage id="error.apoteker_warning" />
+          </LocalAlert.Content>
+        </LocalAlert>
       )}
       <Radio value="ja_privat" data-testid="afp-radio-ja-privat">
         <FormattedMessage id="stegvisning.afp.radio_ja_privat" />
@@ -65,9 +67,11 @@ const AFPRadioGroup: React.FC<AFPRadioGroupProps> = ({
         <FormattedMessage id="stegvisning.afp.radio_vet_ikke" />
       </Radio>
       {showVetIkkeAlert && (
-        <Alert className={styles.alert} variant="info" aria-live="polite">
-          <FormattedMessage id="stegvisning.afp.alert_vet_ikke" />
-        </Alert>
+        <LocalAlert className={styles.alert} status="announcement" aria-live="polite">
+          <LocalAlert.Content>
+            <FormattedMessage id="stegvisning.afp.alert_vet_ikke" />
+          </LocalAlert.Content>
+        </LocalAlert>
       )}
     </RadioGroup>
   )

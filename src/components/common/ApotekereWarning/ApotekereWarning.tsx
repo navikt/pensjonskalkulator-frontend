@@ -1,6 +1,6 @@
 import { FormattedMessage } from 'react-intl'
 
-import { Alert } from '@navikt/ds-react'
+import { LocalAlert } from '@navikt/ds-react'
 
 import { ALERT_VIST } from '@/utils/loggerConstants'
 import { logger } from '@/utils/logging'
@@ -17,13 +17,14 @@ export const ApotekereWarning = ({ showWarning }: { showWarning: boolean }) => {
   })
 
   return (
-    <Alert
+    <LocalAlert
       className={styles.alertWrapper}
-      variant="warning"
+      status="warning"
       data-testid="apotekere-warning"
-      role="alert"
     >
-      <FormattedMessage id="error.apoteker_warning" />
-    </Alert>
+      <LocalAlert.Content>
+        <FormattedMessage id="error.apoteker_warning" />
+      </LocalAlert.Content>
+    </LocalAlert>
   )
 }
