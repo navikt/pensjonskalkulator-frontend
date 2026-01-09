@@ -218,7 +218,7 @@ export const Simulering = ({
   const { data: tidligstMuligUttak } = useTidligstMuligUttak(ufoeregrad)
   const { data: omstillingsstoenadOgGjenlevende } =
     useGetOmstillingsstoenadOgGjenlevendeQuery()
-  
+
   const isPrintingRef = useRef(false)
   const isInBeforePrintRef = useRef(false)
   const handlePDFRef = useRef<(() => void) | null>(null)
@@ -405,9 +405,9 @@ export const Simulering = ({
         }
       }
     }
-    
+
     window.addEventListener('beforeprint', handleBeforePrint)
-    
+
     return () => {
       window.removeEventListener('beforeprint', handleBeforePrint)
     }
