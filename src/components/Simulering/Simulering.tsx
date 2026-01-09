@@ -244,17 +244,10 @@ export const Simulering = ({
   const { data: tidligstMuligUttak } = useTidligstMuligUttak(ufoeregrad)
   const { data: omstillingsstoenadOgGjenlevende } =
     useGetOmstillingsstoenadOgGjenlevendeQuery()
-  useEffect(() => {
-    window.addEventListener('beforeprint', () => {
-      const locationUrl = window.location.href
-      if (locationUrl.includes('beregning') && showPDF?.enabled) {
-        handlePDF()
-      }
-    })
-    return () => {
-      window.removeEventListener('beforeprint', handlePDF)
-    }
-  })
+
+  const isPrintingRef = useRef(false)
+  const isInBeforePrintRef = useRef(false)
+  const handlePDFRef = useRef<(() => void) | null>(null)
 
   const isSafari = (): boolean => {
     return /^((?!chrome|android).)*safari/i.test(window.navigator.userAgent)
@@ -421,32 +414,65 @@ export const Simulering = ({
     const documentTitle = document.title
     document.title = '' // Ikke vis document title i print preview/PDF
 
-    window.onafterprint = () => {
+    const cleanup = () => {
+      isPrintingRef.current = false
       if (printContentDiv) {
-        // Reset to original content after printing
         printContentDiv.innerHTML = ''
         document.title = documentTitle
       }
+      if (appContentElement) {
+        appContentElement.classList.remove('hideAppContent')
+      }
+      if (printContentElement) {
+        printContentElement.classList.remove('showPrintContent')
+      }
     }
 
-    if (isSafari()) {
-      setTimeout(() => window.print(), 100)
-    } else {
-      window.print()
+    window.onafterprint = cleanup
+
+    // Only call window.print() if not already in a print context (from beforeprint event)
+    // This prevents Safari from showing "webpage is trying to print" warning
+    if (!isInBeforePrintRef.current) {
+      if (isSafari()) {
+        setTimeout(() => window.print(), 100)
+      } else {
+        window.print()
+      }
     }
   }
-
-  const handlePDFRef = useRef(handlePDF)
 
   useEffect(() => {
     handlePDFRef.current = handlePDF
   })
 
+  useEffect(() => {
+    const handleBeforePrint = () => {
+      if (!isPrintingRef.current) {
+        const locationUrl = window.location.href
+        if (locationUrl.includes('beregning') && showPDF?.enabled) {
+          isPrintingRef.current = true
+          isInBeforePrintRef.current = true
+          handlePDFRef.current?.()
+          // Reset the flag after handlePDF completes
+          setTimeout(() => {
+            isInBeforePrintRef.current = false
+          }, 0)
+        }
+      }
+    }
+
+    window.addEventListener('beforeprint', handleBeforePrint)
+
+    return () => {
+      window.removeEventListener('beforeprint', handleBeforePrint)
+    }
+  }, [showPDF?.enabled])
+
   // Set up the context ref connection
   useEffect(() => {
     if (showPDFRef) {
       showPDFRef.current = {
-        handlePDF: () => handlePDFRef.current(),
+        handlePDF: () => handlePDFRef.current?.(),
       }
       setIsPdfReady?.(true)
     }
