@@ -1,19 +1,19 @@
 import clsx from 'clsx'
 import Highcharts, { SeriesColumnOptions, XAxisOptions } from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl'
+
+
 
 import { HandFingerIcon } from '@navikt/aksel-icons'
 import { BodyLong, BodyShort, Heading, HeadingProps } from '@navikt/ds-react'
 
+
+
 import { TabellVisning } from '@/components/TabellVisning'
 import { BeregningContext } from '@/pages/Beregning/context'
-import {
-  getOffentligTjenestePensjonAlertsText,
-  getOmstillingsstoenadAlert,
-  getPrivatePensjonsavtalerAlertsText,
-} from '@/pdf-view/alerts'
+import { getAfpOffentligAlertsText, getOffentligTjenestePensjonAlertsText, getOmstillingsstoenadAlert, getPrivatePensjonsavtalerAlertsText } from '@/pdf-view/alerts'
 import { getChartTable } from '@/pdf-view/chartTable'
 import { getForbeholdAvsnitt } from '@/pdf-view/forbehold'
 import { getGrunnlagIngress } from '@/pdf-view/grunnlag'
@@ -22,51 +22,20 @@ import { getUtenlandsOppholdIngress } from '@/pdf-view/opphold'
 import { getPensjonsavtaler } from '@/pdf-view/pensjonsavtaler'
 import { getSivilstandIngress } from '@/pdf-view/sivilstand'
 import { getTidligstMuligUttakIngress } from '@/pdf-view/tidligtMuligUttak'
-import {
-  useGetAfpOffentligLivsvarigQuery,
-  useGetOmstillingsstoenadOgGjenlevendeQuery,
-  useGetPersonQuery,
-  useGetShowDownloadPdfFeatureToggleQuery,
-  usePensjonsavtalerQuery,
-} from '@/state/api/apiSlice'
+import { useGetAfpOffentligLivsvarigQuery, useGetOmstillingsstoenadOgGjenlevendeQuery, useGetPersonQuery, useGetShowDownloadPdfFeatureToggleQuery, usePensjonsavtalerQuery } from '@/state/api/apiSlice'
 import { isOffentligTpFoer1963 } from '@/state/api/typeguards'
 import { generatePensjonsavtalerRequestBody } from '@/state/api/utils'
 import { useAppSelector } from '@/state/hooks'
-import {
-  selectAarligInntektFoerUttakBeloepFraSkatt,
-  selectAfp,
-  selectAfpUtregningValg,
-  selectCurrentSimulation,
-  selectEpsHarInntektOver2G,
-  selectEpsHarPensjon,
-  selectErApoteker,
-  selectFoedselsdato,
-  selectHarUtenlandsopphold,
-  selectIsEndring,
-  selectLoependeVedtak,
-  selectSamtykke,
-  selectSamtykkeOffentligAFP,
-  selectSivilstand,
-  selectSkalBeregneAfpKap19,
-  selectUfoeregrad,
-  selectUtenlandsperioder,
-} from '@/state/userInput/selectors'
+import { selectAarligInntektFoerUttakBeloepFraSkatt, selectAfp, selectAfpUtregningValg, selectCurrentSimulation, selectEpsHarInntektOver2G, selectEpsHarPensjon, selectErApoteker, selectFoedselsdato, selectHarUtenlandsopphold, selectIsEndring, selectLoependeVedtak, selectSamtykke, selectSamtykkeOffentligAFP, selectSivilstand, selectSkalBeregneAfpKap19, selectUfoeregrad, selectUtenlandsperioder } from '@/state/userInput/selectors'
 import { formatUttaksalder, isAlderOver62 } from '@/utils/alder'
-import {
-  useTidligstMuligUttak,
-  useTidligstMuligUttakConditions,
-} from '@/utils/hooks/useTidligstMuligUttakData'
+import { useTidligstMuligUttak, useTidligstMuligUttakConditions } from '@/utils/hooks/useTidligstMuligUttakData'
 import { formatSivilstand } from '@/utils/sivilstand'
 
+
+
 import { generateAfpContent } from '../Grunnlag/GrunnlagAFP/utils'
-import {
-  useOppholdUtenforNorge,
-  useSortedUtenlandsperioder,
-} from '../Grunnlag/GrunnlagUtenlandsopphold/hooks'
-import {
-  useOffentligTjenestePensjonAlertList,
-  usePrivatePensjonsAvtalerAlertList,
-} from '../Pensjonsavtaler/hooks'
+import { useOppholdUtenforNorge, useSortedUtenlandsperioder } from '../Grunnlag/GrunnlagUtenlandsopphold/hooks'
+import { useOffentligTjenestePensjonAlertList, usePrivatePensjonsAvtalerAlertList } from '../Pensjonsavtaler/hooks'
 import { groupPensjonsavtalerByType } from '../Pensjonsavtaler/utils'
 import { useTableData } from '../TabellVisning/hooks'
 import { useBeregningsdetaljer } from './BeregningsdetaljerForOvergangskull/hooks'
@@ -75,7 +44,7 @@ import { SimuleringAfpOffentligAlert } from './SimuleringAfpOffentligAlert/Simul
 import { SimuleringEndringBanner } from './SimuleringEndringBanner/SimuleringEndringBanner'
 import { SimuleringGrafNavigation } from './SimuleringGrafNavigation/SimuleringGrafNavigation'
 import { SimuleringPensjonsavtalerAlert } from './SimuleringPensjonsavtalerAlert/SimuleringPensjonsavtalerAlert'
-import { useOffentligTpData, useSimuleringChartLocalState } from './hooks'
+import { useAfpOffentligAlerts, useOffentligTpData, useSimuleringChartLocalState } from './hooks'
 
 import styles from './Simulering.module.scss'
 
@@ -302,6 +271,12 @@ export const Simulering = ({
       offentligTp,
     })
 
+  const afpOffentligAlertsList = useAfpOffentligAlerts({
+    harSamtykketOffentligAFP,
+    isAfpOffentligLivsvarigSuccess,
+    loependeLivsvarigAfpOffentlig,
+  })
+
   const formatertSivilstand = React.useMemo(
     () => formatSivilstand(intl, sivilstand!),
     [sivilstand]
@@ -322,7 +297,9 @@ export const Simulering = ({
     const forbeholdAvsnitt = getForbeholdAvsnitt(intl)
 
     const uttakstidspunkt = uttaksalder && formatUttaksalder(intl, uttaksalder)
-    const helUttaksAlder = `<h2>Beregning av 100 % alderspensjon ved ${uttakstidspunkt} </h2>`
+    const helUttaksAlder = isEnkel
+      ? `<h2>Beregning av 100 % alderspensjon ved ${uttakstidspunkt} </h2>`
+      : ''
     const chartTableWithHeading = getChartTable({ tableData, intl })
 
     const tidligstMuligUttakIngress = isEnkel
@@ -380,6 +357,13 @@ export const Simulering = ({
         intl,
       })
 
+    const afpOffentligAlertsMessage =
+      afpOffentligAlertsList &&
+      getAfpOffentligAlertsText({
+        afpOffentligAlertsList,
+        intl,
+      })
+
     const pensjonsavtaler = harSamtykket
       ? getPensjonsavtaler({
           intl,
@@ -401,6 +385,7 @@ export const Simulering = ({
       chartTableWithHeading +
       grunnlagIngress +
       pensjonsavtaler +
+      afpOffentligAlertsMessage +
       privatePensjonsavtalerAlertsMessage +
       offentligTjenestePensjonAlertsMessage +
       omDegIngress

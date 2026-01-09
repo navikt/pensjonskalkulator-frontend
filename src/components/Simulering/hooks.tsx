@@ -705,6 +705,7 @@ export const useAfpOffentligAlerts = ({
     return {
       variant: 'warning' as AlertVariant,
       text: alertText,
+      dataTestId: 'alert-afp-offentlig-livsvarig-success',
     }
   }
 }

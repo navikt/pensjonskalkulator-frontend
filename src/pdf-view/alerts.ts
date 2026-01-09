@@ -5,6 +5,7 @@ import {
   OffentligTpAlert,
   privatePensjonsavtalerAlert,
 } from '@/components/Pensjonsavtaler/hooks'
+import { AlertVariant } from '@/components/Simulering/hooks'
 import { formatUttaksalder } from '@/utils/alder'
 
 import { ALERT_TRIANGLE_ICON, INFO_SQUARE_ICON } from './constants'
@@ -89,6 +90,40 @@ export function getOffentligTjenestePensjonAlertsText({
   })
 
   return html.join('')
+}
+
+export function getAfpOffentligAlertsText({
+  afpOffentligAlertsList,
+  intl,
+}: {
+  afpOffentligAlertsList: {
+    variant: AlertVariant
+    text: string
+  }
+  intl: IntlShape
+}): string {
+  const alertIcon =
+    afpOffentligAlertsList.variant === 'info'
+      ? INFO_SQUARE_ICON
+      : ALERT_TRIANGLE_ICON
+  return `
+      <table role='presentation' class='alert-box' style='width: 100%; margin-bottom: 1em;'>
+        <tr>
+          <td style='width: 20px; vertical-align: top; padding: 16px 8px 16px 16px; margin: 0; border: none;'>
+            <span class='infoIconContainer'>
+              ${alertIcon}
+            </span>
+          </td>
+          <td style='vertical-align: top; padding: 16px 16px 16px 8px; margin: 0; text-align: left; border: none;'>
+            <p style='margin: 0; padding: 0;'>${intl.formatMessage(
+              { id: afpOffentligAlertsList.text },
+              {
+                ...pdfFormatMessageValues,
+              }
+            )}</p>
+          </td>
+        </tr>
+      </table>`
 }
 
 export function getOmstillingsstoenadAlert(

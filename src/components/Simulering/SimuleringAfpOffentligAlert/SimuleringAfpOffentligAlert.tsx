@@ -77,7 +77,7 @@ export const SimuleringAfpOffentligAlert: React.FC<Props> = ({
     return (
       <Alert
         variant="warning"
-        data-testid="alert-afp-offentlig-livsvarig-failed"
+        data-testid={`${afpOffentligAlert?.dataTestId ?? 'alert-afp-offentlig-livsvarig-failed'}`}
         data-intl={afpOffentligAlert.text}
         className={styles.alert}
       >
