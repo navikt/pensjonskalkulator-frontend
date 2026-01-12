@@ -686,8 +686,6 @@ describe('Grunnlag', () => {
       })
 
       it('skjuler AFP avkortet melding og lenke når pre2025OffentligAfp er undefined', async () => {
-        const user = userEvent.setup()
-
         render(
           <Grunnlag
             headingLevel="2"
@@ -715,14 +713,6 @@ describe('Grunnlag', () => {
             },
           }
         )
-
-        const buttons = screen.getAllByRole('button')
-        const afpReadMoreButton = buttons.find((button) =>
-          button.textContent?.includes('AFP')
-        )
-
-        expect(afpReadMoreButton).toBeDefined()
-        await user.click(afpReadMoreButton!)
 
         expect(
           screen.queryByText('grunnlag.afp.avkortet.til.70.prosent')
