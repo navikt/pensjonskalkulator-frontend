@@ -1,67 +1,46 @@
-import clsx from 'clsx'
-import Highcharts, { SeriesColumnOptions, XAxisOptions } from 'highcharts'
-import HighchartsReact from 'highcharts-react-official'
-import React, { useContext, useEffect, useRef, useState } from 'react'
-import { FormattedMessage, useIntl } from 'react-intl'
+import clsx from 'clsx';
+import Highcharts, { SeriesColumnOptions, XAxisOptions } from 'highcharts';
+import HighchartsReact from 'highcharts-react-official';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
 
-import { HandFingerIcon } from '@navikt/aksel-icons'
-import { BodyLong, BodyShort, Heading, HeadingProps } from '@navikt/ds-react'
 
-import { TabellVisning } from '@/components/TabellVisning'
-import { BeregningContext } from '@/pages/Beregning/context'
-import {
-  useGetAfpOffentligLivsvarigQuery,
-  useGetOmstillingsstoenadOgGjenlevendeQuery,
-  useGetPersonQuery,
-  useGetShowDownloadPdfFeatureToggleQuery,
-  usePensjonsavtalerQuery,
-} from '@/state/api/apiSlice'
-import { isOffentligTpFoer1963 } from '@/state/api/typeguards'
-import { generatePensjonsavtalerRequestBody } from '@/state/api/utils'
-import { useAppSelector } from '@/state/hooks'
-import {
-  selectAarligInntektFoerUttakBeloepFraSkatt,
-  selectAfp,
-  selectAfpUtregningValg,
-  selectCurrentSimulation,
-  selectEpsHarInntektOver2G,
-  selectEpsHarPensjon,
-  selectErApoteker,
-  selectFoedselsdato,
-  selectIsEndring,
-  selectLoependeVedtak,
-  selectSamtykke,
-  selectSamtykkeOffentligAFP,
-  selectSivilstand,
-  selectSkalBeregneAfpKap19,
-  selectUfoeregrad,
-} from '@/state/userInput/selectors'
-import { formatUttaksalder, isAlderOver62 } from '@/utils/alder'
-import {
-  useTidligstMuligUttak,
-  useTidligstMuligUttakConditions,
-} from '@/utils/hooks/useTidligstMuligUttakData'
 
-import { generateAfpContent } from '../Grunnlag/GrunnlagAFP/utils'
-import { useTableData } from '../TabellVisning/hooks'
-import { useBeregningsdetaljer } from './BeregningsdetaljerForOvergangskull/hooks'
-import { MaanedsbeloepAvansertBeregning } from './MaanedsbeloepAvansertBeregning'
-import { SimuleringAfpOffentligAlert } from './SimuleringAfpOffentligAlert/SimuleringAfpOffentligAlert'
-import { SimuleringEndringBanner } from './SimuleringEndringBanner/SimuleringEndringBanner'
-import { SimuleringGrafNavigation } from './SimuleringGrafNavigation/SimuleringGrafNavigation'
-import { SimuleringPensjonsavtalerAlert } from './SimuleringPensjonsavtalerAlert/SimuleringPensjonsavtalerAlert'
-import { useOffentligTpData, useSimuleringChartLocalState } from './hooks'
-import {
-  getChartTable,
-  getCurrentDateTimeFormatted,
-  getForbeholdAvsnitt,
-  getGrunnlagIngress,
-  getOmstillingsstoenadAlert,
-  getPdfHeadingWithLogo,
-  getTidligstMuligUttakIngressContent,
-} from './pdf-utils'
+import { HandFingerIcon } from '@navikt/aksel-icons';
+import { BodyLong, BodyShort, Heading, HeadingProps } from '@navikt/ds-react';
 
-import styles from './Simulering.module.scss'
+
+
+import { TabellVisning } from '@/components/TabellVisning';
+import { BeregningContext } from '@/pages/Beregning/context';
+import { useGetAfpOffentligLivsvarigQuery, useGetOmstillingsstoenadOgGjenlevendeQuery, useGetPersonQuery, useGetShowDownloadPdfFeatureToggleQuery, usePensjonsavtalerQuery } from '@/state/api/apiSlice';
+import { isOffentligTpFoer1963 } from '@/state/api/typeguards';
+import { generatePensjonsavtalerRequestBody } from '@/state/api/utils';
+import { useAppSelector } from '@/state/hooks';
+import { selectAarligInntektFoerUttakBeloepFraSkatt, selectAfp, selectAfpUtregningValg, selectCurrentSimulation, selectEpsHarInntektOver2G, selectEpsHarPensjon, selectErApoteker, selectFoedselsdato, selectIsEndring, selectLoependeVedtak, selectSamtykke, selectSamtykkeOffentligAFP, selectSivilstand, selectSkalBeregneAfpKap19, selectUfoeregrad } from '@/state/userInput/selectors';
+import { formatUttaksalder, isAlderOver62 } from '@/utils/alder';
+import { useTidligstMuligUttak, useTidligstMuligUttakConditions } from '@/utils/hooks/useTidligstMuligUttakData';
+
+
+
+import { generateAfpContent } from '../Grunnlag/GrunnlagAFP/utils';
+import { useTableData } from '../TabellVisning/hooks';
+import { useBeregningsdetaljer } from './BeregningsdetaljerForOvergangskull/hooks';
+import { MaanedsbeloepAvansertBeregning } from './MaanedsbeloepAvansertBeregning';
+import { SimuleringAfpOffentligAlert } from './SimuleringAfpOffentligAlert/SimuleringAfpOffentligAlert';
+import { SimuleringEndringBanner } from './SimuleringEndringBanner/SimuleringEndringBanner';
+import { SimuleringGrafNavigation } from './SimuleringGrafNavigation/SimuleringGrafNavigation';
+import { SimuleringPensjonsavtalerAlert } from './SimuleringPensjonsavtalerAlert/SimuleringPensjonsavtalerAlert';
+import { useOffentligTpData, useSimuleringChartLocalState } from './hooks';
+import { getChartTable, getCurrentDateTimeFormatted, getForbeholdAvsnitt, getGrunnlagIngress, getOmstillingsstoenadAlert, getPdfHeadingWithLogo, getTidligstMuligUttakIngressContent } from './pdf-utils';
+
+
+
+import styles from './Simulering.module.scss';
+
+
+
+
 
 interface Props {
   isLoading: boolean
@@ -219,9 +198,8 @@ export const Simulering = ({
   const { data: omstillingsstoenadOgGjenlevende } =
     useGetOmstillingsstoenadOgGjenlevendeQuery()
 
-  const isPrintingRef = useRef(false)
-  const isInBeforePrintRef = useRef(false)
   const handlePDFRef = useRef<(() => void) | null>(null)
+  const isPrintingRef = useRef(false)
 
   const isSafari = (): boolean => {
     return /^((?!chrome|android).)*safari/i.test(window.navigator.userAgent)
@@ -263,26 +241,12 @@ export const Simulering = ({
   )
 
   const handlePDF = () => {
-    const appContentElement = document.getElementById('app-content')
-    if (appContentElement) {
-      appContentElement.classList.add('hideAppContent')
+    // Prevent double printing
+    if (isPrintingRef.current) {
+      return
     }
+    isPrintingRef.current = true
 
-    const printContentElement = document.getElementById('print-content')
-    if (printContentElement) {
-      printContentElement.classList.add('showPrintContent')
-    }
-    const pdfHeadingWithLogo = getPdfHeadingWithLogo(isEnkel)
-
-    const personalInfo = `<div 
-      class="pdf-metadata"
-    >
-      ${person?.navn}
-      <span 
-        style="padding: 0 8px; font-size: 16px; font-weight: 800;"
-      >\u2022</span>
-      Dato opprettet: ${getCurrentDateTimeFormatted()}
-    </div>`
 
     const forbeholdAvsnitt = getForbeholdAvsnitt(intl)
 
@@ -327,8 +291,6 @@ export const Simulering = ({
     })
 
     const finalPdfContent =
-      pdfHeadingWithLogo +
-      personalInfo +
       forbeholdAvsnitt +
       tidligstMuligUttakIngress +
       omstillingsstoenadAlert +
@@ -336,53 +298,105 @@ export const Simulering = ({
       chartTableWithHeading +
       grunnlagIngress
 
-    // Set the print content in the hidden div
-    const printContentDiv = document.getElementById('print-content')
-    if (printContentDiv) {
-      printContentDiv.innerHTML = finalPdfContent
+    // Use hidden iframe approach to avoid mc-ref artifacts and double print dialogs
+    const printStyles = `
+      <style>
+        @page { margin: 1cm; }
+        body { font-family: 'Source Sans 3', 'Source Sans Pro', Arial, sans-serif; font-size: 12pt; line-height: 1.4; margin: 0; padding: 20px; }
+        h1 { margin: 0; padding-left: 0; text-align: left; }
+        h2 { margin-top: 1em; }
+        h4 { padding: 1.5em 0 0.5em; }
+        h4.utenlandsopphold-title { padding: 0; }
+        table { width: 100%; border-collapse: collapse; table-layout: auto; margin: 0; }
+        th, tr, .afp-grunnlag-title { border-bottom: 1px solid rgb(128 128 128); }
+        thead th { border-bottom: 2px solid rgb(128 128 128); font-weight: bold; text-align: center; white-space: nowrap; }
+        th, td { padding: 12px 8px; }
+        tr td { margin-right: 10px; text-align: center; }
+        tr.header-with-logo { border: none; margin: 0; }
+        tr.header-with-logo td { padding: 0; }
+        .pdf-table-wrapper-row, .pdf-table-type2 tbody > tr:last-child { border-bottom: none; }
+        .pdf-table-type2 tbody > tr:last-child { font-weight: bold; }
+        td.pdf-td-type2 { vertical-align: top; width: 33%; padding-top: 0; padding-right: 8px; }
+        table.alert-box { border: 2px solid #0214317d; border-radius: 8px; }
+        div.pdf-metadata { margin-top: -1em; }
+        div.utenlandsopphold-land-item { border: 1px solid rgb(2 20 49 / 49%); border-radius: 8px; padding: 8px; margin-bottom: 1em; }
+        .display-inline { display: inline; }
+        .nowrap { white-space: nowrap; }
+        .logoContainer svg { width: 72px; height: auto; padding: 0; margin: 0; }
+        .infoIconContainer svg { width: 16px; height: 16px; }
+      </style>
+    `
+
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html lang="nb">
+        <head>
+          <meta charset="UTF-8">
+          <title>Pensjonskalkulator beregning</title>
+          ${printStyles}
+        </head>
+        <body>
+          ${finalPdfContent}
+        </body>
+      </html>
+    `
+
+    // Create a hidden iframe for printing
+    const iframe = document.createElement('iframe')
+    iframe.style.position = 'absolute'
+    iframe.style.width = '0'
+    iframe.style.height = '0'
+    iframe.style.border = 'none'
+    iframe.style.left = '-9999px'
+    document.body.appendChild(iframe)
+
+    const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document
+    if (!iframeDoc) {
+      console.error('Could not access iframe document')
+      document.body.removeChild(iframe)
+      return
     }
 
-    const documentTitle = document.title
-    document.title = '' // Ikke vis document title i print preview/PDF
+    iframeDoc.open()
+    iframeDoc.write(htmlContent)
+    iframeDoc.close()
+
+    // Wait for content to render then print
+    const triggerPrint = () => {
+      iframe.contentWindow?.focus()
+      iframe.contentWindow?.print()
+    }
 
     const cleanup = () => {
+      if (document.body.contains(iframe)) {
+        document.body.removeChild(iframe)
+      }
       isPrintingRef.current = false
-      if (printContentDiv) {
-        printContentDiv.innerHTML = ''
-        document.title = documentTitle
-      }
-      if (appContentElement) {
-        appContentElement.classList.remove('hideAppContent')
-      }
-      if (printContentElement) {
-        printContentElement.classList.remove('showPrintContent')
-      }
     }
 
-    window.onafterprint = cleanup
-
-    // Fallback timeout in case afterprint event doesn't fire (Safari issues)
-    const cleanupTimeout = setTimeout(() => {
-      cleanup()
-    }, 1000)
-
-    // Clear timeout if afterprint fires
-    const originalAfterprint = window.onafterprint
-    window.onafterprint = () => {
-      clearTimeout(cleanupTimeout)
-      if (originalAfterprint) {
-        originalAfterprint.call(window, new Event('afterprint'))
+    if (isSafari()) {
+      setTimeout(() => {
+        triggerPrint()
+        setTimeout(cleanup, 1000)
+      }, 100)
+    } else {
+      iframe.onload = () => {
+        triggerPrint()
+        // Use onafterprint on iframe's window to detect when print dialog closes
+        if (iframe.contentWindow) {
+          iframe.contentWindow.onafterprint = cleanup
+        }
+        // Fallback: reset flag after short delay in case onafterprint doesn't fire
+        setTimeout(() => {
+          isPrintingRef.current = false
+        }, 1000)
       }
-    }
-
-    // Only call window.print() if not already in a print context (from beforeprint event)
-    // This prevents Safari from showing "webpage is trying to print" warning
-    if (!isInBeforePrintRef.current) {
-      if (isSafari()) {
-        setTimeout(() => window.print(), 100)
-      } else {
-        window.print()
-      }
+      // Fallback if onload doesn't fire
+      setTimeout(() => {
+        if (!iframe.contentWindow) {
+          cleanup()
+        }
+      }, 2000)
     }
   }
 
@@ -391,25 +405,37 @@ export const Simulering = ({
   })
 
   useEffect(() => {
-    const handleBeforePrint = () => {
-      if (!isPrintingRef.current) {
-        const locationUrl = window.location.href
-        if (locationUrl.includes('beregning') && showPDF?.enabled) {
-          isPrintingRef.current = true
-          isInBeforePrintRef.current = true
+    const locationUrl = window.location.href
+    if (!locationUrl.includes('beregning') || !showPDF?.enabled) {
+      return
+    }
+
+    // Intercept Cmd+P / Ctrl+P to use our custom print
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'p') {
+        e.preventDefault()
+        e.stopPropagation()
+        e.stopImmediatePropagation()
+        if (!isPrintingRef.current) {
           handlePDFRef.current?.()
-          // Reset the flag after handlePDF completes
-          setTimeout(() => {
-            isInBeforePrintRef.current = false
-          }, 0)
         }
       }
     }
 
-    window.addEventListener('beforeprint', handleBeforePrint)
+    // Block any beforeprint on the main window while we're printing via iframe
+    const handleBeforePrint = (e: Event) => {
+      if (isPrintingRef.current) {
+        // We're already printing via iframe, block any main window print
+        e.stopImmediatePropagation()
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown, true) // Use capture phase
+    window.addEventListener('beforeprint', handleBeforePrint, true)
 
     return () => {
-      window.removeEventListener('beforeprint', handleBeforePrint)
+      window.removeEventListener('keydown', handleKeyDown, true)
+      window.removeEventListener('beforeprint', handleBeforePrint, true)
     }
   }, [showPDF?.enabled])
 
