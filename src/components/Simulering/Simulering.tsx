@@ -9,6 +9,7 @@ import { BodyLong, BodyShort, Heading, HeadingProps } from '@navikt/ds-react'
 
 import { TabellVisning } from '@/components/TabellVisning'
 import { BeregningContext } from '@/pages/Beregning/context'
+import { PRINT_STYLES } from '@/pdf-view/printStyles'
 import {
   useGetAfpOffentligLivsvarigQuery,
   useGetOmstillingsstoenadOgGjenlevendeQuery,
@@ -58,7 +59,6 @@ import {
   getOmstillingsstoenadAlert,
   getTidligstMuligUttakIngressContent,
 } from './pdf-utils'
-import { PRINT_STYLES } from '@/pdf-view/printStyles'
 
 import styles from './Simulering.module.scss'
 
