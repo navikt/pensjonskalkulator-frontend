@@ -1,46 +1,67 @@
-import clsx from 'clsx';
-import Highcharts, { SeriesColumnOptions, XAxisOptions } from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import clsx from 'clsx'
+import Highcharts, { SeriesColumnOptions, XAxisOptions } from 'highcharts'
+import HighchartsReact from 'highcharts-react-official'
+import React, { useContext, useEffect, useRef, useState } from 'react'
+import { FormattedMessage, useIntl } from 'react-intl'
 
+import { HandFingerIcon } from '@navikt/aksel-icons'
+import { BodyLong, BodyShort, Heading, HeadingProps } from '@navikt/ds-react'
 
+import { TabellVisning } from '@/components/TabellVisning'
+import { BeregningContext } from '@/pages/Beregning/context'
+import {
+  useGetAfpOffentligLivsvarigQuery,
+  useGetOmstillingsstoenadOgGjenlevendeQuery,
+  useGetPersonQuery,
+  useGetShowDownloadPdfFeatureToggleQuery,
+  usePensjonsavtalerQuery,
+} from '@/state/api/apiSlice'
+import { isOffentligTpFoer1963 } from '@/state/api/typeguards'
+import { generatePensjonsavtalerRequestBody } from '@/state/api/utils'
+import { useAppSelector } from '@/state/hooks'
+import {
+  selectAarligInntektFoerUttakBeloepFraSkatt,
+  selectAfp,
+  selectAfpUtregningValg,
+  selectCurrentSimulation,
+  selectEpsHarInntektOver2G,
+  selectEpsHarPensjon,
+  selectErApoteker,
+  selectFoedselsdato,
+  selectIsEndring,
+  selectLoependeVedtak,
+  selectSamtykke,
+  selectSamtykkeOffentligAFP,
+  selectSivilstand,
+  selectSkalBeregneAfpKap19,
+  selectUfoeregrad,
+} from '@/state/userInput/selectors'
+import { formatUttaksalder, isAlderOver62 } from '@/utils/alder'
+import {
+  useTidligstMuligUttak,
+  useTidligstMuligUttakConditions,
+} from '@/utils/hooks/useTidligstMuligUttakData'
 
-import { HandFingerIcon } from '@navikt/aksel-icons';
-import { BodyLong, BodyShort, Heading, HeadingProps } from '@navikt/ds-react';
+import { generateAfpContent } from '../Grunnlag/GrunnlagAFP/utils'
+import { useTableData } from '../TabellVisning/hooks'
+import { useBeregningsdetaljer } from './BeregningsdetaljerForOvergangskull/hooks'
+import { MaanedsbeloepAvansertBeregning } from './MaanedsbeloepAvansertBeregning'
+import { SimuleringAfpOffentligAlert } from './SimuleringAfpOffentligAlert/SimuleringAfpOffentligAlert'
+import { SimuleringEndringBanner } from './SimuleringEndringBanner/SimuleringEndringBanner'
+import { SimuleringGrafNavigation } from './SimuleringGrafNavigation/SimuleringGrafNavigation'
+import { SimuleringPensjonsavtalerAlert } from './SimuleringPensjonsavtalerAlert/SimuleringPensjonsavtalerAlert'
+import { useOffentligTpData, useSimuleringChartLocalState } from './hooks'
+import {
+  getChartTable,
+  getCurrentDateTimeFormatted,
+  getForbeholdAvsnitt,
+  getGrunnlagIngress,
+  getOmstillingsstoenadAlert,
+  getPdfHeadingWithLogo,
+  getTidligstMuligUttakIngressContent,
+} from './pdf-utils'
 
-
-
-import { TabellVisning } from '@/components/TabellVisning';
-import { BeregningContext } from '@/pages/Beregning/context';
-import { useGetAfpOffentligLivsvarigQuery, useGetOmstillingsstoenadOgGjenlevendeQuery, useGetPersonQuery, useGetShowDownloadPdfFeatureToggleQuery, usePensjonsavtalerQuery } from '@/state/api/apiSlice';
-import { isOffentligTpFoer1963 } from '@/state/api/typeguards';
-import { generatePensjonsavtalerRequestBody } from '@/state/api/utils';
-import { useAppSelector } from '@/state/hooks';
-import { selectAarligInntektFoerUttakBeloepFraSkatt, selectAfp, selectAfpUtregningValg, selectCurrentSimulation, selectEpsHarInntektOver2G, selectEpsHarPensjon, selectErApoteker, selectFoedselsdato, selectIsEndring, selectLoependeVedtak, selectSamtykke, selectSamtykkeOffentligAFP, selectSivilstand, selectSkalBeregneAfpKap19, selectUfoeregrad } from '@/state/userInput/selectors';
-import { formatUttaksalder, isAlderOver62 } from '@/utils/alder';
-import { useTidligstMuligUttak, useTidligstMuligUttakConditions } from '@/utils/hooks/useTidligstMuligUttakData';
-
-
-
-import { generateAfpContent } from '../Grunnlag/GrunnlagAFP/utils';
-import { useTableData } from '../TabellVisning/hooks';
-import { useBeregningsdetaljer } from './BeregningsdetaljerForOvergangskull/hooks';
-import { MaanedsbeloepAvansertBeregning } from './MaanedsbeloepAvansertBeregning';
-import { SimuleringAfpOffentligAlert } from './SimuleringAfpOffentligAlert/SimuleringAfpOffentligAlert';
-import { SimuleringEndringBanner } from './SimuleringEndringBanner/SimuleringEndringBanner';
-import { SimuleringGrafNavigation } from './SimuleringGrafNavigation/SimuleringGrafNavigation';
-import { SimuleringPensjonsavtalerAlert } from './SimuleringPensjonsavtalerAlert/SimuleringPensjonsavtalerAlert';
-import { useOffentligTpData, useSimuleringChartLocalState } from './hooks';
-import { getChartTable, getCurrentDateTimeFormatted, getForbeholdAvsnitt, getGrunnlagIngress, getOmstillingsstoenadAlert, getPdfHeadingWithLogo, getTidligstMuligUttakIngressContent } from './pdf-utils';
-
-
-
-import styles from './Simulering.module.scss';
-
-
-
-
+import styles from './Simulering.module.scss'
 
 interface Props {
   isLoading: boolean
@@ -246,7 +267,6 @@ export const Simulering = ({
       return
     }
     isPrintingRef.current = true
-
 
     const forbeholdAvsnitt = getForbeholdAvsnitt(intl)
 
