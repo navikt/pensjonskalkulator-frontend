@@ -18,7 +18,7 @@ export function getChartTable({
     new Set(tableData.flatMap((row) => row.detaljer.map((d) => d.name)))
   )
   detailNames.forEach((name) => {
-    tableHtml += `<th>${name}</th>`
+    tableHtml += `<th style="text-align: right;">${name}</th>`
   })
 
   tableHtml += '</tr></thead><tbody>'

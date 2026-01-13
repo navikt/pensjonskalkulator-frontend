@@ -20,7 +20,7 @@ export const getPdfLink = ({
   displayText: string
 }): string => {
   if (!url) return displayText
-  return `<a href="${url}">${displayText}</a>(${url.substring(8)})`
+  return `<a href="${url}" style="color: #23262A">${displayText}</a><span style="text-decoration: underline"> (${url.substring(8)})</span>`
 }
 
 export const escapeHtml = (input: string): string => {
