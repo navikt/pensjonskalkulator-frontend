@@ -13,7 +13,6 @@ import { PRINT_STYLES } from '@/pdf-view/printStyles'
 import {
   useGetAfpOffentligLivsvarigQuery,
   useGetOmstillingsstoenadOgGjenlevendeQuery,
-  useGetPersonQuery,
   useGetShowDownloadPdfFeatureToggleQuery,
   usePensjonsavtalerQuery,
 } from '@/state/api/apiSlice'
@@ -220,6 +219,15 @@ export const Simulering = ({
 
   const handlePDFRef = useRef<(() => void) | null>(null)
 
+  // Detect mobile once - user agent doesn't change during session
+  const isMobile = React.useMemo(
+    () =>
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        window.navigator.userAgent
+      ),
+    []
+  )
+
   const {
     normertPensjonsalder,
     nedreAldersgrense,
@@ -255,7 +263,8 @@ export const Simulering = ({
     selectAarligInntektFoerUttakBeloepFraSkatt
   )
 
-  const handlePDF = () => {
+  // Generate the PDF content HTML
+  const generatePdfContent = () => {
     const pdfHeadingWithLogo = getPdfHeadingWithLogo(isEnkel)
     const forbeholdAvsnitt = getForbeholdAvsnitt(intl)
 
@@ -299,7 +308,7 @@ export const Simulering = ({
       shouldHideAfpHeading,
     })
 
-    const finalPdfContent =
+    return (
       pdfHeadingWithLogo +
       forbeholdAvsnitt +
       tidligstMuligUttakIngress +
@@ -307,55 +316,55 @@ export const Simulering = ({
       helUttaksAlder +
       chartTableWithHeading +
       grunnlagIngress
+    )
+  }
 
-    const htmlContent = `
-      <!DOCTYPE html>
-      <html lang="nb">
-        <head>
-          <meta charset="UTF-8">
-          <title>Pensjonskalkulator beregning</title>
-          <style>${PRINT_STYLES}</style>
-        </head>
-        <body>
-          ${finalPdfContent}
-        </body>
-      </html>
-    `
+  // Prepare mobile print content (used by both button and native browser print)
+  const prepareMobilePrintContent = () => {
+    const appContentElement = document.getElementById('app-content')
+    const printContentElement = document.getElementById('print-content')
 
-    const isMobile =
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        window.navigator.userAgent
-      )
+    // Skip if already prepared
+    if (printContentElement?.classList.contains('showPrintContent')) {
+      return
+    }
 
+    const finalPdfContent = generatePdfContent()
+
+    if (appContentElement) {
+      appContentElement.classList.add('hideAppContent')
+    }
+
+    if (printContentElement) {
+      printContentElement.classList.add('showPrintContent')
+      printContentElement.innerHTML = `<style>${PRINT_STYLES}</style>${finalPdfContent}`
+    }
+
+    const documentTitle = document.title
+    document.title = ''
+
+    const cleanup = () => {
+      if (printContentElement) {
+        printContentElement.innerHTML = ''
+        printContentElement.classList.remove('showPrintContent')
+      }
+      if (appContentElement) {
+        appContentElement.classList.remove('hideAppContent')
+      }
+      document.title = documentTitle
+      window.removeEventListener('afterprint', cleanup)
+    }
+
+    window.addEventListener('afterprint', cleanup)
+  }
+
+  const prepareMobilePrintContentRef = useRef(prepareMobilePrintContent)
+  prepareMobilePrintContentRef.current = prepareMobilePrintContent
+
+  const handlePDF = () => {
     // Mobile: Use div replacement approach (works better on mobile)
     if (isMobile) {
-      const appContentElement = document.getElementById('app-content')
-      if (appContentElement) {
-        appContentElement.classList.add('hideAppContent')
-      }
-
-      const printContentElement = document.getElementById('print-content')
-      if (printContentElement) {
-        printContentElement.classList.add('showPrintContent')
-        printContentElement.innerHTML = `<style>${PRINT_STYLES}</style>${finalPdfContent}`
-      }
-
-      const documentTitle = document.title
-      document.title = ''
-
-      const cleanup = () => {
-        if (printContentElement) {
-          printContentElement.innerHTML = ''
-          printContentElement.classList.remove('showPrintContent')
-        }
-        if (appContentElement) {
-          appContentElement.classList.remove('hideAppContent')
-        }
-        document.title = documentTitle
-        window.removeEventListener('afterprint', cleanup)
-      }
-
-      window.addEventListener('afterprint', cleanup)
+      prepareMobilePrintContent()
 
       setTimeout(() => {
         window.print()
@@ -365,7 +374,7 @@ export const Simulering = ({
     }
 
     // Desktop: Use popup window approach (avoids mc-ref artifacts for JAWS users)
-    // Size similar to print dialog, centered on screen
+    const finalPdfContent = generatePdfContent()
     const printWindow = window.open('', 'printWindow')
     if (!printWindow) {
       console.error('Could not open print window - popup may be blocked')
@@ -440,12 +449,24 @@ export const Simulering = ({
       }
     }
 
-    window.addEventListener('keydown', handleKeyDown, true) // Use capture phase
+    // On mobile, intercept native browser print via beforeprint event
+    const handleBeforePrint = () => {
+      prepareMobilePrintContentRef.current?.()
+    }
+
+    window.addEventListener('keydown', handleKeyDown, true)
+
+    if (isMobile) {
+      window.addEventListener('beforeprint', handleBeforePrint)
+    }
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown, true)
+      if (isMobile) {
+        window.removeEventListener('beforeprint', handleBeforePrint)
+      }
     }
-  }, [showPDF?.enabled])
+  }, [showPDF?.enabled, isMobile])
 
   // Set up the context ref connection
   useEffect(() => {
