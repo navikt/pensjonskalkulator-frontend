@@ -1,7 +1,7 @@
 // Shared print styles for both iframe and @media print approaches
 export const PRINT_STYLES = `
   @page { margin: 1cm; }
-  body { color: #23262A; font-family: 'Source Sans 3', 'Source Sans Pro', Arial, sans-serif; font-size: 12pt; line-height: 1.4; margin: 0; padding: 20px; }
+  body { color: #23262A; font-family: 'Source Sans 3', 'Source Sans Pro', Arial, sans-serif; font-size: 16px; line-height: 1.4; margin: 0; padding: 20px; }
   h1 { margin: 0; padding-left: 0; text-align: left; }
   h2 { margin-top: 1em; }
   h4 { padding: 1.5em 0 0.5em; }

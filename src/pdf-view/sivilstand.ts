@@ -9,7 +9,7 @@ export const getSivilstandIngress = ({
   intl: IntlShape
   formatertSivilstand: string
 }): string => {
-  const GARANTI_PENSJON_URL = 'https://www.nav.no/minstepensjon'
+  const GARANTI_PENSJON_URL = 'https://nav.no/minstepensjon'
 
   return `<div>
     <div><b>${intl.formatMessage({ id: 'grunnlag.sivilstand.title' })}: </b>${formatertSivilstand}</div>
