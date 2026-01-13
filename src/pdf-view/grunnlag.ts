@@ -1,20 +1,15 @@
-import { IntlShape } from 'react-intl';
+import { IntlShape } from 'react-intl'
 
+import { getAlderspensjonHeading } from '@/components/Simulering/BeregningsdetaljerForOvergangskull/AlderspensjonDetaljerGrunnlag'
+import {
+  AfpDetaljerListe,
+  AlderspensjonDetaljerListe,
+} from '@/components/Simulering/BeregningsdetaljerForOvergangskull/hooks'
+import { getAfpDetaljerTable, getAfpIngress } from '@/pdf-view/afp'
+import { getPdfLink, pdfFormatMessageValues } from '@/pdf-view/utils'
+import { formatInntekt } from '@/utils/inntekt'
 
-
-import { getAlderspensjonHeading } from '@/components/Simulering/BeregningsdetaljerForOvergangskull/AlderspensjonDetaljerGrunnlag';
-import { AfpDetaljerListe, AlderspensjonDetaljerListe } from '@/components/Simulering/BeregningsdetaljerForOvergangskull/hooks';
-import { getAfpDetaljerTable, getAfpIngress } from '@/pdf-view/afp';
-import { getPdfLink, pdfFormatMessageValues } from '@/pdf-view/utils';
-import { formatInntekt } from '@/utils/inntekt';
-
-
-
-import { getAlderspensjonDetaljerTable } from './alderspensjon';
-
-
-
-
+import { getAlderspensjonDetaljerTable } from './alderspensjon'
 
 const DIN_PENSJON_OPPTJENING_URL = 'https://nav.no/pensjon/opptjening'
 
