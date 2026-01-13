@@ -1,17 +1,5 @@
 // Shared print styles for both iframe and @media print approaches
 export const PRINT_STYLES = `
-  @font-face {
-    font-family: 'Source Sans 3';
-    font-style: normal;
-    font-weight: 400;
-    src: url('https://cdn.nav.no/aksel/fonts/SourceSans3-normal.woff2') format('woff2');
-  }
-  @font-face {
-    font-family: 'Source Sans 3';
-    font-style: normal;
-    font-weight: 600;
-    src: url('https://cdn.nav.no/aksel/fonts/SourceSans3-semibold.woff2') format('woff2');
-  }
   @page { margin: 1cm; }
   body { font-family: 'Source Sans 3', 'Source Sans Pro', Arial, sans-serif; font-size: 12pt; line-height: 1.4; margin: 0; padding: 20px; }
   h1 { margin: 0; padding-left: 0; text-align: left; }

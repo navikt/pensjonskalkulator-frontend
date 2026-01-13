@@ -484,7 +484,7 @@ export const Simulering = ({
 
     // Desktop: Use popup window approach (avoids mc-ref artifacts for JAWS users)
     const finalPdfContent = generatePdfContent()
-    const printWindow = window.open('', 'printWindow')
+    const printWindow = window.open('', 'printWindow', 'status')
     if (!printWindow) {
       console.error('Could not open print window - popup may be blocked')
       return
