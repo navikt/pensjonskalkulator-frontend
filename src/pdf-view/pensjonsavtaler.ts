@@ -47,7 +47,7 @@ function getPrivatePensjonsAvtaler(
 ): string {
   if (!privatePensjonsAvtaler) return ''
 
-  const NORSK_PENSJON_URL = 'https://norskpensjon.no/'
+  const NORSK_PENSJON_URL = 'https://norskpensjon.no'
 
   const groupOrder = [
     'individuelle ordninger',

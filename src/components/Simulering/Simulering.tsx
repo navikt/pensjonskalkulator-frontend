@@ -1,19 +1,20 @@
 import clsx from 'clsx'
 import Highcharts, { SeriesColumnOptions, XAxisOptions } from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
-
-
 
 import { HandFingerIcon } from '@navikt/aksel-icons'
 import { BodyLong, BodyShort, Heading, HeadingProps } from '@navikt/ds-react'
 
-
-
 import { TabellVisning } from '@/components/TabellVisning'
 import { BeregningContext } from '@/pages/Beregning/context'
-import { getAfpOffentligAlertsText, getOffentligTjenestePensjonAlertsText, getOmstillingsstoenadAlert, getPrivatePensjonsavtalerAlertsText } from '@/pdf-view/alerts'
+import {
+  getAfpOffentligAlertsText,
+  getOffentligTjenestePensjonAlertsText,
+  getOmstillingsstoenadAlert,
+  getPrivatePensjonsavtalerAlertsText,
+} from '@/pdf-view/alerts'
 import { getChartTable } from '@/pdf-view/chartTable'
 import { getForbeholdAvsnitt } from '@/pdf-view/forbehold'
 import { getGrunnlagIngress } from '@/pdf-view/grunnlag'
@@ -22,20 +23,53 @@ import { getUtenlandsOppholdIngress } from '@/pdf-view/opphold'
 import { getPensjonsavtaler } from '@/pdf-view/pensjonsavtaler'
 import { getSivilstandIngress } from '@/pdf-view/sivilstand'
 import { getTidligstMuligUttakIngress } from '@/pdf-view/tidligtMuligUttak'
-import { useGetAfpOffentligLivsvarigQuery, useGetOmstillingsstoenadOgGjenlevendeQuery, useGetPersonQuery, useGetShowDownloadPdfFeatureToggleQuery, usePensjonsavtalerQuery } from '@/state/api/apiSlice'
+import {
+  useGetAfpOffentligLivsvarigQuery,
+  useGetOmstillingsstoenadOgGjenlevendeQuery,
+  useGetPersonQuery,
+  useGetShowDownloadPdfFeatureToggleQuery,
+  usePensjonsavtalerQuery,
+} from '@/state/api/apiSlice'
 import { isOffentligTpFoer1963 } from '@/state/api/typeguards'
 import { generatePensjonsavtalerRequestBody } from '@/state/api/utils'
 import { useAppSelector } from '@/state/hooks'
-import { selectAarligInntektFoerUttakBeloepFraSkatt, selectAfp, selectAfpUtregningValg, selectCurrentSimulation, selectEpsHarInntektOver2G, selectEpsHarPensjon, selectErApoteker, selectFoedselsdato, selectHarUtenlandsopphold, selectIsEndring, selectLoependeVedtak, selectSamtykke, selectSamtykkeOffentligAFP, selectSivilstand, selectSkalBeregneAfpKap19, selectUfoeregrad, selectUtenlandsperioder } from '@/state/userInput/selectors'
+import {
+  selectAarligInntektFoerUttakBeloepFraBrukerInput,
+  selectAarligInntektFoerUttakBeloepFraSkatt,
+  selectAfp,
+  selectAfpUtregningValg,
+  selectCurrentSimulation,
+  selectEpsHarInntektOver2G,
+  selectEpsHarPensjon,
+  selectErApoteker,
+  selectFoedselsdato,
+  selectHarUtenlandsopphold,
+  selectIsEndring,
+  selectLoependeVedtak,
+  selectSamtykke,
+  selectSamtykkeOffentligAFP,
+  selectSivilstand,
+  selectSkalBeregneAfpKap19,
+  selectUfoeregrad,
+  selectUtenlandsperioder,
+} from '@/state/userInput/selectors'
 import { formatUttaksalder, isAlderOver62 } from '@/utils/alder'
-import { useTidligstMuligUttak, useTidligstMuligUttakConditions } from '@/utils/hooks/useTidligstMuligUttakData'
+import {
+  useTidligstMuligUttak,
+  useTidligstMuligUttakConditions,
+} from '@/utils/hooks/useTidligstMuligUttakData'
 import { formatSivilstand } from '@/utils/sivilstand'
 
-
-
+import { PRINT_STYLES } from '../../pdf-view/printStyles'
 import { generateAfpContent } from '../Grunnlag/GrunnlagAFP/utils'
-import { useOppholdUtenforNorge, useSortedUtenlandsperioder } from '../Grunnlag/GrunnlagUtenlandsopphold/hooks'
-import { useOffentligTjenestePensjonAlertList, usePrivatePensjonsAvtalerAlertList } from '../Pensjonsavtaler/hooks'
+import {
+  useOppholdUtenforNorge,
+  useSortedUtenlandsperioder,
+} from '../Grunnlag/GrunnlagUtenlandsopphold/hooks'
+import {
+  useOffentligTjenestePensjonAlertList,
+  usePrivatePensjonsAvtalerAlertList,
+} from '../Pensjonsavtaler/hooks'
 import { groupPensjonsavtalerByType } from '../Pensjonsavtaler/utils'
 import { useTableData } from '../TabellVisning/hooks'
 import { useBeregningsdetaljer } from './BeregningsdetaljerForOvergangskull/hooks'
@@ -44,7 +78,11 @@ import { SimuleringAfpOffentligAlert } from './SimuleringAfpOffentligAlert/Simul
 import { SimuleringEndringBanner } from './SimuleringEndringBanner/SimuleringEndringBanner'
 import { SimuleringGrafNavigation } from './SimuleringGrafNavigation/SimuleringGrafNavigation'
 import { SimuleringPensjonsavtalerAlert } from './SimuleringPensjonsavtalerAlert/SimuleringPensjonsavtalerAlert'
-import { useAfpOffentligAlerts, useOffentligTpData, useSimuleringChartLocalState } from './hooks'
+import {
+  useAfpOffentligAlerts,
+  useOffentligTpData,
+  useSimuleringChartLocalState,
+} from './hooks'
 
 import styles from './Simulering.module.scss'
 
@@ -214,13 +252,16 @@ export const Simulering = ({
   const { data: omstillingsstoenadOgGjenlevende } =
     useGetOmstillingsstoenadOgGjenlevendeQuery()
 
-  const isPrintingRef = useRef(false)
-  const isInBeforePrintRef = useRef(false)
   const handlePDFRef = useRef<(() => void) | null>(null)
 
-  const isSafari = (): boolean => {
-    return /^((?!chrome|android).)*safari/i.test(window.navigator.userAgent)
-  }
+  // Detect mobile once - user agent doesn't change during session
+  const isMobile = React.useMemo(
+    () =>
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        window.navigator.userAgent
+      ),
+    []
+  )
 
   const {
     normertPensjonsalder,
@@ -282,16 +323,10 @@ export const Simulering = ({
     [sivilstand]
   )
 
-  const handlePDF = () => {
-    const appContentElement = document.getElementById('app-content')
-    if (appContentElement) {
-      appContentElement.classList.add('hideAppContent')
-    }
-
-    const printContentElement = document.getElementById('print-content')
-    if (printContentElement) {
-      printContentElement.classList.add('showPrintContent')
-    }
+  const aarligInntektFoerUttakBeloepFraBrukerInput = useAppSelector(
+    selectAarligInntektFoerUttakBeloepFraBrukerInput
+  )
+  const generatePdfContent = () => {
     const pdfHeader = getPdfHeader({ isEnkel, person })
 
     const forbeholdAvsnitt = getForbeholdAvsnitt(intl)
@@ -331,6 +366,7 @@ export const Simulering = ({
       intl,
       alderspensjonDetaljerListe: alderspensjonDetaljerListe,
       aarligInntektFoerUttakBeloepFraSkatt,
+      aarligInntektFoerUttakBeloepFraBrukerInput,
       afpDetaljerListe,
       title,
       content,
@@ -376,7 +412,7 @@ export const Simulering = ({
         ${getSivilstandIngress({ intl, formatertSivilstand })}
         ${getUtenlandsOppholdIngress({ intl, oppholdUtenforNorge, sortedUtenlandsperioder })}`
 
-    const finalPdfContent =
+    return (
       pdfHeader +
       forbeholdAvsnitt +
       tidligstMuligUttakIngress +
@@ -389,41 +425,95 @@ export const Simulering = ({
       privatePensjonsavtalerAlertsMessage +
       offentligTjenestePensjonAlertsMessage +
       omDegIngress
+    )
+  }
 
-    // Set the print content in the hidden div
-    const printContentDiv = document.getElementById('print-content')
-    if (printContentDiv) {
-      printContentDiv.innerHTML = finalPdfContent
+  // Prepare mobile print content (used by both button and native browser print)
+  const prepareMobilePrintContent = () => {
+    const appContentElement = document.getElementById('app-content')
+    const printContentElement = document.getElementById('print-content')
+
+    // Skip if already prepared
+    if (printContentElement?.classList.contains('showPrintContent')) {
+      return
+    }
+
+    const finalPdfContent = generatePdfContent()
+
+    if (appContentElement) {
+      appContentElement.classList.add('hideAppContent')
+    }
+
+    if (printContentElement) {
+      printContentElement.classList.add('showPrintContent')
+      printContentElement.innerHTML = `<style>${PRINT_STYLES}</style>${finalPdfContent}`
     }
 
     const documentTitle = document.title
-    document.title = '' // Ikke vis document title i print preview/PDF
+    document.title = ''
 
     const cleanup = () => {
-      isPrintingRef.current = false
-      if (printContentDiv) {
-        printContentDiv.innerHTML = ''
-        document.title = documentTitle
+      if (printContentElement) {
+        printContentElement.innerHTML = ''
+        printContentElement.classList.remove('showPrintContent')
       }
       if (appContentElement) {
         appContentElement.classList.remove('hideAppContent')
       }
-      if (printContentElement) {
-        printContentElement.classList.remove('showPrintContent')
-      }
+      document.title = documentTitle
+      window.removeEventListener('afterprint', cleanup)
     }
 
-    window.onafterprint = cleanup
+    window.addEventListener('afterprint', cleanup)
+  }
 
-    // Only call window.print() if not already in a print context (from beforeprint event)
-    // This prevents Safari from showing "webpage is trying to print" warning
-    if (!isInBeforePrintRef.current) {
-      if (isSafari()) {
-        setTimeout(() => window.print(), 100)
-      } else {
+  const prepareMobilePrintContentRef = useRef(prepareMobilePrintContent)
+  prepareMobilePrintContentRef.current = prepareMobilePrintContent
+
+  const handlePDF = () => {
+    // Mobile: Use div replacement approach (works better on mobile)
+    if (isMobile) {
+      prepareMobilePrintContent()
+
+      setTimeout(() => {
         window.print()
-      }
+      }, 100)
+
+      return
     }
+
+    // Desktop: Use popup window approach (avoids mc-ref artifacts for JAWS users)
+    const finalPdfContent = generatePdfContent()
+    const printWindow = window.open('', 'printWindow')
+    if (!printWindow) {
+      console.error('Could not open print window - popup may be blocked')
+      return
+    }
+
+    // Set document content using modern DOM APIs instead of deprecated document.write
+    const doc = printWindow.document
+    doc.documentElement.innerHTML = `
+      <head>
+        <meta charset="UTF-8">
+  
+        <title>Pensjonskalkulator beregning</title>
+        <style>${PRINT_STYLES}</style>
+      </head>
+      <body>
+        <div class="print-overlay">Laster ...</div>
+        ${finalPdfContent}
+      </body>
+    `
+    doc.documentElement.setAttribute('lang', 'nb')
+
+    // Close window immediately when print dialog closes (print or cancel)
+    printWindow.onafterprint = () => {
+      printWindow.close()
+    }
+
+    // Trigger print immediately
+    printWindow.focus()
+    printWindow.print()
   }
 
   useEffect(() => {
@@ -431,27 +521,40 @@ export const Simulering = ({
   })
 
   useEffect(() => {
-    const handleBeforePrint = () => {
-      if (!isPrintingRef.current) {
-        const locationUrl = window.location.href
-        if (locationUrl.includes('beregning') && showPDF?.enabled) {
-          isPrintingRef.current = true
-          isInBeforePrintRef.current = true
-          handlePDFRef.current?.()
-          // Reset the flag after handlePDF completes
-          setTimeout(() => {
-            isInBeforePrintRef.current = false
-          }, 0)
-        }
+    const locationUrl = window.location.href
+    if (!locationUrl.includes('beregning') || !showPDF?.enabled) {
+      return
+    }
+
+    // Intercept Cmd+P / Ctrl+P to use our custom print
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'p') {
+        e.preventDefault()
+        e.stopPropagation()
+        e.stopImmediatePropagation()
+        handlePDFRef.current?.()
+        return false
       }
     }
 
-    window.addEventListener('beforeprint', handleBeforePrint)
+    // On mobile, intercept native browser print via beforeprint event
+    const handleBeforePrint = () => {
+      prepareMobilePrintContentRef.current?.()
+    }
+
+    window.addEventListener('keydown', handleKeyDown, true)
+
+    if (isMobile) {
+      window.addEventListener('beforeprint', handleBeforePrint)
+    }
 
     return () => {
-      window.removeEventListener('beforeprint', handleBeforePrint)
+      window.removeEventListener('keydown', handleKeyDown, true)
+      if (isMobile) {
+        window.removeEventListener('beforeprint', handleBeforePrint)
+      }
     }
-  }, [showPDF?.enabled])
+  }, [showPDF?.enabled, isMobile])
 
   // Set up the context ref connection
   useEffect(() => {

@@ -1,22 +1,28 @@
-import { IntlShape } from 'react-intl'
+import { IntlShape } from 'react-intl';
 
-import { getAlderspensjonHeading } from '@/components/Simulering/BeregningsdetaljerForOvergangskull/AlderspensjonDetaljerGrunnlag'
-import {
-  AfpDetaljerListe,
-  AlderspensjonDetaljerListe,
-} from '@/components/Simulering/BeregningsdetaljerForOvergangskull/hooks'
-import { getAfpDetaljerTable, getAfpIngress } from '@/pdf-view/afp'
-import { getPdfLink, pdfFormatMessageValues } from '@/pdf-view/utils'
-import { formatInntekt } from '@/utils/inntekt'
 
-import { getAlderspensjonDetaljerTable } from './alderspensjon'
 
-const DIN_PENSJON_OPPTJENING_URL = 'https://www.nav.no/pensjon/opptjening'
+import { getAlderspensjonHeading } from '@/components/Simulering/BeregningsdetaljerForOvergangskull/AlderspensjonDetaljerGrunnlag';
+import { AfpDetaljerListe, AlderspensjonDetaljerListe } from '@/components/Simulering/BeregningsdetaljerForOvergangskull/hooks';
+import { getAfpDetaljerTable, getAfpIngress } from '@/pdf-view/afp';
+import { getPdfLink, pdfFormatMessageValues } from '@/pdf-view/utils';
+import { formatInntekt } from '@/utils/inntekt';
+
+
+
+import { getAlderspensjonDetaljerTable } from './alderspensjon';
+
+
+
+
+
+const DIN_PENSJON_OPPTJENING_URL = 'https://nav.no/pensjon/opptjening'
 
 export function getGrunnlagIngress({
   intl,
   alderspensjonDetaljerListe,
   aarligInntektFoerUttakBeloepFraSkatt,
+  aarligInntektFoerUttakBeloepFraBrukerInput,
   afpDetaljerListe,
   title,
   content,
@@ -32,6 +38,7 @@ export function getGrunnlagIngress({
     beloep: string
     aar: number
   }
+  aarligInntektFoerUttakBeloepFraBrukerInput: string | null
   title?: string
   content?: string
   hasPre2025OffentligAfpUttaksalder: boolean
@@ -61,7 +68,13 @@ export function getGrunnlagIngress({
     }
   )
   return `<h2>${intl.formatMessage({ id: 'grunnlag.title' })}</h2>
-  <h3>${intl.formatMessage({ id: 'grunnlag2.endre_inntekt.title' })}</h3>
+  <h3>${intl.formatMessage(
+    { id: 'grunnlag2.endre_inntekt.title' },
+    {
+      ...pdfFormatMessageValues,
+      beloep: aarligInntektFoerUttakBeloepFraBrukerInput ?? beloepFormatted,
+    }
+  )}</h3>
   
   <p>${inntektBeloepOgÅr} avansert kalkulator.</p>
   
@@ -104,7 +117,7 @@ export function getGrunnlagIngress({
   })}</div>
 
   <div>${getPdfLink({
-    url: 'https://www.nav.no/alderspensjon#beregning',
+    url: 'https://nav.no/alderspensjon#beregning',
     displayText: 'Om reglene for alderspensjon ',
   })}
   </div>

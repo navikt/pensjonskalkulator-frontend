@@ -24,12 +24,12 @@ export function getAfpIngress(
         ...pdfFormatMessageValues,
         afpLink: (chunks: string[]) =>
           getPdfLink({
-            url: 'https://www.afp.no',
+            url: 'https://afp.no',
             displayText: chunks.join('') || 'Fellesordningen for AFP',
           }),
         ufoeretrygdOgAfpLink: (chunks: string[]) =>
           getPdfLink({
-            url: 'https://www.nav.no/ufor-til-pensjon#afp',
+            url: 'https://nav.no/ufor-til-pensjon#afp',
             displayText: chunks.join('') || 'Uføretrygd og AFP',
           }),
         goToAFP: (chunks: string[]) =>
