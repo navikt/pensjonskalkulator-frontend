@@ -170,11 +170,13 @@ function getOffentligTpTable({
       ? `${formatInntekt(String(periode.aarligUtbetaling)).replace(/\u00A0/g, ' ')} kr`
       : ''
 
-    rows += `<tr style='${lastRowStyle}'>${produktCell}<td style='text-align:left;'>${escapeHtml(
+    rows += `<tr style='${lastRowStyle}'>${produktCell}<td style='text-align:left;'>
+    ${escapeHtml(
       periodText
     )}</td><td style='text-align:right;'>${escapeHtml(String(amount))}</td></tr>`
   })
 
   html += `<table class="pdf-table-type2" style="width: 60%"><thead><tr><th style='text-align:left;'>Avtale</th><th style='text-align:left;'>Perioder</th><th style='text-align:right;'>Årlig Beløp</th></tr></thead><tbody>${rows}</tbody></table>`
-  return html
+
+  return rows.length ? html : ''
 }

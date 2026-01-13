@@ -376,9 +376,9 @@ export const Simulering = ({
       shouldHideAfpHeading,
     })
 
-    const gruppertePensjonsavtaler =
-      pensjonsavtalerData?.avtaler &&
-      groupPensjonsavtalerByType(pensjonsavtalerData?.avtaler)
+    const gruppertePensjonsavtaler = pensjonsavtalerData?.avtaler
+      ? groupPensjonsavtalerByType(pensjonsavtalerData?.avtaler)
+      : undefined
 
     const privatePensjonsavtalerAlertsMessage =
       getPrivatePensjonsavtalerAlertsText({
@@ -393,12 +393,12 @@ export const Simulering = ({
         intl,
       })
 
-    const afpOffentligAlertsMessage =
-      afpOffentligAlertsList &&
-      getAfpOffentligAlertsText({
-        afpOffentligAlertsList,
-        intl,
-      })
+    const afpOffentligAlertsMessage = afpOffentligAlertsList
+      ? getAfpOffentligAlertsText({
+          afpOffentligAlertsList,
+          intl,
+        })
+      : ''
 
     const pensjonsavtaler = harSamtykket
       ? getPensjonsavtaler({
@@ -511,9 +511,11 @@ export const Simulering = ({
       printWindow.close()
     }
 
-    // Trigger print immediately
-    printWindow.focus()
-    printWindow.print()
+    // Wait for fonts to load before printing to ensure consistent font rendering
+    printWindow.document.fonts.ready.then(() => {
+      printWindow.focus()
+      printWindow.print()
+    })
   }
 
   useEffect(() => {
