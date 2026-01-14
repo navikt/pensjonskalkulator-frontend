@@ -10,11 +10,14 @@ on:
       - dreambox
       - coffeebox
       - codebox
-    paths-ignore:
-      - '.gitignore'
-      - 'CODEOWNERS'
-      - 'LICENSE.md'
-      - 'README.md'
+    paths:
+      - 'sanity/**'
+      - 'sanity.cli.ts'
+      - 'sanity.config.ts'
+      - 'tsconfig.sanity.json'
+      - '.docker/Dockerfile-sanity'
+      - '.nais/deploy-sanity-*.yml'
+      - '.github/workflows/deploy-sanity.yaml'
   workflow_dispatch:
     inputs:
       sanity:
