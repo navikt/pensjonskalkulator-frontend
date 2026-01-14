@@ -67,7 +67,7 @@ export function getOffentligTjenestePensjonAlertsText({
       alert.hasLeverandoerList && leverandoerList
         ? formatLeverandoerList(intl.locale, leverandoerList)
         : undefined
-    const heading = `<h4>${intl.formatMessage({ id: 'pensjonsavtaler.offentligtp.title' }, { chunk: chunk ? chunk : undefined })}</h4>`
+    const heading = `<h4>${intl.formatMessage({ id: 'pensjonsavtaler.offentligtp.title' }, { ...pdfFormatMessageValues, chunk: chunk ?? '' })}</h4>`
 
     return `${heading}
       <table role='presentation' class='alert-box' style='width: 100%; margin-bottom: 1em;'>
@@ -102,6 +102,12 @@ export function getAfpOffentligAlertsText({
   }
   intl: IntlShape
 }): string {
+  if (
+    afpOffentligAlertsList.text ===
+    'beregning.alert.info.afp-offentlig-livsvarig'
+  ) {
+    return ''
+  }
   const alertIcon =
     afpOffentligAlertsList.variant === 'info'
       ? INFO_SQUARE_ICON
