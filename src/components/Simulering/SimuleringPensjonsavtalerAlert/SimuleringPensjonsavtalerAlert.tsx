@@ -4,10 +4,15 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { Alert, Link } from '@navikt/ds-react'
 
 import { BeregningContext } from '@/pages/Beregning/context'
+import { isOffentligTpFoer1963 } from '@/state/api/typeguards'
 import { useAppSelector } from '@/state/hooks'
-import { selectIsEndring } from '@/state/userInput/selectors'
+import {
+  selectIsEndring,
+  selectSkalBeregneAfpKap19,
+} from '@/state/userInput/selectors'
 import { ALERT_VIST } from '@/utils/loggerConstants'
 import { logger } from '@/utils/logging'
+import { getFormatMessageValues } from '@/utils/translations'
 
 import styles from './SimuleringPensjonsavtalerAlert.module.scss'
 
@@ -31,8 +36,9 @@ interface Props {
   }
   offentligTp: {
     isError: boolean
-    data?: OffentligTp
+    data?: OffentligTp | OffentligTpFoer1963
   }
+  erOffentligTpFoer1963?: boolean
   isPensjonsavtaleFlagVisible: boolean
 }
 
@@ -40,10 +46,12 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
   pensjonsavtaler,
   offentligTp,
   isPensjonsavtaleFlagVisible,
+  erOffentligTpFoer1963,
 }) => {
   const intl = useIntl()
   const { pensjonsavtalerShowMoreRef } = React.useContext(BeregningContext)
   const isEndring = useAppSelector(selectIsEndring)
+  const skalBeregneAfpKap19 = useAppSelector(selectSkalBeregneAfpKap19)
   const {
     isLoading: isPensjonsavtalerLoading,
     isSuccess: isPensjonsavtalerSuccess,
@@ -56,6 +64,25 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
     variant: AlertVariant
     text: string
   }> = []
+
+  if (
+    skalBeregneAfpKap19 &&
+    offentligTpData &&
+    erOffentligTpFoer1963 &&
+    isOffentligTpFoer1963(offentligTpData) &&
+    offentligTpData.feilkode === 'OPPFYLLER_IKKE_INNGANGSVILKAAR'
+  ) {
+    const text = 'beregning.pensjonsavtaler.alert.afp_offentlig.error'
+    const variant = ALERT_VARIANTS.WARNING
+    logger(ALERT_VIST, {
+      tekst: `Pensjonsavtaler:`,
+      variant,
+    })
+    alertsList.push({
+      variant,
+      text,
+    })
+  }
 
   // Varselet om at avtaler starter tidligere enn uttakstidspunkt skal være øverst av varslene
   if (!isPensjonsavtalerLoading && isPensjonsavtaleFlagVisible) {
@@ -78,10 +105,17 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
       pensjonsavtalerData?.partialResponse &&
       pensjonsavtalerData?.avtaler.length === 0
 
+    const harInngangsvilkaarFeilUtenAfp =
+      !skalBeregneAfpKap19 &&
+      erOffentligTpFoer1963 &&
+      isOffentligTpFoer1963(offentligTpData) &&
+      offentligTpData?.feilkode === 'OPPFYLLER_IKKE_INNGANGSVILKAAR'
+
     const isOffentligTpUkomplett =
       offentligTpData?.simuleringsresultatStatus ===
         'TOM_SIMULERING_FRA_TP_ORDNING' ||
-      offentligTpData?.simuleringsresultatStatus === 'TEKNISK_FEIL'
+      offentligTpData?.simuleringsresultatStatus === 'TEKNISK_FEIL' ||
+      harInngangsvilkaarFeilUtenAfp
 
     const isOffentligTpOK =
       offentligTpData &&
@@ -172,6 +206,8 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
     pensjonsavtalerData,
     isOffentligTpError,
     offentligTpData,
+    skalBeregneAfpKap19,
+    erOffentligTpFoer1963,
   ])
 
   if (pensjonsavtaleAlert) {
@@ -216,10 +252,12 @@ export const SimuleringPensjonsavtalerAlert: React.FC<Props> = ({
           className={styles.alert}
           {...(index === 1 && { style: { margin: '16px 0' } })}
           inline={alert.variant === ALERT_VARIANTS.INLINE_INFO}
+          role="alert"
         >
           <FormattedMessage
             id={alert.text}
             values={{
+              ...getFormatMessageValues(),
               // eslint-disable-next-line react/no-unstable-nested-components
               scrollTo: (chunk) => (
                 <Link

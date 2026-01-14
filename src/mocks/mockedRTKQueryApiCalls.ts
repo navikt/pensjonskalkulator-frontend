@@ -1,5 +1,6 @@
 export const personMock: Person = {
-  navn: 'Aprikos',
+  navn: 'Aprikos Nordmann',
+  fornavn: 'Aprikos',
   sivilstand: 'UGIFT',
   foedselsdato: '1963-04-30',
   pensjoneringAldre: {
@@ -35,7 +36,7 @@ export const fulfilledPre1963GetPerson = {
     requestId: 'xTaE6mOydr5ZI75UXq4Wi',
     startedTimeStamp: 1688046411971,
     data: {
-      navn: 'Aprikos',
+      fornavn: 'Aprikos',
       sivilstand: 'UGIFT',
       foedselsdato: '1960-04-30',
       pensjoneringAldre: {
@@ -64,7 +65,7 @@ export const fulfilledGetPersonEldreEnnAfpUfoereOppsigelsesalder = {
     requestId: 'xTaE6mOydr5ZI75UXq4Wi',
     startedTimeStamp: 1688046411971,
     data: {
-      navn: 'Aprikos',
+      fornavn: 'Aprikos',
       sivilstand: 'UGIFT',
       foedselsdato: '1963-01-30',
       pensjoneringAldre: {
@@ -93,7 +94,7 @@ export const fulfilledGetPersonYngreEnnAfpUfoereOppsigelsesalder = {
     requestId: 'xTaE6mOydr5ZI75UXq4Wi',
     startedTimeStamp: 1688046411971,
     data: {
-      navn: 'Aprikos',
+      fornavn: 'Aprikos',
       sivilstand: 'UGIFT',
       foedselsdato: '1990-01-30',
       pensjoneringAldre: {
@@ -122,7 +123,7 @@ export const fulfilledGetPersonMedOekteAldersgrenser = {
     requestId: 'xTaE6mOydr5ZI75UXq4Wi',
     startedTimeStamp: 1688046411971,
     data: {
-      navn: 'Aprikos',
+      fornavn: 'Aprikos',
       sivilstand: 'UGIFT',
       foedselsdato: '1963-04-30',
       pensjoneringAldre: {
@@ -162,7 +163,7 @@ export const fulfilledGetPersonMedSamboer = {
     requestId: 'xTaE6mOydr5ZI75UXq4Wi',
     startedTimeStamp: 1688046411971,
     data: {
-      navn: 'Aprikos',
+      fornavn: 'Aprikos',
       sivilstand: 'GIFT',
       foedselsdato: '1963-04-30',
       pensjoneringAldre: {
@@ -300,6 +301,7 @@ export const fulfilledGetLoependeVedtakLoependeAlderspensjon = {
       harLoependeVedtak: true,
       alderspensjon: {
         grad: 100,
+        uttaksgradFom: '2020-10-02',
         fom: '2020-10-02',
         sivilstand: 'UGIFT',
       },
@@ -322,6 +324,7 @@ export const fulfilledGetLoependeVedtakLoependeAlderspensjonMedSisteUtbetaling =
         harLoependeVedtak: true,
         alderspensjon: {
           grad: 100,
+          uttaksgradFom: '2020-10-02',
           fom: '2020-10-02',
           sisteUtbetaling: {
             beloep: 34000,
@@ -347,6 +350,7 @@ export const fulfilledGetLoependeVedtakLoepende50Alderspensjon = {
       harLoependeVedtak: true,
       alderspensjon: {
         grad: 50,
+        uttaksgradFom: '2020-10-02',
         fom: '2020-10-02',
         sivilstand: 'UGIFT',
       },
@@ -368,6 +372,7 @@ export const fulfilledGetLoependeVedtakLoependeAlderspensjonOg40Ufoeretrygd = {
       harLoependeVedtak: true,
       alderspensjon: {
         grad: 100,
+        uttaksgradFom: '2020-10-02',
         fom: '2020-10-02',
         sivilstand: 'UGIFT',
       },
@@ -389,6 +394,7 @@ export const fulfilledGetLoependeVedtakLoependeAFPprivat = {
       harLoependeVedtak: true,
       alderspensjon: {
         grad: 0,
+        uttaksgradFom: '2020-10-02',
         fom: '2020-10-02',
         sivilstand: 'UGIFT',
       },
@@ -451,6 +457,7 @@ export const fulfilledGetLoependeVedtakLoepende0Alderspensjon100Ufoeretrygd = {
       harLoependeVedtak: true,
       alderspensjon: {
         grad: 0,
+        uttaksgradFom: '2020-10-02',
         fom: '2020-10-02',
         sivilstand: 'UGIFT',
       },
@@ -492,6 +499,7 @@ export const fulfilledGetLoependeVedtakFremtidigMedAlderspensjon = {
       harLoependeVedtak: true,
       alderspensjon: {
         grad: 100,
+        uttaksgradFom: '2020-10-02',
         fom: '2020-10-02',
         sivilstand: 'UGIFT',
       },
@@ -566,6 +574,22 @@ export const fulfilledAlderspensjonForLiteTrygdetid = {
       harForLiteTrygdetid: true,
     },
 
+    fulfilledTimeStamp: 1688046412103,
+  },
+}
+
+export const fulfilledGetAfpOffentligLivsvarigFalse = {
+  ['getAfpOffentligLivsvarig(undefined)']: {
+    status: 'fulfilled',
+    endpointName: 'getAfpOffentligLivsvarig',
+    requestId: 'xTaE6mOydr5ZI75UXq4Wi',
+    startedTimeStamp: 1688046411971,
+    data: {
+      afpStatus: false,
+      maanedligBeloep: null,
+      virkningFom: undefined,
+      sistBenyttetGrunnbeloep: undefined,
+    },
     fulfilledTimeStamp: 1688046412103,
   },
 }

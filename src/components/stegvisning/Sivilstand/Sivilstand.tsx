@@ -195,7 +195,12 @@ export function Sivilstand({
   return (
     <Card hasLargePadding hasMargin>
       <form onSubmit={onSubmit}>
-        <Heading level="2" size="medium" spacing>
+        <Heading
+          level="2"
+          size="medium"
+          spacing
+          data-testid="stegvisning.sivilstand.title"
+        >
           <FormattedMessage id="stegvisning.sivilstand.title" />
         </Heading>
         <BodyLong size="large" className={styles.ingress}>
@@ -252,6 +257,7 @@ export function Sivilstand({
                 id: 'stegvisning.sivilstand.radio_epsHarPensjon_description',
               })}
               name="epsHarPensjon"
+              data-testid="stegvisning.sivilstand.radio_epsHarPensjon_label"
               value={epsHarPensjonInput}
               onChange={setEpsHarPensjonInput}
               error={validationError.epsHarPensjon}
@@ -280,6 +286,7 @@ export function Sivilstand({
               description={intl.formatMessage({
                 id: 'stegvisning.sivilstand.radio_epsHarInntektOver2G_description',
               })}
+              data-testid="stegvisning.sivilstand.radio_epsHarInntektOver2G_label"
               value={epsHarInntektOver2GInput}
               onChange={(value: 'ja' | 'nei') =>
                 setEpsHarInntektOver2GInput(value)

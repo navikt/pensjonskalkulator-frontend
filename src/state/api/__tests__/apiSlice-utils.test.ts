@@ -10,6 +10,7 @@ import {
 import {
   generateAlderspensjonEnkelRequestBody,
   generateAlderspensjonRequestBody,
+  generateOffentligTpFoer1963RequestBody,
   generateOffentligTpRequestBody,
   generatePensjonsavtalerRequestBody,
   generateTidligstMuligHeltUttakRequestBody,
@@ -224,6 +225,7 @@ describe('apiSlice - utils', () => {
       epsHarInntektOver2G: null,
       aarligInntektFoerUttakBeloep: '0',
       utenlandsperioder: [],
+      loependeLivsvarigAfpOffentlig: null,
     }
     it('returnerer riktig simuleringstype', () => {
       expect(
@@ -264,6 +266,7 @@ describe('apiSlice - utils', () => {
             harLoependeVedtak: true,
             alderspensjon: {
               grad: 50,
+              uttaksgradFom: '2012-12-12',
               fom: '2012-12-12',
               sivilstand: 'UGIFT',
             },
@@ -279,6 +282,7 @@ describe('apiSlice - utils', () => {
             harLoependeVedtak: true,
             alderspensjon: {
               grad: 50,
+              uttaksgradFom: '2012-12-12',
               fom: '2012-12-12',
               sivilstand: 'UGIFT',
             },
@@ -411,6 +415,7 @@ describe('apiSlice - utils', () => {
       uttaksalder: { aar: 68, maaneder: 3 },
       uttaksgrad: 100,
       utenlandsperioder: [],
+      loependeLivsvarigAfpOffentlig: null,
     }
     it('returnerer undefined når foedselsdato, eller startAlder er null', () => {
       expect(
@@ -478,6 +483,7 @@ describe('apiSlice - utils', () => {
             harLoependeVedtak: true,
             alderspensjon: {
               grad: 50,
+              uttaksgradFom: '2012-12-12',
               fom: '2012-12-12',
               sivilstand: 'UGIFT',
             },
@@ -492,6 +498,7 @@ describe('apiSlice - utils', () => {
             harLoependeVedtak: true,
             alderspensjon: {
               grad: 50,
+              uttaksgradFom: '2012-12-12',
               fom: '2012-12-12',
               sivilstand: 'UGIFT',
             },
@@ -507,6 +514,7 @@ describe('apiSlice - utils', () => {
             harLoependeVedtak: true,
             alderspensjon: {
               grad: 50,
+              uttaksgradFom: '2012-12-12',
               fom: '2012-12-12',
               sivilstand: 'UGIFT',
             },
@@ -608,6 +616,7 @@ describe('apiSlice - utils', () => {
         },
       },
       utenlandsperioder: [],
+      loependeLivsvarigAfpOffentlig: null,
     }
     it('returnerer undefined når foedselsdato, eller heltUttak er null/undefined', () => {
       expect(
@@ -675,7 +684,12 @@ describe('apiSlice - utils', () => {
           ...args,
           loependeVedtak: {
             harLoependeVedtak: true,
-            alderspensjon: { grad: 60, fom: '2010-10-10', sivilstand: 'UGIFT' },
+            alderspensjon: {
+              grad: 60,
+              uttaksgradFom: '2020-10-10',
+              fom: '2010-10-10',
+              sivilstand: 'UGIFT',
+            },
             ufoeretrygd: { grad: 0 },
           },
         })?.simuleringstype
@@ -686,7 +700,12 @@ describe('apiSlice - utils', () => {
           afp: null,
           loependeVedtak: {
             harLoependeVedtak: true,
-            alderspensjon: { grad: 60, fom: '2010-10-10', sivilstand: 'UGIFT' },
+            alderspensjon: {
+              grad: 60,
+              uttaksgradFom: '2010-10-10',
+              fom: '2010-10-10',
+              sivilstand: 'UGIFT',
+            },
             ufoeretrygd: { grad: 0 },
           },
         })?.simuleringstype
@@ -1165,6 +1184,59 @@ describe('apiSlice - utils', () => {
           },
         ],
       })
+    })
+  })
+
+  describe('generateOffentligTpFoer1963RequestBody', () => {
+    const requestBody = {
+      foedselsdato: '1962-04-30',
+      aarligInntektFoerUttakBeloep: '500 000',
+      heltUttak: { uttaksalder: { aar: 67, maaneder: 0 } },
+      utenlandsperioder: [],
+      epsHarPensjon: null,
+      epsHarInntektOver2G: null,
+      skalBeregneKunAlderspensjon: false,
+      skalBeregneAfpKap19: true,
+    }
+
+    it('returnerer undefined når foedselsdato eller heltUttak ikke er oppgitt', () => {
+      expect(
+        generateOffentligTpFoer1963RequestBody({
+          ...requestBody,
+          foedselsdato: null,
+        })
+      ).toEqual(undefined)
+      expect(
+        generateOffentligTpFoer1963RequestBody({
+          ...requestBody,
+          heltUttak: undefined,
+        })
+      ).toEqual(undefined)
+    })
+
+    it('returnerer riktig simuleringstype for pre-2025 offentlig AFP', () => {
+      expect(
+        generateOffentligTpFoer1963RequestBody({
+          ...requestBody,
+        })?.simuleringstype
+      ).toEqual('PRE2025_OFFENTLIG_AFP_ETTERFULGT_AV_ALDERSPENSJON')
+    })
+
+    it('returnerer riktig stillingsprosentOffHeltUttak', () => {
+      expect(
+        generateOffentligTpFoer1963RequestBody({
+          ...requestBody,
+        })?.stillingsprosentOffHeltUttak
+      ).toEqual('0')
+    })
+
+    it('formaterer foedselsdato korrekt', () => {
+      expect(
+        generateOffentligTpFoer1963RequestBody({
+          ...requestBody,
+          foedselsdato: '1962-04-30',
+        })?.foedselsdato
+      ).toEqual('1962-04-30')
     })
   })
 })
