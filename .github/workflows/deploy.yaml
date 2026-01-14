@@ -29,6 +29,9 @@ jobs:
     permissions:
       id-token: 'write'
     steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
       - name: Setup Node.js
         uses: ./.github/actions/setup-node
         with:
@@ -75,6 +78,9 @@ jobs:
     strategy:
       fail-fast: true
     steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
       - name: Setup Node.js
         uses: ./.github/actions/setup-node
         with:
@@ -96,6 +102,9 @@ jobs:
     strategy:
       fail-fast: true
     steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
       - name: Setup Node.js
         uses: ./.github/actions/setup-node
         with:

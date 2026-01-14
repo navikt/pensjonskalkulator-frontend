@@ -1,5 +1,5 @@
 name: 'Setup Node.js'
-description: 'Checkout, setup Node.js, cache and install dependencies'
+description: 'Setup Node.js, cache and install dependencies. Requires checkout to be run first.'
 
 inputs:
   node-version:
@@ -13,9 +13,6 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: Checkout
-      uses: actions/checkout@v6
-
     - name: Use Node.js v${{ inputs.node-version }}
       uses: actions/setup-node@v6
       with:
