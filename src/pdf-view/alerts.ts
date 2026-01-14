@@ -67,7 +67,11 @@ export function getOffentligTjenestePensjonAlertsText({
       alert.hasLeverandoerList && leverandoerList
         ? formatLeverandoerList(intl.locale, leverandoerList)
         : undefined
-    const heading = `<h4>${intl.formatMessage({ id: 'pensjonsavtaler.offentligtp.title' }, { ...pdfFormatMessageValues, chunk: chunk ?? '' })}</h4>`
+
+    if (!chunk) {
+      return ''
+    }
+    const heading = `<h4>${intl.formatMessage({ id: 'pensjonsavtaler.offentligtp.title' })}</h4>`
 
     return `${heading}
       <table role='presentation' class='alert-box' style='width: 100%; margin-bottom: 1em;'>
@@ -82,6 +86,7 @@ export function getOffentligTjenestePensjonAlertsText({
               { id: alert.alertTextId },
               {
                 ...pdfFormatMessageValues,
+                values: chunk,
               }
             )}</p>
           </td>
