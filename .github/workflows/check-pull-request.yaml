@@ -22,29 +22,10 @@ jobs:
     name: Build application
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Use Node.js v22
-        uses: actions/setup-node@v6
+      - name: Setup Node.js
+        uses: ./.github/actions/setup-node
         with:
-          node-version: '22.16.0'
-          registry-url: 'https://npm.pkg.github.com'
-
-      - name: Cache node modules
-        id: cache-node
-        uses: actions/cache@v5
-        with:
-          path: |
-            node_modules
-            ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-
-      - name: Install dependencies
-        if: steps.cache-node.outputs.cache-hit != 'true'
-        run: npm ci
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+          reader-token: ${{ secrets.READER_TOKEN }}
 
       - name: Build application
         run: npm run build
@@ -64,29 +45,10 @@ jobs:
     strategy:
       fail-fast: true
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Use Node.js v22.16.0
-        uses: actions/setup-node@v6
+      - name: Setup Node.js
+        uses: ./.github/actions/setup-node
         with:
-          node-version: '22.16.0'
-          registry-url: 'https://npm.pkg.github.com'
-
-      - name: Cache node modules
-        id: cache-node
-        uses: actions/cache@v5
-        with:
-          path: |
-            node_modules
-            ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-
-      - name: Install dependencies
-        if: steps.cache-node.outputs.cache-hit != 'true'
-        run: npm ci
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+          reader-token: ${{ secrets.READER_TOKEN }}
 
       - name: Run unit tests
         run: npm run test
@@ -104,23 +66,10 @@ jobs:
     strategy:
       fail-fast: true
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Use Node.js v22.16.0
-        uses: actions/setup-node@v6
+      - name: Setup Node.js
+        uses: ./.github/actions/setup-node
         with:
-          node-version: '22.16.0'
-          registry-url: 'https://npm.pkg.github.com'
-
-      - name: Cache node modules
-        id: cache-node
-        uses: actions/cache@v5
-        with:
-          path: |
-            node_modules
-            ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          reader-token: ${{ secrets.READER_TOKEN }}
 
       - name: Cache Cypress binary
         id: cache-cypress
@@ -134,12 +83,6 @@ jobs:
         with:
           name: dist
           path: dist
-
-      - name: Install dependencies
-        if: steps.cache-node.outputs.cache-hit != 'true'
-        run: npm ci
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
       - name: Install cypress
         if: steps.cache-cypress.outputs.cache-hit != 'true'

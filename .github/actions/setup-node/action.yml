@@ -1,0 +1,39 @@
+name: 'Setup Node.js'
+description: 'Checkout, setup Node.js, cache and install dependencies'
+
+inputs:
+  node-version:
+    description: 'Node.js version to use'
+    required: false
+    default: '22.16.0'
+  reader-token:
+    description: 'GitHub token for npm registry'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v6
+
+    - name: Use Node.js v${{ inputs.node-version }}
+      uses: actions/setup-node@v6
+      with:
+        node-version: ${{ inputs.node-version }}
+        registry-url: 'https://npm.pkg.github.com'
+
+    - name: Cache node modules
+      id: cache-node
+      uses: actions/cache@v5
+      with:
+        path: |
+          node_modules
+          ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
+    - name: Install dependencies
+      if: steps.cache-node.outputs.cache-hit != 'true'
+      shell: bash
+      run: npm ci
+      env:
+        NODE_AUTH_TOKEN: ${{ inputs.reader-token }}
