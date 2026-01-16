@@ -31,7 +31,7 @@ export function getPrivatePensjonsavtalerAlertsText({
         <tr>
           <td style='width: 20px; vertical-align: top; padding: 16px 8px 16px 16px; margin: 0; border: none;'>
             <span class='infoIconContainer'>
-              ${ALERT_TRIANGLE_ICON}
+              ${INFO_SQUARE_ICON}
             </span>
           </td>
           <td style='vertical-align: top; padding: 16px 16px 16px 8px; margin: 0; text-align: left; border: none;'>
@@ -68,9 +68,6 @@ export function getOffentligTjenestePensjonAlertsText({
         ? formatLeverandoerList(intl.locale, leverandoerList)
         : undefined
 
-    if (!chunk) {
-      return ''
-    }
     const heading = `<h4>${intl.formatMessage({ id: 'pensjonsavtaler.offentligtp.title' })}</h4>`
 
     return `${heading}
@@ -78,7 +75,7 @@ export function getOffentligTjenestePensjonAlertsText({
         <tr>
           <td style='width: 20px; vertical-align: top; padding: 16px 8px 16px 16px; margin: 0; border: none;'>
             <span class='infoIconContainer'>
-              ${ALERT_TRIANGLE_ICON}
+              ${INFO_SQUARE_ICON}
             </span>
           </td>
           <td style='vertical-align: top; padding: 16px 16px 16px 8px; margin: 0; text-align: left; border: none;'>
@@ -86,7 +83,7 @@ export function getOffentligTjenestePensjonAlertsText({
               { id: alert.alertTextId },
               {
                 ...pdfFormatMessageValues,
-                values: chunk,
+                values: chunk ?? '',
               }
             )}</p>
           </td>

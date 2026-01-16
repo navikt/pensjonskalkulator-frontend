@@ -78,7 +78,8 @@ export function getGrunnlagIngress({
     ${intl.formatMessage(
       { id: 'grunnlag.alderspensjon.ingress' },
       {
-        avansert: '',
+        ...pdfFormatMessageValues,
+        avansert: 'avansert',
       }
     )}
   </p>

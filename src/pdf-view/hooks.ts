@@ -102,7 +102,7 @@ const isMobileDevice = () =>
   )
 
 const openDesktopPrintWindow = (content: string) => {
-  const printWindow = window.open('', 'printWindow', 'status')
+  const printWindow = window.open('', 'printWindow')
   if (!printWindow) {
     console.error('Could not open print window - popup may be blocked')
     return
@@ -351,7 +351,7 @@ const generatePdfContent = (params: {
     : ''
 
   // Chart table
-  const chartTableWithHeading = getChartTable({ tableData, intl })
+  const chartTableWithHeading = getChartTable({ tableData, intl, isEnkel })
 
   // Grunnlag
   const shouldHideAfpHeading = Boolean(

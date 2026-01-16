@@ -33,7 +33,8 @@ export function getPensjonsavtaler({
   })
   return `<h3>Pensjonsavtaler (arbeidsgivere m.m.)</h3>
         ${privatePensjonsAvtalerTable}
-        ${offentligTpTable}`
+        ${offentligTpTable}
+  ${privatePensjonsAvtaler || offentligTp ? `<p>${intl.formatMessage({ id: 'pensjonsavtaler.fra_og_med_forklaring' })}</p>` : ''}`
 }
 
 function getPrivatePensjonsAvtaler(
@@ -58,6 +59,7 @@ function getPrivatePensjonsAvtaler(
   let html = ''
 
   groupOrder.forEach((groupKey) => {
+    html += `<h3>${escapeHtml(capitalize(groupKey))}</h3>`
     const pensjonsAvtalerGruppe = privatePensjonsAvtaler[groupKey]
     if (
       !Array.isArray(pensjonsAvtalerGruppe) ||
@@ -65,7 +67,6 @@ function getPrivatePensjonsAvtaler(
     ) {
       html += ''
     } else {
-      html += `<h3>${escapeHtml(capitalize(groupKey))}</h3>`
       let rows = ''
       pensjonsAvtalerGruppe.forEach((pensjonsavtale: Pensjonsavtale) => {
         rows += getPensjonsAvtalerTableRows({
@@ -89,8 +90,7 @@ function getPrivatePensjonsAvtaler(
           displayText: chunks.join('') || 'Norsk Pensjon',
         }),
     }
-  )}</p>
-  <p>${intl.formatMessage({ id: 'pensjonsavtaler.fra_og_med_forklaring' })}</p>`
+  )}</p>`
   return html
 }
 
@@ -144,6 +144,7 @@ function getOffentligTpTable({
     return ''
   }
 
+  const SPK_URL = 'https://spk.no'
   const { simuleringsresultat, tpLeverandoer } =
     offentligTp.simulertTjenestepensjon
   const { utbetalingsperioder } = simuleringsresultat
@@ -178,5 +179,16 @@ function getOffentligTpTable({
 
   html += `<table class="pdf-table-type2" style="width: 60%"><thead><tr><th style='text-align:left;'>Avtale</th><th style='text-align:left;'>Perioder</th><th style='text-align:right;'>Årlig Beløp</th></tr></thead><tbody>${rows}</tbody></table>`
 
+  html += `<p>${intl.formatMessage(
+    { id: 'pensjonsavtaler.offentligtp.spk.afp_ja' },
+    {
+      ...pdfFormatMessageValues,
+      spkLink: (chunks: string[]) =>
+        getPdfLink({
+          url: SPK_URL,
+          displayText: chunks.join('') || 'SPK',
+        }),
+    }
+  )}</p>`
   return rows.length ? html : ''
 }
