@@ -69,13 +69,14 @@ export function getOffentligTjenestePensjonAlertsText({
         : undefined
 
     const heading = `<h4>${intl.formatMessage({ id: 'pensjonsavtaler.offentligtp.title' })}</h4>`
-
+    const alertIcon =
+      alert.variant === 'info' ? INFO_SQUARE_ICON : ALERT_TRIANGLE_ICON
     return `${heading}
       <table role='presentation' class='alert-box' style='width: 100%; margin-bottom: 1em;'>
         <tr>
           <td style='width: 20px; vertical-align: top; padding: 16px 8px 16px 16px; margin: 0; border: none;'>
             <span class='infoIconContainer'>
-              ${INFO_SQUARE_ICON}
+              ${alertIcon}
             </span>
           </td>
           <td style='vertical-align: top; padding: 16px 16px 16px 8px; margin: 0; text-align: left; border: none;'>
