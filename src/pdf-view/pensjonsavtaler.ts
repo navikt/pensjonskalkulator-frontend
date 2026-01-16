@@ -59,7 +59,6 @@ function getPrivatePensjonsAvtaler(
   let html = ''
 
   groupOrder.forEach((groupKey) => {
-    html += `<h3>${escapeHtml(capitalize(groupKey))}</h3>`
     const pensjonsAvtalerGruppe = privatePensjonsAvtaler[groupKey]
     if (
       !Array.isArray(pensjonsAvtalerGruppe) ||
@@ -67,6 +66,8 @@ function getPrivatePensjonsAvtaler(
     ) {
       html += ''
     } else {
+      html += `<h3>${escapeHtml(capitalize(groupKey))}</h3>`
+
       let rows = ''
       pensjonsAvtalerGruppe.forEach((pensjonsavtale: Pensjonsavtale) => {
         rows += getPensjonsAvtalerTableRows({
@@ -77,20 +78,22 @@ function getPrivatePensjonsAvtaler(
       })
 
       html += `<table class="pdf-table-type2" style="width: 60%"><thead><tr><th style='text-align:left;'>Avtale</th><th style='text-align:left;'>Perioder</th><th style='text-align:right;'>Årlig Beløp</th></tr></thead><tbody>${rows}</tbody></table>`
+      if (groupKey === 'privat tjenestepensjon') {
+        html += `<p>${intl.formatMessage(
+          { id: 'pensjonsavtaler.private.ingress.norsk_pensjon' },
+          {
+            ...pdfFormatMessageValues,
+            norskPensjonLink: (chunks: string[]) =>
+              getPdfLink({
+                url: NORSK_PENSJON_URL,
+                displayText: chunks.join('') || 'Norsk Pensjon',
+              }),
+          }
+        )}</p>`
+      }
     }
   })
 
-  html += `<p>${intl.formatMessage(
-    { id: 'pensjonsavtaler.private.ingress.norsk_pensjon' },
-    {
-      ...pdfFormatMessageValues,
-      norskPensjonLink: (chunks: string[]) =>
-        getPdfLink({
-          url: NORSK_PENSJON_URL,
-          displayText: chunks.join('') || 'Norsk Pensjon',
-        }),
-    }
-  )}</p>`
   return html
 }
 
