@@ -37,6 +37,7 @@ import {
   selectErApoteker,
   selectFoedselsdato,
   selectHarUtenlandsopphold,
+  selectIsEndring,
   selectLoependeVedtak,
   selectSamtykke,
   selectSamtykkeOffentligAFP,
@@ -66,6 +67,7 @@ import { getPensjonsavtaler } from './pensjonsavtaler'
 import { PRINT_STYLES } from './printStyles'
 import { getSivilstandIngress } from './sivilstand'
 import { getTidligstMuligUttakIngress } from './tidligtMuligUttak'
+import { getUttaksGradEndringIngress } from './uttaksGradEndringIngress'
 
 // ============================================================================
 // Types
@@ -188,6 +190,7 @@ const useReduxSelectors = () => {
   const { beregningsvalg, uttaksalder, gradertUttaksperiode } = useAppSelector(
     selectCurrentSimulation
   )
+  const isEndring = useAppSelector(selectIsEndring)
 
   return {
     harSamtykket,
@@ -206,6 +209,7 @@ const useReduxSelectors = () => {
     beregningsvalg,
     uttaksalder,
     gradertUttaksperiode,
+    isEndring,
   }
 }
 
@@ -248,6 +252,7 @@ const useApiData = (
 const generatePdfContent = (params: {
   intl: IntlShape
   isEnkel: boolean
+  uttaksGradEndring: number | undefined
   person: Person | undefined
   tableData: ReturnType<typeof useTableData>
   uttaksalder: Alder | null
@@ -290,6 +295,7 @@ const generatePdfContent = (params: {
   const {
     intl,
     isEnkel,
+    uttaksGradEndring: uttaksGradForBrukerMedAP,
     person,
     tableData,
     uttaksalder,
@@ -325,6 +331,10 @@ const generatePdfContent = (params: {
   // Header & Forbehold
   const pdfHeader = getPdfHeader({ isEnkel, person })
   const forbeholdAvsnitt = getForbeholdAvsnitt(intl)
+
+  const uttaksGradEndringIngress = uttaksGradForBrukerMedAP
+    ? getUttaksGradEndringIngress({ prosent: uttaksGradForBrukerMedAP, intl })
+    : ''
 
   // Tidligst mulig uttak (only for enkel view)
   const tidligstMuligUttakIngress = isEnkel
@@ -417,6 +427,7 @@ const generatePdfContent = (params: {
   return [
     pdfHeader,
     forbeholdAvsnitt,
+    uttaksGradEndringIngress,
     tidligstMuligUttakIngress,
     omstillingsstoenadAlert,
     helUttaksAlder,
@@ -465,6 +476,7 @@ export const usePdfView = ({
     beregningsvalg,
     uttaksalder,
     gradertUttaksperiode,
+    isEndring,
   } = useReduxSelectors()
   // #endregion Redux State
 
@@ -570,12 +582,17 @@ export const usePdfView = ({
   })
   // #endregion Alerts
 
+  const uttaksGradForBrukerMedAP = isEndring
+    ? loependeVedtak?.alderspensjon?.grad
+    : undefined
+
   // #region PDF Generation
   const createPdfContent = useCallback(
     () =>
       generatePdfContent({
         intl,
         isEnkel,
+        uttaksGradEndring: uttaksGradForBrukerMedAP,
         person,
         tableData,
         uttaksalder,
@@ -611,6 +628,7 @@ export const usePdfView = ({
     [
       intl,
       isEnkel,
+      isEndring,
       person,
       tableData,
       uttaksalder,
