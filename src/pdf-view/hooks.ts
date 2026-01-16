@@ -90,6 +90,7 @@ interface UsePdfViewProps {
   }
   isPensjonsavtalerSuccess: boolean
   isPensjonsavtalerError: boolean
+  isLoading?: boolean
 }
 
 // ============================================================================
@@ -438,6 +439,7 @@ export const usePdfView = ({
   pensjonsavtalerData,
   isPensjonsavtalerSuccess,
   isPensjonsavtalerError,
+  isLoading = false,
 }: UsePdfViewProps) => {
   const intl = useIntl()
   const { showPDFRef, setIsPdfReady } = useContext(BeregningContext)
@@ -658,11 +660,16 @@ export const usePdfView = ({
     // Connect to context
     if (showPDFRef) {
       showPDFRef.current = { handlePDF }
-      setIsPdfReady?.(true)
+      // Only show PDF button when data is loaded
+      setIsPdfReady?.(!isLoading)
     }
 
-    // Skip keyboard handling if PDF is disabled
-    if (!showPDF?.enabled || !window.location.href.includes('beregning')) {
+    // Skip keyboard handling if PDF is disabled or still loading
+    if (
+      !showPDF?.enabled ||
+      !window.location.href.includes('beregning') ||
+      isLoading
+    ) {
       return () => setIsPdfReady?.(false)
     }
 
@@ -700,6 +707,7 @@ export const usePdfView = ({
     isMobile,
     handlePDF,
     createPdfContent,
+    isLoading,
   ])
   // #endregion Context Connection & Keyboard Shortcut
 }
