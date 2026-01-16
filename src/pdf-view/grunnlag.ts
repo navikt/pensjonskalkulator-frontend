@@ -25,6 +25,7 @@ export function getGrunnlagIngress({
   uttaksalder,
   gradertUttaksperiode,
   shouldHideAfpHeading,
+  isEnkel,
 }: {
   intl: IntlShape
   alderspensjonDetaljerListe: AlderspensjonDetaljerListe[]
@@ -40,6 +41,7 @@ export function getGrunnlagIngress({
   uttaksalder: Alder | null
   gradertUttaksperiode: GradertUttak | null
   shouldHideAfpHeading: boolean
+  isEnkel: boolean
 }): string {
   const beloepRaw = aarligInntektFoerUttakBeloepFraSkatt?.beloep
   const aarRaw = aarligInntektFoerUttakBeloepFraSkatt?.aar
@@ -76,7 +78,11 @@ export function getGrunnlagIngress({
   <h3>Alderspensjon (Nav)</h3>
   <p>
     ${intl.formatMessage(
-      { id: 'grunnlag.alderspensjon.ingress' },
+      {
+        id: isEnkel
+          ? 'grunnlag.alderspensjon.ingress'
+          : 'grunnlag.alderspensjon.endring.ingress',
+      },
       {
         ...pdfFormatMessageValues,
         avansert: 'avansert',

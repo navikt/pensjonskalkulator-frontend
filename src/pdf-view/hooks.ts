@@ -372,6 +372,7 @@ const generatePdfContent = (params: {
     uttaksalder,
     gradertUttaksperiode,
     shouldHideAfpHeading,
+    isEnkel,
   })
 
   // Pensjonsavtaler
