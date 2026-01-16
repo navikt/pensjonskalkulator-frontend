@@ -361,6 +361,10 @@ const generatePdfContent = (params: {
     loependeLivsvarigAfpOffentlig?.maanedligBeloep
   )
 
+  const afpOffentligAlertsMessage = afpOffentligAlertsList
+    ? getAfpOffentligAlertsText({ afpOffentligAlertsList, intl })
+    : ''
+
   const grunnlagIngress = getGrunnlagIngress({
     intl,
     alderspensjonDetaljerListe,
@@ -369,6 +373,7 @@ const generatePdfContent = (params: {
     afpDetaljerListe,
     title: afpTitle,
     content: afpContent,
+    afpOffentligAlertsMessage,
     hasPre2025OffentligAfpUttaksalder: hasPre2025OffentligAfp,
     uttaksalder,
     gradertUttaksperiode,
@@ -390,9 +395,6 @@ const generatePdfContent = (params: {
     : `<h3>Pensjonsavtaler (arbeidsgivere m.m.)</h3>${intl.formatMessage({ id: 'pensjonsavtaler.ingress.error.samtykke_ingress' })}`
 
   // Alerts
-  const afpOffentligAlertsMessage = afpOffentligAlertsList
-    ? getAfpOffentligAlertsText({ afpOffentligAlertsList, intl })
-    : ''
 
   const privatePensjonsavtalerAlertsMessage =
     getPrivatePensjonsavtalerAlertsText({
@@ -420,7 +422,6 @@ const generatePdfContent = (params: {
     chartTableWithHeading,
     grunnlagIngress,
     pensjonsavtaler,
-    afpOffentligAlertsMessage,
     privatePensjonsavtalerAlertsMessage,
     offentligTjenestePensjonAlertsMessage,
     omDegIngress,

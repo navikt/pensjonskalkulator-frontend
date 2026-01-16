@@ -21,6 +21,7 @@ export function getGrunnlagIngress({
   afpDetaljerListe,
   title,
   content,
+  afpOffentligAlertsMessage,
   hasPre2025OffentligAfpUttaksalder,
   uttaksalder,
   gradertUttaksperiode,
@@ -37,6 +38,7 @@ export function getGrunnlagIngress({
   aarligInntektFoerUttakBeloepFraBrukerInput: string | null
   title?: string
   content?: string
+  afpOffentligAlertsMessage?: string
   hasPre2025OffentligAfpUttaksalder: boolean
   uttaksalder: Alder | null
   gradertUttaksperiode: GradertUttak | null
@@ -126,5 +128,6 @@ export function getGrunnlagIngress({
 
   ${getAfpIngress(intl, title || '', content || '')}
   ${getAfpDetaljerTable({ afpDetaljerListe, intl, uttaksalder, gradertUttaksperiode, shouldHideAfpHeading })}
+  ${afpOffentligAlertsMessage}
   `
 }
