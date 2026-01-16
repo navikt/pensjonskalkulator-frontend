@@ -32,9 +32,10 @@ export function getPensjonsavtaler({
     intl,
   })
   return `<h3>Pensjonsavtaler (arbeidsgivere m.m.)</h3>
-        ${privatePensjonsAvtalerTable}
-        ${offentligTpTable}
-  ${privatePensjonsAvtaler || offentligTp ? `<p>${intl.formatMessage({ id: 'pensjonsavtaler.fra_og_med_forklaring' })}</p>` : ''}`
+        ${privatePensjonsAvtalerTable ?? ''}
+        ${offentligTpTable ?? ''}
+        
+  ${privatePensjonsAvtalerTable || offentligTpTable ? `<p>${intl.formatMessage({ id: 'pensjonsavtaler.fra_og_med_forklaring' })}</p>` : ''}`
 }
 
 function getPrivatePensjonsAvtaler(
@@ -45,8 +46,8 @@ function getPrivatePensjonsAvtaler(
       >
     | undefined,
   intl: IntlShape
-): string {
-  if (!privatePensjonsAvtaler) return ''
+): string | undefined {
+  if (!privatePensjonsAvtaler) return
 
   const NORSK_PENSJON_URL = 'https://norskpensjon.no'
 
@@ -142,9 +143,9 @@ function getOffentligTpTable({
 }: {
   offentligTp?: OffentligTpResponse
   intl: IntlShape
-}): string {
+}): string | undefined {
   if (!offentligTp || !offentligTp.simulertTjenestepensjon) {
-    return ''
+    return
   }
 
   const SPK_URL = 'https://spk.no'
