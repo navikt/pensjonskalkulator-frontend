@@ -114,6 +114,7 @@ const openDesktopPrintWindow = (content: string) => {
     <head>
       <meta charset="UTF-8">
       <title>Pensjonskalkulator beregning</title>
+      <link rel="preload" href="https://cdn.nav.no/aksel/fonts/SourceSans3-normal.woff2" as="font" type="font/woff2" crossorigin>
       <style>${PRINT_STYLES}</style>
     </head>
     <body>
