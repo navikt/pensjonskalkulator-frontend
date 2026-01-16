@@ -102,7 +102,7 @@ const isMobileDevice = () =>
   )
 
 const openDesktopPrintWindow = (content: string) => {
-  const printWindow = window.open('', 'printWindow')
+  const printWindow = window.open('', 'printWindow', 'width=1000,height=600')
   if (!printWindow) {
     console.error('Could not open print window - popup may be blocked')
     return

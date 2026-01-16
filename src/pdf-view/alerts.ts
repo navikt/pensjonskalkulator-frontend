@@ -83,7 +83,7 @@ export function getOffentligTjenestePensjonAlertsText({
               { id: alert.alertTextId },
               {
                 ...pdfFormatMessageValues,
-                values: chunk ?? '',
+                chunk: chunk ?? '',
               }
             )}</p>
           </td>
