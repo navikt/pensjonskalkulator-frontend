@@ -349,7 +349,7 @@ const generatePdfContent = (params: {
   } = params
 
   // Header & Forbehold
-  const pdfHeader = getPdfHeader({ isEnkel, person })
+  const pdfHeader = getPdfHeader({ isEnkel, person, isEndring })
   const loependeVedtakAlert = getFremtidigVedtakAlert({ loependeVedtak, intl })
   const forbeholdAvsnitt = getForbeholdAvsnitt(intl)
 
@@ -418,20 +418,20 @@ const generatePdfContent = (params: {
     ? groupPensjonsavtalerByType(pensjonsavtalerData.avtaler)
     : undefined
 
-  const pensjonsavtaler = isEndring
-    ? ''
-    : `${
-        harSamtykket
-          ? getPensjonsavtaler({
-              intl,
-              privatePensjonsAvtaler: gruppertePensjonsavtaler,
-              offentligTp,
-              afp,
-              skalBeregneAfpKap19,
-              erOffentligTpFoer1963,
-            })
-          : `<h3>Pensjonsavtaler (arbeidsgivere m.m.)</h3>${intl.formatMessage({ id: 'pensjonsavtaler.ingress.error.samtykke_ingress' })}`
-      }`
+  let pensjonsavtaler = ''
+
+  if (!isEndring) {
+    pensjonsavtaler = harSamtykket
+      ? getPensjonsavtaler({
+          intl,
+          privatePensjonsAvtaler: gruppertePensjonsavtaler,
+          offentligTp,
+          afp,
+          skalBeregneAfpKap19,
+          erOffentligTpFoer1963,
+        })
+      : `<h3>Pensjonsavtaler (arbeidsgivere m.m.)</h3>${intl.formatMessage({ id: 'pensjonsavtaler.ingress.error.samtykke_ingress' })}`
+  }
 
   const pensjonsavtalerAlertsMessage = getPensjonsavtalerAlertsText({
     intl,
