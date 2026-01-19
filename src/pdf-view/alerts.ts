@@ -1,3 +1,4 @@
+import { format, parseISO } from 'date-fns'
 import { IntlShape } from 'react-intl/src/types'
 
 import { formatLeverandoerList } from '@/components/Pensjonsavtaler/OffentligTjenestePensjon/utils'
@@ -7,6 +8,7 @@ import {
 } from '@/components/Pensjonsavtaler/hooks'
 import { AlertVariant } from '@/components/Simulering/hooks'
 import { formatUttaksalder } from '@/utils/alder'
+import { DATE_ENDUSER_FORMAT } from '@/utils/dates'
 
 import { ALERT_TRIANGLE_ICON, INFO_SQUARE_ICON } from './constants'
 import { pdfFormatMessageValues } from './utils'
@@ -189,6 +191,42 @@ export function getOmstillingsstoenadAlert(
       ...pdfFormatMessageValues,
       normertPensjonsalder: formatertNormertPensjonsalder,
       link: linkHtml,
+    }
+  )
+
+  return `<table role='presentation' class='alert-box' style='width: 100%; margin-bottom: 1em;'>
+    <tr>
+      <td style='width: 20px; vertical-align: top; padding: 16px 8px 16px 16px; margin: 0; border: none;'>
+        <span class='infoIconContainer'>
+          ${INFO_SQUARE_ICON}
+        </span>
+      </td>
+      <td style='vertical-align: top; padding: 16px 16px 16px 8px; margin: 0; text-align: left; border: none;'>
+        <p style='margin: 0; padding: 0;'>${alertMessage}</p>
+      </td>
+    </tr>
+  </table>`
+}
+
+export const getFremtidigVedtakAlert = ({
+  loependeVedtak,
+  intl,
+}: {
+  loependeVedtak: LoependeVedtak
+  intl: IntlShape
+}): string | null => {
+  if (!loependeVedtak.fremtidigAlderspensjon || loependeVedtak.alderspensjon)
+    return null
+
+  const alertMessage = intl.formatMessage(
+    { id: 'stegvisning.fremtidigvedtak.alert' },
+    {
+      ...pdfFormatMessageValues,
+      grad: loependeVedtak.fremtidigAlderspensjon.grad,
+      fom: format(
+        parseISO(loependeVedtak.fremtidigAlderspensjon.fom),
+        DATE_ENDUSER_FORMAT
+      ),
     }
   )
 

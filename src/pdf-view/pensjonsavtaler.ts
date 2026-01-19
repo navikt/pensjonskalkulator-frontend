@@ -1,5 +1,7 @@
 import { IntlShape } from 'react-intl'
 
+import { getInfoOmAfpOgBetingetTjenestepensjon } from '@/components/Pensjonsavtaler/OffentligTjenestePensjon/utils'
+import { isOffentligTpFoer1963 } from '@/state/api/typeguards'
 import {
   formaterLivsvarigString,
   formaterSluttAlderString,
@@ -9,10 +11,14 @@ import { capitalize } from '@/utils/string'
 
 import { escapeHtml, getPdfLink, pdfFormatMessageValues } from './utils'
 
+const SPK_URL = 'https://spk.no'
+
 export function getPensjonsavtaler({
   intl,
   privatePensjonsAvtaler,
   offentligTp,
+  afp,
+  skalBeregneAfpKap19,
 }: {
   intl: IntlShape
   privatePensjonsAvtaler:
@@ -22,6 +28,9 @@ export function getPensjonsavtaler({
       >
     | undefined
   offentligTp?: OffentligTpResponse
+  afp: AfpRadio | null
+  skalBeregneAfpKap19: boolean | null
+  erOffentligTpFoer1963: boolean
 }): string {
   const privatePensjonsAvtalerTable = getPrivatePensjonsAvtaler(
     privatePensjonsAvtaler,
@@ -31,10 +40,18 @@ export function getPensjonsavtaler({
     offentligTp,
     intl,
   })
+
+  const offentligTpInfoIngress = `<p>${getOffentligTpInfoIngress({
+    intl,
+    offentligTp,
+    afp,
+    skalBeregneAfpKap19,
+  })}</p>`
+
   return `<h3>Pensjonsavtaler (arbeidsgivere m.m.)</h3>
         ${privatePensjonsAvtalerTable ?? ''}
         ${offentligTpTable ?? ''}
-        
+        ${offentligTpInfoIngress}
   ${privatePensjonsAvtalerTable || offentligTpTable ? `<p>${intl.formatMessage({ id: 'pensjonsavtaler.fra_og_med_forklaring' })}</p>` : ''}`
 }
 
@@ -148,7 +165,6 @@ function getOffentligTpTable({
     return
   }
 
-  const SPK_URL = 'https://spk.no'
   const { simuleringsresultat, tpLeverandoer } =
     offentligTp.simulertTjenestepensjon
   const { utbetalingsperioder } = simuleringsresultat
@@ -183,16 +199,81 @@ function getOffentligTpTable({
 
   html += `<table class="pdf-table-type2" style="width: 60%"><thead><tr><th style='text-align:left;'>Avtale</th><th style='text-align:left;'>Perioder</th><th style='text-align:right;'>Årlig Beløp</th></tr></thead><tbody>${rows}</tbody></table>`
 
-  html += `<p>${intl.formatMessage(
-    { id: 'pensjonsavtaler.offentligtp.spk.afp_ja' },
-    {
-      ...pdfFormatMessageValues,
-      spkLink: (chunks: string[]) =>
-        getPdfLink({
-          url: SPK_URL,
-          displayText: chunks.join('') || 'SPK',
-        }),
-    }
-  )}</p>`
   return rows.length ? html : ''
+}
+
+function getOffentligTpInfoIngress({
+  intl,
+  offentligTp,
+  afp,
+  skalBeregneAfpKap19,
+}: {
+  intl: IntlShape
+  offentligTp?: OffentligTp | OffentligTpFoer1963
+  afp: AfpRadio | null
+  skalBeregneAfpKap19: boolean | null
+}): string {
+  const { tpNummer } = offentligTp?.simulertTjenestepensjon || {}
+
+  const tekstInfoIkkeAfP = intl.formatMessage({
+    id: 'pensjonsavtaler.offentligtp.foer1963.info_ikke_afp',
+  })
+  let html = ''
+  if (
+    isOffentligTpFoer1963(offentligTp) &&
+    (offentligTp.simulertTjenestepensjon?.simuleringsresultat
+      .utbetalingsperioder.length ?? 0) > 0 &&
+    !offentligTp.feilkode
+  ) {
+    html += `<p>${tekstInfoIkkeAfP}
+    ${intl.formatMessage(
+      {
+        id: 'pensjonsavtaler.offentligtp.foer1963.info',
+      },
+      {
+        ...pdfFormatMessageValues,
+        spkLink: (chunks: string[]) =>
+          getPdfLink({
+            url: SPK_URL,
+            displayText: chunks.join('') || 'SPK',
+          }),
+      }
+    )}</p>`
+
+    if (skalBeregneAfpKap19) {
+      html += `<h4>${intl.formatMessage({ id: 'pensjonsavtaler.offentligtp.subtitle.afp_fra_spk' }, { ...pdfFormatMessageValues })}</h4>
+      <p>${intl.formatMessage(
+        {
+          id: 'pensjonsavtaler.offentligtp.text.afp_fra_spk',
+        },
+        {
+          ...pdfFormatMessageValues,
+          scrollTo: (chunks: string[]) =>
+            getPdfLink({
+              url: '',
+              displayText: chunks.join('') || 'AFP Offentlig',
+            }),
+        }
+      )}
+      </p>`
+    }
+
+    return html
+  }
+
+  if (!isOffentligTpFoer1963(offentligTp)) {
+    return `<p>${intl.formatMessage(
+      {
+        id: getInfoOmAfpOgBetingetTjenestepensjon(
+          tpNummer!,
+          afp,
+          offentligTp!.simulertTjenestepensjon?.simuleringsresultat
+            .betingetTjenestepensjonErInkludert
+        ),
+      },
+      { ...pdfFormatMessageValues }
+    )}</p>`
+  }
+
+  return ''
 }

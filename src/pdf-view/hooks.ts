@@ -43,6 +43,7 @@ import {
   selectSamtykke,
   selectSamtykkeOffentligAFP,
   selectSivilstand,
+  selectSkalBeregneAfpKap19,
   selectUfoeregrad,
   selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
@@ -55,6 +56,7 @@ import { formatSivilstand } from '@/utils/sivilstand'
 
 import {
   getAfpOffentligAlertsText,
+  getFremtidigVedtakAlert,
   getOffentligTjenestePensjonAlertsText,
   getOmstillingsstoenadAlert,
   getPensjonsavtalerAlertsText,
@@ -94,9 +96,9 @@ interface UsePdfViewProps {
   }
   isPensjonsavtalerSuccess: boolean
   isPensjonsavtalerError: boolean
-  isLoading?: boolean
   isPensjonsavtaleFlagVisible: boolean
   erOffentligTpFoer1963: boolean
+  isLoading?: boolean
 }
 
 // ============================================================================
@@ -195,6 +197,7 @@ const useReduxSelectors = () => {
     selectCurrentSimulation
   )
   const isEndring = useAppSelector(selectIsEndring)
+  const skalBeregneAfpKap19 = useAppSelector(selectSkalBeregneAfpKap19)
 
   return {
     harSamtykket,
@@ -214,6 +217,7 @@ const useReduxSelectors = () => {
     uttaksalder,
     gradertUttaksperiode,
     isEndring,
+    skalBeregneAfpKap19,
   }
 }
 
@@ -256,6 +260,7 @@ const useApiData = (
 const generatePdfContent = (params: {
   intl: IntlShape
   isEnkel: boolean
+  isEndring: boolean
   uttaksGradEndring: number | undefined
   person: Person | undefined
   tableData: ReturnType<typeof useTableData>
@@ -263,6 +268,7 @@ const generatePdfContent = (params: {
   harSamtykket: boolean | null
   normertPensjonsalder: Alder
   nedreAldersgrense: Alder
+  loependeVedtak: LoependeVedtak
   loependeVedtakPre2025OffentligAfp: boolean
   isOver75AndNoLoependeVedtak: boolean
   show1963Text: boolean
@@ -286,6 +292,7 @@ const generatePdfContent = (params: {
   pensjonsavtalerData?: { avtaler: Pensjonsavtale[]; partialResponse: boolean }
   pensjonsavtalerAlertsList: ReturnType<typeof usePensjonsavtalerAlerts>
   offentligTp: OffentligTpResponse | undefined
+  afp: AfpRadio | null
   privatPensjonsAvtalerAlertsList: ReturnType<
     typeof usePrivatePensjonsAvtalerAlertList
   >
@@ -296,10 +303,13 @@ const generatePdfContent = (params: {
   formatertSivilstand: string
   oppholdUtenforNorge: ReturnType<typeof useOppholdUtenforNorge>
   sortedUtenlandsperioder: Utenlandsperiode[]
+  skalBeregneAfpKap19: boolean | null
+  erOffentligTpFoer1963: boolean
 }): string => {
   const {
     intl,
     isEnkel,
+    isEndring,
     uttaksGradEndring: uttaksGradForBrukerMedAP,
     person,
     tableData,
@@ -307,6 +317,7 @@ const generatePdfContent = (params: {
     harSamtykket,
     normertPensjonsalder,
     nedreAldersgrense,
+    loependeVedtak,
     loependeVedtakPre2025OffentligAfp,
     isOver75AndNoLoependeVedtak,
     show1963Text,
@@ -326,16 +337,20 @@ const generatePdfContent = (params: {
     pensjonsavtalerData,
     pensjonsavtalerAlertsList,
     offentligTp,
+    afp,
     privatPensjonsAvtalerAlertsList,
     offentligTjenestePensjonsAvtalerAlertsList,
     afpOffentligAlertsList,
     formatertSivilstand,
     oppholdUtenforNorge,
     sortedUtenlandsperioder,
+    skalBeregneAfpKap19,
+    erOffentligTpFoer1963,
   } = params
 
   // Header & Forbehold
   const pdfHeader = getPdfHeader({ isEnkel, person })
+  const loependeVedtakAlert = getFremtidigVedtakAlert({ loependeVedtak, intl })
   const forbeholdAvsnitt = getForbeholdAvsnitt(intl)
 
   const uttaksGradEndringIngress = uttaksGradForBrukerMedAP
@@ -404,18 +419,21 @@ const generatePdfContent = (params: {
     : undefined
 
   const pensjonsavtaler = `${
-    harSamtykket
+    harSamtykket && !isEndring
       ? getPensjonsavtaler({
           intl,
           privatePensjonsAvtaler: gruppertePensjonsavtaler,
           offentligTp,
+          afp,
+          skalBeregneAfpKap19,
+          erOffentligTpFoer1963,
         })
       : `<h3>Pensjonsavtaler (arbeidsgivere m.m.)</h3>${intl.formatMessage({ id: 'pensjonsavtaler.ingress.error.samtykke_ingress' })}`
   }`
 
   const pensjonsavtalerAlertsMessage = getPensjonsavtalerAlertsText({
-    pensjonsavtalerAlertsList,
     intl,
+    pensjonsavtalerAlertsList,
   })
   // Alerts
 
@@ -438,6 +456,7 @@ const generatePdfContent = (params: {
 
   return [
     pdfHeader,
+    loependeVedtakAlert,
     forbeholdAvsnitt,
     uttaksGradEndringIngress,
     tidligstMuligUttakIngress,
@@ -465,9 +484,9 @@ export const usePdfView = ({
   pensjonsavtalerData,
   isPensjonsavtalerSuccess,
   isPensjonsavtalerError,
-  isLoading = false,
   isPensjonsavtaleFlagVisible,
   erOffentligTpFoer1963,
+  isLoading = false,
 }: UsePdfViewProps) => {
   const intl = useIntl()
   const { showPDFRef, setIsPdfReady } = useContext(BeregningContext)
@@ -492,6 +511,7 @@ export const usePdfView = ({
     uttaksalder,
     gradertUttaksperiode,
     isEndring,
+    skalBeregneAfpKap19,
   } = useReduxSelectors()
   // #endregion Redux State
 
@@ -629,6 +649,7 @@ export const usePdfView = ({
         harSamtykket,
         normertPensjonsalder,
         nedreAldersgrense,
+        loependeVedtak,
         loependeVedtakPre2025OffentligAfp,
         isOver75AndNoLoependeVedtak,
         show1963Text,
@@ -655,6 +676,10 @@ export const usePdfView = ({
         formatertSivilstand,
         oppholdUtenforNorge,
         sortedUtenlandsperioder,
+        skalBeregneAfpKap19,
+        erOffentligTpFoer1963,
+        isEndring: false,
+        afp,
       }),
     [
       intl,
@@ -690,6 +715,7 @@ export const usePdfView = ({
       formatertSivilstand,
       oppholdUtenforNorge,
       sortedUtenlandsperioder,
+      skalBeregneAfpKap19,
     ]
   )
   // #endregion PDF Generation
