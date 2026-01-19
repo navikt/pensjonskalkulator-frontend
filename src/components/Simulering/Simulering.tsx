@@ -185,6 +185,8 @@ export const Simulering = ({
     isPensjonsavtalerSuccess,
     isPensjonsavtalerError,
     isLoading: isLoading || isOffentligTpLoading || isPensjonsavtalerLoading,
+    isPensjonsavtaleFlagVisible,
+    erOffentligTpFoer1963,
   })
 
   const isEnkel = visning === 'enkel'

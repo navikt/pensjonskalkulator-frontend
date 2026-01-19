@@ -18,6 +18,7 @@ import { useBeregningsdetaljer } from '@/components/Simulering/Beregningsdetalje
 import {
   useAfpOffentligAlerts,
   useOffentligTpData,
+  usePensjonsavtalerAlerts,
 } from '@/components/Simulering/hooks'
 import { useTableData } from '@/components/TabellVisning/hooks'
 import { BeregningContext } from '@/pages/Beregning/context'
@@ -56,6 +57,7 @@ import {
   getAfpOffentligAlertsText,
   getOffentligTjenestePensjonAlertsText,
   getOmstillingsstoenadAlert,
+  getPensjonsavtalerAlertsText,
   getPrivatePensjonsavtalerAlertsText,
 } from './alerts'
 import { getChartTable } from './chartTable'
@@ -93,6 +95,8 @@ interface UsePdfViewProps {
   isPensjonsavtalerSuccess: boolean
   isPensjonsavtalerError: boolean
   isLoading?: boolean
+  isPensjonsavtaleFlagVisible: boolean
+  erOffentligTpFoer1963: boolean
 }
 
 // ============================================================================
@@ -280,6 +284,7 @@ const generatePdfContent = (params: {
   gradertUttaksperiode: GradertUttak | null
   loependeLivsvarigAfpOffentlig: AfpOffentligLivsvarig | undefined
   pensjonsavtalerData?: { avtaler: Pensjonsavtale[]; partialResponse: boolean }
+  pensjonsavtalerAlertsList: ReturnType<typeof usePensjonsavtalerAlerts>
   offentligTp: OffentligTpResponse | undefined
   privatPensjonsAvtalerAlertsList: ReturnType<
     typeof usePrivatePensjonsAvtalerAlertList
@@ -319,6 +324,7 @@ const generatePdfContent = (params: {
     gradertUttaksperiode,
     loependeLivsvarigAfpOffentlig,
     pensjonsavtalerData,
+    pensjonsavtalerAlertsList,
     offentligTp,
     privatPensjonsAvtalerAlertsList,
     offentligTjenestePensjonsAvtalerAlertsList,
@@ -397,14 +403,20 @@ const generatePdfContent = (params: {
     ? groupPensjonsavtalerByType(pensjonsavtalerData.avtaler)
     : undefined
 
-  const pensjonsavtaler = harSamtykket
-    ? getPensjonsavtaler({
-        intl,
-        privatePensjonsAvtaler: gruppertePensjonsavtaler,
-        offentligTp,
-      })
-    : `<h3>Pensjonsavtaler (arbeidsgivere m.m.)</h3>${intl.formatMessage({ id: 'pensjonsavtaler.ingress.error.samtykke_ingress' })}`
+  const pensjonsavtaler = `${
+    harSamtykket
+      ? getPensjonsavtaler({
+          intl,
+          privatePensjonsAvtaler: gruppertePensjonsavtaler,
+          offentligTp,
+        })
+      : `<h3>Pensjonsavtaler (arbeidsgivere m.m.)</h3>${intl.formatMessage({ id: 'pensjonsavtaler.ingress.error.samtykke_ingress' })}`
+  }`
 
+  const pensjonsavtalerAlertsMessage = getPensjonsavtalerAlertsText({
+    pensjonsavtalerAlertsList,
+    intl,
+  })
   // Alerts
 
   const privatePensjonsavtalerAlertsMessage =
@@ -434,6 +446,7 @@ const generatePdfContent = (params: {
     chartTableWithHeading,
     grunnlagIngress,
     pensjonsavtaler,
+    pensjonsavtalerAlertsMessage,
     privatePensjonsavtalerAlertsMessage,
     offentligTjenestePensjonAlertsMessage,
     omDegIngress,
@@ -453,6 +466,8 @@ export const usePdfView = ({
   isPensjonsavtalerSuccess,
   isPensjonsavtalerError,
   isLoading = false,
+  isPensjonsavtaleFlagVisible,
+  erOffentligTpFoer1963,
 }: UsePdfViewProps) => {
   const intl = useIntl()
   const { showPDFRef, setIsPdfReady } = useContext(BeregningContext)
@@ -580,6 +595,21 @@ export const usePdfView = ({
     isAfpOffentligLivsvarigSuccess,
     loependeLivsvarigAfpOffentlig,
   })
+
+  const pensjonsavtalerAlertsList = usePensjonsavtalerAlerts({
+    pensjonsavtaler: {
+      data: pensjonsavtalerData,
+      isError: isPensjonsavtalerError,
+      isSuccess: isPensjonsavtalerSuccess,
+      isLoading,
+    },
+    offentligTp: {
+      isError: isOffentligTpError,
+      data: offentligTp,
+    },
+    isPensjonsavtaleFlagVisible,
+    erOffentligTpFoer1963,
+  })
   // #endregion Alerts
 
   const uttaksGradForBrukerMedAP = isEndring
@@ -617,6 +647,7 @@ export const usePdfView = ({
         gradertUttaksperiode,
         loependeLivsvarigAfpOffentlig,
         pensjonsavtalerData,
+        pensjonsavtalerAlertsList,
         offentligTp,
         privatPensjonsAvtalerAlertsList,
         offentligTjenestePensjonsAvtalerAlertsList,

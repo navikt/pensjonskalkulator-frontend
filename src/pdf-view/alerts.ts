@@ -11,6 +11,43 @@ import { formatUttaksalder } from '@/utils/alder'
 import { ALERT_TRIANGLE_ICON, INFO_SQUARE_ICON } from './constants'
 import { pdfFormatMessageValues } from './utils'
 
+export function getPensjonsavtalerAlertsText({
+  pensjonsavtalerAlertsList,
+  intl,
+}: {
+  pensjonsavtalerAlertsList: {
+    variant: AlertVariant
+    text: string
+  }[]
+  intl: IntlShape
+}): string {
+  if (!pensjonsavtalerAlertsList.length) {
+    return ''
+  }
+  const html = pensjonsavtalerAlertsList.map((alert) => {
+    return `
+      <table role='presentation' class='alert-box' style='width: 100%; margin-bottom: 1em;'>
+        <tr>
+          <td style='width: 20px; vertical-align: top; padding: 16px 8px 16px 16px; margin: 0; border: none;'>
+            <span class='infoIconContainer'>
+              ${INFO_SQUARE_ICON}
+            </span>
+          </td>
+          <td style='vertical-align: top; padding: 16px 16px 16px 8px; margin: 0; text-align: left; border: none;'>
+            <p style='margin: 0; padding: 0;'>${intl.formatMessage(
+              { id: alert.text },
+              {
+                ...pdfFormatMessageValues,
+              }
+            )}</p>
+          </td>
+        </tr>
+      </table>`
+  })
+
+  return html.join('')
+}
+
 export function getPrivatePensjonsavtalerAlertsText({
   pensjonsavtalerAlertsList,
   intl,
