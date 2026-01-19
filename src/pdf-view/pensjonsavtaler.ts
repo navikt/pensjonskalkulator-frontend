@@ -1,6 +1,9 @@
 import { IntlShape } from 'react-intl'
 
-import { getInfoOmAfpOgBetingetTjenestepensjon } from '@/components/Pensjonsavtaler/OffentligTjenestePensjon/utils'
+import {
+  getInfoOmAfpOgBetingetTjenestepensjon,
+  getLeverandoerHeading,
+} from '@/components/Pensjonsavtaler/OffentligTjenestePensjon/utils'
 import { isOffentligTpFoer1963 } from '@/state/api/typeguards'
 import {
   formaterLivsvarigString,
@@ -165,7 +168,7 @@ function getOffentligTpTable({
     return
   }
 
-  const { simuleringsresultat, tpLeverandoer } =
+  const { simuleringsresultat, tpLeverandoer, tpNummer } =
     offentligTp.simulertTjenestepensjon
   const { utbetalingsperioder } = simuleringsresultat
   let rows = ''
@@ -180,7 +183,7 @@ function getOffentligTpTable({
 
     const produktCell = isFirst
       ? `<td style='text-align:left; vertical-align: top; ${lastRowStyle}' rowspan='${utbetalingsperioder.length}'>${escapeHtml(
-          String(tpLeverandoer)
+          getLeverandoerHeading(intl, tpNummer, tpLeverandoer) ?? ''
         )}</td>`
       : ''
     const periodText = periode.sluttAlder

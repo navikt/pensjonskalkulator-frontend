@@ -418,18 +418,20 @@ const generatePdfContent = (params: {
     ? groupPensjonsavtalerByType(pensjonsavtalerData.avtaler)
     : undefined
 
-  const pensjonsavtaler = `${
-    harSamtykket && !isEndring
-      ? getPensjonsavtaler({
-          intl,
-          privatePensjonsAvtaler: gruppertePensjonsavtaler,
-          offentligTp,
-          afp,
-          skalBeregneAfpKap19,
-          erOffentligTpFoer1963,
-        })
-      : `<h3>Pensjonsavtaler (arbeidsgivere m.m.)</h3>${intl.formatMessage({ id: 'pensjonsavtaler.ingress.error.samtykke_ingress' })}`
-  }`
+  const pensjonsavtaler = isEndring
+    ? ''
+    : `${
+        harSamtykket
+          ? getPensjonsavtaler({
+              intl,
+              privatePensjonsAvtaler: gruppertePensjonsavtaler,
+              offentligTp,
+              afp,
+              skalBeregneAfpKap19,
+              erOffentligTpFoer1963,
+            })
+          : `<h3>Pensjonsavtaler (arbeidsgivere m.m.)</h3>${intl.formatMessage({ id: 'pensjonsavtaler.ingress.error.samtykke_ingress' })}`
+      }`
 
   const pensjonsavtalerAlertsMessage = getPensjonsavtalerAlertsText({
     intl,
