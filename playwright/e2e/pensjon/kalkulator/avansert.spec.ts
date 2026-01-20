@@ -2,9 +2,14 @@ import { expect, test } from '../../../base'
 import { authenticate } from '../../../utils/auth'
 import { person } from '../../../utils/mocks'
 import { fillOutStegvisning } from '../../../utils/navigation'
-import { presetStates } from '../../../utils/presetStates'
+
+const MOCK_DATE = new Date(2024, 0, 1, 12, 0, 0) // January 1, 2024
 
 test.describe('Avansert', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.clock.install({ time: MOCK_DATE })
+  })
+
   test.describe('Gitt at jeg som bruker har gjort en enkel beregning,', () => {
     test.describe('Når jeg ønsker en avansert beregning,', () => {
       test.use({ autoAuth: false })
@@ -21,7 +26,6 @@ test.describe('Avansert', () => {
               oevreAldersgrense: { aar: 75, maaneder: 0 },
             },
           }),
-          ...(await presetStates.medTidligsteUttaksalder(62, 10)),
         ])
         await fillOutStegvisning(page, {
           sivilstand: 'UGIFT',
@@ -129,7 +133,6 @@ test.describe('Avansert', () => {
               oevreAldersgrense: { aar: 75, maaneder: 0 },
             },
           }),
-          ...(await presetStates.medTidligsteUttaksalder(62, 10)),
         ])
         await fillOutStegvisning(page, {
           sivilstand: 'UGIFT',
@@ -192,23 +195,15 @@ test.describe('Avansert', () => {
         await expect(yearOptions.nth(1)).toHaveText('62 år')
         await expect(yearOptions.nth(14)).toHaveText('75 år')
 
-        // Select 62 and check month options - only 10 and 11 available since tidligsteUttaksalder is 62y 10m
-        // 1 placeholder + 2 months = 3 options
+        // Select 62 and check month options - all 12 months should be available
         await yearSelect.selectOption('62')
         const monthSelect = page.getByTestId(
           'age-picker-uttaksalder-helt-uttak-maaneder'
         )
         const monthOptions = monthSelect.locator('option')
-        await expect(monthOptions).toHaveCount(3) // 1 placeholder + months 10 and 11
-        await expect(monthOptions.nth(1)).toHaveText('10 md. (mars)')
-        await expect(monthOptions.nth(2)).toHaveText('11 md. (apr.)')
-
-        // Select 63 and check month options (all 12 should be available, no placeholder when switching)
-        await yearSelect.selectOption('63')
-        const monthOptionsAt63 = monthSelect.locator('option')
-        await expect(monthOptionsAt63).toHaveCount(12)
-        await expect(monthOptionsAt63.nth(0)).toHaveText('0 md. (mai)')
-        await expect(monthOptionsAt63.nth(11)).toHaveText('11 md. (apr.)')
+        await expect(monthOptions).toHaveCount(12)
+        await expect(monthOptions.nth(0)).toHaveText('0 md. (mai)')
+        await expect(monthOptions.nth(11)).toHaveText('11 md. (apr.)')
 
         // Select 75 and check month options (only 0 should be available)
         await yearSelect.selectOption('75')
@@ -339,7 +334,6 @@ test.describe('Avansert', () => {
               oevreAldersgrense: { aar: 75, maaneder: 0 },
             },
           }),
-          ...(await presetStates.medTidligsteUttaksalder(62, 10)),
         ])
         await fillOutStegvisning(page, {
           sivilstand: 'UGIFT',
@@ -450,7 +444,6 @@ test.describe('Avansert', () => {
               oevreAldersgrense: { aar: 75, maaneder: 0 },
             },
           }),
-          ...(await presetStates.medTidligsteUttaksalder(62, 10)),
         ])
         await fillOutStegvisning(page, {
           sivilstand: 'UGIFT',
@@ -491,16 +484,15 @@ test.describe('Avansert', () => {
         await expect(yearOptions.nth(1)).toHaveText('62 år')
         await expect(yearOptions.nth(14)).toHaveText('75 år')
 
-        // Due to tidligsteUttaksalder(62, 10), at year 62 only months 10-11 are available
-        // (1 placeholder + 2 months = 3 options)
+        // All 12 months should be available at year 62
         await yearSelect.selectOption('62')
         const monthSelect = page.getByTestId(
           'age-picker-uttaksalder-helt-uttak-maaneder'
         )
         const monthOptions = monthSelect.locator('option')
-        await expect(monthOptions).toHaveCount(3)
-        await expect(monthOptions.nth(1)).toHaveText('10 md. (mars)')
-        await expect(monthOptions.nth(2)).toHaveText('11 md. (apr.)')
+        await expect(monthOptions).toHaveCount(12)
+        await expect(monthOptions.nth(0)).toHaveText('0 md. (mai)')
+        await expect(monthOptions.nth(11)).toHaveText('11 md. (apr.)')
 
         // Select 75 and check month options (only month 0, no placeholder after year change)
         await yearSelect.selectOption('75')
@@ -567,7 +559,6 @@ test.describe('Avansert', () => {
               oevreAldersgrense: { aar: 75, maaneder: 0 },
             },
           }),
-          ...(await presetStates.medTidligsteUttaksalder(62, 10)),
         ])
         await fillOutStegvisning(page, {
           sivilstand: 'UGIFT',
@@ -817,7 +808,6 @@ test.describe('Avansert', () => {
               oevreAldersgrense: { aar: 75, maaneder: 0 },
             },
           }),
-          ...(await presetStates.medTidligsteUttaksalder(62, 10)),
         ])
         await fillOutStegvisning(page, {
           sivilstand: 'UGIFT',
@@ -836,7 +826,7 @@ test.describe('Avansert', () => {
           .selectOption('62')
         await page
           .getByTestId('age-picker-uttaksalder-helt-uttak-maaneder')
-          .selectOption('10')
+          .selectOption('3')
         await page.getByTestId('uttaksgrad').selectOption('40 %')
         await page.getByTestId('inntekt-vsa-gradert-uttak-radio-ja').check()
         await page.getByTestId('inntekt-vsa-gradert-uttak').fill('300000')
@@ -923,7 +913,7 @@ test.describe('Avansert', () => {
           page.getByRole('heading', { name: 'Månedlig pensjon' })
         ).toBeVisible()
         await expect(
-          page.getByRole('heading', { name: 'Ved 62 år og 10 måneder' })
+          page.getByRole('heading', { name: 'Ved 62 år og 3 måneder' })
         ).toBeVisible()
         await expect(
           page.getByText('AFP (avtalefestet pensjon)').first()
@@ -993,7 +983,6 @@ test.describe('Avansert', () => {
               oevreAldersgrense: { aar: 75, maaneder: 0 },
             },
           }),
-          ...(await presetStates.medTidligsteUttaksalder(62, 10)),
         ])
         await fillOutStegvisning(page, {
           sivilstand: 'UGIFT',
@@ -1019,7 +1008,7 @@ test.describe('Avansert', () => {
           .selectOption('62')
         await page
           .getByTestId('age-picker-uttaksalder-helt-uttak-maaneder')
-          .selectOption('10')
+          .selectOption('3')
         await page.getByTestId('uttaksgrad').selectOption('40 %')
         await page.getByTestId('inntekt-vsa-gradert-uttak-radio-ja').check()
         await page.getByTestId('inntekt-vsa-gradert-uttak').fill('300000')
@@ -1055,7 +1044,7 @@ test.describe('Avansert', () => {
         ).toHaveValue('62')
         await expect(
           page.getByTestId('age-picker-uttaksalder-gradert-uttak-maaneder')
-        ).toHaveValue('10')
+        ).toHaveValue('3')
         await expect(page.getByTestId('uttaksgrad')).toHaveValue('40')
         await expect(
           page.getByTestId('inntekt-vsa-gradert-uttak-radio-ja')
