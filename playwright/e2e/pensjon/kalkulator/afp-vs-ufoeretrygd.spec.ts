@@ -2,7 +2,11 @@ import type { Page } from '@playwright/test'
 
 import { expect, test } from '../../../base'
 import { authenticate } from '../../../utils/auth'
-import { loependeVedtak, person, tidligsteUttaksalder } from '../../../utils/mocks'
+import {
+  loependeVedtak,
+  person,
+  tidligsteUttaksalder,
+} from '../../../utils/mocks'
 import { fillOutStegvisning } from '../../../utils/navigation'
 
 test.describe('AFP vs uføretrygd', () => {
@@ -629,7 +633,9 @@ test.describe('AFP vs uføretrygd', () => {
           await expect(
             page.getByText('Pensjonsavtaler (arbeidsgivere m.m.)').first()
           ).toBeVisible()
-          await expect(page.getByText('Alderspensjon (Nav)').first()).toBeVisible()
+          await expect(
+            page.getByText('Alderspensjon (Nav)').first()
+          ).toBeVisible()
         })
 
         // 28
@@ -756,9 +762,7 @@ test.describe('AFP vs uføretrygd', () => {
           await selectHeltUttakMaaneder(page, '0')
           await selectUttaksgrad(page, '50 %')
           await expect(
-            page.getByText(
-              'Om alderspensjon og inntektsgrensen for uføretrygd'
-            )
+            page.getByText('Om alderspensjon og inntektsgrensen for uføretrygd')
           ).toBeVisible()
         })
       })
@@ -836,7 +840,9 @@ test.describe('AFP vs uføretrygd', () => {
           await expect(
             page.getByText('Pensjonsgivende inntekt').first()
           ).toBeVisible()
-          await expect(page.getByText('Alderspensjon (Nav)').first()).toBeVisible()
+          await expect(
+            page.getByText('Alderspensjon (Nav)').first()
+          ).toBeVisible()
         })
 
         // 41
