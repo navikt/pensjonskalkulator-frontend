@@ -12,7 +12,10 @@ import { fillOutStegvisning } from '../../../utils/navigation'
 test.describe('AFP vs uføretrygd', () => {
   const clickAvansert = async (page: Page) => {
     await test.step('Click Avansert toggle', async () => {
-      await page.getByTestId('toggle-avansert').getByText('Avansert').click()
+      await page
+        .getByTestId('toggle-avansert')
+        .getByRole('radio', { name: 'Avansert' })
+        .click()
     })
   }
 
@@ -83,6 +86,9 @@ test.describe('AFP vs uføretrygd', () => {
         page,
       }) => {
         await expect(page.getByTestId('ufoere-info')).toBeVisible()
+        await expect(page.getByTestId('ufoere-info')).toContainText(
+          'AFP og uføretrygd kan ikke kombineres'
+        )
       })
 
       // 2
@@ -132,6 +138,9 @@ test.describe('AFP vs uføretrygd', () => {
         page,
       }) => {
         await expect(page.getByTestId('ufoere-info')).toBeVisible()
+        await expect(page.getByTestId('ufoere-info')).toContainText(
+          'AFP og uføretrygd kan ikke kombineres'
+        )
       })
 
       // 5
@@ -233,6 +242,9 @@ test.describe('AFP vs uføretrygd', () => {
             page.getByText(
               'Du har oppgitt AFP i offentlig sektor, men du har ikke samtykket til at Nav beregner den.'
             )
+          ).toBeVisible()
+          await expect(
+            page.getByText('Derfor vises ikke AFP i beregningen.')
           ).toBeVisible()
         })
       })
@@ -350,7 +362,9 @@ test.describe('AFP vs uføretrygd', () => {
           await expect(
             page.getByText('Pensjonsgivende årsinntekt frem til pensjon')
           ).toBeVisible()
-          await expect(page.getByText(/kr per år før skatt/)).toBeVisible()
+          await expect(
+            page.getByText(/521\s*338 kr per år før skatt/)
+          ).toBeVisible()
           await page.getByRole('button', { name: 'Endre inntekt' }).click()
           await page.getByTestId('inntekt-textfield').fill('0')
           await page.getByRole('button', { name: 'Oppdater inntekt' }).click()
@@ -716,6 +730,14 @@ test.describe('AFP vs uføretrygd', () => {
           await expect(
             page.getByText('Når vil du ta ut 100 % alderspensjon?')
           ).toBeVisible()
+
+          const heltUttakAarSelect2 = page.getByTestId(
+            'age-picker-uttaksalder-helt-uttak-aar'
+          )
+          const options2 = await heltUttakAarSelect2.locator('option').all()
+          expect(options2.length).toBe(10)
+          expect(await options2[1].textContent()).toBe('67 år')
+          expect(await options2[9].textContent()).toBe('75 år')
         })
 
         // 32
