@@ -27,6 +27,7 @@ export function getGrunnlagIngress({
   gradertUttaksperiode,
   shouldHideAfpHeading,
   isEnkel,
+  erSpkBesteberegning,
 }: {
   intl: IntlShape
   alderspensjonDetaljerListe: AlderspensjonDetaljerListe[]
@@ -44,6 +45,7 @@ export function getGrunnlagIngress({
   gradertUttaksperiode: GradertUttak | null
   shouldHideAfpHeading: boolean
   isEnkel: boolean
+  erSpkBesteberegning?: boolean
 }): string {
   const beloepRaw = aarligInntektFoerUttakBeloepFraSkatt?.beloep
   const aarRaw = aarligInntektFoerUttakBeloepFraSkatt?.aar
@@ -127,7 +129,7 @@ export function getGrunnlagIngress({
   </div>
 
   ${getAfpIngress(intl, title || '', content || '')}
-  ${getAfpDetaljerTable({ afpDetaljerListe, intl, uttaksalder, gradertUttaksperiode, shouldHideAfpHeading })}
+  ${getAfpDetaljerTable({ afpDetaljerListe, intl, uttaksalder, gradertUttaksperiode, shouldHideAfpHeading, erSpkBesteberegning })}
   ${afpOffentligAlertsMessage}
   `
 }

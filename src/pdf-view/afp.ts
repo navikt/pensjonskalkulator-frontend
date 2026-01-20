@@ -48,19 +48,21 @@ export function getAfpDetaljerTable({
   uttaksalder,
   gradertUttaksperiode,
   shouldHideAfpHeading,
+  erSpkBesteberegning,
 }: {
   afpDetaljerListe?: AfpDetaljerListe[]
   intl: IntlShape
   uttaksalder: Alder | null
   gradertUttaksperiode: GradertUttak | null
   shouldHideAfpHeading: boolean
+  erSpkBesteberegning?: boolean
 }): string {
   if (!afpDetaljerListe) {
     return ''
   }
 
   // For each AfpDetaljer entry, render its sections and concatenate HTML
-  return afpDetaljerListe
+  const afpDetaljer = afpDetaljerListe
     .map((afpDetaljForValgtUttak, index) => {
       const afpHeading =
         !shouldHideAfpHeading &&
@@ -105,6 +107,13 @@ export function getAfpDetaljerTable({
     </table>`
     })
     .join('')
+
+  const afpDetaljerSPKIngress = erSpkBesteberegning
+    ? `<p>${intl.formatMessage({
+        id: 'grunnlag.afp.spk.foer1963.text',
+      })}</p>`
+    : ''
+  return afpDetaljer + afpDetaljerSPKIngress
 }
 
 function getAfpTable(afpSection: AfpSectionConfig): string {

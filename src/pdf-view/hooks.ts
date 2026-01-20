@@ -307,6 +307,7 @@ const generatePdfContent = (params: {
   sortedUtenlandsperioder: Utenlandsperiode[]
   skalBeregneAfpKap19: boolean | null
   erOffentligTpFoer1963: boolean
+  erSpkBesteberegning?: boolean
 }): string => {
   const {
     intl,
@@ -348,6 +349,7 @@ const generatePdfContent = (params: {
     sortedUtenlandsperioder,
     skalBeregneAfpKap19,
     erOffentligTpFoer1963,
+    erSpkBesteberegning,
   } = params
 
   // Header & Forbehold
@@ -413,6 +415,7 @@ const generatePdfContent = (params: {
     gradertUttaksperiode,
     shouldHideAfpHeading,
     isEnkel,
+    erSpkBesteberegning,
   })
 
   // Pensjonsavtaler
@@ -688,6 +691,7 @@ export const usePdfView = ({
         erOffentligTpFoer1963,
         isEndring,
         afp,
+        erSpkBesteberegning,
       }),
     [
       intl,
@@ -729,6 +733,7 @@ export const usePdfView = ({
       skalBeregneAfpKap19,
       erOffentligTpFoer1963,
       isEndring,
+      erSpkBesteberegning,
     ]
   )
   // #endregion PDF Generation
