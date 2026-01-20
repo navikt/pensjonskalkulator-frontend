@@ -98,6 +98,8 @@ interface UsePdfViewProps {
   isPensjonsavtalerError: boolean
   isPensjonsavtaleFlagVisible: boolean
   erOffentligTpFoer1963: boolean
+  tpAfpPeriode?: UtbetalingsperiodeFoer1963
+  erSpkBesteberegning?: boolean
   isLoading?: boolean
 }
 
@@ -488,6 +490,8 @@ export const usePdfView = ({
   isPensjonsavtalerError,
   isPensjonsavtaleFlagVisible,
   erOffentligTpFoer1963,
+  tpAfpPeriode,
+  erSpkBesteberegning,
   isLoading = false,
 }: UsePdfViewProps) => {
   const intl = useIntl()
@@ -559,7 +563,9 @@ export const usePdfView = ({
       afpPrivatListe,
       afpOffentligListe,
       pre2025OffentligAfp,
-      loependeLivsvarigAfpOffentlig
+      loependeLivsvarigAfpOffentlig,
+      tpAfpPeriode,
+      erSpkBesteberegning
     )
   // #endregion Derived Data
 

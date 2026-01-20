@@ -95,6 +95,8 @@ export const Simulering = ({
     isError: isOffentligTpError,
     afpPerioder,
     erOffentligTpFoer1963,
+    tpAfpPeriode,
+    erSpkBesteberegning,
   } = useOffentligTpData()
 
   const {
@@ -187,6 +189,8 @@ export const Simulering = ({
     isLoading: isLoading || isOffentligTpLoading || isPensjonsavtalerLoading,
     isPensjonsavtaleFlagVisible,
     erOffentligTpFoer1963,
+    tpAfpPeriode,
+    erSpkBesteberegning,
   })
 
   const isEnkel = visning === 'enkel'
