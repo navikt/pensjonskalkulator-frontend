@@ -55,7 +55,7 @@ export function getPensjonsavtaler({
         ${privatePensjonsAvtalerTable ?? ''}
         ${offentligTpTable ?? ''}
         ${offentligTpInfoIngress}
-  ${privatePensjonsAvtalerTable || offentligTpTable ? `<p>${intl.formatMessage({ id: 'pensjonsavtaler.fra_og_med_forklaring' })}</p>` : ''}`
+  ${privatePensjonsAvtalerTable || offentligTpTable ? `<p class="pdf-h3-paragraph">${intl.formatMessage({ id: 'pensjonsavtaler.fra_og_med_forklaring' })}</p>` : ''}`
 }
 
 function getPrivatePensjonsAvtaler(
@@ -245,7 +245,7 @@ function getOffentligTpInfoIngress({
 
     if (skalBeregneAfpKap19) {
       html += `<h4>${intl.formatMessage({ id: 'pensjonsavtaler.offentligtp.subtitle.afp_fra_spk' }, { ...pdfFormatMessageValues })}</h4>
-      <p>${intl.formatMessage(
+      <p class="pdf-h4-paragraph">${intl.formatMessage(
         {
           id: 'pensjonsavtaler.offentligtp.text.afp_fra_spk',
         },

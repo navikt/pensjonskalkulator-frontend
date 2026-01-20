@@ -77,10 +77,10 @@ export function getGrunnlagIngress({
     }
   )}</h3>
   
-  <p>${inntektBeloepOgÅr} avansert kalkulator.</p>
+  <p class="pdf-h3-paragraph">${inntektBeloepOgÅr} avansert kalkulator.</p>
   
   <h3>Alderspensjon (Nav)</h3>
-  <p>
+  <p class="pdf-h3-paragraph">
     ${intl.formatMessage(
       {
         id: isEnkel

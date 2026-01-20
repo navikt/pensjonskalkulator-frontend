@@ -17,7 +17,7 @@ export function getAfpIngress(
   return `<h3>
     ${intl.formatMessage({ id: 'grunnlag.afp.title' })}: ${title}
   </h3>
-  <p>
+  <p class="pdf-h3-paragraph">
     ${intl.formatMessage(
       { id: content },
       {

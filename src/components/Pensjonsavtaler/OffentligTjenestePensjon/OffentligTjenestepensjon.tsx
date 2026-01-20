@@ -133,9 +133,9 @@ export const OffentligTjenestepensjon = (props: {
 
           const leverandoerList = offentligTp?.muligeTpLeverandoerListe
           const chunk =
-            alert.hasLeverandoerList && leverandoerList
+            alert.hasLeverandoerList && leverandoerList?.length
               ? formatLeverandoerList(intl.locale, leverandoerList)
-              : undefined
+              : ''
 
           return (
             <Alert
@@ -144,10 +144,7 @@ export const OffentligTjenestepensjon = (props: {
               variant={alert.variant}
               data-testid={alert.testId}
             >
-              <FormattedMessage
-                id={alert.alertTextId}
-                values={chunk ? { chunk } : undefined}
-              />
+              <FormattedMessage id={alert.alertTextId} values={{ chunk }} />
             </Alert>
           )
         })}
