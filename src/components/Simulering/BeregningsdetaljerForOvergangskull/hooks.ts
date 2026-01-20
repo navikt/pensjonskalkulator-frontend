@@ -546,6 +546,7 @@ export function useBeregningsdetaljer(
     uttaksalder,
     tpAfpPeriode,
     gradertUttaksperiode,
+    erSpkBesteberegning,
     loependeLivsvarigAfpOffentlig,
   ])
 }
