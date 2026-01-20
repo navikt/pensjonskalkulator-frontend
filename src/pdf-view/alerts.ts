@@ -29,7 +29,7 @@ export function getPensjonsavtalerAlertsText({
 
   const html = pensjonsavtalerAlertsList.map((alert) => {
     const alertIcon =
-      alert.variant === 'info' ? INFO_SQUARE_ICON : ALERT_TRIANGLE_ICON
+      alert.variant === 'warning' ? ALERT_TRIANGLE_ICON : INFO_SQUARE_ICON
     return `
       <table role='presentation' class='alert-box' style='width: 100%; margin-bottom: 1em;'>
         <tr>
