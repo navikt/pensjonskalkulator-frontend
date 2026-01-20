@@ -109,9 +109,14 @@ export function getAfpDetaljerTable({
     .join('')
 
   const afpDetaljerSPKIngress = erSpkBesteberegning
-    ? `<p>${intl.formatMessage({
-        id: 'grunnlag.afp.spk.foer1963.text',
-      })}</p>`
+    ? `<p>${intl.formatMessage(
+        {
+          id: 'grunnlag.afp.spk.foer1963.text',
+        },
+        {
+          ...pdfFormatMessageValues,
+        }
+      )}</p>`
     : ''
   return afpDetaljer + afpDetaljerSPKIngress
 }
