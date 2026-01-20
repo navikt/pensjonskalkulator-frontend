@@ -30,24 +30,13 @@ export function getPensjonsavtalerAlertsText({
   const html = pensjonsavtalerAlertsList.map((alert) => {
     const alertIcon =
       alert.variant === 'warning' ? ALERT_TRIANGLE_ICON : INFO_SQUARE_ICON
-    return `
-      <table role='presentation' class='alert-box' style='width: 100%; margin-bottom: 1em;'>
-        <tr>
-          <td style='width: 20px; vertical-align: top; padding: 16px 8px 16px 16px; margin: 0; border: none;'>
-            <span class='infoIconContainer'>
-              ${alertIcon}
-            </span>
-          </td>
-          <td style='vertical-align: top; padding: 16px 16px 16px 8px; margin: 0; text-align: left; border: none;'>
-            <p style='margin: 0; padding: 0;'>${intl.formatMessage(
-              { id: alert.text },
-              {
-                ...pdfFormatMessageValues,
-              }
-            )}</p>
-          </td>
-        </tr>
-      </table>`
+    const alertMessage = intl.formatMessage(
+      { id: alert.text },
+      {
+        ...pdfFormatMessageValues,
+      }
+    )
+    return renderAlertTable({ alertIcon, alertMessage })
   })
 
   return html.join('')
@@ -68,24 +57,18 @@ export function getPrivatePensjonsavtalerAlertsText({
       ? `<h4>${intl.formatMessage({ id: alert.headingId })}</h4>`
       : ''
 
+    const alertMessage = intl.formatMessage(
+      { id: alert.alertTextId },
+      {
+        ...pdfFormatMessageValues,
+      }
+    )
+
+    const alertIcon =
+      alert.variant === 'info' ? INFO_SQUARE_ICON : ALERT_TRIANGLE_ICON
+
     return `${heading}
-      <table role='presentation' class='alert-box' style='width: 100%; margin-bottom: 1em;'>
-        <tr>
-          <td style='width: 20px; vertical-align: top; padding: 16px 8px 16px 16px; margin: 0; border: none;'>
-            <span class='infoIconContainer'>
-              ${INFO_SQUARE_ICON}
-            </span>
-          </td>
-          <td style='vertical-align: top; padding: 16px 16px 16px 8px; margin: 0; text-align: left; border: none;'>
-            <p style='margin: 0; padding: 0;'>${intl.formatMessage(
-              { id: alert.alertTextId },
-              {
-                ...pdfFormatMessageValues,
-              }
-            )}</p>
-          </td>
-        </tr>
-      </table>`
+    ${renderAlertTable({ alertIcon, alertMessage })}`
   })
 
   return html.join('')
@@ -113,25 +96,15 @@ export function getOffentligTjenestePensjonAlertsText({
     const heading = `<h4>${intl.formatMessage({ id: 'pensjonsavtaler.offentligtp.title' })}</h4>`
     const alertIcon =
       alert.variant === 'info' ? INFO_SQUARE_ICON : ALERT_TRIANGLE_ICON
+    const alertMessage = intl.formatMessage(
+      { id: alert.alertTextId },
+      {
+        ...pdfFormatMessageValues,
+        chunk: chunk ? `(${chunk})` : '',
+      }
+    )
     return `${heading}
-      <table role='presentation' class='alert-box' style='width: 100%; margin-bottom: 1em;'>
-        <tr>
-          <td style='width: 20px; vertical-align: top; padding: 16px 8px 16px 16px; margin: 0; border: none;'>
-            <span class='infoIconContainer'>
-              ${alertIcon}
-            </span>
-          </td>
-          <td style='vertical-align: top; padding: 16px 16px 16px 8px; margin: 0; text-align: left; border: none;'>
-            <p style='margin: 0; padding: 0;'>${intl.formatMessage(
-              { id: alert.alertTextId },
-              {
-                ...pdfFormatMessageValues,
-                chunk: chunk ? `(${chunk})` : '',
-              }
-            )}</p>
-          </td>
-        </tr>
-      </table>`
+      ${renderAlertTable({ alertIcon, alertMessage })}`
   })
 
   return html.join('')
@@ -157,24 +130,13 @@ export function getAfpOffentligAlertsText({
     afpOffentligAlertsList.variant === 'info'
       ? INFO_SQUARE_ICON
       : ALERT_TRIANGLE_ICON
-  return `
-      <table role='presentation' class='alert-box' style='width: 100%; margin-bottom: 1em;'>
-        <tr>
-          <td style='width: 20px; vertical-align: top; padding: 16px 8px 16px 16px; margin: 0; border: none;'>
-            <span class='infoIconContainer'>
-              ${alertIcon}
-            </span>
-          </td>
-          <td style='vertical-align: top; padding: 16px 16px 16px 8px; margin: 0; text-align: left; border: none;'>
-            <p style='margin: 0; padding: 0;'>${intl.formatMessage(
-              { id: afpOffentligAlertsList.text },
-              {
-                ...pdfFormatMessageValues,
-              }
-            )}</p>
-          </td>
-        </tr>
-      </table>`
+  const alertMessage = intl.formatMessage(
+    { id: afpOffentligAlertsList.text },
+    {
+      ...pdfFormatMessageValues,
+    }
+  )
+  return renderAlertTable({ alertIcon, alertMessage })
 }
 
 export function getOmstillingsstoenadAlert(
@@ -197,18 +159,7 @@ export function getOmstillingsstoenadAlert(
     }
   )
 
-  return `<table role='presentation' class='alert-box' style='width: 100%; margin-bottom: 1em;'>
-    <tr>
-      <td style='width: 20px; vertical-align: top; padding: 16px 8px 16px 16px; margin: 0; border: none;'>
-        <span class='infoIconContainer'>
-          ${INFO_SQUARE_ICON}
-        </span>
-      </td>
-      <td style='vertical-align: top; padding: 16px 16px 16px 8px; margin: 0; text-align: left; border: none;'>
-        <p style='margin: 0; padding: 0;'>${alertMessage}</p>
-      </td>
-    </tr>
-  </table>`
+  return renderAlertTable({ alertIcon: INFO_SQUARE_ICON, alertMessage })
 }
 
 export const getFremtidigVedtakAlert = ({
@@ -233,11 +184,21 @@ export const getFremtidigVedtakAlert = ({
     }
   )
 
+  return renderAlertTable({ alertMessage, alertIcon: INFO_SQUARE_ICON })
+}
+
+function renderAlertTable({
+  alertIcon,
+  alertMessage,
+}: {
+  alertIcon: string
+  alertMessage: string
+}): string {
   return `<table role='presentation' class='alert-box' style='width: 100%; margin-bottom: 1em;'>
     <tr>
       <td style='width: 20px; vertical-align: top; padding: 16px 8px 16px 16px; margin: 0; border: none;'>
         <span class='infoIconContainer'>
-          ${INFO_SQUARE_ICON}
+          ${alertIcon}
         </span>
       </td>
       <td style='vertical-align: top; padding: 16px 16px 16px 8px; margin: 0; text-align: left; border: none;'>
