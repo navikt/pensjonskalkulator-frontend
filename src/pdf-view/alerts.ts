@@ -108,7 +108,7 @@ export function getOffentligTjenestePensjonAlertsText({
     const chunk =
       alert.hasLeverandoerList && leverandoerList?.length
         ? formatLeverandoerList(intl.locale, leverandoerList)
-        : ''
+        : undefined
 
     const heading = `<h4>${intl.formatMessage({ id: 'pensjonsavtaler.offentligtp.title' })}</h4>`
     const alertIcon =
@@ -126,7 +126,7 @@ export function getOffentligTjenestePensjonAlertsText({
               { id: alert.alertTextId },
               {
                 ...pdfFormatMessageValues,
-                chunk,
+                chunk: chunk ? `(${chunk})` : '',
               }
             )}</p>
           </td>
