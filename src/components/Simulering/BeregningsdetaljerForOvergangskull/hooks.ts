@@ -5,7 +5,7 @@ import { selectCurrentSimulation } from '@/state/userInput/selectors'
 import { isAlderOverAnnenAlder } from '@/utils/alder'
 import { formatDecimalWithComma, formatInntekt } from '@/utils/inntekt'
 
-import { shouldHideAfpDetaljer } from './utils'
+import { hasInvalidMonthlyLivsvarigAfpBeloep } from './utils'
 
 export interface DetaljRad {
   tekst: string
@@ -294,15 +294,6 @@ function getAfpDetaljerListe(
   const getAfpOffentligDetails = (
     afpOffentlig: AfpPensjonsberegning | AfpOffentligLivsvarig
   ) => {
-    if (
-      shouldHideAfpDetaljer({
-        afpDetaljerListe,
-        loependeLivsvarigAfpOffentlig,
-      })
-    ) {
-      return []
-    }
-
     return [
       {
         tekst: 'Månedlig livsvarig avtalefestet pensjon (AFP)',
@@ -467,9 +458,15 @@ function getAfpDetaljerListe(
         : afpOffentligListe.find((it) => it.alder >= afpAar)
 
     if (afpOffentligVedUttak) {
+      const afpOffentligDetails = hasInvalidMonthlyLivsvarigAfpBeloep(
+        loependeLivsvarigAfpOffentlig
+      )
+        ? []
+        : getAfpOffentligDetails(afpOffentligVedUttak)
+
       afpDetaljerListe.push({
         afpPrivat: [],
-        afpOffentlig: getAfpOffentligDetails(afpOffentligVedUttak),
+        afpOffentlig: afpOffentligDetails,
         afpOffentligSpk: [],
         pre2025OffentligAfp: [],
         opptjeningPre2025OffentligAfp: [],

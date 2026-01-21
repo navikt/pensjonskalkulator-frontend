@@ -1,18 +1,25 @@
 import { AfpDetaljerListe } from './hooks'
 
+export interface LoependeLivsvarigAfpOffentlig {
+  afpStatus?: boolean
+  virkningFom?: string
+  maanedligBeloep?: number
+  sistBenyttetGrunnbeloep?: number
+}
+
+export const hasInvalidMonthlyLivsvarigAfpBeloep = (
+  loependeLivsvarigAfpOffentlig: LoependeLivsvarigAfpOffentlig | undefined
+) =>
+  loependeLivsvarigAfpOffentlig?.afpStatus &&
+  (loependeLivsvarigAfpOffentlig?.maanedligBeloep === undefined ||
+    loependeLivsvarigAfpOffentlig?.maanedligBeloep === null)
+
 export const shouldHideAfpDetaljer = ({
   afpDetaljerListe,
   loependeLivsvarigAfpOffentlig,
 }: {
   afpDetaljerListe: AfpDetaljerListe[]
-  loependeLivsvarigAfpOffentlig:
-    | {
-        afpStatus?: boolean | undefined
-        virkningFom?: string | undefined
-        maanedligBeloep?: number | undefined
-        sistBenyttetGrunnbeloep?: number | undefined
-      }
-    | undefined
+  loependeLivsvarigAfpOffentlig: LoependeLivsvarigAfpOffentlig | undefined
 }) => {
   return Boolean(
     afpDetaljerListe.length === 0 ||
@@ -23,8 +30,6 @@ export const shouldHideAfpDetaljer = ({
         afpDetaljer.afpOffentligSpk.length === 0 &&
         afpDetaljer.pre2025OffentligAfp.length === 0
     ) ||
-    (loependeLivsvarigAfpOffentlig?.afpStatus &&
-      (loependeLivsvarigAfpOffentlig?.maanedligBeloep === undefined ||
-        loependeLivsvarigAfpOffentlig?.maanedligBeloep === null))
+    hasInvalidMonthlyLivsvarigAfpBeloep(loependeLivsvarigAfpOffentlig)
   )
 }
