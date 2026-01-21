@@ -57,6 +57,7 @@ import {
   useTidligstMuligUttak,
   useTidligstMuligUttakConditions,
 } from '@/utils/hooks/useTidligstMuligUttakData'
+import { logger } from '@/utils/logging'
 import { formatSivilstand } from '@/utils/sivilstand'
 
 import {
@@ -782,6 +783,9 @@ export const usePdfView = ({
 
   // #region Print Handler
   const handlePDF = useCallback(() => {
+    logger('knapp klikket', {
+      tekst: 'Last ned PDF eller print',
+    })
     const content = createPdfContent()
     if (isMobile) {
       prepareMobilePrint(content)
