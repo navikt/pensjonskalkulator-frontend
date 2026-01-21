@@ -55,7 +55,7 @@ export function getPensjonsavtaler({
         ${privatePensjonsAvtalerTable ?? ''}
         ${offentligTpTable ?? ''}
         ${offentligTpInfoIngress}
-  ${privatePensjonsAvtalerTable || offentligTpTable ? `<p class="pdf-h3-paragraph">${intl.formatMessage({ id: 'pensjonsavtaler.fra_og_med_forklaring' })}</p>` : ''}`
+  ${privatePensjonsAvtalerTable || offentligTpTable ? `<p>${intl.formatMessage({ id: 'pensjonsavtaler.fra_og_med_forklaring' })}</p>` : ''}`
 }
 
 function getPrivatePensjonsAvtaler(

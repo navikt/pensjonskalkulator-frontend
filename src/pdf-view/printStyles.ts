@@ -25,6 +25,9 @@ export const PRINT_STYLES = `
   tr td { margin-right: 10px; text-align: center; }
   tr.header-with-logo { border: none; margin: 0; }
   tr.header-with-logo td { padding: 0; }
+  table.pdf-chart-table {
+    margin: 0 0 24px 0;
+  }
   p.pdf-h3-paragraph, p.pdf-h4-paragraph {margin-top: -16px;}
   .pdf-table-wrapper-row, .pdf-table-type2 tbody > tr:last-child { border-bottom: none; }
   .pdf-table-type2 tbody > tr:last-child { font-weight: bold; }

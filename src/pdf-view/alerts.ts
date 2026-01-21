@@ -11,7 +11,7 @@ import { formatUttaksalder } from '@/utils/alder'
 import { DATE_ENDUSER_FORMAT } from '@/utils/dates'
 
 import { ALERT_TRIANGLE_ICON, INFO_SQUARE_ICON } from './constants'
-import { pdfFormatMessageValues } from './utils'
+import { getPdfLink, pdfFormatMessageValues } from './utils'
 
 export function getPensjonsavtalerAlertsText({
   pensjonsavtalerAlertsList,
@@ -34,6 +34,11 @@ export function getPensjonsavtalerAlertsText({
       { id: alert.text },
       {
         ...pdfFormatMessageValues,
+        scrollTo: (chunks: string[]) =>
+          getPdfLink({
+            url: '',
+            displayText: chunks.join('') || 'pensjonsavtaler',
+          }),
       }
     )
     return renderAlertTable({ alertIcon, alertMessage })
