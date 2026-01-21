@@ -5,6 +5,8 @@ import { selectCurrentSimulation } from '@/state/userInput/selectors'
 import { isAlderOverAnnenAlder } from '@/utils/alder'
 import { formatDecimalWithComma, formatInntekt } from '@/utils/inntekt'
 
+import { shouldHideAfpDetaljer } from './utils'
+
 export interface DetaljRad {
   tekst: string
   verdi?: number | string
@@ -292,6 +294,15 @@ function getAfpDetaljerListe(
   const getAfpOffentligDetails = (
     afpOffentlig: AfpPensjonsberegning | AfpOffentligLivsvarig
   ) => {
+    if (
+      shouldHideAfpDetaljer({
+        afpDetaljerListe,
+        loependeLivsvarigAfpOffentlig,
+      })
+    ) {
+      return []
+    }
+
     return [
       {
         tekst: 'Månedlig livsvarig avtalefestet pensjon (AFP)',
