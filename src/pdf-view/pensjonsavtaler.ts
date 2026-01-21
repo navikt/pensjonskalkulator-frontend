@@ -218,6 +218,13 @@ function getOffentligTpInfoIngress({
 }): string {
   const { tpNummer } = offentligTp?.simulertTjenestepensjon || {}
 
+  const showResults =
+    offentligTp?.simuleringsresultatStatus === 'OK' && tpNummer !== undefined
+
+  if (!showResults) {
+    return ''
+  }
+
   const tekstInfoIkkeAfP = intl.formatMessage({
     id: 'pensjonsavtaler.offentligtp.foer1963.info_ikke_afp',
   })
@@ -268,9 +275,9 @@ function getOffentligTpInfoIngress({
     return `<p>${intl.formatMessage(
       {
         id: getInfoOmAfpOgBetingetTjenestepensjon(
-          tpNummer!,
+          tpNummer,
           afp,
-          offentligTp!.simulertTjenestepensjon?.simuleringsresultat
+          offentligTp.simulertTjenestepensjon?.simuleringsresultat
             .betingetTjenestepensjonErInkludert
         ),
       },
