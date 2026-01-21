@@ -56,5 +56,6 @@ export const PRINT_STYLES = `
   }
   @media print {
     .print-overlay { display: none; }
+    a[href]:after { content: none; }
   }
 `

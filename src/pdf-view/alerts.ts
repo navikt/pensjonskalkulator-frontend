@@ -144,6 +144,17 @@ export function getAfpOffentligAlertsText({
   return renderAlertTable({ alertIcon, alertMessage })
 }
 
+export function getApotekerAlert(intl: IntlShape): string {
+  const alertMessage = intl.formatMessage(
+    { id: 'error.apoteker_warning' },
+    {
+      ...pdfFormatMessageValues,
+    }
+  )
+
+  return renderAlertTable({ alertIcon: ALERT_TRIANGLE_ICON, alertMessage })
+}
+
 export function getOmstillingsstoenadAlert(
   intl: IntlShape,
   normertPensjonsalder: Alder

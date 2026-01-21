@@ -29,6 +29,7 @@ import {
   useGetShowDownloadPdfFeatureToggleQuery,
 } from '@/state/api/apiSlice'
 import { useAppSelector } from '@/state/hooks'
+import { selectHasErApotekerError } from '@/state/session/selectors'
 import {
   selectAarligInntektFoerUttakBeloepFraBrukerInput,
   selectAarligInntektFoerUttakBeloepFraSkatt,
@@ -47,7 +48,11 @@ import {
   selectUfoeregrad,
   selectUtenlandsperioder,
 } from '@/state/userInput/selectors'
-import { formatUttaksalder, isAlderOver62 } from '@/utils/alder'
+import {
+  formatUttaksalder,
+  isAlderOver62,
+  isFoedtEtter1963,
+} from '@/utils/alder'
 import {
   useTidligstMuligUttak,
   useTidligstMuligUttakConditions,
@@ -56,6 +61,7 @@ import { formatSivilstand } from '@/utils/sivilstand'
 
 import {
   getAfpOffentligAlertsText,
+  getApotekerAlert,
   getFremtidigVedtakAlert,
   getOffentligTjenestePensjonAlertsText,
   getOmstillingsstoenadAlert,
@@ -188,6 +194,8 @@ const useReduxSelectors = () => {
   const afp = useAppSelector(selectAfp)
   const sivilstand = useAppSelector(selectSivilstand)
   const foedselsdato = useAppSelector(selectFoedselsdato)
+  const foedtEtter1963 = isFoedtEtter1963(foedselsdato)
+  const hasErApotekerError = useAppSelector(selectHasErApotekerError)
   const utenlandsperioder = useAppSelector(selectUtenlandsperioder)
   const harUtenlandsopphold = useAppSelector(selectHarUtenlandsopphold)
   const aarligInntektFoerUttakBeloepFraSkatt = useAppSelector(
@@ -221,6 +229,8 @@ const useReduxSelectors = () => {
     gradertUttaksperiode,
     isEndring,
     skalBeregneAfpKap19,
+    foedtEtter1963,
+    hasErApotekerError,
   }
 }
 
@@ -310,6 +320,7 @@ const generatePdfContent = (params: {
   skalBeregneAfpKap19: boolean | null
   erOffentligTpFoer1963: boolean
   erSpkBesteberegning?: boolean
+  showApotekerAlert: boolean
 }): string => {
   const {
     intl,
@@ -353,6 +364,7 @@ const generatePdfContent = (params: {
     skalBeregneAfpKap19,
     erOffentligTpFoer1963,
     erSpkBesteberegning,
+    showApotekerAlert,
   } = params
 
   // Header & Forbehold
@@ -385,6 +397,7 @@ const generatePdfContent = (params: {
     ? getOmstillingsstoenadAlert(intl, normertPensjonsalder)
     : ''
 
+  const apotekerError = showApotekerAlert ? getApotekerAlert(intl) : ''
   // Uttaksalder heading (only for enkel view)
   const uttakstidspunkt = uttaksalder && formatUttaksalder(intl, uttaksalder)
   const helUttaksAlder = isEnkel
@@ -471,6 +484,7 @@ const generatePdfContent = (params: {
     forbeholdAvsnitt,
     uttaksGradEndringIngress,
     tidligstMuligUttakIngress,
+    apotekerError,
     omstillingsstoenadAlert,
     helUttaksAlder,
     ufoeretrygdIngress,
@@ -526,6 +540,8 @@ export const usePdfView = ({
     gradertUttaksperiode,
     isEndring,
     skalBeregneAfpKap19,
+    foedtEtter1963,
+    hasErApotekerError,
   } = useReduxSelectors()
   // #endregion Redux State
 
@@ -657,6 +673,10 @@ export const usePdfView = ({
     loependeVedtak?.ufoeretrygd.grad > 0 &&
     loependeVedtak?.ufoeretrygd.grad < 100
 
+  const showApotekerAlert = Boolean(
+    afp === 'ja_offentlig' && hasErApotekerError && foedtEtter1963
+  )
+
   const ufoeretrygdIngress = getUfoeretrygdIngress({
     intl,
     harHelUT,
@@ -711,6 +731,7 @@ export const usePdfView = ({
         isEndring,
         afp,
         erSpkBesteberegning,
+        showApotekerAlert,
       }),
     [
       intl,
@@ -754,6 +775,7 @@ export const usePdfView = ({
       erOffentligTpFoer1963,
       isEndring,
       erSpkBesteberegning,
+      showApotekerAlert,
     ]
   )
   // #endregion PDF Generation
