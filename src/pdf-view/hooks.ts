@@ -266,6 +266,7 @@ const generatePdfContent = (params: {
   isEndring: boolean
   uttaksGradEndring: number | undefined
   person: Person | undefined
+  ufoeretrygdIngress: string
   tableData: ReturnType<typeof useTableData>
   uttaksalder: Alder | null
   harSamtykket: boolean | null
@@ -316,6 +317,7 @@ const generatePdfContent = (params: {
     isEndring,
     uttaksGradEndring: uttaksGradForBrukerMedAP,
     person,
+    ufoeretrygdIngress,
     tableData,
     uttaksalder,
     harSamtykket,
@@ -358,9 +360,10 @@ const generatePdfContent = (params: {
   const loependeVedtakAlert = getFremtidigVedtakAlert({ loependeVedtak, intl })
   const forbeholdAvsnitt = getForbeholdAvsnitt(intl)
 
-  const uttaksGradEndringIngress = uttaksGradForBrukerMedAP
-    ? getUttaksGradEndringIngress({ prosent: uttaksGradForBrukerMedAP, intl })
-    : ''
+  const uttaksGradEndringIngress =
+    uttaksGradForBrukerMedAP !== undefined
+      ? getUttaksGradEndringIngress({ prosent: uttaksGradForBrukerMedAP, intl })
+      : ''
 
   // Tidligst mulig uttak (only for enkel view)
   const tidligstMuligUttakIngress = isEnkel
@@ -470,6 +473,7 @@ const generatePdfContent = (params: {
     tidligstMuligUttakIngress,
     omstillingsstoenadAlert,
     helUttaksAlder,
+    ufoeretrygdIngress,
     chartTableWithHeading,
     pensjonsavtalerAlertsMessage,
     grunnlagIngress,
@@ -669,6 +673,7 @@ export const usePdfView = ({
         isEnkel,
         uttaksGradEndring: uttaksGradForBrukerMedAP,
         person,
+        ufoeretrygdIngress,
         tableData,
         uttaksalder,
         harSamtykket,
