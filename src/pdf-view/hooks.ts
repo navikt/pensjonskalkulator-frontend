@@ -71,6 +71,7 @@ import { getPensjonsavtaler } from './pensjonsavtaler'
 import { PRINT_STYLES } from './printStyles'
 import { getSivilstandIngress } from './sivilstand'
 import { getTidligstMuligUttakIngress } from './tidligtMuligUttak'
+import { getUfoeretrygdIngress } from './ufoeretrygdIngress'
 import { getUttaksGradEndringIngress } from './uttaksGradEndringIngress'
 
 // ============================================================================
@@ -647,6 +648,19 @@ export const usePdfView = ({
     ? loependeVedtak?.alderspensjon?.grad
     : undefined
 
+  const harHelUT = loependeVedtak?.ufoeretrygd.grad === 100
+  const harGradertUT =
+    loependeVedtak?.ufoeretrygd.grad > 0 &&
+    loependeVedtak?.ufoeretrygd.grad < 100
+
+  const ufoeretrygdIngress = getUfoeretrygdIngress({
+    intl,
+    harHelUT,
+    harGradertUT,
+    beregningsvalg,
+    loependeVedtak,
+    normertPensjonsalder,
+  })
   // #region PDF Generation
   const createPdfContent = useCallback(
     () =>
@@ -698,6 +712,7 @@ export const usePdfView = ({
       isEnkel,
       uttaksGradForBrukerMedAP,
       person,
+      ufoeretrygdIngress,
       tableData,
       uttaksalder,
       harSamtykket,
