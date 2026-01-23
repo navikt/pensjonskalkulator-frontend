@@ -5,195 +5,195 @@ import { expect, test } from '../../../base'
 import { authenticate } from '../../../utils/auth'
 import { alderspensjon } from '../../../utils/mocks'
 
+async function checkForErrorPage(page: Page): Promise<string | null> {
+  const errorHeading = page.getByTestId('error.global.title')
+  const errorExists = await errorHeading.isVisible().catch(() => false)
+  if (errorExists) {
+    const errorText = await errorHeading.textContent().catch(() => null)
+    return errorText || 'Error page detected'
+  }
+  return null
+}
+
+async function selectHarUtenlandsoppholdRadio(
+  page: Page,
+  value: 'ja' | 'nei'
+) {
+  await test.step(`Select har utenlandsopphold: ${value}`, async () => {
+    const radio = page.locator(
+      `input[type="radio"][name="har-utenlandsopphold-radio"][value="${value}"]`
+    )
+    await radio.check()
+    await expect(radio).toBeChecked()
+  })
+}
+
+async function openAddUtenlandsoppholdModal(page: Page) {
+  await test.step('Open add utenlandsopphold modal', async () => {
+    await page.getByTestId('legg-til-utenlandsopphold').click()
+    await expect(
+      page.getByRole('dialog', { name: 'Om oppholdet ditt' })
+    ).toBeVisible()
+  })
+}
+
+async function selectLand(page: Page, landkode: string) {
+  await test.step(`Select land: ${landkode}`, async () => {
+    const landSelect = page.getByTestId('utenlandsopphold-land')
+    await landSelect.selectOption(landkode)
+    await expect(landSelect).toHaveValue(landkode)
+  })
+}
+
+async function selectArbeidetUtenlands(page: Page, value: 'ja' | 'nei') {
+  await test.step(`Select arbeidet utenlands: ${value}`, async () => {
+    const radio = page.getByTestId(
+      `utenlandsopphold-arbeidet-utenlands-${value}`
+    )
+    await radio.check()
+    await expect(radio).toBeChecked()
+  })
+}
+
+async function fillStartdato(page: Page, dato: string) {
+  await test.step(`Fill startdato: ${dato}`, async () => {
+    const input = page.getByTestId('utenlandsopphold-startdato')
+    await input.fill(dato)
+  })
+}
+
+async function fillSluttdato(page: Page, dato: string) {
+  await test.step(`Fill sluttdato: ${dato}`, async () => {
+    const input = page.getByTestId('utenlandsopphold-sluttdato')
+    await input.fill(dato)
+  })
+}
+
+async function submitUtenlandsopphold(page: Page) {
+  await test.step('Submit utenlandsopphold', async () => {
+    await page.getByTestId('legg-til-utenlandsopphold-submit').click()
+  })
+}
+
+async function cancelUtenlandsopphold(page: Page) {
+  await test.step('Cancel utenlandsopphold', async () => {
+    await page.getByTestId('legg-til-utenlandsopphold-avbryt').click()
+  })
+}
+
+async function addUtenlandsopphold(
+  page: Page,
+  options: {
+    landkode: string
+    arbeidetUtenlands?: 'ja' | 'nei'
+    startdato: string
+    sluttdato?: string
+  }
+) {
+  await test.step(`Add utenlandsopphold: ${options.landkode}`, async () => {
+    await openAddUtenlandsoppholdModal(page)
+    await selectLand(page, options.landkode)
+    if (options.arbeidetUtenlands) {
+      await selectArbeidetUtenlands(page, options.arbeidetUtenlands)
+    }
+    await fillStartdato(page, options.startdato)
+    if (options.sluttdato) {
+      await fillSluttdato(page, options.sluttdato)
+    }
+    await submitUtenlandsopphold(page)
+    await expect(
+      page.getByRole('dialog', { name: 'Om oppholdet ditt' })
+    ).toBeHidden()
+  })
+}
+
+async function clickNeste(page: Page, expectedUrl?: RegExp) {
+  await test.step('Click "Neste" button', async () => {
+    const button = page.getByTestId('stegvisning-neste-button')
+    const errorBeforeClick = await checkForErrorPage(page)
+    if (errorBeforeClick) {
+      throw new Error(
+        `Error page detected before clicking next: ${errorBeforeClick}`
+      )
+    }
+    await button.click()
+    if (expectedUrl) {
+      await expect(page).toHaveURL(expectedUrl, { timeout: 20000 })
+      const errorAfterNav = await checkForErrorPage(page)
+      if (errorAfterNav) {
+        throw new Error(
+          `Error page detected after navigation: ${errorAfterNav}`
+        )
+      }
+    }
+  })
+}
+
+async function selectUttaksalder(page: Page, alder: number) {
+  await test.step(`Select uttaksalder: ${alder} år`, async () => {
+    const alderButton = page.getByRole('button', { name: `${alder} år` })
+    await alderButton.click()
+    await expect(page.getByTestId('highcharts-done-drawing')).toBeVisible({
+      timeout: 10000,
+    })
+  })
+}
+
+async function selectAfpRadio(
+  page: Page,
+  value: 'ja_privat' | 'ja_offentlig' | 'nei' | 'vet_ikke'
+) {
+  await test.step(`Select AFP: ${value}`, async () => {
+    const radioValue = {
+      ja_privat: 'ja_privat',
+      ja_offentlig: 'ja_offentlig',
+      nei: 'nei',
+      vet_ikke: 'vet_ikke',
+    }[value]
+    await page.locator(`input[name="afp"][value="${radioValue}"]`).check()
+  })
+}
+
+async function selectSamtykkeRadio(page: Page, value: 'ja' | 'nei') {
+  await test.step(`Select samtykke: ${value}`, async () => {
+    await page.locator(`input[name="samtykke"][value="${value}"]`).check()
+  })
+}
+
+async function navigateFromUtenlandsoppholdToBeregning(
+  page: Page,
+  options: {
+    afp: 'nei' | 'ja_privat' | 'ja_offentlig' | 'vet_ikke'
+    samtykke: boolean
+  }
+) {
+  await test.step('Navigate from utenlandsopphold to beregning', async () => {
+    await page.getByTestId('stegvisning-neste-button').click()
+    await page.waitForURL(/\/afp/, { timeout: 10000 })
+
+    await page.locator(`input[name="afp"][value="${options.afp}"]`).check()
+    await page.getByTestId('stegvisning-neste-button').click()
+    await page.waitForURL(/\/samtykke/)
+
+    const samtykkeValue = options.samtykke ? 'ja' : 'nei'
+    await page
+      .locator(`input[name="samtykke"][value="${samtykkeValue}"]`)
+      .check()
+    await page.getByTestId('stegvisning-neste-button').click()
+    await page.waitForURL(/\/beregning/, { timeout: 15000 })
+
+    await page.waitForTimeout(500)
+
+    const errorPage = await checkForErrorPage(page)
+    if (errorPage) {
+      throw new Error(
+        `Error page detected after navigating to beregning: ${errorPage}`
+      )
+    }
+  })
+}
+
 test.describe('Utland', () => {
-  const checkForErrorPage = async (page: Page): Promise<string | null> => {
-    const errorHeading = page.getByTestId('error.global.title')
-    const errorExists = await errorHeading.isVisible().catch(() => false)
-    if (errorExists) {
-      const errorText = await errorHeading.textContent().catch(() => null)
-      return errorText || 'Error page detected'
-    }
-    return null
-  }
-
-  const selectHarUtenlandsoppholdRadio = async (
-    page: Page,
-    value: 'ja' | 'nei'
-  ) => {
-    await test.step(`Select har utenlandsopphold: ${value}`, async () => {
-      const radio = page.locator(
-        `input[type="radio"][name="har-utenlandsopphold-radio"][value="${value}"]`
-      )
-      await radio.check()
-      await expect(radio).toBeChecked()
-    })
-  }
-
-  const openAddUtenlandsoppholdModal = async (page: Page) => {
-    await test.step('Open add utenlandsopphold modal', async () => {
-      await page.getByTestId('legg-til-utenlandsopphold').click()
-      await expect(
-        page.getByRole('dialog', { name: 'Om oppholdet ditt' })
-      ).toBeVisible()
-    })
-  }
-
-  const selectLand = async (page: Page, landkode: string) => {
-    await test.step(`Select land: ${landkode}`, async () => {
-      const landSelect = page.getByTestId('utenlandsopphold-land')
-      await landSelect.selectOption(landkode)
-      await expect(landSelect).toHaveValue(landkode)
-    })
-  }
-
-  const selectArbeidetUtenlands = async (page: Page, value: 'ja' | 'nei') => {
-    await test.step(`Select arbeidet utenlands: ${value}`, async () => {
-      const radio = page.getByTestId(
-        `utenlandsopphold-arbeidet-utenlands-${value}`
-      )
-      await radio.check()
-      await expect(radio).toBeChecked()
-    })
-  }
-
-  const fillStartdato = async (page: Page, dato: string) => {
-    await test.step(`Fill startdato: ${dato}`, async () => {
-      const input = page.getByTestId('utenlandsopphold-startdato')
-      await input.fill(dato)
-    })
-  }
-
-  const fillSluttdato = async (page: Page, dato: string) => {
-    await test.step(`Fill sluttdato: ${dato}`, async () => {
-      const input = page.getByTestId('utenlandsopphold-sluttdato')
-      await input.fill(dato)
-    })
-  }
-
-  const submitUtenlandsopphold = async (page: Page) => {
-    await test.step('Submit utenlandsopphold', async () => {
-      await page.getByTestId('legg-til-utenlandsopphold-submit').click()
-    })
-  }
-
-  const cancelUtenlandsopphold = async (page: Page) => {
-    await test.step('Cancel utenlandsopphold', async () => {
-      await page.getByTestId('legg-til-utenlandsopphold-avbryt').click()
-    })
-  }
-
-  const addUtenlandsopphold = async (
-    page: Page,
-    options: {
-      landkode: string
-      arbeidetUtenlands?: 'ja' | 'nei'
-      startdato: string
-      sluttdato?: string
-    }
-  ) => {
-    await test.step(`Add utenlandsopphold: ${options.landkode}`, async () => {
-      await openAddUtenlandsoppholdModal(page)
-      await selectLand(page, options.landkode)
-      if (options.arbeidetUtenlands) {
-        await selectArbeidetUtenlands(page, options.arbeidetUtenlands)
-      }
-      await fillStartdato(page, options.startdato)
-      if (options.sluttdato) {
-        await fillSluttdato(page, options.sluttdato)
-      }
-      await submitUtenlandsopphold(page)
-      await expect(
-        page.getByRole('dialog', { name: 'Om oppholdet ditt' })
-      ).toBeHidden()
-    })
-  }
-
-  const clickNeste = async (page: Page, expectedUrl?: RegExp) => {
-    await test.step('Click "Neste" button', async () => {
-      const button = page.getByTestId('stegvisning-neste-button')
-      const errorBeforeClick = await checkForErrorPage(page)
-      if (errorBeforeClick) {
-        throw new Error(
-          `Error page detected before clicking next: ${errorBeforeClick}`
-        )
-      }
-      await button.click()
-      if (expectedUrl) {
-        await expect(page).toHaveURL(expectedUrl, { timeout: 20000 })
-        const errorAfterNav = await checkForErrorPage(page)
-        if (errorAfterNav) {
-          throw new Error(
-            `Error page detected after navigation: ${errorAfterNav}`
-          )
-        }
-      }
-    })
-  }
-
-  const selectUttaksalder = async (page: Page, alder: number) => {
-    await test.step(`Select uttaksalder: ${alder} år`, async () => {
-      const alderButton = page.getByRole('button', { name: `${alder} år` })
-      await alderButton.click()
-      await expect(page.getByTestId('highcharts-done-drawing')).toBeVisible({
-        timeout: 10000,
-      })
-    })
-  }
-
-  const selectAfpRadio = async (
-    page: Page,
-    value: 'ja_privat' | 'ja_offentlig' | 'nei' | 'vet_ikke'
-  ) => {
-    await test.step(`Select AFP: ${value}`, async () => {
-      const radioValue = {
-        ja_privat: 'ja_privat',
-        ja_offentlig: 'ja_offentlig',
-        nei: 'nei',
-        vet_ikke: 'vet_ikke',
-      }[value]
-      await page.locator(`input[name="afp"][value="${radioValue}"]`).check()
-    })
-  }
-
-  const selectSamtykkeRadio = async (page: Page, value: 'ja' | 'nei') => {
-    await test.step(`Select samtykke: ${value}`, async () => {
-      await page.locator(`input[name="samtykke"][value="${value}"]`).check()
-    })
-  }
-
-  const navigateFromUtenlandsoppholdToBeregning = async (
-    page: Page,
-    options: {
-      afp: 'nei' | 'ja_privat' | 'ja_offentlig' | 'vet_ikke'
-      samtykke: boolean
-    }
-  ) => {
-    await test.step('Navigate from utenlandsopphold to beregning', async () => {
-      await page.getByTestId('stegvisning-neste-button').click()
-      await page.waitForURL(/\/afp/, { timeout: 10000 })
-
-      await page.locator(`input[name="afp"][value="${options.afp}"]`).check()
-      await page.getByTestId('stegvisning-neste-button').click()
-      await page.waitForURL(/\/samtykke/)
-
-      const samtykkeValue = options.samtykke ? 'ja' : 'nei'
-      await page
-        .locator(`input[name="samtykke"][value="${samtykkeValue}"]`)
-        .check()
-      await page.getByTestId('stegvisning-neste-button').click()
-      await page.waitForURL(/\/beregning/, { timeout: 15000 })
-
-      await page.waitForTimeout(500)
-
-      const errorPage = await checkForErrorPage(page)
-      if (errorPage) {
-        throw new Error(
-          `Error page detected after navigating to beregning: ${errorPage}`
-        )
-      }
-    })
-  }
-
   test.describe('Som bruker som har logget inn på kalkulatoren,', () => {
     test.beforeEach(async ({ page }) => {
       await fillOutStegvisning(page, { navigateTo: 'utenlandsopphold' })
