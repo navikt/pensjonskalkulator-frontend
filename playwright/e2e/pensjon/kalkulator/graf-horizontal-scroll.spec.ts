@@ -1,7 +1,8 @@
+import { fillOutStegvisning } from 'utils/navigation'
+
 import { expect, test } from '../../../base'
 import { authenticate } from '../../../utils/auth'
 import { person, tidligsteUttaksalder } from '../../../utils/mocks'
-import { fillOutStegvisning } from 'utils/navigation'
 
 test.describe('Graf Horizontal scroll', () => {
   test.describe('Gitt at grafen rendres på desktop,', () => {
