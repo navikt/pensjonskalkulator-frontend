@@ -15,10 +15,7 @@ async function checkForErrorPage(page: Page): Promise<string | null> {
   return null
 }
 
-async function selectHarUtenlandsoppholdRadio(
-  page: Page,
-  value: 'ja' | 'nei'
-) {
+async function selectHarUtenlandsoppholdRadio(page: Page, value: 'ja' | 'nei') {
   await test.step(`Select har utenlandsopphold: ${value}`, async () => {
     const radio = page.locator(
       `input[type="radio"][name="har-utenlandsopphold-radio"][value="${value}"]`
