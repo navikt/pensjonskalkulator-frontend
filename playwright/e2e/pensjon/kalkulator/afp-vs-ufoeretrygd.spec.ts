@@ -7,64 +7,64 @@ import {
   person,
   tidligsteUttaksalder,
 } from '../../../utils/mocks'
-import { fillOutStegvisning } from '../../../utils/navigation'
+import { fillOutStegvisning } from 'utils/navigation'
+
+async function clickAvansert(page: Page) {
+  await test.step('Click Avansert toggle', async () => {
+    await page
+      .getByTestId('toggle-avansert')
+      .getByRole('radio', { name: 'Avansert' })
+      .click()
+  })
+}
+
+async function clickNesteButton(page: Page) {
+  await test.step('Click Neste button', async () => {
+    await page.getByTestId('stegvisning-neste-button').click()
+  })
+}
+
+async function clickBeregnPensjon(page: Page) {
+  await test.step('Click Beregn pensjon button', async () => {
+    await page.getByRole('button', { name: 'Beregn pensjon' }).click()
+  })
+}
+
+async function selectUttaksgrad(page: Page, value: string) {
+  await test.step(`Select uttaksgrad: ${value}`, async () => {
+    await page.getByTestId('uttaksgrad').selectOption(value)
+  })
+}
+
+async function selectHeltUttakAar(page: Page, value: string) {
+  await test.step(`Select helt uttak år: ${value}`, async () => {
+    await page
+      .getByTestId('age-picker-uttaksalder-helt-uttak-aar')
+      .selectOption(value)
+  })
+}
+
+async function selectHeltUttakMaaneder(page: Page, value: string) {
+  await test.step(`Select helt uttak måneder: ${value}`, async () => {
+    await page
+      .getByTestId('age-picker-uttaksalder-helt-uttak-maaneder')
+      .selectOption(value)
+  })
+}
+
+async function checkInntektVsaGradertUttakNei(page: Page) {
+  await test.step('Check inntekt vsa gradert uttak nei', async () => {
+    await page.getByTestId('inntekt-vsa-gradert-uttak-radio-nei').check()
+  })
+}
+
+async function checkInntektVsaHeltUttakNei(page: Page) {
+  await test.step('Check inntekt vsa helt uttak nei', async () => {
+    await page.getByTestId('inntekt-vsa-helt-uttak-radio-nei').check()
+  })
+}
 
 test.describe('AFP vs uføretrygd', () => {
-  const clickAvansert = async (page: Page) => {
-    await test.step('Click Avansert toggle', async () => {
-      await page
-        .getByTestId('toggle-avansert')
-        .getByRole('radio', { name: 'Avansert' })
-        .click()
-    })
-  }
-
-  const clickNesteButton = async (page: Page) => {
-    await test.step('Click Neste button', async () => {
-      await page.getByTestId('stegvisning-neste-button').click()
-    })
-  }
-
-  const clickBeregnPensjon = async (page: Page) => {
-    await test.step('Click Beregn pensjon button', async () => {
-      await page.getByRole('button', { name: 'Beregn pensjon' }).click()
-    })
-  }
-
-  const selectUttaksgrad = async (page: Page, value: string) => {
-    await test.step(`Select uttaksgrad: ${value}`, async () => {
-      await page.getByTestId('uttaksgrad').selectOption(value)
-    })
-  }
-
-  const selectHeltUttakAar = async (page: Page, value: string) => {
-    await test.step(`Select helt uttak år: ${value}`, async () => {
-      await page
-        .getByTestId('age-picker-uttaksalder-helt-uttak-aar')
-        .selectOption(value)
-    })
-  }
-
-  const selectHeltUttakMaaneder = async (page: Page, value: string) => {
-    await test.step(`Select helt uttak måneder: ${value}`, async () => {
-      await page
-        .getByTestId('age-picker-uttaksalder-helt-uttak-maaneder')
-        .selectOption(value)
-    })
-  }
-
-  const checkInntektVsaGradertUttakNei = async (page: Page) => {
-    await test.step('Check inntekt vsa gradert uttak nei', async () => {
-      await page.getByTestId('inntekt-vsa-gradert-uttak-radio-nei').check()
-    })
-  }
-
-  const checkInntektVsaHeltUttakNei = async (page: Page) => {
-    await test.step('Check inntekt vsa helt uttak nei', async () => {
-      await page.getByTestId('inntekt-vsa-helt-uttak-radio-nei').check()
-    })
-  }
-
   test.describe('Som bruker som har logget inn i kalkulatoren, har gradert uføretrygd og er mindre enn 62 år,', () => {
     test.use({ autoAuth: false })
 
