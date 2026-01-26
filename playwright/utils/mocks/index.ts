@@ -1,3 +1,7 @@
+export {
+  afpOffentligLivsvarig,
+  afpOffentligLivsvarigError,
+} from './afp-offentlig-livsvarig'
 export { alderspensjon } from './alderspensjon'
 export { apoteker } from './apoteker'
 export { ekskludert } from './ekskludert'
