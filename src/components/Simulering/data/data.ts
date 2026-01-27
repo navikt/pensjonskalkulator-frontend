@@ -39,6 +39,17 @@ export const parseStartSluttUtbetaling = (
     beloep: aarligUtbetaling * forsteAarAndel,
   }
 
+  if (!erLivsvarig && startAlder.aar === sluttAlder!.aar) {
+    return [
+      {
+        alder: startAlder.aar,
+        beloep:
+          (aarligUtbetaling / MAANEDER_I_AARET) *
+          (sluttAlder!.maaneder - startAlder.maaneder + 1),
+      },
+    ]
+  }
+
   if (erLivsvarig) {
     // For livsvarig utbetaling, vis første år med delårsbeløp hvis nødvendig,
     // deretter full utbetaling, og avslutt med Infinity for å indikere livsvarig
