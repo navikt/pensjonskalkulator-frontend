@@ -26,9 +26,13 @@ export const afpOffentligLivsvarig = (
   }
 }
 
-export const afpOffentligLivsvarigError = (): RouteDefinition => {
-  return {
-    url: /\/pensjon\/kalkulator\/api\/v2\/tpo-livsvarig-offentlig-afp/,
-    status: 500,
-  }
-}
+const createAfpOffentligLivsvarigErrorResponse = (): RouteDefinition => ({
+  url: /\/pensjon\/kalkulator\/api\/v2\/tpo-livsvarig-offentlig-afp/,
+  status: 500,
+})
+
+export const afpOffentligLivsvarigError = (): RouteDefinition =>
+  createAfpOffentligLivsvarigErrorResponse()
+
+export const afpOffentligLivsvarigFlereTpOrdninger = (): RouteDefinition =>
+  createAfpOffentligLivsvarigErrorResponse()

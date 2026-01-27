@@ -5,6 +5,7 @@ import { authenticate } from '../../../utils/auth'
 import {
   afpOffentligLivsvarig,
   afpOffentligLivsvarigError,
+  afpOffentligLivsvarigFlereTpOrdninger,
   person,
   tidligsteUttaksalder,
 } from '../../../utils/mocks'
@@ -44,7 +45,7 @@ const navigateToBeregningWithOffentligAfp = async (page: Page) => {
 }
 
 test.describe('Livsvarig AFP i offentlig sektor', () => {
-  test.describe('Som bruker som er født 1963 eller senere OG som er fylt 62 år', () => {
+  test.describe('Som bruker som er født 1963 eller senere med eller uten vedtak om AP OG som er fylt 62 år', () => {
     test.describe('Som har valgt AFP i offentlig sektor OG som har samtykket til å sjekke AFP', () => {
       test.describe('OG sjekk av vedtak viser at jeg har vedtak om AFP og henting av beløp er vellykket', () => {
         test.beforeEach(async ({ page }) => {
@@ -75,7 +76,21 @@ test.describe('Livsvarig AFP i offentlig sektor', () => {
           )
         })
 
-        test('forventer at hentet beløp vises i detaljer om AFP med informasjon om at AFP fortsetter som før', async ({
+        test('forventer at AFP ikke vises i graf og tabell', async ({
+          page,
+        }) => {
+          await navigateToBeregningWithOffentligAfp(page)
+          await page.getByRole('button', { name: '67' }).click()
+
+          await expect(page.getByTestId('highcharts-aria-wrapper')).toBeVisible(
+            { timeout: 10000 }
+          )
+          await expect(
+            page.getByTestId('highcharts-aria-wrapper').getByText(/AFP/)
+          ).not.toBeVisible()
+        })
+
+        test('forventer at hentet beløp vises i detaljer om AFP uten uttakstidspunkt med informasjon om at AFP er hentet og at den fortsetter som før', async ({
           page,
         }) => {
           await navigateToBeregningWithOffentligAfp(page)
@@ -87,9 +102,9 @@ test.describe('Livsvarig AFP i offentlig sektor', () => {
 
           const afpGrunnlagContent = page.getByTestId('grunnlag.afp.content')
           await expect(afpGrunnlagContent).toBeVisible()
-          await expect(afpGrunnlagContent).toContainText(
-            'fortsetter som før selv om du starter eller endrer alderspensjonen din'
-          )
+          await expect(afpGrunnlagContent).toContainText('Vi har hentet')
+          await expect(afpGrunnlagContent).toContainText('fortsetter som før')
+          await expect(afpGrunnlagContent).not.toContainText(/fra \d/)
         })
       })
 
@@ -144,6 +159,43 @@ test.describe('Livsvarig AFP i offentlig sektor', () => {
         })
 
         test('forventer et varsel om at vedtak ikke kunne sjekkes', async ({
+          page,
+        }) => {
+          await navigateToBeregningWithOffentligAfp(page)
+          await page.getByRole('button', { name: '67' }).click()
+
+          const alert = page.getByTestId('alert-afp-offentlig-livsvarig-failed')
+          await expect(alert).toBeVisible({ timeout: 10000 })
+          await expect(alert).toContainText(
+            'Vi klarte ikke å sjekke om du har vedtak om livsvarig AFP'
+          )
+        })
+
+        test('forventer at simulert AFP-beløp fra Nav med uttakstidspunkt vises i detaljer om AFP', async ({
+          page,
+        }) => {
+          await navigateToBeregningWithOffentligAfp(page)
+          await page.getByRole('button', { name: '67' }).click()
+
+          const afpGrunnlagContent = page.getByTestId('grunnlag.afp.content')
+          await expect(afpGrunnlagContent).toBeVisible({ timeout: 15000 })
+          await expect(afpGrunnlagContent).toContainText(
+            'oppgitt AFP i offentlig sektor'
+          )
+        })
+      })
+
+      test.describe('OG vedtak om AFP finnes hos flere TP-ordninger', () => {
+        test.beforeEach(async ({ page }) => {
+          await authenticate(page, [
+            await personOver62(),
+            await tidligsteUttaksalder({ aar: 62, maaneder: 0 }),
+            afpOffentligLivsvarigFlereTpOrdninger(),
+          ])
+          await dismissCookieBannerIfPresent(page)
+        })
+
+        test('forventer et varsel om at vedtak ikke kunne sjekkes (behandlet som feil)', async ({
           page,
         }) => {
           await navigateToBeregningWithOffentligAfp(page)
