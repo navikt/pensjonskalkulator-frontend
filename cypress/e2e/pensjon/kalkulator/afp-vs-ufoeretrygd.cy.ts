@@ -2,7 +2,19 @@ import { format, sub } from 'date-fns'
 
 import loependeVedtakMock from '../../../fixtures/loepende-vedtak.json'
 import personMock from '../../../fixtures/person.json'
-import { expect_afp_og_pensjonsavtaler_i_graf_og_tabell } from './med-samtykke-offentlig-tjenestepensjon.cy'
+
+function expect_afp_og_pensjonsavtaler_i_graf_og_tabell() {
+  cy.contains('Pensjonsgivende inntekt').should('be.visible')
+  cy.contains('AFP (avtalefestet pensjon)').should('be.visible')
+  cy.contains('Pensjonsavtaler (arbeidsgivere m.m.)').should('be.visible')
+  cy.contains('Alderspensjon (Nav)').should('be.visible')
+  cy.contains('Vis tabell av beregningen').click()
+  cy.get('td button').first().click()
+  cy.contains('dt', 'Pensjonsgivende inntekt').should('be.visible')
+  cy.contains('dt', 'AFP (avtalefestet pensjon)').should('be.visible')
+  cy.contains('dt', 'Pensjonsavtaler (arbeidsgivere m.m.)').should('be.visible')
+  cy.contains('dt', 'Alderspensjon (Nav)').should('be.visible')
+}
 
 const fødselsdatoYngreEnn62 = format(
   sub(new Date(), { years: 61, months: 1, days: 5 }),
