@@ -146,8 +146,6 @@ jobs:
 
       - name: Run ${{ matrix.browser }} tests
         run: npx playwright test --project=${{ matrix.browser }} --workers=6 --reporter=blob
-        env:
-          HOME: /root
 
       - name: Upload ${{ matrix.browser }} blob report
         uses: actions/upload-artifact@v6
@@ -197,8 +195,6 @@ jobs:
 
       - name: Run Firefox tests
         run: npx playwright test --project=firefox --workers=6 --reporter=blob
-        env:
-          HOME: /root
 
       - name: Upload Firefox blob report
         uses: actions/upload-artifact@v6
