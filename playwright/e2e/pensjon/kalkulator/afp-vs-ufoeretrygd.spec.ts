@@ -1,13 +1,13 @@
 import type { Page } from '@playwright/test'
-import { fillOutStegvisning } from 'utils/navigation'
 
-import { expect, test } from '../../../base'
-import { authenticate } from '../../../utils/auth'
+import { expect, test } from 'base'
+import { authenticate } from 'utils/auth'
 import {
   loependeVedtak,
   person,
   tidligsteUttaksalder,
-} from '../../../utils/mocks'
+} from 'utils/mocks'
+import { fillOutStegvisning } from 'utils/navigation'
 
 async function clickAvansert(page: Page) {
   await test.step('Click Avansert toggle', async () => {
