@@ -92,9 +92,7 @@ async function expectIkkePensjonsavtalerIGrafOgTabell(page: Page) {
 async function clickUttaksalderAndWait(page: Page, buttonText: string) {
   await test.step(`Click uttaksalder: ${buttonText}`, async () => {
     await page.getByRole('button', { name: buttonText }).click()
-    await expect(page.getByTestId('pensjonsavtaler-heading')).toBeVisible({
-      timeout: 15000,
-    })
+    await expect(page.getByTestId('pensjonsavtaler-heading')).toBeVisible()
   })
 }
 
@@ -1057,7 +1055,7 @@ test.describe('Med samtykke - Offentlig tjenestepensjon', () => {
 
       test.beforeEach(async ({ page }) => {
         await authenticate(page, [
-          await person({ foedselsdato: '1960-04-30' }),
+          await person({ alder: { aar: 65 } }),
           await offentligTp({
             preset: 'unsupported',
             unsupportedProviders: [
@@ -1088,7 +1086,7 @@ test.describe('Med samtykke - Offentlig tjenestepensjon', () => {
 
       test.beforeEach(async ({ page }) => {
         await authenticate(page, [
-          await person({ foedselsdato: '1960-04-30' }),
+          await person({ alder: { aar: 65 } }),
           await offentligTp({ preset: 'no_membership' }),
           await pensjonsavtaler({ avtaler: [], utilgjengeligeSelskap: [] }),
         ])
