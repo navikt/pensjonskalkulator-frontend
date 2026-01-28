@@ -1,8 +1,8 @@
-import { expect, test } from '../../../base'
-import { authenticate } from '../../../utils/auth'
-import { offentligTp, pensjonsavtaler, person } from '../../../utils/mocks'
-import { fillOutStegvisning } from '../../../utils/navigation'
-import { presetStates } from '../../../utils/presetStates'
+import { expect, test } from 'base'
+import { authenticate } from 'utils/auth'
+import { offentligTp, pensjonsavtaler, person } from 'utils/mocks'
+import { fillOutStegvisning } from 'utils/navigation'
+import { presetStates } from 'utils/presetStates'
 
 test.use({ autoAuth: false })
 
@@ -10,7 +10,7 @@ async function defaultPersonMock() {
   return person({
     fornavn: 'Aprikos',
     sivilstand: 'UGIFT',
-    foedselsdato: '1964-04-30',
+    alder: { aar: 60 },
     pensjoneringAldre: {
       normertPensjoneringsalder: { aar: 67, maaneder: 0 },
       nedreAldersgrense: { aar: 62, maaneder: 0 },
