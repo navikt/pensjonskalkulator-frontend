@@ -1,14 +1,14 @@
 import { Page } from '@playwright/test'
 
-import { expect, test } from '../../../base'
-import { authenticate } from '../../../utils/auth'
+import { expect, test } from 'base'
+import { authenticate } from 'utils/auth'
 import {
   apotekerError,
   loependeVedtak,
   person,
   tidligsteUttaksalder,
-} from '../../../utils/mocks'
-import { fillOutStegvisning } from '../../../utils/navigation'
+} from 'utils/mocks'
+import { fillOutStegvisning } from 'utils/navigation'
 
 test.use({ autoAuth: false })
 
@@ -252,7 +252,7 @@ test.describe('Med ufoeretrygd', () => {
             await person({
               fornavn: 'Aprikos',
               sivilstand: 'UGIFT',
-              foedselsdato: '1964-04-30',
+              alder: { aar: 60 },
               pensjoneringAldre: {
                 normertPensjoneringsalder: { aar: 67, maaneder: 0 },
                 nedreAldersgrense: { aar: 62, maaneder: 0 },
@@ -359,11 +359,11 @@ test.describe('Med ufoeretrygd', () => {
         })
         await page
           .getByRole('button', { name: '67' })
-          .waitFor({ state: 'visible', timeout: 15000 })
+          .waitFor({ state: 'visible' })
         await page.getByRole('button', { name: '67' }).click()
 
         const afpGrunnlag = page.getByTestId('grunnlag.afp.title')
-        await expect(afpGrunnlag).toBeVisible({ timeout: 15000 })
+        await expect(afpGrunnlag).toBeVisible()
       })
     })
   })
