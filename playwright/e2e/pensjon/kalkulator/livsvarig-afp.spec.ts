@@ -72,7 +72,9 @@ test.describe('Livsvarig AFP i offentlig sektor', () => {
           await navigateToBeregningWithOffentligAfp(page)
           await page.getByRole('button', { name: '67' }).click()
 
-          await expect(page.getByTestId('highcharts-aria-wrapper')).toBeVisible()
+          await expect(
+            page.getByTestId('highcharts-aria-wrapper')
+          ).toBeVisible()
           await expect(
             page.getByTestId('highcharts-aria-wrapper').getByText(/AFP/)
           ).not.toBeVisible()
