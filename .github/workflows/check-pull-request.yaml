@@ -27,8 +27,6 @@ jobs:
 
       - name: Setup Node.js
         uses: ./.github/actions/setup-node
-        with:
-          reader-token: ${{ secrets.READER_TOKEN }}
 
       - name: Build application
         run: npm run build
@@ -52,8 +50,6 @@ jobs:
 
       - name: Setup Node.js
         uses: ./.github/actions/setup-node
-        with:
-          reader-token: ${{ secrets.READER_TOKEN }}
 
       - name: Run unit tests
         run: npm run test
@@ -76,8 +72,6 @@ jobs:
 
       - name: Setup Node.js
         uses: ./.github/actions/setup-node
-        with:
-          reader-token: ${{ secrets.READER_TOKEN }}
 
       - name: Cache Cypress binary
         id: cache-cypress

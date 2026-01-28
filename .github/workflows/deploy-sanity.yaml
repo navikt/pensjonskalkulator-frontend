@@ -37,8 +37,6 @@ jobs:
 
       - name: Setup Node.js
         uses: ./.github/actions/setup-node
-        with:
-          reader-token: ${{ secrets.READER_TOKEN }}
 
       - name: Build staging application
         run: npm run sanity-build
