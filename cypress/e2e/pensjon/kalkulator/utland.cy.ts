@@ -53,9 +53,9 @@ describe('Utland', () => {
           cy.get('[data-testid="utenlandsopphold-land"]').then(
             (selectElements) => {
               const options = selectElements.find('option')
-              expect(options.length).equal(257)
+              expect(options.length).equal(255)
               expect(options.eq(1).text()).equal('Afghanistan')
-              expect(options.eq(256).text()).equal('ukjent')
+              expect(options.eq(254).text()).equal('ukjent')
             }
           )
         })
