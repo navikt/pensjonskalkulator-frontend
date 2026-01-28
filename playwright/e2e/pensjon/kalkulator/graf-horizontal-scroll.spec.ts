@@ -1,8 +1,7 @@
+import { expect, test } from 'base'
+import { authenticate } from 'utils/auth'
+import { person, tidligsteUttaksalder } from 'utils/mocks'
 import { fillOutStegvisning } from 'utils/navigation'
-
-import { expect, test } from '../../../base'
-import { authenticate } from '../../../utils/auth'
-import { person, tidligsteUttaksalder } from '../../../utils/mocks'
 
 test.describe('Graf Horizontal scroll', () => {
   test.describe('Gitt at grafen rendres på desktop,', () => {
@@ -12,7 +11,7 @@ test.describe('Graf Horizontal scroll', () => {
       await authenticate(page, [
         await person({
           sivilstand: 'UGIFT',
-          foedselsdato: '1964-04-30',
+          alder: { aar: 60 },
           pensjoneringAldre: {
             normertPensjoneringsalder: { aar: 67, maaneder: 0 },
             nedreAldersgrense: { aar: 62, maaneder: 0 },
