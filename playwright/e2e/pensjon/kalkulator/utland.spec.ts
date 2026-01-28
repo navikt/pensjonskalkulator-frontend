@@ -1,9 +1,9 @@
 import type { Page } from '@playwright/test'
-import { fillOutStegvisning } from 'utils/navigation'
 
-import { expect, test } from '../../../base'
-import { authenticate } from '../../../utils/auth'
-import { alderspensjon } from '../../../utils/mocks'
+import { expect, test } from 'base'
+import { authenticate } from 'utils/auth'
+import { alderspensjon } from 'utils/mocks'
+import { fillOutStegvisning } from 'utils/navigation'
 
 async function checkForErrorPage(page: Page): Promise<string | null> {
   const errorHeading = page.getByTestId('error.global.title')
@@ -115,7 +115,7 @@ async function clickNeste(page: Page, expectedUrl?: RegExp) {
     }
     await button.click()
     if (expectedUrl) {
-      await expect(page).toHaveURL(expectedUrl, { timeout: 20000 })
+      await expect(page).toHaveURL(expectedUrl)
       const errorAfterNav = await checkForErrorPage(page)
       if (errorAfterNav) {
         throw new Error(
@@ -130,9 +130,7 @@ async function selectUttaksalder(page: Page, alder: number) {
   await test.step(`Select uttaksalder: ${alder} år`, async () => {
     const alderButton = page.getByRole('button', { name: `${alder} år` })
     await alderButton.click()
-    await expect(page.getByTestId('highcharts-done-drawing')).toBeVisible({
-      timeout: 10000,
-    })
+    await expect(page.getByTestId('highcharts-done-drawing')).toBeVisible()
   })
 }
 
@@ -166,7 +164,7 @@ async function navigateFromUtenlandsoppholdToBeregning(
 ) {
   await test.step('Navigate from utenlandsopphold to beregning', async () => {
     await page.getByTestId('stegvisning-neste-button').click()
-    await page.waitForURL(/\/afp/, { timeout: 10000 })
+    await page.waitForURL(/\/afp/)
 
     await page.locator(`input[name="afp"][value="${options.afp}"]`).check()
     await page.getByTestId('stegvisning-neste-button').click()
@@ -177,9 +175,7 @@ async function navigateFromUtenlandsoppholdToBeregning(
       .locator(`input[name="samtykke"][value="${samtykkeValue}"]`)
       .check()
     await page.getByTestId('stegvisning-neste-button').click()
-    await page.waitForURL(/\/beregning/, { timeout: 15000 })
-
-    await page.waitForTimeout(500)
+    await page.waitForURL(/\/beregning/)
 
     const errorPage = await checkForErrorPage(page)
     if (errorPage) {
