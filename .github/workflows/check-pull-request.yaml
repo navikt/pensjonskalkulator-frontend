@@ -119,6 +119,7 @@ jobs:
     steps:
       - name: Check if browser should run
         id: should-run
+        shell: bash
         run: |
           if [[ "${{ matrix.browser }}" == "chromium" ]]; then
             echo "run=true" >> $GITHUB_OUTPUT
