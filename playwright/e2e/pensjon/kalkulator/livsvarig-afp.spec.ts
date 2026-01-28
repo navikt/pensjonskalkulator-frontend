@@ -1,4 +1,5 @@
 import { Page } from '@playwright/test'
+import { fillOutStegvisning } from 'utils/navigation'
 
 import { expect, test } from '../../../base'
 import { authenticate } from '../../../utils/auth'
@@ -9,7 +10,6 @@ import {
   person,
   tidligsteUttaksalder,
 } from '../../../utils/mocks'
-import { fillOutStegvisning } from '../../../utils/navigation'
 
 test.use({ autoAuth: false })
 
@@ -25,13 +25,6 @@ const personOver62 = () =>
     },
   })
 
-const dismissCookieBannerIfPresent = async (page: Page) => {
-  const cookieButton = page.getByRole('button', { name: 'Bare nødvendige' })
-  if (await cookieButton.isVisible({ timeout: 1000 }).catch(() => false)) {
-    await cookieButton.click()
-  }
-}
-
 const navigateToBeregningWithOffentligAfp = async (page: Page) => {
   await fillOutStegvisning(page, {
     afp: 'ja_offentlig',
@@ -39,9 +32,7 @@ const navigateToBeregningWithOffentligAfp = async (page: Page) => {
     samtykke: false,
     navigateTo: 'beregning',
   })
-  await page
-    .getByRole('button', { name: '67' })
-    .waitFor({ state: 'visible', timeout: 15000 })
+  await page.getByRole('button', { name: '67' }).waitFor({ state: 'visible' })
 }
 
 test.describe('Livsvarig AFP i offentlig sektor', () => {
@@ -59,7 +50,6 @@ test.describe('Livsvarig AFP i offentlig sektor', () => {
               sistBenyttetGrunnbeloep: 118620,
             }),
           ])
-          await dismissCookieBannerIfPresent(page)
         })
 
         test('forventer et varsel på beregningssiden som sier at beløp er hentet, men at beløp ikke vises i graf og tabell', async ({
@@ -69,7 +59,7 @@ test.describe('Livsvarig AFP i offentlig sektor', () => {
           await page.getByRole('button', { name: '67' }).click()
 
           const alert = page.getByTestId('alert-afp-offentlig-livsvarig-info')
-          await expect(alert).toBeVisible({ timeout: 10000 })
+          await expect(alert).toBeVisible()
           await expect(alert).toContainText('Vi har hentet din livsvarige AFP')
           await expect(alert).toContainText(
             'Beløpet vises ikke i graf og tabell'
@@ -82,9 +72,7 @@ test.describe('Livsvarig AFP i offentlig sektor', () => {
           await navigateToBeregningWithOffentligAfp(page)
           await page.getByRole('button', { name: '67' }).click()
 
-          await expect(page.getByTestId('highcharts-aria-wrapper')).toBeVisible(
-            { timeout: 10000 }
-          )
+          await expect(page.getByTestId('highcharts-aria-wrapper')).toBeVisible()
           await expect(
             page.getByTestId('highcharts-aria-wrapper').getByText(/AFP/)
           ).not.toBeVisible()
@@ -97,7 +85,7 @@ test.describe('Livsvarig AFP i offentlig sektor', () => {
           await page.getByRole('button', { name: '67' }).click()
 
           const afpGrunnlagTitle = page.getByTestId('grunnlag.afp.title')
-          await expect(afpGrunnlagTitle).toBeVisible({ timeout: 15000 })
+          await expect(afpGrunnlagTitle).toBeVisible()
           await expect(afpGrunnlagTitle).toContainText('Offentlig')
 
           const afpGrunnlagContent = page.getByTestId('grunnlag.afp.content')
@@ -118,7 +106,6 @@ test.describe('Livsvarig AFP i offentlig sektor', () => {
               maanedligBeloep: null,
             }),
           ])
-          await dismissCookieBannerIfPresent(page)
         })
 
         test('forventer et varsel om at beløpet ikke kunne hentes', async ({
@@ -130,7 +117,7 @@ test.describe('Livsvarig AFP i offentlig sektor', () => {
           const alert = page.getByTestId(
             'alert-afp-offentlig-livsvarig-success'
           )
-          await expect(alert).toBeVisible({ timeout: 10000 })
+          await expect(alert).toBeVisible()
           await expect(alert).toContainText(
             'Du har startet uttak av livsvarig AFP'
           )
@@ -143,7 +130,7 @@ test.describe('Livsvarig AFP i offentlig sektor', () => {
           await page.getByRole('button', { name: '67' }).click()
 
           const afpGrunnlagContent = page.getByTestId('grunnlag.afp.content')
-          await expect(afpGrunnlagContent).toBeVisible({ timeout: 15000 })
+          await expect(afpGrunnlagContent).toBeVisible()
           await expect(afpGrunnlagContent).not.toContainText('kr')
         })
       })
@@ -155,7 +142,6 @@ test.describe('Livsvarig AFP i offentlig sektor', () => {
             await tidligsteUttaksalder({ aar: 62, maaneder: 0 }),
             afpOffentligLivsvarigError(),
           ])
-          await dismissCookieBannerIfPresent(page)
         })
 
         test('forventer et varsel om at vedtak ikke kunne sjekkes', async ({
@@ -192,7 +178,6 @@ test.describe('Livsvarig AFP i offentlig sektor', () => {
             await tidligsteUttaksalder({ aar: 62, maaneder: 0 }),
             afpOffentligLivsvarigFlereTpOrdninger(),
           ])
-          await dismissCookieBannerIfPresent(page)
         })
 
         test('forventer et varsel om at vedtak ikke kunne sjekkes (behandlet som feil)', async ({
@@ -215,7 +200,7 @@ test.describe('Livsvarig AFP i offentlig sektor', () => {
           await page.getByRole('button', { name: '67' }).click()
 
           const afpGrunnlagContent = page.getByTestId('grunnlag.afp.content')
-          await expect(afpGrunnlagContent).toBeVisible({ timeout: 15000 })
+          await expect(afpGrunnlagContent).toBeVisible()
           await expect(afpGrunnlagContent).toContainText(
             'oppgitt AFP i offentlig sektor'
           )
@@ -232,7 +217,6 @@ test.describe('Livsvarig AFP i offentlig sektor', () => {
               maanedligBeloep: 0,
             }),
           ])
-          await dismissCookieBannerIfPresent(page)
         })
 
         test('forventer et varsel om at vedtak ikke kunne sjekkes (behandlet som feil)', async ({
@@ -242,7 +226,7 @@ test.describe('Livsvarig AFP i offentlig sektor', () => {
           await page.getByRole('button', { name: '67' }).click()
 
           const alert = page.getByTestId('alert-afp-offentlig-livsvarig-failed')
-          await expect(alert).toBeVisible({ timeout: 10000 })
+          await expect(alert).toBeVisible()
           await expect(alert).toContainText(
             'Vi klarte ikke å sjekke om du har vedtak om livsvarig AFP'
           )
@@ -255,7 +239,7 @@ test.describe('Livsvarig AFP i offentlig sektor', () => {
           await page.getByRole('button', { name: '67' }).click()
 
           const afpGrunnlagContent = page.getByTestId('grunnlag.afp.content')
-          await expect(afpGrunnlagContent).toBeVisible({ timeout: 15000 })
+          await expect(afpGrunnlagContent).toBeVisible()
           await expect(afpGrunnlagContent).toContainText(
             'oppgitt AFP i offentlig sektor'
           )
@@ -269,7 +253,6 @@ test.describe('Livsvarig AFP i offentlig sektor', () => {
           await personOver62(),
           await tidligsteUttaksalder({ aar: 62, maaneder: 0 }),
         ])
-        await dismissCookieBannerIfPresent(page)
       })
 
       test('forventer informasjon på samtykke-steget om at Nav kan gjøre en mer presis beregning hvis jeg samtykker', async ({
