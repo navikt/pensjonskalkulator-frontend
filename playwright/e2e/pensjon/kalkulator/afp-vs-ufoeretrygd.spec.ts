@@ -1,12 +1,7 @@
 import type { Page } from '@playwright/test'
-
 import { expect, test } from 'base'
 import { authenticate } from 'utils/auth'
-import {
-  loependeVedtak,
-  person,
-  tidligsteUttaksalder,
-} from 'utils/mocks'
+import { loependeVedtak, person, tidligsteUttaksalder } from 'utils/mocks'
 import { fillOutStegvisning } from 'utils/navigation'
 
 async function clickAvansert(page: Page) {
