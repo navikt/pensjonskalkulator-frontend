@@ -1,8 +1,7 @@
+import { expect, test } from 'base'
+import { authenticate } from 'utils/auth'
+import { person } from 'utils/mocks'
 import { fillOutStegvisning } from 'utils/navigation'
-
-import { expect, test } from '../../../base'
-import { authenticate } from '../../../utils/auth'
-import { person } from '../../../utils/mocks'
 
 const MOCK_DATE = new Date(2024, 0, 1, 12, 0, 0) // January 1, 2024
 
