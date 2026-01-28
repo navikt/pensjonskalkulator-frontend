@@ -1,14 +1,14 @@
 import { Page } from '@playwright/test'
 
-import { expect, test } from '../../../base'
-import { authenticate } from '../../../utils/auth'
+import { expect, test } from 'base'
+import { authenticate } from 'utils/auth'
 import {
   alderspensjon,
   apotekerError,
   person,
   tidligsteUttaksalder,
-} from '../../../utils/mocks'
-import { fillOutStegvisning } from '../../../utils/navigation'
+} from 'utils/mocks'
+import { fillOutStegvisning } from 'utils/navigation'
 
 test.use({ autoAuth: false })
 
