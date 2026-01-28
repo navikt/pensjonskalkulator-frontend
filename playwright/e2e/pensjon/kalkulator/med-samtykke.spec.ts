@@ -1,7 +1,5 @@
-import { Page } from '@playwright/test'
-
-import { expect, test } from '../../../base'
-import { authenticate } from '../../../utils/auth'
+import { expect, test } from 'base'
+import { authenticate } from 'utils/auth'
 import {
   offentligTpAnnenOrdning,
   offentligTpIkkeMedlem,
@@ -9,15 +7,8 @@ import {
   offentligTpTomSimulering,
   pensjonsavtalerDelvisSvarTom,
   pensjonsavtalerError,
-} from '../../../utils/mocks'
-import { fillOutStegvisning } from '../../../utils/navigation'
-
-const dismissCookieBannerIfPresent = async (page: Page) => {
-  const cookieButton = page.getByRole('button', { name: 'Bare nødvendige' })
-  if (await cookieButton.isVisible({ timeout: 1000 }).catch(() => false)) {
-    await cookieButton.click()
-  }
-}
+} from 'utils/mocks'
+import { fillOutStegvisning } from 'utils/navigation'
 
 const alertTekstStart = 'Beregningen viser kanskje ikke alt.'
 const alertTekstAnnenTPO = `${alertTekstStart} Du kan ha rett til offentlig tjenestepensjon. Les mer under pensjonsavtaler.`
@@ -30,7 +21,6 @@ test.describe('Med samtykke', () => {
     test.describe('Når NP og TPO er vellykket,', () => {
       // 1
       test('forventer jeg ingen alert', async ({ page }) => {
-        await dismissCookieBannerIfPresent(page)
         await fillOutStegvisning(page, {
           afp: 'nei',
           samtykke: true,
@@ -38,12 +28,12 @@ test.describe('Med samtykke', () => {
         })
         await page
           .getByRole('button', { name: '67' })
-          .waitFor({ state: 'visible', timeout: 15000 })
+          .waitFor({ state: 'visible' })
         await page.getByRole('button', { name: '67' }).click()
 
         await expect(
           page.getByRole('button', { name: 'Vis tabell av beregningen' })
-        ).toBeVisible({ timeout: 15000 })
+        ).toBeVisible()
         await expect(page.getByText(alertTekstStart)).not.toBeVisible()
       })
     })
@@ -55,7 +45,6 @@ test.describe('Med samtykke', () => {
         page,
       }) => {
         await authenticate(page, [pensjonsavtalerError()])
-        await dismissCookieBannerIfPresent(page)
         await fillOutStegvisning(page, {
           afp: 'nei',
           samtykke: true,
@@ -63,12 +52,10 @@ test.describe('Med samtykke', () => {
         })
         await page
           .getByRole('button', { name: '67' })
-          .waitFor({ state: 'visible', timeout: 15000 })
+          .waitFor({ state: 'visible' })
         await page.getByRole('button', { name: '67' }).click()
 
-        await expect(page.getByText(alertTekstNP)).toBeVisible({
-          timeout: 15000,
-        })
+        await expect(page.getByText(alertTekstNP)).toBeVisible()
       })
     })
 
@@ -79,7 +66,6 @@ test.describe('Med samtykke', () => {
         page,
       }) => {
         await authenticate(page, [pensjonsavtalerDelvisSvarTom()])
-        await dismissCookieBannerIfPresent(page)
         await fillOutStegvisning(page, {
           afp: 'nei',
           samtykke: true,
@@ -87,12 +73,10 @@ test.describe('Med samtykke', () => {
         })
         await page
           .getByRole('button', { name: '67' })
-          .waitFor({ state: 'visible', timeout: 15000 })
+          .waitFor({ state: 'visible' })
         await page.getByRole('button', { name: '67' }).click()
 
-        await expect(page.getByText(alertTekstNP)).toBeVisible({
-          timeout: 15000,
-        })
+        await expect(page.getByText(alertTekstNP)).toBeVisible()
       })
     })
 
@@ -104,7 +88,6 @@ test.describe('Med samtykke', () => {
           page,
         }) => {
           await authenticate(page, [offentligTpTekniskFeil()])
-          await dismissCookieBannerIfPresent(page)
           await fillOutStegvisning(page, {
             afp: 'nei',
             samtykke: true,
@@ -112,12 +95,10 @@ test.describe('Med samtykke', () => {
           })
           await page
             .getByRole('button', { name: '67' })
-            .waitFor({ state: 'visible', timeout: 15000 })
+            .waitFor({ state: 'visible' })
           await page.getByRole('button', { name: '67' }).click()
 
-          await expect(page.getByText(alertTekstTPO)).toBeVisible({
-            timeout: 15000,
-          })
+          await expect(page.getByText(alertTekstTPO)).toBeVisible()
         })
       })
 
@@ -130,7 +111,6 @@ test.describe('Med samtykke', () => {
             offentligTpTekniskFeil(),
             pensjonsavtalerError(),
           ])
-          await dismissCookieBannerIfPresent(page)
           await fillOutStegvisning(page, {
             afp: 'nei',
             samtykke: true,
@@ -138,12 +118,10 @@ test.describe('Med samtykke', () => {
           })
           await page
             .getByRole('button', { name: '67' })
-            .waitFor({ state: 'visible', timeout: 15000 })
+            .waitFor({ state: 'visible' })
           await page.getByRole('button', { name: '67' }).click()
 
-          await expect(page.getByText(alertTekstBegge)).toBeVisible({
-            timeout: 15000,
-          })
+          await expect(page.getByText(alertTekstBegge)).toBeVisible()
         })
       })
 
@@ -156,7 +134,6 @@ test.describe('Med samtykke', () => {
             offentligTpTekniskFeil(),
             pensjonsavtalerDelvisSvarTom(),
           ])
-          await dismissCookieBannerIfPresent(page)
           await fillOutStegvisning(page, {
             afp: 'nei',
             samtykke: true,
@@ -164,12 +141,10 @@ test.describe('Med samtykke', () => {
           })
           await page
             .getByRole('button', { name: '67' })
-            .waitFor({ state: 'visible', timeout: 15000 })
+            .waitFor({ state: 'visible' })
           await page.getByRole('button', { name: '67' }).click()
 
-          await expect(page.getByText(alertTekstBegge)).toBeVisible({
-            timeout: 15000,
-          })
+          await expect(page.getByText(alertTekstBegge)).toBeVisible()
         })
       })
     })
@@ -182,7 +157,6 @@ test.describe('Med samtykke', () => {
           page,
         }) => {
           await authenticate(page, [offentligTpTomSimulering()])
-          await dismissCookieBannerIfPresent(page)
           await fillOutStegvisning(page, {
             afp: 'nei',
             samtykke: true,
@@ -190,12 +164,10 @@ test.describe('Med samtykke', () => {
           })
           await page
             .getByRole('button', { name: '67' })
-            .waitFor({ state: 'visible', timeout: 15000 })
+            .waitFor({ state: 'visible' })
           await page.getByRole('button', { name: '67' }).click()
 
-          await expect(page.getByText(alertTekstTPO)).toBeVisible({
-            timeout: 15000,
-          })
+          await expect(page.getByText(alertTekstTPO)).toBeVisible()
         })
       })
 
@@ -208,7 +180,6 @@ test.describe('Med samtykke', () => {
             offentligTpTomSimulering(),
             pensjonsavtalerError(),
           ])
-          await dismissCookieBannerIfPresent(page)
           await fillOutStegvisning(page, {
             afp: 'nei',
             samtykke: true,
@@ -216,12 +187,10 @@ test.describe('Med samtykke', () => {
           })
           await page
             .getByRole('button', { name: '67' })
-            .waitFor({ state: 'visible', timeout: 15000 })
+            .waitFor({ state: 'visible' })
           await page.getByRole('button', { name: '67' }).click()
 
-          await expect(page.getByText(alertTekstBegge)).toBeVisible({
-            timeout: 15000,
-          })
+          await expect(page.getByText(alertTekstBegge)).toBeVisible()
         })
       })
 
@@ -234,7 +203,6 @@ test.describe('Med samtykke', () => {
             offentligTpTomSimulering(),
             pensjonsavtalerDelvisSvarTom(),
           ])
-          await dismissCookieBannerIfPresent(page)
           await fillOutStegvisning(page, {
             afp: 'nei',
             samtykke: true,
@@ -242,12 +210,10 @@ test.describe('Med samtykke', () => {
           })
           await page
             .getByRole('button', { name: '67' })
-            .waitFor({ state: 'visible', timeout: 15000 })
+            .waitFor({ state: 'visible' })
           await page.getByRole('button', { name: '67' }).click()
 
-          await expect(page.getByText(alertTekstBegge)).toBeVisible({
-            timeout: 15000,
-          })
+          await expect(page.getByText(alertTekstBegge)).toBeVisible()
         })
       })
     })
@@ -259,7 +225,6 @@ test.describe('Med samtykke', () => {
       // 12
       test('forventer jeg ingen alert', async ({ page }) => {
         await authenticate(page, [offentligTpIkkeMedlem()])
-        await dismissCookieBannerIfPresent(page)
         await fillOutStegvisning(page, {
           afp: 'nei',
           samtykke: true,
@@ -267,12 +232,12 @@ test.describe('Med samtykke', () => {
         })
         await page
           .getByRole('button', { name: '67' })
-          .waitFor({ state: 'visible', timeout: 15000 })
+          .waitFor({ state: 'visible' })
         await page.getByRole('button', { name: '67' }).click()
 
         await expect(
           page.getByRole('button', { name: 'Vis tabell av beregningen' })
-        ).toBeVisible({ timeout: 15000 })
+        ).toBeVisible()
         await expect(page.getByText(alertTekstStart)).not.toBeVisible()
       })
     })
@@ -286,7 +251,6 @@ test.describe('Med samtykke', () => {
           offentligTpIkkeMedlem(),
           pensjonsavtalerError(),
         ])
-        await dismissCookieBannerIfPresent(page)
         await fillOutStegvisning(page, {
           afp: 'nei',
           samtykke: true,
@@ -294,12 +258,10 @@ test.describe('Med samtykke', () => {
         })
         await page
           .getByRole('button', { name: '67' })
-          .waitFor({ state: 'visible', timeout: 15000 })
+          .waitFor({ state: 'visible' })
         await page.getByRole('button', { name: '67' }).click()
 
-        await expect(page.getByText(alertTekstNP)).toBeVisible({
-          timeout: 15000,
-        })
+        await expect(page.getByText(alertTekstNP)).toBeVisible()
       })
     })
 
@@ -312,7 +274,6 @@ test.describe('Med samtykke', () => {
           offentligTpIkkeMedlem(),
           pensjonsavtalerDelvisSvarTom(),
         ])
-        await dismissCookieBannerIfPresent(page)
         await fillOutStegvisning(page, {
           afp: 'nei',
           samtykke: true,
@@ -320,12 +281,10 @@ test.describe('Med samtykke', () => {
         })
         await page
           .getByRole('button', { name: '67' })
-          .waitFor({ state: 'visible', timeout: 15000 })
+          .waitFor({ state: 'visible' })
         await page.getByRole('button', { name: '67' }).click()
 
-        await expect(page.getByText(alertTekstNP)).toBeVisible({
-          timeout: 15000,
-        })
+        await expect(page.getByText(alertTekstNP)).toBeVisible()
       })
     })
   })
@@ -338,7 +297,6 @@ test.describe('Med samtykke', () => {
         page,
       }) => {
         await authenticate(page, [offentligTpAnnenOrdning()])
-        await dismissCookieBannerIfPresent(page)
         await fillOutStegvisning(page, {
           afp: 'nei',
           samtykke: true,
@@ -346,12 +304,10 @@ test.describe('Med samtykke', () => {
         })
         await page
           .getByRole('button', { name: '67' })
-          .waitFor({ state: 'visible', timeout: 15000 })
+          .waitFor({ state: 'visible' })
         await page.getByRole('button', { name: '67' }).click()
 
-        await expect(page.getByText(alertTekstAnnenTPO)).toBeVisible({
-          timeout: 15000,
-        })
+        await expect(page.getByText(alertTekstAnnenTPO)).toBeVisible()
       })
     })
 
@@ -364,7 +320,6 @@ test.describe('Med samtykke', () => {
           offentligTpAnnenOrdning(),
           pensjonsavtalerError(),
         ])
-        await dismissCookieBannerIfPresent(page)
         await fillOutStegvisning(page, {
           afp: 'nei',
           samtykke: true,
@@ -372,12 +327,10 @@ test.describe('Med samtykke', () => {
         })
         await page
           .getByRole('button', { name: '67' })
-          .waitFor({ state: 'visible', timeout: 15000 })
+          .waitFor({ state: 'visible' })
         await page.getByRole('button', { name: '67' }).click()
 
-        await expect(page.getByText(alertTekstBegge)).toBeVisible({
-          timeout: 15000,
-        })
+        await expect(page.getByText(alertTekstBegge)).toBeVisible()
       })
     })
 
@@ -390,7 +343,6 @@ test.describe('Med samtykke', () => {
           offentligTpAnnenOrdning(),
           pensjonsavtalerDelvisSvarTom(),
         ])
-        await dismissCookieBannerIfPresent(page)
         await fillOutStegvisning(page, {
           afp: 'nei',
           samtykke: true,
@@ -398,12 +350,10 @@ test.describe('Med samtykke', () => {
         })
         await page
           .getByRole('button', { name: '67' })
-          .waitFor({ state: 'visible', timeout: 15000 })
+          .waitFor({ state: 'visible' })
         await page.getByRole('button', { name: '67' }).click()
 
-        await expect(page.getByText(alertTekstBegge)).toBeVisible({
-          timeout: 15000,
-        })
+        await expect(page.getByText(alertTekstBegge)).toBeVisible()
       })
     })
   })
