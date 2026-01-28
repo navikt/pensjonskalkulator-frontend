@@ -1,6 +1,5 @@
 import clsx from 'clsx'
 import type { SeriesColumnOptions, SeriesOptionsType } from 'highcharts'
-import { get } from 'http'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 
@@ -9,6 +8,7 @@ import type { HeadingProps } from '@navikt/ds-react'
 import { BodyLong, BodyShort, Heading } from '@navikt/ds-react'
 
 import { TabellVisning } from '@/components/TabellVisning'
+import { usePdfView } from '@/pdf-view/hooks'
 import {
   useGetAfpOffentligLivsvarigQuery,
   usePensjonsavtalerQuery,
@@ -77,7 +77,7 @@ export const Simulering = ({
   afpPrivatListe,
   afpOffentligListe,
   alderspensjonMaanedligVedEndring,
-  detaljer, // eslint-disable-line @typescript-eslint/no-unused-vars
+  detaljer,
   showButtonsAndTable,
   visning,
 }: Props) => {
@@ -103,11 +103,20 @@ export const Simulering = ({
 
   const {
     data: offentligTp,
-    isLoading: isOffentligTpLoading,
+    isFetching: isOffentligTpLoading,
     isError: isOffentligTpError,
     afpPerioder,
+    tpAfpPeriode,
     erOffentligTpFoer1963,
+    erSpkBesteberegning,
   } = useOffentligTpData()
+
+  useEffect(() => {
+    console.log('Offentlig TP load', isOffentligTpLoading)
+  }, [isOffentligTpLoading])
+  useEffect(() => {
+    console.log('Offentlig TP data', offentligTp)
+  }, [offentligTp])
 
   const {
     data: pensjonsavtalerData,
@@ -145,10 +154,236 @@ export const Simulering = ({
 
   const hasIncome = useMemo(() => {
     return Boolean(
-      aarligInntektFoerUttakBeloep &&
-      formatInntektToNumber(aarligInntektFoerUttakBeloep) > 0
+      (aarligInntektFoerUttakBeloep &&
+        formatInntektToNumber(aarligInntektFoerUttakBeloep) > 0) ||
+      (gradertUttaksperiode?.aarligInntektVsaPensjonBeloep &&
+        formatInntektToNumber(
+          gradertUttaksperiode.aarligInntektVsaPensjonBeloep
+        ) > 0) ||
+      (aarligInntektVsaHelPensjon?.beloep &&
+        formatInntektToNumber(aarligInntektVsaHelPensjon.beloep) > 0)
     )
-  }, [aarligInntektFoerUttakBeloep])
+  }, [
+    aarligInntektFoerUttakBeloep,
+    gradertUttaksperiode?.aarligInntektVsaPensjonBeloep,
+    aarligInntektVsaHelPensjon?.beloep,
+  ])
+
+  const buildInntektSerie = () => {
+    if (!uttaksalder) return []
+
+    const pensjonStartAlder = isEndring
+      ? {
+          aar:
+            alderspensjonListe && alderspensjonListe.length > 0
+              ? alderspensjonListe[0].alder
+              : uttaksalder.aar,
+          maaneder: 0,
+        }
+      : gradertUttaksperiode?.uttaksalder || uttaksalder
+
+    // Period 1: Income before withdrawal
+    // Førstegangssøknad: starts 1 year before pension
+    // Endring: starts from pension year
+    // sluttAlder: ends just before the user's chosen uttaksalder (or gradual withdrawal start)
+    const userChosenStartAlder =
+      gradertUttaksperiode?.uttaksalder || uttaksalder
+
+    const inntektFoerUttak = aarligInntektFoerUttakBeloep
+      ? parseStartSluttUtbetaling({
+          startAlder: {
+            aar: isEndring ? pensjonStartAlder.aar : pensjonStartAlder.aar - 1,
+            maaneder: 0,
+          },
+          sluttAlder:
+            userChosenStartAlder.maaneder === 0
+              ? {
+                  aar: userChosenStartAlder.aar - 1,
+                  maaneder: 11,
+                }
+              : {
+                  aar: userChosenStartAlder.aar,
+                  maaneder: userChosenStartAlder.maaneder - 1,
+                },
+          aarligUtbetaling: formatInntektToNumber(aarligInntektFoerUttakBeloep),
+        })
+      : []
+
+    // Period 2: Income during gradual withdrawal (ends when full pension starts)
+    const inntektVedGradertUttak =
+      gradertUttaksperiode?.uttaksalder &&
+      gradertUttaksperiode?.aarligInntektVsaPensjonBeloep
+        ? parseStartSluttUtbetaling({
+            startAlder: gradertUttaksperiode.uttaksalder,
+            sluttAlder: pre2025OffentligAfp
+              ? getAlderMinus1Maaned({ aar: 67, maaneder: 0 })
+              : getAlderMinus1Maaned(uttaksalder),
+            aarligUtbetaling: formatInntektToNumber(
+              gradertUttaksperiode.aarligInntektVsaPensjonBeloep
+            ),
+          })
+        : []
+
+    // Period 3: Income during full pension (starts after gradual withdrawal ends, if any)
+    const inntektVedHelPensjon = aarligInntektVsaHelPensjon?.beloep
+      ? parseStartSluttUtbetaling({
+          startAlder: uttaksalder,
+          sluttAlder:
+            aarligInntektVsaHelPensjon.sluttAlder.maaneder === 0
+              ? {
+                  aar: aarligInntektVsaHelPensjon.sluttAlder.aar - 1,
+                  maaneder: 11,
+                }
+              : {
+                  aar: aarligInntektVsaHelPensjon.sluttAlder.aar,
+                  maaneder: aarligInntektVsaHelPensjon.sluttAlder.maaneder - 1,
+                },
+          aarligUtbetaling: formatInntektToNumber(
+            aarligInntektVsaHelPensjon.beloep
+          ),
+        })
+      : []
+
+    return mergeAarligUtbetalinger([
+      inntektFoerUttak,
+      inntektVedGradertUttak,
+      inntektVedHelPensjon,
+    ])
+  }
+
+  const buildAfpSerie = () => {
+    const pre2025AfpData = (() => {
+      if (pre2025OffentligAfp) {
+        const harSpkPerioder = Boolean(afpPerioder?.length)
+        if (harSpkPerioder) {
+          return parseStartSluttUtbetaling({
+            startAlder: uttaksalder!,
+            sluttAlder: { aar: 64, maaneder: 11 },
+            aarligUtbetaling: pre2025OffentligAfp.totaltAfpBeloep * 12,
+          })
+        }
+
+        return parseStartSluttUtbetaling({
+          startAlder: { aar: pre2025OffentligAfp.alderAar, maaneder: 0 },
+          sluttAlder: { aar: 66, maaneder: 11 },
+          aarligUtbetaling: pre2025OffentligAfp.totaltAfpBeloep * 12,
+        })
+      }
+
+      if (
+        shouldShowAfpOffentlig &&
+        afpOffentligListe &&
+        afpOffentligListe.length > 0
+      ) {
+        return afpOffentligListe.length === 1
+          ? parseStartSluttUtbetaling({
+              startAlder: {
+                aar: afpOffentligListe[0].alder,
+                maaneder: 0,
+              },
+              aarligUtbetaling: afpOffentligListe[0].beloep,
+            })
+          : [
+              {
+                alder: afpOffentligListe[0].alder,
+                beloep: afpOffentligListe[0].beloep,
+              },
+              {
+                alder: Infinity,
+                beloep: afpOffentligListe[1].beloep,
+              },
+            ]
+      }
+
+      return []
+    })()
+
+    const afpPerioderData = afpPerioder
+      ? afpPerioder.flatMap((periode) =>
+          periode.startAlder.aar >= 65
+            ? parseStartSluttUtbetaling({
+                startAlder: periode.startAlder,
+                sluttAlder: periode.sluttAlder
+                  ? periode.sluttAlder.maaneder === 0
+                    ? {
+                        aar: periode.sluttAlder.aar - 1,
+                        maaneder: 11,
+                      }
+                    : {
+                        aar: periode.sluttAlder.aar,
+                        maaneder: periode.sluttAlder.maaneder - 1,
+                      }
+                  : undefined,
+                aarligUtbetaling: periode.aarligUtbetaling,
+              })
+            : []
+        )
+      : []
+
+    const afpPrivatData = (() => {
+      if (afpPrivatListe && afpPrivatListe.length > 0) {
+        return [
+          ...afpPrivatListe.map((it) => ({
+            alder: it.alder,
+            beloep: it.beloep,
+          })),
+          {
+            alder: Infinity,
+            beloep: afpPrivatListe[afpPrivatListe.length - 1].beloep,
+          },
+        ]
+      }
+      return []
+    })()
+
+    return mergeAarligUtbetalinger([
+      pre2025AfpData,
+      afpPerioderData,
+      afpPrivatData,
+    ])
+  }
+
+  const buildTpSerie = () => {
+    const privatTpParsed = (pensjonsavtalerData?.avtaler ?? []).flatMap(
+      (avtale) =>
+        avtale.utbetalingsperioder.map((periode) =>
+          parseStartSluttUtbetaling({
+            startAlder: periode.startAlder,
+            sluttAlder: periode.sluttAlder,
+            aarligUtbetaling: periode.aarligUtbetaling,
+          })
+        )
+    )
+
+    const offentligTpParsed = (
+      offentligTp?.simulertTjenestepensjon?.simuleringsresultat
+        .utbetalingsperioder ?? []
+    ).map((periode) =>
+      parseStartSluttUtbetaling({
+        startAlder: periode.startAlder,
+        sluttAlder: periode.sluttAlder,
+        aarligUtbetaling: periode.aarligUtbetaling,
+      })
+    )
+
+    return mergeAarligUtbetalinger([...privatTpParsed, ...offentligTpParsed])
+  }
+
+  const buildAlderspensjonSerie = () => {
+    if (!alderspensjonListe || alderspensjonListe.length === 0) return []
+
+    return [
+      ...alderspensjonListe.map((it) => ({
+        alder: it.alder,
+        beloep: it.beloep,
+      })),
+      // Alderspensjon fra Nav er livsvarig
+      {
+        alder: Infinity,
+        beloep: alderspensjonListe[alderspensjonListe.length - 1].beloep,
+      },
+    ]
+  }
 
   const graphData: SeriesConfig[] = useMemo(
     () => [
@@ -156,252 +391,43 @@ export const Simulering = ({
         name: intl.formatMessage({ id: SERIES_DEFAULT.SERIE_INNTEKT.name }),
         color: SERIES_DEFAULT.SERIE_INNTEKT.color,
         showInLegend: hasIncome,
-        data: uttaksalder
-          ? (() => {
-              const pensjonStartAlder = isEndring
-                ? {
-                    aar:
-                      alderspensjonListe && alderspensjonListe.length > 0
-                        ? alderspensjonListe[0].alder
-                        : uttaksalder.aar,
-                    maaneder: 0,
-                  }
-                : gradertUttaksperiode?.uttaksalder || uttaksalder
-
-              // Period 1: Income before withdrawal
-              // Førstegangssøknad: starts 1 year before pension
-              // Endring: starts from pension year
-              // sluttAlder: ends just before the user's chosen uttaksalder (or gradual withdrawal start)
-              const userChosenStartAlder =
-                gradertUttaksperiode?.uttaksalder || uttaksalder
-
-              const inntektFoerUttak = aarligInntektFoerUttakBeloep
-                ? parseStartSluttUtbetaling({
-                    startAlder: {
-                      aar: isEndring
-                        ? pensjonStartAlder.aar
-                        : pensjonStartAlder.aar - 1,
-                      maaneder: 0,
-                    },
-                    sluttAlder:
-                      userChosenStartAlder.maaneder === 0
-                        ? {
-                            aar: userChosenStartAlder.aar - 1,
-                            maaneder: 11,
-                          }
-                        : {
-                            aar: userChosenStartAlder.aar,
-                            maaneder: userChosenStartAlder.maaneder - 1,
-                          },
-                    aarligUtbetaling: formatInntektToNumber(
-                      aarligInntektFoerUttakBeloep
-                    ),
-                  })
-                : []
-
-              // Period 2: Income during gradual withdrawal (ends when full pension starts)
-              const inntektVedGradertUttak =
-                gradertUttaksperiode?.uttaksalder &&
-                gradertUttaksperiode?.aarligInntektVsaPensjonBeloep
-                  ? parseStartSluttUtbetaling({
-                      startAlder: gradertUttaksperiode.uttaksalder,
-                      sluttAlder: pre2025OffentligAfp
-                        ? getAlderMinus1Maaned({ aar: 67, maaneder: 0 })
-                        : getAlderMinus1Maaned(uttaksalder),
-                      aarligUtbetaling: formatInntektToNumber(
-                        gradertUttaksperiode.aarligInntektVsaPensjonBeloep
-                      ),
-                    })
-                  : []
-
-              // Period 3: Income during full pension (starts after gradual withdrawal ends, if any)
-              const inntektVedHelPensjon = aarligInntektVsaHelPensjon?.beloep
-                ? parseStartSluttUtbetaling({
-                    startAlder: uttaksalder,
-                    sluttAlder:
-                      aarligInntektVsaHelPensjon.sluttAlder.maaneder === 0
-                        ? {
-                            aar: aarligInntektVsaHelPensjon.sluttAlder.aar - 1,
-                            maaneder: 11,
-                          }
-                        : {
-                            aar: aarligInntektVsaHelPensjon.sluttAlder.aar,
-                            maaneder:
-                              aarligInntektVsaHelPensjon.sluttAlder.maaneder -
-                              1,
-                          },
-                    aarligUtbetaling: formatInntektToNumber(
-                      aarligInntektVsaHelPensjon.beloep
-                    ),
-                  })
-                : []
-
-              return mergeAarligUtbetalinger([
-                inntektFoerUttak,
-                inntektVedGradertUttak,
-                inntektVedHelPensjon,
-              ])
-            })()
-          : [],
+        data: buildInntektSerie(),
       },
       {
-        name: intl.formatMessage({
-          id: SERIES_DEFAULT.SERIE_AFP.name,
-        }),
+        name: intl.formatMessage({ id: SERIES_DEFAULT.SERIE_AFP.name }),
         color: SERIES_DEFAULT.SERIE_AFP.color,
-        data: mergeAarligUtbetalinger([
-          (() => {
-            if (pre2025OffentligAfp) {
-              const harSpkPerioder = Boolean(afpPerioder?.length)
-              if (harSpkPerioder) {
-                return parseStartSluttUtbetaling({
-                  startAlder: uttaksalder!,
-                  sluttAlder: { aar: 64, maaneder: 11 },
-                  aarligUtbetaling: pre2025OffentligAfp.totaltAfpBeloep * 12,
-                })
-              }
-
-              return parseStartSluttUtbetaling({
-                startAlder: uttaksalder!,
-                sluttAlder: { aar: 66, maaneder: 11 },
-                aarligUtbetaling: pre2025OffentligAfp.totaltAfpBeloep * 12,
-              })
-            }
-
-            if (
-              shouldShowAfpOffentlig &&
-              afpOffentligListe &&
-              afpOffentligListe.length > 0
-            ) {
-              return afpOffentligListe.length === 1
-                ? parseStartSluttUtbetaling({
-                    startAlder: {
-                      aar: afpOffentligListe[0].alder,
-                      maaneder: 0,
-                    },
-                    aarligUtbetaling: afpOffentligListe[0].beloep,
-                  })
-                : [
-                    {
-                      alder: afpOffentligListe[0].alder,
-                      beloep: afpOffentligListe[0].beloep,
-                    },
-                    {
-                      alder: Infinity,
-                      beloep: afpOffentligListe[1].beloep,
-                    },
-                  ]
-            }
-
-            return []
-          })(),
-          afpPerioder
-            ? afpPerioder.flatMap((periode) =>
-                periode.startAlder.aar >= 65
-                  ? parseStartSluttUtbetaling({
-                      startAlder: periode.startAlder,
-                      sluttAlder: periode.sluttAlder
-                        ? periode.sluttAlder.maaneder === 0
-                          ? {
-                              aar: periode.sluttAlder.aar - 1,
-                              maaneder: 11,
-                            }
-                          : {
-                              aar: periode.sluttAlder.aar,
-                              maaneder: periode.sluttAlder.maaneder - 1,
-                            }
-                        : undefined,
-                      aarligUtbetaling: periode.aarligUtbetaling,
-                    })
-                  : []
-              )
-            : [],
-          (() => {
-            if (afpPrivatListe && afpPrivatListe.length > 0) {
-              return [
-                ...afpPrivatListe.map((it) => ({
-                  alder: it.alder,
-                  beloep: it.beloep,
-                })),
-                {
-                  alder: Infinity,
-                  beloep: afpPrivatListe[afpPrivatListe.length - 1].beloep,
-                },
-              ]
-            }
-            return []
-          })(),
-        ]),
+        data: buildAfpSerie(),
       },
       {
         name: intl.formatMessage({ id: SERIES_DEFAULT.SERIE_TP.name }),
         color: SERIES_DEFAULT.SERIE_TP.color,
-        data: (() => {
-          const privatePensjonsParsed = (
-            pensjonsavtalerData?.avtaler ?? []
-          ).flatMap((avtale) =>
-            avtale.utbetalingsperioder.map((periode) =>
-              parseStartSluttUtbetaling({
-                startAlder: periode.startAlder,
-                sluttAlder: periode.sluttAlder,
-                aarligUtbetaling: periode.aarligUtbetaling,
-              })
-            )
-          )
-
-          const offentligTpParsed = (
-            offentligTp?.simulertTjenestepensjon?.simuleringsresultat
-              .utbetalingsperioder ?? []
-          ).map((periode) =>
-            parseStartSluttUtbetaling({
-              startAlder: periode.startAlder,
-              sluttAlder: periode.sluttAlder,
-              aarligUtbetaling: periode.aarligUtbetaling,
-            })
-          )
-
-          return mergeAarligUtbetalinger([
-            ...privatePensjonsParsed,
-            ...offentligTpParsed,
-          ])
-        })(),
+        data: buildTpSerie(),
       },
       {
         name: intl.formatMessage({
           id: SERIES_DEFAULT.SERIE_ALDERSPENSJON.name,
         }),
         color: SERIES_DEFAULT.SERIE_ALDERSPENSJON.color,
-        data:
-          alderspensjonListe && alderspensjonListe.length > 0
-            ? [
-                ...alderspensjonListe.map((it) => ({
-                  alder: it.alder,
-                  beloep: it.beloep,
-                })),
-                // Alderspensjon fra Nav er livsvarig
-                {
-                  alder: Infinity,
-                  beloep:
-                    alderspensjonListe[alderspensjonListe.length - 1].beloep,
-                },
-              ]
-            : [],
+        data: buildAlderspensjonSerie(),
       },
     ],
     [
       intl,
+      hasIncome,
       isEndring,
       uttaksalder,
       gradertUttaksperiode,
       aarligInntektFoerUttakBeloep,
       aarligInntektVsaHelPensjon,
+      alderspensjonListe,
+      pre2025OffentligAfp,
+      shouldShowAfpOffentlig,
       afpOffentligListe,
       afpPrivatListe,
+      afpPerioder,
       pensjonsavtalerData?.avtaler,
       offentligTp?.simulertTjenestepensjon?.simuleringsresultat
         .utbetalingsperioder,
-      alderspensjonListe,
-      hasIncome,
     ]
   )
 
@@ -465,6 +491,16 @@ export const Simulering = ({
     []
   )
 
+  const filteredTableSeries = useMemo(() => {
+    if (hasIncome) return tableSeries as SeriesColumnOptions[]
+
+    return tableSeries.filter(
+      (serie) =>
+        serie.name !==
+        intl.formatMessage({ id: SERIES_DEFAULT.SERIE_INNTEKT.name })
+    ) as SeriesColumnOptions[]
+  }, [tableSeries, hasIncome, intl])
+
   const isPensjonsavtaleFlagVisible =
     (pensjonsavtalerData?.partialResponse ||
       (!isOffentligTpFoer1963(offentligTp) &&
@@ -475,24 +511,25 @@ export const Simulering = ({
   // const { data: person } = useGetPersonQuery()
   const isEnkel = visning === 'enkel'
 
-  // usePdfView({
-  //   headingLevel,
-  //   alderspensjonListe,
-  //   pre2025OffentligAfp,
-  //   afpPrivatListe,
-  //   afpOffentligListe,
-  //   detaljer,
-  //   visning,
-  //   chartOptions,
-  //   pensjonsavtalerData,
-  //   isPensjonsavtalerSuccess,
-  //   isPensjonsavtalerError,
-  //   isLoading: isLoading || isOffentligTpLoading || isPensjonsavtalerLoading,
-  //   isPensjonsavtaleFlagVisible,
-  //   erOffentligTpFoer1963,
-  //   tpAfpPeriode,
-  //   erSpkBesteberegning,
-  // })
+  usePdfView({
+    headingLevel,
+    alderspensjonListe,
+    pre2025OffentligAfp,
+    afpPrivatListe,
+    afpOffentligListe,
+    detaljer,
+    visning,
+    series: tableSeries as SeriesColumnOptions[],
+    aarArray: tableXAxis,
+    pensjonsavtalerData,
+    isPensjonsavtalerSuccess,
+    isPensjonsavtalerError,
+    isLoading: isLoading || isOffentligTpLoading || isPensjonsavtalerLoading,
+    isPensjonsavtaleFlagVisible,
+    erOffentligTpFoer1963,
+    tpAfpPeriode,
+    erSpkBesteberegning,
+  })
 
   const hideAFP =
     loependeLivsvarigAfpOffentlig?.afpStatus &&
@@ -590,10 +627,7 @@ export const Simulering = ({
       />
 
       {showButtonsAndTable && (
-        <TabellVisning
-          series={tableSeries as SeriesColumnOptions[]}
-          aarArray={tableXAxis}
-        />
+        <TabellVisning series={filteredTableSeries} aarArray={tableXAxis} />
       )}
 
       {/* c8 ignore next 6 - detaljer skal kun vises i dev for test formål */}
