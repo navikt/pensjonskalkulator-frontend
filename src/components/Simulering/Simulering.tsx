@@ -113,12 +113,7 @@ export const Simulering = ({
     erSpkBesteberegning,
   } = useOffentligTpData()
 
-  useEffect(() => {
-    console.log('Offentlig TP load', isOffentligTpLoading)
-  }, [isOffentligTpLoading])
-  useEffect(() => {
-    console.log('Offentlig TP data', offentligTp)
-  }, [offentligTp])
+  console.log('test - Simulering render')
 
   const {
     data: pensjonsavtalerData,
@@ -312,7 +307,6 @@ export const Simulering = ({
     if (!uttaksalder) return false
 
     const avtaler = pensjonsavtalerData?.avtaler ?? []
-    console.log('pensjonsavtalerData', pensjonsavtalerData)
     const utbetalingsperioder =
       offentligTp?.simulertTjenestepensjon?.simuleringsresultat
         .utbetalingsperioder ?? []
@@ -406,6 +400,7 @@ export const Simulering = ({
             isLoading={isLoading}
             isPensjonsavtalerLoading={isPensjonsavtalerLoading}
             isOffentligTpLoading={isOffentligTpLoading}
+            skalBeregneAfpKap19={skalBeregneAfpKap19 ?? false}
             onButtonVisibilityChange={handleButtonVisibilityChange}
             onSeriesDataChange={handleSeriesDataChange}
           />
@@ -452,7 +447,11 @@ export const Simulering = ({
       />
 
       {showButtonsAndTable && (
-        <TabellVisning series={filteredTableSeries} aarArray={tableXAxis} />
+        <TabellVisning
+          series={filteredTableSeries}
+          aarArray={tableXAxis}
+          skalBeregneAfpKap19={skalBeregneAfpKap19 ?? false}
+        />
       )}
 
       {/* c8 ignore next 6 - detaljer skal kun vises i dev for test formål */}
