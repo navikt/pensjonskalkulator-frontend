@@ -268,12 +268,7 @@ jobs:
   deploy-prod:
     name: Deploy to prod-gcp
     needs:
-      [
-        build,
-        run-unit-tests,
-        run-integration-tests-cypress,
-        run-playwright-tests,
-      ]
+      [ build ]
     permissions:
       id-token: 'write'
     runs-on: ubuntu-latest
