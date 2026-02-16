@@ -1,3 +1,6 @@
+Koden videreutvikles i https://github.com/navikt/pensjonskalkulator-frontend-monorepo, og applikasjonen er omdøpt til "ekstern pensjonskalkulator"
+
+
 # pensjonskalkulator-frontend
 
 [![Build and deploy](https://github.com/navikt/pensjonskalkulator-frontend/actions/workflows/deploy.yaml/badge.svg)](https://github.com/navikt/pensjonskalkulator-frontend/actions/workflows/deploy.yaml)
